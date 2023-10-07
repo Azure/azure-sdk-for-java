@@ -104,6 +104,12 @@ public final class RegistryProperties {
     @JsonProperty(value = "zoneRedundancy")
     private ZoneRedundancy zoneRedundancy;
 
+    /*
+     * Enables registry-wide pull from unauthenticated clients.
+     */
+    @JsonProperty(value = "anonymousPullEnabled")
+    private Boolean anonymousPullEnabled;
+
     /** Creates an instance of RegistryProperties class. */
     public RegistryProperties() {
     }
@@ -322,6 +328,26 @@ public final class RegistryProperties {
      */
     public RegistryProperties withZoneRedundancy(ZoneRedundancy zoneRedundancy) {
         this.zoneRedundancy = zoneRedundancy;
+        return this;
+    }
+
+    /**
+     * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     *
+     * @return the anonymousPullEnabled value.
+     */
+    public Boolean anonymousPullEnabled() {
+        return this.anonymousPullEnabled;
+    }
+
+    /**
+     * Set the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     *
+     * @param anonymousPullEnabled the anonymousPullEnabled value to set.
+     * @return the RegistryProperties object itself.
+     */
+    public RegistryProperties withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
+        this.anonymousPullEnabled = anonymousPullEnabled;
         return this;
     }
 

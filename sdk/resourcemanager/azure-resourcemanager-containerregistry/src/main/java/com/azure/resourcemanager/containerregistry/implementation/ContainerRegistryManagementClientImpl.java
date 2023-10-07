@@ -9,10 +9,16 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerregistry.fluent.AgentPoolsClient;
+import com.azure.resourcemanager.containerregistry.fluent.ArchiveVersionsClient;
+import com.azure.resourcemanager.containerregistry.fluent.ArchivesClient;
 import com.azure.resourcemanager.containerregistry.fluent.CacheRulesClient;
+import com.azure.resourcemanager.containerregistry.fluent.ConnectedRegistriesClient;
 import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.fluent.CredentialSetsClient;
+import com.azure.resourcemanager.containerregistry.fluent.ExportPipelinesClient;
+import com.azure.resourcemanager.containerregistry.fluent.ImportPipelinesClient;
 import com.azure.resourcemanager.containerregistry.fluent.OperationsClient;
+import com.azure.resourcemanager.containerregistry.fluent.PipelineRunsClient;
 import com.azure.resourcemanager.containerregistry.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
 import com.azure.resourcemanager.containerregistry.fluent.ReplicationsClient;
@@ -89,6 +95,30 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         return this.defaultPollInterval;
     }
 
+    /** The ArchivesClient object to access its operations. */
+    private final ArchivesClient archives;
+
+    /**
+     * Gets the ArchivesClient object to access its operations.
+     *
+     * @return the ArchivesClient object.
+     */
+    public ArchivesClient getArchives() {
+        return this.archives;
+    }
+
+    /** The ArchiveVersionsClient object to access its operations. */
+    private final ArchiveVersionsClient archiveVersions;
+
+    /**
+     * Gets the ArchiveVersionsClient object to access its operations.
+     *
+     * @return the ArchiveVersionsClient object.
+     */
+    public ArchiveVersionsClient getArchiveVersions() {
+        return this.archiveVersions;
+    }
+
     /** The CacheRulesClient object to access its operations. */
     private final CacheRulesClient cacheRules;
 
@@ -99,6 +129,18 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
      */
     public CacheRulesClient getCacheRules() {
         return this.cacheRules;
+    }
+
+    /** The ConnectedRegistriesClient object to access its operations. */
+    private final ConnectedRegistriesClient connectedRegistries;
+
+    /**
+     * Gets the ConnectedRegistriesClient object to access its operations.
+     *
+     * @return the ConnectedRegistriesClient object.
+     */
+    public ConnectedRegistriesClient getConnectedRegistries() {
+        return this.connectedRegistries;
     }
 
     /** The CredentialSetsClient object to access its operations. */
@@ -113,6 +155,18 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         return this.credentialSets;
     }
 
+    /** The ExportPipelinesClient object to access its operations. */
+    private final ExportPipelinesClient exportPipelines;
+
+    /**
+     * Gets the ExportPipelinesClient object to access its operations.
+     *
+     * @return the ExportPipelinesClient object.
+     */
+    public ExportPipelinesClient getExportPipelines() {
+        return this.exportPipelines;
+    }
+
     /** The RegistriesClient object to access its operations. */
     private final RegistriesClient registries;
 
@@ -125,6 +179,18 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         return this.registries;
     }
 
+    /** The ImportPipelinesClient object to access its operations. */
+    private final ImportPipelinesClient importPipelines;
+
+    /**
+     * Gets the ImportPipelinesClient object to access its operations.
+     *
+     * @return the ImportPipelinesClient object.
+     */
+    public ImportPipelinesClient getImportPipelines() {
+        return this.importPipelines;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -135,6 +201,18 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /** The PipelineRunsClient object to access its operations. */
+    private final PipelineRunsClient pipelineRuns;
+
+    /**
+     * Gets the PipelineRunsClient object to access its operations.
+     *
+     * @return the PipelineRunsClient object.
+     */
+    public PipelineRunsClient getPipelineRuns() {
+        return this.pipelineRuns;
     }
 
     /** The PrivateEndpointConnectionsClient object to access its operations. */
@@ -268,10 +346,16 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.archives = new ArchivesClientImpl(this);
+        this.archiveVersions = new ArchiveVersionsClientImpl(this);
         this.cacheRules = new CacheRulesClientImpl(this);
+        this.connectedRegistries = new ConnectedRegistriesClientImpl(this);
         this.credentialSets = new CredentialSetsClientImpl(this);
+        this.exportPipelines = new ExportPipelinesClientImpl(this);
         this.registries = new RegistriesClientImpl(this);
+        this.importPipelines = new ImportPipelinesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.pipelineRuns = new PipelineRunsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.replications = new ReplicationsClientImpl(this);
         this.scopeMaps = new ScopeMapsClientImpl(this);

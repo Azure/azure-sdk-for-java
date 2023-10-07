@@ -185,7 +185,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -245,7 +245,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -374,7 +374,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (cacheRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -430,7 +430,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (cacheRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -542,7 +542,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         } else {
             cacheRuleCreateParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -612,7 +612,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         } else {
             cacheRuleCreateParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -851,7 +851,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (cacheRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -906,7 +906,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (cacheRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1118,7 +1118,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         } else {
             cacheRuleUpdateParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1188,7 +1188,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         } else {
             cacheRuleUpdateParameters.validate();
         }
-        final String apiVersion = "2023-07-01";
+        final String apiVersion = "2023-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

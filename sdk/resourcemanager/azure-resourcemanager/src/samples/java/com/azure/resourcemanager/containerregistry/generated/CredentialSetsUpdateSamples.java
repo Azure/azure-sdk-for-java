@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for CredentialSets Update. */
 public final class CredentialSetsUpdateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/CredentialSetUpdate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/CredentialSetUpdate.json
      */
     /**
      * Sample code: CredentialSetUpdate.

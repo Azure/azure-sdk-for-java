@@ -368,6 +368,29 @@ public final class RegistryInner extends Resource {
     }
 
     /**
+     * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     *
+     * @return the anonymousPullEnabled value.
+     */
+    public Boolean anonymousPullEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().anonymousPullEnabled();
+    }
+
+    /**
+     * Set the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     *
+     * @param anonymousPullEnabled the anonymousPullEnabled value to set.
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withAnonymousPullEnabled(anonymousPullEnabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
