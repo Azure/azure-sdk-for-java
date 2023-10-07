@@ -80,11 +80,7 @@ public class JsonArray extends JsonElement {
         if (element == null) {
             throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value.");
         }
-        if (index > elements.size()) {
-            this.elements.add(element);
-        } else {
-            this.elements.add(index, element);
-        }
+        this.elements.add(index, element);
         return this;
     }
 
@@ -271,7 +267,7 @@ public class JsonArray extends JsonElement {
             if (i > 0) {
                 keyword += i;
             }
-            output.addProperty(keyword, elements.get(i));
+            output.setProperty(keyword, elements.get(i));
         }
         return output;
     }

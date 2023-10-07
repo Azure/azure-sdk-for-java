@@ -55,7 +55,7 @@ public class JsonString extends JsonElement{
     @Override
     public JsonObject asObject() {
         JsonObject output = new JsonObject();
-        output.addProperty("Value", this);
+        output.setProperty("Value", this);
         return output;
     }
 

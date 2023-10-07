@@ -193,24 +193,24 @@ public class JsonObject extends JsonElement {
     }
      */
 
-    /**
-     * Adds a new property into the JsonObject object using JsonElement as the
-     * property value.
-     *
-     * The primary user is the build method of JsonObject and JsonArray.
-     *
-     * @param key
-     * @param element
-     * @return The new state of the JsonObject after the successful addition of
-     * the new property
-     * @throws IllegalArgumentException
-     */
-    public JsonObject addProperty(String key, JsonElement element) throws IllegalArgumentException {
-        // Adding the new property, the key with its value pair. The value is
-        // the respective JsonElement cast/conversion of element.
-        properties.put(key, element);
-        return this;
-    }
+//    /**
+//     * Adds a new property into the JsonObject object using JsonElement as the
+//     * property value.
+//     *
+//     * The primary user is the build method of JsonObject and JsonArray.
+//     *
+//     * @param key
+//     * @param element
+//     * @return The new state of the JsonObject after the successful addition of
+//     * the new property
+//     * @throws IllegalArgumentException
+//     */
+//    public JsonObject addProperty(String key, JsonElement element) throws IllegalArgumentException {
+//        // Adding the new property, the key with its value pair. The value is
+//        // the respective JsonElement cast/conversion of element.
+//        properties.put(key, element);
+//        return this;
+//    }
 
     /**
      * Returns a property value for the corresponding specified property key
@@ -298,13 +298,9 @@ public class JsonObject extends JsonElement {
 //    }
 
     @Override
-    public JsonObject setProperty(String key, JsonElement element) throws IOException {
-        if (properties.containsKey(key)) {
-            this.properties.replace(key, element);
-            return this;
-        } else {
-            throw new IOException("Key" + key + " does not currently exist");
-        }
+    public JsonObject setProperty(String key, JsonElement element) throws IllegalArgumentException {
+        properties.put(key, element);
+        return this;
     }
 
     /**

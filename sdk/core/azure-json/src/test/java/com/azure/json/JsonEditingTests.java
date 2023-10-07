@@ -9,25 +9,25 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JsonEditingTests {
 
     JsonObject object = new JsonObject()
-        .addProperty("EntryVariable", new JsonString("First"))
-        .addProperty("EntryObject", new JsonObject().addProperty("InnerKey", new JsonNumber(20)))
-        .addProperty("EntryArray", new JsonArray().addElement(new JsonString("Value")).addElement(new JsonString("Value2")));
+        .setProperty("EntryVariable", new JsonString("First"))
+        .setProperty("EntryObject", new JsonObject().setProperty("InnerKey", new JsonNumber(20)))
+        .setProperty("EntryArray", new JsonArray().addElement(new JsonString("Value")).addElement(new JsonString("Value2")));
     JsonArray array = new JsonArray()
         .addElement(new JsonString("EntryVariable"))
-        .addElement(new JsonObject().addProperty("InnerKey", new JsonString("Data")))
+        .addElement(new JsonObject().setProperty("InnerKey", new JsonString("Data")))
         .addElement(new JsonArray().addElement(JsonNull.getInstance()).addElement(JsonBoolean.getInstance(false)));
 
 
     //Tests for add, edit and remove methods.
     @Test
     public void addObjectPropertyNewKey(){
-        object.addProperty("New Key", new JsonString("New Value"));
+        object.setProperty("New Key", new JsonString("New Value"));
         assertEquals("New Value", object.getProperty("New Key").toString());
     }
 
     @Test
     public void addObjectPropertyExistingKey(){ //If key already exists, acts as replace.
-        object.addProperty("EntryVariable", new JsonString("Changed"));
+        object.setProperty("EntryVariable", new JsonString("Changed"));
         assertEquals("Changed", object.getProperty("EntryVariable").toString());
     }
 
