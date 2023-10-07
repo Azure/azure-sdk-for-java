@@ -52,16 +52,16 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple3<Stri
 
     @Override
     public Topic internalCreate(Tuple3<String, String, ServiceBusTopicProperties> creationTuple) {
-        ServiceBusTopicProperties queueProperties = creationTuple.getT3();
+        ServiceBusTopicProperties topicProperties = creationTuple.getT3();
         Topic.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
             .getOrCreate(creationTuple.getT1())
             .topics()
             .define(creationTuple.getT2());
-        if (queueProperties.getMaxSizeInMegabytes() != null) {
-            blank.withSizeInMB(queueProperties.getMaxSizeInMegabytes());
+        if (topicProperties.getMaxSizeInMegabytes() != null) {
+            blank.withSizeInMB(topicProperties.getMaxSizeInMegabytes());
         }
-        if (queueProperties.getDefaultMessageTimeToLive() != null) {
-            blank.withDefaultMessageTTL(queueProperties.getDefaultMessageTimeToLive());
+        if (topicProperties.getDefaultMessageTimeToLive() != null) {
+            blank.withDefaultMessageTTL(topicProperties.getDefaultMessageTimeToLive());
         }
         return blank.create();
     }
