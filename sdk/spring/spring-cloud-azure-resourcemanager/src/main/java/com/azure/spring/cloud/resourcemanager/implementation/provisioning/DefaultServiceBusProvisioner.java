@@ -9,8 +9,8 @@ import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusQueu
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicSubscriptionCrud;
 import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
-import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
+import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties;
+import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties;
 import reactor.util.function.Tuples;
 
 /**
@@ -37,34 +37,34 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
     @Override
     @Deprecated
     public void provisionQueue(String namespace, String queue) {
-        this.queueCrud.getOrCreate(Tuples.of(namespace, queue, new ServiceBusProducerProperties()));
+        this.queueCrud.getOrCreate(Tuples.of(namespace, queue, new ServiceBusQueueProperties()));
     }
 
     @Override
-    public void provisionQueue(String namespace, String queue, ServiceBusProducerProperties producerProperties) {
-        this.queueCrud.getOrCreate(Tuples.of(namespace, queue, producerProperties));
+    public void provisionQueue(String namespace, String queue, ServiceBusQueueProperties queueProperties) {
+        this.queueCrud.getOrCreate(Tuples.of(namespace, queue, queueProperties));
     }
 
     @Override
     @Deprecated
     public void provisionTopic(String namespace, String topic) {
-        this.topicCrud.getOrCreate(Tuples.of(namespace, topic, new ServiceBusProducerProperties()));
+        this.topicCrud.getOrCreate(Tuples.of(namespace, topic, new ServiceBusTopicProperties()));
     }
 
     @Override
-    public void provisionTopic(String namespace, String topic, ServiceBusProducerProperties producerProperties) {
-        this.topicCrud.getOrCreate(Tuples.of(namespace, topic, producerProperties));
+    public void provisionTopic(String namespace, String topic, ServiceBusTopicProperties topicProperties) {
+        this.topicCrud.getOrCreate(Tuples.of(namespace, topic, topicProperties));
     }
 
     @Override
     @Deprecated
     public void provisionSubscription(String namespace, String topic, String subscription) {
-        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription, new ServiceBusConsumerProperties()));
+        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription, new ServiceBusTopicProperties()));
     }
 
     @Override
     public void provisionSubscription(String namespace, String topic, String subscription,
-                                      ServiceBusConsumerProperties consumerProperties) {
-        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription, consumerProperties));
+                                      ServiceBusTopicProperties topicProperties) {
+        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription, topicProperties));
     }
 }

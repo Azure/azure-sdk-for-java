@@ -150,29 +150,37 @@
         },
 		{
           "code": "java.method.addedToInterface",
-          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties)",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties)",
           "justification": "New method added to support more properties."
         },
 		{
           "code": "java.method.addedToInterface",
-          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionSubscription(java.lang.String, java.lang.String, java.lang.String, com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties)",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionSubscription(java.lang.String, java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
           "justification": "New method added to support more properties."
         },
 		{
           "code": "java.method.addedToInterface",
-          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionTopic(java.lang.String, java.lang.String, com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties)",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionTopic(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
           "justification": "New method added to support more properties."
         },
-		{
+        {
+          "regex": true,
           "ignore": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties",
-          "justification": "Provides new APIs."
+          "newArchive": "class com.azure.spring.cloud.resourcemanager.provisioning.properties.*",
+          "justification": "Provides new properties."
+        },
+		{
+          "regex": true,
+          "ignore": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "newArchive": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.(ServiceBusProducerProperties|ServiceBusConsumerProperties)",
+          "justification": "Provides new properties."
         },
         {
           "ignore": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties",
+          "newArchive": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties",
           "justification": "Provides new APIs."
         },
         {

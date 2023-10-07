@@ -8,14 +8,14 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
+import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties;
 import org.springframework.util.Assert;
 import reactor.util.function.Tuple3;
 
 /**
  * Resource manager for Service Bus queue.
  */
-public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple3<String, String, ServiceBusProducerProperties>> {
+public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple3<String, String, ServiceBusQueueProperties>> {
 
 
     public ServiceBusQueueCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
@@ -23,7 +23,7 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple3<Stri
     }
 
     @Override
-    String getResourceName(Tuple3<String, String, ServiceBusProducerProperties> key) {
+    String getResourceName(Tuple3<String, String, ServiceBusQueueProperties> key) {
         return key.getT2();
     }
 
@@ -33,7 +33,7 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple3<Stri
     }
 
     @Override
-    public Queue internalGet(Tuple3<String, String, ServiceBusProducerProperties> namespaceAndName) {
+    public Queue internalGet(Tuple3<String, String, ServiceBusQueueProperties> namespaceAndName) {
         try {
             ServiceBusNamespace serviceBusNamespace = new ServiceBusNamespaceCrud(this.resourceManager,
                 this.resourceMetadata)
@@ -52,17 +52,17 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple3<Stri
     }
 
     @Override
-    public Queue internalCreate(Tuple3<String, String, ServiceBusProducerProperties> creationTuple) {
-        ServiceBusProducerProperties producerProperties = creationTuple.getT3();
+    public Queue internalCreate(Tuple3<String, String, ServiceBusQueueProperties> creationTuple) {
+        ServiceBusQueueProperties topicProperties = creationTuple.getT3();
         Queue.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
             .getOrCreate(creationTuple.getT1())
             .queues()
             .define(creationTuple.getT2());
-        if (producerProperties.getMaxSizeInMegabytes() != null) {
-            blank.withSizeInMB(producerProperties.getMaxSizeInMegabytes());
+        if (topicProperties.getMaxSizeInMegabytes() != null) {
+            blank.withSizeInMB(topicProperties.getMaxSizeInMegabytes());
         }
-        if (producerProperties.getDefaultMessageTimeToLive() != null) {
-            blank.withDefaultMessageTTL(producerProperties.getDefaultMessageTimeToLive());
+        if (topicProperties.getDefaultMessageTimeToLive() != null) {
+            blank.withDefaultMessageTTL(topicProperties.getDefaultMessageTimeToLive());
         }
         return blank.create();
     }

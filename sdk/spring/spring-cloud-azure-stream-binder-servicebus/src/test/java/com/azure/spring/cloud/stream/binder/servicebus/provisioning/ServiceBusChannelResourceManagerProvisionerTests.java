@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
 
 import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties;
+import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
@@ -27,7 +29,6 @@ public class ServiceBusChannelResourceManagerProvisionerTests {
 
     private ServiceBusChannelResourceManagerProvisioner resourceManagerProvisioner;
 
-    private final String namespaceName = "namespaceName";
     private final String entityName = "entityName";
 
     @BeforeEach
@@ -37,6 +38,7 @@ public class ServiceBusChannelResourceManagerProvisionerTests {
         producerProperties.setEntityName(entityName);
         consumerProperties = new ServiceBusConsumerProperties();
         consumerProperties.setEntityName(entityName);
+        String namespaceName = "namespaceName";
         resourceManagerProvisioner = spy(new ServiceBusChannelResourceManagerProvisioner(namespaceName, provisioner));
     }
 
@@ -49,17 +51,17 @@ public class ServiceBusChannelResourceManagerProvisionerTests {
             new ExtendedProducerProperties<>(producerProperties);
         resourceManagerProvisioner.provisionProducerDestination(entityName, extendedProperties);
         if (ServiceBusEntityType.QUEUE == serviceBusEntityType) {
-            verify(provisioner, times(1)).provisionQueue(namespaceName, entityName, producerProperties);
+            verify(provisioner, times(1)).provisionQueue(anyString(), anyString(), any(ServiceBusQueueProperties.class));
         } else {
-            verify(provisioner, times(1)).provisionTopic(namespaceName, entityName, producerProperties);
+            verify(provisioner, times(1)).provisionTopic(anyString(), anyString(), any(ServiceBusTopicProperties.class));
         }
         verify(resourceManagerProvisioner, times(1)).provisionProducerDestination(entityName, extendedProperties);
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "QUEUE", "TOPIC" })
-    void provisionConsumerDestination() {
-        ServiceBusEntityType serviceBusEntityType = ServiceBusEntityType.valueOf("QUEUE");
+    void provisionConsumerDestination(String entityType) {
+        ServiceBusEntityType serviceBusEntityType = ServiceBusEntityType.valueOf(entityType);
         consumerProperties.setEntityType(serviceBusEntityType);
         ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedProperties =
             new ExtendedConsumerProperties<>(consumerProperties);
@@ -67,9 +69,9 @@ public class ServiceBusChannelResourceManagerProvisionerTests {
         String subscriptionName = "subscriptionName";
         resourceManagerProvisioner.provisionConsumerDestination(entityName, subscriptionName, extendedProperties);
         if (ServiceBusEntityType.QUEUE == serviceBusEntityType) {
-            verify(provisioner, times(1)).provisionQueue(anyString(), anyString(), any());
+            verify(provisioner, times(1)).provisionQueue(anyString(), anyString(), any(ServiceBusQueueProperties.class));
         } else {
-            verify(provisioner, times(1)).provisionSubscription(namespaceName, entityName, subscriptionName, consumerProperties);
+            verify(provisioner, times(1)).provisionSubscription(anyString(), anyString(), anyString(), any(ServiceBusTopicProperties.class));
         }
         verify(resourceManagerProvisioner, times(1)).provisionConsumerDestination(entityName, subscriptionName, extendedProperties);
     }

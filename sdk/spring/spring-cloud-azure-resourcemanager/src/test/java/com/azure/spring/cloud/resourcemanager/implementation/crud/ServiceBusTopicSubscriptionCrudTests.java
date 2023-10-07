@@ -12,8 +12,7 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusSubscriptions;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.Topics;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
+import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,41 +30,37 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<ServiceBusSubscription,
-    Tuple4<String, String, String, ServiceBusConsumerProperties>> {
+    Tuple4<String, String, String, ServiceBusTopicProperties>> {
 
     private static final String NAMESPACE = "namespace";
     private static final String TOPIC_NAME = "topic";
     private static final String SUBSCRIPTION_NAME = "subscription";
     private ServiceBusTopicCrud topicCrud;
 
-    private ServiceBusProducerProperties producerProperties = new ServiceBusProducerProperties();
-    private ServiceBusConsumerProperties consumerProperties = new ServiceBusConsumerProperties();
+    private final ServiceBusTopicProperties topicProperties = new ServiceBusTopicProperties();
 
     @BeforeEach
     void beforeEach() {
         topicCrud = mock(ServiceBusTopicCrud.class);
-        consumerProperties.setDefaultMessageTimeToLive(Duration.ofSeconds(60));
-        consumerProperties.setMaxSizeInMegabytes(1024L);
-
-        producerProperties.setDefaultMessageTimeToLive(Duration.ofSeconds(60));
-        producerProperties.setMaxSizeInMegabytes(1024L);
+        topicProperties.setDefaultMessageTimeToLive(Duration.ofSeconds(60));
+        topicProperties.setMaxSizeInMegabytes(1024L);
         super.beforeEach();
     }
 
     @Override
-    AbstractResourceCrud<ServiceBusSubscription, Tuple4<String, String, String, ServiceBusConsumerProperties>> getResourceCrud() {
+    AbstractResourceCrud<ServiceBusSubscription, Tuple4<String, String, String, ServiceBusTopicProperties>> getResourceCrud() {
         return new ServiceBusTopicSubscriptionCrud(resourceManager, resourceMetadata, this.topicCrud);
     }
 
     @Override
-    Tuple4<String, String, String, ServiceBusConsumerProperties> getKey() {
-        return Tuples.of(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME, consumerProperties);
+    Tuple4<String, String, String, ServiceBusTopicProperties> getKey() {
+        return Tuples.of(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME, topicProperties);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     void getStubManagementException(int statusCode, String message) {
-        Tuple4<String, String, String, ServiceBusConsumerProperties> subscriptionKey = getKey();
+        Tuple4<String, String, String, ServiceBusTopicProperties> subscriptionKey = getKey();
         ManagementException exception = createManagementException(statusCode, message);
         Topic topic = mock(Topic.class);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
@@ -99,7 +94,7 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
     @Test
     @SuppressWarnings("unchecked")
     void topicDoesNotExistsShouldReturnNullTopicAndCreateSub() {
-        Tuple4<String, String, String, ServiceBusConsumerProperties> subscriptionKey = getKey();
+        Tuple4<String, String, String, ServiceBusTopicProperties> subscriptionKey = getKey();
 
         Topic topic = mock(Topic.class);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
@@ -123,7 +118,7 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
     @Test
     @SuppressWarnings("unchecked")
     void topicExistsSubscriptionDoesNotExistShouldReturnNonNullTopicAndCreateSub() {
-        Tuple4<String, String, String, ServiceBusConsumerProperties> subscriptionKey = getKey();
+        Tuple4<String, String, String, ServiceBusTopicProperties> subscriptionKey = getKey();
         Topic topic = mock(Topic.class);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
         ServiceBusSubscription subscription = mock(ServiceBusSubscription.class);
@@ -162,12 +157,12 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         Topic.DefinitionStages.Blank blank = mock(Topic.DefinitionStages.Blank.class);
         when(topics.define(TOPIC_NAME)).thenReturn(blank);
 
-        Tuple3<String, String, ServiceBusProducerProperties> topicKey = Tuples.of(NAMESPACE, TOPIC_NAME, producerProperties);
+        Tuple3<String, String, ServiceBusTopicProperties> topicKey = Tuples.of(NAMESPACE, TOPIC_NAME, topicProperties);
         ServiceBusTopicCrud srvBusTopicCrud = new ServiceBusTopicCrud(resourceManager, resourceMetadata);
         when(srvBusTopicCrud.get(topicKey)).thenReturn(null);
         srvBusTopicCrud.getOrCreate(topicKey);
 
-        verify(blank, times(1)).withSizeInMB(producerProperties.getMaxSizeInMegabytes());
-        verify(blank, times(1)).withDefaultMessageTTL(producerProperties.getDefaultMessageTimeToLive());
+        verify(blank, times(1)).withSizeInMB(topicProperties.getMaxSizeInMegabytes());
+        verify(blank, times(1)).withDefaultMessageTTL(topicProperties.getDefaultMessageTimeToLive());
     }
 }
