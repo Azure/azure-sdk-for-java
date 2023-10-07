@@ -236,12 +236,11 @@ public abstract class JsonElement {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException, IOException {
+    public JsonElement removeProperty(String key) {
         if (this.isObject()) {
             return (this.asObject()).removeProperty(key);
-        } else {
-            throw new InvalidJsonDataTypeException();
         }
+        return null;
     }
 
     /**
