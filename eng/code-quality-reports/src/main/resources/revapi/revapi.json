@@ -167,7 +167,7 @@
           "regex": true,
           "ignore": true,
           "code": "java.class.externalClassExposedInAPI",
-          "newArchive": "class com.azure.spring.cloud.resourcemanager.provisioning.properties.*",
+          "newArchive": "class com.azure.spring.cloud.resourcemanager.provisioning.properties.(ServiceBusQueueProperties|ServiceBusTopicProperties)",
           "justification": "Provides new properties."
         },
 		{
