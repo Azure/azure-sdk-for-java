@@ -36,6 +36,10 @@ public class ServiceBusConsumerProperties extends ProcessorProperties {
         this.requeueRejected = requeueRejected;
     }
 
+    /**
+     * Get the maxSizeInMegabytes property.
+     * @return the maxSizeInMegabytes value.
+     */
     public Long getMaxSizeInMegabytes() {
         return maxSizeInMegabytes;
     }
@@ -48,6 +52,10 @@ public class ServiceBusConsumerProperties extends ProcessorProperties {
         this.maxSizeInMegabytes = maxSizeInMegabytes;
     }
 
+    /**
+     * Set the defaultMessageTimeToLive property.
+     * @return the defaultMessageTimeToLive value.
+     */
     public Duration getDefaultMessageTimeToLive() {
         return defaultMessageTimeToLive;
     }
