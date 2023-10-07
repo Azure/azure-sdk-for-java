@@ -15,6 +15,7 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.*;
 
 /**
@@ -26,8 +27,10 @@ import java.util.*;
  */
 public class HttpUrlConnectionAsyncClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionAsyncClient.class);
-    private final long connectionTimeout; // in milliseconds
-    private final long readTimeout; // in milliseconds
+    private final long connectionTimeout; // in milliseconds format for HttpUrlConnection methods
+    private final long readTimeout; // in milliseconds format for HttpUrlConnection methods
+    private final Duration writeTimeout;
+    private final Duration responseTimeout;
     private final ProxyOptions proxyOptions;
     private final Configuration configuration;
 
@@ -45,6 +48,8 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         else {
             this.readTimeout = timeouts.readTimeout.toMillis();
         }
+        this.writeTimeout = timeouts.writeTimeout;
+        this.responseTimeout = timeouts.responseTimeout;
 
         this.proxyOptions = proxyOptions;
         this.configuration = configuration;
@@ -90,6 +95,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             HttpURLConnection connection = connect(httpRequest);
             return sendAsyncRequest(httpRequest, progressReporter, connection)
                 .then(Mono.defer(() -> Mono.fromCallable(() -> receiveResponse(httpRequest, connection))))
+                .timeout(responseTimeout)
                 .publishOn(Schedulers.boundedElastic());
         });
     }
@@ -227,7 +233,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                             } catch (IOException e) {
                                 return FluxUtil.monoError(LOGGER, new RuntimeException(e));
                             }
-                        });
+                        }).timeout(writeTimeout);
                     })
                     .then();
             case GET:
