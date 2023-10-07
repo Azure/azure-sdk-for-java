@@ -1216,4 +1216,38 @@ public class JsonConversionTests {
         JsonObject converted = test.asObject();
         assertEquals("{\"Value\":null}", converted.toString());
     }
+
+    //Section 4: Reconversion Tests. Check that changing a data value from one type and back works as intended.
+    @Test
+    public void reverseStringNumberGeneric(){
+        JsonElement test = new JsonString("Generic");
+        JsonNumber converted = test.asNumber();
+        JsonString result = converted.asString();
+        assertEquals("", result.toString());
+    }
+
+    @Test
+    public void reverseStringNumberInt(){
+        JsonElement test = new JsonString("123");
+        JsonNumber converted = test.asNumber();
+        JsonString result = converted.asString();
+        assertEquals("123", result.toString());
+    }
+
+    @Test
+    public void reverseStringNumberFloat(){
+        JsonElement test = new JsonString("1.23");
+        JsonNumber converted = test.asNumber();
+        JsonString result = converted.asString();
+        assertEquals("1.23", result.toString());
+    }
+
+    @Test
+    public void reverseStringNumberNegative(){
+        JsonElement test = new JsonString("-1");
+        JsonNumber converted = test.asNumber();
+        JsonString result = converted.asString();
+        assertEquals("-1", result.toString());
+    }
+
 }

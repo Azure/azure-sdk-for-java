@@ -193,7 +193,7 @@ public abstract class JsonElement {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonObject addProperty(String key, Object element) throws InvalidJsonDataTypeException {
+    public JsonObject addProperty(String key, JsonElement element) throws InvalidJsonDataTypeException {
         if(this.isObject()) {
             return (this.asObject()).addProperty(key, element);
         } else {
