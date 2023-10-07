@@ -2,6 +2,7 @@ package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.*;
 import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
+import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionTimeouts;
 import com.azure.core.util.*;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -14,7 +15,6 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
 import java.util.*;
 
 /**
@@ -27,16 +27,25 @@ import java.util.*;
 public class HttpUrlConnectionAsyncClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionAsyncClient.class);
     private final long connectionTimeout; // in milliseconds
+    private final long readTimeout; // in milliseconds
     private final ProxyOptions proxyOptions;
     private final Configuration configuration;
 
-    HttpUrlConnectionAsyncClient(Duration connectionTimeout, ProxyOptions proxyOptions, Configuration configuration) {
-        if (connectionTimeout == null) {
+    HttpUrlConnectionAsyncClient(HttpUrlConnectionTimeouts timeouts, ProxyOptions proxyOptions, Configuration configuration) {
+        if (timeouts.connectionTimeout == null) {
             this.connectionTimeout = -1;
         }
         else {
-            this.connectionTimeout = connectionTimeout.toMillis();
+            this.connectionTimeout = timeouts.connectionTimeout.toMillis();
         }
+
+        if (timeouts.readTimeout == null) {
+            this.readTimeout = -1;
+        }
+        else {
+            this.readTimeout = timeouts.readTimeout.toMillis();
+        }
+
         this.proxyOptions = proxyOptions;
         this.configuration = configuration;
     }
@@ -137,6 +146,10 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
             if (connectionTimeout != -1) {
                 connection.setConnectTimeout((int) connectionTimeout);
+            }
+
+            if (readTimeout != -1) {
+                connection.setReadTimeout((int) readTimeout);
             }
 
             // SetConnectionRequest

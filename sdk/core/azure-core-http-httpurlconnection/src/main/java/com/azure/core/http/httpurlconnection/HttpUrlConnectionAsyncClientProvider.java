@@ -57,7 +57,10 @@ public class HttpUrlConnectionAsyncClientProvider implements HttpClientProvider 
         HttpUrlConnectionAsyncClientBuilder builder = new HttpUrlConnectionAsyncClientBuilder();
         builder = builder.proxy(clientOptions.getProxyOptions())
             .configuration(clientOptions.getConfiguration())
-            .connectionTimeout(clientOptions.getConnectTimeout());
+            .connectionTimeout(clientOptions.getConnectTimeout())
+            .readTimeout(clientOptions.getReadTimeout())
+            .writeTimeout(clientOptions.getWriteTimeout())
+            .responseTimeout(clientOptions.getResponseTimeout());
 
         return builder.build();
     }
