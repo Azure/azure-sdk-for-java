@@ -7,6 +7,8 @@ import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
 
 import java.time.Duration;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
+
 /**
  *
  */
@@ -14,8 +16,8 @@ public class ServiceBusProducerProperties extends ProducerProperties {
     private boolean sync = false;
     private Duration sendTimeout = Duration.ofMillis(10000);
 
-    private Long maxSizeInMegabytes;
-    private Duration defaultMessageTimeToLive;
+    private Long maxSizeInMegabytes = 1024L;
+    private Duration defaultMessageTimeToLive = MAX_DURATION;
 
     /**
      * Check whether is sync.

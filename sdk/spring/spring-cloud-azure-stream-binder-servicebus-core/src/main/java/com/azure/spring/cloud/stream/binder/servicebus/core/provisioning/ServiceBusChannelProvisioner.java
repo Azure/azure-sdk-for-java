@@ -38,12 +38,12 @@ public class ServiceBusChannelProvisioner implements
      * Validate or create for consumer.
      *
      * @param name the name
-     * @param subscription the subscription
+     * @param group the group
      * @param type the type
      * @deprecated Move the logic to {@link #provisionConsumerDestination(String, String, ExtendedConsumerProperties)} implementation.
      */
     @Deprecated
-    protected void validateOrCreateForConsumer(String name, String subscription, ServiceBusEntityType type) {
+    protected void validateOrCreateForConsumer(String name, String group, ServiceBusEntityType type) {
         // no-op
     }
 

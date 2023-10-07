@@ -63,6 +63,7 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
     public ProducerDestination provisionProducerDestination(String name,
                                                             ExtendedProducerProperties<ServiceBusProducerProperties> extendedProducerProperties) throws ProvisioningException {
         ServiceBusProducerProperties producerProperties = extendedProducerProperties.getExtension();
+        Assert.notNull(producerProperties.getEntityType(), "The EntityType of the producer can't be null.");
         if (QUEUE == producerProperties.getEntityType()) {
             this.serviceBusProvisioner.provisionQueue(namespace, name, producerProperties);
         } else {
@@ -75,6 +76,7 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
     public ConsumerDestination provisionConsumerDestination(String name, String group,
                                                             ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedConsumerProperties) throws ProvisioningException {
         ServiceBusConsumerProperties consumerProperties = extendedConsumerProperties.getExtension();
+        Assert.notNull(consumerProperties.getEntityType(), "The EntityType of the consumer can't be null.");
         if (QUEUE == consumerProperties.getEntityType()) {
             ServiceBusProducerProperties producerProperties = new ServiceBusProducerProperties();
             producerProperties.setEntityType(consumerProperties.getEntityType());

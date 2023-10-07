@@ -53,16 +53,16 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple3<Stri
     @Override
     public Topic internalCreate(Tuple3<String, String, ServiceBusProducerProperties> creationTuple) {
         ServiceBusProducerProperties producerProperties = creationTuple.getT3();
-        Topic.Definition definition = (Topic.Definition) new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
+        Topic.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
             .getOrCreate(creationTuple.getT1())
             .topics()
             .define(creationTuple.getT2());
         if (producerProperties.getMaxSizeInMegabytes() != null) {
-            definition.withSizeInMB(producerProperties.getMaxSizeInMegabytes());
+            blank.withSizeInMB(producerProperties.getMaxSizeInMegabytes());
         }
         if (producerProperties.getDefaultMessageTimeToLive() != null) {
-            definition.withDefaultMessageTTL(producerProperties.getDefaultMessageTimeToLive());
+            blank.withDefaultMessageTTL(producerProperties.getDefaultMessageTimeToLive());
         }
-        return definition.create();
+        return blank.create();
     }
 }

@@ -54,16 +54,16 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple3<Stri
     @Override
     public Queue internalCreate(Tuple3<String, String, ServiceBusProducerProperties> creationTuple) {
         ServiceBusProducerProperties producerProperties = creationTuple.getT3();
-        Queue.Definition definition = (Queue.Definition) new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
+        Queue.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
             .getOrCreate(creationTuple.getT1())
             .queues()
             .define(creationTuple.getT2());
         if (producerProperties.getMaxSizeInMegabytes() != null) {
-            definition.withSizeInMB(producerProperties.getMaxSizeInMegabytes());
+            blank.withSizeInMB(producerProperties.getMaxSizeInMegabytes());
         }
         if (producerProperties.getDefaultMessageTimeToLive() != null) {
-            definition.withDefaultMessageTTL(producerProperties.getDefaultMessageTimeToLive());
+            blank.withDefaultMessageTTL(producerProperties.getDefaultMessageTimeToLive());
         }
-        return definition.create();
+        return blank.create();
     }
 }

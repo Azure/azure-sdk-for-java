@@ -23,16 +23,16 @@ This section includes changes in the `spring-integration-azure-servicebus` modul
 ### Spring Cloud Stream Binder Service Bus
 
 #### Features Added
-- Support two topic or queue creation options (maxSizeInMegabytes, defaultMessageTimeToLive) in Service Bus channel namespace properties.
+- Support two topic or queue creation options (maxSizeInMegabytes, defaultMessageTimeToLive) in Service Bus channel namespace properties [#36996](https://github.com/Azure/azure-sdk-for-java/pull/36996).
 
 #### Breaking Changes
-- Deprecated APIs `ServiceBusChannelProvisioner.validateOrCreateForConsumer`, `ServiceBusChannelProvisioner.validateOrCreateForProducer`.
+- Deprecated APIs `ServiceBusChannelProvisioner.validateOrCreateForConsumer`, `ServiceBusChannelProvisioner.validateOrCreateForProducer` [#36996](https://github.com/Azure/azure-sdk-for-java/pull/36996).
 
-### Spring Resource Manager
+### Spring Azure Resource Manager
 
 #### Breaking Changes
-- Deprecated APIs `ServiceBusProvisioner.provisionQueue`, `ServiceBusProvisioner.provisionTopic`, `ServiceBusProvisioner.provisionSubscription`.
-- Add new dependency `spring-cloud-azure-stream-binder-servicebus-core`.
+- Deprecated APIs `ServiceBusProvisioner.provisionQueue`, `ServiceBusProvisioner.provisionTopic`, `ServiceBusProvisioner.provisionSubscription` [#36996](https://github.com/Azure/azure-sdk-for-java/pull/36996).
+- Add new dependency `spring-cloud-azure-stream-binder-servicebus-core` [#36996](https://github.com/Azure/azure-sdk-for-java/pull/36996).
 
 ## 5.5.0 (2023-08-28)
 - This release is compatible with Spring Boot 3.0.0-3.1.2. (Note: 3.1.x (x>2) should be supported, but they aren't tested with this release.)

@@ -7,14 +7,16 @@ import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties
 
 import java.time.Duration;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
+
 /**
  * Service Bus consumer properties.
  */
 public class ServiceBusConsumerProperties extends ProcessorProperties {
 
     private boolean requeueRejected;
-    private Long maxSizeInMegabytes;
-    private Duration defaultMessageTimeToLive;
+    private Long maxSizeInMegabytes = 1024L;
+    private Duration defaultMessageTimeToLive = MAX_DURATION;
 
     /**
      * Controls if the failed messages are routed to the DLQ

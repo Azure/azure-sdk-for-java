@@ -15,7 +15,7 @@ public interface ServiceBusProvisioner {
      * Provision the namespace and queue of the Service Bus.
      * @param namespace the namespace of the Service Bus.
      * @param queue the queue of the Service Bus.
-     * @deprecated use {@link #provisionQueue(String, String, ServiceBusConsumerProperties)} instead.
+     * @deprecated use {@link #provisionQueue(String, String, ServiceBusProducerProperties)} instead.
      */
     @Deprecated
     void provisionQueue(String namespace, String queue);
