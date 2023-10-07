@@ -250,12 +250,13 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 BinaryData bodyData = httpRequest.getBodyAsBinaryData();
 
                 if (bodyData != null) {
+                    byte[] bytes = bodyData.toBytes();
+
                     if (progressReporter != null) {
-                        progressReporter.reportProgress(bodyData.toBytes().length);
+                        progressReporter.reportProgress(bytes.length);
                     }
 
                     try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
-                        byte[] bytes = bodyData.toBytes();
                         os.write(bytes);
                         os.flush();
                     } catch (IOException e) {
