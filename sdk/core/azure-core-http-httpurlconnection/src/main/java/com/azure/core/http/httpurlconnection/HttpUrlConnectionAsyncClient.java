@@ -209,13 +209,13 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 connection.setDoOutput(true);
 
                 Flux<BinaryData> requestBody;
-                BinaryData body_data = httpRequest.getBodyAsBinaryData();
+                BinaryData binaryBodyData = httpRequest.getBodyAsBinaryData();
 
-                if (body_data == null) {
+                if (binaryBodyData == null) {
                     requestBody = Flux.just(BinaryData.fromByteBuffer(ByteBuffer.wrap(new byte[0])));
                 }
                 else {
-                    requestBody = Flux.just(body_data);
+                    requestBody = Flux.just(binaryBodyData);
                 }
 
                 return requestBody
@@ -266,10 +266,10 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             case DELETE:
                 connection.setDoOutput(true);
 
-                BinaryData bodyData = httpRequest.getBodyAsBinaryData();
+                BinaryData binaryBodyData = httpRequest.getBodyAsBinaryData();
 
-                if (bodyData != null) {
-                    byte[] bytes = bodyData.toBytes();
+                if (binaryBodyData != null) {
+                    byte[] bytes = binaryBodyData.toBytes();
 
                     if (progressReporter != null) {
                         progressReporter.reportProgress(bytes.length);
