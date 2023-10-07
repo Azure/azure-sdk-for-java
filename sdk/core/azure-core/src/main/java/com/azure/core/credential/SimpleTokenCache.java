@@ -85,8 +85,8 @@ public class SimpleTokenCache {
                         // cache hasn't expired, ignore refresh error this time
                         fallback = Mono.just(cache);
                     }
-                    return tokenRefresh
-                        .materialize()
+
+                    return Mono.using(() -> wip, ignored -> tokenRefresh.materialize()
                         .flatMap(signal -> {
                             AccessToken accessToken = signal.get();
                             Throwable error = signal.getThrowable();
@@ -107,8 +107,7 @@ public class SimpleTokenCache {
                                 return fallback;
                             }
                         })
-                        .doOnError(sinksOne::tryEmitError)
-                        .doFinally(ignored -> wip.set(null));
+                        .doOnError(sinksOne::tryEmitError), w -> w.set(null));
                 } else if (cache != null && !cache.isExpired()) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);

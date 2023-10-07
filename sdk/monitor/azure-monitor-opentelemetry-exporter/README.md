@@ -37,11 +37,10 @@ In order to export telemetry data to Azure Monitor, you will need the instrument
 search for your resource. On the overview page of your resource, you will find the instrumentation key in the top
 right corner.
 
-### Creating exporter for Azure Monitor
-```java readme-sample-createExporter
-SpanExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
-    .connectionString("{connection-string}")
-    .buildTraceExporter();
+### Creating exporter builder for Azure Monitor
+```java readme-sample-createExporterBuilder
+AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder()
+    .connectionString("{connection-string}");
 ```
 
 #### Exporting span data
@@ -49,23 +48,19 @@ SpanExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
 The following example shows how to export a trace data to Azure Monitor through the
  `AzureMonitorTraceExporter`
 
-##### Setup OpenTelemetry Tracer to work with Azure Monitor exporter
+##### Setup OpenTelemetry SDK to work with Azure Monitor exporter
 ```java readme-sample-setupExporter
-// Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
+// Create Azure Monitor exporter and initialize OpenTelemetry SDK
 // This should be done just once when application starts up
-SpanExporter exporter = new AzureMonitorExporterBuilder()
+AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
-    .buildTraceExporter();
+    .build(sdkBuilder);
 
-SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-    .addSpanProcessor(SimpleSpanProcessor.create(exporter))
-    .build();
+OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
-OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
-    .setTracerProvider(tracerProvider)
-    .buildAndRegisterGlobal();
-
-Tracer tracer = openTelemetrySdk.getTracer("Sample");
+Tracer tracer = openTelemetry.getTracer("Sample");
 ```
 
 ##### Create spans
