@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for CredentialSets Create. */
 public final class CredentialSetsCreateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/CredentialSetCreate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/CredentialSetCreate.json
      */
     /**
      * Sample code: CredentialSetCreate.
