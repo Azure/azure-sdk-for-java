@@ -267,7 +267,7 @@ public class JsonArray extends JsonElement {
             if (i > 0) {
                 keyword += i;
             }
-            output.addProperty(keyword, elements.get(i));
+            output.setProperty(keyword, elements.get(i));
         }
         return output;
     }
