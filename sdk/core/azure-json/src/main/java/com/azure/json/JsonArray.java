@@ -161,10 +161,14 @@ public class JsonArray extends JsonElement {
      * @throws IOException if the writer throws an exception
      */
     public Writer toWriter(Writer writer) throws IOException {
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
-            serialize(jsonWriter);
+        if(writer != null){
+            try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
+                serialize(jsonWriter);
+            }
+            return writer;
+        } else {
+            throw new NullPointerException();
         }
-        return writer;
     }
 
     /**
@@ -174,10 +178,15 @@ public class JsonArray extends JsonElement {
      * @throws IOException if the output stream throws an exception
      */
     public OutputStream toStream(OutputStream stream) throws IOException {
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
-            serialize(jsonWriter);
+        if(stream != null){
+            try (JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
+                serialize(jsonWriter);
+            }
+            return stream;
+        } else {
+            throw new NullPointerException();
         }
-        return stream;
+
     }
 
     /**
