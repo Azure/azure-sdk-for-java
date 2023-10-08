@@ -119,7 +119,7 @@ public class JsonEditingTests {
     }
 
     @Test
-    public void deleteObjectPropertyNotExist(){
+    public void deleteObjectPropertyNotExist() throws IOException {
         assertNull(object.removeProperty("EntryFake"));
         //assertThrows(IOException.class, ()-> object.removeProperty("EntryFake"));
     }

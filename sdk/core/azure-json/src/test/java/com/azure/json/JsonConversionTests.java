@@ -2,11 +2,246 @@ package com.azure.json;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonConversionTests {
 
-        /*
+
+    //Section 1: Converting from one type to another.
+    @Test
+    public void convertStringToNumber() throws IOException {
+        JsonString input = new JsonString("24");
+        JsonNumber output = input.asNumber();
+        assertEquals(24, output.getNumberValue().intValue());
+    }
+
+    @Test
+    public void convertStringToNumberDecimal() throws IOException {
+        JsonString input = new JsonString("3.14159");
+        JsonNumber output = input.asNumber();
+        assertEquals(Float.parseFloat("3.14159"), output.getNumberValue().floatValue());
+    }
+
+    @Test
+    public void convertStringToNumberInvalid() throws IOException {
+        JsonString input = new JsonString("invalid");
+        assertThrows(IOException.class, input::asNumber);
+    }
+
+    @Test
+    public void convertStringToBooleanWord() throws IOException {
+        JsonString input = new JsonString("true");
+        JsonBoolean output = input.asBoolean();
+        assertTrue(output.getBooleanValue());
+    }
+
+    @Test
+    public void convertStringToBooleanNumber() throws IOException {
+        JsonString input = new JsonString("0");
+        JsonBoolean output = input.asBoolean();
+        assertFalse(output.getBooleanValue());
+    }
+
+    @Test
+    public void convertStringToBooleanInvalid(){
+        JsonString input = new JsonString("invalid");
+        assertThrows(IOException.class, input::asBoolean);
+    }
+
+    @Test
+    public void convertNumberToString(){
+        JsonNumber input = new JsonNumber(527);
+        JsonString output = input.asString();
+        assertEquals("527", output.toString());
+    }
+
+    @Test
+    public void convertNumberToStringDecimal(){
+        JsonNumber input = new JsonNumber(6.78);
+        JsonString output = input.asString();
+        assertEquals("6.78", output.toString());
+    }
+
+    @Test
+    public void convertNumberToBooleanTrue() throws IOException {
+        JsonNumber input = new JsonNumber(1);
+        JsonBoolean output = input.asBoolean();
+        assertTrue(output.getBooleanValue());
+    }
+
+    @Test
+    public void convertNumberToBooleanFalse() throws IOException {
+        JsonNumber input = new JsonNumber(0);
+        JsonBoolean output = input.asBoolean();
+        assertFalse(output.getBooleanValue());
+    }
+
+    @Test
+    public void convertNumberToBooleanInvalid(){
+        JsonNumber input = new JsonNumber(67);
+        assertThrows(IOException.class, input::asBoolean);
+    }
+
+    @Test
+    public void convertBooleanToStringTrue(){
+        JsonBoolean input = JsonBoolean.getInstance(true);
+        JsonString output = input.asString();
+        assertEquals("true", output.toString());
+    }
+
+    @Test
+    public void convertBooleanToStringFalse(){
+        JsonBoolean input = JsonBoolean.getInstance(false);
+        JsonString output = input.asString();
+        assertEquals("false", output.toString());
+    }
+
+    @Test
+    public void convertBooleanToNumberTrue(){
+        JsonBoolean input = JsonBoolean.getInstance(true);
+        JsonNumber output = input.asNumber();
+        assertEquals(1, output.getNumberValue().intValue());
+    }
+
+    @Test
+    public void convertBooleanToNumberFalse(){
+        JsonBoolean input = JsonBoolean.getInstance(false);
+        JsonNumber output = input.asNumber();
+        assertEquals(0, output.getNumberValue().intValue());
+    }
+
+    //Section 2: Perform conversion, then convert back to previous value.
+    @Test
+    public void convertStringNumberReverse() throws IOException {
+        JsonString input = new JsonString("888");
+        JsonNumber converted = input.asNumber();
+        JsonString output = converted.asString();
+        assertEquals(input.toString(), output.toString());
+    }
+
+    @Test
+    public void convertStringBooleanReverse() throws IOException {
+        JsonString input = new JsonString("true");
+        JsonBoolean converted = input.asBoolean();
+        JsonString output = converted.asString();
+        assertEquals(input.toString(), output.toString());
+    }
+
+    @Test
+    public void convertStringDigitBooleanReverse() throws IOException {
+        JsonString input = new JsonString("0");
+        JsonBoolean converted = input.asBoolean();
+        JsonString output = converted.asStringDigit();
+        assertEquals(input.toString(), output.toString());
+    }
+
+    @Test
+    public void convertNumberStringReverse() throws IOException {
+        JsonNumber input = new JsonNumber(444);
+        JsonString converted = input.asString();
+        JsonNumber output = converted.asNumber();
+        assertEquals(input.getNumberValue(), output.getNumberValue());
+    }
+
+    @Test
+    public void convertNumberBooleanReverse() throws IOException {
+        JsonNumber input = new JsonNumber(1);
+        JsonBoolean converted = input.asBoolean();
+        JsonNumber output = converted.asNumber();
+        assertEquals(input.getNumberValue(), output.getNumberValue());
+    }
+
+    @Test
+    public void convertBooleanStringReverse() throws IOException {
+        JsonBoolean input = JsonBoolean.getInstance(false);
+        JsonString converted = input.asString();
+        JsonBoolean output = converted.asBoolean();
+        assertEquals(input.getBooleanValue(), output.getBooleanValue());
+    }
+
+    @Test
+    public void convertBooleanStringDigitReverse() throws IOException {
+        JsonBoolean input = JsonBoolean.getInstance(false);
+        JsonString converted = input.asStringDigit();
+        JsonBoolean output = converted.asBoolean();
+        assertEquals(input.getBooleanValue(), output.getBooleanValue());
+    }
+
+    @Test
+    public void convertBooleanNumberReverse() throws IOException {
+        JsonBoolean input = JsonBoolean.getInstance(false);
+        JsonNumber converted = input.asNumber();
+        JsonBoolean output = converted.asBoolean();
+        assertEquals(input.getBooleanValue(), output.getBooleanValue());
+
+    }
+
+    //Section 3: Testing for cyclical conversion (Going through all three types).
+    @Test
+    public void convertCycleString() throws IOException {
+        JsonString input = new JsonString("true");
+        JsonBoolean boolConvert = input.asBoolean();
+        JsonNumber numConvert = boolConvert.asNumber();
+        JsonString output = numConvert.asString();
+        assertEquals("1", output.toString());
+    }
+
+    @Test
+    public void convertCycleStringDigit() throws IOException {
+        JsonString input = new JsonString("1");
+        JsonBoolean boolConvert = input.asBoolean();
+        JsonNumber numConvert = boolConvert.asNumber();
+        JsonString output = numConvert.asString();
+        assertEquals("1", output.toString());
+    }
+
+    @Test
+    public void convertCycleStringDigitAlt() throws IOException {
+        JsonString input = new JsonString("1");
+        JsonNumber numConvert = input.asNumber();
+        JsonBoolean boolConvert = numConvert.asBoolean();
+        JsonString output = boolConvert.asString();
+        assertEquals("true", output.toString());
+    }
+
+    @Test
+    public void convertCycleNumber() throws IOException {
+        JsonNumber input = new JsonNumber("0");
+        JsonBoolean boolConvert = input.asBoolean();
+        JsonString stringConvert = boolConvert.asStringDigit();
+        JsonNumber output = stringConvert.asNumber();
+        assertEquals(input.getNumberValue(), output.getNumberValue());
+    }
+
+    @Test
+    public void convertCycleBoolean() throws IOException {
+        JsonBoolean input = JsonBoolean.getInstance(true);
+        JsonNumber numConvert = input.asNumber();
+        JsonString stringConvert = numConvert.asString();
+        JsonBoolean output = stringConvert.asBoolean();
+        assertEquals(input.getBooleanValue(), output.getBooleanValue());
+    }
+
+    @Test
+    public void convertCycleBooleanAlt() throws IOException {
+        JsonBoolean input = JsonBoolean.getInstance(false);
+        JsonString stringConvert = input.asStringDigit();
+        JsonNumber numConvert = stringConvert.asNumber();
+        JsonBoolean output = numConvert.asBoolean();
+        assertEquals(input.getBooleanValue(), output.getBooleanValue());
+    }
+
+
+
+
+
+    //----------
+    // OLD JSON CONVERSION TESTS BELOW (Currently kept until confirmed they no longer have use)
+    //----------
+
+            /*
     General Rules for conversions:
 
     Converting Empty Entries:
@@ -51,6 +286,7 @@ public class JsonConversionTests {
     //Part 1: Convert empty entry into type, check it becomes correct type. Since there is no data, we don't need to worry about converting values here.
 
     //1.1: Object
+/*
     @Test
     public void convertEmptyObjectToNumber(){
         JsonElement test = new JsonObject();
@@ -575,7 +811,7 @@ public class JsonConversionTests {
         assertThrows(Exception.class, test::asString);
     }
     */
-
+/*
     @Test
     public void filledObjectMultipleToString(){
         JsonElement test = new JsonObject().addProperty("Key 1", JsonNull.getInstance()).addProperty("Key 2", new JsonString("Irrelevant"));
@@ -605,7 +841,7 @@ public class JsonConversionTests {
     }
 
      */
-
+/*
     @Test
     public void filledObjectToArray(){
         JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("value"));
@@ -678,7 +914,7 @@ public class JsonConversionTests {
     }
 
      */
-
+/*
     @Test
     public void filledNumberToArray(){
         JsonElement test = new JsonNumber(5);
@@ -733,7 +969,7 @@ public class JsonConversionTests {
     }
 
      */
-
+/*
     @Test
     public void filledBooleanToArray(){
         JsonElement test = JsonBoolean.getInstance(true);
@@ -801,7 +1037,7 @@ public class JsonConversionTests {
     }
 
      */
-
+/*
     @Test
     public void filledStringToNullNonMatch(){ //What should happen here? Error or just turn it to null regardless?
         JsonElement test = new JsonString("not null");
@@ -1153,6 +1389,7 @@ public class JsonConversionTests {
 
     //3.6 Null Conversion
     //Null is a special case as it always has its value set to null.
+    /*
     @Test
     public void convertNullToNumber(){
         JsonElement test = JsonNull.getInstance();
@@ -1216,38 +1453,6 @@ public class JsonConversionTests {
         JsonObject converted = test.asObject();
         assertEquals("{\"Value\":null}", converted.toString());
     }
-
-    //Section 4: Reconversion Tests. Check that changing a data value from one type and back works as intended.
-    @Test
-    public void reverseStringNumberGeneric(){
-        JsonElement test = new JsonString("Generic");
-        JsonNumber converted = test.asNumber();
-        JsonString result = converted.asString();
-        assertEquals("", result.toString());
-    }
-
-    @Test
-    public void reverseStringNumberInt(){
-        JsonElement test = new JsonString("123");
-        JsonNumber converted = test.asNumber();
-        JsonString result = converted.asString();
-        assertEquals("123", result.toString());
-    }
-
-    @Test
-    public void reverseStringNumberFloat(){
-        JsonElement test = new JsonString("1.23");
-        JsonNumber converted = test.asNumber();
-        JsonString result = converted.asString();
-        assertEquals("1.23", result.toString());
-    }
-
-    @Test
-    public void reverseStringNumberNegative(){
-        JsonElement test = new JsonString("-1");
-        JsonNumber converted = test.asNumber();
-        JsonString result = converted.asString();
-        assertEquals("-1", result.toString());
-    }
-
+    */
 }
+

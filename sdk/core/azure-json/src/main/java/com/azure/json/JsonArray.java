@@ -40,9 +40,9 @@ public class JsonArray extends JsonElement {
     }
 
     /**
-     * Called by JsonArray methods in order to verify that the JsonElement passed 
-     * to them is an instantiated JsonElement. 
-     * 
+     * Called by JsonArray methods in order to verify that the JsonElement passed
+     * to them is an instantiated JsonElement.
+     *
      * @throws IllegalArgumentException Thrown when a null JsonElement is passed.
      * Instantiated JsonElements must be passed. Must pass instantiated JsonNull
      * to represent JSON null value.
@@ -269,52 +269,6 @@ public class JsonArray extends JsonElement {
     @Override
     public boolean isArray() {
         return true;
-    }
-
-    @Override
-    public JsonArray asArray() {
-        return this;
-    }
-
-    @Override
-    public JsonObject asObject() {
-        JsonObject output = new JsonObject();
-        for (int i = 0; i < elements.size(); i++) {
-            String keyword = "Value";
-            if (i > 0) {
-                keyword += i;
-            }
-            output.setProperty(keyword, elements.get(i));
-        }
-        return output;
-    }
-
-    @Override
-    public JsonBoolean asBoolean() {
-        if (elements.size() >= 1) {
-            return elements.get(0).asBoolean();
-        } else {
-            return JsonBoolean.getInstance(true);
-        }
-    }
-
-    @Override
-    public JsonNumber asNumber() {
-        if (elements.size() >= 1) {
-            return elements.get(0).asNumber();
-        } else {
-            return new JsonNumber();
-        }
-    }
-
-    @Override
-    public JsonString asString() {
-        if (elements.size() >= 1) {
-            return elements.get(0).asString();
-        } else {
-            //todo hacky fix for now
-            return new JsonString("");
-        }
     }
 
     /**

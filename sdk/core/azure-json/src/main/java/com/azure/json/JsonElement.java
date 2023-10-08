@@ -113,7 +113,7 @@ public abstract class JsonElement {
      */
     public JsonArray addElement(JsonElement element) throws IllegalArgumentException  {
         if (this.isArray()) {
-            return (this.asArray()).addElement(element);
+            return ((JsonArray)this).addElement(element);
         } else {
             throw new InvalidJsonDataTypeException();
         }
@@ -129,7 +129,7 @@ public abstract class JsonElement {
      */
     public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
         if (this.isArray()) {
-            return (this.asArray()).addElement(index, element);
+            return ((JsonArray)this).addElement(index, element);
         } else {
             throw new InvalidJsonDataTypeException();
         }
@@ -145,7 +145,7 @@ public abstract class JsonElement {
      */
     public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
         if (this.isArray()) {
-            return (this.asArray()).setElement(index, element);
+            return ((JsonArray)this).setElement(index, element);
         } else {
             throw new InvalidJsonDataTypeException();
         }
@@ -159,7 +159,7 @@ public abstract class JsonElement {
      */
     public JsonElement getElement(int index) throws IndexOutOfBoundsException {
         if (this.isArray()) {
-            return (this.asArray()).getElement(index);
+            return ((JsonArray)this).getElement(index);
         } else {
             throw new InvalidJsonDataTypeException();
         }
@@ -173,7 +173,7 @@ public abstract class JsonElement {
      */
     public JsonElement removeElement(int index) throws IndexOutOfBoundsException {
         if (this.isArray()) {
-            return (this.asArray()).removeElement(index);
+            return ((JsonArray)this).removeElement(index);
         } else {
             throw new InvalidJsonDataTypeException();
         }
@@ -195,7 +195,7 @@ public abstract class JsonElement {
      */
     public JsonObject addProperty(String key, JsonElement element) throws InvalidJsonDataTypeException {
         if(this.isObject()) {
-            return (this.asObject()).addProperty(key, element);
+            return ((JsonObject)this).addProperty(key, element);
         } else {
             throw new InvalidJsonDataTypeException();
         }
@@ -210,7 +210,7 @@ public abstract class JsonElement {
      */
     public JsonObject setProperty(String key, JsonElement element) throws InvalidJsonDataTypeException, IOException {
      if(this.isObject()) {
-            return (this.asObject()).setProperty(key, element);
+            return ((JsonObject)this).setProperty(key, element);
         } else {
             throw new InvalidJsonDataTypeException();
         }
@@ -224,7 +224,7 @@ public abstract class JsonElement {
      */
     public JsonElement getProperty(String key) throws InvalidJsonDataTypeException {
         if(this.isObject()) {
-            return (this.asObject()).getProperty(key);
+            return ((JsonObject)this).getProperty(key);
         } else {
             throw new InvalidJsonDataTypeException();
         }
@@ -238,7 +238,7 @@ public abstract class JsonElement {
      */
     public JsonElement removeProperty(String key) {
         if (this.isObject()) {
-            return (this.asObject()).removeProperty(key);
+            return ((JsonObject)this).removeProperty(key);
         }
         return null;
     }
@@ -251,7 +251,7 @@ public abstract class JsonElement {
      */
     public JsonElement getValueByKey(String key) throws InvalidJsonDataTypeException {
         if (this.isObject()) {
-            return (this.asObject()).getValueByKey(key);
+            return ((JsonObject)this).getValueByKey(key);
         } else {
             throw new InvalidJsonDataTypeException();
         }
@@ -313,46 +313,5 @@ public abstract class JsonElement {
     // they will be used in their current implementation.                     //
     //------------------------------------------------------------------------//
 
-    /**
-     * @return
-     */
-    public JsonArray asArray() {
-        return new JsonArray();
-    }
-
-    /**
-     * @return
-     */
-    public JsonObject asObject() {
-        return new JsonObject();
-    }
-
-    /**
-     * @return
-     */
-    public JsonBoolean asBoolean() {
-        return JsonBoolean.getInstance(true);
-    }
-
-    /**
-     * @return
-     */
-    public JsonNull asNull() {
-        return JsonNull.getInstance();
-    }
-
-    /**
-     * @return
-     */
-    public JsonNumber asNumber() {
-        return new JsonNumber();
-    }
-
-    /**
-     * @return
-     */
-    public JsonString asString() {
-        return new JsonString("");
-    }
 }
 

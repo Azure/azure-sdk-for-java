@@ -21,7 +21,7 @@ public class JsonNumber extends JsonElement {
      *
      * TODO: may need to double check that 0 is correctly cast to a Number type
      */
-    JsonNumber() { }//this(0); }
+    //JsonNumber() { }//this(0); }
 
 
     JsonNumber(String value) {
@@ -62,6 +62,14 @@ public class JsonNumber extends JsonElement {
         }
     }
 
+
+
+    public Number getNumberValue(){
+        return this.numberValue;
+    }
+
+
+
     /**
      * @return boolean of whether this JsonElement object is of type JsonNumber.
      */
@@ -81,39 +89,16 @@ public class JsonNumber extends JsonElement {
 
     */
 
-    @Override
-    public JsonArray asArray() {
-        JsonArray output = new JsonArray();
-        output.addElement(this);
-        return output;
-    }
-
-    @Override
-    public JsonObject asObject() {
-        JsonObject output = new JsonObject();
-        output.setProperty("Value", this);
-        return output;
-    }
-
-    @Override
-    public JsonBoolean asBoolean() {
-        try {
-            if (numberValue.floatValue() == 1) {
-                return JsonBoolean.getInstance(true);
-            } else {
-                return JsonBoolean.getInstance(false);
-            }
-        } catch (NullPointerException e) {
+    public JsonBoolean asBoolean() throws IOException {
+        if (numberValue.floatValue() == 1) {
             return JsonBoolean.getInstance(true);
+        } else if (numberValue.floatValue() == 0) {
+            return JsonBoolean.getInstance(false);
+        } else {
+            throw new IOException();
         }
     }
 
-    @Override
-    public JsonNumber asNumber() {
-        return this;
-    }
-
-    @Override
     public JsonString asString() {
         try {
             return new JsonString(numberValue.toString());
