@@ -1,7 +1,13 @@
 # Release History
 
-## 5.6.0-beta.1 (Unreleased)
-Upgrade Spring Boot dependencies version to 3.1.3 and Spring Cloud dependencies version to 2022.0.4
+## 5.6.0 (2023-10-09)
+- This release is compatible with Spring Boot 3.0.0-3.1.3. (Note: 3.1.x (x>3) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.4. (Note: 2022.0.x (x>4) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.17.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -20,6 +26,10 @@ This section includes changes in the `spring-integration-azure-servicebus` modul
 
 #### Bugs Fixed
 - Fix NPE in the error handler of `ServiceBusInboundChannelAdapter` when `instrumentationManager` or `instrumentationId` is null [#36930](https://github.com/Azure/azure-sdk-for-java/pull/36930).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#560-2023-10-09) for more details.
 
 ## 5.5.0 (2023-08-28)
 - This release is compatible with Spring Boot 3.0.0-3.1.2. (Note: 3.1.x (x>2) should be supported, but they aren't tested with this release.)
