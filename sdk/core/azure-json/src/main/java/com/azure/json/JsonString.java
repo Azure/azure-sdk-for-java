@@ -77,13 +77,13 @@ public class JsonString extends JsonElement{
     public JsonNumber asNumber() {
         try {
             return new JsonNumber(Integer.parseInt(stringValue));
-        } catch (NullPointerException e) {
+        } catch (NumberFormatException e) {
             try {
                 return new JsonNumber(Float.parseFloat(stringValue));
             } catch (NullPointerException x) {
                 return new JsonNumber();
             }
-        } catch (NumberFormatException z) {
+        } catch (NullPointerException z) {
             return new JsonNumber();
         }
     }

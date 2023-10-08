@@ -487,16 +487,7 @@ public class JsonObject extends JsonElement {
      * @throws IOException if the underlying writer or stream throws an exception
      */
     public JsonWriter serialize(JsonWriter writer) throws IOException {
-        writer.writeStartObject();
-
-        //for each item in the linked hashmap
-        for (Map.Entry<String, JsonElement> entry : properties.entrySet()) {
-            //write the key
-            writer.writeFieldName(entry.getKey());
-            //write the value
-            entry.getValue().serialize(writer);
-        }
-        writer.writeEndObject();
+        writer.writeMap(properties, (entryValueWriter, entryValue) -> entryValue.serialize(entryValueWriter));
         return writer;
     }
 }
