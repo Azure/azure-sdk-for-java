@@ -61,6 +61,15 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
     }
 
     @Override
+    public ServiceBusSubscription internalCreate(Tuple3<String, String, String> subscriptionCoordinate) {
+        return this.serviceBusTopicCrud
+            .getOrCreate(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()))
+            .subscriptions()
+            .define(subscriptionCoordinate.getT3())
+            .create();
+    }
+
+    @Override
     public ServiceBusSubscription internalCreate(Tuple3<String, String, String> subscriptionCoordinate,
                                                  @Nullable ServiceBusTopicProperties topicProperties) {
         return this.serviceBusTopicCrud

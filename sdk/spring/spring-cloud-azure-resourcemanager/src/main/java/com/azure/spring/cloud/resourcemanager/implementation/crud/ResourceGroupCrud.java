@@ -7,7 +7,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
-import org.springframework.lang.Nullable;
 
 /**
  * Resource manager for resource group.
@@ -48,7 +47,7 @@ public class ResourceGroupCrud extends AbstractResourceCrud<ResourceGroup, Strin
     }
 
     @Override
-    public ResourceGroup internalCreate(String key, @Nullable Object properties) {
+    public ResourceGroup internalCreate(String key) {
         return resourceManager.resourceGroups()
                               .define(key)
                               .withRegion(resourceMetadata.getResourceGroup())

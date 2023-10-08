@@ -7,7 +7,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
-import org.springframework.lang.Nullable;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
@@ -51,14 +50,14 @@ public class EventHubsConsumerGroupCrud
     }
 
     @Override
-    public EventHubConsumerGroup internalCreate(Tuple3<String, String, String> consumerGroupCoordinate, @Nullable Object properties) {
+    public EventHubConsumerGroup internalCreate(Tuple3<String, String, String> consumerGroupCoordinate) {
         return this.resourceManager
             .eventHubs()
             .consumerGroups()
             .define(consumerGroupCoordinate.getT3())
             .withExistingEventHub(new EventHubsCrud(this.resourceManager, this.resourceMetadata)
                                       .getOrCreate(Tuples.of(consumerGroupCoordinate.getT1(),
-                                                            consumerGroupCoordinate.getT2()), null))
+                                                            consumerGroupCoordinate.getT2())))
             .create();
     }
 }

@@ -30,6 +30,14 @@ public interface ResourceCrud<T, K, P> {
     boolean exists(K key);
 
     /**
+     * Creates a value for a given key.
+     *
+     * @param key The key.
+     * @return The created value.
+     */
+    T create(K key);
+
+    /**
      * Creates a value for a given key and properties.
      *
      * @param key The key.
@@ -37,6 +45,14 @@ public interface ResourceCrud<T, K, P> {
      * @return The created value.
      */
     T create(K key, P properties);
+
+    /**
+     * Gets or creates a value for a given key.
+     *
+     * @param key The key.
+     * @return The retrieved or created value.
+     */
+    T getOrCreate(K key);
 
     /**
      * Gets or creates a value for a given key and properties.

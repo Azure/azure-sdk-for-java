@@ -53,9 +53,18 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple2<Stri
     }
 
     @Override
+    public Queue internalCreate(Tuple2<String, String> namespaceAndName) {
+        return new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
+            .getOrCreate(namespaceAndName.getT1())
+            .queues()
+            .define(namespaceAndName.getT2())
+            .create();
+    }
+
+    @Override
     public Queue internalCreate(Tuple2<String, String> namespaceAndName, @Nullable ServiceBusQueueProperties queueProperties) {
         Queue.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
-            .getOrCreate(namespaceAndName.getT1(), null)
+            .getOrCreate(namespaceAndName.getT1())
             .queues()
             .define(namespaceAndName.getT2());
         if (queueProperties != null) {

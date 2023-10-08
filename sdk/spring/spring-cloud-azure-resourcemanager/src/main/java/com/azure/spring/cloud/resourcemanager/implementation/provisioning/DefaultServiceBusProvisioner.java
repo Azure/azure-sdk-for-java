@@ -37,7 +37,7 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
     @Override
     @Deprecated
     public void provisionQueue(String namespace, String queue) {
-        this.queueCrud.getOrCreate(Tuples.of(namespace, queue), new ServiceBusQueueProperties());
+        this.queueCrud.getOrCreate(Tuples.of(namespace, queue));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
     @Override
     @Deprecated
     public void provisionTopic(String namespace, String topic) {
-        this.topicCrud.getOrCreate(Tuples.of(namespace, topic), new ServiceBusTopicProperties());
+        this.topicCrud.getOrCreate(Tuples.of(namespace, topic));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
     @Override
     @Deprecated
     public void provisionSubscription(String namespace, String topic, String subscription) {
-        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription), new ServiceBusTopicProperties());
+        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription));
     }
 
     @Override

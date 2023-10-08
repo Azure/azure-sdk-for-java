@@ -8,7 +8,6 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 /**
  * Resource manager for Service Bus namespace.
@@ -45,7 +44,7 @@ public class ServiceBusNamespaceCrud extends AbstractResourceCrud<ServiceBusName
     }
 
     @Override
-    public ServiceBusNamespace internalCreate(String namespace, @Nullable Object properties) {
+    public ServiceBusNamespace internalCreate(String namespace) {
         return this.resourceManager.serviceBusNamespaces()
                                    .define(namespace)
                                    .withRegion(this.resourceMetadata.getRegion())

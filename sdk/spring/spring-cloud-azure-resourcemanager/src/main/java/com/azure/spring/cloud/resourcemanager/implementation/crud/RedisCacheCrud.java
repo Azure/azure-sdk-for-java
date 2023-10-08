@@ -7,7 +7,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
-import org.springframework.lang.Nullable;
 
 /**
  * Resource manager for Redis cache.
@@ -43,7 +42,7 @@ public class RedisCacheCrud extends AbstractResourceCrud<RedisCache, String, Obj
     }
 
     @Override
-    public RedisCache internalCreate(String name, @Nullable Object properties) {
+    public RedisCache internalCreate(String name) {
         return resourceManager.redisCaches()
                               .define(name)
                               .withRegion(resourceMetadata.getRegion())

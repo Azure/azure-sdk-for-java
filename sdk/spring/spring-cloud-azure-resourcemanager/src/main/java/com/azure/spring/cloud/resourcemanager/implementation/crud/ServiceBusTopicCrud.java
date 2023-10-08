@@ -52,9 +52,18 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<Stri
     }
 
     @Override
+    public Topic internalCreate(Tuple2<String, String> namespaceAndName) {
+        return new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
+            .getOrCreate(namespaceAndName.getT1())
+            .topics()
+            .define(namespaceAndName.getT2())
+            .create();
+    }
+
+    @Override
     public Topic internalCreate(Tuple2<String, String> namespaceAndName, @Nullable ServiceBusTopicProperties topicProperties) {
         Topic.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
-            .getOrCreate(namespaceAndName.getT1(), null)
+            .getOrCreate(namespaceAndName.getT1())
             .topics()
             .define(namespaceAndName.getT2());
         if (topicProperties != null) {

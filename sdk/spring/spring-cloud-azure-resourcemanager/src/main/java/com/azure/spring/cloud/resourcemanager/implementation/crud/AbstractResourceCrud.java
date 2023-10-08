@@ -70,6 +70,27 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
     }
 
     @Override
+    public T create(K key) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+        final String resourceType = getResourceType();
+        final String name = getResourceName(key);
+
+        try {
+            LOGGER.info("Creating {} with name '{}' ...", resourceType, name);
+            return internalCreate(key);
+        } catch (ManagementException e) {
+            String message = String.format("Creating %s with name '%s' failed due to: %s", resourceType, name, e.toString());
+            throw new RuntimeException(message, e);
+        } finally {
+            stopWatch.stop();
+            LOGGER.info("Creating {} with name '{}' finished in {} seconds", getResourceType(), name,
+                stopWatch.getTotalTimeMillis() / 1000);
+        }
+    }
+
+    @Override
     public T create(K key, @Nullable P properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
@@ -91,6 +112,17 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
     }
 
     @Override
+    public T getOrCreate(K key) {
+        T result = get(key);
+
+        if (result != null) {
+            return result;
+        }
+
+        return create(key);
+    }
+
+    @Override
     public T getOrCreate(K key, @Nullable P properties) {
         T result = get(key);
 
@@ -107,5 +139,9 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
 
     abstract T internalGet(K key);
 
-    abstract T internalCreate(K key, P properties);
+    abstract T internalCreate(K key);
+
+    T internalCreate(K key, P properties) {
+        return internalCreate(key);
+    }
 }
