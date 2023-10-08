@@ -20,7 +20,7 @@ To use the APIs in the Azure Management Libraries for Java, as the first step yo
 
 * An [Azure tenant](https://learn.microsoft.com/azure/active-directory/develop/quickstart-create-new-tenant) for Graph RBAC.
 * An [Azure subscription](https://azure.microsoft.com/free/) for resource management.
-* An Azure Active Directory service principal. You can create a service principal via [Azure Portal](https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal), [Azure CLI](https://learn.microsoft.com/cli/azure/azure-cli-sp-tutorial-1) or [Azure Powershell](https://learn.microsoft.com/azure/active-directory/develop/howto-authenticate-service-principal-powershell).
+* A Microsoft Entra service principal. You can create a service principal via [Azure Portal](https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal), [Azure CLI](https://learn.microsoft.com/cli/azure/azure-cli-sp-tutorial-1) or [Azure Powershell](https://learn.microsoft.com/azure/active-directory/develop/howto-authenticate-service-principal-powershell).
 
 ## Simple Authentication
 
@@ -50,7 +50,7 @@ The value of `AZURE_AUTHORITY_HOST` can be set via [`AzureAuthorityHosts`](https
   
 |variable name|value
 |-|-
-|`AZURE_TENANT_ID`|id of the principal's Azure Active Directory tenant
+|`AZURE_TENANT_ID`|id of the principal's Microsoft Entra tenant
 |`AZURE_SUBSCRIPTION_ID`|id of the subscription for the Azure resources
 
 Sample code to create a `AzureProfile`:

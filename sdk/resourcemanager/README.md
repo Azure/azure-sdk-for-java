@@ -93,7 +93,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 `azure-identity` package and `azure-core-http-netty` package provide the default implementation.
 
-[Azure Identity][azure_identity] provides Azure Active Directory token authentication support across the Azure SDK.
+[Azure Identity][azure_identity] provides Microsoft Entra ID token authentication support across the Azure SDK.
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
@@ -121,7 +121,7 @@ Alternatively, [Azure Core OkHttp HTTP client][azure_core_http_okhttp] is anothe
 
 ### Authentication
 
-By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
+By default, Microsoft Entra ID token authentication depends on correct configure of following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.

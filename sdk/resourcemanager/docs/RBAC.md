@@ -2,12 +2,12 @@
 
 [Managed identity][managed_identity] and [role-based access control][rbac] are commonly used together for identity and access management.
 
-Managed identity provides an identity for the Azure resource in Azure Active Directory, and uses it to obtain Azure AD token.
+Managed identity provides an identity for the Azure resource in Microsoft Entra ID, and uses it to obtain Azure AD token.
 RBAC enforces the role, scope, and access control of that managed identity. 
 
 They are useful in scenarios of enabling Azure virtual machine or web app to either manage Azure resource, or access data in Azure resource.
 
-The role of Owner is required for assigning role to managed identity. It can be configured from Azure Active Directory blade in Portal, or by Azure CLI.
+The role of Owner is required for assigning role to managed identity. It can be configured from Microsoft Entra ID blade in Portal, or by Azure CLI.
 
 ## Managing Azure resource
 
@@ -57,11 +57,11 @@ For system-assigned managed identity, use e.g. `virtualMachine.systemAssignedMan
 
 Since 2.5.0, SDK supports role-based access control. Please check `BuiltInRole.KEY_VAULT_CRYPTO_USER`, `BuiltInRole.KEY_VAULT_SECRETS_USER`, etc. for related roles.
 
-## Accessing Azure Active Directory
+## Accessing Microsoft Entra ID
 
-SDK provides limited support for accessing Azure Active Directory, generally only for querying applications, users, groups, and service principals.
+SDK provides limited support for accessing Microsoft Entra ID, generally only for querying applications, users, groups, and service principals.
 
-This requires additional permission from Azure Active Directory, which can be configured from Azure Active Directory blade in Portal, or by Azure CLI.
+This requires additional permission from Microsoft Entra ID, which can be configured from Microsoft Entra ID blade in Portal, or by Azure CLI.
 
 Since 2.2.0, SDK switched from [Azure Active Directory Grpah API][aad_graph] to [Microsoft Graph API][microsoft_graph].
 
