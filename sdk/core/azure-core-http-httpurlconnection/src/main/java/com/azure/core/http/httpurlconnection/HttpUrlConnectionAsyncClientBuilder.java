@@ -84,7 +84,6 @@ public class HttpUrlConnectionAsyncClientBuilder {
         return this;
     }
 
-
     public HttpClient build() {
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
