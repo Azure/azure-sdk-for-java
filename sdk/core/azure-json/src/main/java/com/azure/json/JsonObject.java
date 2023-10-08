@@ -322,49 +322,6 @@ public class JsonObject extends JsonElement {
         return true;
     }
 
-    @Override
-    public JsonArray asArray() {
-        JsonArray output = new JsonArray();
-        Set<String> keys = properties.keySet();
-        for (String key: keys) {
-            output.addElement(properties.get(key));
-        }
-        return output;
-    }
-
-    @Override
-    public JsonObject asObject() {
-        return this;
-    }
-
-    @Override
-    public JsonBoolean asBoolean() {
-        if (properties.size() >= 1) {
-            return properties.get(properties.keySet().iterator().next()).asBoolean(); //Should only get the first element.
-        } else {
-            return JsonBoolean.getInstance(true);
-        }
-    }
-
-    @Override
-    public JsonNumber asNumber() {
-        if (properties.size() >= 1) {
-            return properties.get(properties.keySet().iterator().next()).asNumber(); //Should only get the first element.
-        } else {
-            return new JsonNumber();
-        }
-    }
-
-    @Override
-    public JsonString asString() {
-        if (properties.size() >= 1) {
-            return properties.get(properties.keySet().iterator().next()).asString(); //Should only get the first element.
-        } else {
-            //todo hacky fix for now
-            return new JsonString("");
-        }
-    }
-
     /**
      * @return String representation of the JsonObject. This functionality is
      * defined within the toJson method.
