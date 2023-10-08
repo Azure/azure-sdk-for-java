@@ -34,6 +34,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
 
     public HttpUrlConnectionAsyncClientBuilder() {
     }
+    
     public HttpUrlConnectionAsyncClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
@@ -82,7 +83,6 @@ public class HttpUrlConnectionAsyncClientBuilder {
         this.configuration = configuration;
         return this;
     }
-
 
     public HttpClient build() {
         Configuration buildConfiguration = (configuration == null)
