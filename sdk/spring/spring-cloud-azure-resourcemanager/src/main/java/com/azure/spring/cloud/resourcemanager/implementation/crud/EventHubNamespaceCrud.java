@@ -7,11 +7,12 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
+import org.springframework.lang.Nullable;
 
 /**
  * Resource manager for Event Hubs namespace.
  */
-public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespace, String> {
+public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespace, String, Object> {
 
     /**
      * Creates a new instance of {@link EventHubNamespaceCrud}.
@@ -49,7 +50,7 @@ public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespac
     }
 
     @Override
-    public EventHubNamespace internalCreate(String namespace) {
+    public EventHubNamespace internalCreate(String namespace, @Nullable Object properties) {
         return this.resourceManager.eventHubNamespaces()
                                    .define(namespace)
                                    .withRegion(this.resourceMetadata.getRegion())

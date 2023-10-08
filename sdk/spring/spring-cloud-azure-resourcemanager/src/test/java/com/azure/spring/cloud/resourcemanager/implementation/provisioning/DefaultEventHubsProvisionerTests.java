@@ -146,17 +146,17 @@ class DefaultEventHubsProvisionerTests {
 
         @Override
         public void provisionNamespace(String namespace) {
-            this.namespaceCrud.getOrCreate(namespace);
+            this.namespaceCrud.getOrCreate(namespace, null);
         }
 
         @Override
         public void provisionEventHub(String namespace, String eventHub) {
-            this.eventHubsCrud.getOrCreate(Tuples.of(namespace, eventHub));
+            this.eventHubsCrud.getOrCreate(Tuples.of(namespace, eventHub), null);
         }
 
         @Override
         public void provisionConsumerGroup(String namespace, String eventHub, String consumerGroup) {
-            this.consumerGroupCrud.getOrCreate(Tuples.of(namespace, eventHub, consumerGroup));
+            this.consumerGroupCrud.getOrCreate(Tuples.of(namespace, eventHub, consumerGroup), null);
         }
     }
 }

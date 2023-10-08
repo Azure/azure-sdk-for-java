@@ -16,8 +16,8 @@ import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBus
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.util.function.Tuple2;
 import reactor.util.function.Tuple3;
-import reactor.util.function.Tuple4;
 import reactor.util.function.Tuples;
 
 import java.time.Duration;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<ServiceBusSubscription,
-    Tuple4<String, String, String, ServiceBusTopicProperties>> {
+    Tuple3<String, String, String>, ServiceBusTopicProperties> {
 
     private static final String NAMESPACE = "namespace";
     private static final String TOPIC_NAME = "topic";
@@ -48,23 +48,28 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
     }
 
     @Override
-    AbstractResourceCrud<ServiceBusSubscription, Tuple4<String, String, String, ServiceBusTopicProperties>> getResourceCrud() {
+    AbstractResourceCrud<ServiceBusSubscription, Tuple3<String, String, String>, ServiceBusTopicProperties> getResourceCrud() {
         return new ServiceBusTopicSubscriptionCrud(resourceManager, resourceMetadata, this.topicCrud);
     }
 
     @Override
-    Tuple4<String, String, String, ServiceBusTopicProperties> getKey() {
-        return Tuples.of(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME, topicProperties);
+    Tuple3<String, String, String> getKey() {
+        return Tuples.of(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME);
+    }
+
+    @Override
+    ServiceBusTopicProperties getCreationProperties() {
+        return topicProperties;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     void getStubManagementException(int statusCode, String message) {
-        Tuple4<String, String, String, ServiceBusTopicProperties> subscriptionKey = getKey();
+        Tuple3<String, String, String> subscriptionKey = getKey();
         ManagementException exception = createManagementException(statusCode, message);
         Topic topic = mock(Topic.class);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
-        when(this.topicCrud.get(any(Tuple3.class))).thenReturn(topic);
+        when(this.topicCrud.get(any(Tuple2.class))).thenReturn(topic);
         when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
         when(serviceBusSubscriptions.getByName(subscriptionKey.getT3())).thenThrow(exception);
     }
@@ -77,7 +82,7 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
         ServiceBusSubscription.DefinitionStages.Blank define = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
 
-        when(this.topicCrud.getOrCreate(any(Tuple3.class))).thenReturn(topic);
+        when(this.topicCrud.getOrCreate(any(Tuple2.class), any(ServiceBusTopicProperties.class))).thenReturn(topic);
         when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
         when(serviceBusSubscriptions.define(SUBSCRIPTION_NAME)).thenReturn(define);
         when(define.create()).thenThrow(exception);
@@ -86,7 +91,7 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
     @Test
     @SuppressWarnings("unchecked")
     void topicDoesNotExistReturnNull() {
-        when(topicCrud.get(any(Tuple3.class))).thenReturn(null);
+        when(topicCrud.get(any(Tuple2.class))).thenReturn(null);
         ServiceBusSubscription actualGet = getResourceCrud().get(getKey());
         Assertions.assertNull(actualGet);
     }
@@ -94,7 +99,7 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
     @Test
     @SuppressWarnings("unchecked")
     void topicDoesNotExistsShouldReturnNullTopicAndCreateSub() {
-        Tuple4<String, String, String, ServiceBusTopicProperties> subscriptionKey = getKey();
+        Tuple3<String, String, String> subscriptionKey = getKey();
 
         Topic topic = mock(Topic.class);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
@@ -105,11 +110,11 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         when(serviceBusSubscriptions.define(subscriptionKey.getT3())).thenReturn(define);
         ServiceBusSubscription serviceBusSubscription = mock(ServiceBusSubscription.class);
         when(define.create()).thenReturn(serviceBusSubscription);
-        when(topicCrud.get(any(Tuple3.class))).thenReturn(null);
-        when(topicCrud.getOrCreate(any(Tuple3.class))).thenReturn(topic);
+        when(topicCrud.get(any(Tuple2.class))).thenReturn(null);
+        when(topicCrud.getOrCreate(any(Tuple2.class), any(ServiceBusTopicProperties.class))).thenReturn(topic);
 
         ServiceBusSubscription actualGet = getResourceCrud().get(subscriptionKey);
-        ServiceBusSubscription actualCreate = getResourceCrud().create(subscriptionKey);
+        ServiceBusSubscription actualCreate = getResourceCrud().create(subscriptionKey, topicProperties);
         Assertions.assertNull(actualGet);
         Assertions.assertNotNull(actualCreate);
         Assertions.assertEquals(serviceBusSubscription, actualCreate);
@@ -118,21 +123,21 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
     @Test
     @SuppressWarnings("unchecked")
     void topicExistsSubscriptionDoesNotExistShouldReturnNonNullTopicAndCreateSub() {
-        Tuple4<String, String, String, ServiceBusTopicProperties> subscriptionKey = getKey();
+        Tuple3<String, String, String> subscriptionKey = getKey();
         Topic topic = mock(Topic.class);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
         ServiceBusSubscription subscription = mock(ServiceBusSubscription.class);
         ServiceBusSubscription.DefinitionStages.Blank define =
             mock(ServiceBusSubscription.DefinitionStages.Blank.class);
 
-        when(this.topicCrud.getOrCreate(any(Tuple3.class))).thenReturn(topic);
+        when(this.topicCrud.getOrCreate(any(Tuple2.class), any(ServiceBusTopicProperties.class))).thenReturn(topic);
         when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
         when(serviceBusSubscriptions.getByName(subscriptionKey.getT3())).thenReturn(null);
         when(serviceBusSubscriptions.define(subscriptionKey.getT3())).thenReturn(define);
         when(define.create()).thenReturn(subscription);
 
         ServiceBusSubscription actualGet = getResourceCrud().get(subscriptionKey);
-        ServiceBusSubscription actualCreate = getResourceCrud().create(subscriptionKey);
+        ServiceBusSubscription actualCreate = getResourceCrud().create(subscriptionKey, topicProperties);
 
         Assertions.assertNull(actualGet);
         Assertions.assertNotNull(actualCreate);
@@ -157,10 +162,10 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         Topic.DefinitionStages.Blank blank = mock(Topic.DefinitionStages.Blank.class);
         when(topics.define(TOPIC_NAME)).thenReturn(blank);
 
-        Tuple3<String, String, ServiceBusTopicProperties> topicKey = Tuples.of(NAMESPACE, TOPIC_NAME, topicProperties);
+        Tuple2<String, String> topicKey = Tuples.of(NAMESPACE, TOPIC_NAME);
         ServiceBusTopicCrud srvBusTopicCrud = new ServiceBusTopicCrud(resourceManager, resourceMetadata);
         when(srvBusTopicCrud.get(topicKey)).thenReturn(null);
-        srvBusTopicCrud.getOrCreate(topicKey);
+        srvBusTopicCrud.getOrCreate(topicKey, topicProperties);
 
         verify(blank, times(1)).withSizeInMB(topicProperties.getMaxSizeInMegabytes());
         verify(blank, times(1)).withDefaultMessageTTL(topicProperties.getDefaultMessageTimeToLive());

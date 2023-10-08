@@ -37,34 +37,34 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
     @Override
     @Deprecated
     public void provisionQueue(String namespace, String queue) {
-        this.queueCrud.getOrCreate(Tuples.of(namespace, queue, new ServiceBusQueueProperties()));
+        this.queueCrud.getOrCreate(Tuples.of(namespace, queue), new ServiceBusQueueProperties());
     }
 
     @Override
     public void provisionQueue(String namespace, String queue, ServiceBusQueueProperties queueProperties) {
-        this.queueCrud.getOrCreate(Tuples.of(namespace, queue, queueProperties));
+        this.queueCrud.getOrCreate(Tuples.of(namespace, queue), queueProperties);
     }
 
     @Override
     @Deprecated
     public void provisionTopic(String namespace, String topic) {
-        this.topicCrud.getOrCreate(Tuples.of(namespace, topic, new ServiceBusTopicProperties()));
+        this.topicCrud.getOrCreate(Tuples.of(namespace, topic), new ServiceBusTopicProperties());
     }
 
     @Override
     public void provisionTopic(String namespace, String topic, ServiceBusTopicProperties topicProperties) {
-        this.topicCrud.getOrCreate(Tuples.of(namespace, topic, topicProperties));
+        this.topicCrud.getOrCreate(Tuples.of(namespace, topic), topicProperties);
     }
 
     @Override
     @Deprecated
     public void provisionSubscription(String namespace, String topic, String subscription) {
-        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription, new ServiceBusTopicProperties()));
+        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription), new ServiceBusTopicProperties());
     }
 
     @Override
     public void provisionSubscription(String namespace, String topic, String subscription,
                                       ServiceBusTopicProperties topicProperties) {
-        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription, topicProperties));
+        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription), topicProperties);
     }
 }

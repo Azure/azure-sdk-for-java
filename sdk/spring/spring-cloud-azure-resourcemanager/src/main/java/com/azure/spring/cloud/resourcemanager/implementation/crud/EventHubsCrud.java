@@ -7,12 +7,13 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
+import org.springframework.lang.Nullable;
 import reactor.util.function.Tuple2;
 
 /**
  * Resource manager for Azure Event Hubs.
  */
-public class EventHubsCrud extends AbstractResourceCrud<EventHub, Tuple2<String, String>> {
+public class EventHubsCrud extends AbstractResourceCrud<EventHub, Tuple2<String, String>, Object> {
 
     public EventHubsCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
@@ -45,12 +46,12 @@ public class EventHubsCrud extends AbstractResourceCrud<EventHub, Tuple2<String,
     }
 
     @Override
-    public EventHub internalCreate(Tuple2<String, String> namespaceAndName) {
+    public EventHub internalCreate(Tuple2<String, String> namespaceAndName, @Nullable Object properties) {
         return this.resourceManager.eventHubs()
                                    .define(namespaceAndName.getT2())
                                    .withExistingNamespace(new EventHubNamespaceCrud(this.resourceManager,
                                                                                     this.resourceMetadata)
-                                                              .getOrCreate(namespaceAndName.getT1()))
+                                                              .getOrCreate(namespaceAndName.getT1(), null))
                                    .create();
     }
 }

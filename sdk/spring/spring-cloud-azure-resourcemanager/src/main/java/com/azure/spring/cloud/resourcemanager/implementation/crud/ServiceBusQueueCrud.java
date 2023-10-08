@@ -9,13 +9,14 @@ import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import reactor.util.function.Tuple3;
+import reactor.util.function.Tuple2;
 
 /**
  * Resource manager for Service Bus queue.
  */
-public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple3<String, String, ServiceBusQueueProperties>> {
+public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple2<String, String>, ServiceBusQueueProperties> {
 
 
     public ServiceBusQueueCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
@@ -23,7 +24,7 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple3<Stri
     }
 
     @Override
-    String getResourceName(Tuple3<String, String, ServiceBusQueueProperties> key) {
+    String getResourceName(Tuple2<String, String> key) {
         return key.getT2();
     }
 
@@ -33,7 +34,7 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple3<Stri
     }
 
     @Override
-    public Queue internalGet(Tuple3<String, String, ServiceBusQueueProperties> namespaceAndName) {
+    public Queue internalGet(Tuple2<String, String> namespaceAndName) {
         try {
             ServiceBusNamespace serviceBusNamespace = new ServiceBusNamespaceCrud(this.resourceManager,
                 this.resourceMetadata)
@@ -52,17 +53,18 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple3<Stri
     }
 
     @Override
-    public Queue internalCreate(Tuple3<String, String, ServiceBusQueueProperties> creationTuple) {
-        ServiceBusQueueProperties queueProperties = creationTuple.getT3();
+    public Queue internalCreate(Tuple2<String, String> namespaceAndName, @Nullable ServiceBusQueueProperties queueProperties) {
         Queue.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
-            .getOrCreate(creationTuple.getT1())
+            .getOrCreate(namespaceAndName.getT1(), null)
             .queues()
-            .define(creationTuple.getT2());
-        if (queueProperties.getMaxSizeInMegabytes() != null) {
-            blank.withSizeInMB(queueProperties.getMaxSizeInMegabytes());
-        }
-        if (queueProperties.getDefaultMessageTimeToLive() != null) {
-            blank.withDefaultMessageTTL(queueProperties.getDefaultMessageTimeToLive());
+            .define(namespaceAndName.getT2());
+        if (queueProperties != null) {
+            if (queueProperties.getMaxSizeInMegabytes() != null) {
+                blank.withSizeInMB(queueProperties.getMaxSizeInMegabytes());
+            }
+            if (queueProperties.getDefaultMessageTimeToLive() != null) {
+                blank.withDefaultMessageTTL(queueProperties.getDefaultMessageTimeToLive());
+            }
         }
         return blank.create();
     }

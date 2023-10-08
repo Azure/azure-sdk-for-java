@@ -151,17 +151,17 @@ class DefaultServiceBusProvisionerTests {
 
         @Override
         public void provisionQueue(String namespace, String queue) {
-            this.queueCrud.getOrCreate(Tuples.of(namespace, queue, new ServiceBusQueueProperties()));
+            this.queueCrud.getOrCreate(Tuples.of(namespace, queue), new ServiceBusQueueProperties());
         }
 
         @Override
         public void provisionTopic(String namespace, String topic) {
-            this.topicCrud.getOrCreate(Tuples.of(namespace, topic, new ServiceBusTopicProperties()));
+            this.topicCrud.getOrCreate(Tuples.of(namespace, topic), new ServiceBusTopicProperties());
         }
 
         @Override
         public void provisionSubscription(String namespace, String topic, String subscription) {
-            this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription, new ServiceBusTopicProperties()));
+            this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription), new ServiceBusTopicProperties());
         }
     }
 }

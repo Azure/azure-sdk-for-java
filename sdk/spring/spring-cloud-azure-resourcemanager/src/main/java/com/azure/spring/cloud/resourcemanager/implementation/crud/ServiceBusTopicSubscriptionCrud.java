@@ -9,16 +9,17 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties;
-import reactor.util.function.Tuple4;
+import org.springframework.lang.Nullable;
+import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
 /**
  * Resource manager for Service Bus topic subscription.
  */
 public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<ServiceBusSubscription,
-    Tuple4<String, String, String, ServiceBusTopicProperties>> {
+    Tuple3<String, String, String>, ServiceBusTopicProperties> {
 
-    private ServiceBusTopicCrud serviceBusTopicCrud;
+    private final ServiceBusTopicCrud serviceBusTopicCrud;
     public ServiceBusTopicSubscriptionCrud(AzureResourceManager azureResourceManager,
                                            AzureResourceMetadata azureResourceMetadata) {
         this(azureResourceManager, azureResourceMetadata,
@@ -33,7 +34,7 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
     }
 
     @Override
-    String getResourceName(Tuple4<String, String, String, ServiceBusTopicProperties> key) {
+    String getResourceName(Tuple3<String, String, String> key) {
         return key.getT3();
     }
 
@@ -43,10 +44,10 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
     }
 
     @Override
-    public ServiceBusSubscription internalGet(Tuple4<String, String, String, ServiceBusTopicProperties> subscriptionCoordinate) {
+    public ServiceBusSubscription internalGet(Tuple3<String, String, String> subscriptionCoordinate) {
         try {
             Topic topic = this.serviceBusTopicCrud
-                .get(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2(), subscriptionCoordinate.getT4()));
+                .get(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()));
             return topic == null ? null : topic
                 .subscriptions()
                 .getByName(subscriptionCoordinate.getT3());
@@ -60,9 +61,10 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
     }
 
     @Override
-    public ServiceBusSubscription internalCreate(Tuple4<String, String, String, ServiceBusTopicProperties> subscriptionCoordinate) {
+    public ServiceBusSubscription internalCreate(Tuple3<String, String, String> subscriptionCoordinate,
+                                                 @Nullable ServiceBusTopicProperties topicProperties) {
         return this.serviceBusTopicCrud
-            .getOrCreate(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2(), subscriptionCoordinate.getT4()))
+            .getOrCreate(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()), topicProperties)
             .subscriptions()
             .define(subscriptionCoordinate.getT3())
             .create();

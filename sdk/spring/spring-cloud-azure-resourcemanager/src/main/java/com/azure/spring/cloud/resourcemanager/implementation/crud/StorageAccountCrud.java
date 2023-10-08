@@ -7,11 +7,12 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
+import org.springframework.lang.Nullable;
 
 /**
  * Resource manager for Storage account.
  */
-public class StorageAccountCrud extends AbstractResourceCrud<StorageAccount, String> {
+public class StorageAccountCrud extends AbstractResourceCrud<StorageAccount, String, Object> {
 
     /**
      * Creates a new instance of {@link StorageAccountCrud}.
@@ -49,7 +50,7 @@ public class StorageAccountCrud extends AbstractResourceCrud<StorageAccount, Str
     }
 
     @Override
-    public StorageAccount internalCreate(String key) {
+    public StorageAccount internalCreate(String key, @Nullable Object properties) {
         return this.resourceManager.storageAccounts()
                                    .define(key)
                                    .withRegion(this.resourceMetadata.getRegion())

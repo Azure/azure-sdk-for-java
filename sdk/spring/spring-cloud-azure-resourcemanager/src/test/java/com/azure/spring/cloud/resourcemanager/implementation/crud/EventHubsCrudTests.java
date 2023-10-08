@@ -14,13 +14,13 @@ import reactor.util.function.Tuples;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class EventHubsCrudTests extends AbstractResourceCrudTests<EventHub, Tuple2<String, String>> {
+public class EventHubsCrudTests extends AbstractResourceCrudTests<EventHub, Tuple2<String, String>, Object> {
 
     private static final String NAMESPACE = "namespace";
     private static final String EVENTHUB_NAME = "eventhub-name";
 
     @Override
-    AbstractResourceCrud<EventHub, Tuple2<String, String>> getResourceCrud() {
+    AbstractResourceCrud<EventHub, Tuple2<String, String>, Object> getResourceCrud() {
         return new EventHubsCrud(resourceManager, resourceMetadata);
     }
 

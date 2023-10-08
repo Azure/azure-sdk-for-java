@@ -9,6 +9,7 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.util.StopWatch;
 
 /**
@@ -16,8 +17,9 @@ import org.springframework.util.StopWatch;
  *
  * @param <T> The type of resource.
  * @param <K> The type of resource key.
+ * @param <P> Azure resource properties.
  */
-public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
+public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K, P> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractResourceCrud.class);
     static final int RESOURCE_NOT_FOUND = 404;
@@ -68,7 +70,7 @@ public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
     }
 
     @Override
-    public T create(K key) {
+    public T create(K key, @Nullable P properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
@@ -77,7 +79,7 @@ public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
 
         try {
             LOGGER.info("Creating {} with name '{}' ...", resourceType, name);
-            return internalCreate(key);
+            return internalCreate(key, properties);
         } catch (ManagementException e) {
             String message = String.format("Creating %s with name '%s' failed due to: %s", resourceType, name, e.toString());
             throw new RuntimeException(message, e);
@@ -89,14 +91,14 @@ public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
     }
 
     @Override
-    public T getOrCreate(K key) {
+    public T getOrCreate(K key, @Nullable P properties) {
         T result = get(key);
 
         if (result != null) {
             return result;
         }
 
-        return create(key);
+        return create(key, properties);
     }
 
     abstract String getResourceName(K key);
@@ -105,5 +107,5 @@ public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
 
     abstract T internalGet(K key);
 
-    abstract T internalCreate(K key);
+    abstract T internalCreate(K key, P properties);
 }

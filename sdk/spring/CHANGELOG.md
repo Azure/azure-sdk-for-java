@@ -32,7 +32,7 @@ This section includes changes in the `spring-integration-azure-servicebus` modul
 
 #### Breaking Changes
 - Deprecated APIs `ServiceBusProvisioner.provisionQueue`, `ServiceBusProvisioner.provisionTopic`, `ServiceBusProvisioner.provisionSubscription` [#36996](https://github.com/Azure/azure-sdk-for-java/pull/36996).
-- Add queue and topic properties to create Service Bus entity [#36996](https://github.com/Azure/azure-sdk-for-java/pull/36996).
+- Add new methods to provision queue and topic with entity properties [#36996](https://github.com/Azure/azure-sdk-for-java/pull/36996).
 
 ## 5.5.0 (2023-08-28)
 - This release is compatible with Spring Boot 3.0.0-3.1.2. (Note: 3.1.x (x>2) should be supported, but they aren't tested with this release.)

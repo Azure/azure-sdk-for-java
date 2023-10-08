@@ -14,7 +14,7 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import reactor.util.function.Tuple3;
+import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.time.Duration;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class ServiceBusQueueCrudTests extends AbstractResourceCrudTests<Queue, Tuple3<String, String, ServiceBusQueueProperties>> {
+class ServiceBusQueueCrudTests extends AbstractResourceCrudTests<Queue, Tuple2<String, String>, ServiceBusQueueProperties> {
 
     private AzureResourceManager resourceManager;
     private AzureResourceMetadata resourceMetadata;
@@ -54,13 +54,13 @@ class ServiceBusQueueCrudTests extends AbstractResourceCrudTests<Queue, Tuple3<S
     }
 
     @Override
-    AbstractResourceCrud<Queue, Tuple3<String, String, ServiceBusQueueProperties>> getResourceCrud() {
+    AbstractResourceCrud<Queue, Tuple2<String, String>, ServiceBusQueueProperties> getResourceCrud() {
         return new ServiceBusQueueCrud(this.resourceManager, this.resourceMetadata);
     }
 
     @Override
     void getStubManagementException(int statusCode, String message) {
-        Tuple3<String, String, ServiceBusQueueProperties> queueKey = getKey();
+        Tuple2<String, String> queueKey = getKey();
         stubServiceBusNamespace();
         ManagementException exception = createManagementException(statusCode, message);
         Queues queues = mock(Queues.class);
@@ -90,8 +90,13 @@ class ServiceBusQueueCrudTests extends AbstractResourceCrudTests<Queue, Tuple3<S
     }
 
     @Override
-    Tuple3<String, String, ServiceBusQueueProperties> getKey() {
-        return Tuples.of(NAMESPACE, QUEUE_NAME, queueProperties);
+    Tuple2<String, String> getKey() {
+        return Tuples.of(NAMESPACE, QUEUE_NAME);
+    }
+
+    @Override
+    ServiceBusQueueProperties getCreationProperties() {
+        return queueProperties;
     }
 
     @Test
@@ -104,9 +109,9 @@ class ServiceBusQueueCrudTests extends AbstractResourceCrudTests<Queue, Tuple3<S
         Queue.DefinitionStages.Blank blank = mock(Queue.DefinitionStages.Blank.class);
         when(queues.define(QUEUE_NAME)).thenReturn(blank);
 
-        Tuple3<String, String, ServiceBusQueueProperties> queueKey = Tuples.of(NAMESPACE, QUEUE_NAME, queueProperties);
+        Tuple2<String, String> queueKey = Tuples.of(NAMESPACE, QUEUE_NAME);
         when(getResourceCrud().get(queueKey)).thenReturn(null);
-        getResourceCrud().getOrCreate(queueKey);
+        getResourceCrud().getOrCreate(queueKey, queueProperties);
 
         verify(blank, times(1)).withSizeInMB(queueProperties.getMaxSizeInMegabytes());
         verify(blank, times(1)).withDefaultMessageTTL(queueProperties.getDefaultMessageTimeToLive());
