@@ -141,7 +141,7 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
 
     abstract T internalCreate(K key);
 
-    T internalCreate(K key, P properties) {
+    T internalCreate(K key, @Nullable P properties) {
         return internalCreate(key);
     }
 }
