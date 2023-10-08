@@ -145,6 +145,8 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                             connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
                         }
                     }
+                } else {
+                    throw new ConnectException("Invalid proxy address");
                 }
             } else {
                 connection = (HttpURLConnection) url.openConnection();
