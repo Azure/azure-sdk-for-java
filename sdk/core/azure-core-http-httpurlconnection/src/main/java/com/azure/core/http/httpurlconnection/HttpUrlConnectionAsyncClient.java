@@ -1,7 +1,6 @@
 package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.*;
-import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
 import com.azure.core.util.*;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;

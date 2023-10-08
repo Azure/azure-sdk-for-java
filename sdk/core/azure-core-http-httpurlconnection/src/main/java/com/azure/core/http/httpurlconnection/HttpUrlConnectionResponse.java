@@ -1,4 +1,4 @@
-package com.azure.core.http.httpurlconnection.implementation;
+package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
-public class HttpUrlConnectionResponse extends HttpResponse {
+class HttpUrlConnectionResponse extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
     private final Flux<ByteBuffer> body;
