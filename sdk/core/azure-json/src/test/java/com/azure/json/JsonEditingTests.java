@@ -83,8 +83,9 @@ public class JsonEditingTests {
     }
 
     @Test
-    public void editObjectPropertyNotExist() {
-        assertThrows(IOException.class, ()-> object.setProperty("EntryFake", JsonNull.getInstance()));
+    public void editObjectPropertyNotExist() throws IOException {
+        object.setProperty("EntryFake", JsonNull.getInstance());
+        assertEquals("null", object.getProperty("EntryFake").toString());
     }
     //-------------------------------------------------------------------------
 

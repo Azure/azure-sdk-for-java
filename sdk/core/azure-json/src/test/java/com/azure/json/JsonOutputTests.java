@@ -16,42 +16,42 @@ public class JsonOutputTests {
     @Test
     public void objectWithStringJSON() throws IOException {
         String expected = "{\"Value1\":\"Write String\"}";
-        String actual = new JsonObject().addProperty("Value1", new JsonString("Write String")).toJson();
+        String actual = new JsonObject().setProperty("Value1", new JsonString("Write String")).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
     public void objectWithIntJSON() throws IOException {
         String expected = "{\"Value1\":111}";
-        String actual = new JsonObject().addProperty("Value1", new JsonNumber(111)).toJson();
+        String actual = new JsonObject().setProperty("Value1", new JsonNumber(111)).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
     public void objectWithFloatJSON() throws IOException {
         String expected = "{\"Value1\":1.23}";
-        String actual = new JsonObject().addProperty("Value1", new JsonNumber(1.23)).toJson();
+        String actual = new JsonObject().setProperty("Value1", new JsonNumber(1.23)).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
     public void objectWithBooleanJSON() throws IOException {
         String expected = "{\"Value1\":true}";
-        String actual = new JsonObject().addProperty("Value1", JsonBoolean.getInstance(true)).toJson();
+        String actual = new JsonObject().setProperty("Value1", JsonBoolean.getInstance(true)).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
     public void objectWithNullJSON() throws IOException {
         String expected = "{\"Value1\":null}";
-        String actual = new JsonObject().addProperty("Value1", JsonNull.getInstance()).toJson();
+        String actual = new JsonObject().setProperty("Value1", JsonNull.getInstance()).toJson();
         assertEquals(expected, actual);
     }
 
     @Test
     public void objectWithInnerObjectJSON() throws IOException {
         String expected = "{\"Value1\":{\"Value2\":\"Second Layer\"}}";
-        String actual = new JsonObject().addProperty("Value1", new JsonObject().addProperty("Value2", new JsonString("Second Layer"))).toJson();
+        String actual = new JsonObject().setProperty("Value1", new JsonObject().setProperty("Value2", new JsonString("Second Layer"))).toJson();
         assertEquals(expected, actual);
     }
 
@@ -59,8 +59,8 @@ public class JsonOutputTests {
     public void objectTwoPropertiesJSONSame() throws IOException { //Adding two values with the same type.
         String expected = "{\"Value1\":\"First Layer\",\"Value2\":\"Second Layer\"}";
         String actual = new JsonObject()
-            .addProperty("Value1", new JsonString("First Layer"))
-            .addProperty("Value2", new JsonString("Second Layer"))
+            .setProperty("Value1", new JsonString("First Layer"))
+            .setProperty("Value2", new JsonString("Second Layer"))
             .toJson();
         assertEquals(expected, actual);
     }
@@ -69,8 +69,8 @@ public class JsonOutputTests {
     public void objectTwoPropertiesJSONDifferent() throws IOException { //Adding values to JSONObject that have different variable types
         String expected = "{\"Value1\":\"First Layer\",\"Value2\":2}";
         String actual = new JsonObject()
-            .addProperty("Value1", new JsonString("First Layer"))
-            .addProperty("Value2", new JsonNumber(2))
+            .setProperty("Value1", new JsonString("First Layer"))
+            .setProperty("Value2", new JsonNumber(2))
             .toJson();
         assertEquals(expected, actual);
     }
@@ -79,9 +79,9 @@ public class JsonOutputTests {
     public void objectWithArrayObjectsJSON() throws IOException {
         String expected = "{\"Value1\":[{\"Value2\":2},{\"Value3\":3}]}";
         String actual = new JsonObject()
-            .addProperty("Value1", new JsonArray()
-                .addElement(new JsonObject().addProperty("Value2", new JsonNumber(2)))
-                .addElement(new JsonObject().addProperty("Value3", new JsonNumber(3)))
+            .setProperty("Value1", new JsonArray()
+                .addElement(new JsonObject().setProperty("Value2", new JsonNumber(2)))
+                .addElement(new JsonObject().setProperty("Value3", new JsonNumber(3)))
             )
             .toJson();
         assertEquals(expected, actual);
@@ -95,7 +95,7 @@ public class JsonOutputTests {
         for (int a: values){
             intList.addElement(new JsonNumber(a));
         }
-        String actual = new JsonObject().addProperty("intList", intList).toJson();
+        String actual = new JsonObject().setProperty("intList", intList).toJson();
         assertEquals(expected, actual);
     }
 
@@ -103,11 +103,11 @@ public class JsonOutputTests {
     public void complexJSONIsolated() throws IOException {
         String expected = "{\"James\":\"Anderson\",\"Michael\":\"Campbell\",\"Mary\":\"Jones\",\"John\":\"Williams\"}";
         JsonObject jsonObj = new JsonObject();
-        // Adding properties - showcasing addProperty.
-        jsonObj.addProperty("James", new JsonString("Anderson"))
-            .addProperty("Michael", new JsonString("Campbell"))
-            .addProperty("Mary", new JsonString("Jones"))
-            .addProperty("John", new JsonString("Williams"));
+        // Adding properties - showcasing setProperty.
+        jsonObj.setProperty("James", new JsonString("Anderson"))
+            .setProperty("Michael", new JsonString("Campbell"))
+            .setProperty("Mary", new JsonString("Jones"))
+            .setProperty("John", new JsonString("Williams"));
         assertEquals(expected, jsonObj.toJson());
     }
 
@@ -115,11 +115,11 @@ public class JsonOutputTests {
     public void complexJSONIsolatedEdited() throws IOException {
         String expected = "{\"James\":\"Anderson\",\"Mary\":\"Jones\",\"John\":\"Williams\"}";
         JsonObject jsonObj = new JsonObject();
-        // Adding properties - showcasing addProperty.
-        jsonObj.addProperty("James", new JsonString("Anderson"))
-            .addProperty("Michael", new JsonString("Campbell"))
-            .addProperty("Mary", new JsonString("Jones"))
-            .addProperty("John", new JsonString("Williams"));
+        // Adding properties - showcasing setProperty.
+        jsonObj.setProperty("James", new JsonString("Anderson"))
+            .setProperty("Michael", new JsonString("Campbell"))
+            .setProperty("Mary", new JsonString("Jones"))
+            .setProperty("John", new JsonString("Williams"));
         jsonObj.removeProperty("Michael");
         assertEquals(expected, jsonObj.toJson());
     }
@@ -129,11 +129,11 @@ public class JsonOutputTests {
 //    public void complexJSONChaining() throws IOException {
 //        String expected = "{\"Mary\":\"Jones\",\"John\":\"Williams\"}";
 //        JsonObject jsonObj = new JsonObject();
-//        jsonObj.addProperty("James", new JsonString("Anderson"))
-//            .addProperty("Michael", new JsonString("Campbell"))
-//            .addProperty("Mary", new JsonString("Jones"))
+//        jsonObj.setProperty("James", new JsonString("Anderson"))
+//            .setProperty("Michael", new JsonString("Campbell"))
+//            .setProperty("Mary", new JsonString("Jones"))
 //            .removeProperty("Michael")
-//            .addProperty("John", new JsonString("Williams"))
+//            .setProperty("John", new JsonString("Williams"))
 //            .removeProperty("James");
 //        assertEquals(expected, jsonObj.toJson());
 //    }
@@ -143,18 +143,18 @@ public class JsonOutputTests {
         String expected = "{\"James\":{\"Country\":\"New Zealand\",\"Surname\":\"Anderson\"},\"Michael\":{\"Country\":\"Australia\",\"Surname\":\"Campbell\"},\"Mary\":{\"Country\":\"Canada\",\"Surname\":\"Jones\"},\"John\":{\"Country\":\"Australia\",\"Surname\":\"Williams\"}}";
         JsonObject jsonObj = new JsonObject();
 
-        jsonObj.addProperty(
+        jsonObj.setProperty(
             "James",
-            new JsonObject().addProperty("Country", new JsonString("New Zealand")).addProperty("Surname", new JsonString("Anderson"))
-        ).addProperty(
+            new JsonObject().setProperty("Country", new JsonString("New Zealand")).setProperty("Surname", new JsonString("Anderson"))
+        ).setProperty(
             "Michael",
-            new JsonObject().addProperty("Country", new JsonString("Australia")).addProperty("Surname", new JsonString("Campbell"))
-        ).addProperty(
+            new JsonObject().setProperty("Country", new JsonString("Australia")).setProperty("Surname", new JsonString("Campbell"))
+        ).setProperty(
             "Mary",
-            new JsonObject().addProperty("Country", new JsonString("Canada")).addProperty("Surname", new JsonString("Jones"))
-        ).addProperty(
+            new JsonObject().setProperty("Country", new JsonString("Canada")).setProperty("Surname", new JsonString("Jones"))
+        ).setProperty(
             "John",
-            new JsonObject().addProperty("Country", new JsonString("Australia")).addProperty("Surname", new JsonString("Williams"))
+            new JsonObject().setProperty("Country", new JsonString("Australia")).setProperty("Surname", new JsonString("Williams"))
         );
         assertEquals(expected, jsonObj.toJson());
     }

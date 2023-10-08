@@ -57,11 +57,11 @@ public class JsonObject extends JsonElement {
      * after the addition of the new property.
      */
     /*
-    addProperty temporarily removed to better guarantee runtime behaviour.
+    setProperty temporarily removed to better guarantee runtime behaviour.
 
 
 
-    public JsonObject addProperty(String key, Object element) throws IllegalArgumentException {
+    public JsonObject setProperty(String key, Object element) throws IllegalArgumentException {
         // Stores element cast or converted to a valid JsonElement type if such
         // cast or conversion exists for it.
         JsonElement value;
@@ -184,7 +184,7 @@ public class JsonObject extends JsonElement {
 
         // Adding the new property, the key with its value pair. The value is
         // the respective JsonElement cast/conversion of element.
-        this.addProperty(key, value);
+        this.setProperty(key, value);
         //properties.put(key, value);
 
         // Returning the new state of the JsonObject after the successful
@@ -205,7 +205,7 @@ public class JsonObject extends JsonElement {
 //     * the new property
 //     * @throws IllegalArgumentException
 //     */
-//    public JsonObject addProperty(String key, JsonElement element) throws IllegalArgumentException {
+//    public JsonObject setProperty(String key, JsonElement element) throws IllegalArgumentException {
 //        // Adding the new property, the key with its value pair. The value is
 //        // the respective JsonElement cast/conversion of element.
 //        properties.put(key, element);
@@ -353,22 +353,22 @@ public class JsonObject extends JsonElement {
                     fieldName = reader.getFieldName();
                     break;
                 case START_OBJECT:
-                    this.addProperty(fieldName, new JsonObject(reader));
+                    this.setProperty(fieldName, new JsonObject(reader));
                     break;
                 case START_ARRAY:
-                    this.addProperty(fieldName, new JsonArray(reader));
+                    this.setProperty(fieldName, new JsonArray(reader));
                     break;
                 case STRING:
-                    this.addProperty(fieldName, new JsonString(reader.getString()));
+                    this.setProperty(fieldName, new JsonString(reader.getString()));
                     break;
                 case NUMBER:
-                    this.addProperty(fieldName, new JsonNumber(reader.getString()));
+                    this.setProperty(fieldName, new JsonNumber(reader.getString()));
                     break;
                 case BOOLEAN:
-                    this.addProperty(fieldName, JsonBoolean.getInstance(reader.getBoolean()));
+                    this.setProperty(fieldName, JsonBoolean.getInstance(reader.getBoolean()));
                     break;
                 case NULL:
-                    this.addProperty(fieldName, JsonNull.getInstance());
+                    this.setProperty(fieldName, JsonNull.getInstance());
                     break;
                 // END_DOCUMENT and END_OBJECT cases are picked up by the overall
                 // while statement. These cases should not be reached, assuming

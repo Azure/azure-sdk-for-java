@@ -90,7 +90,11 @@ public class JsonArray extends JsonElement {
      */
     public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
         nullCheck(element);
-        this.elements.add(index, element);
+        if(index >= elements.size()){
+            this.elements.add(element);
+        } else {
+            this.elements.add(index, element);
+        }
         return this;
     }
 
