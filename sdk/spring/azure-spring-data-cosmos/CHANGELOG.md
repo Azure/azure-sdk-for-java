@@ -1,14 +1,10 @@
 ## Release History
 
-### 3.39.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 3.39.0 (2023-10-08)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.50.0`.
+* Updated `Spring Data Commons` to version `2.7.16`.
 
 ### 5.5.0 (2023-08-28)
 
