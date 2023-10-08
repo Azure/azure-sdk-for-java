@@ -11,8 +11,6 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Map;
 
 public class HttpUrlConnectionResponse extends HttpResponse {
     private final int statusCode;

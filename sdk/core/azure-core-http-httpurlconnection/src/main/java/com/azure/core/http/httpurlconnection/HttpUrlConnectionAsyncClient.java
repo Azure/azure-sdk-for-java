@@ -2,7 +2,6 @@ package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.*;
 import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
-import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionTimeouts;
 import com.azure.core.util.*;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -32,16 +31,15 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     private final Duration writeTimeout;
     private final Duration responseTimeout;
     private final ProxyOptions proxyOptions;
-    private final Configuration configuration;
 
-    HttpUrlConnectionAsyncClient(HttpUrlConnectionTimeouts timeouts, ProxyOptions proxyOptions, Configuration configuration) {
-        this.connectionTImeout = timeouts.connectionTimeout == null ? -1 : timeouts.connectionTimeout.toMillis();
-        this.readTimeout = timeouts.readTimeout == null ? -1 : timeouts.readTimeout.toMillis();
-        this.writeTimeout = timeouts.writeTimeout;
-        this.responseTimeout = timeouts.responseTimeout;
+    HttpUrlConnectionAsyncClient(Duration connectionTimeout, Duration readTimeout, Duration writeTimeout,
+                                 Duration responseTimeout, ProxyOptions proxyOptions) {
+        this.connectionTimeout = connectionTimeout == null ? -1 : connectionTimeout.toMillis();
+        this.readTimeout = readTimeout == null ? -1 : readTimeout.toMillis();
+        this.writeTimeout = writeTimeout;
+        this.responseTimeout = responseTimeout;
 
         this.proxyOptions = proxyOptions;
-        this.configuration = configuration;
     }
 
     @Override
@@ -63,7 +61,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         }
 
         HttpURLConnection connection = connect(httpRequest);
-        sendSyncRequest(httpRequest, progressReporter, connection);
+        sendBodySync(httpRequest, progressReporter, connection);
         return receiveResponse(httpRequest, connection);
     }
 
@@ -75,14 +73,14 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      * @return A Mono containing a HttpResponse object
      */
     private Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         return Mono.defer(() -> {
             HttpURLConnection connection = connect(httpRequest);
-            return sendAsyncRequest(httpRequest, progressReporter, connection)
+            return sendBodyAsync(httpRequest, progressReporter, connection)
                 .then(Mono.defer(() -> Mono.fromCallable(() -> receiveResponse(httpRequest, connection))))
                 .timeout(responseTimeout)
                 .publishOn(Schedulers.boundedElastic());
@@ -138,6 +136,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                                 e.printStackTrace();
                             }
                             String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
+                            assert messageDigest != null;
                             messageDigest.update(authString.getBytes());
                             String authStringEnc = Base64.getEncoder().encodeToString(messageDigest.digest());
                             connection.setRequestProperty("Proxy-Authorization", "Digest " + authStringEnc);
@@ -188,13 +187,13 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      * @param connection The HttpURLConnection that is being sent to.
      * @return A Mono that represents the completion of the request sending process.
      */
-    private Mono<Void> sendAsyncRequest(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
+    private Mono<Void> sendBodyAsync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
         Mono<Void> requestSendMono = Mono.empty();
 
         switch (httpRequest.getHttpMethod()) {
             case POST:
             case PUT:
-            case DELETE:
+            case DELETE: {
                 connection.setDoOutput(true);
 
                 Flux<BinaryData> requestBody;
@@ -202,8 +201,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
                 if (binaryBodyData == null) {
                     requestBody = Flux.just(BinaryData.fromByteBuffer(ByteBuffer.wrap(new byte[0])));
-                }
-                else {
+                } else {
                     requestBody = Flux.just(binaryBodyData);
                 }
 
@@ -225,15 +223,18 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                         }).timeout(writeTimeout);
                     })
                     .then();
+            }
             case GET:
             case HEAD:
             case OPTIONS:
             case TRACE:
-            case CONNECT:
-                break ;
-            default:
+            case CONNECT: {
+                break;
+            }
+            default: {
                 requestSendMono = FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:"
                     + httpRequest.getHttpMethod()));
+            }
         }
         return requestSendMono;
     }
@@ -246,13 +247,13 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      * @param connection The HttpURLConnection that is being sent to.
      * @return This method does not return any value.
      */
-    private Void sendSyncRequest(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
+    private Void sendBodySync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
         Void requestSendMono = null;
 
         switch (httpRequest.getHttpMethod()) {
             case POST:
             case PUT:
-            case DELETE:
+            case DELETE: {
                 connection.setDoOutput(true);
 
                 BinaryData binaryBodyData = httpRequest.getBodyAsBinaryData();
@@ -271,15 +272,18 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                         throw LOGGER.logExceptionAsError(new RuntimeException(e));
                     }
                 }
+            }
             case GET:
             case HEAD:
             case OPTIONS:
             case TRACE:
-            case CONNECT:
+            case CONNECT: {
                 break;
-            default:
+            }
+            default: {
                 throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown HTTP Method:"
                     + httpRequest.getHttpMethod()));
+            }
         }
         return requestSendMono;
     }

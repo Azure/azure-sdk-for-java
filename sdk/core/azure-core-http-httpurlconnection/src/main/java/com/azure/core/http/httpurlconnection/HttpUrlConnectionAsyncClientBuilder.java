@@ -1,10 +1,8 @@
 package com.azure.core.http.httpurlconnection;
 
-import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionTimeouts;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
@@ -18,8 +16,6 @@ public class HttpUrlConnectionAsyncClientBuilder {
     private static final Duration DEFAULT_WRITE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final String JAVA_HOME = System.getProperty("java.home");
-    private static final String HTTPURLCONNECTIONCLIENT_ALLOW_RESTRICTED_HEADERS = "httpurlconnectionclient.allowRestrictedHeaders";
 
     static final Set<String> DEFAULT_RESTRICTED_HEADERS;
 
@@ -28,8 +24,6 @@ public class HttpUrlConnectionAsyncClientBuilder {
         Collections.addAll(treeSet, "connection", "content-length", "expect", "host", "upgrade");
         DEFAULT_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionAsyncClientBuilder.class);
 
     private Duration connectionTimeout;
     private Duration readTimeout;
@@ -109,49 +103,12 @@ public class HttpUrlConnectionAsyncClientBuilder {
             throw new IllegalArgumentException("Invalid proxy");
         }
 
-        HttpUrlConnectionTimeouts timeouts = new HttpUrlConnectionTimeouts(
+        return new HttpUrlConnectionAsyncClient(
             getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT),
             getTimeout(readTimeout, DEFAULT_READ_TIMEOUT),
             getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT),
-            getTimeout(responseTimeout, DEFAULT_RESPONSE_TIMEOUT)
-        );
-        return new HttpUrlConnectionAsyncClient(timeouts, buildProxyOptions, buildConfiguration);
-    }
-
-    Set<String> getRestrictedHeaders() {
-        Set<String> allowRestrictedHeaders = getAllowRestrictedHeaders();
-        Set<String> restrictedHeaders = new HashSet<>(DEFAULT_RESTRICTED_HEADERS);
-        restrictedHeaders.removeAll(allowRestrictedHeaders);
-        return restrictedHeaders;
-    }
-
-    private Set<String> getAllowRestrictedHeaders() {
-        Properties properties = getNetworkProperties();
-        String[] allowRestrictedHeadersNetProperties = properties.getProperty(HTTPURLCONNECTIONCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
-
-        Configuration config = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        String[] allowRestrictedHeadersSystemProperties = config.get(HTTPURLCONNECTIONCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
-
-        Set<String> allowRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        for (String header : allowRestrictedHeadersSystemProperties) {
-            allowRestrictedHeaders.add(header.trim());
-        }
-
-        for (String header : allowRestrictedHeadersNetProperties) {
-            allowRestrictedHeaders.add(header.trim());
-        }
-
-        return allowRestrictedHeaders;
-    }
-
-    Properties getNetworkProperties() {
-        Properties properties = new Properties();
-        try {
-            properties.load(ClassLoader.getSystemResourceAsStream("net.properties"));
-        } catch (Exception e) {
-            LOGGER.warning("Cannot read net properties file", e);
-        }
-        return properties;
+            getTimeout(responseTimeout, DEFAULT_RESPONSE_TIMEOUT),
+            buildProxyOptions);
     }
 
     private static class ProxyAuthenticator extends Authenticator {
