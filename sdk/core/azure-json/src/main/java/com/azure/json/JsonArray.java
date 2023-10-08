@@ -40,6 +40,20 @@ public class JsonArray extends JsonElement {
     }
 
     /**
+     * Called by JsonArray methods in order to verify that the JsonElement passed 
+     * to them is an instantiated JsonElement. 
+     * 
+     * @throws IllegalArgumentException Thrown when a null JsonElement is passed.
+     * Instantiated JsonElements must be passed. Must pass instantiated JsonNull
+     * to represent JSON null value.
+     */
+    private static void nullCheck(JsonElement element) throws IllegalArgumentException {
+        if (element == null) {
+            throw new IllegalArgumentException("Cannot add or set a null JsonElement to a JsonArray. Use an instantiated JsonNull object to represent a valid JSON null value.");
+        }
+    }
+
+    /**
      * Adds a JsonElement object as a nested element within the JsonArray object,
      * appending it to the end.
      *
@@ -52,9 +66,7 @@ public class JsonArray extends JsonElement {
      * to represent JSON null value.
      */
     public JsonArray addElement(JsonElement element) throws IllegalArgumentException {
-        if (element == null) {
-            throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value.");
-        }
+        nullCheck(element);
         this.elements.add(element);
         return this;
     }
@@ -77,9 +89,7 @@ public class JsonArray extends JsonElement {
      * > size()
      */
     public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
-        if (element == null) {
-            throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value.");
-        }
+        nullCheck(element);
         this.elements.add(index, element);
         return this;
     }
@@ -101,9 +111,7 @@ public class JsonArray extends JsonElement {
      * >= size()
      */
     public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
-        if (element == null) {
-            throw new IllegalArgumentException("Cannot set a null JsonElement in the JsonArray. Use a JsonNull object to represent a valid JSON null value.");
-        }
+        nullCheck(element);
         this.elements.set(index, element);
         return this;
     }
