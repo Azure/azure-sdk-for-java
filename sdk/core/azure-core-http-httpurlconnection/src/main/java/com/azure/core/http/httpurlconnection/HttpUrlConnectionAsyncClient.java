@@ -35,19 +35,8 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     private final Configuration configuration;
 
     HttpUrlConnectionAsyncClient(HttpUrlConnectionTimeouts timeouts, ProxyOptions proxyOptions, Configuration configuration) {
-        if (timeouts.connectionTimeout == null) {
-            this.connectionTimeout = -1;
-        }
-        else {
-            this.connectionTimeout = timeouts.connectionTimeout.toMillis();
-        }
-
-        if (timeouts.readTimeout == null) {
-            this.readTimeout = -1;
-        }
-        else {
-            this.readTimeout = timeouts.readTimeout.toMillis();
-        }
+        this.connectionTImeout = timeouts.connectionTimeout == null ? -1 : timeouts.connectionTimeout.toMillis();
+        this.readTimeout = timeouts.readTimeout == null ? -1 : timeouts.readTimeout.toMillis();
         this.writeTimeout = timeouts.writeTimeout;
         this.responseTimeout = timeouts.responseTimeout;
 
