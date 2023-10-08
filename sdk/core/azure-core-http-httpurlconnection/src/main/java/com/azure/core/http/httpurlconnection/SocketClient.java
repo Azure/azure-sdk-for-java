@@ -4,6 +4,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -147,7 +148,7 @@ class SocketClient {
             bodyString.append(line);
         }
 
-        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(bodyString.toString().getBytes()));
+        BinaryData body = BinaryData.fromByteBuffer(ByteBuffer.wrap(bodyString.toString().getBytes()));
 
         return new HttpUrlConnectionResponse(httpRequest, statusCode, headers, body);
     }

@@ -326,7 +326,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 httpRequest,
                 responseCode,
                 responseHeaders,
-                Flux.just(ByteBuffer.wrap(outputStream.toByteArray()))
+                BinaryData.fromByteBuffer(ByteBuffer.wrap(outputStream.toByteArray()))
             );
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));

@@ -4,6 +4,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
@@ -15,13 +16,13 @@ import java.nio.charset.Charset;
 class HttpUrlConnectionResponse extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
-    private final Flux<ByteBuffer> body;
+    private final BinaryData body;
 
-    public HttpUrlConnectionResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> body) {
+    public HttpUrlConnectionResponse(HttpRequest request, int statusCode, HttpHeaders headers, BinaryData body) {
         super(request);
         this.statusCode = statusCode;
         this.headers = headers;
-        this.body = body.cache();
+        this.body = body;
     }
 
     @Override
@@ -67,7 +68,7 @@ class HttpUrlConnectionResponse extends HttpResponse {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return body;
+        return body.toFluxByteBuffer();
     }
 
     public HttpResponse buffer() {
