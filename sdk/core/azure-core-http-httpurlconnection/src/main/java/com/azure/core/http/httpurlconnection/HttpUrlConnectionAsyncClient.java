@@ -304,7 +304,10 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             HttpHeaders responseHeaders = new HttpHeaders();
             for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
                 if (entry.getKey() != null) {
-                    for (String headerValue : entry.getValue()) {
+                    List<String> values = new ArrayList<>();
+                    entry.getValue().forEach(v -> values.add(0, v));
+
+                    for (String headerValue : values) {
                         responseHeaders.add(HttpHeaderName.fromString(entry.getKey()), headerValue);
                     }
                 }
