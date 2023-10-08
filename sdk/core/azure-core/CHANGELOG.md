@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `PollResult` as details of long-running operations status.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -17,7 +19,6 @@
 - Added `CoreUtils.getResultWithTimeout` to get a value of a `Future` and cancel it if the `get` times out. ([#37055](https://github.com/Azure/azure-sdk-for-java/pull/37055))
 - Added `transfer` and `transferAsync` overloads in `IOUtils` that accept an estimated data size to attempt to better
   optimize transfers to reduce reads and writes. ([#36650](https://github.com/Azure/azure-sdk-for-java/pull/36650))
-- Added `PollResult` as details of long-running operations status.
 
 ### Bugs Fixed
 
