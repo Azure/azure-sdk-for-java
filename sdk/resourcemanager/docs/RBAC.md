@@ -66,9 +66,9 @@ This requires additional permission from Azure Active Directory, which can be co
 Since 2.2.0, SDK switched from [Azure Active Directory Grpah API][aad_graph] to [Microsoft Graph API][microsoft_graph].
 
 Permission required (since 2.2.0):
-- Access application and service principal: Microsoft Graph, Application permission, [Application.Read.All](https://docs.microsoft.com/graph/api/application-list?view=graph-rest-1.0&tabs=http#permissions)
-- Access user: Microsoft Graph, Application permission, [User.Read.All](https://docs.microsoft.com/graph/api/user-list?view=graph-rest-1.0&tabs=http#permissions)
-- Access group: Microsoft Graph, Application permission, [Group.Read.All](https://docs.microsoft.com/graph/api/group-list?view=graph-rest-1.0&tabs=http#permissions)
+- Access application and service principal: Microsoft Graph, Application permission, [Application.Read.All](https://learn.microsoft.com/graph/api/application-list?view=graph-rest-1.0&tabs=http#permissions)
+- Access user: Microsoft Graph, Application permission, [User.Read.All](https://learn.microsoft.com/graph/api/user-list?view=graph-rest-1.0&tabs=http#permissions)
+- Access group: Microsoft Graph, Application permission, [Group.Read.All](https://learn.microsoft.com/graph/api/group-list?view=graph-rest-1.0&tabs=http#permissions)
 
 Sample code to assign role of contributor to another service principal.
 ```java
@@ -114,9 +114,9 @@ TokenCredential credential = new ChainedTokenCredentialBuilder()
 
 For more details on authentication methods, please refer to [Azure Identity][azure_identity].
 
-[managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
-[rbac]: https://docs.microsoft.com/azure/role-based-access-control/overview
-[microsoft_graph]: https://docs.microsoft.com/graph/overview
-[aad_graph]: https://docs.microsoft.com/azure/active-directory/develop/active-directory-graph-api
-[service_principal]: https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals
+[managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[rbac]: https://learn.microsoft.com/azure/role-based-access-control/overview
+[microsoft_graph]: https://learn.microsoft.com/graph/overview
+[aad_graph]: https://learn.microsoft.com/azure/active-directory/develop/active-directory-graph-api
+[service_principal]: https://learn.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
