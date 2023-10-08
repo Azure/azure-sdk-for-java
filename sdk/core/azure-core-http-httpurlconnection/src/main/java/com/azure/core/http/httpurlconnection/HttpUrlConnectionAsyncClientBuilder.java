@@ -34,6 +34,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
 
     public HttpUrlConnectionAsyncClientBuilder() {
     }
+    
     public HttpUrlConnectionAsyncClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
