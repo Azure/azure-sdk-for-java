@@ -9,7 +9,7 @@ import com.azure.resourcemanager.containerregistry.models.CacheRuleUpdateParamet
 /** Samples for CacheRules Update. */
 public final class CacheRulesUpdateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/CacheRuleUpdate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/CacheRuleUpdate.json
      */
     /**
      * Sample code: CacheRuleUpdate.
