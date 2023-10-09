@@ -13,6 +13,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
@@ -50,6 +51,8 @@ public class FeatureManager {
     private final TargetingContextAccessor contextAccessor;
 
     private final TargetingEvaluationOptions evaluationOptions;
+    
+    private final ObjectProvider<VariantProperties> propertiesProvider;
 
     /**
      * Can be called to check if a feature is enabled or disabled.
@@ -60,12 +63,13 @@ public class FeatureManager {
      */
     FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
         FeatureManagementConfigProperties properties, TargetingContextAccessor contextAccessor,
-        TargetingEvaluationOptions evaluationOptions) {
+        TargetingEvaluationOptions evaluationOptions, ObjectProvider<VariantProperties> propertiesProvider) {
         this.context = context;
         this.featureManagementConfigurations = featureManagementConfigurations;
         this.properties = properties;
         this.contextAccessor = contextAccessor;
         this.evaluationOptions = evaluationOptions;
+        this.propertiesProvider = propertiesProvider;
     }
 
     /**
@@ -173,7 +177,7 @@ public class FeatureManager {
 
     private Mono<Variant> generateVariant(String featureName, Object featureContext) {
 
-        VariantAssignment variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions);
+        VariantAssignment variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions, propertiesProvider);
 
         if (!StringUtils.hasText(featureName)) {
             throw new IllegalArgumentException("Feature Variant name can not be empty or null.");
@@ -241,10 +245,6 @@ public class FeatureManager {
             if (variant.getConfigurationValue() == null && variant.getConfigurationReference() == null) {
                 throw new FeatureManagementException(
                     "The " + feature.getKey() + " neededs a Configuration Value or Configuration Reference.");
-            }
-            if (variant.getConfigurationValue() != null && variant.getConfigurationReference() != null) {
-                throw new FeatureManagementException(
-                    "The " + feature.getKey() + " can't have both a Configuration Value and Configuration Reference.");
             }
         }
     }

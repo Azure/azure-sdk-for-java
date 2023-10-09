@@ -43,12 +43,15 @@ public class VariantAssignmentTest {
             @Override
             public void configureTargetingContext(TargetingContext context) {
                 context.setUserId("test-user-id");
-                context.setGroups(List.of("test-group-id1", "test-group-id2"));
+                List<String> groups = new ArrayList<String>();
+                groups.add("test-group-id1");
+                groups.add("test-group-id2");
+                context.setGroups(groups);
             }
         };
         evaluationOptions = new TargetingEvaluationOptions();
         evaluationOptions.setIgnoreCase(true);
-        variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions);
+        variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions, null);
     }
 
     @Test

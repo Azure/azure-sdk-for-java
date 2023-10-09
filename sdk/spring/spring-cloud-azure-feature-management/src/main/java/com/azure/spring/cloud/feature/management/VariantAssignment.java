@@ -2,13 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.feature.management.implementation.models.Allocation;
@@ -34,15 +39,19 @@ public final class VariantAssignment {
 
     private final TargetingEvaluationOptions evaluationOptions;
 
+    private final ObjectProvider<VariantProperties> propertiesProvider;
+
     /**
      * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
      * 
      * @param contextAccessor Context for evaluating the users/groups.
      * @param options enables customization of the filter.
      */
-    VariantAssignment(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options) {
+    VariantAssignment(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options,
+        ObjectProvider<VariantProperties> propertiesProvider) {
         this.contextAccessor = contextAccessor;
         this.evaluationOptions = options;
+        this.propertiesProvider = propertiesProvider;
     }
 
     /**
@@ -133,15 +142,58 @@ public final class VariantAssignment {
         }
         return Flux.fromStream(
             variants.stream().filter(variant -> variant.getName().equals(variantName))
-                .map(variant -> this.assignVariant(variant))).single();
+                .map(variant -> this.assignVariant(variant)))
+            .single();
     }
 
+    @SuppressWarnings("unchecked")
     private Variant assignVariant(VariantReference variant) {
         if (variant.getConfigurationValue() != null) {
             return new Variant(variant.getName(), variant.getConfigurationValue());
         }
 
-        return null;
+        String reference = variant.getConfigurationReference();
+
+        String[] parts = reference.split("\\.");
+
+        String methodName = "get" + parts[0];
+        Method method = null;
+        Map<String, Object> variantMap = null;
+
+        Optional<VariantProperties> variantProperties = propertiesProvider.stream().filter(properties -> {
+            try {
+                properties.getClass().getMethod(methodName);
+                return true;
+            } catch (NoSuchMethodException | SecurityException e) {
+                return false;
+            }
+        }).findFirst();
+
+        if (!variantProperties.isPresent()) {
+            String message = "Failed to load " + methodName + ". No ConfigurationProperties where found containing it."
+                + ". Make sure it exists and is publicly accessible.";
+            throw new FeatureManagementException(message);
+        }
+
+        // Dynamically Accesses @ConfigurationProperties and finds the matching method.
+        try {
+            method = variantProperties.get().getClass().getMethod(methodName);
+        } catch (NoSuchMethodException | SecurityException e) {
+            String message = "Failed to load " + methodName + " in " + variantProperties.getClass()
+                + ". Make sure it exists and is publicly accessible.";
+            throw new FeatureManagementException(message, e);
+        }
+        // Calls method to get back an Object, this object contains multiple variants
+        // each has a get method.
+        try {
+            variantMap = (Map<String, Object>) method.invoke(variantProperties.get());
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            String message = "Failed invoking " + methodName + " in " + variantProperties.getClass()
+                + ". Make sure it exists and is publicly accessible.";
+            throw new FeatureManagementException(message, e);
+        }
+
+        return new Variant(variant.getName(), variantMap.get(parts[1]));
     }
 
     /**

@@ -55,7 +55,7 @@ public class FeatureManagerVariantTest {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
 
-        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, contextAccessorMock, null);
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, contextAccessorMock, null, null);
     }
 
     @AfterEach
@@ -85,7 +85,7 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void noAssigner() {
-        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null);
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null, null);
         
         HashMap<String, Feature> features = new HashMap<>();
         Feature feature = new Feature();

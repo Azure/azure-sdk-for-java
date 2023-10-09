@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -33,7 +34,8 @@ class FeatureManagementConfiguration {
      */
     @Bean
     FeatureManager featureManager(ApplicationContext context,
-        FeatureManagementProperties featureManagementConfigurations, FeatureManagementConfigProperties properties) {
+        FeatureManagementProperties featureManagementConfigurations, FeatureManagementConfigProperties properties,
+        ObjectProvider<VariantProperties> propertiesProvider) {
 
         TargetingContextAccessor contextAccessor = appContext.getBeanProvider(TargetingContextAccessor.class)
             .getIfAvailable();
@@ -45,6 +47,6 @@ class FeatureManagementConfiguration {
         }
 
         return new FeatureManager(context, featureManagementConfigurations, properties, contextAccessor,
-            evaluationOptions);
+            evaluationOptions, propertiesProvider);
     }
 }
