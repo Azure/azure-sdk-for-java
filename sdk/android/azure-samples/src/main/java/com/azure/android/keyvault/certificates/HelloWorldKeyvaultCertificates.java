@@ -7,7 +7,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
@@ -27,7 +26,7 @@ import java.util.Map;
 /**
  * Sample demonstrates how to set, get, update and delete a certificate.
  */
-public class HelloWorldKeyvaultCerificates {
+public class HelloWorldKeyvaultCertificates {
     /**
      * Authenticates with the key vault and shows how to set, get, update and delete a certificate in the key vault.
      *

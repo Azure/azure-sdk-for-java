@@ -4,7 +4,6 @@
 package com.azure.android.keyvault.certificates;
 
 import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -19,7 +18,7 @@ import java.util.Map;
 /**
  * Sample demonstrates how to asynchronously list, recover and purge deleted certificates in a soft-delete enabled key vault.
  */
-public class ManagingDeletedCertificatesAsyncKeyvaultCerificates {
+public class ManagingDeletedCertificatesAsyncKeyvaultCertificates {
     /**
      * Authenticates with the key vault and shows how to asynchronously list, recover and purge deleted certificates in a soft-delete enabled key vault.
      *

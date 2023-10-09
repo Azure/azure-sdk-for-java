@@ -8,7 +8,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
@@ -32,7 +31,7 @@ import java.util.Map;
 /**
  * Sample demonstrates how to backup and restore certificates in the key vault.
  */
-public class BackupAndRestoreOperationsKeyvaultCerificates {
+public class BackupAndRestoreOperationsKeyvaultCertificates {
     /**
      * Authenticates with the key vault and shows how to backup and restore certificates in the key vault.
      *
