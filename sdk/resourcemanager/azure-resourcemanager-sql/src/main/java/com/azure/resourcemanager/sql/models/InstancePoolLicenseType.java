@@ -20,6 +20,15 @@ public final class InstancePoolLicenseType extends ExpandableStringEnum<Instance
     public static final InstancePoolLicenseType BASE_PRICE = fromString("BasePrice");
 
     /**
+     * Creates a new instance of InstancePoolLicenseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InstancePoolLicenseType() {
+    }
+
+    /**
      * Creates or finds a InstancePoolLicenseType from its string representation.
      *
      * @param name a name to look for.

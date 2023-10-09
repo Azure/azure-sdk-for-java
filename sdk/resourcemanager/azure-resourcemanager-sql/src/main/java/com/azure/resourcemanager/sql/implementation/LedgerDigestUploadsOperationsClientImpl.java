@@ -71,8 +71,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
     public interface LedgerDigestUploadsOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/ledgerDigestUploads")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/ledgerDigestUploads")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LedgerDigestUploadsListResult>> listByDatabase(
@@ -87,8 +86,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LedgerDigestUploadsInner>> get(
@@ -104,8 +102,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -122,8 +119,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}/disable")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/ledgerDigestUploads/{ledgerDigestUploads}/disable")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disable(
@@ -775,7 +771,8 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
         String databaseName,
         LedgerDigestUploadsName ledgerDigestUploads,
         LedgerDigestUploadsInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters)
             .getSyncPoller();
     }
 
@@ -802,7 +799,8 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
         LedgerDigestUploadsName ledgerDigestUploads,
         LedgerDigestUploadsInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serverName, databaseName, ledgerDigestUploads, parameters, context)
             .getSyncPoller();
     }
@@ -1117,7 +1115,7 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LedgerDigestUploadsInner>, LedgerDigestUploadsInner> beginDisable(
         String resourceGroupName, String serverName, String databaseName, LedgerDigestUploadsName ledgerDigestUploads) {
-        return beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads).getSyncPoller();
+        return this.beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads).getSyncPoller();
     }
 
     /**
@@ -1141,7 +1139,8 @@ public final class LedgerDigestUploadsOperationsClientImpl implements LedgerDige
         String databaseName,
         LedgerDigestUploadsName ledgerDigestUploads,
         Context context) {
-        return beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context)
+        return this
+            .beginDisableAsync(resourceGroupName, serverName, databaseName, ledgerDigestUploads, context)
             .getSyncPoller();
     }
 

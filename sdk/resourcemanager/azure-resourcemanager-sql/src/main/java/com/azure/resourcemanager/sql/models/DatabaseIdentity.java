@@ -12,7 +12,7 @@ import java.util.UUID;
 
 /** Azure Active Directory identity configuration for a resource. */
 @Fluent
-public class DatabaseIdentity {
+public final class DatabaseIdentity {
     /*
      * The identity type
      */

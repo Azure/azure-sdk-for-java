@@ -17,6 +17,15 @@ public final class PerformanceLevelUnit extends ExpandableStringEnum<Performance
     public static final PerformanceLevelUnit VCORES = fromString("VCores");
 
     /**
+     * Creates a new instance of PerformanceLevelUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PerformanceLevelUnit() {
+    }
+
+    /**
      * Creates or finds a PerformanceLevelUnit from its string representation.
      *
      * @param name a name to look for.

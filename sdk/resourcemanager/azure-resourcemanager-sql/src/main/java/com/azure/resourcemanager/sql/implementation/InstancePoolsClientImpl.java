@@ -98,8 +98,7 @@ public final class InstancePoolsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools"
-                + "/{instancePoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InstancePoolInner>> getByResourceGroup(
@@ -113,8 +112,7 @@ public final class InstancePoolsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools"
-                + "/{instancePoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -129,8 +127,7 @@ public final class InstancePoolsClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools"
-                + "/{instancePoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -143,8 +140,7 @@ public final class InstancePoolsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools"
-                + "/{instancePoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -819,7 +815,7 @@ public final class InstancePoolsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginCreateOrUpdate(
         String resourceGroupName, String instancePoolName, InstancePoolInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, instancePoolName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, instancePoolName, parameters).getSyncPoller();
     }
 
     /**
@@ -838,7 +834,7 @@ public final class InstancePoolsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginCreateOrUpdate(
         String resourceGroupName, String instancePoolName, InstancePoolInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, instancePoolName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, instancePoolName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1067,7 +1063,7 @@ public final class InstancePoolsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instancePoolName) {
-        return beginDeleteAsync(resourceGroupName, instancePoolName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, instancePoolName).getSyncPoller();
     }
 
     /**
@@ -1085,7 +1081,7 @@ public final class InstancePoolsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String instancePoolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, instancePoolName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, instancePoolName, context).getSyncPoller();
     }
 
     /**
@@ -1335,7 +1331,7 @@ public final class InstancePoolsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdate(
         String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, instancePoolName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, instancePoolName, parameters).getSyncPoller();
     }
 
     /**
@@ -1354,7 +1350,7 @@ public final class InstancePoolsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdate(
         String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, instancePoolName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, instancePoolName, parameters, context).getSyncPoller();
     }
 
     /**

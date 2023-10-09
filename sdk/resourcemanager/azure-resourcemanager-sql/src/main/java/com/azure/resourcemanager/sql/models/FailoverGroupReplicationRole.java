@@ -17,6 +17,15 @@ public final class FailoverGroupReplicationRole extends ExpandableStringEnum<Fai
     public static final FailoverGroupReplicationRole SECONDARY = fromString("Secondary");
 
     /**
+     * Creates a new instance of FailoverGroupReplicationRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FailoverGroupReplicationRole() {
+    }
+
+    /**
      * Creates or finds a FailoverGroupReplicationRole from its string representation.
      *
      * @param name a name to look for.

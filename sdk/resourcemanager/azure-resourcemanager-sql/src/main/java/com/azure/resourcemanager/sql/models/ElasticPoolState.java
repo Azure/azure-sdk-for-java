@@ -20,6 +20,15 @@ public final class ElasticPoolState extends ExpandableStringEnum<ElasticPoolStat
     public static final ElasticPoolState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of ElasticPoolState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ElasticPoolState() {
+    }
+
+    /**
      * Creates or finds a ElasticPoolState from its string representation.
      *
      * @param name a name to look for.

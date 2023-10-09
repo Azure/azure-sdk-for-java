@@ -6,6 +6,8 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.sql.models.AlwaysEncryptedEnclaveType;
+import com.azure.resourcemanager.sql.models.AvailabilityZoneType;
 import com.azure.resourcemanager.sql.models.ElasticPoolLicenseType;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
 import com.azure.resourcemanager.sql.models.ElasticPoolState;
@@ -294,6 +296,52 @@ public final class ElasticPoolInner extends Resource {
             this.innerProperties = new ElasticPoolProperties();
         }
         this.innerProperties().withHighAvailabilityReplicaCount(highAvailabilityReplicaCount);
+        return this;
+    }
+
+    /**
+     * Get the preferredEnclaveType property: Type of enclave requested on the elastic pool.
+     *
+     * @return the preferredEnclaveType value.
+     */
+    public AlwaysEncryptedEnclaveType preferredEnclaveType() {
+        return this.innerProperties() == null ? null : this.innerProperties().preferredEnclaveType();
+    }
+
+    /**
+     * Set the preferredEnclaveType property: Type of enclave requested on the elastic pool.
+     *
+     * @param preferredEnclaveType the preferredEnclaveType value to set.
+     * @return the ElasticPoolInner object itself.
+     */
+    public ElasticPoolInner withPreferredEnclaveType(AlwaysEncryptedEnclaveType preferredEnclaveType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolProperties();
+        }
+        this.innerProperties().withPreferredEnclaveType(preferredEnclaveType);
+        return this;
+    }
+
+    /**
+     * Get the availabilityZone property: Specifies the availability zone the pool's primary replica is pinned to.
+     *
+     * @return the availabilityZone value.
+     */
+    public AvailabilityZoneType availabilityZone() {
+        return this.innerProperties() == null ? null : this.innerProperties().availabilityZone();
+    }
+
+    /**
+     * Set the availabilityZone property: Specifies the availability zone the pool's primary replica is pinned to.
+     *
+     * @param availabilityZone the availabilityZone value to set.
+     * @return the ElasticPoolInner object itself.
+     */
+    public ElasticPoolInner withAvailabilityZone(AvailabilityZoneType availabilityZone) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolProperties();
+        }
+        this.innerProperties().withAvailabilityZone(availabilityZone);
         return this;
     }
 

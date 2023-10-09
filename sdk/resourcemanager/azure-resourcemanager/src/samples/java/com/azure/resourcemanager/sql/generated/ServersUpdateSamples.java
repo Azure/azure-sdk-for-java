@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
+import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerUpdate;
 
 /** Samples for Servers Update. */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ServerUpdate.json
      */
     /**
      * Sample code: Update a server.
@@ -30,8 +30,9 @@ public final class ServersUpdateSamples {
                 new ServerUpdate()
                     .withAdministratorLogin("dummylogin")
                     .withAdministratorLoginPassword("fakeTokenPlaceholder")
-                    .withPublicNetworkAccess(ServerNetworkAccessFlag.DISABLED)
-                    .withRestrictOutboundNetworkAccess(ServerNetworkAccessFlag.ENABLED),
-                Context.NONE);
+                    .withPublicNetworkAccess(ServerPublicNetworkAccessFlag.DISABLED)
+                    .withRestrictOutboundNetworkAccess(ServerNetworkAccessFlag.ENABLED)
+                    .withIsIPv6Enabled(ServerNetworkAccessFlag.ENABLED),
+                com.azure.core.util.Context.NONE);
     }
 }

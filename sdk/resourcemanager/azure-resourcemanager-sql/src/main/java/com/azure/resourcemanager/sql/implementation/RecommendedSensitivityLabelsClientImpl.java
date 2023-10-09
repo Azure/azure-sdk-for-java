@@ -55,8 +55,7 @@ public final class RecommendedSensitivityLabelsClientImpl implements Recommended
     public interface RecommendedSensitivityLabelsService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/recommendedSensitivityLabels")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/recommendedSensitivityLabels")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> update(

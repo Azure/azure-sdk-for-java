@@ -11,25 +11,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BaseLongTermRetentionPolicyProperties {
     /*
-     * The weekly retention policy for an LTR backup in an ISO 8601 format.
+     * The weekly retention policy for an LTR backup.
      */
     @JsonProperty(value = "weeklyRetention")
     private String weeklyRetention;
 
     /*
-     * The monthly retention policy for an LTR backup in an ISO 8601 format.
+     * The monthly retention policy for an LTR backup.
      */
     @JsonProperty(value = "monthlyRetention")
     private String monthlyRetention;
 
     /*
-     * The yearly retention policy for an LTR backup in an ISO 8601 format.
+     * The yearly retention policy for an LTR backup.
      */
     @JsonProperty(value = "yearlyRetention")
     private String yearlyRetention;
 
     /*
-     * The week of year to take the yearly backup in an ISO 8601 format.
+     * The week of year to take the yearly backup.
      */
     @JsonProperty(value = "weekOfYear")
     private Integer weekOfYear;
@@ -39,7 +39,7 @@ public final class BaseLongTermRetentionPolicyProperties {
     }
 
     /**
-     * Get the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
+     * Get the weeklyRetention property: The weekly retention policy for an LTR backup.
      *
      * @return the weeklyRetention value.
      */
@@ -48,7 +48,7 @@ public final class BaseLongTermRetentionPolicyProperties {
     }
 
     /**
-     * Set the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
+     * Set the weeklyRetention property: The weekly retention policy for an LTR backup.
      *
      * @param weeklyRetention the weeklyRetention value to set.
      * @return the BaseLongTermRetentionPolicyProperties object itself.
@@ -59,7 +59,7 @@ public final class BaseLongTermRetentionPolicyProperties {
     }
 
     /**
-     * Get the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
+     * Get the monthlyRetention property: The monthly retention policy for an LTR backup.
      *
      * @return the monthlyRetention value.
      */
@@ -68,7 +68,7 @@ public final class BaseLongTermRetentionPolicyProperties {
     }
 
     /**
-     * Set the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
+     * Set the monthlyRetention property: The monthly retention policy for an LTR backup.
      *
      * @param monthlyRetention the monthlyRetention value to set.
      * @return the BaseLongTermRetentionPolicyProperties object itself.
@@ -79,7 +79,7 @@ public final class BaseLongTermRetentionPolicyProperties {
     }
 
     /**
-     * Get the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
+     * Get the yearlyRetention property: The yearly retention policy for an LTR backup.
      *
      * @return the yearlyRetention value.
      */
@@ -88,7 +88,7 @@ public final class BaseLongTermRetentionPolicyProperties {
     }
 
     /**
-     * Set the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
+     * Set the yearlyRetention property: The yearly retention policy for an LTR backup.
      *
      * @param yearlyRetention the yearlyRetention value to set.
      * @return the BaseLongTermRetentionPolicyProperties object itself.
@@ -99,7 +99,7 @@ public final class BaseLongTermRetentionPolicyProperties {
     }
 
     /**
-     * Get the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
+     * Get the weekOfYear property: The week of year to take the yearly backup.
      *
      * @return the weekOfYear value.
      */
@@ -108,7 +108,7 @@ public final class BaseLongTermRetentionPolicyProperties {
     }
 
     /**
-     * Set the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
+     * Set the weekOfYear property: The week of year to take the yearly backup.
      *
      * @param weekOfYear the weekOfYear value to set.
      * @return the BaseLongTermRetentionPolicyProperties object itself.

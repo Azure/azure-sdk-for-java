@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.DatabaseExtensions;
 import com.azure.resourcemanager.sql.models.OperationMode;
 import com.azure.resourcemanager.sql.models.StorageKeyType;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.sql.models.StorageKeyType;
 /** Samples for DatabaseExtensionsOperation CreateOrUpdate. */
 public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ImportDatabaseUsingDatabaseExtensions.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ImportDatabaseUsingDatabaseExtensions.json
      */
     /**
      * Sample code: Import database using database extension.
@@ -38,11 +37,11 @@ public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
                     .withAdministratorLogin("login")
                     .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withAuthenticationType("Sql"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExportDatabaseUsingDatabaseExtensions.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ExportDatabaseUsingDatabaseExtensions.json
      */
     /**
      * Sample code: Export database using database extension.
@@ -68,11 +67,11 @@ public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
                     .withAdministratorLogin("login")
                     .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withAuthenticationType("Sql"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateDatabaseExtensions.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/CreateOrUpdateDatabaseExtensions.json
      */
     /**
      * Sample code: Create or Update database extensions.
@@ -95,6 +94,6 @@ public final class DatabaseExtensionsOperationCreateOrUpdateSamples {
                     .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
                     .withStorageKey("fakeTokenPlaceholder")
                     .withStorageUri("https://teststorage.blob.core.windows.net/testcontainer/Manifest.xml"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

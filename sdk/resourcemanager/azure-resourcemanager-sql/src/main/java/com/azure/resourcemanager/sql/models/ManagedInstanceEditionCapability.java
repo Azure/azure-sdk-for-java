@@ -18,6 +18,12 @@ public final class ManagedInstanceEditionCapability {
     private String name;
 
     /*
+     * Whether or not this is a GPv2 variant of General Purpose edition.
+     */
+    @JsonProperty(value = "isGeneralPurposeV2", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isGeneralPurposeV2;
+
+    /*
      * The supported families.
      */
     @JsonProperty(value = "supportedFamilies", access = JsonProperty.Access.WRITE_ONLY)
@@ -28,12 +34,6 @@ public final class ManagedInstanceEditionCapability {
      */
     @JsonProperty(value = "supportedStorageCapabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageCapability> supportedStorageCapabilities;
-
-    /*
-     * Whether or not zone redundancy is supported for the edition.
-     */
-    @JsonProperty(value = "zoneRedundant", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean zoneRedundant;
 
     /*
      * The status of the capability.
@@ -61,6 +61,15 @@ public final class ManagedInstanceEditionCapability {
     }
 
     /**
+     * Get the isGeneralPurposeV2 property: Whether or not this is a GPv2 variant of General Purpose edition.
+     *
+     * @return the isGeneralPurposeV2 value.
+     */
+    public Boolean isGeneralPurposeV2() {
+        return this.isGeneralPurposeV2;
+    }
+
+    /**
      * Get the supportedFamilies property: The supported families.
      *
      * @return the supportedFamilies value.
@@ -76,15 +85,6 @@ public final class ManagedInstanceEditionCapability {
      */
     public List<StorageCapability> supportedStorageCapabilities() {
         return this.supportedStorageCapabilities;
-    }
-
-    /**
-     * Get the zoneRedundant property: Whether or not zone redundancy is supported for the edition.
-     *
-     * @return the zoneRedundant value.
-     */
-    public Boolean zoneRedundant() {
-        return this.zoneRedundant;
     }
 
     /**

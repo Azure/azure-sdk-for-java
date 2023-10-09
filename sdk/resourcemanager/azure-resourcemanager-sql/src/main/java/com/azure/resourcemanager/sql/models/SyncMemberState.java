@@ -65,6 +65,15 @@ public final class SyncMemberState extends ExpandableStringEnum<SyncMemberState>
     public static final SyncMemberState UN_REPROVISIONED = fromString("UnReprovisioned");
 
     /**
+     * Creates a new instance of SyncMemberState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncMemberState() {
+    }
+
+    /**
      * Creates or finds a SyncMemberState from its string representation.
      *
      * @param name a name to look for.

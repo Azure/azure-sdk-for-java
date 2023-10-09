@@ -66,8 +66,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
     public interface OutboundFirewallRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/outboundFirewallRules")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/outboundFirewallRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundFirewallRuleListResult>> listByServer(
@@ -81,8 +80,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/outboundFirewallRules/{outboundRuleFqdn}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/outboundFirewallRules/{outboundRuleFqdn}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OutboundFirewallRuleInner>> get(
@@ -97,8 +95,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/outboundFirewallRules/{outboundRuleFqdn}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/outboundFirewallRules/{outboundRuleFqdn}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -113,8 +110,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/outboundFirewallRules/{outboundRuleFqdn}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/outboundFirewallRules/{outboundRuleFqdn}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -669,7 +665,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String outboundRuleFqdn) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn).getSyncPoller();
     }
 
     /**
@@ -688,7 +684,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OutboundFirewallRuleInner>, OutboundFirewallRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String outboundRuleFqdn, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, outboundRuleFqdn, context).getSyncPoller();
     }
 
     /**
@@ -935,7 +931,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String outboundRuleFqdn) {
-        return beginDeleteAsync(resourceGroupName, serverName, outboundRuleFqdn).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, outboundRuleFqdn).getSyncPoller();
     }
 
     /**
@@ -954,7 +950,7 @@ public final class OutboundFirewallRulesClientImpl implements OutboundFirewallRu
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String outboundRuleFqdn, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, outboundRuleFqdn, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, outboundRuleFqdn, context).getSyncPoller();
     }
 
     /**

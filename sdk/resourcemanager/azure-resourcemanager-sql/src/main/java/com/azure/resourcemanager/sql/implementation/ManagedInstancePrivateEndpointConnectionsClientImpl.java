@@ -74,8 +74,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
     public interface ManagedInstancePrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/privateEndpointConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstancePrivateEndpointConnectionListResult>> listByManagedInstance(
@@ -89,8 +88,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstancePrivateEndpointConnectionInner>> get(
@@ -105,8 +103,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -122,8 +119,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -737,8 +733,8 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             String managedInstanceName,
             String privateEndpointConnectionName,
             ManagedInstancePrivateEndpointConnectionInner parameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters)
             .getSyncPoller();
     }
 
@@ -765,7 +761,8 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             String privateEndpointConnectionName,
             ManagedInstancePrivateEndpointConnectionInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters, context)
             .getSyncPoller();
     }
@@ -1043,7 +1040,9 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName)
+            .getSyncPoller();
     }
 
     /**
@@ -1062,7 +1061,8 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName, context)
             .getSyncPoller();
     }
 

@@ -15,6 +15,15 @@ public final class ManagedInstanceLongTermRetentionPolicyName
     public static final ManagedInstanceLongTermRetentionPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of ManagedInstanceLongTermRetentionPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedInstanceLongTermRetentionPolicyName() {
+    }
+
+    /**
      * Creates or finds a ManagedInstanceLongTermRetentionPolicyName from its string representation.
      *
      * @param name a name to look for.

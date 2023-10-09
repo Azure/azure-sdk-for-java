@@ -58,8 +58,7 @@ public final class TdeCertificatesClientImpl implements TdeCertificatesClient {
     public interface TdeCertificatesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/tdeCertificates")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/tdeCertificates")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -239,7 +238,7 @@ public final class TdeCertificatesClientImpl implements TdeCertificatesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String resourceGroupName, String serverName, TdeCertificate parameters) {
-        return beginCreateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
     /**
@@ -258,7 +257,7 @@ public final class TdeCertificatesClientImpl implements TdeCertificatesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String resourceGroupName, String serverName, TdeCertificate parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**

@@ -255,6 +255,31 @@ public final class ManagedDatabaseUpdate {
     }
 
     /**
+     * Get the crossSubscriptionSourceDatabaseId property: The resource identifier of the cross-subscription source
+     * database associated with create operation of this database.
+     *
+     * @return the crossSubscriptionSourceDatabaseId value.
+     */
+    public String crossSubscriptionSourceDatabaseId() {
+        return this.innerProperties() == null ? null : this.innerProperties().crossSubscriptionSourceDatabaseId();
+    }
+
+    /**
+     * Set the crossSubscriptionSourceDatabaseId property: The resource identifier of the cross-subscription source
+     * database associated with create operation of this database.
+     *
+     * @param crossSubscriptionSourceDatabaseId the crossSubscriptionSourceDatabaseId value to set.
+     * @return the ManagedDatabaseUpdate object itself.
+     */
+    public ManagedDatabaseUpdate withCrossSubscriptionSourceDatabaseId(String crossSubscriptionSourceDatabaseId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withCrossSubscriptionSourceDatabaseId(crossSubscriptionSourceDatabaseId);
+        return this;
+    }
+
+    /**
      * Get the restorableDroppedDatabaseId property: The restorable dropped database resource id to restore when
      * creating this database.
      *
@@ -280,8 +305,67 @@ public final class ManagedDatabaseUpdate {
     }
 
     /**
-     * Get the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the storage container sas token.
+     * Get the crossSubscriptionRestorableDroppedDatabaseId property: The restorable cross-subscription dropped database
+     * resource id to restore when creating this database.
+     *
+     * @return the crossSubscriptionRestorableDroppedDatabaseId value.
+     */
+    public String crossSubscriptionRestorableDroppedDatabaseId() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().crossSubscriptionRestorableDroppedDatabaseId();
+    }
+
+    /**
+     * Set the crossSubscriptionRestorableDroppedDatabaseId property: The restorable cross-subscription dropped database
+     * resource id to restore when creating this database.
+     *
+     * @param crossSubscriptionRestorableDroppedDatabaseId the crossSubscriptionRestorableDroppedDatabaseId value to
+     *     set.
+     * @return the ManagedDatabaseUpdate object itself.
+     */
+    public ManagedDatabaseUpdate withCrossSubscriptionRestorableDroppedDatabaseId(
+        String crossSubscriptionRestorableDroppedDatabaseId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this
+            .innerProperties()
+            .withCrossSubscriptionRestorableDroppedDatabaseId(crossSubscriptionRestorableDroppedDatabaseId);
+        return this;
+    }
+
+    /**
+     * Get the storageContainerIdentity property: Conditional. If createMode is RestoreExternalBackup, this value is
+     * used. Specifies the identity used for storage container authentication. Can be 'SharedAccessSignature' or
+     * 'ManagedIdentity'; if not specified 'SharedAccessSignature' is assumed.
+     *
+     * @return the storageContainerIdentity value.
+     */
+    public String storageContainerIdentity() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageContainerIdentity();
+    }
+
+    /**
+     * Set the storageContainerIdentity property: Conditional. If createMode is RestoreExternalBackup, this value is
+     * used. Specifies the identity used for storage container authentication. Can be 'SharedAccessSignature' or
+     * 'ManagedIdentity'; if not specified 'SharedAccessSignature' is assumed.
+     *
+     * @param storageContainerIdentity the storageContainerIdentity value to set.
+     * @return the ManagedDatabaseUpdate object itself.
+     */
+    public ManagedDatabaseUpdate withStorageContainerIdentity(String storageContainerIdentity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withStorageContainerIdentity(storageContainerIdentity);
+        return this;
+    }
+
+    /**
+     * Get the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup and
+     * storageContainerIdentity is not ManagedIdentity, this value is required. Specifies the storage container sas
+     * token.
      *
      * @return the storageContainerSasToken value.
      */
@@ -290,8 +374,9 @@ public final class ManagedDatabaseUpdate {
     }
 
     /**
-     * Set the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
-     * required. Specifies the storage container sas token.
+     * Set the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup and
+     * storageContainerIdentity is not ManagedIdentity, this value is required. Specifies the storage container sas
+     * token.
      *
      * @param storageContainerSasToken the storageContainerSasToken value to set.
      * @return the ManagedDatabaseUpdate object itself.
@@ -407,6 +492,61 @@ public final class ManagedDatabaseUpdate {
             this.innerProperties = new ManagedDatabaseProperties();
         }
         this.innerProperties().withLastBackupName(lastBackupName);
+        return this;
+    }
+
+    /**
+     * Get the crossSubscriptionTargetManagedInstanceId property: Target managed instance id used in cross-subscription
+     * restore.
+     *
+     * @return the crossSubscriptionTargetManagedInstanceId value.
+     */
+    public String crossSubscriptionTargetManagedInstanceId() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().crossSubscriptionTargetManagedInstanceId();
+    }
+
+    /**
+     * Set the crossSubscriptionTargetManagedInstanceId property: Target managed instance id used in cross-subscription
+     * restore.
+     *
+     * @param crossSubscriptionTargetManagedInstanceId the crossSubscriptionTargetManagedInstanceId value to set.
+     * @return the ManagedDatabaseUpdate object itself.
+     */
+    public ManagedDatabaseUpdate withCrossSubscriptionTargetManagedInstanceId(
+        String crossSubscriptionTargetManagedInstanceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withCrossSubscriptionTargetManagedInstanceId(crossSubscriptionTargetManagedInstanceId);
+        return this;
+    }
+
+    /**
+     * Get the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     *
+     * @return the isLedgerOn value.
+     */
+    public Boolean isLedgerOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().isLedgerOn();
+    }
+
+    /**
+     * Set the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     *
+     * @param isLedgerOn the isLedgerOn value to set.
+     * @return the ManagedDatabaseUpdate object itself.
+     */
+    public ManagedDatabaseUpdate withIsLedgerOn(Boolean isLedgerOn) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedDatabaseProperties();
+        }
+        this.innerProperties().withIsLedgerOn(isLedgerOn);
         return this;
     }
 

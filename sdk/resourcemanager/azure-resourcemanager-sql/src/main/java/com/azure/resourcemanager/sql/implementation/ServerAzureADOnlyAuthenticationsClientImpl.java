@@ -73,8 +73,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
     public interface ServerAzureADOnlyAuthenticationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/azureADOnlyAuthentications")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureADOnlyAuthListResult>> listByServer(
@@ -88,8 +87,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/azureADOnlyAuthentications/{authenticationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications/{authenticationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerAzureADOnlyAuthenticationInner>> get(
@@ -104,8 +102,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/azureADOnlyAuthentications/{authenticationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications/{authenticationName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -121,8 +118,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/azureADOnlyAuthentications/{authenticationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/azureADOnlyAuthentications/{authenticationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -733,7 +729,9 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
             String serverName,
             AuthenticationName authenticationName,
             ServerAzureADOnlyAuthenticationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, authenticationName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, authenticationName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -760,7 +758,8 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
             AuthenticationName authenticationName,
             ServerAzureADOnlyAuthenticationInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, authenticationName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, authenticationName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1034,7 +1033,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, AuthenticationName authenticationName) {
-        return beginDeleteAsync(resourceGroupName, serverName, authenticationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, authenticationName).getSyncPoller();
     }
 
     /**
@@ -1053,7 +1052,7 @@ public final class ServerAzureADOnlyAuthenticationsClientImpl implements ServerA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, AuthenticationName authenticationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, authenticationName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, authenticationName, context).getSyncPoller();
     }
 
     /**

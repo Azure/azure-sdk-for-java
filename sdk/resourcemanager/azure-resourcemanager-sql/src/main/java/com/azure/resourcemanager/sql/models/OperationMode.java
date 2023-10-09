@@ -20,6 +20,15 @@ public final class OperationMode extends ExpandableStringEnum<OperationMode> {
     public static final OperationMode EXPORT = fromString("Export");
 
     /**
+     * Creates a new instance of OperationMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationMode() {
+    }
+
+    /**
      * Creates or finds a OperationMode from its string representation.
      *
      * @param name a name to look for.

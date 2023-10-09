@@ -70,8 +70,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
     public interface SyncAgentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncAgentListResult>> listByServer(
@@ -85,8 +84,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents/{syncAgentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncAgentInner>> get(
@@ -101,8 +99,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents/{syncAgentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -118,8 +115,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents/{syncAgentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -133,8 +129,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents/{syncAgentName}/generateKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}/generateKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncAgentKeyPropertiesInner>> generateKey(
@@ -149,8 +144,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/syncAgents/{syncAgentName}/linkedDatabases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}/linkedDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncAgentLinkedDatabaseListResult>> listLinkedDatabases(
@@ -718,7 +712,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters).getSyncPoller();
     }
 
     /**
@@ -738,7 +732,8 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SyncAgentInner>, SyncAgentInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String syncAgentName, SyncAgentInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, syncAgentName, parameters, context)
             .getSyncPoller();
     }
 
@@ -987,7 +982,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String syncAgentName) {
-        return beginDeleteAsync(resourceGroupName, serverName, syncAgentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, syncAgentName).getSyncPoller();
     }
 
     /**
@@ -1006,7 +1001,7 @@ public final class SyncAgentsClientImpl implements SyncAgentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String syncAgentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, syncAgentName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, syncAgentName, context).getSyncPoller();
     }
 
     /**

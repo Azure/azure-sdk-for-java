@@ -32,6 +32,15 @@ public final class DayOfWeek extends ExpandableStringEnum<DayOfWeek> {
     public static final DayOfWeek SATURDAY = fromString("Saturday");
 
     /**
+     * Creates a new instance of DayOfWeek value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DayOfWeek() {
+    }
+
+    /**
      * Creates or finds a DayOfWeek from its string representation.
      *
      * @param name a name to look for.

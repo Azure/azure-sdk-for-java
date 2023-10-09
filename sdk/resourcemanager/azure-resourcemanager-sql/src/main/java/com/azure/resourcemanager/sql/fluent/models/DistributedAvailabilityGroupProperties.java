@@ -5,183 +5,85 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.sql.models.ReplicationMode;
+import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupDatabase;
+import com.azure.resourcemanager.sql.models.LinkRole;
+import com.azure.resourcemanager.sql.models.ReplicationModeType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.UUID;
 
 /** The properties of a distributed availability group. */
 @Fluent
 public final class DistributedAvailabilityGroupProperties {
     /*
-     * The name of the target database
+     * Name of the distributed availability group
      */
-    @JsonProperty(value = "targetDatabase")
-    private String targetDatabase;
+    @JsonProperty(value = "distributedAvailabilityGroupName", access = JsonProperty.Access.WRITE_ONLY)
+    private String distributedAvailabilityGroupName;
 
     /*
-     * The source endpoint
-     */
-    @JsonProperty(value = "sourceEndpoint")
-    private String sourceEndpoint;
-
-    /*
-     * The primary availability group name
-     */
-    @JsonProperty(value = "primaryAvailabilityGroupName")
-    private String primaryAvailabilityGroupName;
-
-    /*
-     * The secondary availability group name
-     */
-    @JsonProperty(value = "secondaryAvailabilityGroupName")
-    private String secondaryAvailabilityGroupName;
-
-    /*
-     * The replication mode of a distributed availability group. Parameter will be ignored during link creation.
-     */
-    @JsonProperty(value = "replicationMode")
-    private ReplicationMode replicationMode;
-
-    /*
-     * The distributed availability group id
+     * ID of the distributed availability group
      */
     @JsonProperty(value = "distributedAvailabilityGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID distributedAvailabilityGroupId;
 
     /*
-     * The source replica id
+     * Replication mode of the link
      */
-    @JsonProperty(value = "sourceReplicaId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID sourceReplicaId;
+    @JsonProperty(value = "replicationMode")
+    private ReplicationModeType replicationMode;
 
     /*
-     * The target replica id
+     * SQL server side link role
      */
-    @JsonProperty(value = "targetReplicaId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID targetReplicaId;
+    @JsonProperty(value = "partnerLinkRole", access = JsonProperty.Access.WRITE_ONLY)
+    private LinkRole partnerLinkRole;
 
     /*
-     * The link state
+     * SQL server side availability group name
      */
-    @JsonProperty(value = "linkState", access = JsonProperty.Access.WRITE_ONLY)
-    private String linkState;
+    @JsonProperty(value = "partnerAvailabilityGroupName", access = JsonProperty.Access.WRITE_ONLY)
+    private String partnerAvailabilityGroupName;
 
     /*
-     * The last hardened lsn
+     * SQL server side endpoint - IP or DNS resolvable name
      */
-    @JsonProperty(value = "lastHardenedLsn", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastHardenedLsn;
+    @JsonProperty(value = "partnerEndpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private String partnerEndpoint;
+
+    /*
+     * Managed instance side link role
+     */
+    @JsonProperty(value = "instanceLinkRole", access = JsonProperty.Access.WRITE_ONLY)
+    private LinkRole instanceLinkRole;
+
+    /*
+     * Managed instance side availability group name
+     */
+    @JsonProperty(value = "instanceAvailabilityGroupName", access = JsonProperty.Access.WRITE_ONLY)
+    private String instanceAvailabilityGroupName;
+
+    /*
+     * Databases in the distributed availability group
+     */
+    @JsonProperty(value = "databases", access = JsonProperty.Access.WRITE_ONLY)
+    private List<DistributedAvailabilityGroupDatabase> databases;
 
     /** Creates an instance of DistributedAvailabilityGroupProperties class. */
     public DistributedAvailabilityGroupProperties() {
     }
 
     /**
-     * Get the targetDatabase property: The name of the target database.
+     * Get the distributedAvailabilityGroupName property: Name of the distributed availability group.
      *
-     * @return the targetDatabase value.
+     * @return the distributedAvailabilityGroupName value.
      */
-    public String targetDatabase() {
-        return this.targetDatabase;
+    public String distributedAvailabilityGroupName() {
+        return this.distributedAvailabilityGroupName;
     }
 
     /**
-     * Set the targetDatabase property: The name of the target database.
-     *
-     * @param targetDatabase the targetDatabase value to set.
-     * @return the DistributedAvailabilityGroupProperties object itself.
-     */
-    public DistributedAvailabilityGroupProperties withTargetDatabase(String targetDatabase) {
-        this.targetDatabase = targetDatabase;
-        return this;
-    }
-
-    /**
-     * Get the sourceEndpoint property: The source endpoint.
-     *
-     * @return the sourceEndpoint value.
-     */
-    public String sourceEndpoint() {
-        return this.sourceEndpoint;
-    }
-
-    /**
-     * Set the sourceEndpoint property: The source endpoint.
-     *
-     * @param sourceEndpoint the sourceEndpoint value to set.
-     * @return the DistributedAvailabilityGroupProperties object itself.
-     */
-    public DistributedAvailabilityGroupProperties withSourceEndpoint(String sourceEndpoint) {
-        this.sourceEndpoint = sourceEndpoint;
-        return this;
-    }
-
-    /**
-     * Get the primaryAvailabilityGroupName property: The primary availability group name.
-     *
-     * @return the primaryAvailabilityGroupName value.
-     */
-    public String primaryAvailabilityGroupName() {
-        return this.primaryAvailabilityGroupName;
-    }
-
-    /**
-     * Set the primaryAvailabilityGroupName property: The primary availability group name.
-     *
-     * @param primaryAvailabilityGroupName the primaryAvailabilityGroupName value to set.
-     * @return the DistributedAvailabilityGroupProperties object itself.
-     */
-    public DistributedAvailabilityGroupProperties withPrimaryAvailabilityGroupName(
-        String primaryAvailabilityGroupName) {
-        this.primaryAvailabilityGroupName = primaryAvailabilityGroupName;
-        return this;
-    }
-
-    /**
-     * Get the secondaryAvailabilityGroupName property: The secondary availability group name.
-     *
-     * @return the secondaryAvailabilityGroupName value.
-     */
-    public String secondaryAvailabilityGroupName() {
-        return this.secondaryAvailabilityGroupName;
-    }
-
-    /**
-     * Set the secondaryAvailabilityGroupName property: The secondary availability group name.
-     *
-     * @param secondaryAvailabilityGroupName the secondaryAvailabilityGroupName value to set.
-     * @return the DistributedAvailabilityGroupProperties object itself.
-     */
-    public DistributedAvailabilityGroupProperties withSecondaryAvailabilityGroupName(
-        String secondaryAvailabilityGroupName) {
-        this.secondaryAvailabilityGroupName = secondaryAvailabilityGroupName;
-        return this;
-    }
-
-    /**
-     * Get the replicationMode property: The replication mode of a distributed availability group. Parameter will be
-     * ignored during link creation.
-     *
-     * @return the replicationMode value.
-     */
-    public ReplicationMode replicationMode() {
-        return this.replicationMode;
-    }
-
-    /**
-     * Set the replicationMode property: The replication mode of a distributed availability group. Parameter will be
-     * ignored during link creation.
-     *
-     * @param replicationMode the replicationMode value to set.
-     * @return the DistributedAvailabilityGroupProperties object itself.
-     */
-    public DistributedAvailabilityGroupProperties withReplicationMode(ReplicationMode replicationMode) {
-        this.replicationMode = replicationMode;
-        return this;
-    }
-
-    /**
-     * Get the distributedAvailabilityGroupId property: The distributed availability group id.
+     * Get the distributedAvailabilityGroupId property: ID of the distributed availability group.
      *
      * @return the distributedAvailabilityGroupId value.
      */
@@ -190,39 +92,77 @@ public final class DistributedAvailabilityGroupProperties {
     }
 
     /**
-     * Get the sourceReplicaId property: The source replica id.
+     * Get the replicationMode property: Replication mode of the link.
      *
-     * @return the sourceReplicaId value.
+     * @return the replicationMode value.
      */
-    public UUID sourceReplicaId() {
-        return this.sourceReplicaId;
+    public ReplicationModeType replicationMode() {
+        return this.replicationMode;
     }
 
     /**
-     * Get the targetReplicaId property: The target replica id.
+     * Set the replicationMode property: Replication mode of the link.
      *
-     * @return the targetReplicaId value.
+     * @param replicationMode the replicationMode value to set.
+     * @return the DistributedAvailabilityGroupProperties object itself.
      */
-    public UUID targetReplicaId() {
-        return this.targetReplicaId;
+    public DistributedAvailabilityGroupProperties withReplicationMode(ReplicationModeType replicationMode) {
+        this.replicationMode = replicationMode;
+        return this;
     }
 
     /**
-     * Get the linkState property: The link state.
+     * Get the partnerLinkRole property: SQL server side link role.
      *
-     * @return the linkState value.
+     * @return the partnerLinkRole value.
      */
-    public String linkState() {
-        return this.linkState;
+    public LinkRole partnerLinkRole() {
+        return this.partnerLinkRole;
     }
 
     /**
-     * Get the lastHardenedLsn property: The last hardened lsn.
+     * Get the partnerAvailabilityGroupName property: SQL server side availability group name.
      *
-     * @return the lastHardenedLsn value.
+     * @return the partnerAvailabilityGroupName value.
      */
-    public String lastHardenedLsn() {
-        return this.lastHardenedLsn;
+    public String partnerAvailabilityGroupName() {
+        return this.partnerAvailabilityGroupName;
+    }
+
+    /**
+     * Get the partnerEndpoint property: SQL server side endpoint - IP or DNS resolvable name.
+     *
+     * @return the partnerEndpoint value.
+     */
+    public String partnerEndpoint() {
+        return this.partnerEndpoint;
+    }
+
+    /**
+     * Get the instanceLinkRole property: Managed instance side link role.
+     *
+     * @return the instanceLinkRole value.
+     */
+    public LinkRole instanceLinkRole() {
+        return this.instanceLinkRole;
+    }
+
+    /**
+     * Get the instanceAvailabilityGroupName property: Managed instance side availability group name.
+     *
+     * @return the instanceAvailabilityGroupName value.
+     */
+    public String instanceAvailabilityGroupName() {
+        return this.instanceAvailabilityGroupName;
+    }
+
+    /**
+     * Get the databases property: Databases in the distributed availability group.
+     *
+     * @return the databases value.
+     */
+    public List<DistributedAvailabilityGroupDatabase> databases() {
+        return this.databases;
     }
 
     /**
@@ -231,5 +171,8 @@ public final class DistributedAvailabilityGroupProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (databases() != null) {
+            databases().forEach(e -> e.validate());
+        }
     }
 }

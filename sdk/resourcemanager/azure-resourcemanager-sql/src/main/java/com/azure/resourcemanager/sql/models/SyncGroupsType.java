@@ -23,6 +23,15 @@ public final class SyncGroupsType extends ExpandableStringEnum<SyncGroupsType> {
     public static final SyncGroupsType SUCCESS = fromString("Success");
 
     /**
+     * Creates a new instance of SyncGroupsType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncGroupsType() {
+    }
+
+    /**
      * Creates or finds a SyncGroupsType from its string representation.
      *
      * @param name a name to look for.

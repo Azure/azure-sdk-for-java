@@ -66,8 +66,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
     public interface WorkloadClassifiersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadClassifierListResult>> listByWorkloadGroup(
@@ -83,9 +82,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadClassifierInner>> get(
@@ -102,9 +99,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -122,9 +117,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -857,7 +850,8 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
         String workloadGroupName,
         String workloadClassifierName,
         WorkloadClassifierInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters)
             .getSyncPoller();
     }
@@ -887,7 +881,8 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
         String workloadClassifierName,
         WorkloadClassifierInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 serverName,
                 databaseName,
@@ -1248,7 +1243,8 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
         String databaseName,
         String workloadGroupName,
         String workloadClassifierName) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName)
+        return this
+            .beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName)
             .getSyncPoller();
     }
 
@@ -1275,7 +1271,8 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
         String workloadGroupName,
         String workloadClassifierName,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context)
             .getSyncPoller();
     }

@@ -67,8 +67,7 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
     public interface ServerTrustCertificatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/serverTrustCertificates")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustCertificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerTrustCertificatesListResult>> listByInstance(
@@ -82,8 +81,7 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerTrustCertificateInner>> get(
@@ -98,8 +96,7 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -115,8 +112,7 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustCertificates/{certificateName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -726,7 +722,8 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
         String managedInstanceName,
         String certificateName,
         ServerTrustCertificateInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters)
             .getSyncPoller();
     }
 
@@ -752,7 +749,8 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
         String certificateName,
         ServerTrustCertificateInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, certificateName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1023,7 +1021,7 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String certificateName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName).getSyncPoller();
     }
 
     /**
@@ -1042,7 +1040,7 @@ public final class ServerTrustCertificatesClientImpl implements ServerTrustCerti
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String certificateName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, certificateName, context).getSyncPoller();
     }
 
     /**

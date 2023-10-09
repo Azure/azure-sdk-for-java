@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-import com.azure.resourcemanager.sql.fluent.models.DistributedAvailabilityGroupInner;
+import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupsCreateOrUpdateRequestBody;
 
 /** Samples for DistributedAvailabilityGroups CreateOrUpdate. */
 public final class DistributedAvailabilityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DistributedAvailabilityGroupsCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/DistributedAvailabilityGroupsCreate.json
      */
     /**
      * Sample code: Create a distributed availability group.
@@ -27,11 +26,11 @@ public final class DistributedAvailabilityGroupsCreateOrUpdateSamples {
                 "testrg",
                 "testcl",
                 "dag",
-                new DistributedAvailabilityGroupInner()
+                new DistributedAvailabilityGroupsCreateOrUpdateRequestBody()
                     .withTargetDatabase("testdb")
                     .withSourceEndpoint("TCP://SERVER:7022")
                     .withPrimaryAvailabilityGroupName("BoxLocalAg1")
                     .withSecondaryAvailabilityGroupName("testcl"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

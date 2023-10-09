@@ -120,6 +120,29 @@ public final class LongTermRetentionBackupInner extends ProxyResource {
     }
 
     /**
+     * Get the isBackupImmutable property: The setting whether the LTR backup is immutable.
+     *
+     * @return the isBackupImmutable value.
+     */
+    public Boolean isBackupImmutable() {
+        return this.innerProperties() == null ? null : this.innerProperties().isBackupImmutable();
+    }
+
+    /**
+     * Set the isBackupImmutable property: The setting whether the LTR backup is immutable.
+     *
+     * @param isBackupImmutable the isBackupImmutable value to set.
+     * @return the LongTermRetentionBackupInner object itself.
+     */
+    public LongTermRetentionBackupInner withIsBackupImmutable(Boolean isBackupImmutable) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LongTermRetentionBackupProperties();
+        }
+        this.innerProperties().withIsBackupImmutable(isBackupImmutable);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

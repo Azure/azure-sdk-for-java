@@ -28,6 +28,15 @@ public final class CapabilityGroup extends ExpandableStringEnum<CapabilityGroup>
         fromString("supportedManagedInstanceEditions");
 
     /**
+     * Creates a new instance of CapabilityGroup value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CapabilityGroup() {
+    }
+
+    /**
      * Creates or finds a CapabilityGroup from its string representation.
      *
      * @param name a name to look for.

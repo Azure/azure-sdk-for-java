@@ -67,8 +67,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     public interface RestorePointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/restorePoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorePointListResult>> listByDatabase(
@@ -83,8 +82,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/restorePoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -100,8 +98,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorePointInner>> get(
@@ -117,8 +114,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -553,7 +549,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         String serverName,
         String databaseName,
         CreateDatabaseRestorePointDefinition parameters) {
-        return beginCreateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -577,7 +573,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         String databaseName,
         CreateDatabaseRestorePointDefinition parameters,
         Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
     }
 
     /**

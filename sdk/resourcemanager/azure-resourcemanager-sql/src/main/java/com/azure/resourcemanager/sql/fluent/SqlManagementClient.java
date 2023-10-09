@@ -80,6 +80,27 @@ public interface SqlManagementClient {
     ExtendedServerBlobAuditingPoliciesClient getExtendedServerBlobAuditingPolicies();
 
     /**
+     * Gets the DataMaskingPoliciesClient object to access its operations.
+     *
+     * @return the DataMaskingPoliciesClient object.
+     */
+    DataMaskingPoliciesClient getDataMaskingPolicies();
+
+    /**
+     * Gets the DataMaskingRulesClient object to access its operations.
+     *
+     * @return the DataMaskingRulesClient object.
+     */
+    DataMaskingRulesClient getDataMaskingRules();
+
+    /**
+     * Gets the DataWarehouseUserActivitiesOperationsClient object to access its operations.
+     *
+     * @return the DataWarehouseUserActivitiesOperationsClient object.
+     */
+    DataWarehouseUserActivitiesOperationsClient getDataWarehouseUserActivitiesOperations();
+
+    /**
      * Gets the DatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
      *
      * @return the DatabaseAdvancedThreatProtectionSettingsClient object.
@@ -108,6 +129,13 @@ public interface SqlManagementClient {
     DatabaseColumnsClient getDatabaseColumns();
 
     /**
+     * Gets the DatabaseEncryptionProtectorsClient object to access its operations.
+     *
+     * @return the DatabaseEncryptionProtectorsClient object.
+     */
+    DatabaseEncryptionProtectorsClient getDatabaseEncryptionProtectors();
+
+    /**
      * Gets the DatabaseExtensionsOperationsClient object to access its operations.
      *
      * @return the DatabaseExtensionsOperationsClient object.
@@ -129,13 +157,6 @@ public interface SqlManagementClient {
     DatabaseRecommendedActionsClient getDatabaseRecommendedActions();
 
     /**
-     * Gets the DatabasesClient object to access its operations.
-     *
-     * @return the DatabasesClient object.
-     */
-    DatabasesClient getDatabases();
-
-    /**
      * Gets the DatabaseSchemasClient object to access its operations.
      *
      * @return the DatabaseSchemasClient object.
@@ -148,6 +169,48 @@ public interface SqlManagementClient {
      * @return the DatabaseSecurityAlertPoliciesClient object.
      */
     DatabaseSecurityAlertPoliciesClient getDatabaseSecurityAlertPolicies();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentBaselinesClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentBaselinesClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentBaselinesClient getDatabaseSqlVulnerabilityAssessmentBaselines();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentExecuteScansClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentExecuteScansClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentExecuteScansClient getDatabaseSqlVulnerabilityAssessmentExecuteScans();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentRuleBaselinesClient getDatabaseSqlVulnerabilityAssessmentRuleBaselines();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentScanResultsClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentScanResultsClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentScanResultsClient getDatabaseSqlVulnerabilityAssessmentScanResults();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentScansClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentScansClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentScansClient getDatabaseSqlVulnerabilityAssessmentScans();
+
+    /**
+     * Gets the DatabaseSqlVulnerabilityAssessmentsSettingsClient object to access its operations.
+     *
+     * @return the DatabaseSqlVulnerabilityAssessmentsSettingsClient object.
+     */
+    DatabaseSqlVulnerabilityAssessmentsSettingsClient getDatabaseSqlVulnerabilityAssessmentsSettings();
 
     /**
      * Gets the DatabaseTablesClient object to access its operations.
@@ -171,13 +234,6 @@ public interface SqlManagementClient {
     DatabaseVulnerabilityAssessmentRuleBaselinesClient getDatabaseVulnerabilityAssessmentRuleBaselines();
 
     /**
-     * Gets the DatabaseVulnerabilityAssessmentsClient object to access its operations.
-     *
-     * @return the DatabaseVulnerabilityAssessmentsClient object.
-     */
-    DatabaseVulnerabilityAssessmentsClient getDatabaseVulnerabilityAssessments();
-
-    /**
      * Gets the DatabaseVulnerabilityAssessmentScansClient object to access its operations.
      *
      * @return the DatabaseVulnerabilityAssessmentScansClient object.
@@ -185,25 +241,18 @@ public interface SqlManagementClient {
     DatabaseVulnerabilityAssessmentScansClient getDatabaseVulnerabilityAssessmentScans();
 
     /**
-     * Gets the DataMaskingPoliciesClient object to access its operations.
+     * Gets the DatabaseVulnerabilityAssessmentsClient object to access its operations.
      *
-     * @return the DataMaskingPoliciesClient object.
+     * @return the DatabaseVulnerabilityAssessmentsClient object.
      */
-    DataMaskingPoliciesClient getDataMaskingPolicies();
+    DatabaseVulnerabilityAssessmentsClient getDatabaseVulnerabilityAssessments();
 
     /**
-     * Gets the DataMaskingRulesClient object to access its operations.
+     * Gets the DatabasesClient object to access its operations.
      *
-     * @return the DataMaskingRulesClient object.
+     * @return the DatabasesClient object.
      */
-    DataMaskingRulesClient getDataMaskingRules();
-
-    /**
-     * Gets the DataWarehouseUserActivitiesOperationsClient object to access its operations.
-     *
-     * @return the DataWarehouseUserActivitiesOperationsClient object.
-     */
-    DataWarehouseUserActivitiesOperationsClient getDataWarehouseUserActivitiesOperations();
+    DatabasesClient getDatabases();
 
     /**
      * Gets the DeletedServersClient object to access its operations.
@@ -269,6 +318,13 @@ public interface SqlManagementClient {
     GeoBackupPoliciesClient getGeoBackupPolicies();
 
     /**
+     * Gets the IPv6FirewallRulesClient object to access its operations.
+     *
+     * @return the IPv6FirewallRulesClient object.
+     */
+    IPv6FirewallRulesClient getIPv6FirewallRules();
+
+    /**
      * Gets the InstanceFailoverGroupsClient object to access its operations.
      *
      * @return the InstanceFailoverGroupsClient object.
@@ -281,13 +337,6 @@ public interface SqlManagementClient {
      * @return the InstancePoolsClient object.
      */
     InstancePoolsClient getInstancePools();
-
-    /**
-     * Gets the IPv6FirewallRulesClient object to access its operations.
-     *
-     * @return the IPv6FirewallRulesClient object.
-     */
-    IPv6FirewallRulesClient getIPv6FirewallRules();
 
     /**
      * Gets the JobAgentsClient object to access its operations.
@@ -309,13 +358,6 @@ public interface SqlManagementClient {
      * @return the JobExecutionsClient object.
      */
     JobExecutionsClient getJobExecutions();
-
-    /**
-     * Gets the JobsClient object to access its operations.
-     *
-     * @return the JobsClient object.
-     */
-    JobsClient getJobs();
 
     /**
      * Gets the JobStepExecutionsClient object to access its operations.
@@ -351,6 +393,13 @@ public interface SqlManagementClient {
      * @return the JobVersionsClient object.
      */
     JobVersionsClient getJobVersions();
+
+    /**
+     * Gets the JobsClient object to access its operations.
+     *
+     * @return the JobsClient object.
+     */
+    JobsClient getJobs();
 
     /**
      * Gets the LedgerDigestUploadsOperationsClient object to access its operations.
@@ -409,11 +458,25 @@ public interface SqlManagementClient {
     ManagedBackupShortTermRetentionPoliciesClient getManagedBackupShortTermRetentionPolicies();
 
     /**
+     * Gets the ManagedDatabaseAdvancedThreatProtectionSettingsClient object to access its operations.
+     *
+     * @return the ManagedDatabaseAdvancedThreatProtectionSettingsClient object.
+     */
+    ManagedDatabaseAdvancedThreatProtectionSettingsClient getManagedDatabaseAdvancedThreatProtectionSettings();
+
+    /**
      * Gets the ManagedDatabaseColumnsClient object to access its operations.
      *
      * @return the ManagedDatabaseColumnsClient object.
      */
     ManagedDatabaseColumnsClient getManagedDatabaseColumns();
+
+    /**
+     * Gets the ManagedDatabaseMoveOperationsClient object to access its operations.
+     *
+     * @return the ManagedDatabaseMoveOperationsClient object.
+     */
+    ManagedDatabaseMoveOperationsClient getManagedDatabaseMoveOperations();
 
     /**
      * Gets the ManagedDatabaseQueriesClient object to access its operations.
@@ -428,13 +491,6 @@ public interface SqlManagementClient {
      * @return the ManagedDatabaseRestoreDetailsClient object.
      */
     ManagedDatabaseRestoreDetailsClient getManagedDatabaseRestoreDetails();
-
-    /**
-     * Gets the ManagedDatabasesClient object to access its operations.
-     *
-     * @return the ManagedDatabasesClient object.
-     */
-    ManagedDatabasesClient getManagedDatabases();
 
     /**
      * Gets the ManagedDatabaseSchemasClient object to access its operations.
@@ -493,6 +549,13 @@ public interface SqlManagementClient {
     ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient getManagedDatabaseVulnerabilityAssessmentRuleBaselines();
 
     /**
+     * Gets the ManagedDatabaseVulnerabilityAssessmentScansClient object to access its operations.
+     *
+     * @return the ManagedDatabaseVulnerabilityAssessmentScansClient object.
+     */
+    ManagedDatabaseVulnerabilityAssessmentScansClient getManagedDatabaseVulnerabilityAssessmentScans();
+
+    /**
      * Gets the ManagedDatabaseVulnerabilityAssessmentsClient object to access its operations.
      *
      * @return the ManagedDatabaseVulnerabilityAssessmentsClient object.
@@ -500,11 +563,11 @@ public interface SqlManagementClient {
     ManagedDatabaseVulnerabilityAssessmentsClient getManagedDatabaseVulnerabilityAssessments();
 
     /**
-     * Gets the ManagedDatabaseVulnerabilityAssessmentScansClient object to access its operations.
+     * Gets the ManagedDatabasesClient object to access its operations.
      *
-     * @return the ManagedDatabaseVulnerabilityAssessmentScansClient object.
+     * @return the ManagedDatabasesClient object.
      */
-    ManagedDatabaseVulnerabilityAssessmentScansClient getManagedDatabaseVulnerabilityAssessmentScans();
+    ManagedDatabasesClient getManagedDatabases();
 
     /**
      * Gets the ManagedInstanceAdministratorsClient object to access its operations.
@@ -514,11 +577,25 @@ public interface SqlManagementClient {
     ManagedInstanceAdministratorsClient getManagedInstanceAdministrators();
 
     /**
+     * Gets the ManagedInstanceAdvancedThreatProtectionSettingsClient object to access its operations.
+     *
+     * @return the ManagedInstanceAdvancedThreatProtectionSettingsClient object.
+     */
+    ManagedInstanceAdvancedThreatProtectionSettingsClient getManagedInstanceAdvancedThreatProtectionSettings();
+
+    /**
      * Gets the ManagedInstanceAzureADOnlyAuthenticationsClient object to access its operations.
      *
      * @return the ManagedInstanceAzureADOnlyAuthenticationsClient object.
      */
     ManagedInstanceAzureADOnlyAuthenticationsClient getManagedInstanceAzureADOnlyAuthentications();
+
+    /**
+     * Gets the ManagedInstanceDtcsClient object to access its operations.
+     *
+     * @return the ManagedInstanceDtcsClient object.
+     */
+    ManagedInstanceDtcsClient getManagedInstanceDtcs();
 
     /**
      * Gets the ManagedInstanceEncryptionProtectorsClient object to access its operations.
@@ -563,13 +640,6 @@ public interface SqlManagementClient {
     ManagedInstancePrivateLinkResourcesClient getManagedInstancePrivateLinkResources();
 
     /**
-     * Gets the ManagedInstancesClient object to access its operations.
-     *
-     * @return the ManagedInstancesClient object.
-     */
-    ManagedInstancesClient getManagedInstances();
-
-    /**
      * Gets the ManagedInstanceTdeCertificatesClient object to access its operations.
      *
      * @return the ManagedInstanceTdeCertificatesClient object.
@@ -582,6 +652,20 @@ public interface SqlManagementClient {
      * @return the ManagedInstanceVulnerabilityAssessmentsClient object.
      */
     ManagedInstanceVulnerabilityAssessmentsClient getManagedInstanceVulnerabilityAssessments();
+
+    /**
+     * Gets the ManagedInstancesClient object to access its operations.
+     *
+     * @return the ManagedInstancesClient object.
+     */
+    ManagedInstancesClient getManagedInstances();
+
+    /**
+     * Gets the ManagedLedgerDigestUploadsOperationsClient object to access its operations.
+     *
+     * @return the ManagedLedgerDigestUploadsOperationsClient object.
+     */
+    ManagedLedgerDigestUploadsOperationsClient getManagedLedgerDigestUploadsOperations();
 
     /**
      * Gets the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient object to access its operations.
@@ -604,6 +688,13 @@ public interface SqlManagementClient {
      * @return the ManagedServerSecurityAlertPoliciesClient object.
      */
     ManagedServerSecurityAlertPoliciesClient getManagedServerSecurityAlertPolicies();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     *
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -725,6 +816,13 @@ public interface SqlManagementClient {
     ServerAzureADOnlyAuthenticationsClient getServerAzureADOnlyAuthentications();
 
     /**
+     * Gets the ServerConfigurationOptionsClient object to access its operations.
+     *
+     * @return the ServerConfigurationOptionsClient object.
+     */
+    ServerConfigurationOptionsClient getServerConfigurationOptions();
+
+    /**
      * Gets the ServerConnectionPoliciesClient object to access its operations.
      *
      * @return the ServerConnectionPoliciesClient object.
@@ -758,13 +856,6 @@ public interface SqlManagementClient {
      * @return the ServerOperationsClient object.
      */
     ServerOperationsClient getServerOperations();
-
-    /**
-     * Gets the ServersClient object to access its operations.
-     *
-     * @return the ServersClient object.
-     */
-    ServersClient getServers();
 
     /**
      * Gets the ServerSecurityAlertPoliciesClient object to access its operations.
@@ -802,6 +893,13 @@ public interface SqlManagementClient {
     ServerVulnerabilityAssessmentsClient getServerVulnerabilityAssessments();
 
     /**
+     * Gets the ServersClient object to access its operations.
+     *
+     * @return the ServersClient object.
+     */
+    ServersClient getServers();
+
+    /**
      * Gets the SqlAgentsClient object to access its operations.
      *
      * @return the SqlAgentsClient object.
@@ -809,11 +907,88 @@ public interface SqlManagementClient {
     SqlAgentsClient getSqlAgents();
 
     /**
+     * Gets the SqlVulnerabilityAssessmentBaselinesClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentBaselinesClient object.
+     */
+    SqlVulnerabilityAssessmentBaselinesClient getSqlVulnerabilityAssessmentBaselines();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentBaselinesOperationsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentBaselinesOperationsClient object.
+     */
+    SqlVulnerabilityAssessmentBaselinesOperationsClient getSqlVulnerabilityAssessmentBaselinesOperations();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentExecuteScansClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentExecuteScansClient object.
+     */
+    SqlVulnerabilityAssessmentExecuteScansClient getSqlVulnerabilityAssessmentExecuteScans();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentRuleBaselinesClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentRuleBaselinesClient object.
+     */
+    SqlVulnerabilityAssessmentRuleBaselinesClient getSqlVulnerabilityAssessmentRuleBaselines();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentRuleBaselinesOperationsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentRuleBaselinesOperationsClient object.
+     */
+    SqlVulnerabilityAssessmentRuleBaselinesOperationsClient getSqlVulnerabilityAssessmentRuleBaselinesOperations();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScanResultOperationsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentScanResultOperationsClient object.
+     */
+    SqlVulnerabilityAssessmentScanResultOperationsClient getSqlVulnerabilityAssessmentScanResultOperations();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScansClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentScansClient object.
+     */
+    SqlVulnerabilityAssessmentScansClient getSqlVulnerabilityAssessmentScans();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentsSettingsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentsSettingsClient object.
+     */
+    SqlVulnerabilityAssessmentsSettingsClient getSqlVulnerabilityAssessmentsSettings();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentsClient object.
+     */
+    SqlVulnerabilityAssessmentsClient getSqlVulnerabilityAssessments();
+
+    /**
+     * Gets the StartStopManagedInstanceSchedulesClient object to access its operations.
+     *
+     * @return the StartStopManagedInstanceSchedulesClient object.
+     */
+    StartStopManagedInstanceSchedulesClient getStartStopManagedInstanceSchedules();
+
+    /**
      * Gets the SubscriptionUsagesClient object to access its operations.
      *
      * @return the SubscriptionUsagesClient object.
      */
     SubscriptionUsagesClient getSubscriptionUsages();
+
+    /**
+     * Gets the SynapseLinkWorkspacesClient object to access its operations.
+     *
+     * @return the SynapseLinkWorkspacesClient object.
+     */
+    SynapseLinkWorkspacesClient getSynapseLinkWorkspaces();
 
     /**
      * Gets the SyncAgentsClient object to access its operations.

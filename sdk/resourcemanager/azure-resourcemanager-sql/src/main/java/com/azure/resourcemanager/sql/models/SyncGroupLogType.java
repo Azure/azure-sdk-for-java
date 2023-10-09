@@ -23,6 +23,15 @@ public final class SyncGroupLogType extends ExpandableStringEnum<SyncGroupLogTyp
     public static final SyncGroupLogType SUCCESS = fromString("Success");
 
     /**
+     * Creates a new instance of SyncGroupLogType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncGroupLogType() {
+    }
+
+    /**
      * Creates or finds a SyncGroupLogType from its string representation.
      *
      * @param name a name to look for.

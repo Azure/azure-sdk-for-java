@@ -4,13 +4,16 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.DatabaseKey;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** The restorable dropped database's properties. */
-@Immutable
+@Fluent
 public final class RestorableDroppedDatabaseProperties {
     /*
      * The name of the database.
@@ -47,6 +50,13 @@ public final class RestorableDroppedDatabaseProperties {
      */
     @JsonProperty(value = "backupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
     private BackupStorageRedundancy backupStorageRedundancy;
+
+    /*
+     * The resource ids of the user assigned identities to use
+     */
+    @JsonProperty(value = "keys")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, DatabaseKey> keys;
 
     /** Creates an instance of RestorableDroppedDatabaseProperties class. */
     public RestorableDroppedDatabaseProperties() {
@@ -107,10 +117,40 @@ public final class RestorableDroppedDatabaseProperties {
     }
 
     /**
+     * Get the keys property: The resource ids of the user assigned identities to use.
+     *
+     * @return the keys value.
+     */
+    public Map<String, DatabaseKey> keys() {
+        return this.keys;
+    }
+
+    /**
+     * Set the keys property: The resource ids of the user assigned identities to use.
+     *
+     * @param keys the keys value to set.
+     * @return the RestorableDroppedDatabaseProperties object itself.
+     */
+    public RestorableDroppedDatabaseProperties withKeys(Map<String, DatabaseKey> keys) {
+        this.keys = keys;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (keys() != null) {
+            keys()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

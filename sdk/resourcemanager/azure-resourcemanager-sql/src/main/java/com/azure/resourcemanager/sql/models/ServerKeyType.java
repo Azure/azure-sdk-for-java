@@ -17,6 +17,15 @@ public final class ServerKeyType extends ExpandableStringEnum<ServerKeyType> {
     public static final ServerKeyType AZURE_KEY_VAULT = fromString("AzureKeyVault");
 
     /**
+     * Creates a new instance of ServerKeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerKeyType() {
+    }
+
+    /**
      * Creates or finds a ServerKeyType from its string representation.
      *
      * @param name a name to look for.

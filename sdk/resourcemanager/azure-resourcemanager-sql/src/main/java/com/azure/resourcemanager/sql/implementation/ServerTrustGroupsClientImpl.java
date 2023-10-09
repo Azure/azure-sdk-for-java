@@ -66,8 +66,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
     public interface ServerTrustGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/serverTrustGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerTrustGroupListResult>> listByLocation(
@@ -81,8 +80,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/serverTrustGroups/{serverTrustGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups/{serverTrustGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerTrustGroupInner>> get(
@@ -97,8 +95,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/serverTrustGroups/{serverTrustGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups/{serverTrustGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -114,8 +111,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/serverTrustGroups/{serverTrustGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/serverTrustGroups/{serverTrustGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -129,8 +125,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/serverTrustGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverTrustGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerTrustGroupListResult>> listByInstance(
@@ -712,7 +707,8 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerTrustGroupInner>, ServerTrustGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String locationName, String serverTrustGroupName, ServerTrustGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, locationName, serverTrustGroupName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, locationName, serverTrustGroupName, parameters)
             .getSyncPoller();
     }
 
@@ -737,7 +733,8 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
         String serverTrustGroupName,
         ServerTrustGroupInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, locationName, serverTrustGroupName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, locationName, serverTrustGroupName, parameters, context)
             .getSyncPoller();
     }
 
@@ -997,7 +994,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String locationName, String serverTrustGroupName) {
-        return beginDeleteAsync(resourceGroupName, locationName, serverTrustGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, locationName, serverTrustGroupName).getSyncPoller();
     }
 
     /**
@@ -1016,7 +1013,7 @@ public final class ServerTrustGroupsClientImpl implements ServerTrustGroupsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String locationName, String serverTrustGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, locationName, serverTrustGroupName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, locationName, serverTrustGroupName, context).getSyncPoller();
     }
 
     /**

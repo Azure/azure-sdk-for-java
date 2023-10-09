@@ -16,6 +16,12 @@ public final class FailoverGroupReadOnlyEndpoint {
     @JsonProperty(value = "failoverPolicy")
     private ReadOnlyEndpointFailoverPolicy failoverPolicy;
 
+    /*
+     * The target partner server where the read-only endpoint points to.
+     */
+    @JsonProperty(value = "targetServer")
+    private String targetServer;
+
     /** Creates an instance of FailoverGroupReadOnlyEndpoint class. */
     public FailoverGroupReadOnlyEndpoint() {
     }
@@ -37,6 +43,26 @@ public final class FailoverGroupReadOnlyEndpoint {
      */
     public FailoverGroupReadOnlyEndpoint withFailoverPolicy(ReadOnlyEndpointFailoverPolicy failoverPolicy) {
         this.failoverPolicy = failoverPolicy;
+        return this;
+    }
+
+    /**
+     * Get the targetServer property: The target partner server where the read-only endpoint points to.
+     *
+     * @return the targetServer value.
+     */
+    public String targetServer() {
+        return this.targetServer;
+    }
+
+    /**
+     * Set the targetServer property: The target partner server where the read-only endpoint points to.
+     *
+     * @param targetServer the targetServer value to set.
+     * @return the FailoverGroupReadOnlyEndpoint object itself.
+     */
+    public FailoverGroupReadOnlyEndpoint withTargetServer(String targetServer) {
+        this.targetServer = targetServer;
         return this;
     }
 

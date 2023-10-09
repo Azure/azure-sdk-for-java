@@ -68,8 +68,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
     public interface InstanceFailoverGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/instanceFailoverGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InstanceFailoverGroupListResult>> listByLocation(
@@ -83,8 +82,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/instanceFailoverGroups/{failoverGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InstanceFailoverGroupInner>> get(
@@ -99,8 +97,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/instanceFailoverGroups/{failoverGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -116,8 +113,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/instanceFailoverGroups/{failoverGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -131,8 +127,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/instanceFailoverGroups/{failoverGroupName}/failover")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> failover(
@@ -147,8 +142,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/instanceFailoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLoss(
@@ -736,7 +730,9 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
         String locationName,
         String failoverGroupName,
         InstanceFailoverGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, locationName, failoverGroupName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, locationName, failoverGroupName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -760,7 +756,8 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
         String failoverGroupName,
         InstanceFailoverGroupInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, locationName, failoverGroupName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, locationName, failoverGroupName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1026,7 +1023,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String locationName, String failoverGroupName) {
-        return beginDeleteAsync(resourceGroupName, locationName, failoverGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, locationName, failoverGroupName).getSyncPoller();
     }
 
     /**
@@ -1045,7 +1042,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String locationName, String failoverGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, locationName, failoverGroupName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, locationName, failoverGroupName, context).getSyncPoller();
     }
 
     /**
@@ -1300,7 +1297,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginFailover(
         String resourceGroupName, String locationName, String failoverGroupName) {
-        return beginFailoverAsync(resourceGroupName, locationName, failoverGroupName).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, locationName, failoverGroupName).getSyncPoller();
     }
 
     /**
@@ -1319,7 +1316,7 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginFailover(
         String resourceGroupName, String locationName, String failoverGroupName, Context context) {
-        return beginFailoverAsync(resourceGroupName, locationName, failoverGroupName, context).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, locationName, failoverGroupName, context).getSyncPoller();
     }
 
     /**
@@ -1585,7 +1582,9 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner>
         beginForceFailoverAllowDataLoss(String resourceGroupName, String locationName, String failoverGroupName) {
-        return beginForceFailoverAllowDataLossAsync(resourceGroupName, locationName, failoverGroupName).getSyncPoller();
+        return this
+            .beginForceFailoverAllowDataLossAsync(resourceGroupName, locationName, failoverGroupName)
+            .getSyncPoller();
     }
 
     /**
@@ -1606,7 +1605,8 @@ public final class InstanceFailoverGroupsClientImpl implements InstanceFailoverG
     public SyncPoller<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner>
         beginForceFailoverAllowDataLoss(
             String resourceGroupName, String locationName, String failoverGroupName, Context context) {
-        return beginForceFailoverAllowDataLossAsync(resourceGroupName, locationName, failoverGroupName, context)
+        return this
+            .beginForceFailoverAllowDataLossAsync(resourceGroupName, locationName, failoverGroupName, context)
             .getSyncPoller();
     }
 

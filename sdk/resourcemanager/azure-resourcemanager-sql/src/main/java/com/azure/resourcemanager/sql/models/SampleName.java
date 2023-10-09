@@ -20,6 +20,15 @@ public final class SampleName extends ExpandableStringEnum<SampleName> {
     public static final SampleName WIDE_WORLD_IMPORTERS_FULL = fromString("WideWorldImportersFull");
 
     /**
+     * Creates a new instance of SampleName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SampleName() {
+    }
+
+    /**
      * Creates or finds a SampleName from its string representation.
      *
      * @param name a name to look for.

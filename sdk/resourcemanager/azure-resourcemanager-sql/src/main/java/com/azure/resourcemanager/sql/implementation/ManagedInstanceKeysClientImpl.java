@@ -66,8 +66,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
     public interface ManagedInstanceKeysService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/keys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/keys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceKeyListResult>> listByInstance(
@@ -82,8 +81,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/keys/{keyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/keys/{keyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceKeyInner>> get(
@@ -98,8 +96,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/keys/{keyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/keys/{keyName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -115,8 +112,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/keys/{keyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/keys/{keyName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -725,7 +721,9 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, String keyName, ManagedInstanceKeyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, keyName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, keyName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -749,7 +747,8 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
         String keyName,
         ManagedInstanceKeyInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, keyName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, keyName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1009,7 +1008,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String keyName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, keyName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, keyName).getSyncPoller();
     }
 
     /**
@@ -1028,7 +1027,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String keyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, keyName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, keyName, context).getSyncPoller();
     }
 
     /**
