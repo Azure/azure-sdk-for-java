@@ -159,6 +159,9 @@ public final class CallRecordingAsync {
         if (options.getRecordingChannel() != null) {
             request.setRecordingChannelType(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
         }
+        if (options.getPauseOnStart() != null) {
+            request.setPauseOnStart(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
+        }
         if (options.getRecordingStateCallbackUrl() != null) {
             request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUrl());
         }

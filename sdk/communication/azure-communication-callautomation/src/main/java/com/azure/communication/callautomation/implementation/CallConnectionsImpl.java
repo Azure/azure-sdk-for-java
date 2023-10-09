@@ -155,7 +155,7 @@ public final class CallConnectionsImpl {
                 Context context);
 
         @Post("/calling/callConnections/{callConnectionId}/participants:mute")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<MuteParticipantsResponseInternal>> mute(
                 @HostParam("endpoint") String endpoint,
