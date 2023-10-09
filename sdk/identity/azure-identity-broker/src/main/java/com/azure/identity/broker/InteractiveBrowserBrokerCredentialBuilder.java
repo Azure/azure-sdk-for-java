@@ -4,8 +4,13 @@
 package com.azure.identity.broker;
 
 
+import com.azure.identity.InteractiveBrowserCredentialBuilder;
+
 /**
  * stuff
  */
-public class InteractiveBrowserBrokerCredentialBuilder  {
+public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowserCredentialBuilder {
+
+
+
 }
