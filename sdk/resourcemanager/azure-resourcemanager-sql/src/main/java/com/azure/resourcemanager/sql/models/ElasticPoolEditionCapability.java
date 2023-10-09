@@ -30,6 +30,12 @@ public final class ElasticPoolEditionCapability {
     private Boolean zoneRedundant;
 
     /*
+     * Whether or not zone pinning is supported for the edition.
+     */
+    @JsonProperty(value = "zonePinning", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean zonePinning;
+
+    /*
      * The status of the capability.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
@@ -71,6 +77,15 @@ public final class ElasticPoolEditionCapability {
      */
     public Boolean zoneRedundant() {
         return this.zoneRedundant;
+    }
+
+    /**
+     * Get the zonePinning property: Whether or not zone pinning is supported for the edition.
+     *
+     * @return the zonePinning value.
+     */
+    public Boolean zonePinning() {
+        return this.zonePinning;
     }
 
     /**

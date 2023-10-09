@@ -73,8 +73,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     public interface LongTermRetentionManagedInstanceBackupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstanceBackups")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByLocation(
@@ -89,9 +88,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}"
-                + "/longTermRetentionManagedInstanceBackups")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByDatabase(
@@ -108,9 +105,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}"
-                + "/longTermRetentionManagedInstanceBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceLongTermRetentionBackupInner>> get(
@@ -126,9 +121,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}"
-                + "/longTermRetentionManagedInstanceBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -143,8 +136,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}"
-                + "/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionManagedInstanceBackups")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByInstance(
@@ -160,8 +152,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstanceBackups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByResourceGroupLocation(
@@ -177,9 +168,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
-                + "/{databaseName}/longTermRetentionManagedInstanceBackups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByResourceGroupDatabase(
@@ -197,9 +186,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
-                + "/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceLongTermRetentionBackupInner>> getByResourceGroup(
@@ -216,9 +203,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
-                + "/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteByResourceGroup(
@@ -234,9 +219,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}"
-                + "/longTermRetentionManagedInstanceBackups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceLongTermRetentionBackupListResult>> listByResourceGroupInstance(
@@ -1134,7 +1117,7 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String locationName, String managedInstanceName, String databaseName, String backupName) {
-        return beginDeleteAsync(locationName, managedInstanceName, databaseName, backupName).getSyncPoller();
+        return this.beginDeleteAsync(locationName, managedInstanceName, databaseName, backupName).getSyncPoller();
     }
 
     /**
@@ -1153,7 +1136,9 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String locationName, String managedInstanceName, String databaseName, String backupName, Context context) {
-        return beginDeleteAsync(locationName, managedInstanceName, databaseName, backupName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(locationName, managedInstanceName, databaseName, backupName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2491,7 +2476,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         String managedInstanceName,
         String databaseName,
         String backupName) {
-        return beginDeleteByResourceGroupAsync(
+        return this
+            .beginDeleteByResourceGroupAsync(
                 resourceGroupName, locationName, managedInstanceName, databaseName, backupName)
             .getSyncPoller();
     }
@@ -2519,7 +2505,8 @@ public final class LongTermRetentionManagedInstanceBackupsClientImpl
         String databaseName,
         String backupName,
         Context context) {
-        return beginDeleteByResourceGroupAsync(
+        return this
+            .beginDeleteByResourceGroupAsync(
                 resourceGroupName, locationName, managedInstanceName, databaseName, backupName, context)
             .getSyncPoller();
     }

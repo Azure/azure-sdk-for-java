@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceInner;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.HybridSecondaryUsage;
 import com.azure.resourcemanager.sql.models.ManagedInstanceExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLicenseType;
 import com.azure.resourcemanager.sql.models.ManagedInstanceProxyOverride;
@@ -21,7 +21,7 @@ import java.util.UUID;
 /** Samples for ManagedInstances CreateOrUpdate. */
 public final class ManagedInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceCreateMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ManagedInstanceCreateMin.json
      */
     /**
      * Sample code: Create managed instance with minimal properties.
@@ -48,11 +48,11 @@ public final class ManagedInstancesCreateOrUpdateSamples {
                     .withLicenseType(ManagedInstanceLicenseType.LICENSE_INCLUDED)
                     .withVCores(8)
                     .withStorageSizeInGB(1024),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceCreateMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-02-01-preview/examples/ManagedInstanceCreateMax.json
      */
     /**
      * Sample code: Create managed instance with all properties.
@@ -70,13 +70,14 @@ public final class ManagedInstancesCreateOrUpdateSamples {
                 "testinstance",
                 new ManagedInstanceInner()
                     .withLocation("Japan East")
-                    .withTags(mapOf("tagKey1", "TagValue1"))
+                    .withTags(mapOf("tagKey1", "fakeTokenPlaceholder"))
                     .withSku(new Sku().withName("GP_Gen5").withTier("GeneralPurpose"))
                     .withAdministratorLogin("dummylogin")
                     .withAdministratorLoginPassword("fakeTokenPlaceholder")
                     .withSubnetId(
                         "/subscriptions/20D7082A-0FC7-4468-82BD-542694D5042B/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
                     .withLicenseType(ManagedInstanceLicenseType.LICENSE_INCLUDED)
+                    .withHybridSecondaryUsage(HybridSecondaryUsage.PASSIVE)
                     .withVCores(8)
                     .withStorageSizeInGB(1024)
                     .withCollation("SQL_Latin1_General_CP1_CI_AS")
@@ -99,7 +100,7 @@ public final class ManagedInstancesCreateOrUpdateSamples {
                             .withTenantId(UUID.fromString("00000011-1111-2222-2222-123456789111"))
                             .withAzureADOnlyAuthentication(true))
                     .withServicePrincipal(new ServicePrincipal().withType(ServicePrincipalType.SYSTEM_ASSIGNED)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

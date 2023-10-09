@@ -29,6 +29,15 @@ public final class Status extends ExpandableStringEnum<Status> {
     public static final Status CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of Status value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Status() {
+    }
+
+    /**
      * Creates or finds a Status from its string representation.
      *
      * @param name a name to look for.

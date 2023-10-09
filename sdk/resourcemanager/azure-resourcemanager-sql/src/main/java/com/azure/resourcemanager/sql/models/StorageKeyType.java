@@ -17,6 +17,15 @@ public final class StorageKeyType extends ExpandableStringEnum<StorageKeyType> {
     public static final StorageKeyType STORAGE_ACCESS_KEY = fromString("StorageAccessKey");
 
     /**
+     * Creates a new instance of StorageKeyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageKeyType() {
+    }
+
+    /**
      * Creates or finds a StorageKeyType from its string representation.
      *
      * @param name a name to look for.

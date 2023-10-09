@@ -87,8 +87,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers"
-                + "/{deletedServerName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers/{deletedServerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeletedServerInner>> get(
@@ -102,8 +101,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers"
-                + "/{deletedServerName}/recover")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/deletedServers/{deletedServerName}/recover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> recover(
@@ -732,7 +730,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeletedServerInner>, DeletedServerInner> beginRecover(
         String locationName, String deletedServerName) {
-        return beginRecoverAsync(locationName, deletedServerName).getSyncPoller();
+        return this.beginRecoverAsync(locationName, deletedServerName).getSyncPoller();
     }
 
     /**
@@ -749,7 +747,7 @@ public final class DeletedServersClientImpl implements DeletedServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeletedServerInner>, DeletedServerInner> beginRecover(
         String locationName, String deletedServerName, Context context) {
-        return beginRecoverAsync(locationName, deletedServerName, context).getSyncPoller();
+        return this.beginRecoverAsync(locationName, deletedServerName, context).getSyncPoller();
     }
 
     /**

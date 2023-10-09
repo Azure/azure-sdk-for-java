@@ -39,6 +39,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsLi
 import com.azure.resourcemanager.sql.fluent.ServersClient;
 import com.azure.resourcemanager.sql.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.sql.fluent.models.ImportExportOperationResultInner;
+import com.azure.resourcemanager.sql.fluent.models.RefreshExternalGovernanceStatusOperationResultInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.sql.models.ImportNewDatabaseDefinition;
@@ -116,8 +117,7 @@ public final class ServersClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerInner>> getByResourceGroup(
@@ -132,8 +132,7 @@ public final class ServersClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -148,8 +147,7 @@ public final class ServersClientImpl
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -162,8 +160,7 @@ public final class ServersClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -178,8 +175,7 @@ public final class ServersClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/import")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/import")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> importDatabase(
@@ -189,6 +185,20 @@ public final class ServersClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ImportNewDatabaseDefinition parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/refreshExternalGovernanceStatus")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> refreshStatus(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1036,7 +1046,7 @@ public final class ServersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, ServerInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
     /**
@@ -1055,7 +1065,7 @@ public final class ServersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, ServerInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1280,7 +1290,7 @@ public final class ServersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName) {
-        return beginDeleteAsync(resourceGroupName, serverName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName).getSyncPoller();
     }
 
     /**
@@ -1298,7 +1308,7 @@ public final class ServersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, context).getSyncPoller();
     }
 
     /**
@@ -1539,7 +1549,7 @@ public final class ServersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
         String resourceGroupName, String serverName, ServerUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
     /**
@@ -1558,7 +1568,7 @@ public final class ServersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
         String resourceGroupName, String serverName, ServerUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1820,7 +1830,7 @@ public final class ServersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
         beginImportDatabase(String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters) {
-        return beginImportDatabaseAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        return this.beginImportDatabaseAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
     /**
@@ -1840,7 +1850,7 @@ public final class ServersClientImpl
     public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
         beginImportDatabase(
             String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters, Context context) {
-        return beginImportDatabaseAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        return this.beginImportDatabaseAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1919,6 +1929,275 @@ public final class ServersClientImpl
     public ImportExportOperationResultInner importDatabase(
         String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters, Context context) {
         return importDatabaseAsync(resourceGroupName, serverName, parameters, context).block();
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(
+        String resourceGroupName, String serverName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .refreshStatus(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            serverName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(
+        String resourceGroupName, String serverName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .refreshStatus(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                serverName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<
+            PollResult<RefreshExternalGovernanceStatusOperationResultInner>,
+            RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatusAsync(String resourceGroupName, String serverName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = refreshStatusWithResponseAsync(resourceGroupName, serverName);
+        return this
+            .client
+            .<RefreshExternalGovernanceStatusOperationResultInner, RefreshExternalGovernanceStatusOperationResultInner>
+                getLroResult(
+                    mono,
+                    this.client.getHttpPipeline(),
+                    RefreshExternalGovernanceStatusOperationResultInner.class,
+                    RefreshExternalGovernanceStatusOperationResultInner.class,
+                    this.client.getContext());
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<RefreshExternalGovernanceStatusOperationResultInner>,
+            RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatusAsync(String resourceGroupName, String serverName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = refreshStatusWithResponseAsync(resourceGroupName, serverName, context);
+        return this
+            .client
+            .<RefreshExternalGovernanceStatusOperationResultInner, RefreshExternalGovernanceStatusOperationResultInner>
+                getLroResult(
+                    mono,
+                    this.client.getHttpPipeline(),
+                    RefreshExternalGovernanceStatusOperationResultInner.class,
+                    RefreshExternalGovernanceStatusOperationResultInner.class,
+                    context);
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<RefreshExternalGovernanceStatusOperationResultInner>,
+            RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatus(String resourceGroupName, String serverName) {
+        return this.beginRefreshStatusAsync(resourceGroupName, serverName).getSyncPoller();
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<RefreshExternalGovernanceStatusOperationResultInner>,
+            RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatus(String resourceGroupName, String serverName, Context context) {
+        return this.beginRefreshStatusAsync(resourceGroupName, serverName, context).getSyncPoller();
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RefreshExternalGovernanceStatusOperationResultInner> refreshStatusAsync(
+        String resourceGroupName, String serverName) {
+        return beginRefreshStatusAsync(resourceGroupName, serverName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RefreshExternalGovernanceStatusOperationResultInner> refreshStatusAsync(
+        String resourceGroupName, String serverName, Context context) {
+        return beginRefreshStatusAsync(resourceGroupName, serverName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RefreshExternalGovernanceStatusOperationResultInner refreshStatus(
+        String resourceGroupName, String serverName) {
+        return refreshStatusAsync(resourceGroupName, serverName).block();
+    }
+
+    /**
+     * Refresh external governance enablement status.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RefreshExternalGovernanceStatusOperationResultInner refreshStatus(
+        String resourceGroupName, String serverName, Context context) {
+        return refreshStatusAsync(resourceGroupName, serverName, context).block();
     }
 
     /**

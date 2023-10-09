@@ -68,8 +68,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
     public interface JobAgentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobAgentListResult>> listByServer(
@@ -83,8 +82,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobAgentInner>> get(
@@ -99,8 +97,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -116,8 +113,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -131,8 +127,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -693,7 +688,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters).getSyncPoller();
     }
 
     /**
@@ -713,7 +708,8 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters, context)
             .getSyncPoller();
     }
 
@@ -962,7 +958,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String jobAgentName) {
-        return beginDeleteAsync(resourceGroupName, serverName, jobAgentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, jobAgentName).getSyncPoller();
     }
 
     /**
@@ -981,7 +977,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String jobAgentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, jobAgentName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, jobAgentName, context).getSyncPoller();
     }
 
     /**
@@ -1246,7 +1242,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginUpdate(
         String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters).getSyncPoller();
     }
 
     /**
@@ -1266,7 +1262,7 @@ public final class JobAgentsClientImpl implements JobAgentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginUpdate(
         String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serverName, jobAgentName, parameters, context).getSyncPoller();
     }
 
     /**

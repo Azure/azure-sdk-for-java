@@ -29,6 +29,15 @@ public final class ManagementOperationState extends ExpandableStringEnum<Managem
     public static final ManagementOperationState CANCELLED = fromString("Cancelled");
 
     /**
+     * Creates a new instance of ManagementOperationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagementOperationState() {
+    }
+
+    /**
      * Creates or finds a ManagementOperationState from its string representation.
      *
      * @param name a name to look for.

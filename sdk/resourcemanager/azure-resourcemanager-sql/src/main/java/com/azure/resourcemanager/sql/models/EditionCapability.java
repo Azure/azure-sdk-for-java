@@ -42,6 +42,12 @@ public final class EditionCapability {
     private List<StorageCapability> supportedStorageCapabilities;
 
     /*
+     * Whether or not zone pinning is supported for the edition.
+     */
+    @JsonProperty(value = "zonePinning", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean zonePinning;
+
+    /*
      * The status of the capability.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
@@ -100,6 +106,15 @@ public final class EditionCapability {
      */
     public List<StorageCapability> supportedStorageCapabilities() {
         return this.supportedStorageCapabilities;
+    }
+
+    /**
+     * Get the zonePinning property: Whether or not zone pinning is supported for the edition.
+     *
+     * @return the zonePinning value.
+     */
+    public Boolean zonePinning() {
+        return this.zonePinning;
     }
 
     /**

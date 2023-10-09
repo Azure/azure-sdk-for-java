@@ -66,8 +66,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
     public interface WorkloadGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadGroupListResult>> listByDatabase(
@@ -82,8 +81,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadGroupInner>> get(
@@ -99,8 +97,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -117,8 +114,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -751,7 +747,8 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
         String databaseName,
         String workloadGroupName,
         WorkloadGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, workloadGroupName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, workloadGroupName, parameters)
             .getSyncPoller();
     }
 
@@ -778,7 +775,8 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
         String workloadGroupName,
         WorkloadGroupInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serverName, databaseName, workloadGroupName, parameters, context)
             .getSyncPoller();
     }
@@ -1068,7 +1066,7 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName).getSyncPoller();
     }
 
     /**
@@ -1088,7 +1086,8 @@ public final class WorkloadGroupsClientImpl implements WorkloadGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, context)
             .getSyncPoller();
     }
 

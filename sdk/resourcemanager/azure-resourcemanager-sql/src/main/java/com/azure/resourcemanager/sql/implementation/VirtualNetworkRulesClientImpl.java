@@ -66,8 +66,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
     public interface VirtualNetworkRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/virtualNetworkRules")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/virtualNetworkRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualNetworkRuleListResult>> listByServer(
@@ -81,8 +80,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualNetworkRuleInner>> get(
@@ -97,8 +95,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -114,8 +111,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/virtualNetworkRules/{virtualNetworkRuleName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -706,7 +702,8 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
         String serverName,
         String virtualNetworkRuleName,
         VirtualNetworkRuleInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, virtualNetworkRuleName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, virtualNetworkRuleName, parameters)
             .getSyncPoller();
     }
 
@@ -731,7 +728,8 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
         String virtualNetworkRuleName,
         VirtualNetworkRuleInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, virtualNetworkRuleName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, virtualNetworkRuleName, parameters, context)
             .getSyncPoller();
     }
 
@@ -999,7 +997,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String virtualNetworkRuleName) {
-        return beginDeleteAsync(resourceGroupName, serverName, virtualNetworkRuleName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, virtualNetworkRuleName).getSyncPoller();
     }
 
     /**
@@ -1018,7 +1016,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String virtualNetworkRuleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, virtualNetworkRuleName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, virtualNetworkRuleName, context).getSyncPoller();
     }
 
     /**

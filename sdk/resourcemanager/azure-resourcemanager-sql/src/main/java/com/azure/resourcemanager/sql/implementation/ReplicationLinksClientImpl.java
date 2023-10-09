@@ -65,8 +65,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
     public interface ReplicationLinksService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/replicationLinks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicationLinkListResult>> listByDatabase(
@@ -81,8 +80,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicationLinkInner>> get(
@@ -98,8 +96,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -114,8 +111,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> failover(
@@ -131,8 +127,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> failoverAllowDataLoss(
@@ -148,8 +143,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/replicationLinks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/replicationLinks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicationLinkListResult>> listByServer(
@@ -737,7 +731,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
     }
 
     /**
@@ -757,7 +751,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, linkId, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, databaseName, linkId, context).getSyncPoller();
     }
 
     /**
@@ -1024,7 +1018,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginFailover(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
     }
 
     /**
@@ -1044,7 +1038,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginFailover(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId, context).getSyncPoller();
+        return this.beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId, context).getSyncPoller();
     }
 
     /**
@@ -1315,7 +1309,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
-        return beginFailoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
+        return this
+            .beginFailoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId)
+            .getSyncPoller();
     }
 
     /**
@@ -1335,7 +1331,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicationLinkInner>, ReplicationLinkInner> beginFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
-        return beginFailoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId, context)
+        return this
+            .beginFailoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId, context)
             .getSyncPoller();
     }
 

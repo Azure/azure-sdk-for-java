@@ -66,6 +66,8 @@ public interface RestorableDroppedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -73,7 +75,7 @@ public interface RestorableDroppedDatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RestorableDroppedDatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String restorableDroppedDatabaseId);
+        String resourceGroupName, String serverName, String restorableDroppedDatabaseId, String expand, String filter);
 
     /**
      * Gets a restorable dropped database.
@@ -98,6 +100,8 @@ public interface RestorableDroppedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -106,7 +110,12 @@ public interface RestorableDroppedDatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RestorableDroppedDatabaseInner> getWithResponse(
-        String resourceGroupName, String serverName, String restorableDroppedDatabaseId, Context context);
+        String resourceGroupName,
+        String serverName,
+        String restorableDroppedDatabaseId,
+        String expand,
+        String filter,
+        Context context);
 
     /**
      * Gets a restorable dropped database.

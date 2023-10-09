@@ -17,6 +17,15 @@ public final class SyncConflictResolutionPolicy extends ExpandableStringEnum<Syn
     public static final SyncConflictResolutionPolicy MEMBER_WIN = fromString("MemberWin");
 
     /**
+     * Creates a new instance of SyncConflictResolutionPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SyncConflictResolutionPolicy() {
+    }
+
+    /**
      * Creates or finds a SyncConflictResolutionPolicy from its string representation.
      *
      * @param name a name to look for.

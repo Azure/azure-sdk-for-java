@@ -72,8 +72,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     public interface ManagedDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedDatabaseListResult>> listByInstance(
@@ -87,8 +86,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedDatabaseInner>> get(
@@ -103,8 +101,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -120,8 +117,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -135,8 +131,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -152,8 +147,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/cancelMove")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/cancelMove")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> cancelMove(
@@ -168,8 +162,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/completeMove")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/completeMove")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> completeMove(
@@ -184,8 +177,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/completeRestore")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/completeRestore")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> completeRestore(
@@ -200,8 +192,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/startMove")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/startMove")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> startMove(
@@ -216,8 +207,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/inaccessibleManagedDatabases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/inaccessibleManagedDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedDatabaseListResult>> listInaccessibleByInstance(
@@ -801,7 +791,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
             .getSyncPoller();
     }
 
@@ -826,7 +817,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         String databaseName,
         ManagedDatabaseInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1086,7 +1078,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String databaseName) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, databaseName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, databaseName).getSyncPoller();
     }
 
     /**
@@ -1105,7 +1097,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
-        return beginDeleteAsync(resourceGroupName, managedInstanceName, databaseName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, managedInstanceName, databaseName, context).getSyncPoller();
     }
 
     /**
@@ -1381,7 +1373,7 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdate(
         String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -1405,7 +1397,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         String databaseName,
         ManagedDatabaseUpdate parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1699,7 +1692,9 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         String managedInstanceName,
         String databaseName,
         ManagedDatabaseMoveDefinition parameters) {
-        return beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).getSyncPoller();
+        return this
+            .beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1723,7 +1718,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         String databaseName,
         ManagedDatabaseMoveDefinition parameters,
         Context context) {
-        return beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+        return this
+            .beginCancelMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2021,7 +2017,9 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         String managedInstanceName,
         String databaseName,
         ManagedDatabaseMoveDefinition parameters) {
-        return beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).getSyncPoller();
+        return this
+            .beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -2045,7 +2043,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         String databaseName,
         ManagedDatabaseMoveDefinition parameters,
         Context context) {
-        return beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+        return this
+            .beginCompleteMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2343,7 +2342,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         String managedInstanceName,
         String databaseName,
         CompleteDatabaseRestoreDefinition parameters) {
-        return beginCompleteRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
+        return this
+            .beginCompleteRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
             .getSyncPoller();
     }
 
@@ -2368,7 +2368,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         String databaseName,
         CompleteDatabaseRestoreDefinition parameters,
         Context context) {
-        return beginCompleteRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+        return this
+            .beginCompleteRestoreAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2666,7 +2667,9 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         String managedInstanceName,
         String databaseName,
         ManagedDatabaseStartMoveDefinition parameters) {
-        return beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters).getSyncPoller();
+        return this
+            .beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -2690,7 +2693,8 @@ public final class ManagedDatabasesClientImpl implements ManagedDatabasesClient 
         String databaseName,
         ManagedDatabaseStartMoveDefinition parameters,
         Context context) {
-        return beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
+        return this
+            .beginStartMoveAsync(resourceGroupName, managedInstanceName, databaseName, parameters, context)
             .getSyncPoller();
     }
 

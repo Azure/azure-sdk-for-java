@@ -24,6 +24,12 @@ public final class ManagedInstanceFamilyCapability {
     private String sku;
 
     /*
+     * Whether or not zone redundancy is supported for the family.
+     */
+    @JsonProperty(value = "zoneRedundant", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean zoneRedundant;
+
+    /*
      * List of supported license types.
      */
     @JsonProperty(value = "supportedLicenseTypes", access = JsonProperty.Access.WRITE_ONLY)
@@ -67,6 +73,15 @@ public final class ManagedInstanceFamilyCapability {
      */
     public String sku() {
         return this.sku;
+    }
+
+    /**
+     * Get the zoneRedundant property: Whether or not zone redundancy is supported for the family.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.zoneRedundant;
     }
 
     /**

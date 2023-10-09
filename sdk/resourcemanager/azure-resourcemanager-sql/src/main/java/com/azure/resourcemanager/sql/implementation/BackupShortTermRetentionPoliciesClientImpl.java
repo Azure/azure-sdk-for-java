@@ -73,8 +73,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
     public interface BackupShortTermRetentionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupShortTermRetentionPolicyListResult>> listByDatabase(
@@ -89,8 +88,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupShortTermRetentionPolicyInner>> get(
@@ -106,8 +104,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -124,8 +121,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -773,7 +769,8 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             String databaseName,
             ShortTermRetentionPolicyName policyName,
             BackupShortTermRetentionPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
             .getSyncPoller();
     }
 
@@ -801,7 +798,8 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
             ShortTermRetentionPolicyName policyName,
             BackupShortTermRetentionPolicyInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1141,7 +1139,9 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
         String databaseName,
         ShortTermRetentionPolicyName policyName,
         BackupShortTermRetentionPolicyInner parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1167,7 +1167,8 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
         ShortTermRetentionPolicyName policyName,
         BackupShortTermRetentionPolicyInner parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, serverName, databaseName, policyName, parameters, context)
             .getSyncPoller();
     }
 

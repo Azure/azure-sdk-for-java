@@ -66,8 +66,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
     public interface ServerKeysService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/keys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/keys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerKeyListResult>> listByServer(
@@ -81,8 +80,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/keys/{keyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/keys/{keyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerKeyInner>> get(
@@ -97,8 +95,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/keys/{keyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/keys/{keyName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -114,8 +111,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/keys/{keyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/keys/{keyName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -687,7 +683,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String keyName, ServerKeyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, keyName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, keyName, parameters).getSyncPoller();
     }
 
     /**
@@ -710,7 +706,9 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String keyName, ServerKeyInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, keyName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, keyName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -969,7 +967,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String keyName) {
-        return beginDeleteAsync(resourceGroupName, serverName, keyName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, keyName).getSyncPoller();
     }
 
     /**
@@ -988,7 +986,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String keyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, keyName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, keyName, context).getSyncPoller();
     }
 
     /**

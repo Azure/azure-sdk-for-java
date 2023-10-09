@@ -27,6 +27,12 @@ public final class ReplicationLinkProperties {
     private String partnerDatabase;
 
     /*
+     * Resource partner database Id.
+     */
+    @JsonProperty(value = "partnerDatabaseId", access = JsonProperty.Access.WRITE_ONLY)
+    private String partnerDatabaseId;
+
+    /*
      * Resource partner location.
      */
     @JsonProperty(value = "partnerLocation", access = JsonProperty.Access.WRITE_ONLY)
@@ -100,6 +106,15 @@ public final class ReplicationLinkProperties {
      */
     public String partnerDatabase() {
         return this.partnerDatabase;
+    }
+
+    /**
+     * Get the partnerDatabaseId property: Resource partner database Id.
+     *
+     * @return the partnerDatabaseId value.
+     */
+    public String partnerDatabaseId() {
+        return this.partnerDatabaseId;
     }
 
     /**

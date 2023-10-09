@@ -36,6 +36,60 @@ public final class ManagedInstanceVcoresCapability {
     private List<MaxSizeRangeCapability> supportedStorageSizes;
 
     /*
+     * Included storage IOps.
+     */
+    @JsonProperty(value = "includedStorageIOps", access = JsonProperty.Access.WRITE_ONLY)
+    private Long includedStorageIOps;
+
+    /*
+     * Storage IOps ranges.
+     */
+    @JsonProperty(value = "supportedStorageIOps", access = JsonProperty.Access.WRITE_ONLY)
+    private MaxLimitRangeCapability supportedStorageIOps;
+
+    /*
+     * Min IOps override factor per selected storage GB.
+     */
+    @JsonProperty(value = "iopsMinValueOverrideFactorPerSelectedStorageGB", access = JsonProperty.Access.WRITE_ONLY)
+    private Double iopsMinValueOverrideFactorPerSelectedStorageGB;
+
+    /*
+     * Included IOps override factor per selected storage GB.
+     */
+    @JsonProperty(
+        value = "iopsIncludedValueOverrideFactorPerSelectedStorageGB",
+        access = JsonProperty.Access.WRITE_ONLY)
+    private Double iopsIncludedValueOverrideFactorPerSelectedStorageGB;
+
+    /*
+     * Included storage throughput MBps.
+     */
+    @JsonProperty(value = "includedStorageThroughputMBps", access = JsonProperty.Access.WRITE_ONLY)
+    private Long includedStorageThroughputMBps;
+
+    /*
+     * Storage throughput MBps ranges.
+     */
+    @JsonProperty(value = "supportedStorageThroughputMBps", access = JsonProperty.Access.WRITE_ONLY)
+    private MaxLimitRangeCapability supportedStorageThroughputMBps;
+
+    /*
+     * Min throughput MBps override factor per selected storage GB.
+     */
+    @JsonProperty(
+        value = "throughputMBpsMinValueOverrideFactorPerSelectedStorageGB",
+        access = JsonProperty.Access.WRITE_ONLY)
+    private Double throughputMBpsMinValueOverrideFactorPerSelectedStorageGB;
+
+    /*
+     * Included throughput MBps override factor per selected storage GB.
+     */
+    @JsonProperty(
+        value = "throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB",
+        access = JsonProperty.Access.WRITE_ONLY)
+    private Double throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB;
+
+    /*
      * True if this service objective is supported for managed instances in an instance pool.
      */
     @JsonProperty(value = "instancePoolSupported", access = JsonProperty.Access.WRITE_ONLY)
@@ -103,6 +157,82 @@ public final class ManagedInstanceVcoresCapability {
      */
     public List<MaxSizeRangeCapability> supportedStorageSizes() {
         return this.supportedStorageSizes;
+    }
+
+    /**
+     * Get the includedStorageIOps property: Included storage IOps.
+     *
+     * @return the includedStorageIOps value.
+     */
+    public Long includedStorageIOps() {
+        return this.includedStorageIOps;
+    }
+
+    /**
+     * Get the supportedStorageIOps property: Storage IOps ranges.
+     *
+     * @return the supportedStorageIOps value.
+     */
+    public MaxLimitRangeCapability supportedStorageIOps() {
+        return this.supportedStorageIOps;
+    }
+
+    /**
+     * Get the iopsMinValueOverrideFactorPerSelectedStorageGB property: Min IOps override factor per selected storage
+     * GB.
+     *
+     * @return the iopsMinValueOverrideFactorPerSelectedStorageGB value.
+     */
+    public Double iopsMinValueOverrideFactorPerSelectedStorageGB() {
+        return this.iopsMinValueOverrideFactorPerSelectedStorageGB;
+    }
+
+    /**
+     * Get the iopsIncludedValueOverrideFactorPerSelectedStorageGB property: Included IOps override factor per selected
+     * storage GB.
+     *
+     * @return the iopsIncludedValueOverrideFactorPerSelectedStorageGB value.
+     */
+    public Double iopsIncludedValueOverrideFactorPerSelectedStorageGB() {
+        return this.iopsIncludedValueOverrideFactorPerSelectedStorageGB;
+    }
+
+    /**
+     * Get the includedStorageThroughputMBps property: Included storage throughput MBps.
+     *
+     * @return the includedStorageThroughputMBps value.
+     */
+    public Long includedStorageThroughputMBps() {
+        return this.includedStorageThroughputMBps;
+    }
+
+    /**
+     * Get the supportedStorageThroughputMBps property: Storage throughput MBps ranges.
+     *
+     * @return the supportedStorageThroughputMBps value.
+     */
+    public MaxLimitRangeCapability supportedStorageThroughputMBps() {
+        return this.supportedStorageThroughputMBps;
+    }
+
+    /**
+     * Get the throughputMBpsMinValueOverrideFactorPerSelectedStorageGB property: Min throughput MBps override factor
+     * per selected storage GB.
+     *
+     * @return the throughputMBpsMinValueOverrideFactorPerSelectedStorageGB value.
+     */
+    public Double throughputMBpsMinValueOverrideFactorPerSelectedStorageGB() {
+        return this.throughputMBpsMinValueOverrideFactorPerSelectedStorageGB;
+    }
+
+    /**
+     * Get the throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB property: Included throughput MBps override
+     * factor per selected storage GB.
+     *
+     * @return the throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB value.
+     */
+    public Double throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB() {
+        return this.throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB;
     }
 
     /**
@@ -174,6 +304,12 @@ public final class ManagedInstanceVcoresCapability {
         }
         if (supportedStorageSizes() != null) {
             supportedStorageSizes().forEach(e -> e.validate());
+        }
+        if (supportedStorageIOps() != null) {
+            supportedStorageIOps().validate();
+        }
+        if (supportedStorageThroughputMBps() != null) {
+            supportedStorageThroughputMBps().validate();
         }
         if (supportedMaintenanceConfigurations() != null) {
             supportedMaintenanceConfigurations().forEach(e -> e.validate());

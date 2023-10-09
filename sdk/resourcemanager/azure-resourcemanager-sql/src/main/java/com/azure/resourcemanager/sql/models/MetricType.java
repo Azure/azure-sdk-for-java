@@ -26,6 +26,15 @@ public final class MetricType extends ExpandableStringEnum<MetricType> {
     public static final MetricType DTU = fromString("dtu");
 
     /**
+     * Creates a new instance of MetricType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricType() {
+    }
+
+    /**
      * Creates or finds a MetricType from its string representation.
      *
      * @param name a name to look for.

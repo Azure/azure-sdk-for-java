@@ -87,8 +87,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncGroupListResult>> listByDatabase(
@@ -103,8 +102,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncGroupInner>> get(
@@ -120,8 +118,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -138,8 +135,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -154,8 +150,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -172,8 +167,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/cancelSync")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/cancelSync")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancelSync(
@@ -188,8 +182,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/hubSchemas")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/hubSchemas")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncFullSchemaPropertiesListResult>> listHubSchemas(
@@ -205,8 +198,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/logs")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/logs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncGroupLogListResult>> listLogs(
@@ -226,8 +218,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/refreshHubSchema")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/refreshHubSchema")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> refreshHubSchema(
@@ -242,8 +233,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/triggerSync")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/triggerSync")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> triggerSync(
@@ -1062,7 +1052,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
         String databaseName,
         String syncGroupName,
         SyncGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters)
             .getSyncPoller();
     }
 
@@ -1089,7 +1080,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
         String syncGroupName,
         SyncGroupInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1375,7 +1367,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName).getSyncPoller();
     }
 
     /**
@@ -1395,7 +1387,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1702,7 +1696,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
         String databaseName,
         String syncGroupName,
         SyncGroupInner parameters) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1728,7 +1724,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
         String syncGroupName,
         SyncGroupInner parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, serverName, databaseName, syncGroupName, parameters, context)
             .getSyncPoller();
     }
 
@@ -2791,7 +2788,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
-        return beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName).getSyncPoller();
+        return this
+            .beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName)
+            .getSyncPoller();
     }
 
     /**
@@ -2811,7 +2810,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
-        return beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
+        return this
+            .beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
             .getSyncPoller();
     }
 

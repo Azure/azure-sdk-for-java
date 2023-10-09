@@ -75,8 +75,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
     public interface ManagedBackupShortTermRetentionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedBackupShortTermRetentionPolicyListResult>> listByDatabase(
@@ -91,9 +90,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies"
-                + "/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> get(
@@ -109,9 +106,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies"
-                + "/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -128,9 +123,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies"
-                + "/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -798,7 +791,8 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             String databaseName,
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters)
             .getSyncPoller();
     }
 
@@ -827,7 +821,8 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, managedInstanceName, databaseName, policyName, parameters, context)
             .getSyncPoller();
     }
@@ -1178,7 +1173,8 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             String databaseName,
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters) {
-        return beginUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters)
             .getSyncPoller();
     }
 
@@ -1207,7 +1203,8 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
             ManagedShortTermRetentionPolicyName policyName,
             ManagedBackupShortTermRetentionPolicyInner parameters,
             Context context) {
-        return beginUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, managedInstanceName, databaseName, policyName, parameters, context)
             .getSyncPoller();
     }
 

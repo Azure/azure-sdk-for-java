@@ -18,6 +18,15 @@ public final class SqlAgentConfigurationPropertiesState
     public static final SqlAgentConfigurationPropertiesState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of SqlAgentConfigurationPropertiesState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlAgentConfigurationPropertiesState() {
+    }
+
+    /**
      * Creates or finds a SqlAgentConfigurationPropertiesState from its string representation.
      *
      * @param name a name to look for.

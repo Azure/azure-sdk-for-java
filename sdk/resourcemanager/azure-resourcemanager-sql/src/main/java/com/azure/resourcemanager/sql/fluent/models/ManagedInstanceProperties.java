@@ -6,12 +6,16 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
+import com.azure.resourcemanager.sql.models.FreemiumType;
+import com.azure.resourcemanager.sql.models.HybridSecondaryUsage;
+import com.azure.resourcemanager.sql.models.HybridSecondaryUsageDetected;
 import com.azure.resourcemanager.sql.models.ManagedInstanceExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLicenseType;
 import com.azure.resourcemanager.sql.models.ManagedInstancePecProperty;
-import com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState;
 import com.azure.resourcemanager.sql.models.ManagedInstanceProxyOverride;
 import com.azure.resourcemanager.sql.models.ManagedServerCreateMode;
+import com.azure.resourcemanager.sql.models.ProvisioningState;
 import com.azure.resourcemanager.sql.models.ServicePrincipal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -21,10 +25,10 @@ import java.util.List;
 @Fluent
 public final class ManagedInstanceProperties {
     /*
-     * The provisioningState property.
+     * Provisioning state of managed instance.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ManagedInstancePropertiesProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Specifies the mode of database creation.
@@ -42,6 +46,12 @@ public final class ManagedInstanceProperties {
      */
     @JsonProperty(value = "fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
     private String fullyQualifiedDomainName;
+
+    /*
+     * Whether or not this is a GPv2 variant of General Purpose edition.
+     */
+    @JsonProperty(value = "isGeneralPurposeV2")
+    private Boolean isGeneralPurposeV2;
 
     /*
      * Administrator username for the managed instance. Can only be specified when the managed instance is being
@@ -76,6 +86,20 @@ public final class ManagedInstanceProperties {
     private ManagedInstanceLicenseType licenseType;
 
     /*
+     * Hybrid secondary usage. Possible values are 'Active' (default value) and 'Passive' (customer uses the secondary
+     * as Passive DR).
+     */
+    @JsonProperty(value = "hybridSecondaryUsage")
+    private HybridSecondaryUsage hybridSecondaryUsage;
+
+    /*
+     * Hybrid secondary usage detected. Possible values are 'Active' (customer does not meet the requirements to use
+     * the secondary as Passive DR) and 'Passive' (customer meets the requirements to use the secondary as Passive DR).
+     */
+    @JsonProperty(value = "hybridSecondaryUsageDetected", access = JsonProperty.Access.WRITE_ONLY)
+    private HybridSecondaryUsageDetected hybridSecondaryUsageDetected;
+
+    /*
      * The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
      */
     @JsonProperty(value = "vCores")
@@ -87,6 +111,20 @@ public final class ManagedInstanceProperties {
      */
     @JsonProperty(value = "storageSizeInGB")
     private Integer storageSizeInGB;
+
+    /*
+     * Storage IOps. Minimum value: 120. Maximum value: 120000. Increments of 1 IOps allowed only. Maximum value
+     * depends on the selected hardware family and number of vCores.
+     */
+    @JsonProperty(value = "storageIOps")
+    private Integer storageIOps;
+
+    /*
+     * Storage throughput in MBps. Minimum value: 25. Maximum value: 4000. Increments of 1 MBps allowed only. Maximum
+     * value depends on the selected hardware family and number of vCores.
+     */
+    @JsonProperty(value = "storageThroughputMBps")
+    private Integer storageThroughputMBps;
 
     /*
      * Collation of the managed instance.
@@ -201,7 +239,9 @@ public final class ManagedInstanceProperties {
     private String keyId;
 
     /*
-     * The Azure Active Directory administrator of the server.
+     * The Azure Active Directory administrator of the instance. This can only be used at instance create time. If used
+     * for instance update, it will be ignored or it will result in an error. For updates individual APIs will need to
+     * be used.
      */
     @JsonProperty(value = "administrators")
     private ManagedInstanceExternalAdministrator administrators;
@@ -212,16 +252,40 @@ public final class ManagedInstanceProperties {
     @JsonProperty(value = "servicePrincipal")
     private ServicePrincipal servicePrincipal;
 
+    /*
+     * Virtual cluster resource id for the Managed Instance.
+     */
+    @JsonProperty(value = "virtualClusterId", access = JsonProperty.Access.WRITE_ONLY)
+    private String virtualClusterId;
+
+    /*
+     * Status of external governance.
+     */
+    @JsonProperty(value = "externalGovernanceStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private ExternalGovernanceStatus externalGovernanceStatus;
+
+    /*
+     * Weather or not Managed Instance is freemium.
+     */
+    @JsonProperty(value = "pricingModel")
+    private FreemiumType pricingModel;
+
+    /*
+     * Specifies the point in time (ISO8601 format) of the Managed Instance creation.
+     */
+    @JsonProperty(value = "createTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime createTime;
+
     /** Creates an instance of ManagedInstanceProperties class. */
     public ManagedInstanceProperties() {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: Provisioning state of managed instance.
      *
      * @return the provisioningState value.
      */
-    public ManagedInstancePropertiesProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -262,6 +326,26 @@ public final class ManagedInstanceProperties {
      */
     public String fullyQualifiedDomainName() {
         return this.fullyQualifiedDomainName;
+    }
+
+    /**
+     * Get the isGeneralPurposeV2 property: Whether or not this is a GPv2 variant of General Purpose edition.
+     *
+     * @return the isGeneralPurposeV2 value.
+     */
+    public Boolean isGeneralPurposeV2() {
+        return this.isGeneralPurposeV2;
+    }
+
+    /**
+     * Set the isGeneralPurposeV2 property: Whether or not this is a GPv2 variant of General Purpose edition.
+     *
+     * @param isGeneralPurposeV2 the isGeneralPurposeV2 value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withIsGeneralPurposeV2(Boolean isGeneralPurposeV2) {
+        this.isGeneralPurposeV2 = isGeneralPurposeV2;
+        return this;
     }
 
     /**
@@ -360,6 +444,39 @@ public final class ManagedInstanceProperties {
     }
 
     /**
+     * Get the hybridSecondaryUsage property: Hybrid secondary usage. Possible values are 'Active' (default value) and
+     * 'Passive' (customer uses the secondary as Passive DR).
+     *
+     * @return the hybridSecondaryUsage value.
+     */
+    public HybridSecondaryUsage hybridSecondaryUsage() {
+        return this.hybridSecondaryUsage;
+    }
+
+    /**
+     * Set the hybridSecondaryUsage property: Hybrid secondary usage. Possible values are 'Active' (default value) and
+     * 'Passive' (customer uses the secondary as Passive DR).
+     *
+     * @param hybridSecondaryUsage the hybridSecondaryUsage value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withHybridSecondaryUsage(HybridSecondaryUsage hybridSecondaryUsage) {
+        this.hybridSecondaryUsage = hybridSecondaryUsage;
+        return this;
+    }
+
+    /**
+     * Get the hybridSecondaryUsageDetected property: Hybrid secondary usage detected. Possible values are 'Active'
+     * (customer does not meet the requirements to use the secondary as Passive DR) and 'Passive' (customer meets the
+     * requirements to use the secondary as Passive DR).
+     *
+     * @return the hybridSecondaryUsageDetected value.
+     */
+    public HybridSecondaryUsageDetected hybridSecondaryUsageDetected() {
+        return this.hybridSecondaryUsageDetected;
+    }
+
+    /**
      * Get the vCores property: The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
      *
      * @return the vCores value.
@@ -398,6 +515,50 @@ public final class ManagedInstanceProperties {
      */
     public ManagedInstanceProperties withStorageSizeInGB(Integer storageSizeInGB) {
         this.storageSizeInGB = storageSizeInGB;
+        return this;
+    }
+
+    /**
+     * Get the storageIOps property: Storage IOps. Minimum value: 120. Maximum value: 120000. Increments of 1 IOps
+     * allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     *
+     * @return the storageIOps value.
+     */
+    public Integer storageIOps() {
+        return this.storageIOps;
+    }
+
+    /**
+     * Set the storageIOps property: Storage IOps. Minimum value: 120. Maximum value: 120000. Increments of 1 IOps
+     * allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     *
+     * @param storageIOps the storageIOps value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withStorageIOps(Integer storageIOps) {
+        this.storageIOps = storageIOps;
+        return this;
+    }
+
+    /**
+     * Get the storageThroughputMBps property: Storage throughput in MBps. Minimum value: 25. Maximum value: 4000.
+     * Increments of 1 MBps allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     *
+     * @return the storageThroughputMBps value.
+     */
+    public Integer storageThroughputMBps() {
+        return this.storageThroughputMBps;
+    }
+
+    /**
+     * Set the storageThroughputMBps property: Storage throughput in MBps. Minimum value: 25. Maximum value: 4000.
+     * Increments of 1 MBps allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     *
+     * @param storageThroughputMBps the storageThroughputMBps value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withStorageThroughputMBps(Integer storageThroughputMBps) {
+        this.storageThroughputMBps = storageThroughputMBps;
         return this;
     }
 
@@ -736,7 +897,9 @@ public final class ManagedInstanceProperties {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
+     * Get the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
      *
      * @return the administrators value.
      */
@@ -745,7 +908,9 @@ public final class ManagedInstanceProperties {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
+     * Set the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
      *
      * @param administrators the administrators value to set.
      * @return the ManagedInstanceProperties object itself.
@@ -773,6 +938,53 @@ public final class ManagedInstanceProperties {
     public ManagedInstanceProperties withServicePrincipal(ServicePrincipal servicePrincipal) {
         this.servicePrincipal = servicePrincipal;
         return this;
+    }
+
+    /**
+     * Get the virtualClusterId property: Virtual cluster resource id for the Managed Instance.
+     *
+     * @return the virtualClusterId value.
+     */
+    public String virtualClusterId() {
+        return this.virtualClusterId;
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     *
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.externalGovernanceStatus;
+    }
+
+    /**
+     * Get the pricingModel property: Weather or not Managed Instance is freemium.
+     *
+     * @return the pricingModel value.
+     */
+    public FreemiumType pricingModel() {
+        return this.pricingModel;
+    }
+
+    /**
+     * Set the pricingModel property: Weather or not Managed Instance is freemium.
+     *
+     * @param pricingModel the pricingModel value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withPricingModel(FreemiumType pricingModel) {
+        this.pricingModel = pricingModel;
+        return this;
+    }
+
+    /**
+     * Get the createTime property: Specifies the point in time (ISO8601 format) of the Managed Instance creation.
+     *
+     * @return the createTime value.
+     */
+    public OffsetDateTime createTime() {
+        return this.createTime;
     }
 
     /**

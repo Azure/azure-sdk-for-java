@@ -68,8 +68,7 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
     public interface DatabaseExtensionsOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/extensions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImportExportExtensionsOperationListResult>> listByDatabase(
@@ -84,8 +83,7 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/extensions/{extensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions/{extensionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> get(
@@ -100,8 +98,7 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/extensions/{extensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions/{extensionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -737,7 +734,8 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
             String databaseName,
             String extensionName,
             DatabaseExtensions parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters)
             .getSyncPoller();
     }
 
@@ -766,7 +764,8 @@ public final class DatabaseExtensionsOperationsClientImpl implements DatabaseExt
             String extensionName,
             DatabaseExtensions parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, extensionName, parameters, context)
             .getSyncPoller();
     }
 

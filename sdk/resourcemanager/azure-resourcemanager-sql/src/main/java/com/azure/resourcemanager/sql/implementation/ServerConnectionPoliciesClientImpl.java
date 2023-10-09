@@ -67,8 +67,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
     public interface ServerConnectionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/connectionPolicies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/connectionPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerConnectionPolicyListResult>> listByServer(
@@ -82,8 +81,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/connectionPolicies/{connectionPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/connectionPolicies/{connectionPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerConnectionPolicyInner>> get(
@@ -98,8 +96,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/connectionPolicies/{connectionPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/connectionPolicies/{connectionPolicyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -689,7 +686,8 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
         String serverName,
         ConnectionPolicyName connectionPolicyName,
         ServerConnectionPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, connectionPolicyName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, connectionPolicyName, parameters)
             .getSyncPoller();
     }
 
@@ -714,7 +712,8 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
         ConnectionPolicyName connectionPolicyName,
         ServerConnectionPolicyInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, connectionPolicyName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, connectionPolicyName, parameters, context)
             .getSyncPoller();
     }
 

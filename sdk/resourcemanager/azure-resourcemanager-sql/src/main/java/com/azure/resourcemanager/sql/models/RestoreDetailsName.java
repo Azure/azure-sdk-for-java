@@ -14,6 +14,15 @@ public final class RestoreDetailsName extends ExpandableStringEnum<RestoreDetail
     public static final RestoreDetailsName DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of RestoreDetailsName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestoreDetailsName() {
+    }
+
+    /**
      * Creates or finds a RestoreDetailsName from its string representation.
      *
      * @param name a name to look for.

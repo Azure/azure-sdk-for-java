@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.DatabaseKey;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -166,6 +167,29 @@ public final class RestorableDroppedDatabaseInner extends ProxyResource {
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
         return this.innerProperties() == null ? null : this.innerProperties().backupStorageRedundancy();
+    }
+
+    /**
+     * Get the keys property: The resource ids of the user assigned identities to use.
+     *
+     * @return the keys value.
+     */
+    public Map<String, DatabaseKey> keys() {
+        return this.innerProperties() == null ? null : this.innerProperties().keys();
+    }
+
+    /**
+     * Set the keys property: The resource ids of the user assigned identities to use.
+     *
+     * @param keys the keys value to set.
+     * @return the RestorableDroppedDatabaseInner object itself.
+     */
+    public RestorableDroppedDatabaseInner withKeys(Map<String, DatabaseKey> keys) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDroppedDatabaseProperties();
+        }
+        this.innerProperties().withKeys(keys);
+        return this;
     }
 
     /**

@@ -67,8 +67,7 @@ public final class ServerBlobAuditingPoliciesClientImpl implements ServerBlobAud
     public interface ServerBlobAuditingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/auditingSettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingSettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerBlobAuditingPolicyListResult>> listByServer(
@@ -82,8 +81,7 @@ public final class ServerBlobAuditingPoliciesClientImpl implements ServerBlobAud
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/auditingSettings/{blobAuditingPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerBlobAuditingPolicyInner>> get(
@@ -98,8 +96,7 @@ public final class ServerBlobAuditingPoliciesClientImpl implements ServerBlobAud
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/auditingSettings/{blobAuditingPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -649,7 +646,7 @@ public final class ServerBlobAuditingPoliciesClientImpl implements ServerBlobAud
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, ServerBlobAuditingPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
     }
 
     /**
@@ -668,7 +665,7 @@ public final class ServerBlobAuditingPoliciesClientImpl implements ServerBlobAud
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, ServerBlobAuditingPolicyInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
     }
 
     /**

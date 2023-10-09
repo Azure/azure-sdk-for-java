@@ -68,8 +68,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
     public interface ServerDnsAliasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/dnsAliases")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerDnsAliasListResult>> listByServer(
@@ -83,8 +82,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/dnsAliases/{dnsAliasName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerDnsAliasInner>> get(
@@ -99,8 +97,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/dnsAliases/{dnsAliasName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -115,8 +112,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/dnsAliases/{dnsAliasName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -130,8 +126,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/dnsAliases/{dnsAliasName}/acquire")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}/acquire")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> acquire(
@@ -677,7 +672,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String dnsAliasName) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, dnsAliasName).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, dnsAliasName).getSyncPoller();
     }
 
     /**
@@ -696,7 +691,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String dnsAliasName, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, dnsAliasName, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, dnsAliasName, context).getSyncPoller();
     }
 
     /**
@@ -939,7 +934,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String dnsAliasName) {
-        return beginDeleteAsync(resourceGroupName, serverName, dnsAliasName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, dnsAliasName).getSyncPoller();
     }
 
     /**
@@ -958,7 +953,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String dnsAliasName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, dnsAliasName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serverName, dnsAliasName, context).getSyncPoller();
     }
 
     /**
@@ -1231,7 +1226,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginAcquire(
         String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters) {
-        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, parameters).getSyncPoller();
+        return this.beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, parameters).getSyncPoller();
     }
 
     /**
@@ -1255,7 +1250,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
         String dnsAliasName,
         ServerDnsAliasAcquisition parameters,
         Context context) {
-        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, parameters, context).getSyncPoller();
+        return this.beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, parameters, context).getSyncPoller();
     }
 
     /**

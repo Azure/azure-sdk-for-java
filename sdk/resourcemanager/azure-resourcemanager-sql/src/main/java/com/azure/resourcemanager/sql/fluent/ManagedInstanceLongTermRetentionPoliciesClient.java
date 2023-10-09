@@ -316,4 +316,151 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
         ManagedInstanceLongTermRetentionPolicyName policyName,
         ManagedInstanceLongTermRetentionPolicyInner parameters,
         Context context);
+
+    /**
+     * Deletes a managed database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedInstanceLongTermRetentionPolicyName policyName);
+
+    /**
+     * Deletes a managed database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a long term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
+        beginDeleteAsync(
+            String resourceGroupName,
+            String managedInstanceName,
+            String databaseName,
+            ManagedInstanceLongTermRetentionPolicyName policyName);
+
+    /**
+     * Deletes a managed database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
+        beginDelete(
+            String resourceGroupName,
+            String managedInstanceName,
+            String databaseName,
+            ManagedInstanceLongTermRetentionPolicyName policyName);
+
+    /**
+     * Deletes a managed database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a long term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
+        beginDelete(
+            String resourceGroupName,
+            String managedInstanceName,
+            String databaseName,
+            ManagedInstanceLongTermRetentionPolicyName policyName,
+            Context context);
+
+    /**
+     * Deletes a managed database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ManagedInstanceLongTermRetentionPolicyInner> deleteAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedInstanceLongTermRetentionPolicyName policyName);
+
+    /**
+     * Deletes a managed database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceLongTermRetentionPolicyInner delete(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedInstanceLongTermRetentionPolicyName policyName);
+
+    /**
+     * Deletes a managed database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name. Should always be Default.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedInstanceLongTermRetentionPolicyInner delete(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedInstanceLongTermRetentionPolicyName policyName,
+        Context context);
 }

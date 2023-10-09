@@ -14,6 +14,15 @@ public final class AuthenticationName extends ExpandableStringEnum<Authenticatio
     public static final AuthenticationName DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of AuthenticationName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationName() {
+    }
+
+    /**
      * Creates or finds a AuthenticationName from its string representation.
      *
      * @param name a name to look for.
