@@ -32,6 +32,19 @@
         "description": "Enable partition merge, default value is false"
       },
       "defaultValue": false
+    },
+    // 2024-04-20 17:01:38
+    "resourceStartTime": {
+      "type": "int",
+      "defaultValue": 1713603698
+    },
+    "currentEpoch": {
+      "type": "int",
+      "defaultValue": "[dateTimeToEpoch(utcNow())]"
+    },
+    "skipResourceRegion": {
+      "type": "string",
+      "defaultValue": "chinaeast2"
     }
   },
   "variables": {
@@ -40,10 +53,12 @@
     "newAccountName": "[toLower(concat(parameters('baseName'), '2'))]",
     "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
     "newResourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('newAccountName'))]",
-    "location": "[resourceGroup().location]"
+    "location": "[resourceGroup().location]",
+    "notSkipCondition": "[or(not(equals(resourceGroup().location, parameters('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime')))]"
   },
   "resources": [
     {
+      "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('accountName')]",
@@ -78,6 +93,7 @@
       }
     },
     {
+      "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('newAccountName')]",
