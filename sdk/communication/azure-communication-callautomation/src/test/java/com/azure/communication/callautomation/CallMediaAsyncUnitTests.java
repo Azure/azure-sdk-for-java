@@ -8,8 +8,10 @@ import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOpt
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
+import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
+import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.VoiceKind;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.communication.callautomation.CallAutomationUnitTestBase.CALL_OPERATION_CONTEXT;
+import static com.azure.communication.callautomation.CallAutomationUnitTestBase.OVERRIDE_CALL_CALLBACK_URL;
 import static com.azure.communication.callautomation.CallAutomationUnitTestBase.serializeObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -186,9 +189,11 @@ public class CallMediaAsyncUnitTests {
     public void stopContinuousDtmfRecognitionWithResponse() {
         // override callMedia to mock 200 response code
         callMedia = getMockCallMedia(200);
+        ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
+        options.setOperationContext(CALL_OPERATION_CONTEXT);
+        options.setOverrideCallbackUrl(OVERRIDE_CALL_CALLBACK_URL);
         StepVerifier.create(
-                callMedia.stopContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
-                    CALL_OPERATION_CONTEXT, null)
+                callMedia.stopContinuousDtmfRecognitionWithResponse(options)
             )
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -202,13 +207,12 @@ public class CallMediaAsyncUnitTests {
                     serializeObject(new SendDtmfTonesResultInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202)))
             );
         callMedia = callConnection.getCallMediaAsync();
-        StepVerifier.create(
-                callMedia.sendDtmfTonesWithResponse(
-                        Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
-                        CALL_OPERATION_CONTEXT, null
-                )
-            ).consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
+        List<DtmfTone> tones = Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList());
+        SendDtmfTonesOptions options = new SendDtmfTonesOptions(tones, new CommunicationUserIdentifier("id"));
+        options.setOperationContext(CALL_OPERATION_CONTEXT);
+        options.setOverrideCallbackUrl(OVERRIDE_CALL_CALLBACK_URL);
+        StepVerifier.create(callMedia.sendDtmfTonesWithResponse(options))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode())).verifyComplete();
     }
 
     @Test

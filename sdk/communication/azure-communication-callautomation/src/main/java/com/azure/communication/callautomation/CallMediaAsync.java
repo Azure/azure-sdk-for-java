@@ -28,12 +28,14 @@ import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptio
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
+import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognitionChoice;
+import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SendDtmfTonesResult;
@@ -537,32 +539,29 @@ public final class CallMediaAsync {
      * @return Response for successful sendDtmfTones request.
      */
     public Mono<SendDtmfTonesResult> sendDtmfTones(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        return sendDtmfTonesWithResponse(tones, targetParticipant,  null, null).flatMap(FluxUtil::toMono);
+        return sendDtmfTonesWithResponse(new SendDtmfTonesOptions(tones, targetParticipant)).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Send DTMF tones
      *
-     * @param tones tones to be sent
-     * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
-     * @param overrideCallbackUrl the call back URI override to set (pass null if not applicable)
+     * @param options SendDtmfTones configuration options
      * @return Response for successful sendDtmfTones request.
      */
-    public Mono<Response<SendDtmfTonesResult>> sendDtmfTonesWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext, String overrideCallbackUrl) {
-        return withContext(context -> sendDtmfTonesWithResponseInternal(targetParticipant, tones, operationContext, overrideCallbackUrl, context));
+    public Mono<Response<SendDtmfTonesResult>> sendDtmfTonesWithResponse(SendDtmfTonesOptions options) {
+        return withContext(context -> sendDtmfTonesWithResponseInternal(options, context));
     }
 
-    Mono<Response<SendDtmfTonesResult>> sendDtmfTonesWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, String overrideCallbackUrl, Context context) {
+    Mono<Response<SendDtmfTonesResult>> sendDtmfTonesWithResponseInternal(SendDtmfTonesOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             SendDtmfTonesRequestInternal requestInternal = new SendDtmfTonesRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setTones(tones.stream()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
+                .setTones(options.getTones().stream()
                 .map(this::convertDtmfToneInternal)
                 .collect(Collectors.toList()))
-                .setOperationContext(operationContext)
-                .setOverrideCallbackUri(overrideCallbackUrl);
+                .setOperationContext(options.getOperationContext())
+                .setOverrideCallbackUri(options.getOverrideCallbackUrl());
 
             return contentsInternal.sendDtmfTonesWithResponseAsync(
                 callConnectionId,
@@ -577,7 +576,6 @@ public final class CallMediaAsync {
 
     /**
      * Starts continuous Dtmf recognition.
-     *
      * @param targetParticipant the target participant
      * @return void
      */
@@ -614,27 +612,25 @@ public final class CallMediaAsync {
      * @return void
      */
     public Mono<Void> stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
-        return stopContinuousDtmfRecognitionWithResponse(targetParticipant, null, null).then();
+        return stopContinuousDtmfRecognitionWithResponse(new ContinuousDtmfRecognitionOptions(targetParticipant)).then();
     }
 
     /**
      * Stops continuous Dtmf recognition.
-     * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
-     * @param overrideCallbackUrl the call back URI override to set (pass null if not applicable)
+     * @param options ContinuousDtmfRecognition configuration options
      * @return Response for successful stop continuous dtmf recognition request.
      */
-    public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, String overrideCallbackUrl) {
-        return withContext(context -> stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, overrideCallbackUrl, context));
+    public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponse(ContinuousDtmfRecognitionOptions options) {
+        return withContext(context -> stopContinuousDtmfRecognitionWithResponseInternal(options, context));
     }
 
-    Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseInternal(CommunicationIdentifier targetParticipant, String operationContext, String overrideCallbackUrl, Context context) {
+    Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseInternal(ContinuousDtmfRecognitionOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             ContinuousDtmfRecognitionRequestInternal requestInternal = new ContinuousDtmfRecognitionRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setOperationContext(operationContext)
-                .setOverrideCallbackUri(overrideCallbackUrl);
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
+                .setOperationContext(options.getOperationContext())
+                .setOverrideCallbackUri(options.getOverrideCallbackUrl());
 
             return contentsInternal.stopContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal, context);
         } catch (RuntimeException e) {
