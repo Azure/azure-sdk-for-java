@@ -27,7 +27,7 @@ public final class StartRecordingOptions {
 
     private RecordingFormat recordingFormat;
 
-    private PauseOnStart pauseOnStart;
+    private Boolean pauseOnStart;
 
     private List<CommunicationIdentifier> audioChannelParticipantOrdering;
 
