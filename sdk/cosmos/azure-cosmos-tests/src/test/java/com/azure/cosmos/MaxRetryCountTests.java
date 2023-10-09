@@ -118,9 +118,27 @@ public class MaxRetryCountTests extends TestSuiteBase {
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
         };
 
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerTimeoutGenerated503ForRead =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
+        };
+
     private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerGoneGenerated503ForWrite =
         (statusCode, subStatusCode) -> {
             assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
+        };
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerTimeoutGenerated503ForWrite =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
+        };
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerTimeoutGenerated410ForWrite =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.GONE);
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
         };
 
@@ -148,6 +166,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
     private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectRetryWithErrorIntoAllRegions = null;
     private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectServerGoneErrorIntoAllRegions = null;
     private Function<Duration, BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType>> injectTransitTimeoutIntoAllRegions = null;
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectServerTimeoutErrorIntoAllRegions = null;
 
     private String FIRST_REGION_NAME = null;
     private String SECOND_REGION_NAME = null;
@@ -216,6 +235,9 @@ public class MaxRetryCountTests extends TestSuiteBase {
             this.injectTransitTimeoutIntoAllRegions =
                 (networkRequestTimeoutDuration) ->
                     (c, operationType) -> injectTransitTimeoutError(c, this.writeableRegions, operationType, networkRequestTimeoutDuration);
+
+            this.injectServerTimeoutErrorIntoAllRegions =
+                (c, operationType) -> injectServerTimeoutError(c, this.writeableRegions, operationType);
 
             CosmosAsyncContainer container = this.createTestContainer(dummyClient);
             this.testDatabaseId = container.getDatabase().getId();
@@ -331,21 +353,26 @@ public class MaxRetryCountTests extends TestSuiteBase {
         ConsistencyLevel consistencyLevel,
         OperationType operationType) {
 
-        int requestsInEachRetryCycle = 0;
+        int requestsInFirstRetryCycle = 0;
+        int requestsInFollowingRetryCycle = 0;
         if (operationType.isWriteOperation()) {
-            requestsInEachRetryCycle = 1;
+            requestsInFirstRetryCycle = 1;
+            requestsInFollowingRetryCycle = 1;
         } else {
             switch (consistencyLevel) {
                 case EVENTUAL:
                 case CONSISTENT_PREFIX:
-                    requestsInEachRetryCycle = 1;
+                    requestsInFirstRetryCycle = 1;
+                    requestsInFollowingRetryCycle = 1;
                     break;
                 case SESSION:
-                    requestsInEachRetryCycle = 4;
+                    requestsInFirstRetryCycle = 4;
+                    requestsInFollowingRetryCycle = 4;
                     break;
                 case BOUNDED_STALENESS:
                 case STRONG:
-                    requestsInEachRetryCycle = 4 * 6; // QuorumNotSelected, SDK will retry 6 times before bubble up the exception
+                    requestsInFirstRetryCycle = 4 * 2; // QuorumNotSelected, SDK will retry 2 times before bubble up the exception
+                    requestsInFollowingRetryCycle = 4;
                     break;
                 default:
                     throw new IllegalArgumentException("Consistency level is not supported " + consistencyLevel);
@@ -354,13 +381,20 @@ public class MaxRetryCountTests extends TestSuiteBase {
 
         int currentBackoff = 0;
         long remainingTimeInMs = maxWaitTimeInMs;
-        int count = requestsInEachRetryCycle;
+        int count = requestsInFirstRetryCycle;
         boolean firstRetryAttempt = true;
+        int maxRetriesInLocalRegion = 1; // includes the first try
 
         while (remainingTimeInMs > 0 || firstRetryAttempt) {
+            maxRetriesInLocalRegion ++;
+            if (firstRetryAttempt && remainingTimeInMs < 0) {
+                // SDK will always retry on the local region one more time
+                remainingTimeInMs = maxBackoffTimeInMs;
+            }
+
             firstRetryAttempt = false;
             remainingTimeInMs -= currentBackoff;
-            count += requestsInEachRetryCycle;
+            count += requestsInFollowingRetryCycle;
 
             if (currentBackoff == 0) {
                 currentBackoff = initialBackoffTimeInMs;
@@ -370,13 +404,15 @@ public class MaxRetryCountTests extends TestSuiteBase {
         }
 
         logger.info(
-            "expectedMaxNumberOfRetriesForGone [maxWaitTimeInMs {}, maxBackoffTimeInMs {}, initialBackoffTimeInMs {}, consistencyLevel {}, OperationType {}] == {}",
+            "expectedMaxNumberOfRetriesForGone [maxWaitTimeInMs {}, maxBackoffTimeInMs {}, initialBackoffTimeInMs {}, " +
+                "consistencyLevel {}, OperationType {}] == {}, maxRetriesInLocalRegion {}",
             maxWaitTimeInMs,
             maxBackoffTimeInMs,
             initialBackoffTimeInMs,
             consistencyLevel,
             operationType,
-            count);
+            count,
+            maxRetriesInLocalRegion);
 
         return count;
     }
@@ -392,30 +428,44 @@ public class MaxRetryCountTests extends TestSuiteBase {
         Boolean idempotentWriteRetriesAreEnabled) {
 
         int count = 0;
+        int maxRetriesInLocalRegion = 1; // includes the first try
+
         if (operationType.isWriteOperation()
             && (idempotentWriteRetriesAreEnabled == null || !idempotentWriteRetriesAreEnabled)) {
             count = 1;
         } else {
-            long latencyInEachRetryCycleInMs = 0;
-            int requestsInEachRetryCycle = 0;
+            long latencyInFirstRetryCycleInMs = 0;
+            int requestsInFirstRetryCycle = 0;
+
+            long latencyInFollowingRetryCycleInMs = 0;
+            int requestsInFollowingRetryCycle = 0;
+
             if (operationType.isWriteOperation()) {
-                requestsInEachRetryCycle = 1;
-                latencyInEachRetryCycleInMs = networkRequestTimeout.toMillis();
+                latencyInFirstRetryCycleInMs = networkRequestTimeout.toMillis();
+                requestsInFirstRetryCycle = 1;
+                requestsInFollowingRetryCycle = 1;
+                latencyInFollowingRetryCycleInMs = networkRequestTimeout.toMillis();
             } else {
                 switch (consistencyLevel) {
                     case EVENTUAL:
                     case CONSISTENT_PREFIX:
-                        latencyInEachRetryCycleInMs = networkRequestTimeout.toMillis();
-                        requestsInEachRetryCycle = 1;
+                        latencyInFirstRetryCycleInMs = networkRequestTimeout.toMillis();
+                        requestsInFirstRetryCycle = 1;
+                        latencyInFollowingRetryCycleInMs = networkRequestTimeout.toMillis();
+                        requestsInFollowingRetryCycle = 1;
                         break;
                     case SESSION:
-                        latencyInEachRetryCycleInMs = networkRequestTimeout.toMillis() * 4;
-                        requestsInEachRetryCycle = 4;
+                        latencyInFirstRetryCycleInMs = networkRequestTimeout.toMillis() * 4;
+                        requestsInFirstRetryCycle = 4;
+                        latencyInFollowingRetryCycleInMs = networkRequestTimeout.toMillis() * 4;
+                        requestsInFollowingRetryCycle = 4;
                         break;
                     case BOUNDED_STALENESS:
                     case STRONG:
-                        latencyInEachRetryCycleInMs = networkRequestTimeout.toMillis() * 3 * 6; // for quorum reads, SDK will send two requests in parallel
-                        requestsInEachRetryCycle = 4 * 6; // QuorumNotSelected, SDK will retry 6 times before bubble up the exception
+                        latencyInFirstRetryCycleInMs = networkRequestTimeout.toMillis() * 3 * 2; // for quorum reads, SDK will send two requests in parallel
+                        requestsInFirstRetryCycle = 4 * 2;// QuorumNotSelected, SDK will retry 2 times before bubble up the exception
+                        latencyInFollowingRetryCycleInMs = networkRequestTimeout.toMillis() * 3; // for quorum reads, SDK will send two requests in parallel
+                        requestsInFollowingRetryCycle = 4; // after the first cycle, forceRefreshHeader on the requests has been set, so instead of 2, it will only retry 1 time
                         break;
                     default:
                         throw new IllegalArgumentException("Consistency level is not supported " + consistencyLevel);
@@ -424,15 +474,21 @@ public class MaxRetryCountTests extends TestSuiteBase {
 
             int currentBackoff = 0;
             long remainingTimeInMs = maxWaitTimeInMs;
-            count = requestsInEachRetryCycle;
-            remainingTimeInMs -= latencyInEachRetryCycleInMs;
+            count = requestsInFirstRetryCycle;
+            remainingTimeInMs -= latencyInFirstRetryCycleInMs;
             boolean firstRetryAttempt = true;
 
             while (remainingTimeInMs > 0 || firstRetryAttempt) {
+                maxRetriesInLocalRegion++;
+                if (firstRetryAttempt && remainingTimeInMs < 0) {
+                    // SDK will always retry on the local region one more time
+                    remainingTimeInMs = maxBackoffTimeInMs;
+                }
+
                 firstRetryAttempt = false;
                 remainingTimeInMs -= currentBackoff;
-                count += requestsInEachRetryCycle;
-                remainingTimeInMs -= latencyInEachRetryCycleInMs;
+                count += requestsInFollowingRetryCycle;
+                remainingTimeInMs -= latencyInFollowingRetryCycleInMs;
 
                 if (currentBackoff == 0) {
                     currentBackoff = initialBackoffTimeInMs;
@@ -443,14 +499,18 @@ public class MaxRetryCountTests extends TestSuiteBase {
         }
 
         logger.info(
-            "expectedMaxNumberOfRetriesForGone [maxWaitTimeInMs {}, maxBackoffTimeInMs {}, initialBackoffTimeInMs {}, consistencyLevel {}, OperationType {},  networkRequestTimeout {}] == {}",
+            "expectedMaxNumberOfRetriesForTransitTimeout [maxWaitTimeInMs {}, maxBackoffTimeInMs {}, initialBackoffTimeInMs {}, " +
+                "consistencyLevel {}, OperationType {},  networkRequestTimeout {}, idempotentWriteRetriesAreEnabled {}] == {}, maxRetriesInLocalRegion {}",
             maxWaitTimeInMs,
             maxBackoffTimeInMs,
             initialBackoffTimeInMs,
             consistencyLevel,
             operationType,
             networkRequestTimeout,
-            count);
+            idempotentWriteRetriesAreEnabled,
+            count,
+            maxRetriesInLocalRegion
+   );
 
         return count;
     }
@@ -756,6 +816,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         final int DEFAULT_INITIAL_BACKOFF_TIME_IN_MS = 1000;
         final int DEFAULT_BACK_OFF_MULTIPLIER = 2;
 
+        // TODO: add max networkRequestTimeout test
         return new Object[][] {
             // CONFIG description
             // new Object[] {
@@ -824,30 +885,6 @@ public class MaxRetryCountTests extends TestSuiteBase {
                     )
             },
             new Object[] {
-                "410-20001_AllRegions_Read",
-                Duration.ofSeconds(60),
-                maxNetworkRequestTimeoutDuration,
-                OperationType.Read,
-                FaultInjectionOperationType.READ_ITEM,
-                notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
-                sameDocumentIdJustCreated,
-                injectTransitTimeoutIntoAllRegions.apply(maxNetworkRequestTimeoutDuration),
-                validateStatusCodeIsServerGoneGenerated503ForRead, // SDK will wrap into 503 exceptions after exhausting all retries
-                (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
-                    assertThat(requestCount).isLessThanOrEqualTo(
-                        expectedMaxNumberOfRetriesForTransientTimeout(
-                            DEFAULT_WAIT_TIME_IN_MS,
-                            DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
-                            DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
-                            DEFAULT_BACK_OFF_MULTIPLIER,
-                            consistencyLevel,
-                            operationType,
-                            maxNetworkRequestTimeoutDuration,
-                            notSpecifiedWhetherIdempotentWriteRetriesAreEnabled
-                        ) * (1 + this.writeableRegions.size())
-                    )
-            },
-            new Object[] {
                 "410-20001_AllRegions_Create",
                 Duration.ofSeconds(60),
                 minNetworkRequestTimeoutDuration,
@@ -891,6 +928,103 @@ public class MaxRetryCountTests extends TestSuiteBase {
                             consistencyLevel,
                             operationType,
                             minNetworkRequestTimeoutDuration,
+                            true
+                        ) * (1 + this.writeableRegions.size())
+                    )
+            }
+        };
+    }
+
+    @DataProvider(name = "readMaxRetryCount_serverTimeout")
+    public Object[][] testConfigs_readMaxRetryCount_serverTimeout() {
+        final int DEFAULT_WAIT_TIME_IN_MS = 30 * 1000;
+        final int DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS = 15 * 1000;
+        final int DEFAULT_INITIAL_BACKOFF_TIME_IN_MS = 1000;
+        final int DEFAULT_BACK_OFF_MULTIPLIER = 2;
+
+        return new Object[][] {
+            // CONFIG description
+            // new Object[] {
+            //    TestId - name identifying the test case
+            //    End-to-end timeout,
+            //    OperationType,
+            //    FaultInjectionOperationType,
+            //    Flag to indicate whether IdempotentWriteRetries are enabled
+            //    optional documentId used for reads (instead of the just created doc id) - this can be used to trigger 404/0
+            //    Failure injection callback
+            //    Status code/sub status code validation callback
+            //    maxExpectedRetryCount
+            // },
+
+            // This test injects transient timeout across all regions for the read operation after the initial creation
+            // For read, it is expected to fail with 503/20001
+            // For write with Idempotent retries being enabled, it is expected to fail with 503/20001
+            // For write with idempotent retries being disabled, it is expected to fail with 408
+            new Object[] {
+                "408-0_AllRegions_Read",
+                Duration.ofSeconds(60),
+                OperationType.Read,
+                FaultInjectionOperationType.READ_ITEM,
+                notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
+                sameDocumentIdJustCreated,
+                injectServerTimeoutErrorIntoAllRegions,
+                validateStatusCodeIsServerTimeoutGenerated503ForRead, // SDK will translate 408 into 410, and then follow 410 retry rules
+                (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
+                    assertThat(requestCount).isLessThanOrEqualTo(
+                        expectedMaxNumberOfRetriesForTransientTimeout(
+                            DEFAULT_WAIT_TIME_IN_MS,
+                            DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                            DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
+                            DEFAULT_BACK_OFF_MULTIPLIER,
+                            consistencyLevel,
+                            operationType,
+                            Duration.ofSeconds(5),
+                            notSpecifiedWhetherIdempotentWriteRetriesAreEnabled
+                        ) * (1 + this.writeableRegions.size())
+                    )
+            },
+            new Object[] {
+                "408-0_AllRegions_Create",
+                Duration.ofSeconds(60),
+                OperationType.Create,
+                FaultInjectionOperationType.CREATE_ITEM,
+                notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
+                sameDocumentIdJustCreated,
+                injectServerTimeoutErrorIntoAllRegions,
+                validateStatusCodeIsServerTimeoutGenerated410ForWrite, // when idempotent write is disabled, SDK will not retry for write operation, 408 will be bubbled up
+                (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
+                    assertThat(requestCount).isLessThanOrEqualTo(
+                        expectedMaxNumberOfRetriesForTransientTimeout(
+                            DEFAULT_WAIT_TIME_IN_MS,
+                            DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                            DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
+                            DEFAULT_BACK_OFF_MULTIPLIER,
+                            consistencyLevel,
+                            operationType,
+                            Duration.ofSeconds(5),
+                            notSpecifiedWhetherIdempotentWriteRetriesAreEnabled
+                        )
+                    )
+            },
+            new Object[] {
+                "408-0_AllRegions_Create",
+                Duration.ofSeconds(60),
+                OperationType.Create,
+                FaultInjectionOperationType.CREATE_ITEM,
+                true, // IdempotentWriteRetries is enabled
+                sameDocumentIdJustCreated,
+                injectServerTimeoutErrorIntoAllRegions,
+                validateStatusCodeIsTransitTimeoutGenerated503ForWrite, // when idempotent write is enabled, write will retry in reach region and bubble as 503/20001
+                (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
+                    assertThat(requestCount).isLessThanOrEqualTo(
+                        expectedMaxNumberOfRetriesForTransientTimeout(
+                            DEFAULT_WAIT_TIME_IN_MS,
+                            DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                            DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
+                            DEFAULT_BACK_OFF_MULTIPLIER,
+                            consistencyLevel,
+                            operationType,
+                            Duration.ofSeconds(5),
                             true
                         ) * (1 + this.writeableRegions.size())
                     )
@@ -1216,7 +1350,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
 
         Consumer<CosmosDiagnosticsContext> validateCtxOneRegions =
             (ctx) -> {
-                if (operationType.isReadOnlyOperation()) {
+                if (operationType.isReadOnlyOperation() || isIdempotentWriteRetriesEnabled) {
                     validateCtxRegions.accept(ctx, TWO_REGIONS);
                 } else {
                     validateCtxRegions.accept(ctx, ONE_REGION);
@@ -1264,6 +1398,145 @@ public class MaxRetryCountTests extends TestSuiteBase {
             false,
             ConnectionMode.DIRECT);
     }
+
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_serverTimeout")
+    public void readMaxRetryCount_serverTimeout(
+        String testCaseId,
+        Duration endToEndTimeout,
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        Boolean isIdempotentWriteRetriesEnabled,
+        String readItemDocumentIdOverride,
+        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
+        BiConsumer<Integer, Integer> validateStatusCode,
+        TriConsumer<Integer, ConsistencyLevel, OperationType> maxExpectedRequestCountValidation) {
+
+        final int ONE_REGION = 1;
+        final int TWO_REGIONS = 2;
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback =
+            this.getRequestCallBack(operationType, readItemDocumentIdOverride);
+
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxRegions =
+            (ctx, expectedNumberOfRegionsContacted) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getContactedRegionNames().size()).isGreaterThanOrEqualTo(expectedNumberOfRegionsContacted);
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> logCtx =
+            (ctx) -> {
+                assertThat(ctx).isNotNull();
+                logger.info(
+                    "DIAGNOSTICS CONTEXT: {} Json: {}",
+                    ctx.toString(),
+                    ctx.toJson());
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateCtxOneRegions =
+            (ctx) -> {
+                if (operationType.isReadOnlyOperation() || isIdempotentWriteRetriesEnabled) {
+                    validateCtxRegions.accept(ctx, TWO_REGIONS);
+                } else {
+                    validateCtxRegions.accept(ctx, ONE_REGION);
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> ctxValidation = ctx -> {
+            assertThat(ctx.getDiagnostics()).isNotNull();
+            assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+            CosmosDiagnostics diagnostics = ctx.getDiagnostics().iterator().next();
+            assertThat(diagnostics.getClientSideRequestStatistics()).isNotNull();
+            assertThat(diagnostics.getClientSideRequestStatistics().size()).isEqualTo(1);
+
+            ClientSideRequestStatistics clientStats = diagnostics.getClientSideRequestStatistics().iterator().next();
+            assertThat(clientStats.getResponseStatisticsList()).isNotNull();
+            int actualRequestCount = clientStats.getResponseStatisticsList().size();
+
+            if (maxExpectedRequestCountValidation != null) {
+                logger.info(
+                    "ACTUAL REQUEST COUNT: {}",
+                    actualRequestCount);
+
+                // TODO: expand into other consistencies
+                maxExpectedRequestCountValidation.accept(actualRequestCount, ConsistencyLevel.SESSION, operationType);
+            }
+        };
+
+        execute(
+            testCaseId,
+            endToEndTimeout,
+            noAvailabilityStrategy,
+            CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+            isIdempotentWriteRetriesEnabled,
+            defaultNetworkRequestTimeoutDuration,
+            ArrayUtils.toArray(faultInjectionOperationType),
+            readItemCallback,
+            faultInjectionCallback,
+            validateStatusCode,
+            1,
+            ArrayUtils.toArray(logCtx, validateCtxOneRegions, ctxValidation),
+            null,
+            null,
+            0,
+            0,
+            false,
+            ConnectionMode.DIRECT);
+    }
+
+    // Once validate the algorithm by using the e2e tests, this is a quick method to only log the max count
+    // can be removed
+    private void logMaxCount() {
+        // gone
+        final int DEFAULT_WAIT_TIME_IN_MS = 30 * 1000;
+        final int DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS = 15 * 1000;
+        final int DEFAULT_INITIAL_BACKOFF_TIME_IN_MS = 1000;
+        final int DEFAULT_BACK_OFF_MULTIPLIER = 2;
+
+        for (OperationType operationType : Arrays.asList(OperationType.Read, OperationType.Create)) {
+            for (ConsistencyLevel consistencyLevel : ConsistencyLevel.values()) {
+                expectedMaxNumberOfRetriesForGone(
+                    DEFAULT_WAIT_TIME_IN_MS,
+                    DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                    DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
+                    DEFAULT_BACK_OFF_MULTIPLIER,
+                    consistencyLevel,
+                    operationType
+                );
+            }
+        }
+
+
+        // transitTimeout
+        for (OperationType operationType : Arrays.asList(OperationType.Read, OperationType.Create)) {
+            for (ConsistencyLevel consistencyLevel : ConsistencyLevel.values()) {
+                expectedMaxNumberOfRetriesForTransientTimeout(
+                    DEFAULT_WAIT_TIME_IN_MS,
+                    DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                    DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
+                    DEFAULT_BACK_OFF_MULTIPLIER,
+                    consistencyLevel,
+                    operationType,
+                    Duration.ofSeconds(1),
+                    false
+                );
+
+                if (operationType.isWriteOperation()) {
+                    expectedMaxNumberOfRetriesForTransientTimeout(
+                        DEFAULT_WAIT_TIME_IN_MS,
+                        DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
+                        DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
+                        DEFAULT_BACK_OFF_MULTIPLIER,
+                        consistencyLevel,
+                        operationType,
+                        Duration.ofSeconds(1),
+                        true
+                    );
+                }
+            }
+        }
+    }
+
 
     private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions) {
         String dbId = UUID.randomUUID().toString();
@@ -1380,27 +1653,6 @@ public class MaxRetryCountTests extends TestSuiteBase {
             operationType,
             badSessionTokenServerErrorResult,
             applicableFeedRange
-        );
-    }
-
-    private static void injectTransitTimeout(
-        CosmosAsyncContainer containerWithSeveralWriteableRegions,
-        List<String> applicableRegions,
-        FaultInjectionOperationType faultInjectionOperationType) {
-
-        String ruleName = "serverErrorRule-transitTimeout-" + UUID.randomUUID();
-        FaultInjectionServerErrorResult timeoutResult = FaultInjectionResultBuilders
-            .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-            .delay(Duration.ofSeconds(6))
-            .build();
-
-        inject(
-            ruleName,
-            containerWithSeveralWriteableRegions,
-            applicableRegions,
-            faultInjectionOperationType,
-            timeoutResult,
-            null
         );
     }
 
@@ -1525,6 +1777,26 @@ public class MaxRetryCountTests extends TestSuiteBase {
             applicableRegions,
             faultInjectionOperationType,
             transitTimeoutResult,
+            null
+        );
+    }
+
+    private static void injectServerTimeoutError(
+        CosmosAsyncContainer containerWithSeveralWriteableRegions,
+        List<String> applicableRegions,
+        FaultInjectionOperationType faultInjectionOperationType) {
+
+        String ruleName = "serverErrorRule-serverTimeout-" + UUID.randomUUID();
+        FaultInjectionServerErrorResult serverTimeoutResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.TIMEOUT)
+            .build();
+
+        inject(
+            ruleName,
+            containerWithSeveralWriteableRegions,
+            applicableRegions,
+            faultInjectionOperationType,
+            serverTimeoutResult,
             null
         );
     }
