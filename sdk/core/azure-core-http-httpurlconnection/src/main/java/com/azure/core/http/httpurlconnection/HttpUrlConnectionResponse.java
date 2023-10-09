@@ -10,19 +10,20 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 class HttpUrlConnectionResponse extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
-    private final BinaryData body;
+    private final byte[] body;
 
     public HttpUrlConnectionResponse(HttpRequest request, int statusCode, HttpHeaders headers, BinaryData body) {
         super(request);
         this.statusCode = statusCode;
         this.headers = headers;
-        this.body = body;
+        this.body = body.toBytes();
     }
 
     @Override
@@ -68,7 +69,7 @@ class HttpUrlConnectionResponse extends HttpResponse {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return body.toFluxByteBuffer();
+        return (body.length == 0) ? Flux.empty() : Flux.just(ByteBuffer.wrap(body));
     }
 
     public HttpResponse buffer() {
