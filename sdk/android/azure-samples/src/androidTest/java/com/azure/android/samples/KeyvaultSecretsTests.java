@@ -35,7 +35,7 @@ public class KeyvaultSecretsTests {
     public void helloWorld() {
         try {
             HelloWorldKeyvaultSecrets.main(keyvaultEndpoint, clientSecretCredential);
-        } catch (InterruptedException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }
@@ -43,7 +43,7 @@ public class KeyvaultSecretsTests {
     public void listOperationsAsync() {
         try {
             ListOperationsAsyncKeyvaultSecrets.main(keyvaultEndpoint, clientSecretCredential);
-        } catch (InterruptedException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }
@@ -51,7 +51,7 @@ public class KeyvaultSecretsTests {
     public void managingDeletedSecrets() {
         try {
             ManagingDeletedSecretsKeyvaultSecrets.main(keyvaultEndpoint, clientSecretCredential);
-        } catch (InterruptedException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }

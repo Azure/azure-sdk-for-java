@@ -35,7 +35,7 @@ public class StorageTests {
     public void basicExample() {
         try {
             BasicExample.main(storageAccountName, clientSecretCredential);
-        } catch (IOException e) {
+        } catch (RuntimeException | IOException e) {
             fail();
         }
     }

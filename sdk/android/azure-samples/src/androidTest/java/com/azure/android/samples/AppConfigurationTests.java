@@ -33,33 +33,49 @@ public class AppConfigurationTests {
 
     @Test
     public void helloWorld() {
-        HelloWorld.main(appconfigEndpoint, clientSecretCredential);
+        try {
+            HelloWorld.main(appconfigEndpoint, clientSecretCredential);
+        } catch (RuntimeException e) {
+            fail();
+        }
     }
 
     @Test
     public void watchFeature() {
-        WatchFeature.main(appconfigEndpoint, clientSecretCredential);
+        try {
+            WatchFeature.main(appconfigEndpoint, clientSecretCredential);
+        } catch (RuntimeException e) {
+            fail();
+        }
     }
 
     @Test
     public void secretReferenceConfigurationSettingSample() {
-        SecretReferenceConfigurationSettingSample.main(appconfigEndpoint, clientSecretCredential);
+        try {
+            SecretReferenceConfigurationSettingSample.main(appconfigEndpoint, clientSecretCredential);
+        } catch (RuntimeException e) {
+            fail();
+        }
     }
 
     /*
         I've been unable to get the dependencies for CreateSnapshot, I suspect they're in the preview version
         of the SDK. Once that is figured out this test should be able to be safely uncommented
+    @Test
+    public void createSnapshot() {
+        try {
+            CreateSnapshot.main(appconfigEndpoint, clientSecretCredential);
+        } catch (RuntimeException e) {
+            fail();
+        }
+    }
      */
-//    @Test
-//    public void createSnapshot() {
-//        CreateSnapshot.main(appconfigEndpoint, clientSecretCredential);
-//    }
 
     @Test
     public void conditionalRequestAsync() {
         try {
             ConditionalRequestAsync.main(appconfigEndpoint, clientSecretCredential);
-        } catch (InterruptedException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }

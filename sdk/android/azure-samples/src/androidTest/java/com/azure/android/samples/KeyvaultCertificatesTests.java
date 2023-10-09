@@ -35,20 +35,23 @@ public class KeyvaultCertificatesTests {
     public void helloWorld() {
         try {
             HelloWorldKeyvaultCerificates.main(keyvaultEndpoint, clientSecretCredential);
-        } catch (InterruptedException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }
     @Test
     public void listOperations() {
-        ListOperationsKeyvaultCerificates.main(keyvaultEndpoint, clientSecretCredential);
-
+        try {
+            ListOperationsKeyvaultCerificates.main(keyvaultEndpoint, clientSecretCredential);
+        } catch (RuntimeException e) {
+            fail();
+        }
     }
     @Test
     public void managingDeletedCertificatesAsync() {
         try {
             ManagingDeletedCertificatesAsyncKeyvaultCerificates.main(keyvaultEndpoint, clientSecretCredential);
-        } catch (InterruptedException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }
