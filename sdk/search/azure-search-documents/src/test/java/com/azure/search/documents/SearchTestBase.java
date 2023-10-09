@@ -90,7 +90,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
-        new RetryPolicy(new FixedDelay(1, Duration.ofSeconds(90)));
+        new RetryPolicy(new FixedDelay(4, Duration.ofSeconds(15)));
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
