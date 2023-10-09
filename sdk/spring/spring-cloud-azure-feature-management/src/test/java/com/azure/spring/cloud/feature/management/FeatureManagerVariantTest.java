@@ -25,7 +25,6 @@ import com.azure.spring.cloud.feature.management.implementation.FeatureManagemen
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.implementation.models.Allocation;
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
-import com.azure.spring.cloud.feature.management.implementation.models.UserAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantReference;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FeatureManagementException;

@@ -7,7 +7,6 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.Locale;
 
 import org.springframework.util.StringUtils;
@@ -22,7 +21,6 @@ import com.azure.spring.cloud.feature.management.models.TargetingException;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 import com.azure.spring.cloud.feature.management.targeting.TargetingFilterContext;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -74,7 +72,7 @@ public final class VariantAssignment {
                     }
 
                     if (user.equals(targetedUser)) {
-                        return getVariant(variants, users.getVariant()).single();
+                        return getVariant(variants, users.getVariant());
                     }
                 }
             }
@@ -92,7 +90,7 @@ public final class VariantAssignment {
                             targetedGroup = targetedGroup.toLowerCase(Locale.getDefault());
                         }
                         if (targetedGroup.equals(group)) {
-                            return getVariant(variants, groups.getVariant()).single();
+                            return getVariant(variants, groups.getVariant());
                         }
                     }
                 }
@@ -111,12 +109,12 @@ public final class VariantAssignment {
 
         for (PercentileAllocation percentile : allocation.getPercentile().values()) {
             if (percentile.getFrom().doubleValue() <= value && percentile.getTo().doubleValue() > value) {
-                return getVariant(variants, percentile.getVariant()).single();
+                return getVariant(variants, percentile.getVariant());
             }
         }
 
         if (StringUtils.hasText(allocation.getDefaultWhenEnabled())) {
-            return getVariant(variants, allocation.getDefaultWhenEnabled()).single();
+            return getVariant(variants, allocation.getDefaultWhenEnabled());
         }
 
         return Mono.justOrEmpty(null);
@@ -129,13 +127,13 @@ public final class VariantAssignment {
      * @param variantName Name of the assigned variant
      * @return Variant object containing an instance of the type
      */
-    Flux<Variant> getVariant(Collection<VariantReference> variants, String variantName) {
-        if (variantName == null) {
-            return null;
+    Mono<Variant> getVariant(Collection<VariantReference> variants, String variantName) {
+        if (variantName == null || variants == null || variants.size() == 0) {
+            return Mono.justOrEmpty(null);
         }
         return Flux.fromStream(
             variants.stream().filter(variant -> variant.getName().equals(variantName))
-                .map(variant -> this.assignVariant(variant)));
+                .map(variant -> this.assignVariant(variant))).single();
     }
 
     private Variant assignVariant(VariantReference variant) {
