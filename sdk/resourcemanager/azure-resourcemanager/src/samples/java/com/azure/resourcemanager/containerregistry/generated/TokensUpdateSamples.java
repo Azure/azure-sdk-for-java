@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for Tokens Update. */
 public final class TokensUpdateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/TokenUpdate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/TokenUpdate.json
      */
     /**
      * Sample code: TokenUpdate.

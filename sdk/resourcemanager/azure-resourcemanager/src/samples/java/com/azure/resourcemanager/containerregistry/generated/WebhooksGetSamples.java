@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerregistry.generated;
 /** Samples for Webhooks Get. */
 public final class WebhooksGetSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/WebhookGet.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/WebhookGet.json
      */
     /**
      * Sample code: WebhookGet.

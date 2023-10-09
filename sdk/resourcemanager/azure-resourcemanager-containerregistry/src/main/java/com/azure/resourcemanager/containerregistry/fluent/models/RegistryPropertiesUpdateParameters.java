@@ -57,6 +57,12 @@ public final class RegistryPropertiesUpdateParameters {
     @JsonProperty(value = "networkRuleBypassOptions")
     private NetworkRuleBypassOptions networkRuleBypassOptions;
 
+    /*
+     * Enables registry-wide pull from unauthenticated clients.
+     */
+    @JsonProperty(value = "anonymousPullEnabled")
+    private Boolean anonymousPullEnabled;
+
     /** Creates an instance of RegistryPropertiesUpdateParameters class. */
     public RegistryPropertiesUpdateParameters() {
     }
@@ -201,6 +207,26 @@ public final class RegistryPropertiesUpdateParameters {
     public RegistryPropertiesUpdateParameters withNetworkRuleBypassOptions(
         NetworkRuleBypassOptions networkRuleBypassOptions) {
         this.networkRuleBypassOptions = networkRuleBypassOptions;
+        return this;
+    }
+
+    /**
+     * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     *
+     * @return the anonymousPullEnabled value.
+     */
+    public Boolean anonymousPullEnabled() {
+        return this.anonymousPullEnabled;
+    }
+
+    /**
+     * Set the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     *
+     * @param anonymousPullEnabled the anonymousPullEnabled value to set.
+     * @return the RegistryPropertiesUpdateParameters object itself.
+     */
+    public RegistryPropertiesUpdateParameters withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
+        this.anonymousPullEnabled = anonymousPullEnabled;
         return this;
     }
 

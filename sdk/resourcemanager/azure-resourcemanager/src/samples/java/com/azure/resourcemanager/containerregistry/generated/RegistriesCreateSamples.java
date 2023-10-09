@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Registries Create. */
 public final class RegistriesCreateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/RegistryCreateZoneRedundant.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/RegistryCreateZoneRedundant.json
      */
     /**
      * Sample code: RegistryCreateZoneRedundant.
@@ -39,7 +39,7 @@ public final class RegistriesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/RegistryCreate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-08-01-preview/examples/RegistryCreate.json
      */
     /**
      * Sample code: RegistryCreate.
