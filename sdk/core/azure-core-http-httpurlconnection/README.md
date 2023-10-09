@@ -35,13 +35,13 @@ The following sections provide several code snippets covering some of the most c
 Create a HttpClient.
 
 ```java readme-sample-createBasicClient
-HttpClient client = new HttpUrlConnectionClientBuilder().build();
+HttpClient client = new HttpUrlConnectionAsyncClientBuilder().build();
 ```
 
 Create a HttpClient using a connection timeout of 60 seconds.
 
 ```java readme-sample-createClientWithConnectionTimeout
-HttpClient client = new HttpUrlConnectionClientBuilder().connectionTimeout(Duration.ofSeconds(60)).build();
+HttpClient client = new HttpUrlConnectionAsyncClientBuilder().connectionTimeout(Duration.ofSeconds(60)).build();
 ```
 
 ### Create a Client with Proxy
@@ -49,7 +49,7 @@ HttpClient client = new HttpUrlConnectionClientBuilder().connectionTimeout(Durat
 Create a HttpClient that is using a proxy.
 
 ```java readme-sample-createProxyClient
-HttpClient client = new HttpUrlConnectionClientBuilder()
+HttpClient client = new HttpUrlConnectionAsyncClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();
 ```
@@ -83,4 +83,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-HttpUrlConnection%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-httpurlconnection%2FREADME.png)
