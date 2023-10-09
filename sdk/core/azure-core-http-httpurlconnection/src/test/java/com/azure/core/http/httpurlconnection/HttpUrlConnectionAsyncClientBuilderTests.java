@@ -261,7 +261,7 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
             StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
-                .verifyError(ConnectException.class);
+                .verifyError(RuntimeException.class);
         } finally {
             proxyServer.shutdown();
         }

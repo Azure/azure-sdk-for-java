@@ -60,11 +60,11 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
     @Override
     public Flux<ByteBuffer> getValue() {
         if (response == null) {
-            return super.getValue().doFinally(t -> this.consumed = true);
+            return Flux.using(() -> this, ignored -> super.getValue(), response -> response.consumed = true);
         } else {
-            return response.getBody().doFinally(t -> {
-                this.consumed = true;
-                this.response.close();
+            return Flux.using(() -> response, HttpResponse::getBody, r -> {
+                consumed = true;
+                r.close();
             });
         }
     }

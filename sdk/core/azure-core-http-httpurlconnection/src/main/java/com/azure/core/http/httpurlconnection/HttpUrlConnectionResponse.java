@@ -1,9 +1,10 @@
-package com.azure.core.http.httpurlconnection.implementation;
+package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
@@ -11,24 +12,17 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Map;
 
-public class HttpUrlConnectionResponse extends HttpResponse {
+class HttpUrlConnectionResponse extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
-    private final Flux<ByteBuffer> body;
+    private final BinaryData body;
 
-    public HttpUrlConnectionResponse(HttpRequest request, int statusCode, Map<String, List<String>> headers, Flux<ByteBuffer> body) {
+    public HttpUrlConnectionResponse(HttpRequest request, int statusCode, HttpHeaders headers, BinaryData body) {
         super(request);
         this.statusCode = statusCode;
-        this.headers = new HttpHeaders();
-        for (Map.Entry<String, List<String>> header : headers.entrySet()) {
-            for (String headerValue : header.getValue()) {
-                this.headers.add(header.getKey(), headerValue);
-            }
-        }
-        this.body = body.cache();
+        this.headers = headers;
+        this.body = body;
     }
 
     @Override
@@ -74,7 +68,7 @@ public class HttpUrlConnectionResponse extends HttpResponse {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return body;
+        return body.toFluxByteBuffer();
     }
 
     public HttpResponse buffer() {

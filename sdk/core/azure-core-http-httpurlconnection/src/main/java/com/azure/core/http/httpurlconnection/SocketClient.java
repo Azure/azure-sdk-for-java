@@ -2,18 +2,18 @@ package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
-
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.ProtocolException;
 import java.net.Socket;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
 
 /**
  * A socket client used for making PATCH requests
@@ -21,7 +21,7 @@ import java.util.*;
 
 class SocketClient {
 
-    private static final String HTTP_VERSION = " HTTP/1.0";
+    private static final String HTTP_VERSION = " HTTP/1.1";
 
     /**
      * Opens a socket connection, then writes the PATCH request across the
@@ -47,9 +47,9 @@ class SocketClient {
     }
 
     /**
-     * Gets a String representation of the request and writes it to the output stream,
-     * then calls buildResponse to get an instance of HttpUrlConnectionResponse from the
-     * input stream
+     * Calls buildAndSend to send a String representation of the request across the output
+     * stream, then calls buildResponse to get an instance of HttpUrlConnectionResponse
+     * from the input stream
      *
      * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
      * @param socket {@link java.net.Socket} instance
@@ -57,12 +57,14 @@ class SocketClient {
      */
     private static HttpUrlConnectionResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
         httpRequest.setHeader(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
-        String request = buildPatchRequest(httpRequest);
+        if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HttpHeaderName.CONNECTION))) {
+            httpRequest.setHeader(HttpHeaderName.CONNECTION, "close");
+        }
+
         try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
              OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
 
-            out.write(request);
-            out.flush();
+            buildAndSend(httpRequest, out);
 
             HttpUrlConnectionResponse response = buildResponse(httpRequest, in);
 
@@ -73,7 +75,11 @@ class SocketClient {
                 .orElse(null);
 
             if (redirectLocation != null) {
-                httpRequest.setUrl(redirectLocation);
+                if (!redirectLocation.startsWith("http")) {
+                    httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
+                } else {
+                    httpRequest.setUrl(redirectLocation);
+                }
                 return sendPatchRequest(httpRequest);
             }
             return response;
@@ -85,9 +91,9 @@ class SocketClient {
      * over the output stream
      *
      * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
-     * @return the String representation of the HttpRequest
+     * @param out {@link java.io.OutputStreamWriter } output stream for writing the request
      */
-    private static String buildPatchRequest(HttpRequest httpRequest) {
+    private static void buildAndSend(HttpRequest httpRequest, OutputStreamWriter out) throws IOException {
         final StringBuilder request = new StringBuilder();
 
         request.append("PATCH")
@@ -97,11 +103,11 @@ class SocketClient {
             .append("\r\n");
 
         if (httpRequest.getHeaders().getSize() > 0) {
-            for (HttpHeader headerLine : httpRequest.getHeaders()) {
-                request.append(headerLine.getName())
+            for (HttpHeader header : httpRequest.getHeaders()) {
+                header.getValuesList().forEach(value -> request.append(header.getName())
                     .append(": ")
-                    .append(headerLine.getValue())
-                    .append("\r\n");
+                    .append(value)
+                    .append("\r\n"));
             }
         }
         // Add the body if there is a body to add
@@ -110,8 +116,9 @@ class SocketClient {
                 .append(httpRequest.getBodyAsBinaryData().toString())
                 .append("\r\n");
         }
-        request.append("\r\n");
-        return request.toString();
+
+        out.write(request.toString());
+        out.flush();
     }
 
     /**
@@ -127,21 +134,21 @@ class SocketClient {
         int dotIndex = statusLine.indexOf('.');
         int statusCode = Integer.parseInt(statusLine.substring(dotIndex+3, dotIndex+6));
 
-        Map<String, List<String>> headers = new HashMap<>();
+        HttpHeaders headers = new HttpHeaders();
         String line;
         while ((line = reader.readLine()) != null && !line.isEmpty()) {
             String[] kv = line.split(": ", 2);
             String k = kv[0];
             String v = kv[1];
-            headers.computeIfAbsent(k, key -> new ArrayList<>()).add(v);
+            headers.add(HttpHeaderName.fromString(k), v);
         }
 
         StringBuilder bodyString = new StringBuilder();
         while ((line = reader.readLine()) != null) {
-            bodyString.append(line).append("\n");
+            bodyString.append(line);
         }
 
-        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(bodyString.toString().getBytes()));
+        BinaryData body = BinaryData.fromByteBuffer(ByteBuffer.wrap(bodyString.toString().getBytes()));
 
         return new HttpUrlConnectionResponse(httpRequest, statusCode, headers, body);
     }
