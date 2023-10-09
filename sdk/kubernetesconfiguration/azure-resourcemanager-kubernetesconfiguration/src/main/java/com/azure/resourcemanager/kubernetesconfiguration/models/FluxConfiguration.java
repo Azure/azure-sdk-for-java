@@ -146,6 +146,22 @@ public interface FluxConfiguration {
     OffsetDateTime statusUpdatedAt();
 
     /**
+     * Gets the waitForReconciliation property: Whether flux configuration deployment should wait for cluster to
+     * reconcile the kustomizations.
+     *
+     * @return the waitForReconciliation value.
+     */
+    Boolean waitForReconciliation();
+
+    /**
+     * Gets the reconciliationWaitDuration property: Maximum duration to wait for flux configuration reconciliation. E.g
+     * PT1H, PT5M, P1D.
+     *
+     * @return the reconciliationWaitDuration value.
+     */
+    String reconciliationWaitDuration();
+
+    /**
      * Gets the complianceState property: Combined status of the Flux Kubernetes resources created by the
      * fluxConfiguration or created by the managed objects.
      *

@@ -49,7 +49,7 @@
 /sdk/attestation/azure-resourcemanager-attestation/  @azure-sdk-write-attestation @anilba06 @gkostal
 
 # PRLabel: %Batch
-/sdk/batch/                                          @jingjlii @ljiaqi1998 @JJJessieWang @dpwatrous @NickKouds
+/sdk/batch/                                          @skapur12 @wiboris @dpwatrous @NickKouds
 
 # PRLabel: %Communication
 /sdk/communication/
@@ -758,7 +758,6 @@
 ################
 /eng/                                                @hallipr @weshaggard @benbp @JimSuplizio
 /eng/code-quality-reports/                           @mssfang @JonathanGiles
-/eng/jacoco-test-coverage/                           @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/mgmt/                                           @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio

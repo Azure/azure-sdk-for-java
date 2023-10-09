@@ -18,7 +18,7 @@ public final class RecognizePiiEntitiesResultCollection extends IterableStream<R
     private final TextDocumentBatchStatistics statistics;
 
     /**
-     * Creates a {@link RecognizePiiEntitiesResultCollection} model that maintains a list of
+     * Creates a {@code RecognizePiiEntitiesResultCollection} model that maintains a list of
      * {@link RecognizePiiEntitiesResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link RecognizePiiEntitiesResult}.

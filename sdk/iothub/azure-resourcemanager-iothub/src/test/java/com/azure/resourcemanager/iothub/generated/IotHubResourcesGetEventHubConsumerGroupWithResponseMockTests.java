@@ -30,7 +30,7 @@ public final class IotHubResourcesGetEventHubConsumerGroupWithResponseMockTests 
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"ujmqlgkfbtndoa\":\"datau\",\"bjcntujitc\":\"datan\",\"twwaezkojvdcpzf\":\"dataed\",\"foxciq\":\"dataqouicybxarzgsz\"},\"etag\":\"idoamciodhkha\",\"id\":\"xkhnzbonlwnto\",\"name\":\"gokdwbwhks\",\"type\":\"zcmrvexztvb\"}";
+            "{\"properties\":{\"jcntuj\":\"datafbtndoaong\",\"ftwwaezkojvdc\":\"datatcje\",\"gszufoxciqopid\":\"datazfoqouicybxar\",\"hkh\":\"dataamcio\"},\"etag\":\"xkhnzbonlwnto\",\"id\":\"gokdwbwhks\",\"name\":\"zcmrvexztvb\",\"type\":\"qgsfraoyzkoow\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class IotHubResourcesGetEventHubConsumerGroupWithResponseMockTests 
             manager
                 .iotHubResources()
                 .getEventHubConsumerGroupWithResponse(
-                    "wjue", "aeburuvdmo", "s", "zlxwabmqoefkifr", com.azure.core.util.Context.NONE)
+                    "uwjuetaeburuvdmo", "s", "zlxwabmqoefkifr", "tpuqujmq", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

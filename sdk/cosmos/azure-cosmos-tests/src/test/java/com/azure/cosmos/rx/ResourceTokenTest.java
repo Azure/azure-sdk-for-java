@@ -5,7 +5,8 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -97,7 +98,7 @@ public class ResourceTokenTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_ResourceTokenTest() throws Exception {
         client = clientBuilder().build();
         Database d = new Database();
@@ -252,7 +253,7 @@ public class ResourceTokenTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, dataProvider = "collectionAndPermissionData", timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "collectionAndPermissionData", timeOut = TIMEOUT)
     public void readCollectionFromPermissionFeed(String collectionUrl, Permission permission) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null ;
         try {
@@ -284,7 +285,7 @@ public class ResourceTokenTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, dataProvider = "documentAndPermissionData", timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "documentAndPermissionData", timeOut = TIMEOUT)
     public void readDocumentFromPermissionFeed(String documentUrl, Permission permission, String documentId, String partitionKey) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
@@ -323,7 +324,7 @@ public class ResourceTokenTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, dataProvider = "resourceToken", timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "resourceToken", timeOut = TIMEOUT)
     public void readDocumentFromResouceToken(String resourceToken) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
@@ -354,7 +355,7 @@ public class ResourceTokenTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = {"simple"}, dataProvider = "documentAndMultipleCollPermissionData", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "documentAndMultipleCollPermissionData", timeOut = TIMEOUT)
     public void readDocumentOfParKeyFromTwoCollPermissionWithDiffPartitionKeys(String documentUrl, Permission collPermission1, Permission collPermission2, String documentId, String partitionKey) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
@@ -391,7 +392,7 @@ public class ResourceTokenTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" },dataProvider = "documentAndPermissionDataForResourceNotFound", timeOut = TIMEOUT)
+    @Test(groups = { "fast" },dataProvider = "documentAndPermissionDataForResourceNotFound", timeOut = TIMEOUT)
     public void readDocumentFromCollPermissionWithDiffPartitionKey_ResourceNotFound(String documentUrl, Permission permission, String partitionKey) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
@@ -426,7 +427,7 @@ public class ResourceTokenTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readDocumentFromCollPermissionWithDiffPartitionKey_WithException() throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
@@ -452,7 +453,7 @@ public class ResourceTokenTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, dataProvider = "queryItemPermissionData", timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "queryItemPermissionData", timeOut = TIMEOUT)
     public void queryItemFromResourceToken(DocumentCollection documentCollection, Permission permission, PartitionKey partitionKey) throws Exception {
 
         AsyncDocumentClient asyncClientResourceToken = null;
@@ -476,7 +477,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                 asyncClientResourceToken.queryDocuments(
                     documentCollection.getAltLink(),
                     "select * from c",
-                    queryRequestOptions,
+                    TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, asyncClientResourceToken),
                     Document.class);
 
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
@@ -490,7 +491,7 @@ public class ResourceTokenTest extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(client, databaseId);
         safeClose(client);

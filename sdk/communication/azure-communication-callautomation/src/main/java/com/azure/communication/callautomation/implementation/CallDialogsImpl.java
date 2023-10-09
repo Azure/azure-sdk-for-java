@@ -6,7 +6,7 @@ package com.azure.communication.callautomation.implementation;
 
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
-import com.azure.communication.callautomation.implementation.models.StartDialogRequest;
+import com.azure.communication.callautomation.implementation.models.StartDialogRequestInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -60,7 +60,7 @@ public final class CallDialogsImpl {
                 @PathParam("callConnectionId") String callConnectionId,
                 @PathParam("dialogId") String dialogId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") StartDialogRequest startDialogRequest,
+                @BodyParam("application/json") StartDialogRequestInternal startDialogRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -89,7 +89,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DialogStateResponse>> startDialogWithResponseAsync(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -117,7 +117,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DialogStateResponse>> startDialogWithResponseAsync(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest, Context context) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest, Context context) {
         final String accept = "application/json";
         return service.startDialog(
                 this.client.getEndpoint(),
@@ -142,7 +142,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DialogStateResponse> startDialogAsync(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest) {
         return startDialogWithResponseAsync(callConnectionId, dialogId, startDialogRequest)
                 .flatMap(
                         (Response<DialogStateResponse> res) -> {
@@ -168,7 +168,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DialogStateResponse> startDialogAsync(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest, Context context) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest, Context context) {
         return startDialogWithResponseAsync(callConnectionId, dialogId, startDialogRequest, context)
                 .flatMap(
                         (Response<DialogStateResponse> res) -> {
@@ -193,7 +193,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DialogStateResponse startDialog(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest) {
         return startDialogAsync(callConnectionId, dialogId, startDialogRequest).block();
     }
 
@@ -211,7 +211,7 @@ public final class CallDialogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DialogStateResponse> startDialogWithResponse(
-            String callConnectionId, String dialogId, StartDialogRequest startDialogRequest, Context context) {
+            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest, Context context) {
         return startDialogWithResponseAsync(callConnectionId, dialogId, startDialogRequest, context).block();
     }
 

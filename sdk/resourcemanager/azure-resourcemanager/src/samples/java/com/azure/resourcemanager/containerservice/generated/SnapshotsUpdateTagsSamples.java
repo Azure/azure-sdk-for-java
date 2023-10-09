@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Snapshots UpdateTags. */
 public final class SnapshotsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-07-01/examples/SnapshotsUpdateTags.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/SnapshotsUpdateTags.json
      */
     /**
      * Sample code: Update Snapshot Tags.
@@ -31,6 +31,7 @@ public final class SnapshotsUpdateTagsSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -286,6 +286,11 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public String agentPoolResourceGroup() {
+        return innerModel().nodeResourceGroup();
+    }
+
+    @Override
     public void start() {
         this.startAsync().block();
     }
@@ -653,14 +658,20 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public KubernetesCluster.DefinitionStages.WithCreate disableKubernetesRbac() {
+    public KubernetesClusterImpl disableKubernetesRbac() {
         this.innerModel().withEnableRbac(false);
         return this;
     }
 
     @Override
-    public KubernetesCluster.DefinitionStages.WithCreate withDiskEncryptionSet(String diskEncryptionSetId) {
+    public KubernetesClusterImpl withDiskEncryptionSet(String diskEncryptionSetId) {
         this.innerModel().withDiskEncryptionSetId(diskEncryptionSetId);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withAgentPoolResourceGroup(String resourceGroupName) {
+        this.innerModel().withNodeResourceGroup(resourceGroupName);
         return this;
     }
 

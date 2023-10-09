@@ -40,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EventGridPublisherClientTests extends EventGridTestBase {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
-
     private EventGridPublisherClientBuilder builder;
     private EventGridPublisherClientBuilder syncBuilder;
 
@@ -69,6 +68,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
 
         setupSanitizers();
     }
+
+
 
     @Test
     public void publishEventGridEvents() {

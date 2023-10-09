@@ -68,6 +68,20 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public DatabricksSparkPythonActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public DatabricksSparkPythonActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;

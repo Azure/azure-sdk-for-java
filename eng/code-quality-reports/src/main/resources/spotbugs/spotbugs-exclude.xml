@@ -214,7 +214,7 @@
   <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.jca.implementation.JREKeyStoreFactory"/> <!-- false positive -->
+      <Class name="com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -462,8 +462,9 @@
   <!-- The casting problems do not exist in Azure use cases -->
   <Match>
     <Or>
+      <Class name="com.azure.core.implementation.MethodHandleReflectiveInvoker"/>
+      <Class name="com.azure.core.implementation.ReflectionUtilsMethodHandle"/>
       <Class name="com.azure.core.implementation.TypeUtil"/>
-      <Class name="com.azure.core.implementation.ReflectionUtils"/>
     </Or>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
@@ -1102,6 +1103,20 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.RequestTimeline$Event"/>
     <Field name="durationInMilliSecs"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="e2ePolicyCfg"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="excludedRegions"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -2682,5 +2697,19 @@
     <Class name="com.azure.core.util.io.IOUtils"/>
     <Method name="transfer"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
+
+   <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="~com\.azure\.ai\.openai\.models\.(AudioTranscriptionOptions|AudioTranslationOptions)"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- False positive, it throws an IllegalArgumentException if non-exist method parameter type passed.-->
+  <Match>
+    <Class name="com.azure.ai.openai.implementation.MultipartDataHelper"/>
+    <Method name="serializeRequest"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 </FindBugsFilter>

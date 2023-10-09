@@ -38,7 +38,6 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
         } else if (interceptorManager.isRecordMode()) {
             pipelineBuilder.policies(interceptorManager.getRecordPolicy(), new RetryPolicy());
         }
-
         setupSanitizers();
     }
 

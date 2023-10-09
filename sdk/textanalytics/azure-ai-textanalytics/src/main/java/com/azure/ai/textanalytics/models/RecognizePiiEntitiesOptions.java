@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import java.util.Arrays;
 
 /**
- * The {@link RecognizePiiEntitiesOptions} model.
+ * The {@code RecognizePiiEntitiesOptions} model.
  */
 @Fluent
 public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptions {
@@ -17,12 +17,18 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     private Iterable<PiiEntityCategory> categoriesFilter;
 
     /**
+     * Constructs a {@code RecognizePiiEntitiesOptions} model.
+     */
+    public RecognizePiiEntitiesOptions() {
+    }
+
+    /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link RecognizePiiEntitiesOptions} object itself.
+     * @return The {@code RecognizePiiEntitiesOptions} object itself.
      */
     @Override
     public RecognizePiiEntitiesOptions setModelVersion(String modelVersion) {
@@ -38,7 +44,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return The {@link RecognizePiiEntitiesOptions} object itself.
+     * @return The {@code RecognizePiiEntitiesOptions} object itself.
      */
     @Override
     public RecognizePiiEntitiesOptions setIncludeStatistics(boolean includeStatistics) {
@@ -65,7 +71,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
      * does not log your input text. Setting this property to 'false', enables the service to log your text input for
      * 48 hours, solely to allow for troubleshooting issues.
      *
-     * @return The {@link RecognizePiiEntitiesOptions} object itself.
+     * @return The {@code RecognizePiiEntitiesOptions} object itself.
      */
     @Override
     public RecognizePiiEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
@@ -76,7 +82,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     /**
      * Gets the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
-     * See https://aka.ms/azsdk/language/pii for more information.
+     * See <a href="https://aka.ms/azsdk/language/pii">PII</a> for more information.
      *
      * @return The value of domainFilter.
      */
@@ -87,11 +93,11 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     /**
      * Sets the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
-     * See https://aka.ms/tanerpii for more information.
+     * See <a href="https://aka.ms/tanerpii">Named Entity Recognition</a> for more information.
      *
      * @param domainFilter It filters the response entities to ones only included in the specified domain.
      *
-     * @return The {@link RecognizePiiEntitiesOptions} object itself.
+     * @return The {@code RecognizePiiEntitiesOptions} object itself.
      */
     public RecognizePiiEntitiesOptions setDomainFilter(PiiEntityDomain domainFilter) {
         this.domainFilter = domainFilter;
@@ -114,7 +120,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
      *
      * @param categoriesFilter It filters the response entities to ones only included in the specified categories.
      *
-     * @return The {@link RecognizePiiEntitiesOptions} object itself.
+     * @return The {@code RecognizePiiEntitiesOptions} object itself.
      */
     public RecognizePiiEntitiesOptions setCategoriesFilter(PiiEntityCategory... categoriesFilter) {
         this.categoriesFilter = Arrays.asList(categoriesFilter);

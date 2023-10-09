@@ -121,6 +121,18 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
     private String targetProximityPlacementGroupId;
 
     /*
+     * The confidential VM key vault Id for ADE installation.
+     */
+    @JsonProperty(value = "confidentialVmKeyVaultId")
+    private String confidentialVmKeyVaultId;
+
+    /*
+     * The target VM security profile.
+     */
+    @JsonProperty(value = "targetVmSecurityProfile")
+    private VMwareCbtSecurityProfileProperties targetVmSecurityProfile;
+
+    /*
      * The target boot diagnostics storage account ARM Id.
      */
     @JsonProperty(value = "targetBootDiagnosticsStorageAccountId")
@@ -505,6 +517,47 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
     }
 
     /**
+     * Get the confidentialVmKeyVaultId property: The confidential VM key vault Id for ADE installation.
+     *
+     * @return the confidentialVmKeyVaultId value.
+     */
+    public String confidentialVmKeyVaultId() {
+        return this.confidentialVmKeyVaultId;
+    }
+
+    /**
+     * Set the confidentialVmKeyVaultId property: The confidential VM key vault Id for ADE installation.
+     *
+     * @param confidentialVmKeyVaultId the confidentialVmKeyVaultId value to set.
+     * @return the VMwareCbtEnableMigrationInput object itself.
+     */
+    public VMwareCbtEnableMigrationInput withConfidentialVmKeyVaultId(String confidentialVmKeyVaultId) {
+        this.confidentialVmKeyVaultId = confidentialVmKeyVaultId;
+        return this;
+    }
+
+    /**
+     * Get the targetVmSecurityProfile property: The target VM security profile.
+     *
+     * @return the targetVmSecurityProfile value.
+     */
+    public VMwareCbtSecurityProfileProperties targetVmSecurityProfile() {
+        return this.targetVmSecurityProfile;
+    }
+
+    /**
+     * Set the targetVmSecurityProfile property: The target VM security profile.
+     *
+     * @param targetVmSecurityProfile the targetVmSecurityProfile value to set.
+     * @return the VMwareCbtEnableMigrationInput object itself.
+     */
+    public VMwareCbtEnableMigrationInput withTargetVmSecurityProfile(
+        VMwareCbtSecurityProfileProperties targetVmSecurityProfile) {
+        this.targetVmSecurityProfile = targetVmSecurityProfile;
+        return this;
+    }
+
+    /**
      * Get the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
      *
      * @return the targetBootDiagnosticsStorageAccountId value.
@@ -670,6 +723,9 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetNetworkId in model VMwareCbtEnableMigrationInput"));
+        }
+        if (targetVmSecurityProfile() != null) {
+            targetVmSecurityProfile().validate();
         }
     }
 
