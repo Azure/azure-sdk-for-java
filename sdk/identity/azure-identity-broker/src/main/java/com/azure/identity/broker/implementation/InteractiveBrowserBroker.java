@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.brokeredauthentication;
+package com.azure.identity.broker.implementation;
 
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4jbrokers.MsalRuntimeBroker;

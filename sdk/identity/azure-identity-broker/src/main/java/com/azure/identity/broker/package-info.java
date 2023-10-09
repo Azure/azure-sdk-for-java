@@ -5,4 +5,4 @@
  * <p>The Azure Identity Brokered Authentication library offers support for using various support brokers from the
  * MSAL4j library.</p>
  */
-package com.azure.identity.brokeredauthentication;
+package com.azure.identity.broker;

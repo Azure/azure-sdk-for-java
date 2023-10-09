@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-identity-brokeredauthentication</artifactId>
+  <artifactId>azure-identity-broker</artifactId>
   <version>1.0.0-beta.1</version><!-- {x-version-update;com.azure:azure-identity-brokeredauthentication;current} -->
 
   <name>Microsoft Azure Identity Brokered Authentication Library</name>
@@ -42,14 +42,19 @@
       <version>1.13.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.11.0-beta.1</version>
+    </dependency>
+    <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.14.1-beta</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.99.0-beta</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j-brokers</artifactId>
-      <version>1.0.2-beta</version> <!-- {x-version-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
+      <version>1.99.1-beta</version> <!-- {x-version-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -102,8 +107,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:msal4j:[1.14.1-beta]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
-                <include>com.microsoft.azure:msal4j-brokers:[1.0.2-beta]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.99.0-beta]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j-brokers:[1.99.1-beta]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
