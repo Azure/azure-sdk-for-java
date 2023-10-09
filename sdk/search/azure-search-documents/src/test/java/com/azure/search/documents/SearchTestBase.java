@@ -71,6 +71,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
+
+
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 

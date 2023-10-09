@@ -56,11 +56,13 @@ import static org.junit.jupiter.api.Assertions.fail;
  * This class contains helper methods for running Azure Cognitive Search tests.
  */
 public final class TestHelpers {
-    private static final TestMode TEST_MODE = setupTestMode();
+    private static TestMode TEST_MODE;
 
     private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     public static final String HOTEL_INDEX_NAME = "hotels";
+
+
 
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
@@ -297,6 +299,7 @@ public final class TestHelpers {
     }
 
     public static void sleepIfRunningAgainstService(long millis) {
+        setupTestMode();
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
         }

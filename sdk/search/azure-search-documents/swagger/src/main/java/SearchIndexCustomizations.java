@@ -58,7 +58,6 @@ public class SearchIndexCustomizations extends Customization {
         customizeAutocompleteOptions(packageCustomization.getClass("AutocompleteOptions"));
         customizeSuggestOptions(packageCustomization.getClass("SuggestOptions"));
         customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
-        customizeSearchQueryVector(packageCustomization.getClass("SearchQueryVector"));
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
