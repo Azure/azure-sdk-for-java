@@ -130,26 +130,32 @@
   ],
   "outputs": {
     "ACCOUNT_HOST": {
+      "condition": "[variables('notSkipCondition')]",
       "type": "string",
       "value": "[reference(variables('resourceId'), variables('apiVersion')).documentEndpoint]"
     },
     "ACCOUNT_KEY": {
+      "condition": "[variables('notSkipCondition')]",
       "type": "string",
       "value": "[listKeys(variables('resourceId'), variables('apiVersion')).primaryMasterKey]"
     },
     "SECONDARY_ACCOUNT_KEY": {
+      "condition": "[variables('notSkipCondition')]",
       "type": "string",
       "value": "[listKeys(variables('resourceId'), variables('apiVersion')).secondaryMasterKey]"
     },
     "NEW_ACCOUNT_HOST": {
+      "condition": "[variables('notSkipCondition')]",
       "type": "string",
       "value": "[reference(variables('newResourceId'), variables('apiVersion')).documentEndpoint]"
     },
     "NEW_ACCOUNT_KEY": {
+      "condition": "[variables('notSkipCondition')]",
       "type": "string",
       "value": "[listKeys(variables('newResourceId'), variables('apiVersion')).primaryMasterKey]"
     },
     "NEW_SECONDARY_ACCOUNT_KEY": {
+      "condition": "[variables('notSkipCondition')]",
       "type": "string",
       "value": "[listKeys(variables('newResourceId'), variables('apiVersion')).secondaryMasterKey]"
     }
