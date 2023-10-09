@@ -90,6 +90,8 @@ public class FaultInjectionServerErrorResultInternal {
                 responseHeaders.put(
                     HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
                     String.valueOf(500));
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE));
                 cosmosException = new RequestRateTooLargeException(null, lsn, partitionKeyRangeId, responseHeaders);
 
                 break;
