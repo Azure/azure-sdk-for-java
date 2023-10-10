@@ -17,29 +17,29 @@ public final class UserSessionInnerTests {
         UserSessionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"objectId\":\"jswsrmslyz\",\"userPrincipalName\":\"zbchckqqzqioxiy\",\"applicationType\":\"Desktop\",\"sessionState\":\"Unknown\",\"activeDirectoryUserName\":\"nkedyatrwyhqmib\",\"createTime\":\"2021-06-15T22:18:06Z\"},\"id\":\"wit\",\"name\":\"mypyynpcdpu\",\"type\":\"nzgmwznmabik\"}")
+                    "{\"properties\":{\"objectId\":\"hneuyowqkd\",\"userPrincipalName\":\"t\",\"applicationType\":\"RemoteApp\",\"sessionState\":\"Pending\",\"activeDirectoryUserName\":\"cgpik\",\"createTime\":\"2021-11-09T05:31:13Z\"},\"id\":\"mejzanlfzxia\",\"name\":\"rmbzo\",\"type\":\"okixrjqcir\"}")
                 .toObject(UserSessionInner.class);
-        Assertions.assertEquals("zbchckqqzqioxiy", model.userPrincipalName());
-        Assertions.assertEquals(ApplicationType.DESKTOP, model.applicationType());
-        Assertions.assertEquals(SessionState.UNKNOWN, model.sessionState());
-        Assertions.assertEquals("nkedyatrwyhqmib", model.activeDirectoryUsername());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T22:18:06Z"), model.createTime());
+        Assertions.assertEquals("t", model.userPrincipalName());
+        Assertions.assertEquals(ApplicationType.REMOTE_APP, model.applicationType());
+        Assertions.assertEquals(SessionState.PENDING, model.sessionState());
+        Assertions.assertEquals("cgpik", model.activeDirectoryUsername());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T05:31:13Z"), model.createTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserSessionInner model =
             new UserSessionInner()
-                .withUserPrincipalName("zbchckqqzqioxiy")
-                .withApplicationType(ApplicationType.DESKTOP)
-                .withSessionState(SessionState.UNKNOWN)
-                .withActiveDirectoryUsername("nkedyatrwyhqmib")
-                .withCreateTime(OffsetDateTime.parse("2021-06-15T22:18:06Z"));
+                .withUserPrincipalName("t")
+                .withApplicationType(ApplicationType.REMOTE_APP)
+                .withSessionState(SessionState.PENDING)
+                .withActiveDirectoryUsername("cgpik")
+                .withCreateTime(OffsetDateTime.parse("2021-11-09T05:31:13Z"));
         model = BinaryData.fromObject(model).toObject(UserSessionInner.class);
-        Assertions.assertEquals("zbchckqqzqioxiy", model.userPrincipalName());
-        Assertions.assertEquals(ApplicationType.DESKTOP, model.applicationType());
-        Assertions.assertEquals(SessionState.UNKNOWN, model.sessionState());
-        Assertions.assertEquals("nkedyatrwyhqmib", model.activeDirectoryUsername());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T22:18:06Z"), model.createTime());
+        Assertions.assertEquals("t", model.userPrincipalName());
+        Assertions.assertEquals(ApplicationType.REMOTE_APP, model.applicationType());
+        Assertions.assertEquals(SessionState.PENDING, model.sessionState());
+        Assertions.assertEquals("cgpik", model.activeDirectoryUsername());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T05:31:13Z"), model.createTime());
     }
 }

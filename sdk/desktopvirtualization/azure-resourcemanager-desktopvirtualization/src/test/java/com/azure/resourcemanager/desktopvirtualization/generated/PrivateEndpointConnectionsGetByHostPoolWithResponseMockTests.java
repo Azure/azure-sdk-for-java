@@ -12,10 +12,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager;
-import com.azure.resourcemanager.desktopvirtualization.models.SessionHost;
-import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatch;
-import com.azure.resourcemanager.desktopvirtualization.models.Status;
-import com.azure.resourcemanager.desktopvirtualization.models.UpdateState;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnectionWithSystemData;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointServiceConnectionStatus;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -26,15 +24,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class SessionHostsUpdateWithResponseMockTests {
+public final class PrivateEndpointConnectionsGetByHostPoolWithResponseMockTests {
     @Test
-    public void testUpdateWithResponse() throws Exception {
+    public void testGetByHostPoolWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectId\":\"abzmifrygznmmaxr\",\"lastHeartBeat\":\"2021-09-23T07:11:23Z\",\"sessions\":1319720374,\"agentVersion\":\"gopxlhslnelxie\",\"allowNewSession\":false,\"virtualMachineId\":\"llxecwc\",\"resourceId\":\"jphslhcaw\",\"assignedUser\":\"tifdwfmvi\",\"friendlyName\":\"rqjb\",\"status\":\"Unavailable\",\"statusTimestamp\":\"2021-01-25T09:16:29Z\",\"osVersion\":\"glka\",\"sxSStackVersion\":\"onqjujeickpzvcpo\",\"updateState\":\"Started\",\"lastUpdateTime\":\"2021-06-08T11:40:30Z\",\"updateErrorMessage\":\"wcltyjede\",\"sessionHostHealthCheckResults\":[]},\"id\":\"lfmk\",\"name\":\"scazuawxtzxpu\",\"type\":\"mwabzxrvxc\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"ihsgq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ohsdtmcd\",\"actionsRequired\":\"ufcohdxbz\"},\"provisioningState\":\"Deleting\"},\"id\":\"muapcvhdbevw\",\"name\":\"qxeysko\",\"type\":\"qzinkfkbg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,31 +60,17 @@ public final class SessionHostsUpdateWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SessionHost response =
+        PrivateEndpointConnectionWithSystemData response =
             manager
-                .sessionHosts()
-                .updateWithResponse(
-                    "qnmcjngzqdqx",
-                    "bjwgnyfus",
-                    "zsvtuikzhajqgl",
-                    false,
-                    new SessionHostPatch()
-                        .withAllowNewSession(false)
-                        .withAssignedUser("qryxyn")
-                        .withFriendlyName("zrdpsovwxznptgoe"),
-                    com.azure.core.util.Context.NONE)
+                .privateEndpointConnections()
+                .getByHostPoolWithResponse(
+                    "jltfvnzcyjtotpv", "pvpbdbzqgqqiheds", "qwthmky", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T07:11:23Z"), response.lastHeartBeat());
-        Assertions.assertEquals(1319720374, response.sessions());
-        Assertions.assertEquals("gopxlhslnelxie", response.agentVersion());
-        Assertions.assertEquals(false, response.allowNewSession());
-        Assertions.assertEquals("tifdwfmvi", response.assignedUser());
-        Assertions.assertEquals("rqjb", response.friendlyName());
-        Assertions.assertEquals(Status.UNAVAILABLE, response.status());
-        Assertions.assertEquals("glka", response.osVersion());
-        Assertions.assertEquals("onqjujeickpzvcpo", response.sxSStackVersion());
-        Assertions.assertEquals(UpdateState.STARTED, response.updateState());
-        Assertions.assertEquals("wcltyjede", response.updateErrorMessage());
+        Assertions
+            .assertEquals(
+                PrivateEndpointServiceConnectionStatus.REJECTED, response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("ohsdtmcd", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("ufcohdxbz", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 /** Samples for ScalingPlans GetByResourceGroup. */
 public final class ScalingPlansGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/ScalingPlan_Get.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlan_Get.json
      */
     /**
      * Sample code: ScalingPlans_Get.
