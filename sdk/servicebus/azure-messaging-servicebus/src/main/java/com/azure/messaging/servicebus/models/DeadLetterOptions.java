@@ -31,6 +31,12 @@ public final class DeadLetterOptions extends SettlementOptions {
     private Map<String, Object> propertiesToModify;
 
     /**
+     * Creates a new instance of options to specify when sending messages to the dead-letter queue (DLQ).
+     */
+    public DeadLetterOptions() {
+    }
+
+    /**
      * Sets the reason while putting message in dead letter sub-queue.
      *
      * @param deadLetterReason while putting message in dead letter sub-queue.
