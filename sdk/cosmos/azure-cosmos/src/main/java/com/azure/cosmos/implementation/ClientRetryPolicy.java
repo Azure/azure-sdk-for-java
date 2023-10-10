@@ -152,6 +152,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE)) {
 
             boolean isWebExceptionRetriable = WebExceptionUtility.isWebExceptionRetriable(e);
+            boolean isSDKGeneratedSubStatus = Exceptions.isSDKGeneratedSubStatus(clientException);
             logger.warn(
                 "Service unavailable - IsReadRequest {}, IsWebExceptionRetriable {}, NonIdempotentWriteRetriesEnabled {}",
                 this.isReadRequest,
@@ -162,7 +163,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return this.shouldRetryOnBackendServiceUnavailableAsync(
                 this.isReadRequest,
                 isWebExceptionRetriable,
-                this.request.getNonIdempotentWriteRetriesEnabled());
+                this.request.getNonIdempotentWriteRetriesEnabled(),
+                isSDKGeneratedSubStatus);
         }
 
         return this.throttlingRetry.shouldRetry(e);
@@ -299,11 +301,13 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private Mono<ShouldRetryResult> shouldRetryOnBackendServiceUnavailableAsync(
         boolean isReadRequest,
         boolean isWebExceptionRetriable,
-        boolean nonIdempotentWriteRetriesEnabled) {
+        boolean nonIdempotentWriteRetriesEnabled,
+        boolean isSDKGeneratedSubStatus) {
 
-        if (!isReadRequest && !nonIdempotentWriteRetriesEnabled && !isWebExceptionRetriable) {
+        if (!isReadRequest && !nonIdempotentWriteRetriesEnabled && !isWebExceptionRetriable && !isSDKGeneratedSubStatus) {
             logger.warn(
-                "shouldRetryOnBackendServiceUnavailableAsync() Not retrying on write with non retriable exception. Retry count = {}",
+                "shouldRetryOnBackendServiceUnavailableAsync() Not retrying" +
+                    " on write with non retriable exception and non server returned service unavailable. Retry count = {}",
                 this.serviceUnavailableRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }

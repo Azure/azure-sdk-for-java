@@ -54,4 +54,8 @@ public class Exceptions {
         return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.NOTFOUND) &&
             Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH);
     }
+
+    public static boolean isSDKGeneratedSubStatus(CosmosException cosmosException) {
+        return cosmosException.getSubStatusCode() > 20000;
+    }
 }
