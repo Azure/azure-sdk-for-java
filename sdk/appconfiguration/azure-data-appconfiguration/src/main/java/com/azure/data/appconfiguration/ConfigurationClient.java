@@ -293,7 +293,6 @@ public final class ConfigurationClient {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClient.class);
     private final AzureAppConfigurationImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
-
     final CreateSnapshotUtilClient createSnapshotUtilClient;
 
     /**
