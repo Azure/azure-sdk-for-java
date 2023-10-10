@@ -433,6 +433,7 @@ com.azure.resourcemanager:azure-resourcemanager-hybridconnectivity;1.0.0;1.1.0-b
 com.azure.resourcemanager:azure-resourcemanager-playwrighttesting;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
+com.azure:client-core-gen;1.0.0;1.0.0
 com.client:client-core;1.43.0;1.44.0-beta.1
 com.client:client-core-http-netty;1.13.7;1.14.0-beta.2
 com.client:client-json;1.1.0;1.2.0-beta.1

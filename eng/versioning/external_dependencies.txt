@@ -114,6 +114,7 @@ redis.clients:jedis;4.3.1
 io.lettuce:lettuce-core;6.2.0.RELEASE
 org.redisson:redisson;3.17.0
 net.bytebuddy:byte-buddy;1.12.23
+org.openrewrite.maven:rewrite-maven-plugin;5.6.0
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.7.14

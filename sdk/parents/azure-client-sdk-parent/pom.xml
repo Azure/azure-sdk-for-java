@@ -1669,7 +1669,7 @@
           <plugin>
             <groupId>org.openrewrite.maven</groupId>
             <artifactId>rewrite-maven-plugin</artifactId>
-            <version>5.6.0</version>
+            <version>5.6.0</version> <!-- {x-version-update;org.openrewrite.maven:rewrite-maven-plugin;external_dependency} -->
             <configuration>
               <activeRecipes>
                 <recipe>com.client.core.gen</recipe>
@@ -1678,7 +1678,7 @@
             <dependencies>
               <dependency>
                 <groupId>com.azure</groupId>
-                <artifactId>client-core-gen</artifactId>
+                <artifactId>client-core-gen</artifactId> <!-- {x-version-update;com.azure:client-core-gen;current} -->
                 <version>1.0.0</version>
               </dependency>
             </dependencies>
