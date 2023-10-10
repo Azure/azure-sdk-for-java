@@ -1,4 +1,4 @@
-package com.azure.android.samples;
+package com.azure.android;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
-import com.azure.android.BuildConfig;
 import com.azure.android.appconfiguration.ConditionalRequestAsync;
 import com.azure.android.appconfiguration.HelloWorld;
 import com.azure.android.appconfiguration.SecretReferenceConfigurationSettingSample;
@@ -17,7 +16,7 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 @RunWith(AndroidJUnit4.class)
-public class AppConfigurationTests {
+public class AppConfigurationSampleTests {
     final String appconfigEndpoint = "https://android-app-configuration.azconfig.io";
     ClientSecretCredential clientSecretCredential;
     @Before

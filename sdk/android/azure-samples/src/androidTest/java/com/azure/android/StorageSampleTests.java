@@ -1,10 +1,9 @@
-package com.azure.android.samples;
+package com.azure.android;
 
 import static org.junit.Assert.fail;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.azure.android.BuildConfig;
 import com.azure.android.storage.BasicExample;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -16,7 +15,7 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 
 @RunWith(AndroidJUnit4.class)
-public class StorageTests {
+public class StorageSampleTests {
     final String storageAccountName = "androidazsdkstorage";
 
     ClientSecretCredential clientSecretCredential;

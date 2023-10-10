@@ -1,12 +1,12 @@
-package com.azure.android.samples;
+package com.azure.android;
 
 import static org.junit.Assert.fail;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.azure.android.BuildConfig;
-import com.azure.android.keyvault.keys.HelloWorldKeyvaultKeys;
-import com.azure.android.keyvault.keys.KeyRotationAsyncKeyvaultKeys;
+import com.azure.android.keyvault.certificates.HelloWorldKeyvaultCertificates;
+import com.azure.android.keyvault.certificates.ListOperationsKeyvaultCertificates;
+import com.azure.android.keyvault.certificates.ManagingDeletedCertificatesAsyncKeyvaultCertificates;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class KeyvaultKeysTests {
+public class KeyvaultCertificatesSampleTests {
     final String keyvaultEndpoint = "https://android-key-vault.vault.azure.net/";
 
     ClientSecretCredential clientSecretCredential;
@@ -33,30 +33,25 @@ public class KeyvaultKeysTests {
     @Test
     public void helloWorld() {
         try {
-            HelloWorldKeyvaultKeys.main(keyvaultEndpoint, clientSecretCredential);
+            HelloWorldKeyvaultCertificates.main(keyvaultEndpoint, clientSecretCredential);
         } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }
-
     @Test
-    public void keyRotationAsync() {
+    public void listOperations() {
         try {
-            KeyRotationAsyncKeyvaultKeys.main(keyvaultEndpoint, clientSecretCredential);
-        } catch (RuntimeException | InterruptedException e) {
+            ListOperationsKeyvaultCertificates.main(keyvaultEndpoint, clientSecretCredential);
+        } catch (RuntimeException e) {
             fail();
         }
     }
-
-    /* commented out pending key-id being obtained to put in this
     @Test
-    public void keyWrapUnwrapOperations() {
+    public void managingDeletedCertificatesAsync() {
         try {
-            KeyWrapUnwrapOperationsKeyvaultKeys.main(keyvaultEndpoint, clientSecretCredential);
+            ManagingDeletedCertificatesAsyncKeyvaultCertificates.main(keyvaultEndpoint, clientSecretCredential);
         } catch (RuntimeException | InterruptedException e) {
             fail();
         }
-
     }
-    */
 }
