@@ -3,6 +3,8 @@
 
 package com.azure.android.keyvault.secrets;
 
+import android.util.Log;
+
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.ClientSecretCredential;
@@ -31,6 +33,8 @@ public class BackupAndRestoreOperationsKeyvaultSecrets {
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      * @throws IOException when writing backup to file is unsuccessful.
      */
+    private static final String TAG = "BackupRestoreSecret";
+
     public static void main(String endpoint, ClientSecretCredential clientSecretCredential) throws IOException, InterruptedException, IllegalArgumentException {
         /* Instantiate a SecretClient that will be used to call the service. Notice that the client is using default
         Azure credentials. For more information on this and other types of credentials, see this document:
@@ -66,8 +70,8 @@ public class BackupAndRestoreOperationsKeyvaultSecrets {
         PollResponse<DeletedSecret>  pollResponse = deletedStorageSecretPoller.poll();
         DeletedSecret deletedStorageSecret = pollResponse.getValue();
 
-        System.out.println("Deleted Date %s" + deletedStorageSecret.getDeletedOn().toString());
-        System.out.printf("Deleted Secret's Recovery Id %s", deletedStorageSecret.getRecoveryId());
+        Log.i(TAG, String.format("Deleted Date %s", deletedStorageSecret.getDeletedOn().toString()));
+        Log.i(TAG, String.format("Deleted Secret's Recovery Id %s", deletedStorageSecret.getRecoveryId()));
 
         // Secret is being deleted on server.
         deletedStorageSecretPoller.waitForCompletion();
@@ -99,7 +103,7 @@ public class BackupAndRestoreOperationsKeyvaultSecrets {
             OutputStream os = new FileOutputStream(file);
             os.write(bytes);
 
-            System.out.println("Successfully wrote backup to file.");
+            Log.i(TAG, "Successfully wrote backup to file.");
 
             // Close the file
             os.close();

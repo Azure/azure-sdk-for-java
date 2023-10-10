@@ -3,6 +3,8 @@
 
 package com.azure.android.keyvault.secrets;
 
+import android.util.Log;
+
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
@@ -23,6 +25,8 @@ public class ListOperationsAsyncKeyvaultSecrets {
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
+    private static final String TAG = "ListKeySecrets";
+
     public static void main(String endpoint, ClientSecretCredential clientSecretCredential) throws InterruptedException {
         /* Instantiate a SecretAsyncClient that will be used to call the service. Notice that the client is using
         default Azure credentials. For more information on this and other types of credentials, see this document:
@@ -43,8 +47,8 @@ public class ListOperationsAsyncKeyvaultSecrets {
                 .setProperties(new SecretProperties()
                     .setExpiresOn(OffsetDateTime.now().plusYears(1))))
             .subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(),
-                    secretResponse.getValue()));
+                    Log.i(TAG, String.format("Secret is created with name %s and value %s \n", secretResponse.getName(),
+                    secretResponse.getValue())));
 
         Thread.sleep(2000);
 
@@ -52,7 +56,7 @@ public class ListOperationsAsyncKeyvaultSecrets {
                 .setProperties(new SecretProperties()
                     .setExpiresOn(OffsetDateTime.now().plusYears(1))))
             .subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
+                    Log.i(TAG, String.format("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue())));
 
         Thread.sleep(2000);
 
@@ -63,8 +67,8 @@ public class ListOperationsAsyncKeyvaultSecrets {
             .subscribe(secret ->
                 secretAsyncClient.getSecret(secret.getName(), secret.getVersion())
                     .subscribe(secretResponse ->
-                        System.out.printf("Received secret with name %s and value %s \n", secretResponse.getName(),
-                            secretResponse.getValue())));
+                            Log.i(TAG, String.format("Received secret with name %s and value %s \n", secretResponse.getName(),
+                            secretResponse.getValue()))));
 
         Thread.sleep(15000);
 
@@ -75,8 +79,8 @@ public class ListOperationsAsyncKeyvaultSecrets {
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))))
             .subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(),
-                    secretResponse.getValue()));
+                    Log.i(TAG, String.format("Secret is created with name %s and value %s \n", secretResponse.getName(),
+                    secretResponse.getValue())));
 
         Thread.sleep(2000);
 
@@ -86,8 +90,8 @@ public class ListOperationsAsyncKeyvaultSecrets {
             .subscribe(secret ->
                 secretAsyncClient.getSecret(secret.getName(), secret.getVersion())
                     .subscribe(secretResponse ->
-                        System.out.printf("Received secret's version with name %s and value %s \n",
-                            secretResponse.getName(), secretResponse.getValue())));
+                            Log.i(TAG, String.format("Received secret's version with name %s and value %s \n",
+                            secretResponse.getName(), secretResponse.getValue()))));
 
         Thread.sleep(15000);
     }
