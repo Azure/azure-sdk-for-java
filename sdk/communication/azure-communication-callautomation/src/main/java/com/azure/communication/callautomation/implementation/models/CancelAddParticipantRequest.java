@@ -7,14 +7,14 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The remove participant by identifier request. */
+/** Request payload for cancelling add participant request. */
 @Fluent
-public final class RemoveParticipantRequestInternal {
+public final class CancelAddParticipantRequest {
     /*
-     * The participants to be removed from the call.
+     * Invitation ID used to add a participant.
      */
-    @JsonProperty(value = "participantToRemove", required = true)
-    private CommunicationIdentifierModel participantToRemove;
+    @JsonProperty(value = "invitationId", required = true)
+    private String invitationId;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
@@ -28,26 +28,26 @@ public final class RemoveParticipantRequestInternal {
     @JsonProperty(value = "overrideCallbackUri")
     private String overrideCallbackUri;
 
-    /** Creates an instance of RemoveParticipantRequestInternal class. */
-    public RemoveParticipantRequestInternal() {}
+    /** Creates an instance of CancelAddParticipantRequest class. */
+    public CancelAddParticipantRequest() {}
 
     /**
-     * Get the participantToRemove property: The participants to be removed from the call.
+     * Get the invitationId property: Invitation ID used to add a participant.
      *
-     * @return the participantToRemove value.
+     * @return the invitationId value.
      */
-    public CommunicationIdentifierModel getParticipantToRemove() {
-        return this.participantToRemove;
+    public String getInvitationId() {
+        return this.invitationId;
     }
 
     /**
-     * Set the participantToRemove property: The participants to be removed from the call.
+     * Set the invitationId property: Invitation ID used to add a participant.
      *
-     * @param participantToRemove the participantToRemove value to set.
-     * @return the RemoveParticipantRequestInternal object itself.
+     * @param invitationId the invitationId value to set.
+     * @return the CancelAddParticipantRequest object itself.
      */
-    public RemoveParticipantRequestInternal setParticipantToRemove(CommunicationIdentifierModel participantToRemove) {
-        this.participantToRemove = participantToRemove;
+    public CancelAddParticipantRequest setInvitationId(String invitationId) {
+        this.invitationId = invitationId;
         return this;
     }
 
@@ -66,9 +66,9 @@ public final class RemoveParticipantRequestInternal {
      * the response event.
      *
      * @param operationContext the operationContext value to set.
-     * @return the RemoveParticipantRequestInternal object itself.
+     * @return the CancelAddParticipantRequest object itself.
      */
-    public RemoveParticipantRequestInternal setOperationContext(String operationContext) {
+    public CancelAddParticipantRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -86,9 +86,9 @@ public final class RemoveParticipantRequestInternal {
      * Set the overrideCallbackUri property: The callback URI to override the main callback URI.
      *
      * @param overrideCallbackUri the overrideCallbackUri value to set.
-     * @return the RemoveParticipantRequestInternal object itself.
+     * @return the CancelAddParticipantRequest object itself.
      */
-    public RemoveParticipantRequestInternal setOverrideCallbackUri(String overrideCallbackUri) {
+    public CancelAddParticipantRequest setOverrideCallbackUri(String overrideCallbackUri) {
         this.overrideCallbackUri = overrideCallbackUri;
         return this;
     }

@@ -8,6 +8,8 @@ import com.azure.communication.callautomation.implementation.models.AddParticipa
 import com.azure.communication.callautomation.implementation.models.AddParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
+import com.azure.communication.callautomation.implementation.models.CancelAddParticipantRequest;
+import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
@@ -158,6 +160,19 @@ public final class CallConnectionsImpl {
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") MuteParticipantsRequestInternal muteParticipantsRequest,
+                @HeaderParam("Accept") String accept,
+                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}/participants:cancelAddParticipant")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<CancelAddParticipantResponse>> cancelAddParticipant(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") CancelAddParticipantRequest cancelAddParticipantRequest,
                 @HeaderParam("Accept") String accept,
                 @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
                 @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
@@ -1156,6 +1171,133 @@ public final class CallConnectionsImpl {
     public MuteParticipantsResultInternal mute(
             String callConnectionId, MuteParticipantsRequestInternal muteParticipantsRequest) {
         return muteWithResponse(callConnectionId, muteParticipantsRequest, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancel add participant operation.
+     *
+     * @param callConnectionId The call connection Id.
+     * @param cancelAddParticipantRequest Cancellation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload for cancel add participant request along with {@link Response} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CancelAddParticipantResponse>> cancelAddParticipantWithResponseAsync(
+            String callConnectionId, CancelAddParticipantRequest cancelAddParticipantRequest) {
+        final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
+        return FluxUtil.withContext(
+                context ->
+                        service.cancelAddParticipant(
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                this.client.getApiVersion(),
+                                cancelAddParticipantRequest,
+                                accept,
+                                repeatabilityRequestId,
+                                repeatabilityFirstSent,
+                                context));
+    }
+
+    /**
+     * Cancel add participant operation.
+     *
+     * @param callConnectionId The call connection Id.
+     * @param cancelAddParticipantRequest Cancellation request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload for cancel add participant request along with {@link Response} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CancelAddParticipantResponse>> cancelAddParticipantWithResponseAsync(
+            String callConnectionId, CancelAddParticipantRequest cancelAddParticipantRequest, Context context) {
+        final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
+        return service.cancelAddParticipant(
+                this.client.getEndpoint(),
+                callConnectionId,
+                this.client.getApiVersion(),
+                cancelAddParticipantRequest,
+                accept,
+                repeatabilityRequestId,
+                repeatabilityFirstSent,
+                context);
+    }
+
+    /**
+     * Cancel add participant operation.
+     *
+     * @param callConnectionId The call connection Id.
+     * @param cancelAddParticipantRequest Cancellation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload for cancel add participant request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CancelAddParticipantResponse> cancelAddParticipantAsync(
+            String callConnectionId, CancelAddParticipantRequest cancelAddParticipantRequest) {
+        return cancelAddParticipantWithResponseAsync(callConnectionId, cancelAddParticipantRequest)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancel add participant operation.
+     *
+     * @param callConnectionId The call connection Id.
+     * @param cancelAddParticipantRequest Cancellation request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload for cancel add participant request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CancelAddParticipantResponse> cancelAddParticipantAsync(
+            String callConnectionId, CancelAddParticipantRequest cancelAddParticipantRequest, Context context) {
+        return cancelAddParticipantWithResponseAsync(callConnectionId, cancelAddParticipantRequest, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Cancel add participant operation.
+     *
+     * @param callConnectionId The call connection Id.
+     * @param cancelAddParticipantRequest Cancellation request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload for cancel add participant request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CancelAddParticipantResponse> cancelAddParticipantWithResponse(
+            String callConnectionId, CancelAddParticipantRequest cancelAddParticipantRequest, Context context) {
+        return cancelAddParticipantWithResponseAsync(callConnectionId, cancelAddParticipantRequest, context).block();
+    }
+
+    /**
+     * Cancel add participant operation.
+     *
+     * @param callConnectionId The call connection Id.
+     * @param cancelAddParticipantRequest Cancellation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response payload for cancel add participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CancelAddParticipantResponse cancelAddParticipant(
+            String callConnectionId, CancelAddParticipantRequest cancelAddParticipantRequest) {
+        return cancelAddParticipantWithResponse(callConnectionId, cancelAddParticipantRequest, Context.NONE).getValue();
     }
 
     /**

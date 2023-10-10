@@ -3,19 +3,11 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsResultInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
-import com.azure.communication.callautomation.models.AddParticipantOptions;
-import com.azure.communication.callautomation.models.AddParticipantResult;
-import com.azure.communication.callautomation.models.CallConnectionProperties;
-import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.MuteParticipantResult;
-import com.azure.communication.callautomation.models.RemoveParticipantOptions;
-import com.azure.communication.callautomation.models.RemoveParticipantResult;
-import com.azure.communication.callautomation.models.TransferCallResult;
-import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
+import com.azure.communication.callautomation.models.*;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.exception.HttpResponseException;
@@ -179,6 +171,25 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    public void transferToParticipantCallWithResponseWithTrasferee() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new TransferCallResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        TransferCallToParticipantOptions transferCallToParticipantOptions = new TransferCallToParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
+            .setOperationContext(CALL_OPERATION_CONTEXT)
+            .setTransferee(new CommunicationUserIdentifier(CALL_TRANSFEREE_ID));
+        Response<TransferCallResult> transferCallResultResponse = callConnectionAsync.transferCallToParticipantWithResponse(transferCallToParticipantOptions).block();
+
+        assertNotNull(transferCallResultResponse);
+        assertEquals(202, transferCallResultResponse.getStatusCode());
+        assertNotNull(transferCallResultResponse.getValue());
+    }
+
+    @Test
     public void addParticipants() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
@@ -288,5 +299,48 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
 
         assertThrows(HttpResponseException.class, () ->  callConnectionAsync.muteParticipant(
             new PhoneNumberIdentifier("+11234567890")).block());
+    }
+
+
+    @Test
+    public void cancelAddParticipant() {
+        String invitationId = "invitationId";
+
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new CancelAddParticipantResponse()
+                    .setInvitationId(invitationId)
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        CancelAddParticipantResult result = callConnectionAsync.cancelAddParticipant(invitationId).block();
+
+        assertNotNull(result);
+        assertEquals(CALL_OPERATION_CONTEXT, result.getOperationContext());
+        assertEquals(invitationId, result.getInvitationId());
+    }
+
+    @Test
+    public void cancelAddParticipantWithResponse() {
+        String invitationId = "invitationId";
+
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new CancelAddParticipantResponse()
+                    .setInvitationId(invitationId)
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        CancelAddParticipantOptions options = new CancelAddParticipantOptions(invitationId)
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<CancelAddParticipantResult> response = callConnectionAsync.cancelAddParticipantWithResponse(
+            options).block();
+
+
+        assertNotNull(response);
+        assertEquals(202, response.getStatusCode());
+        assertNotNull(response.getValue());
     }
 }

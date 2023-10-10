@@ -6,8 +6,10 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.implementation.models.SendDtmfTonesResultInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
+import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.VoiceKind;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
@@ -29,6 +31,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.communication.callautomation.CallAutomationUnitTestBase.CALL_OPERATION_CONTEXT;
+import static com.azure.communication.callautomation.CallAutomationUnitTestBase.OVERRIDE_CALL_CALLBACK_URL;
 import static com.azure.communication.callautomation.CallAutomationUnitTestBase.serializeObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -128,10 +131,9 @@ public class CallMediaUnitTests {
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
             );
         callMedia = callConnection.getCallMedia();
-        Response<Void> response = callMedia.startContinuousDtmfRecognitionWithResponse(
-            new CommunicationUserIdentifier("id"),
-            CALL_OPERATION_CONTEXT, Context.NONE
-        );
+        ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
+        options.setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<Void> response = callMedia.startContinuousDtmfRecognitionWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 200);
     }
 
@@ -143,10 +145,10 @@ public class CallMediaUnitTests {
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
             );
         callMedia = callConnection.getCallMedia();
-        Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(
-            new CommunicationUserIdentifier("id"),
-            CALL_OPERATION_CONTEXT, Context.NONE
-        );
+        ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
+        options.setOperationContext(CALL_OPERATION_CONTEXT);
+        options.setOverrideCallbackUrl(OVERRIDE_CALL_CALLBACK_URL);
+        Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 200);
     }
 
@@ -158,10 +160,11 @@ public class CallMediaUnitTests {
                     serializeObject(new SendDtmfTonesResultInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202)))
             );
         callMedia = callConnection.getCallMedia();
-        Response<SendDtmfTonesResult> response = callMedia.sendDtmfTonesWithResponse(
-            Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
-            "ctx", Context.NONE
-        );
+        List<DtmfTone> tones = Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList());
+        SendDtmfTonesOptions options = new SendDtmfTonesOptions(tones, new CommunicationUserIdentifier("id"));
+        options.setOperationContext("ctx");
+        options.setOverrideCallbackUrl(OVERRIDE_CALL_CALLBACK_URL);
+        Response<SendDtmfTonesResult> response = callMedia.sendDtmfTonesWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 

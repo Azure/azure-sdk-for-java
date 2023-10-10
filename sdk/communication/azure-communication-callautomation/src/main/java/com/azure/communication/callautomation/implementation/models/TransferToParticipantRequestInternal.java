@@ -22,6 +22,18 @@ public final class TransferToParticipantRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /*
+     * Transferee is the participant who is transferring the call.
+     */
+    @JsonProperty(value = "transferee")
+    private CommunicationIdentifierModel transferee;
+
+    /*
+     * The callback URI to override the main callback URI.
+     */
+    @JsonProperty(value = "overrideCallbackUri")
+    private String overrideCallbackUri;
+
     /** Creates an instance of TransferToParticipantRequestInternal class. */
     public TransferToParticipantRequestInternal() {}
 
@@ -64,6 +76,46 @@ public final class TransferToParticipantRequestInternal {
      */
     public TransferToParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the transferee property: Transferee is the participant who is transferring the call.
+     *
+     * @return the transferee value.
+     */
+    public CommunicationIdentifierModel getTransferee() {
+        return this.transferee;
+    }
+
+    /**
+     * Set the transferee property: Transferee is the participant who is transferring the call.
+     *
+     * @param transferee the transferee value to set.
+     * @return the TransferToParticipantRequestInternal object itself.
+     */
+    public TransferToParticipantRequestInternal setTransferee(CommunicationIdentifierModel transferee) {
+        this.transferee = transferee;
+        return this;
+    }
+
+    /**
+     * Get the overrideCallbackUri property: The callback URI to override the main callback URI.
+     *
+     * @return the overrideCallbackUri value.
+     */
+    public String getOverrideCallbackUri() {
+        return this.overrideCallbackUri;
+    }
+
+    /**
+     * Set the overrideCallbackUri property: The callback URI to override the main callback URI.
+     *
+     * @param overrideCallbackUri the overrideCallbackUri value to set.
+     * @return the TransferToParticipantRequestInternal object itself.
+     */
+    public TransferToParticipantRequestInternal setOverrideCallbackUri(String overrideCallbackUri) {
+        this.overrideCallbackUri = overrideCallbackUri;
         return this;
     }
 }

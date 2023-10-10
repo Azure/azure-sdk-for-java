@@ -30,10 +30,10 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     private String speechRecognitionModelEndpointId;
 
     /**
-     * Get the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
+     * Get the endSilenceTimeout property: The length of end silence when user stops speaking and cogservice send
      * response.
      *
-     * @return the endSilenceTimeoutInMs value.
+     * @return the endSilenceTimeout value.
      */
     public Duration getEndSilenceTimeout() {
         return this.endSilenceTimeout;
@@ -169,7 +169,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * Initializes a CallMediaRecognizeSpeechOptions object.
      *
      * @param targetParticipant Target participant of continuous speech recognition.
-     * @param endSilenceTimeout the endSilenceTimeoutInMs value to set.
+     * @param endSilenceTimeout the endSilenceTimeout value to set.
      */
     public CallMediaRecognizeSpeechOptions(CommunicationIdentifier targetParticipant, Duration endSilenceTimeout) {
         super(RecognizeInputType.SPEECH, targetParticipant);

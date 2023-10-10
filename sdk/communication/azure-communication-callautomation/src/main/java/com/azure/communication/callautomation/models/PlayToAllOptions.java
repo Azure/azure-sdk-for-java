@@ -27,6 +27,11 @@ public final class PlayToAllOptions {
     private String operationContext;
 
     /**
+     * The call back URI override.
+     */
+    private String overrideCallbackUrl;
+
+    /**
      * Constructor
      * @param playSources A List of {@link PlaySource} representing the sources to play.
      */
@@ -71,6 +76,15 @@ public final class PlayToAllOptions {
     }
 
     /**
+     * Get the call back URI override.
+     *
+     * @return the overrideCallbackUrl
+     */
+    public String getOverrideCallbackUrl() {
+        return overrideCallbackUrl;
+    }
+
+    /**
      * Set the loop property: The option to play the provided audio source in loop when set to true.
      *
      * @param loop the loop value to set.
@@ -89,6 +103,17 @@ public final class PlayToAllOptions {
      */
     public PlayToAllOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the call back URI override.
+     *
+     * @param overrideCallbackUrl The call back URI override to set
+     * @return the PlayToAllOptions object itself.
+     */
+    public PlayToAllOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 }

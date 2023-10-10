@@ -99,10 +99,10 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Get the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
+     * Get the endSilenceTimeout property: The length of end silence when user stops speaking and cogservice send
      * response.
      *
-     * @return the endSilenceTimeoutInMs value.
+     * @return the endSilenceTimeout value.
      */
     public Duration getEndSilenceTimeout() {
         return this.endSilenceTimeout;
@@ -152,7 +152,7 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      *
      * @param targetParticipant Target participant of continuous speech recognition.
      * @param maxTonesToCollect Maximum number of DTMF tones to be collected.
-     * @param endSilenceTimeout the endSilenceTimeoutInMs value to set.
+     * @param endSilenceTimeout the endSilenceTimeout value to set.
      */
     public CallMediaRecognizeSpeechOrDtmfOptions(CommunicationIdentifier targetParticipant, int maxTonesToCollect, Duration endSilenceTimeout) {
         super(RecognizeInputType.SPEECH_OR_DTMF, targetParticipant);

@@ -55,10 +55,15 @@ public abstract class CallMediaRecognizeOptions {
     private Duration initialSilenceTimeout;
 
     /*
-     * Target participant of DTFM tone recognition.
+     * Target participant of DTMF tone recognition.
      */
     @JsonProperty(value = "targetParticipant")
     private CommunicationIdentifier targetParticipant;
+
+    /**
+     * The call back URI override.
+     */
+    private String overrideCallbackUrl;
 
     /**
      * Initializes a CallMediaRecognizeOptions object.
@@ -223,5 +228,25 @@ public abstract class CallMediaRecognizeOptions {
      */
     public CommunicationIdentifier getTargetParticipant() {
         return this.targetParticipant;
+    }
+
+    /**
+     * Get the call back URI override.
+     *
+     * @return the overrideCallbackUrl
+     */
+    public String getOverrideCallbackUrl() {
+        return overrideCallbackUrl;
+    }
+
+    /**
+     * Set the call back URI override.
+     *
+     * @param overrideCallbackUrl The call back URI override to set
+     * @return the CallMediaRecognizeOptions object itself.
+     */
+    public CallMediaRecognizeOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
+        return this;
     }
 }
