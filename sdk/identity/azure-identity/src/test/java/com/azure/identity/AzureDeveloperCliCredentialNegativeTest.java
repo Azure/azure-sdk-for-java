@@ -10,6 +10,7 @@ import reactor.test.StepVerifier;
 
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -49,11 +50,7 @@ public class AzureDeveloperCliCredentialNegativeTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("scope" + invalidCharacter);
 
         AzureDeveloperCliCredential credential = new AzureDeveloperCliCredentialBuilder().build();
-        try {
-            credential.getTokenSync(request);
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-        }
+        assertThrows(IllegalArgumentException.class, () -> credential.getTokenSync(request));
     }
 
     @ParameterizedTest
@@ -61,10 +58,6 @@ public class AzureDeveloperCliCredentialNegativeTest {
     public void testInvalidTenantFromRequestSync(String invalidCharacter) {
         TokenRequestContext request = new TokenRequestContext().addScopes("scope").setTenantId("tenant" + invalidCharacter);
         AzureDeveloperCliCredential credential = new AzureDeveloperCliCredentialBuilder().build();
-        try {
-            credential.getTokenSync(request);
-        } catch (Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-        }
+        assertThrows(IllegalArgumentException.class, () -> credential.getTokenSync(request));
     }
 }
