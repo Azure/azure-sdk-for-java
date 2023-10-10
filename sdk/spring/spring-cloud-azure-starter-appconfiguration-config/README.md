@@ -238,7 +238,7 @@ The values in App Configuration are filtered through the existing Environment wh
 
 #### Use Managed Identity to access App Configuration
 
-[Managed identity][azure_managed_identity] allows application to access [Azure Active Directory][azure_active_directory] protected resource on [Azure][azure].
+[Managed identity][azure_managed_identity] allows application to access [Microsoft Entra ID][azure_active_directory] protected resource on [Azure][azure].
 
 In this library, [Azure Identity SDK][azure_identity_sdk] is used to access Azure App Configuration and optionally Azure Key Vault, for secrets. Only one method of authentication can be set at one time. When not using the AppConfigCredentialProvider and/or KeyVaultCredentialProvider the same authentication method is used for both App Configuration and Key Vault.
 
