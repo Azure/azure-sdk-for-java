@@ -11,6 +11,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import java.util.Map;
  * generate text that continues from or "completes" provided prompt data.
  */
 @Fluent
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class ChatCompletionsOptions {
 
     /*
