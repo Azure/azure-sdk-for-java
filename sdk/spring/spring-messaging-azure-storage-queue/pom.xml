@@ -51,6 +51,11 @@
       <artifactId>azure-storage-queue</artifactId>
       <version>12.19.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.44.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
