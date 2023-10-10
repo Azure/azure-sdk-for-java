@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
@@ -50,7 +51,7 @@ public class RequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
     private List<String> excludeRegions;
 
-    private CosmosDiagnosticsContext diagnosticsCtx;
+    private Supplier<CosmosDiagnosticsContext> diagnosticsCtxSupplier;
 
     public RequestOptions() {}
 
@@ -76,7 +77,7 @@ public class RequestOptions {
         this.trackingId = toBeCloned.trackingId;
         this.nonIdempotentWriteRetriesEnabled = toBeCloned.nonIdempotentWriteRetriesEnabled;
         this.endToEndOperationLatencyConfig = toBeCloned.endToEndOperationLatencyConfig;
-        this.diagnosticsCtx = toBeCloned.diagnosticsCtx;
+        this.diagnosticsCtxSupplier = toBeCloned.diagnosticsCtxSupplier;
 
         if (toBeCloned.customOptions != null) {
             this.customOptions = new HashMap<>(toBeCloned.customOptions);
@@ -496,12 +497,17 @@ public class RequestOptions {
         this.thresholds = thresholds;
     }
 
-    public void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
-        this.diagnosticsCtx = ctx;
+    public void setDiagnosticsContextSupplier(Supplier<CosmosDiagnosticsContext> ctxSupplier) {
+        this.diagnosticsCtxSupplier = ctxSupplier;
     }
 
-    public CosmosDiagnosticsContext getDiagnosticsContext() {
-        return this.diagnosticsCtx;
+    public CosmosDiagnosticsContext getDiagnosticsContextSnapshot() {
+        Supplier<CosmosDiagnosticsContext> ctxSupplierSnapshot = this.diagnosticsCtxSupplier;
+        if (ctxSupplierSnapshot == null) {
+            return null;
+        }
+
+        return ctxSupplierSnapshot.get();
     }
 
     public void setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {

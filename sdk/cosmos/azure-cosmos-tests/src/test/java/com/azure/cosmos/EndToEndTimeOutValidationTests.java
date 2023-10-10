@@ -54,7 +54,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             .build();
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT * 100)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT * 100)
     public void beforeClass() throws Exception {
         CosmosAsyncClient client = this.getClientBuilder().buildAsyncClient();
         CosmosAsyncDatabase createdDatabase = getSharedCosmosDatabase(client);
@@ -64,7 +64,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void readItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -82,7 +82,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         rule.disable();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void createItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -100,7 +100,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         faultInjectionRule.disable();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void replaceItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -120,7 +120,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         rule.disable();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void upsertItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -144,7 +144,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             .verify();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void queryItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -172,7 +172,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         faultInjectionRule.disable();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"fast"}, timeOut = 10000L)
     public void clientLevelEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
