@@ -8,6 +8,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 - Fix the issue that prevented the `disableChallengeResourceVerification` property of the AKV `SecretClient` to be configured [#36628](https://github.com/Azure/azure-sdk-for-java/pull/36628).
+- Use the new name Microsoft Entra ID in Spring configuration metadata file [#37093](https://github.com/Azure/azure-sdk-for-java/pull/37093).
 
 ### Spring Integration Azure Event Hubs
 This section includes changes in the `spring-integration-azure-eventhubs` module.
@@ -62,7 +63,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 - Fix the issue that `AzureMessagingListenerAutoConfiguration` not included in `spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` [#34690](https://github.com/Azure/azure-sdk-for-java/issues/34690), [#35717](https://github.com/Azure/azure-sdk-for-java/pull/35717).
-- Improve default AAD configuration condition [#36126](https://github.com/Azure/azure-sdk-for-java/pull/36126).
+- Improve default Microsoft Entra configuration condition [#36126](https://github.com/Azure/azure-sdk-for-java/pull/36126).
 - Exclude unsupported bean `AzureGlobalProperties` from AOT processing and registration [#36001](https://github.com/Azure/azure-sdk-for-java/issues/36001).
 
 ### Spring Cloud Azure Appconfiguration Config
@@ -90,7 +91,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 - Fix the issue that `AzureMessagingListenerAutoConfiguration` not included in spring.factories [#34690](https://github.com/Azure/azure-sdk-for-java/issues/34690), [#35716](https://github.com/Azure/azure-sdk-for-java/pull/35716).
-- Fix default AAD configuration could be activated multiple times [#36124](https://github.com/Azure/azure-sdk-for-java/pull/36124).
+- Fix default Microsoft Entra configuration could be activated multiple times [#36124](https://github.com/Azure/azure-sdk-for-java/pull/36124).
 
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
@@ -299,7 +300,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fixed `GraphClient` exceptions handling when switching `HttpURLConnection` to `RestTemplate`. [#32779](https://github.com/Azure/azure-sdk-for-java/issues/32779)
 
 #### Breaking Changes
-- Deprecated properties for AAD and AAD B2C. [#33751](https://github.com/Azure/azure-sdk-for-java/pull/33751).
+- Deprecated properties for Microsoft Entra ID and Azure Active Directory B2C. [#33751](https://github.com/Azure/azure-sdk-for-java/pull/33751).
     - Deprecated properties `spring.cloud.azure.active-directory.jwt-connect-timeout`, `spring.cloud.azure.active-directory.jwt-read-timeout`, `spring.cloud.azure.active-directory.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
     - Deprecated properties `spring.cloud.azure.active-directory.b2c.jwt-connect-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-read-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
 
@@ -376,7 +377,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Support passwordless connections for JMS ServiceBus in Spring. [#33489](https://github.com/Azure/azure-sdk-for-java/pull/33489)
 
 #### Breaking Changes
-- Deprecated properties for AAD and AAD B2C. [#33538](https://github.com/Azure/azure-sdk-for-java/pull/33538).
+- Deprecated properties for Microsoft Entra ID and Azure Active Directory B2C. [#33538](https://github.com/Azure/azure-sdk-for-java/pull/33538).
   - Deprecated properties `spring.cloud.azure.active-directory.jwt-connect-timeout`, `spring.cloud.azure.active-directory.jwt-read-timeout`, `spring.cloud.azure.active-directory.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
   - Deprecated properties `spring.cloud.azure.active-directory.b2c.jwt-connect-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-read-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
 
@@ -385,7 +386,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.5. (Note: 2020.0.x (x>6) and 2021.0.y (y>5) should be supported, but they aren't tested with this release.)
 
 #### Features Added
-- Release the `spring-cloud-azure-starter-redis`. This starter supports Azure hosted Redis service authenticating with Azure AD.
+- Release the `spring-cloud-azure-starter-redis`. This starter supports Azure hosted Redis service authenticating with Microsoft Entra ID.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -483,7 +484,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Remove warning logs of Kafka passwordless autoconfiguration. [#31182](https://github.com/Azure/azure-sdk-for-java/issues/31182).
-- Enhance the Azure AD Resource Server configurer to accept the custom jwt granted authorities converter. [#28665](https://github.com/Azure/azure-sdk-for-java/issues/28665).
+- Enhance the Microsoft Entra Resource Server configurer to accept the custom jwt granted authorities converter. [#28665](https://github.com/Azure/azure-sdk-for-java/issues/28665).
 
 #### Breaking Changes
 - Move Key Vault environment classes for internal usage to the implementation package [#32428](https://github.com/Azure/azure-sdk-for-java/pull/32428).
@@ -503,15 +504,15 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 This section includes changes in `spring-cloud-azure-starter` module.
 
 #### Features Added
-- GA the `spring-cloud-azure-starter-jdbc-mysql`. This starter supports Azure hosted MySQL service authenticating with Azure AD.
-- GA the `spring-cloud-azure-starter-jdbc-postgresql`. This starter supports Azure hosted PostgreSQL service authenticating with Azure AD.
+- GA the `spring-cloud-azure-starter-jdbc-mysql`. This starter supports Azure hosted MySQL service authenticating with Microsoft Entra ID.
+- GA the `spring-cloud-azure-starter-jdbc-postgresql`. This starter supports Azure hosted PostgreSQL service authenticating with Microsoft Entra ID.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Remove warning logs of Kafka passwordless autoconfiguration. [#31182](https://github.com/Azure/azure-sdk-for-java/issues/31182)
-- Enhance the token authentication converter and Azure AD Resource Server configurer adapter to accept the custom jwt granted authorities converter. [#28665](https://github.com/Azure/azure-sdk-for-java/issues/28665)
+- Enhance the token authentication converter and Microsoft Entra Resource Server configurer adapter to accept the custom jwt granted authorities converter. [#28665](https://github.com/Azure/azure-sdk-for-java/issues/28665)
 
 #### Dependency Updates
 - Upgrade spring-security to 5.7.5 to address [CVE-2022-31690](https://tanzu.vmware.com/security/cve-2022-31690) [#32145](https://github.com/Azure/azure-sdk-for-java/pull/32145).
@@ -549,7 +550,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fix bug: RestOperations is not well configured when jwkResolver is null. [#31218](https://github.com/Azure/azure-sdk-for-java/issues/31218).
 - Fix bug: Duplicated "scope" parameter. [#31191](https://github.com/Azure/azure-sdk-for-java/issues/31191).
 - Fix bug: NimbusJwtDecoder still uses `RestTemplate()` instead `RestTemplateBuilder` [#31233](https://github.com/Azure/azure-sdk-for-java/issues/31233)
-- Fix bug: Proxy setting not work in Azure AD B2C web application. [31593](https://github.com/Azure/azure-sdk-for-java/issues/31593)
+- Fix bug: Proxy setting not work in Azure Azure AD B2C web application. [31593](https://github.com/Azure/azure-sdk-for-java/issues/31593)
 - Fix Bug: NoClassDefFoundError for JSONArray. [31716](https://github.com/Azure/azure-sdk-for-java/issues/31716)
 - Fix bug: `spring.main.sources` configuration from Spring Cloud Stream Kafka binder cannot take effect. [#31715](https://github.com/Azure/azure-sdk-for-java/pull/31715)
 
@@ -578,7 +579,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Support auto start-up for the auto-configured Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
 - Configure the `spring.main.sources` with `AzureKafkaSpringCloudStreamConfiguration` class for Spring Cloud Stream Kafka Binder context, which helps developers omit customizing the property manually when leveraging Azure Identity with Kafka [#29976](https://github.com/Azure/azure-sdk-for-java/issues/29976).
 - Provide the property of `spring.cloud.azure.eventhubs.kafka.enabled` to turn of/off the OAuth2 support of Spring Cloud Azure for Event Hubs for Kafka [#30574](https://github.com/Azure/azure-sdk-for-java/issues/30574).
-- Support connecting to Azure AD via proxy. To achieve this, customer need provide a custom `RestTemplateCustomizer` bean. [#26493](https://github.com/Azure/azure-sdk-for-java/issues/26493).
+- Support connecting to Microsoft Entra ID via proxy. To achieve this, customer need provide a custom `RestTemplateCustomizer` bean. [#26493](https://github.com/Azure/azure-sdk-for-java/issues/26493).
 
 #### Bugs Fixed
 - Fix bug: Cannot configure "azure" authorization client. [#30354](https://github.com/Azure/azure-sdk-for-java/issues/30354).
@@ -617,7 +618,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Support auto start-up for the auto-configured Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
 - Configure the `spring.main.sources` with `AzureKafkaSpringCloudStreamConfiguration` class for Spring Cloud Stream Kafka Binder context, which helps developers omit customizing the property manually when leveraging Azure Identity with Kafka [#29976](https://github.com/Azure/azure-sdk-for-java/issues/29976).
 - Provide the property of `spring.cloud.azure.eventhubs.kafka.enabled` to turn of/off the OAuth2 support of Spring Cloud Azure for Event Hubs for Kafka [#30574](https://github.com/Azure/azure-sdk-for-java/issues/30574).
-- Support connecting to Azure AD via proxy. To achieve this, customer need provide a custom `RestTemplateCustomizer` bean. [#26493](https://github.com/Azure/azure-sdk-for-java/issues/26493).
+- Support connecting to Microsoft Entra ID via proxy. To achieve this, customer need provide a custom `RestTemplateCustomizer` bean. [#26493](https://github.com/Azure/azure-sdk-for-java/issues/26493).
 
 ### Spring Cloud Stream Event Hubs Binder
 #### Bugs Fixed
@@ -635,7 +636,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 ### Spring Cloud Azure Starter
 This section includes changes in `spring-cloud-azure-starter` module.
 #### Features Added
-+ Support Azure hosted PostgreSQL and MySQL services authenticating with Azure AD [#30024](https://github.com/Azure/azure-sdk-for-java/pull/30024).
++ Support Azure hosted PostgreSQL and MySQL services authenticating with Microsoft Entra ID [#30024](https://github.com/Azure/azure-sdk-for-java/pull/30024).
 
 ## 4.3.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
@@ -644,7 +645,7 @@ This section includes changes in `spring-cloud-azure-starter` module.
 ### Features Added
 - GA the `spring-cloud-azure-starter-storage`. This starter supports all features of Azure Storage.
 - GA the `spring-cloud-azure-starter-keyvault`. This starter supports all features of Azure Key Vault.
-- Support Jwt Client authentication for Azure AD Starter.
+- Support Jwt Client authentication for Microsoft Entra ID Starter.
 
 ### Spring Cloud Azure Dependencies (BOM)
 #### Dependency Updates
@@ -786,7 +787,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 This section includes changes in `spring-cloud-azure-starter-active-directory` module.
 
 #### Breaking Changes
-- Delete the AAD conditional access filter. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
+- Delete the Microsoft Entra conditional access filter. [#27727](https://github.com/Azure/azure-sdk-for-java/pull/27727)
 - Rename classes and methods [#27273](https://github.com/Azure/azure-sdk-for-java/pull/27273), [#27579](https://github.com/Azure/azure-sdk-for-java/pull/27579):
   + Rename classes from `AAD/AADB2C` to `Aad/AadB2c`.
   + Rename method in `UserPrincipal` from `getKid` to `getKeyId`.
@@ -833,13 +834,13 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
   + `spring.cloud.azure.active-directory.jwt-read-timeout` and `spring.cloud.azure.active-directory.b2c.jwt-read-timeout`.
   + `spring.cloud.azure.active-directory.jwk-set-cache-lifespan`.
   + `spring.cloud.azure.active-directory.jwk-set-cache-refresh-time`.
-- Delete deprecated properties for AAD [#26598](https://github.com/Azure/azure-sdk-for-java/pull/26598):
+- Delete deprecated properties for Microsoft Entra ID[#26598](https://github.com/Azure/azure-sdk-for-java/pull/26598):
   + `spring.cloud.azure.active-directory.allow-telemetry`.
   + `spring.cloud.azure.active-directory.active-directory-groups`.
   + `spring.cloud.azure.active-directory.authorization-clients.graph.on-demand`
   + `spring.cloud.azure.active-directory.user-group.allowed-groups`.
   + `spring.cloud.azure.active-directory.user-group.enable-full-list`.
-- Delete deprecated properties for AAD B2C [#26598](https://github.com/Azure/azure-sdk-for-java/pull/26598):
+- Delete deprecated properties for Azure Active Directory B2C [#26598](https://github.com/Azure/azure-sdk-for-java/pull/26598):
   + `spring.cloud.azure.active-directory.b2c.allow-telemetry`.
   + `spring.cloud.azure.active-directory.b2c.tenant`.
 - Delete properties `spring.cloud.azure.cosmos.permissions`. Please use the builder customizer instead. [#27236](https://github.com/Azure/azure-sdk-for-java/pull/27236).
@@ -873,7 +874,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Add descriptions and logs for `namespace` property of Service Bus and Event Hubs [#27053](https://github.com/Azure/azure-sdk-for-java/issues/27053).
 
 #### Bugs Fixed
-- Fix AAD autoconfiguration activated when no web dependencies on the classpath [#26915](https://github.com/Azure/azure-sdk-for-java/issues/26915).
+- Fix Microsoft Entra ID autoconfiguration activated when no web dependencies on the classpath [#26915](https://github.com/Azure/azure-sdk-for-java/issues/26915).
 - Fix inconsistency between `getPropertyNames()` and `containsProperty(String name)` in `KeyVaultPropertySource` [#23815](https://github.com/Azure/azure-sdk-for-java/issues/23815).
 - Fix Cosmos direct/gateway connection properties cannot be configured bug [#27241](https://github.com/Azure/azure-sdk-for-java/pull/27241).
 - Fix Cosmos default connection mode not being set bug [#27236](https://github.com/Azure/azure-sdk-for-java/pull/27236).
@@ -1057,14 +1058,14 @@ This section includes changes in the `spring-cloud-azure-autoconfigure` module.
 - Support `EventHubsMessageConverter` as a bean to support customize ObjectMapper [#26200](https://github.com/Azure/azure-sdk-for-java/pull/26200).
 
 #### Breaking Changes
-- Change AAD configuration properties to use the namespace for credential and environment properties [#25646](https://github.com/Azure/azure-sdk-for-java/issues/25646).
+- Change Microsoft Entra ID configuration properties to use the namespace for credential and environment properties [#25646](https://github.com/Azure/azure-sdk-for-java/issues/25646).
   * Property name "spring.cloud.azure.active-directory.tenant-id" changed to "spring.cloud.azure.active-directory.profile.tenant-id".
   * Property name "spring.cloud.azure.active-directory.client-id" changed to "spring.cloud.azure.active-directory.credential.client-id".
   * Property name "spring.cloud.azure.active-directory.client-secret" changed to "spring.cloud.azure.active-directory.credential.client-secret".
   * Property name "spring.cloud.azure.active-directory.base-uri" changed to "spring.cloud.azure.active-directory.profile.environment.active-directory-endpoint".
   * Property name "spring.cloud.azure.active-directory.graph-base-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint".
   * Property name "spring.cloud.azure.active-directory.graph-membership-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint" and "spring.cloud.azure.active-directory.user-group.use-transitive-members".
-- Change AAD B2C configuration properties to use the namespace for credential and environment properties [#25799](https://github.com/Azure/azure-sdk-for-java/pull/25799).
+- Change Azure Active Directory B2C configuration properties to use the namespace for credential and environment properties [#25799](https://github.com/Azure/azure-sdk-for-java/pull/25799).
 - Change Event Hubs processor configuration properties `spring.cloud.azure.eventhubs.processor.partition-ownership-expiration-interval` to `spring.cloud.azure.eventhubs.processor.load-balancing.partition-ownership-expiration-interval` [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
 - Change Event Hubs configuration properties `spring.cloud.azure.eventhubs.fqdn` to `spring.cloud.azure.eventhubs.fully-qualified-namespace` [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
 - Rename all `*CP` classes to `*ConfigurationProperties` [#26209](https://github.com/Azure/azure-sdk-for-java/pull/26209).
