@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed an issue preventing the client from setting the contentType of the secret when the set secret operation is performed. ([#37019](https://github.com/Azure/azure-sdk-for-java/issues/37019))
+
 ### Other Changes
 
 ## 4.7.0 (2023-09-25)

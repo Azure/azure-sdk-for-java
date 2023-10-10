@@ -53,6 +53,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         sender.sendMessage(new ServiceBusMessage("Foo bar"));
         // END: com.azure.messaging.servicebus.servicebussenderclient.instantiation
 
+        // Continue using the sender and finally, dispose of the sender.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         sender.close();
     }
 
@@ -71,7 +74,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .queueName(queueName)
             .buildAsyncClient();
 
-        // Use the sender and finally close it.
+        // When users are done with the sender, they should dispose of it.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         asyncSender.close();
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
     }
@@ -79,18 +84,20 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
     /**
      * Code snippet demonstrating how to send a batch to Service Bus queue or topic.
      *
-     * @throws IllegalArgumentException if an message is too large.
+     * @throws IllegalArgumentException if a message is too large.
      */
     @Test
     public void sendBatch() {
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
         // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .credential(fullyQualifiedNamespace, credential)
             .sender()
             .queueName(queueName)
             .buildClient();
 
-        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
         List<ServiceBusMessage> messages = Arrays.asList(
             new ServiceBusMessage("test-1"),
             new ServiceBusMessage("test-2"));
@@ -118,7 +125,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             sender.sendMessages(batch);
         }
 
-        // Finally dispose of the sender.
+        // Continue using the sender and finally, dispose of the sender.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         sender.close();
         // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
     }
@@ -150,6 +159,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         });
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch
 
+        // Continue using the sender and finally, dispose of the sender.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         asyncSender.close();
     }
 
@@ -203,7 +215,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             sender.sendMessages(currentBatch);
         }
 
-        // Dispose of the sender
+        // Continue using the sender and finally, dispose of the sender.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
         sender.close();
         // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions
     }
@@ -290,7 +304,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             }, () -> {
                 System.out.println("Completed.");
 
-                // Clean up sender when done using it.  Publishers should be long-lived objects.
+                // Continue using the sender and finally, dispose of the sender.
+                // Clients should be long-lived objects as they require resources
+                // and time to establish a connection to the service.
                 asyncSender.close();
             });
 
@@ -321,5 +337,38 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         // Dispose of the sender.
         sender.close();
         // END: com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session
+    }
+
+    /**
+     * Create a session message.
+     */
+    @Test
+    public void sendSessionMessageAsync() {
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderasyncclient.sendMessage-session
+        // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+        ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
+            .credential(fullyQualifiedNamespace, new DefaultAzureCredentialBuilder().build())
+            .sender()
+            .queueName(sessionEnabledQueueName)
+            .buildAsyncClient();
+
+        // Setting sessionId publishes that message to a specific session, in this case, "greeting".
+        ServiceBusMessage message = new ServiceBusMessage("Hello world")
+            .setSessionId("greetings");
+
+        // `subscribe` is a non-blocking call. The program will move onto the next line of code when it starts the
+        // operation.  Users should use the callbacks on `subscribe` to understand the status of the send operation.
+        sender.sendMessage(message).subscribe(unused -> {
+        }, error -> {
+            System.err.println("Error occurred publishing batch: " + error);
+        }, () -> {
+            System.out.println("Send complete.");
+        });
+
+        // Continue using the sender and finally, dispose of the sender.
+        // Clients should be long-lived objects as they require resources
+        // and time to establish a connection to the service.
+        sender.close();
+        // END: com.azure.messaging.servicebus.servicebussenderasyncclient.sendMessage-session
     }
 }
