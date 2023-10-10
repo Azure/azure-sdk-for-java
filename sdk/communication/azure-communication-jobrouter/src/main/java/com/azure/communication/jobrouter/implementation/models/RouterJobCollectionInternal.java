@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
+import com.azure.communication.jobrouter.models.RouterJobItem;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,7 +16,7 @@ public final class RouterJobCollectionInternal {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<RouterJobItemInternal> value;
+    private List<RouterJobItem> value;
 
     /*
      * The nextLink property.
@@ -31,7 +32,7 @@ public final class RouterJobCollectionInternal {
      *
      * @return the value value.
      */
-    public List<RouterJobItemInternal> getValue() {
+    public List<RouterJobItem> getValue() {
         return this.value;
     }
 
@@ -41,7 +42,7 @@ public final class RouterJobCollectionInternal {
      * @param value the value value to set.
      * @return the RouterJobCollectionInternal object itself.
      */
-    public RouterJobCollectionInternal setValue(List<RouterJobItemInternal> value) {
+    public RouterJobCollectionInternal setValue(List<RouterJobItem> value) {
         this.value = value;
         return this;
     }

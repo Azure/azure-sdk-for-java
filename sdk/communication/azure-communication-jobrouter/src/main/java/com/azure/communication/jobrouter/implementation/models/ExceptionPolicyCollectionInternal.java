@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
+import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,7 +16,7 @@ public final class ExceptionPolicyCollectionInternal {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<ExceptionPolicyItemInternal> value;
+    private List<ExceptionPolicyItem> value;
 
     /*
      * The nextLink property.
@@ -31,7 +32,7 @@ public final class ExceptionPolicyCollectionInternal {
      *
      * @return the value value.
      */
-    public List<ExceptionPolicyItemInternal> getValue() {
+    public List<ExceptionPolicyItem> getValue() {
         return this.value;
     }
 
@@ -41,7 +42,7 @@ public final class ExceptionPolicyCollectionInternal {
      * @param value the value value to set.
      * @return the ExceptionPolicyCollectionInternal object itself.
      */
-    public ExceptionPolicyCollectionInternal setValue(List<ExceptionPolicyItemInternal> value) {
+    public ExceptionPolicyCollectionInternal setValue(List<ExceptionPolicyItem> value) {
         this.value = value;
         return this;
     }

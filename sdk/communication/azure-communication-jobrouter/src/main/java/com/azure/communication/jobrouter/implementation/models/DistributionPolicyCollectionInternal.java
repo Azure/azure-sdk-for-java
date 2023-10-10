@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
+import com.azure.communication.jobrouter.models.DistributionPolicyItem;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,7 +16,7 @@ public final class DistributionPolicyCollectionInternal {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<DistributionPolicyItemInternal> value;
+    private List<DistributionPolicyItem> value;
 
     /*
      * The nextLink property.
@@ -31,7 +32,7 @@ public final class DistributionPolicyCollectionInternal {
      *
      * @return the value value.
      */
-    public List<DistributionPolicyItemInternal> getValue() {
+    public List<DistributionPolicyItem> getValue() {
         return this.value;
     }
 
@@ -41,7 +42,7 @@ public final class DistributionPolicyCollectionInternal {
      * @param value the value value to set.
      * @return the DistributionPolicyCollectionInternal object itself.
      */
-    public DistributionPolicyCollectionInternal setValue(List<DistributionPolicyItemInternal> value) {
+    public DistributionPolicyCollectionInternal setValue(List<DistributionPolicyItem> value) {
         this.value = value;
         return this;
     }

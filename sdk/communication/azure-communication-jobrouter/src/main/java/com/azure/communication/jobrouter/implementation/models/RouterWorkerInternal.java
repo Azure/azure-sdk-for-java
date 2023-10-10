@@ -4,6 +4,8 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
+import com.azure.communication.jobrouter.models.RouterJobOffer;
+import com.azure.communication.jobrouter.models.RouterWorkerAssignment;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -58,13 +60,13 @@ public final class RouterWorkerInternal {
      * A list of active offers issued to this worker.
      */
     @JsonProperty(value = "offers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RouterJobOfferInternal> offers;
+    private List<RouterJobOffer> offers;
 
     /*
      * A list of assigned jobs attached to this worker.
      */
     @JsonProperty(value = "assignedJobs", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RouterWorkerAssignmentInternal> assignedJobs;
+    private List<RouterWorkerAssignment> assignedJobs;
 
     /*
      * A value indicating the workers capacity. A value of '1' means all capacity is consumed. A value of '0' means no
@@ -210,7 +212,7 @@ public final class RouterWorkerInternal {
      *
      * @return the offers value.
      */
-    public List<RouterJobOfferInternal> getOffers() {
+    public List<RouterJobOffer> getOffers() {
         return this.offers;
     }
 
@@ -219,7 +221,7 @@ public final class RouterWorkerInternal {
      *
      * @return the assignedJobs value.
      */
-    public List<RouterWorkerAssignmentInternal> getAssignedJobs() {
+    public List<RouterWorkerAssignment> getAssignedJobs() {
         return this.assignedJobs;
     }
 

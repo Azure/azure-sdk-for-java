@@ -642,7 +642,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterJobItem> listJobs() {
         try {
-            return JobAdapter.convertPagedFluxToPublic(jobRouter.listJobsAsync(null, null, null, null, null, null, null));
+            return jobRouter.listJobsAsync(null, null, null, null, null, null, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -660,14 +660,14 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterJobItem> listJobs(ListJobsOptions listJobsOptions) {
         try {
-            return JobAdapter.convertPagedFluxToPublic(jobRouter.listJobsAsync(
+            return jobRouter.listJobsAsync(
                 RouterJobStatusSelectorInternal.fromString(listJobsOptions.getStatus().toString()),
                 listJobsOptions.getQueueId(),
                 listJobsOptions.getChannelId(),
                 listJobsOptions.getClassificationPolicyId(),
                 listJobsOptions.getScheduledBefore(),
                 listJobsOptions.getScheduledAfter(),
-                listJobsOptions.getMaxPageSize()));
+                listJobsOptions.getMaxPageSize());
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -685,7 +685,7 @@ public final class JobRouterAsyncClient {
      */
     PagedFlux<RouterJobItem> listJobs(ListJobsOptions listJobsOptions, Context context) {
         try {
-            return JobAdapter.convertPagedFluxToPublic(jobRouter.listJobsAsync(
+            return jobRouter.listJobsAsync(
                 RouterJobStatusSelectorInternal.fromString(listJobsOptions.getStatus().toString()),
                 listJobsOptions.getQueueId(),
                 listJobsOptions.getChannelId(),
@@ -693,7 +693,7 @@ public final class JobRouterAsyncClient {
                 listJobsOptions.getScheduledBefore(),
                 listJobsOptions.getScheduledAfter(),
                 listJobsOptions.getMaxPageSize(),
-                context));
+                context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1148,7 +1148,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterWorkerItem> listWorkers() {
         try {
-            return WorkerAdapter.convertPagedFluxToPublic(jobRouter.listWorkersAsync(null, null, null, null, null));
+            return jobRouter.listWorkersAsync(null, null, null, null, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1166,12 +1166,12 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions) {
         try {
-            return WorkerAdapter.convertPagedFluxToPublic(jobRouter.listWorkersAsync(
+            return jobRouter.listWorkersAsync(
                 RouterWorkerStateSelectorInternal.fromString(listWorkersOptions.getState().toString()),
                 listWorkersOptions.getChannelId(),
                 listWorkersOptions.getQueueId(),
                 listWorkersOptions.getHasCapacity(),
-                listWorkersOptions.getMaxPageSize()));
+                listWorkersOptions.getMaxPageSize());
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

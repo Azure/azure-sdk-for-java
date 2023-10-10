@@ -146,43 +146,13 @@ public class JobAdapter {
             .setMatchingMode(convertMatchingModeToInternal(updateJobOptions.getMatchingMode()));
     }
 
-    public static PagedFlux<RouterJobItem> convertPagedFluxToPublic(PagedFlux<RouterJobItemInternal> internalPagedFlux) {
-        final Function<PagedResponse<RouterJobItemInternal>, PagedResponse<RouterJobItem>> responseMapper
-            = internalResponse -> new PagedResponseBase<Void, RouterJobItem>(internalResponse.getRequest(),
-            internalResponse.getStatusCode(),
-            internalResponse.getHeaders(),
-            internalResponse.getValue()
-                .stream()
-                .map(internal -> new RouterJobItem()
-                    .setJob(RouterJobConstructorProxy.create(internal.getJob()))
-                    .setEtag(new ETag(internal.getEtag())))
-                .collect(Collectors.toList()),
-            internalResponse.getContinuationToken(),
-            null);
-
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<RouterJobItemInternal>> flux = (continuationToken == null)
-                ? internalPagedFlux.byPage()
-                : internalPagedFlux.byPage(continuationToken);
-            return flux.map(responseMapper);
-        });
-    }
-
-    public static RouterJobAssignment convertJobAssignmentToPublic(RouterJobAssignmentInternal internal) {
-        return new RouterJobAssignment()
-            .setAssignedAt(internal.getAssignedAt())
-            .setClosedAt(internal.getClosedAt())
-            .setAssignmentId(internal.getAssignmentId())
-            .setWorkerId(internal.getWorkerId())
-            .setCompletedAt(internal.getCompletedAt());
-    }
-
     public static RouterJobMatchingMode convertMatchingModeToPublic(JobMatchingModeInternal internal) {
         if (internal != null) {
             if (internal.getModeType() == JobMatchModeTypeInternal.SUSPEND_MODE) {
                 return new RouterJobMatchingMode(new SuspendMode());
             } else if (internal.getModeType() == JobMatchModeTypeInternal.SCHEDULE_AND_SUSPEND_MODE) {
-                return new RouterJobMatchingMode(new ScheduleAndSuspendMode(internal.getScheduleAndSuspendMode().getScheduleAt()));
+                return new RouterJobMatchingMode(new ScheduleAndSuspendMode()
+                    .setScheduleAt(internal.getScheduleAndSuspendMode().getScheduleAt()));
             }
         }
 

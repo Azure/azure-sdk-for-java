@@ -1831,7 +1831,7 @@ public final class JobRouterRestClientImpl {
                                         classificationPolicyId,
                                         scheduledBefore,
                                         scheduledAfter,
-                                        maxPageSize,
+                                        1,
                                         accept,
                                         requestOptions,
                                         context))
@@ -2075,7 +2075,7 @@ public final class JobRouterRestClientImpl {
                         classificationPolicyId,
                         scheduledBefore,
                         scheduledAfter,
-                        maxPageSize,
+                        1,
                         accept,
                         requestOptions,
                         Context.NONE);
@@ -3092,7 +3092,7 @@ public final class JobRouterRestClientImpl {
                                         channelId,
                                         queueId,
                                         hasCapacity,
-                                        maxPageSize,
+                                        1,
                                         accept,
                                         requestOptions,
                                         context))
@@ -3283,7 +3283,7 @@ public final class JobRouterRestClientImpl {
                         channelId,
                         queueId,
                         hasCapacity,
-                        maxPageSize,
+                        1,
                         accept,
                         requestOptions,
                         Context.NONE);

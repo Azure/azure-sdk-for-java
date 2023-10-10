@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
+import com.azure.communication.jobrouter.models.RouterQueueItem;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,7 +16,7 @@ public final class RouterQueueCollectionInternal {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<RouterQueueItemInternal> value;
+    private List<RouterQueueItem> value;
 
     /*
      * The nextLink property.
@@ -31,7 +32,7 @@ public final class RouterQueueCollectionInternal {
      *
      * @return the value value.
      */
-    public List<RouterQueueItemInternal> getValue() {
+    public List<RouterQueueItem> getValue() {
         return this.value;
     }
 
@@ -41,7 +42,7 @@ public final class RouterQueueCollectionInternal {
      * @param value the value value to set.
      * @return the RouterQueueCollectionInternal object itself.
      */
-    public RouterQueueCollectionInternal setValue(List<RouterQueueItemInternal> value) {
+    public RouterQueueCollectionInternal setValue(List<RouterQueueItem> value) {
         this.value = value;
         return this;
     }

@@ -59,28 +59,6 @@ public class DistributionPolicyAdapter {
             .setOfferExpiresAfterSeconds(Long.valueOf(updateDistributionPolicyOptions.getOfferExpiresAfter().getSeconds()).doubleValue());
     }
 
-    public static PagedFlux<DistributionPolicyItem> convertPagedFluxToPublic(PagedFlux<DistributionPolicyItemInternal> internalPagedFlux) {
-        final Function<PagedResponse<DistributionPolicyItemInternal>, PagedResponse<DistributionPolicyItem>> responseMapper
-            = internalResponse -> new PagedResponseBase<Void, DistributionPolicyItem>(internalResponse.getRequest(),
-            internalResponse.getStatusCode(),
-            internalResponse.getHeaders(),
-            internalResponse.getValue()
-                .stream()
-                .map(internal -> new DistributionPolicyItem()
-                    .setDistributionPolicy(DistributionPolicyConstructorProxy.create(internal.getDistributionPolicy()))
-                    .setEtag(new ETag(internal.getEtag())))
-                .collect(Collectors.toList()),
-            internalResponse.getContinuationToken(),
-            null);
-
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<DistributionPolicyItemInternal>> flux = (continuationToken == null)
-                ? internalPagedFlux.byPage()
-                : internalPagedFlux.byPage(continuationToken);
-            return flux.map(responseMapper);
-        });
-    }
-
     public static DistributionModeInternal convertDistributionModeToInternal(DistributionMode mode) {
         if (mode instanceof BestWorkerMode) {
             BestWorkerMode bestWorker = (BestWorkerMode) mode;

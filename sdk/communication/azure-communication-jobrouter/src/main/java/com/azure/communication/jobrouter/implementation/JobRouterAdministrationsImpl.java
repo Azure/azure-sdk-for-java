@@ -17,6 +17,10 @@ import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyIt
 import com.azure.communication.jobrouter.implementation.models.RouterQueueCollectionInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueItemInternal;
+import com.azure.communication.jobrouter.models.ClassificationPolicyItem;
+import com.azure.communication.jobrouter.models.DistributionPolicyItem;
+import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
+import com.azure.communication.jobrouter.models.RouterQueueItem;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -581,7 +585,7 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItemInternal>> listClassificationPoliciesSinglePageAsync(
+    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesSinglePageAsync(
             Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -615,7 +619,7 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItemInternal>> listClassificationPoliciesSinglePageAsync(
+    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesSinglePageAsync(
             Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listClassificationPolicies(
@@ -641,7 +645,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClassificationPolicyItemInternal> listClassificationPoliciesAsync(Integer maxPageSize) {
+    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
                 () -> listClassificationPoliciesSinglePageAsync(maxPageSize),
                 nextLink -> listClassificationPoliciesNextSinglePageAsync(nextLink));
@@ -658,7 +662,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClassificationPolicyItemInternal> listClassificationPoliciesAsync(
+    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync(
             Integer maxPageSize, Context context) {
         return new PagedFlux<>(
                 () -> listClassificationPoliciesSinglePageAsync(maxPageSize, context),
@@ -675,7 +679,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ClassificationPolicyItemInternal> listClassificationPoliciesSinglePage(Integer maxPageSize) {
+    public PagedResponse<ClassificationPolicyItem> listClassificationPoliciesSinglePage(Integer maxPageSize) {
         return listClassificationPoliciesSinglePageAsync(maxPageSize).block();
     }
 
@@ -690,7 +694,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ClassificationPolicyItemInternal> listClassificationPoliciesSinglePage(
+    public PagedResponse<ClassificationPolicyItem> listClassificationPoliciesSinglePage(
             Integer maxPageSize, Context context) {
         return listClassificationPoliciesSinglePageAsync(maxPageSize, context).block();
     }
@@ -705,7 +709,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClassificationPolicyItemInternal> listClassificationPolicies(Integer maxPageSize) {
+    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxPageSize) {
         return new PagedIterable<>(listClassificationPoliciesAsync(maxPageSize));
     }
 
@@ -720,7 +724,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClassificationPolicyItemInternal> listClassificationPolicies(
+    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(
             Integer maxPageSize, Context context) {
         return new PagedIterable<>(listClassificationPoliciesAsync(maxPageSize, context));
     }
@@ -1036,7 +1040,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItemInternal>> listDistributionPoliciesSinglePageAsync(
+    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesSinglePageAsync(
             Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1070,7 +1074,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItemInternal>> listDistributionPoliciesSinglePageAsync(
+    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesSinglePageAsync(
             Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listDistributionPolicies(
@@ -1096,7 +1100,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItemInternal> listDistributionPoliciesAsync(Integer maxPageSize) {
+    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
                 () -> listDistributionPoliciesSinglePageAsync(maxPageSize),
                 nextLink -> listDistributionPoliciesNextSinglePageAsync(nextLink));
@@ -1113,7 +1117,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItemInternal> listDistributionPoliciesAsync(
+    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync(
             Integer maxPageSize, Context context) {
         return new PagedFlux<>(
                 () -> listDistributionPoliciesSinglePageAsync(maxPageSize, context),
@@ -1130,7 +1134,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DistributionPolicyItemInternal> listDistributionPoliciesSinglePage(Integer maxPageSize) {
+    public PagedResponse<DistributionPolicyItem> listDistributionPoliciesSinglePage(Integer maxPageSize) {
         return listDistributionPoliciesSinglePageAsync(maxPageSize).block();
     }
 
@@ -1145,7 +1149,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DistributionPolicyItemInternal> listDistributionPoliciesSinglePage(
+    public PagedResponse<DistributionPolicyItem> listDistributionPoliciesSinglePage(
             Integer maxPageSize, Context context) {
         return listDistributionPoliciesSinglePageAsync(maxPageSize, context).block();
     }
@@ -1160,7 +1164,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DistributionPolicyItemInternal> listDistributionPolicies(Integer maxPageSize) {
+    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxPageSize) {
         return new PagedIterable<>(listDistributionPoliciesAsync(maxPageSize));
     }
 
@@ -1175,7 +1179,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DistributionPolicyItemInternal> listDistributionPolicies(
+    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(
             Integer maxPageSize, Context context) {
         return new PagedIterable<>(listDistributionPoliciesAsync(maxPageSize, context));
     }
@@ -1493,7 +1497,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItemInternal>> listExceptionPoliciesSinglePageAsync(Integer maxPageSize) {
+    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesSinglePageAsync(Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -1526,7 +1530,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItemInternal>> listExceptionPoliciesSinglePageAsync(
+    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesSinglePageAsync(
             Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listExceptionPolicies(
@@ -1552,7 +1556,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyItemInternal> listExceptionPoliciesAsync(Integer maxPageSize) {
+    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
                 () -> listExceptionPoliciesSinglePageAsync(maxPageSize),
                 nextLink -> listExceptionPoliciesNextSinglePageAsync(nextLink));
@@ -1569,7 +1573,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyItemInternal> listExceptionPoliciesAsync(Integer maxPageSize, Context context) {
+    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync(Integer maxPageSize, Context context) {
         return new PagedFlux<>(
                 () -> listExceptionPoliciesSinglePageAsync(maxPageSize, context),
                 nextLink -> listExceptionPoliciesNextSinglePageAsync(nextLink, context));
@@ -1585,7 +1589,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ExceptionPolicyItemInternal> listExceptionPoliciesSinglePage(Integer maxPageSize) {
+    public PagedResponse<ExceptionPolicyItem> listExceptionPoliciesSinglePage(Integer maxPageSize) {
         return listExceptionPoliciesSinglePageAsync(maxPageSize).block();
     }
 
@@ -1600,7 +1604,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ExceptionPolicyItemInternal> listExceptionPoliciesSinglePage(
+    public PagedResponse<ExceptionPolicyItem> listExceptionPoliciesSinglePage(
             Integer maxPageSize, Context context) {
         return listExceptionPoliciesSinglePageAsync(maxPageSize, context).block();
     }
@@ -1615,7 +1619,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyItemInternal> listExceptionPolicies(Integer maxPageSize) {
+    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize) {
         return new PagedIterable<>(listExceptionPoliciesAsync(maxPageSize));
     }
 
@@ -1630,7 +1634,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyItemInternal> listExceptionPolicies(Integer maxPageSize, Context context) {
+    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize, Context context) {
         return new PagedIterable<>(listExceptionPoliciesAsync(maxPageSize, context));
     }
 
@@ -1930,7 +1934,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterQueueItemInternal>> listQueuesSinglePageAsync(Integer maxPageSize) {
+    public Mono<PagedResponse<RouterQueueItem>> listQueuesSinglePageAsync(Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -1962,7 +1966,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterQueueItemInternal>> listQueuesSinglePageAsync(
+    public Mono<PagedResponse<RouterQueueItem>> listQueuesSinglePageAsync(
             Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listQueues(this.client.getEndpoint(), maxPageSize, this.client.getApiVersion(), accept, context)
@@ -1987,7 +1991,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterQueueItemInternal> listQueuesAsync(Integer maxPageSize) {
+    public PagedFlux<RouterQueueItem> listQueuesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
                 () -> listQueuesSinglePageAsync(maxPageSize), nextLink -> listQueuesNextSinglePageAsync(nextLink));
     }
@@ -2003,7 +2007,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterQueueItemInternal> listQueuesAsync(Integer maxPageSize, Context context) {
+    public PagedFlux<RouterQueueItem> listQueuesAsync(Integer maxPageSize, Context context) {
         return new PagedFlux<>(
                 () -> listQueuesSinglePageAsync(maxPageSize, context),
                 nextLink -> listQueuesNextSinglePageAsync(nextLink, context));
@@ -2019,7 +2023,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterQueueItemInternal> listQueuesSinglePage(Integer maxPageSize) {
+    public PagedResponse<RouterQueueItem> listQueuesSinglePage(Integer maxPageSize) {
         return listQueuesSinglePageAsync(maxPageSize).block();
     }
 
@@ -2034,7 +2038,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterQueueItemInternal> listQueuesSinglePage(Integer maxPageSize, Context context) {
+    public PagedResponse<RouterQueueItem> listQueuesSinglePage(Integer maxPageSize, Context context) {
         return listQueuesSinglePageAsync(maxPageSize, context).block();
     }
 
@@ -2048,7 +2052,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterQueueItemInternal> listQueues(Integer maxPageSize) {
+    public PagedIterable<RouterQueueItem> listQueues(Integer maxPageSize) {
         return new PagedIterable<>(listQueuesAsync(maxPageSize));
     }
 
@@ -2063,7 +2067,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterQueueItemInternal> listQueues(Integer maxPageSize, Context context) {
+    public PagedIterable<RouterQueueItem> listQueues(Integer maxPageSize, Context context) {
         return new PagedIterable<>(listQueuesAsync(maxPageSize, context));
     }
 
@@ -2079,7 +2083,7 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItemInternal>> listClassificationPoliciesNextSinglePageAsync(
+    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesNextSinglePageAsync(
             String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2110,7 +2114,7 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItemInternal>> listClassificationPoliciesNextSinglePageAsync(
+    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesNextSinglePageAsync(
             String nextLink, Context context) {
         final String accept = "application/json";
         return service.listClassificationPoliciesNext(nextLink, this.client.getEndpoint(), accept, context)
@@ -2136,7 +2140,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ClassificationPolicyItemInternal> listClassificationPoliciesNextSinglePage(String nextLink) {
+    public PagedResponse<ClassificationPolicyItem> listClassificationPoliciesNextSinglePage(String nextLink) {
         return listClassificationPoliciesNextSinglePageAsync(nextLink).block();
     }
 
@@ -2152,7 +2156,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ClassificationPolicyItemInternal> listClassificationPoliciesNextSinglePage(
+    public PagedResponse<ClassificationPolicyItem> listClassificationPoliciesNextSinglePage(
             String nextLink, Context context) {
         return listClassificationPoliciesNextSinglePageAsync(nextLink, context).block();
     }
@@ -2169,7 +2173,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItemInternal>> listDistributionPoliciesNextSinglePageAsync(
+    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesNextSinglePageAsync(
             String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2200,7 +2204,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItemInternal>> listDistributionPoliciesNextSinglePageAsync(
+    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesNextSinglePageAsync(
             String nextLink, Context context) {
         final String accept = "application/json";
         return service.listDistributionPoliciesNext(nextLink, this.client.getEndpoint(), accept, context)
@@ -2226,7 +2230,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DistributionPolicyItemInternal> listDistributionPoliciesNextSinglePage(String nextLink) {
+    public PagedResponse<DistributionPolicyItem> listDistributionPoliciesNextSinglePage(String nextLink) {
         return listDistributionPoliciesNextSinglePageAsync(nextLink).block();
     }
 
@@ -2242,7 +2246,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DistributionPolicyItemInternal> listDistributionPoliciesNextSinglePage(
+    public PagedResponse<DistributionPolicyItem> listDistributionPoliciesNextSinglePage(
             String nextLink, Context context) {
         return listDistributionPoliciesNextSinglePageAsync(nextLink, context).block();
     }
@@ -2259,7 +2263,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItemInternal>> listExceptionPoliciesNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -2288,7 +2292,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItemInternal>> listExceptionPoliciesNextSinglePageAsync(
+    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesNextSinglePageAsync(
             String nextLink, Context context) {
         final String accept = "application/json";
         return service.listExceptionPoliciesNext(nextLink, this.client.getEndpoint(), accept, context)
@@ -2314,7 +2318,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ExceptionPolicyItemInternal> listExceptionPoliciesNextSinglePage(String nextLink) {
+    public PagedResponse<ExceptionPolicyItem> listExceptionPoliciesNextSinglePage(String nextLink) {
         return listExceptionPoliciesNextSinglePageAsync(nextLink).block();
     }
 
@@ -2330,7 +2334,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ExceptionPolicyItemInternal> listExceptionPoliciesNextSinglePage(
+    public PagedResponse<ExceptionPolicyItem> listExceptionPoliciesNextSinglePage(
             String nextLink, Context context) {
         return listExceptionPoliciesNextSinglePageAsync(nextLink, context).block();
     }
@@ -2346,7 +2350,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterQueueItemInternal>> listQueuesNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<RouterQueueItem>> listQueuesNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listQueuesNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -2373,7 +2377,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterQueueItemInternal>> listQueuesNextSinglePageAsync(
+    public Mono<PagedResponse<RouterQueueItem>> listQueuesNextSinglePageAsync(
             String nextLink, Context context) {
         final String accept = "application/json";
         return service.listQueuesNext(nextLink, this.client.getEndpoint(), accept, context)
@@ -2399,7 +2403,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterQueueItemInternal> listQueuesNextSinglePage(String nextLink) {
+    public PagedResponse<RouterQueueItem> listQueuesNextSinglePage(String nextLink) {
         return listQueuesNextSinglePageAsync(nextLink).block();
     }
 
@@ -2415,7 +2419,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterQueueItemInternal> listQueuesNextSinglePage(String nextLink, Context context) {
+    public PagedResponse<RouterQueueItem> listQueuesNextSinglePage(String nextLink, Context context) {
         return listQueuesNextSinglePageAsync(nextLink, context).block();
     }
 }

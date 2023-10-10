@@ -1195,7 +1195,7 @@ public final class JobRouterAdministrationRestClientImpl {
                                 service.listDistributionPolicies(
                                         this.getEndpoint(),
                                         this.getServiceVersion().getVersion(),
-                                        maxPageSize,
+                                        1,
                                         accept,
                                         requestOptions,
                                         context))
@@ -1308,7 +1308,7 @@ public final class JobRouterAdministrationRestClientImpl {
                 service.listDistributionPoliciesSync(
                         this.getEndpoint(),
                         this.getServiceVersion().getVersion(),
-                        maxPageSize,
+                        1,
                         accept,
                         requestOptions,
                         Context.NONE);
@@ -1695,7 +1695,7 @@ public final class JobRouterAdministrationRestClientImpl {
                                 service.listClassificationPolicies(
                                         this.getEndpoint(),
                                         this.getServiceVersion().getVersion(),
-                                        maxPageSize,
+                                        1,
                                         accept,
                                         requestOptions,
                                         context))
@@ -1818,7 +1818,7 @@ public final class JobRouterAdministrationRestClientImpl {
                 service.listClassificationPoliciesSync(
                         this.getEndpoint(),
                         this.getServiceVersion().getVersion(),
-                        maxPageSize,
+                        1,
                         accept,
                         requestOptions,
                         Context.NONE);
@@ -2202,7 +2202,7 @@ public final class JobRouterAdministrationRestClientImpl {
                                 service.listExceptionPolicies(
                                         this.getEndpoint(),
                                         this.getServiceVersion().getVersion(),
-                                        maxPageSize,
+                                        1,
                                         accept,
                                         requestOptions,
                                         context))
@@ -2323,7 +2323,7 @@ public final class JobRouterAdministrationRestClientImpl {
                 service.listExceptionPoliciesSync(
                         this.getEndpoint(),
                         this.getServiceVersion().getVersion(),
-                        maxPageSize,
+                        1,
                         accept,
                         requestOptions,
                         Context.NONE);
@@ -2667,7 +2667,7 @@ public final class JobRouterAdministrationRestClientImpl {
                                 service.listQueues(
                                         this.getEndpoint(),
                                         this.getServiceVersion().getVersion(),
-                                        maxPageSize,
+                                        1,
                                         accept,
                                         requestOptions,
                                         context))
@@ -2778,7 +2778,7 @@ public final class JobRouterAdministrationRestClientImpl {
                 service.listQueuesSync(
                         this.getEndpoint(),
                         this.getServiceVersion().getVersion(),
-                        maxPageSize,
+                        1,
                         accept,
                         requestOptions,
                         Context.NONE);

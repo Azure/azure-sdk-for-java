@@ -960,7 +960,7 @@ public final class JobRouterRestAsyncClient {
     public Mono<Void> reclassifyJob(String id) {
         // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return reclassifyJobWithResponse(id, reclassifyJobRequest, requestOptions).flatMap(FluxUtil::toMono);
+        return reclassifyJobWithResponse(id, null, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**

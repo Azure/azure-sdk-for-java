@@ -55,26 +55,4 @@ public class ClassificationPolicyAdapter {
             .setWorkerSelectors(options.getWorkerSelectors().stream()
                 .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToInternal).collect(Collectors.toList()));
     }
-
-    public static PagedFlux<ClassificationPolicyItem> convertPagedFluxToPublic(PagedFlux<ClassificationPolicyItemInternal> internalPagedFlux) {
-        final Function<PagedResponse<ClassificationPolicyItemInternal>, PagedResponse<ClassificationPolicyItem>> responseMapper
-            = internalResponse -> new PagedResponseBase<Void, ClassificationPolicyItem>(internalResponse.getRequest(),
-            internalResponse.getStatusCode(),
-            internalResponse.getHeaders(),
-            internalResponse.getValue()
-                .stream()
-                .map(internal -> new ClassificationPolicyItem()
-                    .setClassificationPolicy(ClassificationPolicyConstructorProxy.create(internal.getClassificationPolicy()))
-                    .setEtag(new ETag(internal.getEtag())))
-                .collect(Collectors.toList()),
-            internalResponse.getContinuationToken(),
-            null);
-
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<ClassificationPolicyItemInternal>> flux = (continuationToken == null)
-                ? internalPagedFlux.byPage()
-                : internalPagedFlux.byPage(continuationToken);
-            return flux.map(responseMapper);
-        });
-    }
 }

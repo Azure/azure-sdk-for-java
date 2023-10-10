@@ -299,8 +299,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClassificationPolicyItem> listClassificationPolicies() {
         try {
-            return ClassificationPolicyAdapter.convertPagedFluxToPublic(
-                jobRouterAdmin.listClassificationPoliciesAsync(null));
+            return jobRouterAdmin.listClassificationPoliciesAsync(null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -318,8 +317,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions) {
         try {
-            return ClassificationPolicyAdapter.convertPagedFluxToPublic(
-                jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize()));
+            return jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize());
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -337,8 +335,7 @@ public final class JobRouterAdministrationAsyncClient {
      */
     PagedFlux<ClassificationPolicyItem> listClassificationPolicies(ListClassificationPoliciesOptions listClassificationPoliciesOptions, Context context) {
         try {
-            return ClassificationPolicyAdapter.convertPagedFluxToPublic(
-                jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize(), context));
+            return jobRouterAdmin.listClassificationPoliciesAsync(listClassificationPoliciesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -563,7 +560,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DistributionPolicyItem> listDistributionPolicies() {
         try {
-            return DistributionPolicyAdapter.convertPagedFluxToPublic(jobRouterAdmin.listDistributionPoliciesAsync(null));
+            return jobRouterAdmin.listDistributionPoliciesAsync(null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -581,8 +578,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions) {
         try {
-            return DistributionPolicyAdapter.convertPagedFluxToPublic(
-                jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize()));
+            return jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize());
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -600,8 +596,7 @@ public final class JobRouterAdministrationAsyncClient {
      */
     PagedFlux<DistributionPolicyItem> listDistributionPolicies(ListDistributionPoliciesOptions listDistributionPoliciesOptions, Context context) {
         try {
-            return DistributionPolicyAdapter.convertPagedFluxToPublic(
-                jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize(), context));
+            return jobRouterAdmin.listDistributionPoliciesAsync(listDistributionPoliciesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -825,7 +820,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExceptionPolicyItem> listExceptionPolicies() {
         try {
-            return ExceptionPolicyAdapter.convertPagedFluxToPublic(jobRouterAdmin.listExceptionPoliciesAsync(null));
+            return jobRouterAdmin.listExceptionPoliciesAsync(null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -843,8 +838,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExceptionPolicyItem> listExceptionPolicies(ListExceptionPoliciesOptions listExceptionPoliciesOptions) {
         try {
-            return ExceptionPolicyAdapter.convertPagedFluxToPublic(
-                jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize()));
+            return jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize());
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -862,8 +856,7 @@ public final class JobRouterAdministrationAsyncClient {
      */
     PagedFlux<ExceptionPolicyItem> listExceptionPolicies(ListExceptionPoliciesOptions listExceptionPoliciesOptions, Context context) {
         try {
-            return ExceptionPolicyAdapter.convertPagedFluxToPublic(
-                jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize(), context));
+            return jobRouterAdmin.listExceptionPoliciesAsync(listExceptionPoliciesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1087,7 +1080,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterQueueItem> listQueues() {
         try {
-            return QueueAdapter.convertPagedFluxToPublic(jobRouterAdmin.listQueuesAsync(null));
+            return jobRouterAdmin.listQueuesAsync(null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1105,7 +1098,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterQueueItem> listQueues(ListQueuesOptions listQueuesOptions) {
         try {
-            return QueueAdapter.convertPagedFluxToPublic(jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize()));
+            return jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize());
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1123,7 +1116,7 @@ public final class JobRouterAdministrationAsyncClient {
      */
     PagedFlux<RouterQueueItem> listQueues(ListQueuesOptions listQueuesOptions, Context context) {
         try {
-            return QueueAdapter.convertPagedFluxToPublic(jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize(), context));
+            return jobRouterAdmin.listQueuesAsync(listQueuesOptions.getMaxPageSize(), context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

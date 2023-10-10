@@ -12,7 +12,6 @@ import com.azure.communication.jobrouter.implementation.models.CompleteJobReques
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferRequest;
 import com.azure.communication.jobrouter.implementation.models.RouterJobCollectionInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterJobItemInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobPositionDetailsInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobStatusSelectorInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueStatisticsInternal;
@@ -22,6 +21,8 @@ import com.azure.communication.jobrouter.implementation.models.RouterWorkerItemI
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerStateSelectorInternal;
 import com.azure.communication.jobrouter.implementation.models.UnassignJobRequest;
 import com.azure.communication.jobrouter.implementation.models.UnassignJobResultInternal;
+import com.azure.communication.jobrouter.models.RouterJobItem;
+import com.azure.communication.jobrouter.models.RouterWorkerItem;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -1102,7 +1103,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItemInternal>> listJobsSinglePageAsync(
+    public Mono<PagedResponse<RouterJobItem>> listJobsSinglePageAsync(
             RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
@@ -1155,7 +1156,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItemInternal>> listJobsSinglePageAsync(
+    public Mono<PagedResponse<RouterJobItem>> listJobsSinglePageAsync(
             RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
@@ -1206,7 +1207,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJobItemInternal> listJobsAsync(
+    public PagedFlux<RouterJobItem> listJobsAsync(
             RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
@@ -1246,7 +1247,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJobItemInternal> listJobsAsync(
+    public PagedFlux<RouterJobItem> listJobsAsync(
             RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
@@ -1287,7 +1288,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterJobItemInternal> listJobsSinglePage(
+    public PagedResponse<RouterJobItem> listJobsSinglePage(
             RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
@@ -1325,7 +1326,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterJobItemInternal> listJobsSinglePage(
+    public PagedResponse<RouterJobItem> listJobsSinglePage(
             RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
@@ -1364,7 +1365,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterJobItemInternal> listJobs(
+    public PagedIterable<RouterJobItem> listJobs(
             RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
@@ -1402,7 +1403,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterJobItemInternal> listJobs(
+    public PagedIterable<RouterJobItem> listJobs(
             RouterJobStatusSelectorInternal status,
             String queueId,
             String channelId,
@@ -2285,7 +2286,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersSinglePageAsync(
+    public Mono<PagedResponse<RouterWorkerItem>> listWorkersSinglePageAsync(
             RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
@@ -2332,7 +2333,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersSinglePageAsync(
+    public Mono<PagedResponse<RouterWorkerItem>> listWorkersSinglePageAsync(
             RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
@@ -2377,7 +2378,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorkerItemInternal> listWorkersAsync(
+    public PagedFlux<RouterWorkerItem> listWorkersAsync(
             RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
@@ -2405,7 +2406,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorkerItemInternal> listWorkersAsync(
+    public PagedFlux<RouterWorkerItem> listWorkersAsync(
             RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
@@ -2433,7 +2434,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterWorkerItemInternal> listWorkersSinglePage(
+    public PagedResponse<RouterWorkerItem> listWorkersSinglePage(
             RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
@@ -2459,7 +2460,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterWorkerItemInternal> listWorkersSinglePage(
+    public PagedResponse<RouterWorkerItem> listWorkersSinglePage(
             RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
@@ -2485,7 +2486,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterWorkerItemInternal> listWorkers(
+    public PagedIterable<RouterWorkerItem> listWorkers(
             RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
@@ -2511,7 +2512,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterWorkerItemInternal> listWorkers(
+    public PagedIterable<RouterWorkerItem> listWorkers(
             RouterWorkerStateSelectorInternal state,
             String channelId,
             String queueId,
@@ -2532,7 +2533,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItemInternal>> listJobsNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<RouterJobItem>> listJobsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -2559,7 +2560,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItemInternal>> listJobsNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<RouterJobItem>> listJobsNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
@@ -2584,7 +2585,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterJobItemInternal> listJobsNextSinglePage(String nextLink) {
+    public PagedResponse<RouterJobItem> listJobsNextSinglePage(String nextLink) {
         return listJobsNextSinglePageAsync(nextLink).block();
     }
 
@@ -2600,7 +2601,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterJobItemInternal> listJobsNextSinglePage(String nextLink, Context context) {
+    public PagedResponse<RouterJobItem> listJobsNextSinglePage(String nextLink, Context context) {
         return listJobsNextSinglePageAsync(nextLink, context).block();
     }
 
@@ -2615,7 +2616,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<RouterWorkerItem>> listWorkersNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listWorkersNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -2642,7 +2643,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersNextSinglePageAsync(
+    public Mono<PagedResponse<RouterWorkerItem>> listWorkersNextSinglePageAsync(
             String nextLink, Context context) {
         final String accept = "application/json";
         return service.listWorkersNext(nextLink, this.client.getEndpoint(), accept, context)
@@ -2668,7 +2669,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterWorkerItemInternal> listWorkersNextSinglePage(String nextLink) {
+    public PagedResponse<RouterWorkerItem> listWorkersNextSinglePage(String nextLink) {
         return listWorkersNextSinglePageAsync(nextLink).block();
     }
 
@@ -2684,7 +2685,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RouterWorkerItemInternal> listWorkersNextSinglePage(String nextLink, Context context) {
+    public PagedResponse<RouterWorkerItem> listWorkersNextSinglePage(String nextLink, Context context) {
         return listWorkersNextSinglePageAsync(nextLink, context).block();
     }
 }

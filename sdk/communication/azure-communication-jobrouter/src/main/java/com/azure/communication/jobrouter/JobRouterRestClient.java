@@ -944,7 +944,7 @@ public final class JobRouterRestClient {
     public void reclassifyJob(String id) {
         // Generated convenience method for reclassifyJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        reclassifyJobWithResponse(id, reclassifyJobRequest, requestOptions).getValue();
+        reclassifyJobWithResponse(id, null, requestOptions).getValue();
     }
 
     /**
