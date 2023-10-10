@@ -4,18 +4,23 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import static org.junit.Assert.assertTrue;
+import java.util.stream.Stream;
 
-@RunWith(Parameterized.class)
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
 public class AzureCliCredentialNegativeTest {
 
-    @Test
-    public void testInvalidScopeFromRequest() {
+    static Stream<String> invalidCharacters() {
+        return Stream.of("|", "&", ";");
+    }
+    @ParameterizedTest
+    @MethodSource("invalidCharacters")
+    public void testInvalidScopeFromRequest(String invalidCharacter) {
         TokenRequestContext request = new TokenRequestContext().addScopes("scope" + invalidCharacter);
 
 
@@ -25,8 +30,9 @@ public class AzureCliCredentialNegativeTest {
             .expectErrorMatches(e -> e instanceof IllegalArgumentException)
             .verify();
     }
-    @Test
-    public void testInvalidTenantFromRequest() {
+    @ParameterizedTest
+    @MethodSource("invalidCharacters")
+    public void testInvalidTenantFromRequest(String invalidCharacter) {
         TokenRequestContext request = new TokenRequestContext().addScopes("scope").setTenantId("tenant" + invalidCharacter);
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
 
@@ -35,8 +41,9 @@ public class AzureCliCredentialNegativeTest {
             .verify();
     }
 
-    @Test
-    public void testInvalidScopeFromRequestSync() {
+    @ParameterizedTest
+    @MethodSource("invalidCharacters")
+    public void testInvalidScopeFromRequestSync(String invalidCharacter) {
         TokenRequestContext request = new TokenRequestContext().addScopes("scope" + invalidCharacter);
 
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
@@ -47,8 +54,9 @@ public class AzureCliCredentialNegativeTest {
         }
     }
 
-    @Test
-    public void testInvalidTenantFromRequestSync() {
+    @ParameterizedTest
+    @MethodSource("invalidCharacters")
+    public void testInvalidTenantFromRequestSync(String invalidCharacter) {
         TokenRequestContext request = new TokenRequestContext().addScopes("scope").setTenantId("tenant" + invalidCharacter);
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         try {
@@ -56,13 +64,5 @@ public class AzureCliCredentialNegativeTest {
         } catch (Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
         }
-    }
-
-    @Parameterized.Parameter
-    public String invalidCharacter;
-
-    @Parameterized.Parameters(name = "invalid character: {0}")
-    public static Object[] getInvalidCharacters() {
-        return new Object[] { "|", "&", ";" };
     }
 }
