@@ -88,11 +88,7 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
 
         try {
             LOGGER.info("Creating {} with name '{}' ...", resourceType, name);
-            if (properties == null) {
-                return internalCreate(key);
-            } else {
-                return internalCreate(key, properties);
-            }
+            return internalCreate(key, properties);
         } catch (ManagementException e) {
             String message = String.format("Creating %s with name '%s' failed due to: %s", resourceType, name, e.toString());
             throw new RuntimeException(message, e);
@@ -120,7 +116,7 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
             return result;
         }
 
-        return create(key, properties);
+        return doCreate(key, properties);
     }
 
     abstract String getResourceName(K key);
