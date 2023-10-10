@@ -20,7 +20,6 @@ import org.mockito.Mockito;
 import reactor.test.StepVerifier;
 
 import javax.servlet.ServletException;
-import java.net.ConnectException;
 import java.net.InetSocketAddress;
 
 import static org.junit.jupiter.api.Assertions.*;
