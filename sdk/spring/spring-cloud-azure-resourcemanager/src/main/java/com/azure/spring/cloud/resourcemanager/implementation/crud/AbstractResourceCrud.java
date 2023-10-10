@@ -91,7 +91,7 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
     }
 
     @Override
-    public T create(K key, @Nullable P properties) {
+    public T create(K key, P properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
@@ -123,7 +123,7 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
     }
 
     @Override
-    public T getOrCreate(K key, @Nullable P properties) {
+    public T getOrCreate(K key, P properties) {
         T result = get(key);
 
         if (result != null) {
