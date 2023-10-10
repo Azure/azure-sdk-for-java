@@ -15,7 +15,7 @@
   <groupId>com.client</groupId>
   <artifactId>client-core-http-netty</artifactId>
   <packaging>jar</packaging>
-  <version>1.14.0-beta.2</version> <!-- {x-version-update;com.client:client-core-http-netty;current} -->
+  <version>1.13.7</version> <!-- {x-version-update;com.client:client-core-http-netty;current} -->
 
   <name>Microsoft Client Netty HTTP Client Library</name>
   <description>This package contains the Netty HTTP client plugin for client-core.</description>
@@ -72,7 +72,7 @@
     <dependency>
       <groupId>com.client</groupId>
       <artifactId>client-core</artifactId>
-      <version>1.44.0-beta.1</version> <!-- {x-version-update;com.client:client-core;current} -->
+      <version>1.43.0</version> <!-- {x-version-update;com.client:client-core;current} -->
     </dependency>
 
     <dependency>
@@ -146,20 +146,20 @@
     <dependency>
       <groupId>com.client</groupId>
       <artifactId>client-core</artifactId>
-      <version>1.44.0-beta.1</version> <!-- {x-version-update;com.client:client-core;current} -->
+      <version>1.43.0</version> <!-- {x-version-update;com.client:client-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.client</groupId>
-      <artifactId>client-core-test</artifactId>
-      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.client:client-core-test;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.client</groupId>
-      <artifactId>client-core-test</artifactId>
-      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.client:client-core-test;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -207,6 +207,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.client:client-core:[1.43.0]</include> <!-- {x-include-update;com.client:client-json;dependency} -->
                 <include>io.netty:netty-tcnative-boringssl-static:[2.0.61.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty-http:[1.0.34]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <include>io.netty:netty-buffer:[4.1.94.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
