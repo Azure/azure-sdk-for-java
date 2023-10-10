@@ -364,7 +364,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             this.currentBackoffMilliseconds.set(
                 Math.min(
                     RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS,
-                    this.currentBackoffMilliseconds.get() * retryWithRetryPolicy.BACK_OFF_MULTIPLIER)
+                    this.currentBackoffMilliseconds.get() * RetryWithRetryPolicy.BACK_OFF_MULTIPLIER)
             );
 
             logger.debug("BackoffTime: {} ms.", backoffTime.toMillis());
