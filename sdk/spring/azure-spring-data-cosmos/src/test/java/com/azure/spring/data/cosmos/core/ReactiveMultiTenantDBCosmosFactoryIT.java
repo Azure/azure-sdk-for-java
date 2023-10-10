@@ -20,6 +20,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
@@ -44,6 +45,11 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Disable this IT in China cloud, because it can't provision DatabaseAccount resource in China cloud with test subscription.
+ * This test will resume running after 2024-04-20 .
+ */
+@DisabledIfEnvironmentVariable(named = "AZURE_SPRING_DATA_COSMOS_IT_SKIPRUNNING", matches = "skipRunning")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MultiTenantTestRepositoryConfig.class)
 public class ReactiveMultiTenantDBCosmosFactoryIT {

@@ -13,6 +13,7 @@ import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.api.Assertions;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,6 +26,11 @@ import java.lang.reflect.Field;
 import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 
+/**
+ * Disable this IT in China cloud, because it can't provision DatabaseAccount resource in China cloud with test subscription.
+ * This test will resume running after 2024-04-20 .
+ */
+@DisabledIfEnvironmentVariable(named = "AZURE_SPRING_DATA_COSMOS_IT_SKIPRUNNING", matches = "skipRunning")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestRepositoryConfig.class, SecondaryTestRepositoryConfig.class})
 public class MultiCosmosTemplateIT {

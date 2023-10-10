@@ -158,6 +158,11 @@
       "condition": "[variables('notSkipCondition')]",
       "type": "string",
       "value": "[listKeys(variables('newResourceId'), variables('apiVersion')).secondaryMasterKey]"
+    },
+    "AZURE_SPRING_DATA_COSMOS_IT_SKIPRUNNING": {
+      "condition": "[variables('notSkipCondition')]",
+      "type": "string",
+      "value": "skipRunning"
     }
   }
 }

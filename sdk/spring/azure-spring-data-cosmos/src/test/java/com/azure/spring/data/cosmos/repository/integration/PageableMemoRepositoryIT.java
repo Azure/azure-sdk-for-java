@@ -16,6 +16,7 @@ import com.azure.spring.data.cosmos.repository.repository.PageableMemoRepository
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -38,6 +39,11 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Disable this IT in China cloud, because it can't provision DatabaseAccount resource in China cloud with test subscription.
+ * This test will resume running after 2024-04-20 .
+ */
+@DisabledIfEnvironmentVariable(named = "AZURE_SPRING_DATA_COSMOS_IT_SKIPRUNNING", matches = "skipRunning")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class PageableMemoRepositoryIT {

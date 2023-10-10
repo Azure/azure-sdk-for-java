@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +29,11 @@ import java.lang.reflect.Field;
 
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * Disable this IT in China cloud, because it can't provision DatabaseAccount resource in China cloud with test subscription.
+ * This test will resume running after 2024-04-20 .
+ */
+@DisabledIfEnvironmentVariable(named = "AZURE_SPRING_DATA_COSMOS_IT_SKIPRUNNING", matches = "skipRunning")
 public class AbstractCosmosConfigurationIT {
 
     @Rule

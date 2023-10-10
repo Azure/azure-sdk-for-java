@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS2_PARTITIO
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS4_PARTITION3;
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Disable this IT in China cloud, because it can't provision DatabaseAccount resource in China cloud with test subscription.
+ * This test will resume running after 2024-04-20 .
+ */
+@DisabledIfEnvironmentVariable(named = "AZURE_SPRING_DATA_COSMOS_IT_SKIPRUNNING", matches = "skipRunning")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ApplicationContextEventReactiveIT {
