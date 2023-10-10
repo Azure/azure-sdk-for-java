@@ -9,8 +9,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
@@ -68,7 +68,7 @@ public class InteractiveBrowserCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -88,12 +88,12 @@ public class InteractiveBrowserCredentialTest {
             // test
             InteractiveBrowserCredential credential = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assertions.assertEquals(token1, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             accessToken = credential.getTokenSync(request2);
-            Assertions.assertEquals(token2, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
@@ -136,7 +136,7 @@ public class InteractiveBrowserCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -157,12 +157,12 @@ public class InteractiveBrowserCredentialTest {
             // test
             InteractiveBrowserCredential credential = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assertions.assertEquals(token1, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             accessToken = credential.getTokenSync(request2);
-            Assertions.assertEquals(token2, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
@@ -202,7 +202,7 @@ public class InteractiveBrowserCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -223,12 +223,12 @@ public class InteractiveBrowserCredentialTest {
             InteractiveBrowserCredential credential =
                 new InteractiveBrowserCredentialBuilder().redirectUrl(redirectUrl).clientId(CLIENT_ID).build();
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assertions.assertEquals(token1, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             accessToken = credential.getTokenSync(request2);
-            Assertions.assertEquals(token2, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
@@ -268,7 +268,7 @@ public class InteractiveBrowserCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -289,24 +289,23 @@ public class InteractiveBrowserCredentialTest {
             InteractiveBrowserCredential credential =
                 new InteractiveBrowserCredentialBuilder().loginHint(username).clientId(CLIENT_ID).build();
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assertions.assertEquals(token1, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             accessToken = credential.getTokenSync(request2);
-            Assertions.assertEquals(token2, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testCredentialDoesnWorkWIthPortAndRedirectUrlConfigured() throws Exception {
         // setup
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new InteractiveBrowserCredentialBuilder()
+        new InteractiveBrowserCredentialBuilder()
             .clientId(CLIENT_ID)
             .port(8080)
             .redirectUrl("http://localhost:8080")
-            .build());
+            .build();
     }
 
     @Test
@@ -333,7 +332,7 @@ public class InteractiveBrowserCredentialTest {
                     && authenticationRecord.getUsername().equals("testuser")
                     && authenticationRecord.getHomeAccountId() != null)
                 .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
     }
 

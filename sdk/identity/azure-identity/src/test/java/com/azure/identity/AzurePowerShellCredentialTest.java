@@ -7,8 +7,8 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class AzurePowerShellCredentialTest {
 
     @Test
-    public void getTokenMockAsync() {
+    public void getTokenMockAsync() throws Exception {
         // setup
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("resourcename");
@@ -40,13 +40,13 @@ public class AzurePowerShellCredentialTest {
                     .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                             && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
                     .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
 
     }
 
     @Test
-    public void azurePowerShellCredentialNotInstalledException() {
+    public void azurePowerShellCredentialNotInstalledException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzurePSNotInstalled");
 
@@ -63,7 +63,7 @@ public class AzurePowerShellCredentialTest {
                 .expectErrorMatches(e -> e instanceof Exception && e.getMessage()
                     .contains("Azure PowerShell not installed"))
                 .verify();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
     }
 }

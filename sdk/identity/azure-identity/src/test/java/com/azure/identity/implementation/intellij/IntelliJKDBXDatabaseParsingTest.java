@@ -5,13 +5,12 @@ package com.azure.identity.implementation.intellij;
 
 import com.azure.identity.implementation.IntelliJAuthMethodDetails;
 import com.azure.identity.implementation.IntelliJCacheAccessor;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IntelliJKDBXDatabaseParsingTest {
 
@@ -20,7 +19,7 @@ public class IntelliJKDBXDatabaseParsingTest {
         InputStream inputStreamwow = new FileInputStream(getPath("c.kdbx"));
         IntelliJKdbxDatabase kdbxDatabase = IntelliJKdbxDatabase.parse(inputStreamwow, "testpassword");
         String password = kdbxDatabase.getDatabaseEntryValue("ADAuthManager");
-        assertEquals("DummyEntry", password);
+        Assert.assertEquals("DummyEntry", password);
     }
 
     @Test
@@ -28,7 +27,7 @@ public class IntelliJKDBXDatabaseParsingTest {
         File authFile = new File(getPath("AuthMethodDetails.json"));
         IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(null);
         IntelliJAuthMethodDetails authMethodDetails = cacheAccessor.parseAuthMethodDetails(authFile);
-        assertEquals("dummyuser@email.com", authMethodDetails.getAccountEmail());
+        Assert.assertEquals("dummyuser@email.com", authMethodDetails.getAccountEmail());
     }
 
     private String getPath(String filename) {

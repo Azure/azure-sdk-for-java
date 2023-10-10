@@ -4,9 +4,8 @@
 package com.azure.identity.implementation;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class VisualStudioCacheAccessorTests {
 
@@ -14,9 +13,9 @@ public class VisualStudioCacheAccessorTests {
     public void testReadJsonFile() throws Exception {
         // setup
         JsonNode jsonRead = VisualStudioCacheAccessor.readJsonFile(getPath("settings.json"));
-        assertEquals("first", jsonRead.get("editor.suggestSelection").asText());
-        assertEquals("/Contents/Home", jsonRead.get("java.home").asText());
-        assertEquals(12, jsonRead.size());
+        Assert.assertEquals("first", jsonRead.get("editor.suggestSelection").asText());
+        Assert.assertEquals("/Contents/Home", jsonRead.get("java.home").asText());
+        Assert.assertEquals(12, jsonRead.size());
     }
 
     private String getPath(String filename) {

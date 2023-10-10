@@ -399,10 +399,11 @@ public class IdentityClient extends IdentityClientBase {
                 ? LoggingUtil.logCredentialUnavailableException(LOGGER, options, (CredentialUnavailableException) e)
                 : LOGGER.logExceptionAsError(e));
         }
+
     }
 
     /**
-     * Asynchronously acquire a token from Active Directory with Azure PowerShell.
+     * Asynchronously acquire a token from Active Directory with Azure Power Shell.
      *
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
@@ -472,48 +473,51 @@ public class IdentityClient extends IdentityClientBase {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
-        return Mono.using(() -> powershellManager, manager -> manager.initSession().flatMap(m -> {
-            String azAccountsCommand = "Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru";
-            return m.runCommand(azAccountsCommand).flatMap(output -> {
-                if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
-                                    + "because no valid module file")) {
-                    return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                        new CredentialUnavailableException("Az.Account module with version >= 2.2.0 is not installed. "
-                                                           + "It needs to be installed to use Azure PowerShell "
-                                                           + "Credential.")));
-                }
+        return powershellManager.initSession()
+            .flatMap(manager -> {
+                String azAccountsCommand = "Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru";
+                return manager.runCommand(azAccountsCommand)
+                    .flatMap(output -> {
+                        if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
+                            + "because no valid module file")) {
+                            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                                new CredentialUnavailableException(
+                                "Az.Account module with version >= 2.2.0 is not installed. It needs to be installed to"
+                                    + " use Azure PowerShell Credential.")));
+                        }
+                        LOGGER.verbose("Az.accounts module was found installed.");
 
-                LOGGER.verbose("Az.accounts module was found installed.");
-                String command = "Get-AzAccessToken -ResourceUrl '"
-                    + scope
-                    + "' | ConvertTo-Json";
-                LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
-                               + "Powershell to retrieve the Access Token.", command);
-
-                return m.runCommand(command).flatMap(out -> {
-                    if (out.contains("Run Connect-AzAccount to login")) {
-                        return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException(
-                                "Run Connect-AzAccount to login to Azure account in PowerShell.")));
-                    }
-
-                    try {
-                        LOGGER.verbose("Azure Powershell Authentication => Attempting to deserialize the "
-                                       + "received response from Azure Powershell.");
-                        Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(out, Map.class,
-                            SerializerEncoding.JSON);
-                        String accessToken = objectMap.get("Token");
-                        String time = objectMap.get("ExpiresOn");
-                        OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
-                        return Mono.just(new AccessToken(accessToken, expiresOn));
-                    } catch (IOException e) {
-                        return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException(
-                                "Encountered error when deserializing response from Azure Power Shell.", e)));
-                    }
-                });
-            });
-        }), PowershellManager::close);
+                        String command = "Get-AzAccessToken -ResourceUrl '"
+                            + scope
+                            + "' | ConvertTo-Json";
+                        LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
+                                + "Powershell to retrieve the Access Token.", command);
+                        return manager.runCommand(command)
+                            .flatMap(out -> {
+                                if (out.contains("Run Connect-AzAccount to login")) {
+                                    return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                                        new CredentialUnavailableException(
+                                        "Run Connect-AzAccount to login to Azure account in PowerShell.")));
+                                }
+                                try {
+                                    LOGGER.verbose("Azure Powershell Authentication => Attempting to deserialize the "
+                                        + "received response from Azure Powershell.");
+                                    Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(out, Map.class,
+                                        SerializerEncoding.JSON);
+                                    String accessToken = objectMap.get("Token");
+                                    String time = objectMap.get("ExpiresOn");
+                                    OffsetDateTime expiresOn = OffsetDateTime.parse(time)
+                                        .withOffsetSameInstant(ZoneOffset.UTC);
+                                    return Mono.just(new AccessToken(accessToken, expiresOn));
+                                } catch (IOException e) {
+                                    return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                                        new CredentialUnavailableException(
+                                            "Encountered error when deserializing response from Azure Power Shell.",
+                                            e)));
+                                }
+                            });
+                    });
+            }).doFinally(ignored -> powershellManager.close());
     }
 
     /**
@@ -1189,18 +1193,6 @@ public class IdentityClient extends IdentityClientBase {
                                 "ManagedIdentityCredential authentication unavailable. "
                                     + "Connection to IMDS endpoint cannot be established.", null));
                     }
-
-                    if (responseCode == 403) {
-                        if (connection.getResponseMessage()
-                            .contains("A socket operation was attempted to an unreachable network")) {
-                            throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                                new CredentialUnavailableException(
-                                    "Managed Identity response was not in the expected format."
-                                        + " See the inner exception for details.",
-                                    new Exception(connection.getResponseMessage())));
-                        }
-                    }
-
                     if (responseCode == 410
                             || responseCode == 429
                             || responseCode == 404

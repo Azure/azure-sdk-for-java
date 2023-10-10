@@ -7,8 +7,8 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -22,7 +22,7 @@ public class AzureDeveloperCliCredentialTest {
 
 
     @Test
-    public void getTokenMockAsync() {
+    public void getTokenMockAsync() throws Exception {
         // setup
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("resourcename");
@@ -39,12 +39,12 @@ public class AzureDeveloperCliCredentialTest {
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
     @Test
-    public void azureDeveloperCliCredentialWinAzureCLINotInstalledException() {
+    public void azureDeveloperCliCredentialWinAzureCLINotInstalledException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotInstalled");
 
@@ -59,12 +59,12 @@ public class AzureDeveloperCliCredentialTest {
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("Azure CLI not installed"))
                 .verify();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
     @Test
-    public void azureDeveloperCliCredentialAzNotLogInException() {
+    public void azureDeveloperCliCredentialAzNotLogInException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotLogin");
 
@@ -79,12 +79,12 @@ public class AzureDeveloperCliCredentialTest {
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("Azure not Login"))
                 .verify();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
     @Test
-    public void azureDeveloperCliCredentialAuthenticationFailedException() {
+    public void azureDeveloperCliCredentialAuthenticationFailedException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureDeveloperCliCredentialAuthenticationFailed");
 
@@ -99,7 +99,7 @@ public class AzureDeveloperCliCredentialTest {
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("other error"))
                 .verify();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
     }
 }

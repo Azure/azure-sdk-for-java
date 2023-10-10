@@ -12,8 +12,8 @@ import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
@@ -23,7 +23,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mockConstruction;
@@ -71,7 +71,7 @@ public class UsernamePasswordCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -92,13 +92,13 @@ public class UsernamePasswordCredentialTest {
                 new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
             // test
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assertions.assertEquals(token1, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
 
             accessToken = credential.getTokenSync(request2);
-            Assertions.assertEquals(token2, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
@@ -140,7 +140,7 @@ public class UsernamePasswordCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -162,13 +162,13 @@ public class UsernamePasswordCredentialTest {
                 new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
             // test
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assertions.assertEquals(token1, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertEquals(token1, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
 
             accessToken = credential.getTokenSync(request2);
-            Assertions.assertEquals(token2, accessToken.getToken());
-            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertEquals(token2, accessToken.getToken());
+            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
@@ -192,7 +192,7 @@ public class UsernamePasswordCredentialTest {
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(t -> t instanceof MsalServiceException && "bad credential".equals(t.getMessage()))
                 .verify();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -207,9 +207,9 @@ public class UsernamePasswordCredentialTest {
             try {
                 credential.getTokenSync(request);
             } catch (Exception e) {
-                Assertions.assertTrue(e instanceof MsalServiceException && "bad credential".equals(e.getMessage()));
+                Assert.assertTrue(e instanceof MsalServiceException && "bad credential".equals(e.getMessage()));
             }
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
@@ -233,21 +233,21 @@ public class UsernamePasswordCredentialTest {
                 new UsernamePasswordCredentialBuilder().username(fakeUsernamePlaceholder).password(fakePasswordPlaceholder).build();
                 fail();
             } catch (IllegalArgumentException e) {
-                Assertions.assertTrue(e.getMessage().contains("clientId"));
+                Assert.assertTrue(e.getMessage().contains("clientId"));
             }
             try {
                 new UsernamePasswordCredentialBuilder().clientId(clientId).username(fakeUsernamePlaceholder).build();
                 fail();
             } catch (IllegalArgumentException e) {
-                Assertions.assertTrue(e.getMessage().contains("password"));
+                Assert.assertTrue(e.getMessage().contains("password"));
             }
             try {
                 new UsernamePasswordCredentialBuilder().clientId(clientId).password(fakePasswordPlaceholder).build();
                 fail();
             } catch (IllegalArgumentException e) {
-                Assertions.assertTrue(e.getMessage().contains("username"));
+                Assert.assertTrue(e.getMessage().contains("username"));
             }
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
@@ -275,7 +275,7 @@ public class UsernamePasswordCredentialTest {
                     && authenticationRecord.getUsername().equals("testuser")
                     && authenticationRecord.getHomeAccountId() != null)
                 .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
