@@ -16,6 +16,15 @@ public final class CommunicationTokenScope extends ExpandableStringEnum<Communic
     /** Static value voip for CommunicationTokenScope. */
     public static final CommunicationTokenScope VOIP = fromString("voip");
 
+    /** Static value chat.join for CommunicationTokenScope. */
+    public static final CommunicationTokenScope CHAT_JOIN = fromString("chat.join");
+
+    /** Static value chat.join.limited for CommunicationTokenScope. */
+    public static final CommunicationTokenScope CHAT_JOIN_LIMITED = fromString("chat.join.limited");
+
+    /** Static value voip.join for CommunicationTokenScope. */
+    public static final CommunicationTokenScope VOIP_JOIN = fromString("voip.join");
+
     /**
      * Creates a new instance of CommunicationTokenScope value.
      *

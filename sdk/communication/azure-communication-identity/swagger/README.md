@@ -28,8 +28,8 @@ autorest --java
 java: true
 output-folder: ..\
 use: '@autorest/java@4.1.14'
-tag: package-2022-10
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a8c4340400f1ab1ae6a43b10e8d635ecb9c49a2a/specification/communication/data-plane/Identity/readme.md
+tag: package-2023-10
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d060b0ad94d8a284681bf64281845c1aec1fa6f3/specification/communication/data-plane/Identity/readme.md
 add-context-parameter: true
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.identity

@@ -15,17 +15,14 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
 
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 import static com.azure.communication.identity.TokenCustomExpirationTimeHelper.assertTokenExpirationWithinAllowedDeviation;
-import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityAsyncTests extends CommunicationIdentityClientTestBase {
 
-    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
     private CommunicationIdentityAsyncClient asyncClient;
     private CommunicationIdentityClientBuilder builder;
 
