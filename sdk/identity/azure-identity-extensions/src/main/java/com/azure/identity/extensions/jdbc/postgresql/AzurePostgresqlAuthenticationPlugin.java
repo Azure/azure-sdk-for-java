@@ -39,7 +39,7 @@ public class AzurePostgresqlAuthenticationPlugin implements AuthenticationPlugin
      * @param type The authentication method that the server is requesting.
      *
      *             <p>AzurePostgresqlAuthenticationPlugin is used as an extension to
-     *             perform authentication with Microsoft Entra ID,the value here is CLEARTEXT_PASSWORD.</p>
+     *             perform authentication with Microsoft Entra ID, the value here is CLEARTEXT_PASSWORD.</p>
      *
      *             When PostgreSQL client trying to connect with PostgreSQL server:
      *             1. Client will send startup packet to server, the server will return the AuthenticationRequestType it accepts,

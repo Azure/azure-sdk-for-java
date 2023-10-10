@@ -129,7 +129,7 @@ az mysql server ad-admin create \
 
 ### Microsoft Entra authentication with MySQL
 
-Microsoft Entra ID authentication is a mechanism of connecting to Azure Database for MySQL using identities defined in Microsoft Entra ID. With Microsoft Entra authentication, you can manage database user identities and other Microsoft services in a central location, which simplifies permission management.
+Microsoft Entra authentication is a mechanism of connecting to Azure Database for MySQL using identities defined in Microsoft Entra ID. With Microsoft Entra authentication, you can manage database user identities and other Microsoft services in a central location, which simplifies permission management.
 
 The following high-level diagram summarizes how authentication works using Microsoft Entra authentication with Azure Database for MySQL. The arrows indicate communication pathways.
 
@@ -199,7 +199,7 @@ Connection connection=DriverManager.getConnection(url,properties);
 
 ### Cloud Configuration
 
-Credentials default to authenticating to the Microsoft Entra endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure Government or a private cloud, configure credentials with the `azure.authorityHost` argument. [AzureAuthorityHosts](https://docs.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable) defines authorities for well-known clouds:
+Credentials default to authenticating to the Microsoft Entra endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure Government or a private cloud, configure credentials with the `azure.authorityHost` argument. [AzureAuthorityHosts](https://learn.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable) defines authorities for well-known clouds:
 
 ```java
 Properties properties=new Properties();
@@ -293,11 +293,11 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 
 <!-- LINKS -->
 
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [mysql_source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-extensions
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[mysql_product_docs]: https://docs.microsoft.com/azure/mysql/single-server/overview
+[mysql_product_docs]: https://learn.microsoft.com/azure/mysql/single-server/overview
 [quick_start_mysql]: https://aka.ms/passwordless/quickstart/mysql
 [Microsoft Entra ID for authenticating with MySQL]:https://learn.microsoft.com/azure/mysql/single-server/concepts-azure-ad-authentication
 [whatismyip.akamai.com]: https://whatismyip.akamai.com/

@@ -80,7 +80,7 @@ System.out.println(jedis.get("Az:key"));
 jedis.close();
 ```
 
-##### Supported Token Credentials for Microsoft Entra ID Authentication
+##### Supported Token Credentials for Microsoft Entra Authentication
 **Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch a Microsoft Entra access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://learn.microsoft.com/azure/developer/java/sdk/identity) are as follows:
 * [Client Certificate Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
 * [Client Secret Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
