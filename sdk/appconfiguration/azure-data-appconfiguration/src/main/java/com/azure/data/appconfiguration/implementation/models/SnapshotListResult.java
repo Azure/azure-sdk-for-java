@@ -5,7 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +19,7 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
     /*
      * The collection value.
      */
-    private List<ConfigurationSettingsSnapshot> items;
+    private List<ConfigurationSnapshot> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
@@ -34,7 +34,7 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      *
      * @return the items value.
      */
-    public List<ConfigurationSettingsSnapshot> getItems() {
+    public List<ConfigurationSnapshot> getItems() {
         return this.items;
     }
 
@@ -44,7 +44,7 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * @param items the items value to set.
      * @return the SnapshotListResult object itself.
      */
-    public SnapshotListResult setItems(List<ConfigurationSettingsSnapshot> items) {
+    public SnapshotListResult setItems(List<ConfigurationSnapshot> items) {
         this.items = items;
         return this;
     }
@@ -94,8 +94,8 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
                         reader.nextToken();
 
                         if ("items".equals(fieldName)) {
-                            List<ConfigurationSettingsSnapshot> items =
-                                    reader.readArray(reader1 -> ConfigurationSettingsSnapshot.fromJson(reader1));
+                            List<ConfigurationSnapshot> items =
+                                    reader.readArray(reader1 -> ConfigurationSnapshot.fromJson(reader1));
                             deserializedSnapshotListResult.items = items;
                         } else if ("@nextLink".equals(fieldName)) {
                             deserializedSnapshotListResult.nextLink = reader.getString();

@@ -19,7 +19,7 @@ public final class SnapshotFields extends ExpandableStringEnum<SnapshotFields> {
     public static final SnapshotFields FILTERS = fromString("filters");
 
     /** Populates the snapshot 'composition_type' from the service. */
-    public static final SnapshotFields COMPOSITION_TYPE = fromString("composition_type");
+    public static final SnapshotFields SNAPSHOT_COMPOSITION = fromString("composition_type");
 
     /** Populates the snapshot 'created' from the service. */
     public static final SnapshotFields CREATED_AT = fromString("created");
