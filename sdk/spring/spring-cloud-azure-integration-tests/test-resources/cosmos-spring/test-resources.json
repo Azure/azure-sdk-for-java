@@ -130,39 +130,32 @@
   ],
   "outputs": {
     "ACCOUNT_HOST": {
-      "condition": "[variables('notSkipCondition')]",
       "type": "string",
-      "value": "[reference(variables('resourceId'), variables('apiVersion')).documentEndpoint]"
+      "value": "[if(variables('notSkipCondition'), reference(variables('resourceId'), variables('apiVersion')).documentEndpoint,'skipResource')]"
     },
     "ACCOUNT_KEY": {
-      "condition": "[variables('notSkipCondition')]",
       "type": "string",
-      "value": "[listKeys(variables('resourceId'), variables('apiVersion')).primaryMasterKey]"
+      "value": "[if(variables('notSkipCondition'), listKeys(variables('resourceId'), variables('apiVersion')).primaryMasterKey,'skipResource')]"
     },
     "SECONDARY_ACCOUNT_KEY": {
-      "condition": "[variables('notSkipCondition')]",
       "type": "string",
-      "value": "[listKeys(variables('resourceId'), variables('apiVersion')).secondaryMasterKey]"
+      "value": "[if(variables('notSkipCondition'), listKeys(variables('resourceId'), variables('apiVersion')).secondaryMasterKey,'skipResource')]"
     },
     "NEW_ACCOUNT_HOST": {
-      "condition": "[variables('notSkipCondition')]",
       "type": "string",
-      "value": "[reference(variables('newResourceId'), variables('apiVersion')).documentEndpoint]"
+      "value": "[if(variables('notSkipCondition'), reference(variables('newResourceId'), variables('apiVersion')).documentEndpoint,'skipResource')]"
     },
     "NEW_ACCOUNT_KEY": {
-      "condition": "[variables('notSkipCondition')]",
       "type": "string",
-      "value": "[listKeys(variables('newResourceId'), variables('apiVersion')).primaryMasterKey]"
+      "value": "[if(variables('notSkipCondition'), listKeys(variables('newResourceId'), variables('apiVersion')).primaryMasterKey,'skipResource')]"
     },
     "NEW_SECONDARY_ACCOUNT_KEY": {
-      "condition": "[variables('notSkipCondition')]",
       "type": "string",
-      "value": "[listKeys(variables('newResourceId'), variables('apiVersion')).secondaryMasterKey]"
+      "value": "[if(variables('notSkipCondition'), listKeys(variables('newResourceId'), variables('apiVersion')).secondaryMasterKey,'skipResource')]"
     },
     "AZURE_SPRING_DATA_COSMOS_IT_SKIPRUNNING": {
-      "condition": "[variables('notSkipCondition')]",
       "type": "string",
-      "value": "skipRunning"
+      "value": "[if(variables('notSkipCondition'), 'notskip', 'skipRunning')]"
     }
   }
 }
