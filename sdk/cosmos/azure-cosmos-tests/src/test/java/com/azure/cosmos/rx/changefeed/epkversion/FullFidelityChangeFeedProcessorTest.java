@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -1019,13 +1020,39 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
     // todo: this test was run against an FFCF account, worth re-enabling
     //  when we have such an account for the live tests pipeline
-    @Test(groups = { "split" }, dataProvider = "contextTestConfigs", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
+    @Test(groups = { "split" }, dataProvider = "contextTestConfigs", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = true)
     public void readFeedDocumentsAfterSplit(boolean isContextRequired) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseMonitorCollection = createLeaseMonitorCollection(LEASE_COLLECTION_THROUGHPUT);
 
+        CosmosAsyncClient clientWithStaleCache = null;
+
         try {
+
+            clientWithStaleCache = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .buildAsyncClient();
+
+            CosmosAsyncDatabase databaseFromStaleClient =
+                clientWithStaleCache.getDatabase(createdFeedCollectionForSplit.getDatabase().getId());
+            CosmosAsyncContainer feedCollectionFromStaleClient =
+                databaseFromStaleClient.getContainer(createdFeedCollectionForSplit.getId());
+            CosmosAsyncContainer leaseCollectionFromStaleClient =
+                databaseFromStaleClient.getContainer(createdLeaseCollection.getId());
+
+            ChangeFeedProcessor staleChangeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .feedContainer(feedCollectionFromStaleClient)
+                .leaseContainer(leaseCollectionFromStaleClient)
+                .handleAllVersionsAndDeletesChanges(changeFeedProcessorItems -> {})
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeasePrefix("TEST")
+                    .setStartFromBeginning(false))
+                .buildChangeFeedProcessor();
+
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             Set<String> receivedLeaseTokensFromContext = ConcurrentHashMap.newKeySet();
@@ -1085,6 +1112,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             // generate a first batch of documents on the feed collection to be split
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+
+            // this call populates the pkRangeCache being the first data-plane request
+            // this will force using a stale pkRangeCache
+            // in the getCurrentState call after the split
+            staleChangeFeedProcessor.getCurrentState().block();
 
             // Wait for the feed processor to receive and process the first batch of documents and apply throughput change.
             Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -1195,8 +1227,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
             leaseMonitoringChangeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-            int leaseCount = changeFeedProcessor.getCurrentState() .map(List::size).block();
+            int leaseCount = changeFeedProcessor.getCurrentState().map(List::size).block();
             assertThat(leaseCount > 1).as("Found %d leases", leaseCount).isTrue();
+
+            int leaseCountFromStaleCfp = staleChangeFeedProcessor.getCurrentState().map(List::size).block();
+            assertThat(leaseCountFromStaleCfp).isEqualTo(leaseCount);
 
             assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
             for (InternalObjectNode item : createdDocuments) {

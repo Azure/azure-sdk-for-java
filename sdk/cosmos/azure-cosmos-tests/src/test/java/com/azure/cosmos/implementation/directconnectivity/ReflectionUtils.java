@@ -198,6 +198,10 @@ public class ReflectionUtils {
         return get(ConnectionPolicy.class, cosmosClientBuilder, "connectionPolicy");
     }
 
+    public static ConnectionPolicy getConnectionPolicy(CosmosAsyncClient cosmosAsyncClient) {
+        return get(ConnectionPolicy.class, cosmosAsyncClient, "connectionPolicy");
+    }
+
     public static CosmosClientTelemetryConfig getClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder){
         return get(CosmosClientTelemetryConfig.class, cosmosClientBuilder, "clientTelemetryConfig");
     }

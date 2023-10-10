@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -35,6 +36,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,6 +47,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -95,6 +98,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public IncrementalChangeFeedProcessorTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
+    }
+
+    @DataProvider(name = "getCurrentStateTestConfigs")
+    public Object[] getCurrentStateTestConfigs() {
+        return new Object[] {
+            FaultInjectionServerErrorType.PARTITION_IS_SPLITTING,
+            FaultInjectionServerErrorType.GONE,
+            FaultInjectionServerErrorType.PARTITION_IS_MIGRATING
+        };
     }
 
     @Test(groups = {"query" }, timeOut = 2 * TIMEOUT)
@@ -1054,7 +1066,38 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseMonitorCollection = createLeaseMonitorCollection(LEASE_COLLECTION_THROUGHPUT);
 
+        CosmosAsyncClient clientWithStaleCache = null;
+
         try {
+
+            clientWithStaleCache = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .buildAsyncClient();
+
+            CosmosAsyncDatabase databaseFromStaleClient =
+                clientWithStaleCache.getDatabase(createdFeedCollectionForSplit.getDatabase().getId());
+            CosmosAsyncContainer feedCollectionFromStaleClient =
+                databaseFromStaleClient.getContainer(createdFeedCollectionForSplit.getId());
+            CosmosAsyncContainer leaseCollectionFromStaleClient =
+                databaseFromStaleClient.getContainer(createdLeaseCollection.getId());
+
+            ChangeFeedProcessor staleChangeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .feedContainer(feedCollectionFromStaleClient)
+                .leaseContainer(leaseCollectionFromStaleClient)
+                .handleLatestVersionChanges(changeFeedProcessorItems -> {
+                })
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeasePrefix("TEST")
+                    .setStartFromBeginning(true)
+                    .setMaxItemCount(100)
+                    .setLeaseExpirationInterval(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .setFeedPollDelay(Duration.ofMillis(200))
+                )
+                .buildChangeFeedProcessor();
+
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
             LeaseStateMonitor leaseStateMonitor = new LeaseStateMonitor();
@@ -1129,8 +1172,14 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .subscribe();
 
+            // this call populates the pkRangeCache being the first data-plane request
+            // this will force using a stale pkRangeCache
+            // in the getCurrentState call after the split
+            staleChangeFeedProcessor.getCurrentState().block();
+
             // Wait for the feed processor to receive and process the first batch of documents and apply throughput change.
             Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
 
             // Retrieve the latest continuation token value.
             long continuationToken = Long.MAX_VALUE;
@@ -1219,6 +1268,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             int leaseCount = changeFeedProcessor.getCurrentState() .map(List::size).block();
             assertThat(leaseCount > 1).as("Found %d leases", leaseCount).isTrue();
 
+            int leaseCountFromStaleCfp = staleChangeFeedProcessor.getCurrentState().map(List::size).block();
+            assertThat(leaseCountFromStaleCfp).isEqualTo(leaseCount);
+
             assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -1235,6 +1287,10 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             System.out.println("Start to delete FeedCollectionForSplit");
             safeDeleteCollection(createdFeedCollectionForSplit);
             safeDeleteCollection(createdLeaseCollection);
+
+            if (clientWithStaleCache != null) {
+                safeCloseAsync(clientWithStaleCache);
+            }
 
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
