@@ -177,10 +177,9 @@ public class CallMediaAsyncUnitTests {
     public void startContinuousDtmfRecognitionWithResponse() {
         // override callMedia to mock 200 response code
         callMedia = getMockCallMedia(200);
-        StepVerifier.create(
-                callMedia.startContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
-                    CALL_OPERATION_CONTEXT)
-            )
+        ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
+        options.setOperationContext(CALL_OPERATION_CONTEXT);
+        StepVerifier.create(callMedia.startContinuousDtmfRecognitionWithResponse(options))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -192,9 +191,7 @@ public class CallMediaAsyncUnitTests {
         ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
         options.setOperationContext(CALL_OPERATION_CONTEXT);
         options.setOverrideCallbackUrl(OVERRIDE_CALL_CALLBACK_URL);
-        StepVerifier.create(
-                callMedia.stopContinuousDtmfRecognitionWithResponse(options)
-            )
+        StepVerifier.create(callMedia.stopContinuousDtmfRecognitionWithResponse(options))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
