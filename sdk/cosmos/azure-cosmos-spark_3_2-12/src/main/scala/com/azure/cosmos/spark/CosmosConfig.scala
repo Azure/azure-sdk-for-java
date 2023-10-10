@@ -409,19 +409,19 @@ private object CosmosAccountConfig {
       defaultValue = None,
       mandatory = false,
       parseFromStringFunction = subscriptionId => subscriptionId,
-      helpMessage = "The subscriptionId of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+      helpMessage = "The subscriptionId of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
   private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
       defaultValue = None,
       mandatory = false,
       parseFromStringFunction = tenantId => tenantId,
-      helpMessage = "The tenantId of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+      helpMessage = "The tenantId of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
   private val ResourceGroupName = CosmosConfigEntry[String](key = CosmosConfigNames.ResourceGroupName,
       defaultValue = None,
       mandatory = false,
       parseFromStringFunction = resourceGroupName => resourceGroupName,
-      helpMessage = "The resource group of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+      helpMessage = "The resource group of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
   private val AzureEnvironmentTypeEnum = CosmosConfigEntry[AzureEnvironment](key = CosmosConfigNames.AzureEnvironment,
       defaultValue = Option.apply(AzureEnvironment.AZURE),
@@ -508,7 +508,7 @@ private object CosmosAccountConfig {
 
 object CosmosAuthType extends Enumeration {
     type CosmosAuthType = Value
-    val MasterKey, ServicePrinciple = Value
+    val MasterKey, ServicePrinciple, ServicePrincipal = Value
 }
 
 private object AzureEnvironmentType extends Enumeration {
@@ -539,25 +539,25 @@ private object CosmosAuthConfig {
         parseFromStringFunction = authTypeAsString =>
             CosmosConfigEntry.parseEnumeration(authTypeAsString, CosmosAuthType),
         helpMessage = "There are two auth types are supported currently: " +
-            "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrinciple`")
+            "`MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`")
 
     private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = tenantId => tenantId,
-        helpMessage = "The tenantId of the CosmosDB account. Required for `ServicePrinciple` authentication.")
+        helpMessage = "The tenantId of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
     private val ClientId = CosmosConfigEntry[String](key = CosmosConfigNames.ClientId,
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientId => clientId,
-        helpMessage = "The clientId/ApplicationId of the service principle. Required for `ServicePrinciple` authentication. ")
+        helpMessage = "The clientId/ApplicationId of the service principle. Required for `ServicePrincipal` authentication. ")
 
     private val ClientSecret = CosmosConfigEntry[String](key = CosmosConfigNames.ClientSecret,
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientSecret => clientSecret,
-        helpMessage = "The client secret/password of the service principle. Required for `ServicePrinciple` authentication. ")
+        helpMessage = "The client secret/password of the service principle. Required for `ServicePrincipal` authentication. ")
 
     def parseCosmosAuthConfig(cfg: Map[String, String]): CosmosAuthConfig = {
         val authType = CosmosConfigEntry.parse(cfg, AuthenticationType)
