@@ -126,6 +126,9 @@ Use the `getToken` function to get a token for an existing user. The function
 also takes in a list of `CommunicationTokenScope`. Scope options include:
 - `chat` (Chat)
 - `voip` (Voice over IP)
+- `chat.join`
+- `chat.join.limited`
+- `voip.join`
 
 ```java readme-sample-issueUserToken
  // Define a list of communication token scopes

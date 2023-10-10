@@ -27,7 +27,7 @@ autorest --java
 ``` yaml
 java: true
 output-folder: ..\
-use: '@autorest/java@4.1.14'
+use: '@autorest/java@4.1.17'
 tag: package-2023-10
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d060b0ad94d8a284681bf64281845c1aec1fa6f3/specification/communication/data-plane/Identity/readme.md
 add-context-parameter: true
