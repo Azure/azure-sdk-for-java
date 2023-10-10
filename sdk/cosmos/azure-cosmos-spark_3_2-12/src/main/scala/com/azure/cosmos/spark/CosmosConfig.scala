@@ -551,13 +551,13 @@ private object CosmosAuthConfig {
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientId => clientId,
-        helpMessage = "The clientId/ApplicationId of the service principle. Required for `ServicePrincipal` authentication. ")
+        helpMessage = "The clientId/ApplicationId of the service principal. Required for `ServicePrincipal` authentication. ")
 
     private val ClientSecret = CosmosConfigEntry[String](key = CosmosConfigNames.ClientSecret,
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientSecret => clientSecret,
-        helpMessage = "The client secret/password of the service principle. Required for `ServicePrincipal` authentication. ")
+        helpMessage = "The client secret/password of the service principal. Required for `ServicePrincipal` authentication. ")
 
     def parseCosmosAuthConfig(cfg: Map[String, String]): CosmosAuthConfig = {
         val authType = CosmosConfigEntry.parse(cfg, AuthenticationType)

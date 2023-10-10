@@ -17,8 +17,8 @@
 | Config Property Name                 | Default | Description                                                                                                                                                             |
 |:-------------------------------------|    :----   |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `spark.cosmos.auth.type`             | `MasterKey`    | There are two auth types are supported currently: `MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`. |
-| `spark.cosmos.auth.aad.clientId`     | None    | The clientId/ApplicationId of the service principle. Required for `ServicePrincipal` authentication.                                                                                                                                                   |
-| `spark.cosmos.auth.aad.clientSecret` | None    | The client secret/password of the service principle. Required for `ServicePrincipal` authentication.                                                                                                                                                 |
+| `spark.cosmos.auth.aad.clientId`     | None    | The clientId/ApplicationId of the service principal. Required for `ServicePrincipal` authentication.                                                                    |
+| `spark.cosmos.auth.aad.clientSecret` | None    | The client secret/password of the service principal. Required for `ServicePrincipal` authentication.                                                                    |
 
 ### Additional Tuning
 | Config Property Name      | Default | Description |
