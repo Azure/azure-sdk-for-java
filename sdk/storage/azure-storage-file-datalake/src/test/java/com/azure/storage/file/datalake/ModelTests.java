@@ -3,6 +3,9 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.storage.file.datalake.models.AccessControlType;
+import com.azure.storage.file.datalake.models.CopyStatusType;
+import com.azure.storage.file.datalake.models.FileQueryHeaders;
+import com.azure.storage.file.datalake.models.FileReadHeaders;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.RolePermissions;
@@ -18,6 +21,11 @@ import java.util.stream.Stream;
 
 import static com.azure.storage.file.datalake.DataLakeTestBase.compareACL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ModelTests {
@@ -45,6 +53,11 @@ public class ModelTests {
     }
 
     @Test
+    public void pathPermissionsParseSymbolicError() {
+        assertThrows(IllegalArgumentException.class, () ->  PathPermissions.parseSymbolic("r---w---t0"));
+    }
+
+    @Test
     public void pathPermissionsCreate() {
         PathPermissions permissions = PathPermissions.parseSymbolic("r---w---t+");
 
@@ -69,27 +82,6 @@ public class ModelTests {
         assertEquals(extendedInfoInAcl, permissions.isExtendedInfoInAcl());
     }
 
-    @ParameterizedTest
-    @MethodSource("pathPermissionsParseOctalSupplier")
-    public void pathPermissionsParseOctal(String octal, RolePermissions owner, RolePermissions group,
-        RolePermissions other, boolean stickyBit) {
-        PathPermissions permissions = PathPermissions.parseOctal(octal);
-
-        if (owner != null) {
-            assertEquals(owner, permissions.getOwner());
-        }
-
-        if (group != null) {
-            assertEquals(group, permissions.getGroup());
-        }
-
-        if (other != null) {
-            assertEquals(other, permissions.getOther());
-        }
-
-        assertEquals(stickyBit, permissions.isStickyBitSet());
-    }
-
     private static Stream<Arguments> pathPermissionsParseOctalSupplier() {
         return Stream.of(
             // octal, owner, group, other, stickyBit
@@ -97,6 +89,196 @@ public class ModelTests {
                 RolePermissions.parseOctal(1), true),
             Arguments.of("0123", null, null, null, false)
         );
+    }
+
+    @Test
+    public void pathPermissionsParseOctalError() {
+        assertThrows(IllegalArgumentException.class, () -> PathPermissions.parseOctal("0"));
+    }
+
+    @Test
+    public void pathPermissionsHashCode() {
+        PathPermissions perm1 = PathPermissions.parseSymbolic("r---w---t+");
+        PathPermissions perm2 = PathPermissions.parseSymbolic("r---w---t+");
+        PathPermissions perm3 = PathPermissions.parseSymbolic("r---w---t");
+
+        assertEquals(perm1, perm2);
+        assertNotEquals(perm1, perm3);
+    }
+
+    @Test
+    public void pathPermissionsEquals() {
+        PathPermissions perm1 = PathPermissions.parseSymbolic("r---w---t+");
+        PathPermissions notSticky = PathPermissions.parseSymbolic("r---w---x+");
+        PathPermissions notExtended = PathPermissions.parseSymbolic("r---w---t");
+        PathPermissions noOwner = PathPermissions.parseSymbolic("----w---t+");
+        PathPermissions noGroup = PathPermissions.parseSymbolic("r-------t+");
+        PathPermissions noOther = PathPermissions.parseSymbolic("r---w----+");
+
+        assertTrue(perm1.equals(perm1));
+        assertFalse(perm1.equals(null));
+        assertFalse(perm1.equals(notSticky));
+        assertFalse(perm1.equals(notExtended));
+        assertFalse(perm1.equals(noOwner));
+        assertFalse(perm1.equals(noGroup));
+        assertFalse(perm1.equals(noOther));
+    }
+
+    @Test
+    public void pathPermissionsToString() {
+        PathPermissions sticky = PathPermissions.parseSymbolic("r---w---t+");
+        PathPermissions notSticky = PathPermissions.parseSymbolic("r---w---x+");
+
+        assertEquals(sticky.toString(), "1421");
+        assertEquals(notSticky.toString(), "0421");
+    }
+
+    @Test
+    public void pathPermissionsSetStickyBit() {
+        PathPermissions notSticky = PathPermissions.parseSymbolic("r---w---x+");
+        assertFalse(notSticky.isStickyBitSet());
+        notSticky.setStickyBit(true);
+        assertTrue(notSticky.isStickyBitSet());
+    }
+
+    @Test
+    public void pathPermissionsSetExtendedInfo() {
+        PathPermissions notExtended = PathPermissions.parseSymbolic("r---w---x");
+        assertFalse(notExtended.isExtendedInfoInAcl());
+        notExtended.setExtendedInfoInAcl(true);
+        assertTrue(notExtended.isExtendedInfoInAcl());
+    }
+
+    @Test
+    public void setFileReadHeadersNull() {
+        FileReadHeaders headers = new FileReadHeaders();
+        headers.setCopyCompletionTime(null);
+        headers.setLastModified(null);
+        headers.setDateProperty(null);
+
+        assertNull(headers.getCopyCompletionTime());
+        assertNull(headers.getLastModified());
+        assertNull(headers.getDateProperty());
+    }
+
+    @Test
+    public void getFileReadHeaders() {
+        FileReadHeaders headers = new FileReadHeaders();
+        assertNull(headers.getLastModified());
+        assertNull(headers.getCopyCompletionTime());
+        assertNull(headers.getDateProperty());
+        assertNull(headers.getContentMd5());
+        assertNull(headers.getFileContentMd5());
+        assertNull(headers.getContentCrc64());
+        assertNull(headers.getMetadata());
+        assertNull(headers.getContentLength());
+        assertNull(headers.getContentType());
+        assertNull(headers.getContentRange());
+        assertNull(headers.getETag());
+        assertNull(headers.getContentEncoding());
+        assertNull(headers.getCacheControl());
+        assertNull(headers.getContentDisposition());
+        assertNull(headers.getContentLanguage());
+        assertNull(headers.getCopyStatusDescription());
+        assertNull(headers.getCopyId());
+        assertNull(headers.getCopyProgress());
+        assertNull(headers.getCopySource());
+        assertNull(headers.getCopyStatus());
+        assertNull(headers.getLeaseDuration());
+        assertNull(headers.getLeaseState());
+        assertNull(headers.getLeaseStatus());
+        assertNull(headers.getClientRequestId());
+        assertNull(headers.getRequestId());
+        assertNull(headers.getVersion());
+        assertNull(headers.getAcceptRanges());
+        assertNull(headers.isServerEncrypted());
+        assertNull(headers.getEncryptionKeySha256());
+        assertNull(headers.getErrorCode());
+    }
+
+    @Test
+    public void setFileQueryHeadersNull() {
+        FileQueryHeaders headers = new FileQueryHeaders();
+        headers.setCopyCompletionTime(null);
+        headers.setLastModified(null);
+        headers.setDateProperty(null);
+
+        assertNull(headers.getCopyCompletionTime());
+        assertNull(headers.getLastModified());
+        assertNull(headers.getDateProperty());
+    }
+
+    @Test
+    public void getFileQueryHeaders() {
+        FileQueryHeaders headers = new FileQueryHeaders();
+        assertNull(headers.getLastModified());
+        assertNull(headers.getCopyCompletionTime());
+        assertNull(headers.getDateProperty());
+        assertNull(headers.getContentMd5());
+        assertNull(headers.getFileContentMd5());
+        assertNull(headers.getContentCrc64());
+        assertNull(headers.getMetadata());
+        assertNull(headers.getContentLength());
+        assertNull(headers.getContentType());
+        assertNull(headers.getContentRange());
+        assertNull(headers.getETag());
+        assertNull(headers.getContentEncoding());
+        assertNull(headers.getCacheControl());
+        assertNull(headers.getContentDisposition());
+        assertNull(headers.getContentLanguage());
+        assertNull(headers.getCopyStatusDescription());
+        assertNull(headers.getCopyId());
+        assertNull(headers.getCopyProgress());
+        assertNull(headers.getCopySource());
+        assertNull(headers.getCopyStatus());
+        assertNull(headers.getLeaseDuration());
+        assertNull(headers.getLeaseState());
+        assertNull(headers.getLeaseStatus());
+        assertNull(headers.getClientRequestId());
+        assertNull(headers.getRequestId());
+        assertNull(headers.getVersion());
+        assertNull(headers.getAcceptRanges());
+        assertNull(headers.isServerEncrypted());
+        assertNull(headers.getEncryptionKeySha256());
+        assertNull(headers.getErrorCode());
+    }
+
+    @Test
+    public void copyStatusTypeFromString() {
+        CopyStatusType type = CopyStatusType.fromString("pending");
+        assertEquals(type.toString(), "pending");
+    }
+
+    @Test
+    public void copyStatusTypeFromStringError() {
+        CopyStatusType type = CopyStatusType.fromString("garbage");
+        assertNull(type);
+    }
+
+    @Test
+    public void pathAccessControlEntryHashCode() {
+        PathAccessControlEntry acc1 = PathAccessControlEntry.parse("default:group:a:---");
+        PathAccessControlEntry acc2 = PathAccessControlEntry.parse("default:group:a:---");
+        PathAccessControlEntry acc3 = PathAccessControlEntry.parse("mask::r--");
+
+        assertEquals(acc1, acc2);
+        assertNotEquals(acc1, acc3);
+    }
+
+    @Test
+    public void PathAccessControlEntryEquals() {
+        PathAccessControlEntry perm1 = PathAccessControlEntry.parse("default:group:a:---");
+        PathAccessControlEntry scope = PathAccessControlEntry.parse("group:a:---");
+        PathAccessControlEntry accessControlType = PathAccessControlEntry.parse("default:user:a:---");
+        PathAccessControlEntry entityID = PathAccessControlEntry.parse("default:group::---");
+        PathAccessControlEntry perms = PathAccessControlEntry.parse("default:group:a:r--");
+
+        assertTrue(perm1.equals(perm1));
+        assertFalse(perm1.equals(null));
+        assertFalse(perm1.equals(scope));
+        assertFalse(perm1.equals(accessControlType));
+        assertFalse(perm1.equals(entityID));
+        assertFalse(perm1.equals(perms));
     }
 
     @Test

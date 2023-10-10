@@ -22,6 +22,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -692,6 +693,16 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .setIfUnmodifiedSince(unmodified);
 
         assertThrows(DataLakeStorageException.class, () -> dc.deleteWithResponse(false, drc, null, null));
+    }
+
+    @Test
+    public void deleteIfExistsPathClient() {
+        assertTrue(((DataLakePathClient) dc).deleteIfExists());
+    }
+
+    @Test
+    public void deleteIfExistsMinPathClient() {
+        assertEquals(200, ((DataLakePathClient) dc).deleteIfExistsWithResponse(null, null, null).getStatusCode());
     }
 
     @Test
@@ -3409,6 +3420,13 @@ public class DirectoryApiTests extends DataLakeTestBase {
         }
 
         fail("Expected a request to time out.");
+    }
+
+    @Test
+    public void getAccountUrlMin() {
+        TestAccount account = ENVIRONMENT.getDataLakeAccount();
+        String accUrl = dc.getAccountUrl();
+        assertEquals(accUrl, account.getDataLakeEndpoint());
     }
 
 }

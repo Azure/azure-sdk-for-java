@@ -265,7 +265,7 @@ public class PathPermissions {
         return this.extendedInfoInAcl;
     }
 
-    PathPermissions setExtendedInfoInAcl(boolean hasExtendedInfoInAcl) {
+    public PathPermissions setExtendedInfoInAcl(boolean hasExtendedInfoInAcl) {
         this.extendedInfoInAcl = hasExtendedInfoInAcl;
         return this;
     }

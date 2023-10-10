@@ -1952,6 +1952,36 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @Test
+    public void appendDataWithLength() {
+        String data = "Test";
+        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+        assertDoesNotThrow(() -> fc.append(dataStream, 0,4));
+    }
+
+    @Test //todo isbr: figure out how to make it time out
+    public void appendDataInputStreamOptionsTimeout() {
+        String data = "Test";
+        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+        assertThrows(UncheckedIOException.class, () -> fc.appendWithResponse(dataStream, 0,4, new DataLakeFileAppendOptions(),
+            Duration.ofSeconds(1), null));
+    }
+
+    @Test //todo isbr: figure out how to make it time out
+    public void appendDataBinaryDataTimeout() {
+        String data = "Test";
+        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+        assertThrows(UncheckedIOException.class, () -> fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, null, null, null, null));
+    }
+
+    @Test //todo isbr: figure out how to make it time out
+    public void appendDataBinaryDataOptionsTimeout() {
+        String data = "Test";
+        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+        assertThrows(UncheckedIOException.class, () -> fc.appendWithResponse(DATA.getDefaultBinaryData(), 0, new DataLakeFileAppendOptions(), null, null));
+    }
+
+
+    @Test
     public void appendDataMd5() throws NoSuchAlgorithmException {
         fc = dataLakeFileSystemClient.createFile(generatePathName());
         byte[] md5 = MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().getBytes());
@@ -2171,6 +2201,13 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @Test
+    public void flushData() {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+
+        assertDoesNotThrow(() -> fc.flush(DATA.getDefaultDataSizeLong()));
+    }
+
+    @Test
     public void flushClose() {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
         fc.create();
@@ -2297,6 +2334,36 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @Test
+    public void uploadFromFileMin() {
+        File file = getRandomFile(Constants.KB);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        assertThrows(IllegalArgumentException.class,() -> fc.uploadFromFile(file.toPath().toString()));
+    }
+
+    @Test
+    public void uploadFromFileLargeFileAlreadyExists() {
+        File file = getRandomFile(104857601);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        //todo isbr: why does this already exist?
+        //fc.uploadFromFile(file.toPath().toString(), false);
+        assertThrows(IllegalArgumentException.class,() -> fc.uploadFromFile(file.toPath().toString(), false));
+    }
+
+    @Test //todo isbr: timeout
+    public void uploadFromFileTimeout() {
+        File file = getRandomFile(Constants.KB);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        fc.uploadFromFile(file.getPath(), null, null, null, null, null);
+
+    }
+
+    @Test
     public void uploadFromFileWithMetadata() throws IOException {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         File file = getRandomFile(Constants.KB);
@@ -2356,6 +2423,24 @@ public class FileApiTest extends DataLakeTestBase {
     @ParameterizedTest
     @MethodSource("uploadFromFileOptionsSupplier")
     public void uploadFromFileWithResponse(int dataSize, long singleUploadSize, Long blockSize) {
+        File file = getRandomFile(dataSize);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        Response<PathInfo> response = fc.uploadFromFileWithResponse(file.toPath().toString(),
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null, null);
+
+        assertEquals(200, response.getStatusCode());
+        assertNotNull(response.getValue().getETag());
+        assertNotNull(response.getValue().getLastModified());
+
+        assertEquals(dataSize, fc.getProperties().getFileSize());
+    }
+
+    //todo isbr: make timeout
+    @ParameterizedTest
+    @MethodSource("uploadFromFileOptionsSupplier")
+    public void uploadFromFileWithResponseTimeout(int dataSize, long singleUploadSize, Long blockSize) {
         File file = getRandomFile(dataSize);
         file.deleteOnExit();
         createdFiles.add(file);
@@ -2490,6 +2575,15 @@ public class FileApiTest extends DataLakeTestBase {
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
     }
 
+    //todo isbr: timeout
+    @Test
+    public void uploadBinaryDataTimeout() {
+        DataLakeFileClient client = getFileClient(getDataLakeCredential(), fc.getFileUrl());
+
+        assertDoesNotThrow(
+            () -> client.uploadWithResponse(new FileParallelUploadOptions(DATA.getDefaultBinaryData()), null, null));
+    }
+
     @Test
     public void uploadBinaryDataOverwrite() {
         DataLakeFileClient client = getFileClient(getDataLakeCredential(), fc.getFileUrl());
@@ -2613,6 +2707,33 @@ public class FileApiTest extends DataLakeTestBase {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             assertDoesNotThrow(() -> fc.query(os, expression));
             TestUtils.assertArraysEqual(downloadedData, os.toByteArray());
+        });
+    }
+
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @ValueSource(ints = {
+        1, // 32 bytes
+        32, // 1 KB
+        256, // 8 KB
+        400, // 12 ish KB
+        4000 // 125 KB
+    })
+    public void queryWithResponseNullResponse(int numCopies) {
+        FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
+            .setRecordSeparator('\n')
+            .setColumnSeparator(',')
+            .setEscapeChar('\0')
+            .setFieldQuote('\0')
+            .setHeadersPresent(false);
+        //uploadCsv(ser, numCopies);
+        String expression = "SELECT * from BlobStorage";
+
+        //todo isbr: figure out how to get a response to be null
+        liveTestScenarioWithRetry(() -> {
+            assertThrows(IllegalStateException.class,
+                () -> fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression)).getValue());
+
         });
     }
 

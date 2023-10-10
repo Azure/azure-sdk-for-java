@@ -3,6 +3,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.implementation.Constants;
@@ -120,6 +121,32 @@ public class FileOutputStreamTests extends DataLakeTestBase {
 
         assertEquals(data.length, fc.getProperties().getFileSize());
         TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(fc.openInputStream().getInputStream(), data.length));
+    }
+
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @Test
+    public void outputStreamWithContext() throws IOException {
+        byte[] data = getRandomByteArray(Constants.KB);
+        DataLakeFileOutputStreamOptions options = new DataLakeFileOutputStreamOptions().setRequestConditions(
+            new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+
+        // Write the file.
+        try (OutputStream outputStream = fc.getOutputStream(options, Context.NONE)) {
+            outputStream.write(data);
+        }
+    }
+
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @Test
+    public void outputStreamWithOnlyOptions() throws IOException {
+        byte[] data = getRandomByteArray(Constants.KB);
+        DataLakeFileOutputStreamOptions options = new DataLakeFileOutputStreamOptions().setRequestConditions(
+            new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+
+        // Write the file.
+        try (OutputStream outputStream = fc.getOutputStream(options)) {
+            outputStream.write(data);
+        }
     }
 
     @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")

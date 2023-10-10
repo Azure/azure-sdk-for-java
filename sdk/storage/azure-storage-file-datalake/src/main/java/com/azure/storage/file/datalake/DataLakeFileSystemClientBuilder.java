@@ -184,6 +184,7 @@ public class DataLakeFileSystemClientBuilder implements
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
+        //}  catch (MalformedURLException | IllegalArgumentException e) {
         } catch (MalformedURLException ex) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The Azure Storage Datalake endpoint url is malformed.", ex));
