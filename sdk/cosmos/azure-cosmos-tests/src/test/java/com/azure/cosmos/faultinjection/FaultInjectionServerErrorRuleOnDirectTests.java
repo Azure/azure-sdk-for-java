@@ -20,7 +20,9 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -111,7 +113,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { FaultInjectionOperationType.READ_ITEM, false },
             { FaultInjectionOperationType.REPLACE_ITEM, true },
             { FaultInjectionOperationType.CREATE_ITEM, true },
-            { FaultInjectionOperationType.DELETE_ITEM, true},
+            { FaultInjectionOperationType.DELETE_ITEM, true },
             { FaultInjectionOperationType.QUERY_ITEM, false },
             { FaultInjectionOperationType.PATCH_ITEM, true }
         };
@@ -793,68 +795,68 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         int errorStatusCode,
         int errorSubStatusCode) throws JsonProcessingException {
 
-        // simulate high channel acquisition/connectionTimeout
-        String ruleId = "serverErrorRule-" + serverErrorType + "-" + UUID.randomUUID();
-        FaultInjectionRule serverErrorRule =
-            new FaultInjectionRuleBuilder(ruleId)
-                .condition(
-                    new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ_ITEM)
-                        .build()
-                )
-                .result(
-                    FaultInjectionResultBuilders
-                        .getResultBuilder(serverErrorType)
-                        .times(1)
-                        .build()
-                )
-                .duration(Duration.ofMinutes(5))
-                .build();
+        // simulate high channel acquisition/connectionTimeout for read/query
+        List<Pair<FaultInjectionOperationType, OperationType>> testCases = new ArrayList<>();
+        testCases.add(Pair.of(FaultInjectionOperationType.READ_FEED_ITEM, OperationType.ReadFeed));
+        testCases.add(Pair.of(FaultInjectionOperationType.READ_ITEM, OperationType.Read));
 
-        try {
+        for (Pair<FaultInjectionOperationType, OperationType>  testCase : testCases) {
+
             TestItem createdItem = TestItem.createNewItem();
             cosmosAsyncContainer.createItem(createdItem).block();
 
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
+            String ruleId = "serverErrorRule-" + serverErrorType + "-" + UUID.randomUUID();
+            FaultInjectionRule serverErrorRule =
+                new FaultInjectionRuleBuilder(ruleId)
+                    .condition(
+                        new FaultInjectionConditionBuilder()
+                            .operationType(testCase.getLeft())
+                            .build()
+                    )
+                    .result(
+                        FaultInjectionResultBuilders
+                            .getResultBuilder(serverErrorType)
+                            .times(1)
+                            .build()
+                    )
+                    .duration(Duration.ofMinutes(5))
+                    .build();
 
-            CosmosDiagnostics cosmosDiagnostics = null;
-            if (canRetry) {
-                try {
-                    cosmosDiagnostics =
-                        cosmosAsyncContainer
-                            .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class)
-                            .block()
-                            .getDiagnostics();
-                } catch (Exception exception) {
-                    fail("Request should succeeded, but failed with " + exception);
-                }
-            } else {
-                try {
-                    cosmosDiagnostics =
-                        cosmosAsyncContainer
-                            .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class)
-                            .block()
-                            .getDiagnostics();
-                     fail("Request should fail, but succeeded");
+            try {
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
 
-                } catch (Exception e) {
-                    cosmosDiagnostics = ((CosmosException)e).getDiagnostics();
+                CosmosDiagnostics cosmosDiagnostics = null;
+                if (canRetry) {
+                    try {
+                        cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, testCase.getRight(), createdItem);
+                    } catch (Exception exception) {
+                        fail("Request should succeeded, but failed with " + exception);
+                    }
+                } else {
+                    try {
+                        cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, testCase.getRight(), createdItem);
+                        fail("Request should fail, but succeeded");
+
+                    } catch (Exception e) {
+                        cosmosDiagnostics = ((CosmosException)e).getDiagnostics();
+                    }
                 }
+
+                this.validateHitCount(serverErrorRule, 1, testCase.getRight(), ResourceType.Document);
+                this.validateFaultInjectionRuleApplied(
+                    cosmosDiagnostics,
+                    testCase.getRight(),
+                    errorStatusCode,
+                    errorSubStatusCode,
+                    ruleId,
+                    canRetry
+                );
+
+            } finally {
+                serverErrorRule.disable();
             }
-
-            this.validateHitCount(serverErrorRule, 1, OperationType.Read, ResourceType.Document);
-            this.validateFaultInjectionRuleApplied(
-                cosmosDiagnostics,
-                OperationType.Read,
-                errorStatusCode,
-                errorSubStatusCode,
-                ruleId,
-                canRetry
-            );
-
-        } finally {
-            serverErrorRule.disable();
         }
+
     }
 
     @Test(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
@@ -972,6 +974,16 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
                         .patchItem(createdItem.getId(), new PartitionKey(createdItem.getId()), patchOperations, TestItem.class)
                         .block().getDiagnostics();
                 }
+            }
+
+            if (operationType == OperationType.ReadFeed) {
+                CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+                    CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+                FeedResponse<TestItem> firstPage =  cosmosAsyncContainer
+                    .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+                    .byPage()
+                    .blockFirst();
+                return firstPage.getCosmosDiagnostics();
             }
 
             throw new IllegalArgumentException("The operation type is not supported");
