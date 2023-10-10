@@ -77,7 +77,7 @@ class AttachStatsbeat extends BaseStatsbeat {
                     return UNKNOWN_RP_ID;
                 }
             case RP_AKS:
-                return envVarFn.apply("AKS_ARM_NAMESPACE_ID ");
+                return envVarFn.apply("AKS_ARM_NAMESPACE_ID");
             case UNKNOWN:
                 return UNKNOWN_RP_ID;
         }
