@@ -9,7 +9,7 @@ matrix:
       abandonRatio: 0.002
       noDispositionRatio: 0.001
       lockRenewalNeededRatio: 0.01
-      processCallbackDurationAvgInMs: 10
+      processCallbackDurationMaxInMs: 10
       autoRenewLock: "true"
       prefetchCount: 0
       lockDurationInMs: 5000
@@ -28,5 +28,5 @@ matrix:
       receiverTestClass: MessageProcessor
       senderTestClass: MessageSenderAsync
       lockDurationInMs: 5000
-      processCallbackDurationAvgInMs: 10
+      processCallbackDurationMaxInMs: 10
       imageBuildDir: ..\..\..\

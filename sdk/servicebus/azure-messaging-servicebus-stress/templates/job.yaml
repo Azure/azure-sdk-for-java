@@ -90,7 +90,7 @@ spec:
           export NO_DISPOSITION_RATIO={{ default 0 .Stress.noDispositionRatio }}
           export LOCK_RENEWAL_NEEDED_RATIO={{ default 0 .Stress.lockRenewalNeededRatio }}
           export AUTO_RENEW_LOCK={{ default "true" .Stress.autoRenewLock }}
-          export PROCESS_CALLBACK_DURATION_AVG_IN_MS={{ default 10 .Stress.processCallbackDurationAvgInMs }}
+          export PROCESS_CALLBACK_DURATION_MAX_IN_MS={{ default 10 .Stress.processCallbackDurationMaxInMs }}
           export PREFETCH_COUNT={{ default 0 .Stress.prefetchCount }}
           export START_DELAY_MINUTES=0 &&
           export APPLICATIONINSIGHTS_INSTRUMENTATION_REACTOR_ENABLED=false &&
@@ -131,7 +131,7 @@ spec:
           export NO_DISPOSITION_RATIO={{ default 0 .Stress.noDispositionRatio }}
           export LOCK_RENEWAL_NEEDED_RATIO={{ default 0 .Stress.lockRenewalNeededRatio }}
           export AUTO_RENEW_LOCK={{ default "true" .Stress.autoRenewLock }}
-          export PROCESS_CALLBACK_DURATION_AVG_IN_MS={{ default 10 .Stress.processCallbackDurationAvgInMs }}
+          export PROCESS_CALLBACK_DURATION_MAX_IN_MS={{ default 10 .Stress.processCallbackDurationMaxInMs }}
           export PREFETCH_COUNT={{ default 0 .Stress.prefetchCount }}
           export START_DELAY_MINUTES={{ default 0 .Stress.delayStartMin }} &&
           export APPLICATIONINSIGHTS_INSTRUMENTATION_REACTOR_ENABLED=false &&

@@ -45,7 +45,6 @@ public class MessageSessionProcessor extends ServiceBusScenario {
                     runResult.set(RunResult.ERROR);
                 })
                 .buildProcessorClient());
-        toClose((AutoCloseable) () -> processor.stop());
         processor.start();
 
         blockingWait(options.getTestDuration());

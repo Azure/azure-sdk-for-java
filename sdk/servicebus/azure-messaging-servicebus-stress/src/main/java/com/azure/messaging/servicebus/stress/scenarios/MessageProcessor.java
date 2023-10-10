@@ -27,8 +27,8 @@ import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getProce
 public class MessageProcessor extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
 
-    @Value("${PROCESS_CALLBACK_DURATION_AVG_IN_MS:50}")
-    private int processMessageDurationAvgInMs;
+    @Value("${PROCESS_CALLBACK_DURATION_MAX_IN_MS:50}")
+    private int processMessageDurationMaxInMs;
 
     @Value("${MAX_CONCURRENT_CALLS:100}")
     private int maxConcurrentCalls;
@@ -82,12 +82,7 @@ public class MessageProcessor extends ServiceBusScenario {
             activeMessages = getRemainingQueueMessages();
         }
 
-        processor.stop();
-        if (activeMessages != 0) {
-            runResult.set(RunResult.WARNING);
-        }
-
-        return runResult.get();
+        return activeMessages != 0 ? RunResult.WARNING : runResult.get();
     }
 
     private void process(ServiceBusReceivedMessageContext messageContext) {
@@ -102,8 +97,8 @@ public class MessageProcessor extends ServiceBusScenario {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         if (random.nextDouble(1) < lockRenewalNeededRatio) {
             return lockDurationInMs + 1000;
-        } else if (processMessageDurationAvgInMs != 0) {
-            return random.nextInt(processMessageDurationAvgInMs * 2);
+        } else if (processMessageDurationMaxInMs != 0) {
+            return random.nextInt(processMessageDurationMaxInMs);
         }
 
         return 0;
