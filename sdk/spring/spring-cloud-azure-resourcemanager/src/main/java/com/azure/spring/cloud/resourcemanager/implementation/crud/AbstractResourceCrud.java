@@ -71,27 +71,15 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
 
     @Override
     public T create(K key) {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-
-        final String resourceType = getResourceType();
-        final String name = getResourceName(key);
-
-        try {
-            LOGGER.info("Creating {} with name '{}' ...", resourceType, name);
-            return internalCreate(key);
-        } catch (ManagementException e) {
-            String message = String.format("Creating %s with name '%s' failed due to: %s", resourceType, name, e.toString());
-            throw new RuntimeException(message, e);
-        } finally {
-            stopWatch.stop();
-            LOGGER.info("Creating {} with name '{}' finished in {} seconds", getResourceType(), name,
-                stopWatch.getTotalTimeMillis() / 1000);
-        }
+        return doCreate(key, null);
     }
 
     @Override
     public T create(K key, P properties) {
+        return doCreate(key, properties);
+    }
+
+    private T doCreate(K key, @Nullable P properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
@@ -100,7 +88,11 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
 
         try {
             LOGGER.info("Creating {} with name '{}' ...", resourceType, name);
-            return internalCreate(key, properties);
+            if (properties == null) {
+                return internalCreate(key);
+            } else {
+                return internalCreate(key, properties);
+            }
         } catch (ManagementException e) {
             String message = String.format("Creating %s with name '%s' failed due to: %s", resourceType, name, e.toString());
             throw new RuntimeException(message, e);
@@ -113,17 +105,15 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
 
     @Override
     public T getOrCreate(K key) {
-        T result = get(key);
-
-        if (result != null) {
-            return result;
-        }
-
-        return create(key);
+        return doGetOrCreate(key, null);
     }
 
     @Override
     public T getOrCreate(K key, P properties) {
+        return doGetOrCreate(key, properties);
+    }
+
+    private T doGetOrCreate(K key, @Nullable P properties) {
         T result = get(key);
 
         if (result != null) {
