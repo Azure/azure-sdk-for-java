@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response containing Id's for the worker, job, and assignment from an accepted offer. */
+@Deprecated
 @Fluent
 public final class AcceptJobOfferResultInternal {
     /*

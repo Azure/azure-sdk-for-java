@@ -623,10 +623,7 @@ public final class JobRouterAsyncClient {
                 unassignJobOptions.getAssignmentId(),
                 new UnassignJobRequest().setSuspendMatching(unassignJobOptions.isSuspendMatching()),
                 context
-            ).map(result -> new SimpleResponse<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
-                new UnassignJobResult()
-                    .setJobId(result.getValue().getJobId())
-                    .setUnassignmentCount(result.getValue().getUnassignmentCount())));
+            );
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -745,14 +742,7 @@ public final class JobRouterAsyncClient {
 
     Mono<Response<RouterJobPositionDetails>> getQueuePositionWithResponse(String id, Context context) {
         try {
-            return jobRouter.getInQueuePositionWithResponseAsync(id, context)
-                .map(result -> new SimpleResponse<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
-                    new RouterJobPositionDetails()
-                        .setJobId(result.getValue().getJobId())
-                        .setQueueId(result.getValue().getQueueId())
-                        .setPosition(result.getValue().getPosition())
-                        .setQueueLength(result.getValue().getQueueLength())
-                        .setEstimatedWaitTimeMinutes(result.getValue().getEstimatedWaitTimeMinutes())));
+            return jobRouter.getInQueuePositionWithResponseAsync(id, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -806,12 +796,7 @@ public final class JobRouterAsyncClient {
 
     Mono<Response<AcceptJobOfferResult>> acceptJobOfferWithResponse(String workerId, String offerId, Context context) {
         try {
-            return jobRouter.acceptJobActionWithResponseAsync(workerId, offerId, context)
-                .map(result -> new SimpleResponse<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
-                    new AcceptJobOfferResult()
-                        .setJobId(result.getValue().getJobId())
-                        .setAssignmentId(result.getValue().getAssignmentId())
-                        .setWorkerId(result.getValue().getWorkerId())));
+            return jobRouter.acceptJobActionWithResponseAsync(workerId, offerId, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -918,13 +903,7 @@ public final class JobRouterAsyncClient {
 
     Mono<Response<RouterQueueStatistics>> getQueueStatisticsWithResponse(String id, Context context) {
         try {
-            return jobRouter.getQueueStatisticsWithResponseAsync(id, context)
-                .map(result -> new SimpleResponse<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
-                    new RouterQueueStatistics()
-                        .setQueueId(result.getValue().getQueueId())
-                        .setLength(result.getValue().getLength())
-                        .setLongestJobWaitTimeMinutes(result.getValue().getLongestJobWaitTimeMinutes())
-                        .setEstimatedWaitTimeMinutes(result.getValue().getEstimatedWaitTimeMinutes())));
+            return jobRouter.getQueueStatisticsWithResponseAsync(id, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1179,13 +1158,13 @@ public final class JobRouterAsyncClient {
 
     PagedFlux<RouterWorkerItem> listWorkers(ListWorkersOptions listWorkersOptions, Context context) {
         try {
-            return WorkerAdapter.convertPagedFluxToPublic(jobRouter.listWorkersAsync(
+            return jobRouter.listWorkersAsync(
                 RouterWorkerStateSelectorInternal.fromString(listWorkersOptions.getState().toString()),
                 listWorkersOptions.getChannelId(),
                 listWorkersOptions.getQueueId(),
                 listWorkersOptions.getHasCapacity(),
                 listWorkersOptions.getMaxPageSize(),
-                context));
+                context);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

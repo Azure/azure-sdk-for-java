@@ -4,7 +4,6 @@
 
 package com.azure.communication.jobrouter.implementation;
 
-import com.azure.communication.jobrouter.implementation.models.AcceptJobOfferResultInternal;
 import com.azure.communication.jobrouter.implementation.models.CancelJobRequest;
 import com.azure.communication.jobrouter.implementation.models.CloseJobRequest;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
@@ -12,17 +11,17 @@ import com.azure.communication.jobrouter.implementation.models.CompleteJobReques
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferRequest;
 import com.azure.communication.jobrouter.implementation.models.RouterJobCollectionInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterJobPositionDetailsInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobStatusSelectorInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterQueueStatisticsInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerCollectionInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterWorkerItemInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerStateSelectorInternal;
 import com.azure.communication.jobrouter.implementation.models.UnassignJobRequest;
-import com.azure.communication.jobrouter.implementation.models.UnassignJobResultInternal;
+import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.RouterJobItem;
+import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
+import com.azure.communication.jobrouter.models.RouterQueueStatistics;
 import com.azure.communication.jobrouter.models.RouterWorkerItem;
+import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -170,7 +169,7 @@ public final class JobRoutersImpl {
         @Get("/routing/jobs/{id}/position")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJobPositionDetailsInternal>> getInQueuePosition(
+        Mono<Response<RouterJobPositionDetails>> getInQueuePosition(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -180,7 +179,7 @@ public final class JobRoutersImpl {
         @Post("/routing/jobs/{id}/assignments/{assignmentId}:unassign")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<UnassignJobResultInternal>> unassignJobAction(
+        Mono<Response<UnassignJobResult>> unassignJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @PathParam("assignmentId") String assignmentId,
@@ -192,7 +191,7 @@ public final class JobRoutersImpl {
         @Post("/routing/workers/{workerId}/offers/{offerId}:accept")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AcceptJobOfferResultInternal>> acceptJobAction(
+        Mono<Response<AcceptJobOfferResult>> acceptJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @PathParam("offerId") String offerId,
@@ -215,7 +214,7 @@ public final class JobRoutersImpl {
         @Get("/routing/queues/{id}/statistics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterQueueStatisticsInternal>> getQueueStatistics(
+        Mono<Response<RouterQueueStatistics>> getQueueStatistics(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -1434,7 +1433,7 @@ public final class JobRoutersImpl {
      * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJobPositionDetailsInternal>> getInQueuePositionWithResponseAsync(String id) {
+    public Mono<Response<RouterJobPositionDetails>> getInQueuePositionWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1453,7 +1452,7 @@ public final class JobRoutersImpl {
      * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJobPositionDetailsInternal>> getInQueuePositionWithResponseAsync(
+    public Mono<Response<RouterJobPositionDetails>> getInQueuePositionWithResponseAsync(
             String id, Context context) {
         final String accept = "application/json";
         return service.getInQueuePosition(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
@@ -1469,7 +1468,7 @@ public final class JobRoutersImpl {
      * @return a job's position details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJobPositionDetailsInternal> getInQueuePositionAsync(String id) {
+    public Mono<RouterJobPositionDetails> getInQueuePositionAsync(String id) {
         return getInQueuePositionWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1484,7 +1483,7 @@ public final class JobRoutersImpl {
      * @return a job's position details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJobPositionDetailsInternal> getInQueuePositionAsync(String id, Context context) {
+    public Mono<RouterJobPositionDetails> getInQueuePositionAsync(String id, Context context) {
         return getInQueuePositionWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1499,7 +1498,7 @@ public final class JobRoutersImpl {
      * @return a job's position details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJobPositionDetailsInternal> getInQueuePositionWithResponse(String id, Context context) {
+    public Response<RouterJobPositionDetails> getInQueuePositionWithResponse(String id, Context context) {
         return getInQueuePositionWithResponseAsync(id, context).block();
     }
 
@@ -1513,7 +1512,7 @@ public final class JobRoutersImpl {
      * @return a job's position details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJobPositionDetailsInternal getInQueuePosition(String id) {
+    public RouterJobPositionDetails getInQueuePosition(String id) {
         return getInQueuePositionWithResponse(id, Context.NONE).getValue();
     }
 
@@ -1530,7 +1529,7 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnassignJobResultInternal>> unassignJobActionWithResponseAsync(
+    public Mono<Response<UnassignJobResult>> unassignJobActionWithResponseAsync(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1559,7 +1558,7 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnassignJobResultInternal>> unassignJobActionWithResponseAsync(
+    public Mono<Response<UnassignJobResult>> unassignJobActionWithResponseAsync(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest, Context context) {
         final String accept = "application/json";
         return service.unassignJobAction(
@@ -1584,7 +1583,7 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResultInternal> unassignJobActionAsync(
+    public Mono<UnassignJobResult> unassignJobActionAsync(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest) {
         return unassignJobActionWithResponseAsync(id, assignmentId, unassignJobRequest)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1603,7 +1602,7 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResultInternal> unassignJobActionAsync(
+    public Mono<UnassignJobResult> unassignJobActionAsync(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest, Context context) {
         return unassignJobActionWithResponseAsync(id, assignmentId, unassignJobRequest, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1622,7 +1621,7 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnassignJobResultInternal> unassignJobActionWithResponse(
+    public Response<UnassignJobResult> unassignJobActionWithResponse(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest, Context context) {
         return unassignJobActionWithResponseAsync(id, assignmentId, unassignJobRequest, context).block();
     }
@@ -1639,7 +1638,7 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnassignJobResultInternal unassignJobAction(
+    public UnassignJobResult unassignJobAction(
             String id, String assignmentId, UnassignJobRequest unassignJobRequest) {
         return unassignJobActionWithResponse(id, assignmentId, unassignJobRequest, Context.NONE).getValue();
     }
@@ -1656,7 +1655,7 @@ public final class JobRoutersImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResultInternal>> acceptJobActionWithResponseAsync(
+    public Mono<Response<AcceptJobOfferResult>> acceptJobActionWithResponseAsync(
             String workerId, String offerId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1683,7 +1682,7 @@ public final class JobRoutersImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResultInternal>> acceptJobActionWithResponseAsync(
+    public Mono<Response<AcceptJobOfferResult>> acceptJobActionWithResponseAsync(
             String workerId, String offerId, Context context) {
         final String accept = "application/json";
         return service.acceptJobAction(
@@ -1702,7 +1701,7 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResultInternal> acceptJobActionAsync(String workerId, String offerId) {
+    public Mono<AcceptJobOfferResult> acceptJobActionAsync(String workerId, String offerId) {
         return acceptJobActionWithResponseAsync(workerId, offerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1719,7 +1718,7 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResultInternal> acceptJobActionAsync(String workerId, String offerId, Context context) {
+    public Mono<AcceptJobOfferResult> acceptJobActionAsync(String workerId, String offerId, Context context) {
         return acceptJobActionWithResponseAsync(workerId, offerId, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1737,7 +1736,7 @@ public final class JobRoutersImpl {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcceptJobOfferResultInternal> acceptJobActionWithResponse(
+    public Response<AcceptJobOfferResult> acceptJobActionWithResponse(
             String workerId, String offerId, Context context) {
         return acceptJobActionWithResponseAsync(workerId, offerId, context).block();
     }
@@ -1753,7 +1752,7 @@ public final class JobRoutersImpl {
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcceptJobOfferResultInternal acceptJobAction(String workerId, String offerId) {
+    public AcceptJobOfferResult acceptJobAction(String workerId, String offerId) {
         return acceptJobActionWithResponse(workerId, offerId, Context.NONE).getValue();
     }
 
@@ -1891,7 +1890,7 @@ public final class JobRoutersImpl {
      * @return statistics for the queue along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterQueueStatisticsInternal>> getQueueStatisticsWithResponseAsync(String id) {
+    public Mono<Response<RouterQueueStatistics>> getQueueStatisticsWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1910,7 +1909,7 @@ public final class JobRoutersImpl {
      * @return statistics for the queue along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterQueueStatisticsInternal>> getQueueStatisticsWithResponseAsync(
+    public Mono<Response<RouterQueueStatistics>> getQueueStatisticsWithResponseAsync(
             String id, Context context) {
         final String accept = "application/json";
         return service.getQueueStatistics(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
@@ -1926,7 +1925,7 @@ public final class JobRoutersImpl {
      * @return statistics for the queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterQueueStatisticsInternal> getQueueStatisticsAsync(String id) {
+    public Mono<RouterQueueStatistics> getQueueStatisticsAsync(String id) {
         return getQueueStatisticsWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1941,7 +1940,7 @@ public final class JobRoutersImpl {
      * @return statistics for the queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterQueueStatisticsInternal> getQueueStatisticsAsync(String id, Context context) {
+    public Mono<RouterQueueStatistics> getQueueStatisticsAsync(String id, Context context) {
         return getQueueStatisticsWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1956,7 +1955,7 @@ public final class JobRoutersImpl {
      * @return statistics for the queue along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterQueueStatisticsInternal> getQueueStatisticsWithResponse(String id, Context context) {
+    public Response<RouterQueueStatistics> getQueueStatisticsWithResponse(String id, Context context) {
         return getQueueStatisticsWithResponseAsync(id, context).block();
     }
 
@@ -1970,7 +1969,7 @@ public final class JobRoutersImpl {
      * @return statistics for the queue.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterQueueStatisticsInternal getQueueStatistics(String id) {
+    public RouterQueueStatistics getQueueStatistics(String id) {
         return getQueueStatisticsWithResponse(id, Context.NONE).getValue();
     }
 

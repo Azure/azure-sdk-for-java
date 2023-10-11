@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Position and estimated wait time for a job. */
+@Deprecated
 @Fluent
 public final class RouterJobPositionDetailsInternal {
     /*

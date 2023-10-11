@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response payload after a job has been successfully unassigned. */
+@Deprecated
 @Fluent
 public final class UnassignJobResultInternal {
     /*
