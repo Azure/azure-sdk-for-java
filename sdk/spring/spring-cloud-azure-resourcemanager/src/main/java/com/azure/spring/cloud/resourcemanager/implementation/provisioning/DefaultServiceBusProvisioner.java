@@ -8,6 +8,8 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusQueueCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicSubscriptionCrud;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.properties.ServiceBusQueueProperties;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.properties.ServiceBusTopicProperties;
 import reactor.util.function.Tuples;
 
 /**
@@ -32,17 +34,36 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
     }
 
     @Override
+    @Deprecated
     public void provisionQueue(String namespace, String queue) {
         this.queueCrud.getOrCreate(Tuples.of(namespace, queue));
     }
 
     @Override
+    public void provisionQueue(String namespace, String queue, ServiceBusQueueProperties queueProperties) {
+        this.queueCrud.getOrCreate(Tuples.of(namespace, queue), queueProperties);
+    }
+
+    @Override
+    @Deprecated
     public void provisionTopic(String namespace, String topic) {
         this.topicCrud.getOrCreate(Tuples.of(namespace, topic));
     }
 
     @Override
+    public void provisionTopic(String namespace, String topic, ServiceBusTopicProperties topicProperties) {
+        this.topicCrud.getOrCreate(Tuples.of(namespace, topic), topicProperties);
+    }
+
+    @Override
+    @Deprecated
     public void provisionSubscription(String namespace, String topic, String subscription) {
         this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription));
+    }
+
+    @Override
+    public void provisionSubscription(String namespace, String topic, String subscription,
+                                      ServiceBusTopicProperties topicProperties) {
+        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription), topicProperties);
     }
 }
