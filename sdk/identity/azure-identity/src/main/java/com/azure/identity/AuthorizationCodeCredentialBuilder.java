@@ -76,8 +76,9 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets the client secret for the authentication. This is required for Microsoft Entra web apps.
-     * Do not set this for Microsoft Entra native apps.
+     * <p>Sets the client secret for the authentication. This is required for Microsoft Entra web apps.</p>
+     *
+     * <p>Do not set this for Microsoft Entra native apps.</p>
      *
      * @param clientSecret the secret value of the Microsoft Entra application.
      * @return An updated instance of this builder.
