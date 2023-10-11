@@ -8,10 +8,12 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.ProgressListener;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -1878,7 +1880,11 @@ public class BlobApiTests extends BlobTestBase {
         StepVerifier.create(poller.take(1)).assertNext(it -> {
             assertNotNull(it.getValue());
             assertNotNull(it.getValue().getCopyId());
-            assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
+            if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
+            } else {
+                assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
+            }
             assertTrue(it.getStatus() == LongRunningOperationStatus.IN_PROGRESS
                 || it.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
         }).verifyComplete();
@@ -1894,7 +1900,11 @@ public class BlobApiTests extends BlobTestBase {
         AsyncPollResponse<BlobCopyInfo, Void> lastResponse = poller.doOnNext(it -> {
             assertNotNull(it.getValue());
             assertNotNull(it.getValue().getCopyId());
-            assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
+            if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
+            } else {
+                assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
+            }
         }).blockLast();
 
         assertNotNull(lastResponse);
@@ -2347,7 +2357,7 @@ public class BlobApiTests extends BlobTestBase {
         destTags.put("fizz", "buzz");
         bc.setTags(sourceTags);
 
-        String sas = bc.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
 
         BlobClient bc2 = cc.getBlobClient(generateBlobName());
@@ -2814,16 +2824,7 @@ public class BlobApiTests extends BlobTestBase {
             null, null, null, null);
         BlockBlobClient bcCopy = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
-        String sas = new BlobServiceSasSignatureValues()
-            .setExpiryTime(OffsetDateTime.now().plusHours(1))
-            .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setContainerName(cc.getBlobContainerName())
-            .setBlobName(blobName)
-            .generateSasQueryParameters(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .encode();
-
-        String secondSas = cc.generateSas(new BlobServiceSasSignatureValues(
-            OffsetDateTime.now().plusHours(1),
+        String secondSas = cc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
         bcCopy.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + secondSas, null, tier2, null, null, null, null);
 
@@ -2867,7 +2868,7 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void getContainerClient() {
         String sasToken = cc.generateSas(
-            new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(2),
+            new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(2),
                 new BlobSasPermission().setReadPermission(true)));
 
         // Ensure a sas token is also persisted

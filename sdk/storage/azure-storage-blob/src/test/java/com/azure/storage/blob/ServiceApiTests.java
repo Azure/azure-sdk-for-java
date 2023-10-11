@@ -730,7 +730,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getUserDelegationKey() {
-        OffsetDateTime start = OffsetDateTime.now();
+        OffsetDateTime start = testResourceNamer.now();
         OffsetDateTime expiry = start.plusDays(1);
 
         Response<UserDelegationKey> response = getOAuthServiceClient()
@@ -749,7 +749,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getUserDelegationKeyMin() {
-        OffsetDateTime expiry = OffsetDateTime.now().plusDays(1);
+        OffsetDateTime expiry = testResourceNamer.now().plusDays(1);
 
         Response<UserDelegationKey> response = getOAuthServiceClient().getUserDelegationKeyWithResponse(null, expiry,
             null, null);
@@ -774,7 +774,7 @@ public class ServiceApiTests extends BlobTestBase {
     @Test
     public void getUserDelegationKeyAnonymous() {
         assertThrows(IllegalStateException.class, () ->
-            anonymousClient.getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)));
+            anonymousClient.getUserDelegationKey(null, testResourceNamer.now().plusDays(1)));
     }
 
     @Test
@@ -850,7 +850,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getAccountSasAnonymous() {
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
         AccountSasPermission permissions = new AccountSasPermission().setReadPermission(true);
         AccountSasService services = new AccountSasService().setBlobAccess(true);
         AccountSasResourceType resourceTypes = new AccountSasResourceType().setService(true);
@@ -1079,10 +1079,8 @@ public class ServiceApiTests extends BlobTestBase {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
-        BlobServiceClient sc = new BlobServiceClientBuilder()
-            .endpoint(primaryBlobServiceClient.getAccountUrl())
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .addPolicy(getPerCallVersionPolicy())
+        BlobServiceClient sc = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy())
             .buildClient();
 
         Response<BlobServiceProperties> response = sc.getPropertiesWithResponse(null, null);

@@ -197,7 +197,7 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
     public void ensureStateResourceAndPermission(String container, String blob, String snapshot, String versionId,
         BlobContainerSasPermission blobContainerSasPermission, BlobSasPermission blobSasPermission, String resource,
         String permissionString) {
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
 
         BlobServiceSasSignatureValues values = blobContainerSasPermission != null
             ? new BlobServiceSasSignatureValues(expiryTime, blobContainerSasPermission)

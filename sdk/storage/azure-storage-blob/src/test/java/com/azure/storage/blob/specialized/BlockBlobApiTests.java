@@ -2302,7 +2302,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName)
             .getBlobClient(generateBlobName());
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
         if (blockBlobClient.exists()) {
             blockBlobClient.delete();
@@ -2323,7 +2323,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName)
             .getBlobClient(generateBlobName());
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
         blockBlobClient.upload(new ByteArrayInputStream(new byte[0]), 0, true);
 
@@ -2342,7 +2342,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName)
             .getBlobClient(generateBlobName());
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
         blockBlobClient.upload(new ByteArrayInputStream(new byte[0]), 0, true);
 
@@ -2365,7 +2365,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         sourceBlob.setHttpHeaders(new BlobHttpHeaders().setContentLanguage("en-GB"));
         byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes());
         BlobProperties sourceProperties = sourceBlob.getProperties();
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
         blockBlobClient.upload(new ByteArrayInputStream(new byte[0]), 0, true);
         BlobProperties destinationPropertiesBefore = blockBlobClient.getProperties();
@@ -2404,7 +2404,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5")
             .digest("garbage".getBytes(StandardCharsets.UTF_8));
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
         blockBlobClient.upload(new ByteArrayInputStream(new byte[0]), 0, true);
 
@@ -2423,7 +2423,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName)
             .getBlobClient(generateBlobName());
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
         blockBlobClient.upload(new ByteArrayInputStream(new byte[0]), 0, true);
 
@@ -2453,7 +2453,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName)
             .getBlobClient(generateBlobName());
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
         blockBlobClient.upload(new ByteArrayInputStream(new byte[0]), 0, true);
         if (requestConditions.getLeaseId() != null) {
@@ -2485,7 +2485,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         Map<String, String> destTags = Collections.singletonMap("fizz", "buzz");
         blockBlobClient.setTags(sourceTags);
 
-        String sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+        String sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
 
         BlobClient bc2 = cc.getBlobClient(generateBlobName());
@@ -2519,7 +2519,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName)
             .getBlobClient(generateBlobName());
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
         if (blockBlobClient.exists()) {
             blockBlobClient.delete();

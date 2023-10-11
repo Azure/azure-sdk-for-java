@@ -25,6 +25,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
@@ -76,6 +77,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
@@ -143,6 +145,8 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static final String GARBAGE_LEASE_ID = UUID.randomUUID().toString();
 
+    private static final Pattern URL_SANITIZER = Pattern.compile("(?<=http://|https://)([^/?]+)");
+
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
@@ -163,9 +167,9 @@ public class BlobTestBase extends TestProxyTestBase {
             interceptorManager.addSanitizers(Arrays.asList(
                 new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
                 new TestProxySanitizer("x-ms-encryption-key", ".+", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-copy-source", ".+", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-copy-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED", TestProxySanitizerType.HEADER),
                 new TestProxySanitizer("x-ms-copy-source-authorization", ".+", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER)));
+                new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED", TestProxySanitizerType.HEADER)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
@@ -203,8 +207,8 @@ public class BlobTestBase extends TestProxyTestBase {
 
         BlobServiceClient cleanupClient = new BlobServiceClientBuilder()
             .httpClient(getHttpClient())
-            .credential(ENVIRONMENT.getDataLakeAccount().getCredential())
-            .endpoint(ENVIRONMENT.getDataLakeAccount().getBlobEndpoint())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
             .buildClient();
 
         ListBlobContainersOptions options = new ListBlobContainersOptions().setPrefix(prefix);
@@ -792,18 +796,6 @@ public class BlobTestBase extends TestProxyTestBase {
         };
     }
 
-    protected void waitForCopy(BlobContainerClient bu, String status) throws Exception {
-        OffsetDateTime start = OffsetDateTime.now();
-        while (!Objects.equals(status, CopyStatusType.SUCCESS.toString())) {
-            status = bu.getPropertiesWithResponse(null, null, null).getHeaders().getValue(X_MS_COPY_STATUS);
-            OffsetDateTime currentTime = OffsetDateTime.now();
-            if (Objects.equals(status, CopyStatusType.FAILED.toString()) || currentTime.minusMinutes(1) == start) {
-                throw new Exception("Copy failed or took too long");
-            }
-            sleepIfRunningAgainstService(1000);
-        }
-    }
-
     /**
     * Validates the presence of headers that are present on a large number of responses. These headers are generally
     * random and can really only be checked as not null.
@@ -1014,5 +1006,13 @@ public class BlobTestBase extends TestProxyTestBase {
     public static boolean isOperatingSystemMac() {
         String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         return osName.contains("mac os") || osName.contains("darwin");
+    }
+
+    protected static String redactUrl(String url) {
+        if (url == null) {
+            return null;
+        }
+
+        return URL_SANITIZER.matcher(url).replaceAll("REDACTED");
     }
 }

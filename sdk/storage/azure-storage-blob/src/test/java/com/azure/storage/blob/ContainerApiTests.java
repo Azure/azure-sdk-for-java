@@ -414,8 +414,8 @@ public class ContainerApiTests extends BlobTestBase {
         BlobSignedIdentifier identifier = new BlobSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
                     .plusDays(1))
                 .setPermissions("r"));
 

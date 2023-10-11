@@ -149,8 +149,7 @@ public class CPKNTests extends BlobTestBase {
         BlockBlobClient sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient();
         sourceBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        String sas = cc.generateSas(new BlobServiceSasSignatureValues(
-            OffsetDateTime.now().plusHours(1),
+        String sas = cc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
         Response<AppendBlobItem> response = cpknAppendBlob.appendBlockFromUrlWithResponse(
             sourceBlob.getBlobUrl() + "?" + sas, null, null, null, null, null, null);
@@ -191,8 +190,7 @@ public class CPKNTests extends BlobTestBase {
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null);
 
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES);
-        String sas = cc.generateSas(new BlobServiceSasSignatureValues(
-            OffsetDateTime.now().plusHours(1),
+        String sas = cc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
 
         Response<PageBlobItem> response = cpknPageBlob.uploadPagesFromUrlWithResponse(

@@ -1481,10 +1481,10 @@ public class PageBlobApiTests extends BlobTestBase {
             null);
 
         CopyStatusType status = copyResponse.getValue();
-        OffsetDateTime start = OffsetDateTime.now();
+        OffsetDateTime start = testResourceNamer.now();
         while (status != CopyStatusType.SUCCESS) {
             status = bc2.getProperties().getCopyStatus();
-            OffsetDateTime currentTime = OffsetDateTime.now();
+            OffsetDateTime currentTime = testResourceNamer.now();
             if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
                 throw new RuntimeException("Copy failed or took too long");
             }
@@ -1520,10 +1520,10 @@ public class PageBlobApiTests extends BlobTestBase {
             null);
 
         CopyStatusType status = copyResponse.getValue();
-        OffsetDateTime start = OffsetDateTime.now();
+        OffsetDateTime start = testResourceNamer.now();
         while (status != CopyStatusType.SUCCESS) {
             status = bu2.getProperties().getCopyStatus();
-            OffsetDateTime currentTime = OffsetDateTime.now();
+            OffsetDateTime currentTime = testResourceNamer.now();
             if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
                 throw new RuntimeException("Copy failed or took too long");
             }
