@@ -1,14 +1,122 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2023-10-11)
+
+- Azure Resource Manager DesktopVirtualization client library for Java. This package contains Microsoft Azure SDK for DesktopVirtualization Management SDK.  Package tag package-2023-09. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.PrivateEndpointConnectionWithSystemData` was added
 
-### Bugs Fixed
+* `models.PrivateEndpointConnectionProvisioningState` was added
 
-### Other Changes
+* `models.ScalingPlanPersonalSchedule$UpdateStages` was added
+
+* `models.ScalingPlanPersonalSchedule` was added
+
+* `models.ScalingPlanPersonalSchedule$Definition` was added
+
+* `models.SetStartVMOnConnect` was added
+
+* `models.PrivateEndpoint` was added
+
+* `models.ScalingPlanPersonalScheduleList` was added
+
+* `models.PrivateLinkResources` was added
+
+* `models.SessionHandlingOperation` was added
+
+* `models.ScalingPlanPersonalSchedule$DefinitionStages` was added
+
+* `models.PrivateEndpointConnections` was added
+
+* `models.ScalingPlanPersonalSchedule$Update` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.PrivateEndpointConnection` was added
+
+* `models.HostpoolPublicNetworkAccess` was added
+
+* `models.ScalingPlanPersonalSchedules` was added
+
+* `models.StartupBehavior` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
+
+* `models.PrivateLinkResourceListResult` was added
+
+* `models.PrivateEndpointServiceConnectionStatus` was added
+
+* `models.PrivateEndpointConnectionListResultWithSystemData` was added
+
+* `models.ScalingPlanPersonalSchedulePatch` was added
+
+* `models.PublicNetworkAccess` was added
+
+#### `models.HostPool$Update` was modified
+
+* `withPublicNetworkAccess(models.HostpoolPublicNetworkAccess)` was added
+
+#### `models.WorkspacePatch` was modified
+
+* `publicNetworkAccess()` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.Workspace` was modified
+
+* `privateEndpointConnections()` was added
+* `publicNetworkAccess()` was added
+
+#### `models.ApplicationGroup` was modified
+
+* `showInFeed()` was added
+
+#### `models.HostPool` was modified
+
+* `privateEndpointConnections()` was added
+* `publicNetworkAccess()` was added
+
+#### `models.HostPoolPatch` was modified
+
+* `publicNetworkAccess()` was added
+* `withPublicNetworkAccess(models.HostpoolPublicNetworkAccess)` was added
+
+#### `models.HostPoolProperties` was modified
+
+* `publicNetworkAccess()` was added
+* `privateEndpointConnections()` was added
+
+#### `DesktopVirtualizationManager` was modified
+
+* `privateLinkResources()` was added
+* `privateEndpointConnections()` was added
+* `scalingPlanPersonalSchedules()` was added
+
+#### `models.ApplicationGroup$Definition` was modified
+
+* `withShowInFeed(java.lang.Boolean)` was added
+
+#### `models.ApplicationGroupPatch` was modified
+
+* `withShowInFeed(java.lang.Boolean)` was added
+* `showInFeed()` was added
+
+#### `models.HostPool$Definition` was modified
+
+* `withPublicNetworkAccess(models.HostpoolPublicNetworkAccess)` was added
+
+#### `models.Workspace$Update` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.Workspace$Definition` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.ApplicationGroup$Update` was modified
+
+* `withShowInFeed(java.lang.Boolean)` was added
 
 ## 1.0.0 (2023-03-20)
 

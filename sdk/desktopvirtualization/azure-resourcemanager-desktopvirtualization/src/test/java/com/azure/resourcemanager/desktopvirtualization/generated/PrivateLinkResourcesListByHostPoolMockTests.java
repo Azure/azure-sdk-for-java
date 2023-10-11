@@ -13,9 +13,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager;
-import com.azure.resourcemanager.desktopvirtualization.models.SessionHost;
-import com.azure.resourcemanager.desktopvirtualization.models.Status;
-import com.azure.resourcemanager.desktopvirtualization.models.UpdateState;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkResource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -26,15 +24,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class SessionHostsListMockTests {
+public final class PrivateLinkResourcesListByHostPoolMockTests {
     @Test
-    public void testList() throws Exception {
+    public void testListByHostPool() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"objectId\":\"koih\",\"lastHeartBeat\":\"2021-01-04T00:33:47Z\",\"sessions\":874789657,\"agentVersion\":\"lmljhlnymzotq\",\"allowNewSession\":true,\"virtualMachineId\":\"zcbmqqvxmvwf\",\"resourceId\":\"ayxonsupeujl\",\"assignedUser\":\"nh\",\"friendlyName\":\"sqltnzo\",\"status\":\"NeedsAssistance\",\"statusTimestamp\":\"2020-12-29T06:07:24Z\",\"osVersion\":\"nxfyqonm\",\"sxSStackVersion\":\"ox\",\"updateState\":\"Started\",\"lastUpdateTime\":\"2021-07-30T17:53:09Z\",\"updateErrorMessage\":\"xiqxeiiqbimh\",\"sessionHostHealthCheckResults\":[]},\"id\":\"winhehfqpo\",\"name\":\"vwbcblembnkbwv\",\"type\":\"vxkdivqihebwtswb\"}]}";
+            "{\"value\":[{\"properties\":{\"groupId\":\"sovwxznptgoeiyb\",\"requiredMembers\":[\"pfhvfslk\"],\"requiredZoneNames\":[\"jlrigjkskyrioovz\",\"dsxwaab\",\"mifrygznmma\"]},\"id\":\"ri\",\"name\":\"kzobgopxlhsln\",\"type\":\"lxieixynllxecwcr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,22 +60,11 @@ public final class SessionHostsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SessionHost> response =
+        PagedIterable<PrivateLinkResource> response =
             manager
-                .sessionHosts()
-                .list("s", "sphaivmxyasflvg", 1752644697, false, 826140742, com.azure.core.util.Context.NONE);
+                .privateLinkResources()
+                .listByHostPool("l", "qryxyn", 620085605, true, 356071455, com.azure.core.util.Context.NONE);
 
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-04T00:33:47Z"), response.iterator().next().lastHeartBeat());
-        Assertions.assertEquals(874789657, response.iterator().next().sessions());
-        Assertions.assertEquals("lmljhlnymzotq", response.iterator().next().agentVersion());
-        Assertions.assertEquals(true, response.iterator().next().allowNewSession());
-        Assertions.assertEquals("nh", response.iterator().next().assignedUser());
-        Assertions.assertEquals("sqltnzo", response.iterator().next().friendlyName());
-        Assertions.assertEquals(Status.NEEDS_ASSISTANCE, response.iterator().next().status());
-        Assertions.assertEquals("nxfyqonm", response.iterator().next().osVersion());
-        Assertions.assertEquals("ox", response.iterator().next().sxSStackVersion());
-        Assertions.assertEquals(UpdateState.STARTED, response.iterator().next().updateState());
-        Assertions.assertEquals("xiqxeiiqbimh", response.iterator().next().updateErrorMessage());
+        Assertions.assertEquals("jlrigjkskyrioovz", response.iterator().next().requiredZoneNames().get(0));
     }
 }
