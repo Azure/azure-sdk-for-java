@@ -15,48 +15,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Contains configuration options specific to the hnsw approximate nearest neighbors algorithm used during indexing and
- * querying. The hnsw algorithm offers a tunable trade-off between search speed and accuracy.
- */
+/** Contains the parameters specific to using an Azure Open AI service for vectorization at query time. */
 @Fluent
-public final class HnswVectorSearchAlgorithmConfiguration extends VectorSearchAlgorithmConfiguration {
+public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     /*
-     * The name of the kind of algorithm being configured for use with vector search.
+     * The name of the kind of vectorization method being configured for use with vector search.
      */
-    private static final VectorSearchAlgorithmKind KIND = VectorSearchAlgorithmKind.HNSW;
+    private static final VectorSearchVectorizerKind KIND = VectorSearchVectorizerKind.AZURE_OPEN_AI;
 
     /*
-     * Contains the parameters specific to hnsw algorithm.
+     * Contains the parameters specific to Azure Open AI embedding vectorization.
      */
-    private HnswParameters parameters;
+    private AzureOpenAIParameters azureOpenAIParameters;
 
     /**
-     * Creates an instance of HnswVectorSearchAlgorithmConfiguration class.
+     * Creates an instance of AzureOpenAIVectorizer class.
      *
      * @param name the name value to set.
      */
-    public HnswVectorSearchAlgorithmConfiguration(String name) {
+    public AzureOpenAIVectorizer(String name) {
         super(name);
     }
 
     /**
-     * Get the parameters property: Contains the parameters specific to hnsw algorithm.
+     * Get the azureOpenAIParameters property: Contains the parameters specific to Azure Open AI embedding
+     * vectorization.
      *
-     * @return the parameters value.
+     * @return the azureOpenAIParameters value.
      */
-    public HnswParameters getParameters() {
-        return this.parameters;
+    public AzureOpenAIParameters getAzureOpenAIParameters() {
+        return this.azureOpenAIParameters;
     }
 
     /**
-     * Set the parameters property: Contains the parameters specific to hnsw algorithm.
+     * Set the azureOpenAIParameters property: Contains the parameters specific to Azure Open AI embedding
+     * vectorization.
      *
-     * @param parameters the parameters value to set.
-     * @return the HnswVectorSearchAlgorithmConfiguration object itself.
+     * @param azureOpenAIParameters the azureOpenAIParameters value to set.
+     * @return the AzureOpenAIVectorizer object itself.
      */
-    public HnswVectorSearchAlgorithmConfiguration setParameters(HnswParameters parameters) {
-        this.parameters = parameters;
+    public AzureOpenAIVectorizer setAzureOpenAIParameters(AzureOpenAIParameters azureOpenAIParameters) {
+        this.azureOpenAIParameters = azureOpenAIParameters;
         return this;
     }
 
@@ -65,26 +64,26 @@ public final class HnswVectorSearchAlgorithmConfiguration extends VectorSearchAl
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeJsonField("hnswParameters", this.parameters);
+        jsonWriter.writeJsonField("azureOpenAIParameters", this.azureOpenAIParameters);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of HnswVectorSearchAlgorithmConfiguration from the JsonReader.
+     * Reads an instance of AzureOpenAIVectorizer from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of HnswVectorSearchAlgorithmConfiguration if the JsonReader was pointing to an instance of
-     *     it, or null if it was pointing to JSON null.
+     * @return An instance of AzureOpenAIVectorizer if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the HnswVectorSearchAlgorithmConfiguration.
+     * @throws IOException If an error occurs while reading the AzureOpenAIVectorizer.
      */
-    public static HnswVectorSearchAlgorithmConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static AzureOpenAIVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
                     boolean nameFound = false;
                     String name = null;
-                    HnswParameters parameters = null;
+                    AzureOpenAIParameters azureOpenAIParameters = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -102,18 +101,17 @@ public final class HnswVectorSearchAlgorithmConfiguration extends VectorSearchAl
                         } else if ("name".equals(fieldName)) {
                             name = reader.getString();
                             nameFound = true;
-                        } else if ("hnswParameters".equals(fieldName)) {
-                            parameters = HnswParameters.fromJson(reader);
+                        } else if ("azureOpenAIParameters".equals(fieldName)) {
+                            azureOpenAIParameters = AzureOpenAIParameters.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
                     }
                     if (nameFound) {
-                        HnswVectorSearchAlgorithmConfiguration deserializedHnswVectorSearchAlgorithmConfiguration =
-                                new HnswVectorSearchAlgorithmConfiguration(name);
-                        deserializedHnswVectorSearchAlgorithmConfiguration.parameters = parameters;
+                        AzureOpenAIVectorizer deserializedAzureOpenAIVectorizer = new AzureOpenAIVectorizer(name);
+                        deserializedAzureOpenAIVectorizer.azureOpenAIParameters = azureOpenAIParameters;
 
-                        return deserializedHnswVectorSearchAlgorithmConfiguration;
+                        return deserializedAzureOpenAIVectorizer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

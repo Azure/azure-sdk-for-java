@@ -13,25 +13,25 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Contains configuration options specific to the algorithm used during indexing and/or querying. */
+/** Contains specific details for a vectorization method to be used during query time. */
 @Immutable
-public class VectorSearchAlgorithmConfiguration implements JsonSerializable<VectorSearchAlgorithmConfiguration> {
+public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVectorizer> {
     /*
-     * The name to associate with this particular configuration.
+     * The name to associate with this particular vectorization method.
      */
     private final String name;
 
     /**
-     * Creates an instance of VectorSearchAlgorithmConfiguration class.
+     * Creates an instance of VectorSearchVectorizer class.
      *
      * @param name the name value to set.
      */
-    public VectorSearchAlgorithmConfiguration(String name) {
+    public VectorSearchVectorizer(String name) {
         this.name = name;
     }
 
     /**
-     * Get the name property: The name to associate with this particular configuration.
+     * Get the name property: The name to associate with this particular vectorization method.
      *
      * @return the name value.
      */
@@ -47,16 +47,16 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
     }
 
     /**
-     * Reads an instance of VectorSearchAlgorithmConfiguration from the JsonReader.
+     * Reads an instance of VectorSearchVectorizer from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VectorSearchAlgorithmConfiguration if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
+     * @return An instance of VectorSearchVectorizer if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the VectorSearchAlgorithmConfiguration.
+     * @throws IOException If an error occurs while reading the VectorSearchVectorizer.
      */
-    public static VectorSearchAlgorithmConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static VectorSearchVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
                     String discriminatorValue = null;
@@ -78,13 +78,13 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
                         readerToUse = readerToUse.reset();
                     }
                     // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("hnsw".equals(discriminatorValue)) {
-                        return HnswVectorSearchAlgorithmConfiguration.fromJson(readerToUse);
-                    } else if ("exhaustiveKnn".equals(discriminatorValue)) {
-                        return ExhaustiveKnnVectorSearchAlgorithmConfiguration.fromJson(readerToUse);
+                    if ("azureOpenAI".equals(discriminatorValue)) {
+                        return AzureOpenAIVectorizer.fromJson(readerToUse);
+                    } else if ("customWebApi".equals(discriminatorValue)) {
+                        return CustomVectorizer.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field 'kind' didn't match one of the expected values 'hnsw', or 'exhaustiveKnn'. It was: '"
+                                "Discriminator field 'kind' didn't match one of the expected values 'azureOpenAI', or 'customWebApi'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }
