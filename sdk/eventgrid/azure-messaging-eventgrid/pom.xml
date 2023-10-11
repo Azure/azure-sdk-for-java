@@ -56,6 +56,8 @@
       --add-opens com.azure.messaging.eventgrid/com.azure.messaging.eventgrid.implementation=ALL-UNNAMED
 
       --add-reads com.azure.messaging.eventgrid=com.azure.core.serializer.json.jackson
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
