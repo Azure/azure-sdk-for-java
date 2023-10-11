@@ -73,6 +73,10 @@ dependencies {
     // azure_messaging_eventhubs
     implementation("com.azure:azure-messaging-eventhubs")
 
+    //azure_resourcemanager
+    implementation("com.azure:azure-core-management")
+    implementation("com.azure.resourcemanager:azure-resourcemanager-compute:2.31.0")
+
     // android
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
