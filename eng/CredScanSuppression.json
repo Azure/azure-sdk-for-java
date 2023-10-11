@@ -74,7 +74,8 @@
         },
         {
             "file": [
-              "sdk/core/azure-core-test/src/main/resources/keystore.jks"
+              "sdk/core/azure-core-test/src/main/resources/keystore.jks",
+              "sdk/core/typespec-core-test/src/main/resources/keystore.jks"
             ],
             "_justification": "Dummy keystore to enable HTTPS testing with LocalTestServer. Contains no real secrets."
         }
