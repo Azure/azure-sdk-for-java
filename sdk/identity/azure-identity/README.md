@@ -2,7 +2,7 @@
 
 The Azure Identity library provides [Microsoft Entra ID](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) ([formerly Azure Active Directory](https://learn.microsoft.com/azure/active-directory/fundamentals/new-name)) token authentication support across the Azure SDK. It provides a set of [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations that can be used to construct Azure SDK clients that support Microsoft Entra token authentication.
 
-[Source code][source] | [API reference documentation][javadoc] | [Microsoft Entra ID documentation][azuread_doc]
+[Source code][source] | [API reference documentation][javadoc] | [Microsoft Entra ID documentation][entraid_doc]
 
 ## Getting started
 
@@ -575,8 +575,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 <!-- LINKS -->
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
 [azure_sub]: https://azure.microsoft.com/free/
-[azuread_doc]: https://learn.microsoft.com/azure/active-directory/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[entraid_doc]: https://learn.microsoft.com/azure/active-directory/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK

@@ -293,7 +293,7 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 
 <!-- LINKS -->
 
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [postgresql_source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-extensions
 [docs]: https://azure.github.io/azure-sdk-for-java/
