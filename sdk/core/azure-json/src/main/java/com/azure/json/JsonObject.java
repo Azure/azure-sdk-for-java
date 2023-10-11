@@ -4,7 +4,6 @@ import com.azure.json.implementation.StringBuilderWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -396,22 +395,22 @@ public class JsonObject extends JsonElement {
                     fieldName = reader.getFieldName();
                     break;
                 case START_OBJECT:
-                    this.addProperty(fieldName, new JsonObject(reader));
+                    this.setProperty(fieldName, new JsonObject(reader));
                     break;
                 case START_ARRAY:
-                    this.addProperty(fieldName, new JsonArray(reader));
+                    this.setProperty(fieldName, new JsonArray(reader));
                     break;
                 case STRING:
-                    this.addProperty(fieldName, new JsonString(reader.getString()));
+                    this.setProperty(fieldName, new JsonString(reader.getString()));
                     break;
                 case NUMBER:
-                    this.addProperty(fieldName, new JsonNumber(reader.getString()));
+                    this.setProperty(fieldName, new JsonNumber(reader.getString()));
                     break;
                 case BOOLEAN:
-                    this.addProperty(fieldName, JsonBoolean.getInstance(reader.getBoolean()));
+                    this.setProperty(fieldName, JsonBoolean.getInstance(reader.getBoolean()));
                     break;
                 case NULL:
-                    this.addProperty(fieldName, JsonNull.getInstance());
+                    this.setProperty(fieldName, JsonNull.getInstance());
                     break;
                 // END_DOCUMENT and END_OBJECT cases are picked up by the overall
                 // while statement. These cases should not be reached, assuming

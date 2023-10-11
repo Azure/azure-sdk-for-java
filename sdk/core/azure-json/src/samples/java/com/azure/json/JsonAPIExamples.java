@@ -50,11 +50,11 @@ public class JsonAPIExamples {
         example_5_chaining_json_array();
 
 
-        // Original (old) samples. 
-        // These are deprecated due to no longer working due to our current 
-        // implementation. For example, passig a boolean array to JsonObject.addProperty, 
-        // no longer works - you can only add JsonElement types. 
-        /* 
+        // Original (old) samples.
+        // These are deprecated due to no longer working due to our current
+        // implementation. For example, passig a boolean array to JsonObject.addProperty,
+        // no longer works - you can only add JsonElement types.
+        /*
         int[] numArray = new int[10];
         numArray[0] = 3;
         numArray[5] = 27;
@@ -85,7 +85,7 @@ public class JsonAPIExamples {
         String output2 = meme2.toJson();
         System.out.println(output2);
         */
-    } // End of main method 
+    } // End of main method
 
     // Showcasing the JsonObject methods in isolation (not chained)
     public static void example_1_json_object() throws IOException {
@@ -96,10 +96,10 @@ public class JsonAPIExamples {
         JsonObject jsonObj = new JsonObject();
 
         // Adding properties - showcasing addProperty.
-        jsonObj.addProperty("James", "Anderson")
-            .addProperty("Michael", "Campbell")
-            .addProperty("Mary", "Jones")
-            .addProperty("John", "Williams");
+        jsonObj.setProperty("James", "Anderson")
+            .setProperty("Michael", "Campbell")
+            .setProperty("Mary", "Jones")
+            .setProperty("John", "Williams");
         System.out.println("Printing the constructed JsonObject:");
         System.out.println(jsonObj);
         System.out.println();
@@ -124,11 +124,11 @@ public class JsonAPIExamples {
 
         JsonObject jsonObj = new JsonObject();
 
-        jsonObj.addProperty("James", "Anderson")
-            .addProperty("Michael", "Campbell")
-            .addProperty("Mary", "Jones")
+        jsonObj.setProperty("James", "Anderson")
+            .setProperty("Michael", "Campbell")
+            .setProperty("Mary", "Jones")
             .removeProperty("Michael")
-            .addProperty("John", "Williams")
+            .setProperty("John", "Williams")
             .removeProperty("James");
         System.out.println("Printing the constructed JsonObject after additions and removals:");
         System.out.println(jsonObj); // Michael and James are not in the resulting JsonObject
@@ -143,18 +143,18 @@ public class JsonAPIExamples {
 
         JsonObject jsonObj = new JsonObject();
 
-        jsonObj.addProperty(
+        jsonObj.setProperty(
             "James",
-            new JsonObject().addProperty("Country", "New Zealand").addProperty("Surname", "Anderson")
-        ).addProperty(
+            new JsonObject().setProperty("Country", "New Zealand").setProperty("Surname", "Anderson")
+        ).setProperty(
             "Michael",
-            new JsonObject().addProperty("Country", "Australia").addProperty("Surname", "Campbell")
-        ).addProperty(
+            new JsonObject().setProperty("Country", "Australia").setProperty("Surname", "Campbell")
+        ).setProperty(
             "Mary",
-            new JsonObject().addProperty("Country", "Canada").addProperty("Surname", "Jones")
-        ).addProperty(
+            new JsonObject().setProperty("Country", "Canada").setProperty("Surname", "Jones")
+        ).setProperty(
             "John",
-            new JsonObject().addProperty("Country", "Australia").addProperty("Surname", "Williams")
+            new JsonObject().setProperty("Country", "Australia").setProperty("Surname", "Williams")
         );
         System.out.println("Printing the constructed JsonObject:");
         System.out.println(jsonObj);
@@ -205,9 +205,9 @@ public class JsonAPIExamples {
         public static void example_1() throws IOException {
         JsonObject jsonObj = new JsonObject();
 
-        jsonObj.addProperty("James", "Anderson")
-            .addProperty("Michael", "Campbell")
-            .addProperty("a", "b");
+        jsonObj.setProperty("James", "Anderson")
+            .setProperty("Michael", "Campbell")
+            .setProperty("a", "b");
 
         System.out.println(jsonObj);
 
@@ -220,7 +220,7 @@ public class JsonAPIExamples {
 
         int properties = 10;
         for(int i = 0; i < properties; i++) {
-            jsonObject.addProperty(
+            jsonObject.setProperty(
                 firstNames.get(randomiser.nextInt(firstNames.size())),
                 countries.get(randomiser.nextInt(countries.size()))
             );
@@ -250,19 +250,19 @@ public class JsonAPIExamples {
         JsonObject jsonObject = new JsonObject();
 
         // Showcasing chaining of JsonObject method calls
-        jsonObject.addProperty(
+        jsonObject.setProperty(
             firstNames.get(randomiser.nextInt(firstNames.size())),
             countries.get(randomiser.nextInt(countries.size()))
-        ).addProperty(
+        ).setProperty(
             firstNames.get(randomiser.nextInt(firstNames.size())),
             countries.get(randomiser.nextInt(countries.size()))
-        ).addProperty(
+        ).setProperty(
             firstNames.get(randomiser.nextInt(firstNames.size())),
             countries.get(randomiser.nextInt(countries.size()))
-        ).addProperty(
+        ).setProperty(
             firstNames.get(randomiser.nextInt(firstNames.size())),
             countries.get(randomiser.nextInt(countries.size()))
-        ).addProperty(
+        ).setProperty(
             firstNames.get(randomiser.nextInt(firstNames.size())),
             countries.get(randomiser.nextInt(countries.size()))
         );

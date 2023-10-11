@@ -493,77 +493,77 @@ public class JsonConversionTests {
     //3.1 JsonObject to other types...
     @Test
     public void filledObjectToNumberValid(){
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("1"));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("1"));
         JsonNumber converted = test.asNumber();
         assertEquals("1", converted.toString());
     }
 
     @Test
     public void filledObjectToNumberInvalid() { //Is this the correct formatting?
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("one"));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("one"));
         JsonNumber converted = test.asNumber();
         assertNull(converted.toString());
     }
 
     @Test
     public void filledObjectMultipleToNumberInvalid() {
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonNumber(1)).addProperty("Key 2", new JsonNumber(2));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonNumber(1)).setProperty("Key 2", new JsonNumber(2));
         JsonNumber converted = test.asNumber();
         assertEquals("1", converted.toString());
     }
 
     @Test
     public void filledObjectToBooleanValid(){
-        JsonElement test = new JsonObject().addProperty("Key 1", JsonBoolean.getInstance(true));
+        JsonElement test = new JsonObject().setProperty("Key 1", JsonBoolean.getInstance(true));
         JsonBoolean converted = test.asBoolean();
         assertEquals("true", converted.toString());
     }
 
     @Test
     public void filledObjectToBooleanInvalid() {
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("lies"));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("lies"));
         JsonBoolean converted = test.asBoolean();
         assertEquals("false", converted.toString());
     }
 
     @Test
     public void filledObjectToBoolValidNum(){ //Should numbers from an object be converted properly?
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("0"));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("0"));
         JsonBoolean converted = test.asBoolean();
         assertEquals("false", converted.toString());
     }
 
     @Test
     public void filledObjectMultipleToBooleanInvalid() {
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("true")).addProperty("Key 2", new JsonNumber(0));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("true")).setProperty("Key 2", new JsonNumber(0));
         JsonBoolean converted = test.asBoolean();
         assertEquals("true", converted.toString());
     }
 
     @Test
     public void filledObjectToString(){
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("aaa"));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("aaa"));
         JsonString converted = test.asString();
         assertEquals("aaa", converted.toString());
     }
 
     @Test
     public void filledObjectToStringNumber(){
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonNumber(1));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonNumber(1));
         JsonString converted = test.asString();
         assertEquals("1", converted.toString());
     }
 
     @Test
     public void filledObjectToStringBool(){
-        JsonElement test = new JsonObject().addProperty("Key 1", JsonBoolean.getInstance(false));
+        JsonElement test = new JsonObject().setProperty("Key 1", JsonBoolean.getInstance(false));
         JsonString converted = test.asString();
         assertEquals("false", converted.toString());
     }
 
     @Test
     public void filledObjectToStringNull(){
-        JsonElement test = new JsonObject().addProperty("Key 1", JsonNull.getInstance());
+        JsonElement test = new JsonObject().setProperty("Key 1", JsonNull.getInstance());
         JsonString converted = test.asString();
         assertEquals("null", converted.toString());
     }
@@ -578,21 +578,21 @@ public class JsonConversionTests {
 
     @Test
     public void filledObjectMultipleToString(){
-        JsonElement test = new JsonObject().addProperty("Key 1", JsonNull.getInstance()).addProperty("Key 2", new JsonString("Irrelevant"));
+        JsonElement test = new JsonObject().setProperty("Key 1", JsonNull.getInstance()).setProperty("Key 2", new JsonString("Irrelevant"));
         JsonString converted = test.asString();
         assertEquals("null", converted.toString());
     }
 
     @Test
     public void filledObjectToNull(){ //What should happen here? Error or just turn it to null regardless?
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("null"));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("null"));
         JsonNull converted = test.asNull();
         assertEquals("null", converted.toString());
     }
 
     @Test
     public void filledObjectToNullNonMatch(){ //What should happen here? Error or just turn it to null regardless?
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("irrelevant"));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("irrelevant"));
         JsonNull converted = test.asNull();
         assertEquals("null", converted.toString());
     }
@@ -608,21 +608,21 @@ public class JsonConversionTests {
 
     @Test
     public void filledObjectToArray(){
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("value"));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("value"));
         JsonArray converted = test.asArray();
         assertEquals("[\"value\"]", converted.toString());
     }
 
     @Test
     public void filledObjectMultipleToArray(){
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("value")).addProperty("Key 2", new JsonNumber(2));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("value")).setProperty("Key 2", new JsonNumber(2));
         JsonArray converted = test.asArray();
         assertEquals("[\"value\",2]", converted.toString());
     }
 
     @Test
     public void filledObjectMultipleToArrayAlternate(){ //Alternate version depending on what makes sense
-        JsonElement test = new JsonObject().addProperty("Key 1", new JsonString("value")).addProperty("Key 2", new JsonNumber(2));
+        JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("value")).setProperty("Key 2", new JsonNumber(2));
         JsonArray converted = test.asArray();
         assertEquals("[\"value\",2]", converted.toString());
     }
@@ -975,105 +975,105 @@ public class JsonConversionTests {
     //3.5.5.1 Object contains number
     @Test
     public void filledArrayObjectNumberToNumber(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonNumber(1)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonNumber(1)));
         JsonObject converted = test.asObject();
         assertEquals("{\"Value\":{\"Value\":1}}", converted.toString());
     }
 
     @Test
     public void filledArrayObjectNumberToString(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonNumber(1)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonNumber(1)));
         JsonString converted = test.asString();
         assertEquals("1", converted.toString());
     }
 
     @Test
     public void filledArrayObjectNumberToBoolean(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonNumber(0)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonNumber(0)));
         JsonBoolean converted = test.asBoolean();
         assertEquals("false", converted.toString());
     }
 
     @Test
     public void filledArrayObjectNumberToBooleanInvalid(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonNumber(15)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonNumber(15)));
         JsonBoolean converted = test.asBoolean();
         assertEquals("false", converted.toString());
     }
 
     @Test
     public void filledArrayObjectNumberToNull(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonNumber(1)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonNumber(1)));
         JsonNull converted = test.asNull();
         assertEquals("null", converted.toString());
     }
     //----------
     @Test
     public void filledArrayObjectStringToNumber(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonString("5")));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonString("5")));
         JsonNumber converted = test.asNumber();
         assertEquals("5", converted.toString());
     }
 
     @Test
     public void filledArrayObjectStringToNumberInvalid(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonString("tenth")));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonString("tenth")));
         JsonNumber converted = test.asNumber();
         assertNull(converted.toString());
     }
 
     @Test
     public void filledArrayObjectStringToString(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonString("Text")));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonString("Text")));
         JsonString converted = test.asString();
         assertEquals("Text", converted.toString());
     }
 
     @Test
     public void filledArrayObjectStringToBoolean(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonString("false")));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonString("false")));
         JsonBoolean converted = test.asBoolean();
         assertEquals("false", converted.toString());
     }
 
     @Test
     public void filledArrayObjectStringToBooleanInvalid(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonString("Text")));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonString("Text")));
         JsonBoolean converted = test.asBoolean();
         assertEquals("false", converted.toString());
     }
 
     @Test
     public void filledArrayObjectStringToNull(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonString("Text")));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonString("Text")));
         JsonNull converted = test.asNull();
         assertEquals("null", converted.toString());
     }
     //----------
     @Test
     public void filledArrayObjectBooleanToNumber(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonBoolean.getInstance(true)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", JsonBoolean.getInstance(true)));
         JsonNumber converted = test.asNumber();
         assertEquals("1", converted.toString());
     }
 
     @Test
     public void filledArrayObjectBooleanToString(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonBoolean.getInstance(true)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", JsonBoolean.getInstance(true)));
         JsonString converted = test.asString();
         assertEquals("true", converted.toString());
     }
 
     @Test
     public void filledArrayObjectBooleanToBoolean(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonBoolean.getInstance(true)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", JsonBoolean.getInstance(true)));
         JsonBoolean converted = test.asBoolean();
         assertEquals("true", converted.toString());
     }
 
     @Test
     public void filledArrayObjectBooleanToNull(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonBoolean.getInstance(true)));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", JsonBoolean.getInstance(true)));
         JsonNull converted = test.asNull();
         assertEquals("null", converted.toString());
     }
@@ -1081,28 +1081,28 @@ public class JsonConversionTests {
     //----------
     @Test
     public void filledArrayObjectNullToNumber(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonNull.getInstance()));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", JsonNull.getInstance()));
         JsonNumber converted = test.asNumber();
         assertNull(converted.toString());
     }
 
     @Test
     public void filledArrayObjectNullToString(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonNull.getInstance()));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", JsonNull.getInstance()));
         JsonString converted = test.asString();
         assertEquals("null", converted.toString());
     }
 
     @Test
     public void filledArrayObjectNullToBoolean(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonNull.getInstance()));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", JsonNull.getInstance()));
         JsonBoolean converted = test.asBoolean();
         assertEquals("true", converted.toString());
     }
 
     @Test
     public void filledArrayObjectNullToNull(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", JsonNull.getInstance()));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", JsonNull.getInstance()));
         JsonNull converted = test.asNull();
         assertEquals("null", converted.toString());
     }
@@ -1111,28 +1111,28 @@ public class JsonConversionTests {
     //----------Converting object with inner object should fail in all cases, except maybe converting it into another array? Else just return itself?
     @Test
     public void filledArrayObjectObjectToNumber(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonObject().addProperty("ValueInner", new JsonNumber(1))));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonObject().setProperty("ValueInner", new JsonNumber(1))));
         JsonNumber converted = test.asNumber();
         assertEquals("1", converted.toString());
     }
 
     @Test
     public void filledArrayObjectObjectToString(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonObject().addProperty("ValueInner", new JsonNumber(1))));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonObject().setProperty("ValueInner", new JsonNumber(1))));
         JsonString converted = test.asString();
         assertEquals("1", converted.toString());
     }
 
     @Test
     public void filledArrayObjectObjectToBoolean(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonObject().addProperty("ValueInner", new JsonNumber(1))));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonObject().setProperty("ValueInner", new JsonNumber(1))));
         JsonBoolean converted = test.asBoolean();
         assertEquals("true", converted.toString());
     }
 
     @Test
     public void filledArrayObjectObjectToNull(){
-        JsonElement test = new JsonArray().addElement(new JsonObject().addProperty("Value", new JsonObject().addProperty("ValueInner", new JsonNumber(1))));
+        JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonObject().setProperty("ValueInner", new JsonNumber(1))));
         JsonNull converted = test.asNull();
         assertEquals("null", converted.toString());
     }

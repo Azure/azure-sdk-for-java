@@ -1,7 +1,6 @@
 package com.azure.json;
 
 import java.io.IOException;
-import java.io.StringWriter;
 
 /*
 
@@ -193,9 +192,9 @@ public abstract class JsonElement {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonObject addProperty(String key, Object element) throws InvalidJsonDataTypeException {
+    public JsonObject setProperty(String key, Object element) throws InvalidJsonDataTypeException {
         if(this.isObject()) {
-            return (this.asObject()).addProperty(key, element);
+            return (this.asObject()).setProperty(key, element);
         } else {
             throw new InvalidJsonDataTypeException();
         }
