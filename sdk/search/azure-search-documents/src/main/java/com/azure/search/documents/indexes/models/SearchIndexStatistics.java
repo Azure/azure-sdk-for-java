@@ -33,19 +33,17 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
     /*
      * The amount of memory in bytes consumed by vectors in the index.
      */
-    private final long vectorIndexSize;
+    private Long vectorIndexSize;
 
     /**
      * Creates an instance of SearchIndexStatistics class.
      *
      * @param documentCount the documentCount value to set.
      * @param storageSize the storageSize value to set.
-     * @param vectorIndexSize the vectorIndexSize value to set.
      */
-    public SearchIndexStatistics(long documentCount, long storageSize, long vectorIndexSize) {
+    public SearchIndexStatistics(long documentCount, long storageSize) {
         this.documentCount = documentCount;
         this.storageSize = storageSize;
-        this.vectorIndexSize = vectorIndexSize;
     }
 
     /**
@@ -71,7 +69,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
      *
      * @return the vectorIndexSize value.
      */
-    public long getVectorIndexSize() {
+    public Long getVectorIndexSize() {
         return this.vectorIndexSize;
     }
 
@@ -80,7 +78,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("documentCount", this.documentCount);
         jsonWriter.writeLongField("storageSize", this.storageSize);
-        jsonWriter.writeLongField("vectorIndexSize", this.vectorIndexSize);
+        jsonWriter.writeNumberField("vectorIndexSize", this.vectorIndexSize);
         return jsonWriter.writeEndObject();
     }
 
@@ -100,8 +98,7 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
                     long documentCount = 0L;
                     boolean storageSizeFound = false;
                     long storageSize = 0L;
-                    boolean vectorIndexSizeFound = false;
-                    long vectorIndexSize = 0L;
+                    Long vectorIndexSize = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -113,15 +110,15 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
                             storageSize = reader.getLong();
                             storageSizeFound = true;
                         } else if ("vectorIndexSize".equals(fieldName)) {
-                            vectorIndexSize = reader.getLong();
-                            vectorIndexSizeFound = true;
+                            vectorIndexSize = reader.getNullable(JsonReader::getLong);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    if (documentCountFound && storageSizeFound && vectorIndexSizeFound) {
+                    if (documentCountFound && storageSizeFound) {
                         SearchIndexStatistics deserializedSearchIndexStatistics =
-                                new SearchIndexStatistics(documentCount, storageSize, vectorIndexSize);
+                                new SearchIndexStatistics(documentCount, storageSize);
+                        deserializedSearchIndexStatistics.vectorIndexSize = vectorIndexSize;
 
                         return deserializedSearchIndexStatistics;
                     }
@@ -131,9 +128,6 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
                     }
                     if (!storageSizeFound) {
                         missingProperties.add("storageSize");
-                    }
-                    if (!vectorIndexSizeFound) {
-                        missingProperties.add("vectorIndexSize");
                     }
 
                     throw new IllegalStateException(

@@ -70,8 +70,8 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @param fields the fields value to set.
      * @return the VectorQuery object itself.
      */
-    public VectorQuery setFields(String fields) {
-        this.fields = fields;
+    public VectorQuery setFields(String... fields) {
+        this.fields = (fields == null) ? null : String.join(",", fields);
         return this;
     }
 

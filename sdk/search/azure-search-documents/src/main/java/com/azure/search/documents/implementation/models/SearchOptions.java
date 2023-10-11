@@ -17,9 +17,6 @@ import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SemanticErrorHandling;
-import com.azure.search.documents.models.VectorFilterMode;
-import com.azure.search.documents.models.VectorQuery;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -203,17 +200,6 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
      * The list of field names used for semantic search.
      */
     private List<String> semanticFields;
-
-    /*
-     * The query parameters for vector and hybrid search queries.
-     */
-    private List<VectorQuery> vectorQueries;
-
-    /*
-     * Determines whether or not filters are applied before or after the vector search is performed. Default is
-     * 'preFilter'.
-     */
-    private VectorFilterMode vectorFilterMode;
 
     /** Creates an instance of SearchOptions class. */
     public SearchOptions() {}
@@ -862,48 +848,6 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
         return this;
     }
 
-    /**
-     * Get the vectorQueries property: The query parameters for vector and hybrid search queries.
-     *
-     * @return the vectorQueries value.
-     */
-    public List<VectorQuery> getVectorQueries() {
-        return this.vectorQueries;
-    }
-
-    /**
-     * Set the vectorQueries property: The query parameters for vector and hybrid search queries.
-     *
-     * @param vectorQueries the vectorQueries value to set.
-     * @return the SearchRequest object itself.
-     */
-    public SearchOptions setVectorQueries(List<VectorQuery> vectorQueries) {
-        this.vectorQueries = vectorQueries;
-        return this;
-    }
-
-    /**
-     * Get the vectorFilterMode property: Determines whether or not filters are applied before or after the vector
-     * search is performed. Default is 'preFilter'.
-     *
-     * @return the vectorFilterMode value.
-     */
-    public VectorFilterMode getVectorFilterMode() {
-        return this.vectorFilterMode;
-    }
-
-    /**
-     * Set the vectorFilterMode property: Determines whether or not filters are applied before or after the vector
-     * search is performed. Default is 'preFilter'.
-     *
-     * @param vectorFilterMode the vectorFilterMode value to set.
-     * @return the SearchRequest object itself.
-     */
-    public SearchOptions setVectorFilterMode(VectorFilterMode vectorFilterMode) {
-        this.vectorFilterMode = vectorFilterMode;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -938,8 +882,6 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
         jsonWriter.writeStringField("captions", this.captions);
         jsonWriter.writeArrayField(
                 "semanticFields", this.semanticFields, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("vectorQueries", this.vectorQueries, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("vectorFilterMode", Objects.toString(this.vectorFilterMode, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -1024,14 +966,7 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                         } else if ("semanticFields".equals(fieldName)) {
                             List<String> semanticFields = reader.readArray(reader1 -> reader1.getString());
                             deserializedSearchOptions.semanticFields = semanticFields;
-                        } else if ("vectorQueries".equals(fieldName)) {
-                            List<VectorQuery> vectorQueries =
-                                reader.readArray(reader1 -> VectorQuery.fromJson(reader1));
-                            deserializedSearchOptions.vectorQueries = vectorQueries;
-                        } else if ("vectorFilterMode".equals(fieldName)) {
-                            deserializedSearchOptions.vectorFilterMode =
-                                VectorFilterMode.fromString(reader.getString());
-                        }else {
+                        } else {
                             reader.skipChildren();
                         }
                     }

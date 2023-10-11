@@ -225,6 +225,7 @@ directive:
       $.SearchIndexerSkillset.required = $.SearchIndexerSkillset.required.filter(required => required === 'name');
       delete $.SynonymMap.required;
       $.ServiceCounters.required = $.ServiceCounters.required.filter(required => required !== 'aliasesCount' && required !== 'skillsetCount' && required !== 'vectorIndexSize');
+      $.SearchIndexStatistics.required = $.SearchIndexStatistics.required.filter(required => required !== 'vectorIndexSize');
 ```
 
 ### Renames 
