@@ -15,7 +15,7 @@
   <groupId>com.typespec</groupId>
   <artifactId>typespec-json</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.typespec:typespec-json;current} -->
 
   <name>Java JSON Library</name>
   <description>This package provides interfaces for reading and writing JSON.</description>
@@ -46,8 +46,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <javaModulesSurefireArgLine>
-      --add-opens com.azure.json/com.azure.json=ALL-UNNAMED
-      --add-opens com.azure.json/com.azure.json.contract=ALL-UNNAMED
+      --add-opens com.typespec.json/com.typespec.json=ALL-UNNAMED
+      --add-opens com.typespec.json/com.typespec.json.contract=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- Ignore shaded code -->
@@ -144,12 +144,12 @@
   </build>
 
   <profiles>
-    <!-- This profile is used to generate a sources JAR with jackson-core shaded into com.azure.core.implementation.jackson.core -->
+    <!-- This profile is used to generate a sources JAR with jackson-core shaded into com.typespec.core.implementation.jackson.core -->
     <!-- DO NOT run this profile with release, it is only meant to be run locally when the shaded jackson-core code needs to be updated. -->
     <!-- -->
     <!-- To update the shaded jackson-core code, run Maven build with '-Dshade-jackson-core' included in the command. -->
     <!-- In the target folder, extract the sources azure-core JAR, the path com/azure/core/implementation/jackson/core will contain the jackson-core source code. -->
-    <!-- Copy this code into the com.azure.core.implementation.jackson.core package in the azure-core project and overwrite the existing files. -->
+    <!-- Copy this code into the com.typespec.core.implementation.jackson.core package in the azure-core project and overwrite the existing files. -->
     <!-- -->
     <!-- After following the steps above the project should be rebuilt with the 'add-license-comment' profile enable to add a comment about the shaded code's license. -->
     <!-- This serves as another way to attribute the shaded code to Jackson Core. -->
@@ -199,7 +199,7 @@
               <relocations>
                 <relocation>
                   <pattern>com.fasterxml.jackson.core</pattern>
-                  <shadedPattern>com.azure.json.implementation.jackson.core</shadedPattern>
+                  <shadedPattern>com.typespec.json.implementation.jackson.core</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>

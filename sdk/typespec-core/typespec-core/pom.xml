@@ -15,9 +15,9 @@
   <groupId>com.typespec</groupId>
   <artifactId>typespec-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.typespec:typespec-core;current} -->
 
-  <name>SDK Java Core Library</name>
+  <name>Java Core Library</name>
   <description>This package contains core types for Java clients.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -45,39 +45,39 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.http.rest=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+      --add-exports com.typespec.core/com.typespec.core.implementation.http=ALL-UNNAMED
+      --add-exports com.typespec.core/com.typespec.core.implementation.http.rest=ALL-UNNAMED
+      --add-exports com.typespec.core/com.typespec.core.implementation.serializer=ALL-UNNAMED
+      --add-exports com.typespec.core/com.typespec.core.implementation.jackson=ALL-UNNAMED
 
-      --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.credential=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation.http.rest=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
-      --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation.logging=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.util.tracing=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.credential=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.http=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.http.policy=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.http.rest=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.implementation=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.implementation.http=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.implementation.http.rest=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
+      --add-opens com.typespec.core/com.typespec.core.implementation.models.jsonflatten=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.implementation.serializer=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.implementation.jackson=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.implementation.logging=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.models=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.util=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.util.tracing=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.util.logging=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.util.polling=ALL-UNNAMED
+      --add-opens com.typespec.core/com.typespec.core.util.serializer=ALL-UNNAMED
 
-      --add-reads com.azure.core=ALL-UNNAMED
+      --add-reads com.typespec.core=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
-    <javadoc.excludePackageNames>com.azure.json</javadoc.excludePackageNames>
+    <javadoc.excludePackageNames>com.typespec.json</javadoc.excludePackageNames>
 
   </properties>
 
@@ -92,7 +92,7 @@
     <dependency>
       <groupId>com.typespec</groupId>
       <artifactId>typespec-json</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.typespec:typespec-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -139,7 +139,7 @@
     <dependency>
       <groupId>com.typespec</groupId>
       <artifactId>typespec-json</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.typespec:typespec-json;dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -202,7 +202,7 @@
 
   <build>
     <plugins>
-      <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
+      <!-- RestProxyTests is inherited by tests in typespec-core-http-netty -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -227,6 +227,7 @@
             <bannedDependencies>
               <includes>
                 <include>io.projectreactor:reactor-core:[3.4.31]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>com.typespec:typespec-json:[1.0.0]</include> <!-- {x-include-update;com.typespec:typespec-json;dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
