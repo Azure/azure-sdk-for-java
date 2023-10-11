@@ -24,37 +24,34 @@ import java.util.Map;
 /**
  * Manages running the test recording proxy server
  */
-public class TestProxyManager {
+public final class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
-    private Process proxy;
-    private final Path testClassPath;
+    private static Process proxy;
+    private static final Path WORKING_DIRECTORY = Paths.get(System.getProperty("user.dir"));
 
-    /**
-     * Construct a {@link TestProxyManager} for controlling the external test proxy.
-     * @param testClassPath the test class path
-     */
-    public TestProxyManager(Path testClassPath) {
-        this.testClassPath = testClassPath;
-        // This is necessary to stop the proxy when the debugger is stopped.
-        Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(TestProxyManager::stopProxy));
         if (runningLocally()) {
-            TestProxyDownloader.installTestProxy(testClassPath);
+            TestProxyDownloader.installTestProxy(WORKING_DIRECTORY);
         }
     }
+
+    @Deprecated
+    private TestProxyManager() { }
 
     /**
      * Start an instance of the test proxy.
      * @throws UncheckedIOException There was an issue communicating with the proxy.
      * @throws RuntimeException There was an issue starting the proxy process.
      */
-    public void startProxy() {
+    public static synchronized void startProxy() {
         try {
             // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
             if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1), null)) {
                 String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                     TestProxyUtils.getProxyProcessName()).toString();
 
-                Path repoRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
+                Path repoRoot = TestUtils.getRepoRootResolveUntil(WORKING_DIRECTORY, "eng");
 
                 // Resolve the path to the repo root 'target' folder and create the folder if it doesn't exist.
                 // This folder will be used to store the 'test-proxy.log' file to enable simpler debugging of Test Proxy
@@ -128,7 +125,7 @@ public class TestProxyManager {
     /**
      * Stop the running instance of the test proxy.
      */
-    public void stopProxy() {
+    private static void stopProxy() {
         if (proxy != null && proxy.isAlive()) {
             proxy.destroy();
         }
@@ -138,7 +135,7 @@ public class TestProxyManager {
      * Checks the environment variables commonly set in CI to determine if the run is local.
      * @return True if the run is local.
      */
-    private boolean runningLocally() {
+    private static boolean runningLocally() {
         return Configuration.getGlobalConfiguration().get("TF_BUILD") == null
             && Configuration.getGlobalConfiguration().get("CI") == null;
     }

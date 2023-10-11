@@ -39,6 +39,10 @@
      <codesnippet.skip>false</codesnippet.skip>
      <javadocDoclet></javadocDoclet>
      <javadocDocletOptions></javadocDocletOptions>
+     <javaModulesSurefireArgLine>
+     --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+     --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+     </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -72,7 +76,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.10.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
