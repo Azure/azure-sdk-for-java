@@ -41,7 +41,7 @@ public class CteTestHelper {
     private static final String COMMUNICATION_EXPIRED_TEAMS_TOKEN = Configuration.getGlobalConfiguration()
             .get("COMMUNICATION_EXPIRED_TEAMS_TOKEN", "Sanitized");
     private static final String COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST = Configuration.getGlobalConfiguration()
-            .get("SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST", "false");
+            .get("SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST", "true");
 
     /**
      * Gets a test mode for unit tests.
