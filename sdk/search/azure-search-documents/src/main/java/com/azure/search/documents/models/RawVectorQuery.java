@@ -59,7 +59,7 @@ public final class RawVectorQuery extends VectorQuery {
 
     /** {@inheritDoc} */
     @Override
-    public RawVectorQuery setFields(String fields) {
+    public RawVectorQuery setFields(String... fields) {
         super.setFields(fields);
         return this;
     }
