@@ -152,7 +152,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE)) {
 
             boolean isWebExceptionRetriable = WebExceptionUtility.isWebExceptionRetriable(e);
-            boolean isSDKGeneratedSubStatus = Exceptions.isSDKGeneratedSubStatus(clientException);
             logger.warn(
                 "Service unavailable - IsReadRequest {}, IsWebExceptionRetriable {}, NonIdempotentWriteRetriesEnabled {}",
                 this.isReadRequest,
@@ -164,7 +163,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 this.isReadRequest,
                 isWebExceptionRetriable,
                 this.request.getNonIdempotentWriteRetriesEnabled(),
-                isSDKGeneratedSubStatus);
+                clientException);
         }
 
         return this.throttlingRetry.shouldRetry(e);
@@ -302,9 +301,23 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean isReadRequest,
         boolean isWebExceptionRetriable,
         boolean nonIdempotentWriteRetriesEnabled,
-        boolean isSDKGeneratedSubStatus) {
+        CosmosException cosmosException) {
 
-        if (!isReadRequest && !nonIdempotentWriteRetriesEnabled && !isWebExceptionRetriable && !isSDKGeneratedSubStatus) {
+        // The request has failed with 503, SDK need to decide whether it is safe to retry for write operations
+        // For server generated retries, it is safe to retry
+        // For SDK generated 503, it will be more tricky as we have to decide the cause of it. For any causes that SDK not sure whether the request
+        // has reached/processed from server side, unless customer has specifically opted in for nonIdempotentWriteRetries, SDK should not retry.
+        // When SDK would generate 503:
+        //    - When server return 410, SDK may internally retry multiple times, when all the retries exhausted, SDK will bubble up 503 with corresponding subStatusCode
+        //      (Note: currently, subStatus code for read may get lost during the conversion, but for writes, the subStatus code will be reserved)
+        //    - when SDK generated 410 due to different reason (like connectionTimeout, transient timeout etc), SDK will internally retry multiple times
+        //      when all the retries exhausted, SDK will bubble up 503
+        //
+        // Fow now, without nonIdempotentWriteRetries being enabled, SDK will only retry for the following situation:
+        // 1. For any connection related errors, it will be covered under isWebExceptionRetriable -> which SDK will retry
+        // 2. For any server returned 503s, SDK will retry
+        // 3. For SDK generated 503, SDK will only retry if the subStatusCode is SERVER_GENERATED_410
+        if (!isReadRequest && !shouldRetryWriteOnServiceUnavailable(nonIdempotentWriteRetriesEnabled, isWebExceptionRetriable, cosmosException)) {
             logger.warn(
                 "shouldRetryOnBackendServiceUnavailableAsync() Not retrying" +
                     " on write with non retriable exception and non server returned service unavailable. Retry count = {}",
@@ -376,6 +389,24 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     CosmosDiagnostics getCosmosDiagnostics() {
         return cosmosDiagnostics;
+    }
+
+    private boolean shouldRetryWriteOnServiceUnavailable(
+        boolean nonIdempotentWriteRetriesEnabled,
+        boolean isWebExceptionRetriable,
+        CosmosException cosmosException) {
+
+        if (nonIdempotentWriteRetriesEnabled || isWebExceptionRetriable) {
+            return true;
+        }
+
+        if (cosmosException instanceof ServiceUnavailableException) {
+            ServiceUnavailableException serviceUnavailableException = (ServiceUnavailableException) cosmosException;
+            return serviceUnavailableException.isBasedOn503ResponseFromService()
+                || serviceUnavailableException.getStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_410;
+        }
+
+        return false;
     }
 
     private static class RetryContext {
