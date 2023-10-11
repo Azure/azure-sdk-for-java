@@ -3,6 +3,11 @@
 ## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
+- Introduction of new scopes for token generation.
+    - chat.join
+    - chat.join.limited
+    - voip.join
+- Added a new API version `CommunicationIdentityServiceVersion.V2023_10_01` that is now the default API version.
 
 ### Breaking Changes
 
