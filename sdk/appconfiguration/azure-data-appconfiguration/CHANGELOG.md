@@ -1,6 +1,16 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.5.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.5.0-beta.2 (2023-10-11)
 
 ### Features Added
 
@@ -23,10 +33,17 @@ Note: Below breaking changes only affect the version `1.5.0-beta.1`.
    - `recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)` by `recoverSnapshotWithResponse(String, MatchConditions)`
    - `archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)` by `archiveSnapshotWithResponse(String, MatchConditions, Context)`
    - `recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)` by `recoverSnapshotWithResponse(String, MatchConditions, Context)`
-  
+
 ### Bugs Fixed
+- `FeatureFlagConfigurationSetting` and `SecretReferenceConfigurationSetting` will now retain custom attributes in the setting value.
+  Previously, only attributes that were defined in the associated JSON schema were allowed and unknown attributes were discarded. ([#36725](https://github.com/Azure/azure-sdk-for-java/pull/36725))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
 
 ## 1.4.9 (2023-09-22)
 

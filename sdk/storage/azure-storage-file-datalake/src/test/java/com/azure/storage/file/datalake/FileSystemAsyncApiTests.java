@@ -288,7 +288,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void getPropertiesLease() {
-        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
 
         assertAsyncResponseStatusCode(dataLakeFileSystemAsyncClient.getPropertiesWithResponse(leaseID), 200);
     }
@@ -376,7 +376,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     @ParameterizedTest
     @MethodSource("setMetadataACSupplier")
     public void setMetadataAC(OffsetDateTime modified, String leaseID) {
-        leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemAsyncClient, leaseID);
+        leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, leaseID);
         DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID).setIfModifiedSince(modified);
 
         assertAsyncResponseStatusCode(dataLakeFileSystemAsyncClient.setMetadataWithResponse(null, drc), 200);
@@ -465,7 +465,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedAndLeaseIdSupplier")
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupFileSystemLeaseCondition(dataLakeFileSystemAsyncClient, leaseID))
+            .setLeaseId(setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, leaseID))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
@@ -581,7 +581,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedAndLeaseIdSupplier")
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupFileSystemLeaseCondition(dataLakeFileSystemAsyncClient, leaseID))
+            .setLeaseId(setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, leaseID))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
@@ -945,7 +945,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createIfNotExistsFileMin() {
         StepVerifier.create(dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName())
-            .flatMap(r -> r.exists()))
+            .flatMap(DataLakePathAsyncClient::exists))
             .expectNext(true)
             .verifyComplete();
     }
@@ -1580,7 +1580,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     @Test
     public void createIfNotExistsDirMin() {
         StepVerifier.create(dataLakeFileSystemAsyncClient.createDirectoryIfNotExists(generatePathName())
-            .flatMap(r -> r.exists()))
+            .flatMap(DataLakePathAsyncClient::exists))
             .expectNext(true)
             .verifyComplete();
     }
@@ -2212,7 +2212,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedAndLeaseIdSupplier")
     public void setAccessPolicyAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         DataLakeRequestConditions cac = new DataLakeRequestConditions()
-            .setLeaseId(setupFileSystemLeaseCondition(dataLakeFileSystemAsyncClient, leaseID))
+            .setLeaseId(setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, leaseID))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
@@ -2275,7 +2275,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void getAccessPolicyLease() {
-        String leaseID = setupFileSystemLeaseCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
 
         assertAsyncResponseStatusCode(dataLakeFileSystemAsyncClient.getAccessPolicyWithResponse(leaseID), 200);
     }
