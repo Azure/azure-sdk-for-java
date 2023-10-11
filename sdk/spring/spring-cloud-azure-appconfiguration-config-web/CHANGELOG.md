@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed Event Hook validation
+
 ### Other Changes
 
 ## 5.5.0 (2023-08-28)
