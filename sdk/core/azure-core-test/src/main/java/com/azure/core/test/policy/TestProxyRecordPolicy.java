@@ -83,6 +83,9 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
             try (HttpResponse response = client.sendSync(request, Context.NONE)) {
                 checkForTestProxyErrors(response);
+                if (response.getStatusCode() != 200) {
+                    throw new RuntimeException(response.getBodyAsBinaryData().toString());
+                }
 
                 this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
             }
@@ -111,11 +114,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
             .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             .setHeader(X_RECORDING_ID, xRecordingId)
             .setBody(serializeVariables(variables));
-        
+
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
-
-            if (response.getStatusCode() == 400) {
+            if (response.getStatusCode() != 200) {
                 throw new RuntimeException(response.getBodyAsBinaryData().toString());
             }
         }
