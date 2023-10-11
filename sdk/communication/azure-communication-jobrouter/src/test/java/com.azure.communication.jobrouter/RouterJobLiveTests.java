@@ -154,8 +154,9 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
 
         RouterJob job = jobRouterClient.createJob(new CreateJobOptions(jobId, testName, queue.getId())
-            .setMatchingMode(new RouterJobMatchingMode(new ScheduleAndSuspendMode(
-                OffsetDateTime.of(2040, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC)))));
+            .setMatchingMode(new RouterJobMatchingMode(
+                new ScheduleAndSuspendMode()
+                .setScheduleAt(OffsetDateTime.of(2040, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC)))));
 
         // Action
         RouterJob job2 = jobRouterClient.updateJob(new UpdateJobOptions(jobId)

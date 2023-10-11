@@ -65,7 +65,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         queue = routerAdminClient.updateQueue(new UpdateQueueOptions(queueId).setLabels(updatedQueueLabels));
 
         // Verify
-        assertEquals(updatedQueueLabels.get("Label_1").getValue(), queue.getLabels().get("Label_1").getValue());
+        assertEquals(updatedQueueLabels.get("Label_1").getValue(), queue.getLabels().get("Label_1"));
 
         // Cleanup
         routerAdminClient.deleteQueue(queueId);
