@@ -62,7 +62,7 @@ public class LocalTestServer {
         server.addConnector(this.httpConnector);
 
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        String mockKeyStore = LocalTestServer.class.getResource("/keystore.jks").toString();
+        String mockKeyStore = LocalTestServer.class.getResource("/fake-fake-keystore.jks").toString();
         sslContextFactory.setKeyStorePath(mockKeyStore);
         sslContextFactory.setKeyStorePassword("password");
         sslContextFactory.setKeyManagerPassword("password");
