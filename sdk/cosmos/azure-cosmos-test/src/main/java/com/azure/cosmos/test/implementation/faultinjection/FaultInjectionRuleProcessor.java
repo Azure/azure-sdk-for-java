@@ -329,6 +329,8 @@ public class FaultInjectionRuleProcessor {
                 return OperationType.Create;
             case QUERY_ITEM:
                 return OperationType.Query;
+            case READ_FEED_ITEM:
+                return OperationType.ReadFeed;
             case UPSERT_ITEM:
                 return OperationType.Upsert;
             case REPLACE_ITEM:
@@ -357,6 +359,7 @@ public class FaultInjectionRuleProcessor {
             case READ_ITEM:
             case CREATE_ITEM:
             case QUERY_ITEM:
+            case READ_FEED_ITEM:
             case UPSERT_ITEM:
             case REPLACE_ITEM:
             case DELETE_ITEM:
