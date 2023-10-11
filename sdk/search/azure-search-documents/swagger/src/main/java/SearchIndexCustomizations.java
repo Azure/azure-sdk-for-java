@@ -60,6 +60,7 @@ public class SearchIndexCustomizations extends Customization {
         customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
         customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
         customizeRawVectorQuery(packageCustomization.getClass("RawVectorQuery"));
+        customizeVectorizableTextQuery(packageCustomization.getClass("VectorizableTextQuery"));
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
@@ -131,6 +132,12 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
 }
 
     private void customizeRawVectorQuery(ClassCustomization classCustomization) {
+        String methodName = "setFields";
+        String parameter = "String... fields";
+        classCustomization.getMethod(methodName).replaceParameters(parameter);
+    }
+
+    private void customizeVectorizableTextQuery(ClassCustomization classCustomization) {
         String methodName = "setFields";
         String parameter = "String... fields";
         classCustomization.getMethod(methodName).replaceParameters(parameter);
