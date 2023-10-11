@@ -29,6 +29,9 @@ Note: Below breaking changes only affect the version `1.5.0-beta.1`.
   Previously, only attributes that were defined in the associated JSON schema were allowed and unknown attributes were discarded. ([#36725](https://github.com/Azure/azure-sdk-for-java/pull/36725))
 
 ### Other Changes
+
+#### Dependency Updates
+
 - Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
 
