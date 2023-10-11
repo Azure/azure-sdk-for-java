@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-module com.azure.core.test {
-    requires transitive com.azure.core;
+module com.typespec.core.test {
+    requires transitive com.typespec.core;
 
     requires com.fasterxml.jackson.dataformat.xml;
     requires org.junit.jupiter.api;
@@ -20,19 +20,19 @@ module com.azure.core.test {
     requires org.eclipse.jetty.util;
     requires org.eclipse.jetty.security;
 
-    exports com.azure.core.test;
-    exports com.azure.core.test.annotation;
-    exports com.azure.core.test.http;
-    exports com.azure.core.test.models;
-    exports com.azure.core.test.policy;
-    exports com.azure.core.test.utils;
+    exports com.typespec.core.test;
+    exports com.typespec.core.test.annotation;
+    exports com.typespec.core.test.http;
+    exports com.typespec.core.test.models;
+    exports com.typespec.core.test.policy;
+    exports com.typespec.core.test.utils;
 
-    opens com.azure.core.test to com.fasterxml.jackson.databind, org.junit.platform.commons;
-    opens com.azure.core.test.models to com.fasterxml.jackson.databind;
-    opens com.azure.core.test.annotation to org.junit.platform.commons;
-    opens com.azure.core.test.implementation to com.fasterxml.jackson.databind, com.azure.core,
+    opens com.typespec.core.test to com.fasterxml.jackson.databind, org.junit.platform.commons;
+    opens com.typespec.core.test.models to com.fasterxml.jackson.databind;
+    opens com.typespec.core.test.annotation to org.junit.platform.commons;
+    opens com.typespec.core.test.implementation to com.fasterxml.jackson.databind, com.typespec.core,
         org.junit.platform.commons;
-    opens com.azure.core.test.implementation.entities to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.typespec.core.test.implementation.entities to com.fasterxml.jackson.databind, com.typespec.core;
 
-    uses com.azure.core.http.HttpClientProvider;
+    uses com.typespec.core.http.HttpClientProvider;
 }
