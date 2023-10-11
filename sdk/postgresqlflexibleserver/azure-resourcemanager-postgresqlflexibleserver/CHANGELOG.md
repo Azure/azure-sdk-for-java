@@ -1,14 +1,211 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0 (2023-10-11)
 
-### Features Added
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2022-12-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.ExecutionStatus` was removed
 
-### Other Changes
+* `models.MigrationResource$Definition` was removed
+
+* `models.LogFiles` was removed
+
+* `models.MigrationResourceListResult` was removed
+
+* `models.LtrBackupResponse` was removed
+
+* `models.Migrations` was removed
+
+* `models.MigrationMode` was removed
+
+* `models.LtrBackupRequest` was removed
+
+* `models.FlexibleServersTriggerLtrPreBackupResponse` was removed
+
+* `models.ZoneRedundantHaSupportedEnum` was removed
+
+* `models.MigrationResourceForPatch` was removed
+
+* `models.RestrictedEnum` was removed
+
+* `models.OverwriteDbsInTargetEnum` was removed
+
+* `models.MigrationState` was removed
+
+* `models.CapabilityStatus` was removed
+
+* `models.AzureManagedDiskPerformanceTiers` was removed
+
+* `models.StorageAutoGrowthSupportedEnum` was removed
+
+* `models.MigrationResource$Update` was removed
+
+* `models.ResourceProviders` was removed
+
+* `models.MigrationStatus` was removed
+
+* `models.StartDataMigrationEnum` was removed
+
+* `models.ZoneRedundantHaAndGeoBackupSupportedEnum` was removed
+
+* `models.StorageMbCapability` was removed
+
+* `models.OnlineResizeSupportedEnum` was removed
+
+* `models.MigrationNameAvailabilityResource` was removed
+
+* `models.ServerSku` was removed
+
+* `models.BackupStoreDetails` was removed
+
+* `models.MigrationResource$UpdateStages` was removed
+
+* `models.FlexibleServers` was removed
+
+* `models.LogicalReplicationOnSourceDbEnum` was removed
+
+* `models.KeyStatusEnum` was removed
+
+* `models.CancelEnum` was removed
+
+* `models.MigrationListFilter` was removed
+
+* `models.FlexibleServerCapability` was removed
+
+* `models.CapabilityBase` was removed
+
+* `models.MigrationNameAvailabilityReason` was removed
+
+* `models.LtrBackupOperations` was removed
+
+* `models.LtrServerBackupOperation` was removed
+
+* `models.ServerCapabilities` was removed
+
+* `models.FastProvisioningSupportedEnum` was removed
+
+* `models.LogFile` was removed
+
+* `models.BackupRequestBase` was removed
+
+* `models.ServerSkuCapability` was removed
+
+* `models.LogFileListResult` was removed
+
+* `models.StorageAutoGrow` was removed
+
+* `models.BackupSettings` was removed
+
+* `models.MigrationSubStateDetails` was removed
+
+* `models.LtrServerBackupOperationList` was removed
+
+* `models.LtrPreBackupRequest` was removed
+
+* `models.LtrPreBackupResponse` was removed
+
+* `models.MigrationResource` was removed
+
+* `models.HaMode` was removed
+
+* `models.GeoBackupSupportedEnum` was removed
+
+* `models.MigrationSecretParameters` was removed
+
+* `models.TriggerCutoverEnum` was removed
+
+* `models.MigrationResource$DefinitionStages` was removed
+
+* `models.MigrationSubState` was removed
+
+* `models.DbServerMetadata` was removed
+
+* `models.FlexibleServersTriggerLtrPreBackupHeaders` was removed
+
+* `models.AdminCredentials` was removed
+
+#### `models.StorageTierCapability` was modified
+
+* `java.lang.Integer iops()` -> `java.lang.Long iops()`
+
+#### `models.FastProvisioningEditionCapability` was modified
+
+* `serverCount()` was removed
+* `supportedTier()` was removed
+* `java.lang.Integer supportedStorageGb()` -> `java.lang.Long supportedStorageGb()`
+
+#### `models.Storage` was modified
+
+* `iops()` was removed
+* `autoGrow()` was removed
+* `withAutoGrow(models.StorageAutoGrow)` was removed
+* `tier()` was removed
+* `withTier(models.AzureManagedDiskPerformanceTiers)` was removed
+
+#### `models.DataEncryption` was modified
+
+* `withPrimaryEncryptionKeyStatus(models.KeyStatusEnum)` was removed
+* `geoBackupUserAssignedIdentityId()` was removed
+* `geoBackupKeyUri()` was removed
+* `primaryEncryptionKeyStatus()` was removed
+* `withGeoBackupUserAssignedIdentityId(java.lang.String)` was removed
+* `withGeoBackupKeyUri(java.lang.String)` was removed
+* `geoBackupEncryptionKeyStatus()` was removed
+* `withGeoBackupEncryptionKeyStatus(models.KeyStatusEnum)` was removed
+
+#### `models.FlexibleServerEditionCapability` was modified
+
+* `supportedServerSkus()` was removed
+* `defaultSkuName()` was removed
+
+#### `models.StorageEditionCapability` was modified
+
+* `defaultStorageSizeMb()` was removed
+* `supportedStorageMb()` was removed
+
+#### `PostgreSqlManager` was modified
+
+* `ltrBackupOperations()` was removed
+* `migrations()` was removed
+* `logFiles()` was removed
+* `serverCapabilities()` was removed
+* `resourceProviders()` was removed
+* `flexibleServers()` was removed
+
+### Features Added
+
+* `models.NodeTypeCapability` was added
+
+* `models.StorageMBCapability` was added
+
+* `models.HyperscaleNodeEditionCapability` was added
+
+* `models.CapabilityProperties` was added
+
+* `models.VcoreCapability` was added
+
+#### `models.StorageTierCapability` was modified
+
+* `status()` was added
+* `tierName()` was added
+* `isBaseline()` was added
+
+#### `models.ServerVersionCapability` was modified
+
+* `status()` was added
+* `supportedVcores()` was added
+
+#### `models.FlexibleServerEditionCapability` was modified
+
+* `supportedServerVersions()` was added
+* `status()` was added
+
+#### `models.StorageEditionCapability` was modified
+
+* `status()` was added
+* `supportedStorageMB()` was added
 
 ## 1.0.0-beta.7 (2023-06-26)
 
