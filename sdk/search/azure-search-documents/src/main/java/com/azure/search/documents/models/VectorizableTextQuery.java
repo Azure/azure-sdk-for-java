@@ -58,7 +58,7 @@ public final class VectorizableTextQuery extends VectorQuery {
 
     /** {@inheritDoc} */
     @Override
-    public VectorizableTextQuery setFields(String fields) {
+    public VectorizableTextQuery setFields(String... fields) {
         super.setFields(fields);
         return this;
     }
