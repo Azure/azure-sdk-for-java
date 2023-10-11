@@ -1353,6 +1353,7 @@
                     <param>com.azure:azure-e2e</param>
                     <param>com.azure:azure-storage-perf</param>
                     <param>com.azure:perf-test-core</param>
+                    <param>com.typespec:typespec-core-test</param>
                   </ignoredGA>
                 </configuration>
               </execution>
