@@ -15,6 +15,7 @@ import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.CreateMode;
+import com.azure.resourcemanager.cosmos.models.CustomerManagedKeyStatus;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
@@ -208,11 +209,24 @@ public final class DatabaseAccountCreateUpdateProperties {
     private Boolean enablePartitionMerge;
 
     /*
-     * Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which
-     * only work with Tls 1.2.
+     * Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with
+     * Tls 1.2.
      */
     @JsonProperty(value = "minimalTlsVersion")
     private MinimalTlsVersion minimalTlsVersion;
+
+    /*
+     * Flag to indicate enabling/disabling of Burst Capacity Preview feature on the account
+     */
+    @JsonProperty(value = "enableBurstCapacity")
+    private Boolean enableBurstCapacity;
+
+    /*
+     * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property
+     * provides troubleshooting guidance.
+     */
+    @JsonProperty(value = "customerManagedKeyStatus")
+    private CustomerManagedKeyStatus customerManagedKeyStatus;
 
     /** Creates an instance of DatabaseAccountCreateUpdateProperties class. */
     public DatabaseAccountCreateUpdateProperties() {
@@ -817,8 +831,8 @@ public final class DatabaseAccountCreateUpdateProperties {
     }
 
     /**
-     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
-     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
+     * Cassandra and Mongo APIs only work with Tls 1.2.
      *
      * @return the minimalTlsVersion value.
      */
@@ -827,14 +841,59 @@ public final class DatabaseAccountCreateUpdateProperties {
     }
 
     /**
-     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
-     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
+     * Cassandra and Mongo APIs only work with Tls 1.2.
      *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
     public DatabaseAccountCreateUpdateProperties withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
         this.minimalTlsVersion = minimalTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
+     *
+     * @return the enableBurstCapacity value.
+     */
+    public Boolean enableBurstCapacity() {
+        return this.enableBurstCapacity;
+    }
+
+    /**
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
+     *
+     * @param enableBurstCapacity the enableBurstCapacity value to set.
+     * @return the DatabaseAccountCreateUpdateProperties object itself.
+     */
+    public DatabaseAccountCreateUpdateProperties withEnableBurstCapacity(Boolean enableBurstCapacity) {
+        this.enableBurstCapacity = enableBurstCapacity;
+        return this;
+    }
+
+    /**
+     * Get the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
+     * account. In case there are errors, the property provides troubleshooting guidance.
+     *
+     * @return the customerManagedKeyStatus value.
+     */
+    public CustomerManagedKeyStatus customerManagedKeyStatus() {
+        return this.customerManagedKeyStatus;
+    }
+
+    /**
+     * Set the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
+     * account. In case there are errors, the property provides troubleshooting guidance.
+     *
+     * @param customerManagedKeyStatus the customerManagedKeyStatus value to set.
+     * @return the DatabaseAccountCreateUpdateProperties object itself.
+     */
+    public DatabaseAccountCreateUpdateProperties withCustomerManagedKeyStatus(
+        CustomerManagedKeyStatus customerManagedKeyStatus) {
+        this.customerManagedKeyStatus = customerManagedKeyStatus;
         return this;
     }
 

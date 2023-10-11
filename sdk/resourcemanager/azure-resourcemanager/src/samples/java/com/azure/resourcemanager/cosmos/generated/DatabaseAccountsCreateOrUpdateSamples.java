@@ -41,7 +41,7 @@ import java.util.Map;
 /** Samples for DatabaseAccounts CreateOrUpdate. */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-09-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
@@ -103,7 +103,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBDatabaseAccountCreateMax.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-09-15/examples/CosmosDBDatabaseAccountCreateMax.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
@@ -182,12 +182,13 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                             .asList(
                                 "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
                     .withCapacity(new Capacity().withTotalThroughputLimit(2000))
-                    .withMinimalTlsVersion(MinimalTlsVersion.TLS12),
+                    .withMinimalTlsVersion(MinimalTlsVersion.TLS12)
+                    .withEnableBurstCapacity(true),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBDatabaseAccountCreateMin.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-09-15/examples/CosmosDBDatabaseAccountCreateMin.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.

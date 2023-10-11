@@ -781,8 +781,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
-     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
+     * Cassandra and Mongo APIs only work with Tls 1.2.
      *
      * @return the minimalTlsVersion value.
      */
@@ -791,8 +791,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
-     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
+     * Cassandra and Mongo APIs only work with Tls 1.2.
      *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
@@ -802,6 +802,57 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
             this.innerProperties = new DatabaseAccountCreateUpdateProperties();
         }
         this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
+        return this;
+    }
+
+    /**
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
+     *
+     * @return the enableBurstCapacity value.
+     */
+    public Boolean enableBurstCapacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableBurstCapacity();
+    }
+
+    /**
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
+     *
+     * @param enableBurstCapacity the enableBurstCapacity value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withEnableBurstCapacity(Boolean enableBurstCapacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withEnableBurstCapacity(enableBurstCapacity);
+        return this;
+    }
+
+    /**
+     * Get the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
+     * account. In case there are errors, the property provides troubleshooting guidance.
+     *
+     * @return the customerManagedKeyStatus value.
+     */
+    public CustomerManagedKeyStatus customerManagedKeyStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().customerManagedKeyStatus();
+    }
+
+    /**
+     * Set the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
+     * account. In case there are errors, the property provides troubleshooting guidance.
+     *
+     * @param customerManagedKeyStatus the customerManagedKeyStatus value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withCustomerManagedKeyStatus(
+        CustomerManagedKeyStatus customerManagedKeyStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withCustomerManagedKeyStatus(customerManagedKeyStatus);
         return this;
     }
 
