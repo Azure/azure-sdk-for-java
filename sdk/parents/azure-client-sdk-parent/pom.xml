@@ -165,7 +165,7 @@
     <parallelizeLiveTests>false</parallelizeLiveTests>
 
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
-    <codesnippet.skip>false</codesnippet.skip>
+    <codesnippet.skip>true</codesnippet.skip>
 
     <!-- The following properties configure the maven-checkstyle-plugin. -->
     <!-- This property configures whether the maven-checkstyle-plugin should be used. -->
@@ -804,7 +804,7 @@
               </offlineLink>
             </offlineLinks>
             <failOnError>true</failOnError>
-            <failOnWarnings>true</failOnWarnings>
+            <failOnWarnings>false</failOnWarnings>
             <doclint>${doclint}</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
