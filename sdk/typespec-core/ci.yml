@@ -33,7 +33,7 @@ parameters:
   - name: release_dependsonlivetests
     displayName: 'Release depends on live tests'
     type: boolean
-    default: false
+    default: true
   - name: release_typespeccore
     displayName: 'typespec-core'
     type: boolean
@@ -56,11 +56,11 @@ extends:
     Artifacts:
       - name: typespec-core
         groupId: com.typespec
-        safeName: clientcore
+        safeName: typespeccore
         releaseInBatch: ${{ parameters.release_typespeccore }}
 #      - name: typespec-core-http-netty
 #        groupId: com.typespec
-#        safeName: clientcorehttpnetty
+#        safeName: typespeccorehttpnetty
 #        releaseInBatch: ${{ parameters.release_typespeccorehttpnetty }}
       - name: typespec-json
         groupId: com.typespec
@@ -68,4 +68,20 @@ extends:
         releaseInBatch: ${{ parameters.release_typespecjson }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-    # TODO: Add live tests back when we rewrite a library that uses the de-branded core client (e.g. AppConfig).
+    LiveTestStages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+        parameters:
+          ServiceDirectory: typespec-core
+          Artifacts:
+            - name: typespec-core
+              groupId: com.typespec
+              safeName: typespeccore
+#            - name: typespec-core-http-netty
+#              groupId: com.typespec
+#              safeName: typespeccorehttpnetty
+            - name: typespec-json
+              groupId: com.typespec
+              safeName: typespecjson
+          MatrixReplace:
+            - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
+          # TODO: Add live tests for a library that uses the de-branded core client (e.g. AppConfig).
