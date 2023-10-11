@@ -4,6 +4,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.ProxyOptions;
@@ -16,14 +17,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
-import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -401,14 +401,14 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-createSnapshot
         String snapshotName = "{snapshotName}";
         // Prepare the snapshot filters
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("Test*"));
-        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> poller =
-            configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSettingsSnapshot(filters), Context.NONE);
+        filters.add(new ConfigurationSettingsFilter("Test*"));
+        SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();
-        ConfigurationSettingsSnapshot snapshot = poller.getFinalResult();
+        ConfigurationSnapshot snapshot = poller.getFinalResult();
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
         // END: readme-sample-createSnapshot
@@ -417,7 +417,7 @@ public class ReadmeSamples {
     public void getSnapshot() {
         // BEGIN: readme-sample-getSnapshot
         String snapshotName = "{snapshotName}";
-        ConfigurationSettingsSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
+        ConfigurationSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
         // END: readme-sample-getSnapshot
@@ -426,7 +426,7 @@ public class ReadmeSamples {
     public void archiveSnapshot() {
         // BEGIN: readme-sample-archiveSnapshot
         String snapshotName = "{snapshotName}";
-        ConfigurationSettingsSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
+        ConfigurationSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
         System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
             archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
         // END: readme-sample-archiveSnapshot
@@ -435,7 +435,7 @@ public class ReadmeSamples {
     public void recoverSnapshot() {
         // BEGIN: readme-sample-recoverSnapshot
         String snapshotName = "{snapshotName}";
-        ConfigurationSettingsSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
+        ConfigurationSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
         System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
             recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
         // END: readme-sample-recoverSnapshot
@@ -444,10 +444,10 @@ public class ReadmeSamples {
     public void listSnapshot() {
         // BEGIN: readme-sample-getAllSnapshots
         String snapshotNameProduct = "{snapshotNameInProduct}";
-        SnapshotSelector snapshotSelector = new SnapshotSelector().setName(snapshotNameProduct);
-        PagedIterable<ConfigurationSettingsSnapshot> configurationSettingsSnapshots =
+        SnapshotSelector snapshotSelector = new SnapshotSelector().setNameFilter(snapshotNameProduct);
+        PagedIterable<ConfigurationSnapshot> configurationSnapshots =
             configurationClient.listSnapshots(snapshotSelector);
-        for (ConfigurationSettingsSnapshot snapshot : configurationSettingsSnapshots) {
+        for (ConfigurationSnapshot snapshot : configurationSnapshots) {
             System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
                 snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
         }

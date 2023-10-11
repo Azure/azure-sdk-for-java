@@ -452,6 +452,9 @@ public class ImplementationBridgeHelpers {
 
             Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
             List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+            int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            void setMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, int maxMicroBatchSize);
         }
     }
 

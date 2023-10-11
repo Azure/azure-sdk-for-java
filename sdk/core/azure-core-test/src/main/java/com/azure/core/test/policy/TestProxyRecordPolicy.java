@@ -104,13 +104,21 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     /**
      * Stops recording of test traffic.
      * @param variables A list of random variables generated during the test which is saved in the recording.
+     * @throws RuntimeException If the test proxy returns an error while stopping recording.
      */
     public void stopRecording(Queue<String> variables) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/record/stop")
             .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             .setHeader(X_RECORDING_ID, xRecordingId)
             .setBody(serializeVariables(variables));
-        client.sendSync(request, Context.NONE).close();
+        
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            checkForTestProxyErrors(response);
+
+            if (response.getStatusCode() == 400) {
+                throw new RuntimeException(response.getBodyAsBinaryData().toString());
+            }
+        }
     }
 
     /**
@@ -138,7 +146,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
             if (variable == null) {
                 builder.append("null");
             } else {
-                builder.append('"').append(variable).append('"');
+                builder.append(variable).append('"');
             }
         }
 
