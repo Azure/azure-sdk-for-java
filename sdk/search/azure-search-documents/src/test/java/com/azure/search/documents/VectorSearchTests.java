@@ -36,7 +36,6 @@ import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RawVectorQuery;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
-import com.azure.search.documents.models.VectorQuery;
 import com.azure.search.documents.test.environment.models.HotelAddress;
 import com.azure.search.documents.test.environment.models.HotelRoom;
 import com.azure.search.documents.test.environment.models.VectorHotel;

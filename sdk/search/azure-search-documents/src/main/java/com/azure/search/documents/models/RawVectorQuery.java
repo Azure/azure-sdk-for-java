@@ -101,7 +101,7 @@ public final class RawVectorQuery extends VectorQuery {
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!KIND.equals(kind)) {
+                            if (!KIND.toString().equals(kind)) {
                                 throw new IllegalStateException(
                                         "'kind' was expected to be non-null and equal to '"
                                                 + KIND
