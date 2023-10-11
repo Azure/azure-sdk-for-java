@@ -11,15 +11,15 @@
  *
  * <h2>Getting Started</h2>
  *
- * <p>{@link com.azure.json.JsonSerializable} is the base of Azure JSON: it's the interface that types implement to
+ * <p>{@link com.typespec.json.JsonSerializable} is the base of Azure JSON: it's the interface that types implement to
  * provide stream-style JSON reading and writing functionality. The interface has a single implementable method
- * {@link com.azure.json.JsonSerializable#toJson(com.azure.json.JsonWriter) toJson(JsonWriter)} that defines how the
- * object is written as JSON, to the {@link com.azure.json.JsonWriter}, and a static method
- * {@link com.azure.json.JsonSerializable#fromJson(com.azure.json.JsonReader) fromJson(JsonReader)} that defines how to
- * read an instance of the object from JSON, being read from the {@link com.azure.json.JsonReader}. The default
- * implementation of {@link com.azure.json.JsonSerializable#fromJson(com.azure.json.JsonReader) fromJson(JsonReader)}
+ * {@link com.typespec.json.JsonSerializable#toJson(com.typespec.json.JsonWriter) toJson(JsonWriter)} that defines how the
+ * object is written as JSON, to the {@link com.typespec.json.JsonWriter}, and a static method
+ * {@link com.typespec.json.JsonSerializable#fromJson(com.typespec.json.JsonReader) fromJson(JsonReader)} that defines how to
+ * read an instance of the object from JSON, being read from the {@link com.typespec.json.JsonReader}. The default
+ * implementation of {@link com.typespec.json.JsonSerializable#fromJson(com.typespec.json.JsonReader) fromJson(JsonReader)}
  * throws an {@link java.lang.UnsupportedOperationException} if the static method isn't hidden (a static method with the
- * same definition) by the type implementing {@link com.azure.json.JsonSerializable}. Given that the type itself manages
+ * same definition) by the type implementing {@link com.typespec.json.JsonSerializable}. Given that the type itself manages
  * JSON serialization the type can be fluent, immutable, or a mix of fluent and immutable, it doesn't matter as all
  * logic is self-encapsulated.</p>
  *
@@ -381,23 +381,23 @@
  *
  * <h2>Reading and Writing JSON</h2>
  *
- * <p>{@link com.azure.json.JsonReader} contains APIs and logic for parsing JSON. The type is abstract and consists of
+ * <p>{@link com.typespec.json.JsonReader} contains APIs and logic for parsing JSON. The type is abstract and consists of
  * both abstract methods for an implementation to implement as well as final method for commonly shared logic that
- * builds on the abstract methods. Similarly, {@link com.azure.json.JsonWriter} contains APIs and logic for writing
- * JSON, and as with {@link com.azure.json.JsonReader}, it contains both abstract methods for implementations to
+ * builds on the abstract methods. Similarly, {@link com.typespec.json.JsonWriter} contains APIs and logic for writing
+ * JSON, and as with {@link com.typespec.json.JsonReader}, it contains both abstract methods for implementations to
  * implement and final methods for commonly shared logic that builds on the abstract methods. Both types implement
  * {@link java.io.Closeable} and should be used in try-with-resources blocks to ensure any resources created by
  * the implementations are cleaned up once JSON reading or writing is complete. Both types are used by the
- * {@link com.azure.json.JsonProvider} service provider interface which is used to create instances of
- * {@link com.azure.json.JsonReader} and {@link com.azure.json.JsonWriter} implementations.</p>
+ * {@link com.typespec.json.JsonProvider} service provider interface which is used to create instances of
+ * {@link com.typespec.json.JsonReader} and {@link com.typespec.json.JsonWriter} implementations.</p>
  *
  *
- * <p>{@link com.azure.json.JsonProviders} is a utility class that handles finding {@link com.azure.json.JsonProvider}
+ * <p>{@link com.typespec.json.JsonProviders} is a utility class that handles finding {@link com.typespec.json.JsonProvider}
  * implementations on the classpath and should be the default way to create instances of
- * {@link com.azure.json.JsonReader} and {@link com.azure.json.JsonWriter}. As mentioned earlier, the Azure JSON
+ * {@link com.typespec.json.JsonReader} and {@link com.typespec.json.JsonWriter}. As mentioned earlier, the Azure JSON
  * package provides a default implementation allowing for the library to be used stand-alone.
- * {@link com.azure.json.JsonReader} can be created from {@code byte[]}, {@link java.lang.String},
- * {@link java.io.InputStream}, and {@link java.io.Reader} sources, {@link com.azure.json.JsonWriter} can be created
+ * {@link com.typespec.json.JsonReader} can be created from {@code byte[]}, {@link java.lang.String},
+ * {@link java.io.InputStream}, and {@link java.io.Reader} sources, {@link com.typespec.json.JsonWriter} can be created
  * from {@link java.io.OutputStream} and {@link java.io.Writer} sources. No matter the source the functionality will be
  * the same, the options exist to provide the best convenience and performance by reducing type translations.
  *
@@ -526,10 +526,10 @@
  * </pre>
  * <!-- end com.azure.json.JsonWriter.writeJsonWriter -->
  *
- * @see com.azure.json.JsonSerializable
- * @see com.azure.json.JsonReader
- * @see com.azure.json.JsonWriter
- * @see com.azure.json.JsonProvider
- * @see com.azure.json.JsonProviders
+ * @see com.typespec.json.JsonSerializable
+ * @see com.typespec.json.JsonReader
+ * @see com.typespec.json.JsonWriter
+ * @see com.typespec.json.JsonProvider
+ * @see com.typespec.json.JsonProviders
  */
 package com.typespec.json;
