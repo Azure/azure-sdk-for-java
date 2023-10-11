@@ -14,18 +14,17 @@ public final class NetworkTests {
         Network model =
             BinaryData
                 .fromString(
-                    "{\"publicNetworkAccess\":\"Enabled\",\"delegatedSubnetResourceId\":\"sbbzo\",\"privateDnsZoneArmResourceId\":\"igrxwburvjxxjn\"}")
+                    "{\"publicNetworkAccess\":\"Enabled\",\"delegatedSubnetResourceId\":\"jxywsuws\",\"privateDnsZoneArmResourceId\":\"s\"}")
                 .toObject(Network.class);
-        Assertions.assertEquals("sbbzo", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("igrxwburvjxxjn", model.privateDnsZoneArmResourceId());
+        Assertions.assertEquals("jxywsuws", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("s", model.privateDnsZoneArmResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Network model =
-            new Network().withDelegatedSubnetResourceId("sbbzo").withPrivateDnsZoneArmResourceId("igrxwburvjxxjn");
+        Network model = new Network().withDelegatedSubnetResourceId("jxywsuws").withPrivateDnsZoneArmResourceId("s");
         model = BinaryData.fromObject(model).toObject(Network.class);
-        Assertions.assertEquals("sbbzo", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("igrxwburvjxxjn", model.privateDnsZoneArmResourceId());
+        Assertions.assertEquals("jxywsuws", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("s", model.privateDnsZoneArmResourceId());
     }
 }

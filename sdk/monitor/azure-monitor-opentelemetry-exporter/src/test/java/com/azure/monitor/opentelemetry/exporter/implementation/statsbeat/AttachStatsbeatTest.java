@@ -73,8 +73,10 @@ public class AttachStatsbeatTest {
 
     @Test
     public void testAksResourceProviderId() {
-        assertThat(AttachStatsbeat.initResourceProviderId(ResourceProvider.RP_AKS, null, key -> null))
-            .isEqualTo("unknown");
+        Map<String, String> envVars = new HashMap<>();
+        envVars.put("AKS_ARM_NAMESPACE_ID", "test_aks_rp_id");
+        assertThat(AttachStatsbeat.initResourceProviderId(ResourceProvider.RP_AKS, null, envVars::get))
+            .isEqualTo("test_aks_rp_id");
     }
 
     @Test

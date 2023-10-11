@@ -43,12 +43,11 @@ import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.CoreUtils.getFutureWithCancellation;
+import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 
@@ -381,8 +380,7 @@ public final class TableServiceClient {
         Supplier<Response<Void>> callable = () -> deleteTableWithResponse(tableName, context);
         try {
             return hasTimeout(timeout)
-                ? getFutureWithCancellation(THREAD_POOL.submit(callable::get), timeout.toMillis(), TimeUnit.MILLISECONDS)
-                : callable.get();
+                ? getResultWithTimeout(THREAD_POOL.submit(callable::get), timeout) : callable.get();
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         } catch (RuntimeException e) {

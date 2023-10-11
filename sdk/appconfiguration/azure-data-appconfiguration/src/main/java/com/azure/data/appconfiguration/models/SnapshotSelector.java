@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
  */
 @Fluent
 public final class SnapshotSelector {
-    private String name;
-    private List<SnapshotStatus> status;
+    private String nameFilter;
+    private List<ConfigurationSnapshotStatus> status;
 
     private List<SnapshotFields> fields;
 
@@ -27,22 +27,22 @@ public final class SnapshotSelector {
     public SnapshotSelector() { }
 
     /**
-     * Gets the snapshot name
+     * Gets the snapshot name filter
      *
-     * @return The snapshot name.
+     * @return The snapshot name filter.
      */
-    public String getName() {
-        return name;
+    public String getNameFilter() {
+        return nameFilter;
     }
 
     /**
-     * Sets the snapshot name.
+     * Sets the snapshot name filter.
      *
-     * @param name the snapshot name.
+     * @param nameFilter the snapshot name filter.
      * @return The updated SnapshotSelector object
      */
-    public SnapshotSelector setName(String name) {
-        this.name = name;
+    public SnapshotSelector setNameFilter(String nameFilter) {
+        this.nameFilter = nameFilter;
         return this;
     }
 
@@ -51,7 +51,7 @@ public final class SnapshotSelector {
      *
      * @return The snapshot status.
      */
-    public List<SnapshotStatus> getSnapshotStatus() {
+    public List<ConfigurationSnapshotStatus> getStatus() {
         return status;
     }
 
@@ -61,16 +61,27 @@ public final class SnapshotSelector {
      * @param status the snapshot status.
      * @return The updated SnapshotSelector object
      */
-    public SnapshotSelector setSnapshotStatus(SnapshotStatus... status) {
+    public SnapshotSelector setStatus(ConfigurationSnapshotStatus... status) {
         this.status = status == null ? null : Arrays.asList(status);
         return this;
     }
 
     /**
-     * Gets the fields on {@link ConfigurationSettingsSnapshot} to return from the GET request. If none are set, the
+     * Sets the snapshot status. Used to filter returned snapshots by their status properties.
+     *
+     * @param status the snapshot status.
+     * @return The updated SnapshotSelector object
+     */
+    public SnapshotSelector setStatus(List<ConfigurationSnapshotStatus> status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Gets the fields on {@link ConfigurationSnapshot} to return from the GET request. If none are set, the
      * service returns the snapshot with all of their fields populated.
      *
-     * @return The set of {@link ConfigurationSettingsSnapshot} fields to return for a GET request.
+     * @return The set of {@link ConfigurationSnapshot} fields to return for a GET request.
      */
     public List<SnapshotFields> getFields() {
         return fields;
@@ -78,7 +89,7 @@ public final class SnapshotSelector {
 
     /**
      * Sets fields that will be returned in the response corresponding to properties in
-     * {@link ConfigurationSettingsSnapshot}. If none are set, the service returns snapshot with all of their fields
+     * {@link ConfigurationSnapshot}. If none are set, the service returns snapshot with all of their fields
      * populated.
      *
      * @param fields The fields to select for the query response. If none are set, the service will return the
@@ -88,6 +99,21 @@ public final class SnapshotSelector {
      */
     public SnapshotSelector setFields(SnapshotFields... fields) {
         this.fields = fields == null ? null : Arrays.asList(fields);
+        return this;
+    }
+
+    /**
+     * Sets fields that will be returned in the response corresponding to properties in
+     * {@link ConfigurationSnapshot}. If none are set, the service returns snapshot with all of their fields
+     * populated.
+     *
+     * @param fields The fields to select for the query response. If none are set, the service will return the
+     * snapshot with a default set of properties.
+     *
+     * @return The updated SnapshotSelector object.
+     */
+    public SnapshotSelector setFields(List<SnapshotFields> fields) {
+        this.fields = fields;
         return this;
     }
 
@@ -114,6 +140,6 @@ public final class SnapshotSelector {
                 .map(statusEnumValue -> statusEnumValue.toString())
                 .collect(Collectors.joining(","));
         }
-        return "SnapshotSelector(name=" + name + ", status=" + status + ", fields=" + fields + ")";
+        return "SnapshotSelector(name=" + nameFilter + ", status=" + status + ", fields=" + fields + ")";
     }
 }
