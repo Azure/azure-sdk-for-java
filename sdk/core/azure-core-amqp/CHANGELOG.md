@@ -1,5 +1,15 @@
 # Release History
 
+## 2.9.0-beta.6 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.8.10 (2023-10-06)
 
 ### Bugs Fixed
