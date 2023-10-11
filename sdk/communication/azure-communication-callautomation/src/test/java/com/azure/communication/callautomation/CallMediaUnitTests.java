@@ -134,7 +134,7 @@ public class CallMediaUnitTests {
         callConnection.getCallMedia().startContinuousDtmfRecognition(new CommunicationUserIdentifier("id"));
     }
 
- @Test
+    @Test
     public void startContinuousDtmfRecognitionWithResponseTest() {
         // override callMedia to mock 200 response code
         CallConnection callConnection =
