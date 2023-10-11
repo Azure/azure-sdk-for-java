@@ -207,7 +207,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.client:client-core:[1.43.0]</include> <!-- {x-include-update;com.client:client-json;dependency} -->
+                <include>com.client:client-core:[1.43.0]</include> <!-- {x-include-update;com.client:client-core;current} -->
                 <include>io.netty:netty-tcnative-boringssl-static:[2.0.61.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty-http:[1.0.34]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <include>io.netty:netty-buffer:[4.1.94.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->

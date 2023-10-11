@@ -1678,8 +1678,8 @@
             <dependencies>
               <dependency>
                 <groupId>com.azure</groupId>
-                <artifactId>client-core-gen</artifactId> <!-- {x-version-update;com.azure:client-core-gen;current} -->
-                <version>1.0.0</version>
+                <artifactId>client-core-gen</artifactId>
+                <version>1.0.0</version> <!-- {x-version-update;com.azure:client-core-gen;current} -->
               </dependency>
             </dependencies>
           </plugin>
