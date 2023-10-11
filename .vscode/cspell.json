@@ -210,7 +210,8 @@
     "sdk/maps/azure-maps-timezone/**",
     "sdk/search/.idea/**",
     "sdk/devcenter/azure-developer-devcenter/**",
-    "sdk/loadtesting/azure-developer-loadtesting/**"
+    "sdk/loadtesting/azure-developer-loadtesting/**",
+    "sdk/typespec-core/"
   ],
   "words": [
     "adal",
