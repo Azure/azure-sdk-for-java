@@ -145,7 +145,7 @@ PostgreSQL)[Use Microsoft Entra ID for authenticating with PostgreSQL].
 
 ### Architecture
 
-This picture shows how the jdbc authentication plugin for PostgreSQl authenticating with managed identity.
+This picture shows how the JDBC authentication plugin for PostgreSQL authenticating with managed identity.
 
 ![postgresql_design.png](img/postgresql_design.png)
 
@@ -202,7 +202,7 @@ Connection connection=DriverManager.getConnection(url,properties);
 
 Credentials default to authenticating to the Microsoft Entra endpoint for Azure Public Cloud. To access resources
 in other clouds, such as Azure Government or a private cloud, configure credentials with the `azure.authorityHost`
-argument. [AzureAuthorityHosts](https://docs.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable)
+argument. [AzureAuthorityHosts](https://learn.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable)
 defines authorities for well-known clouds:
 
 ```java
@@ -297,7 +297,7 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 [azure_subscription]: https://azure.microsoft.com/free/
 [postgresql_source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-extensions
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[postgresql_product_docs]: https://docs.microsoft.com/azure/postgresql/single-server/overview
+[postgresql_product_docs]: https://learn.microsoft.com/azure/postgresql/single-server/overview
 [quick_start_postgresql]: https://aka.ms/passwordless/quickstart/postgresql
-[Use Microsoft Entra ID for authenticating with PostgreSQL]:https://docs.microsoft.com/azure/postgresql/single-server/concepts-azure-ad-authentication
+[Use Microsoft Entra ID for authenticating with PostgreSQL]:https://learn.microsoft.com/azure/postgresql/single-server/concepts-azure-ad-authentication
 [whatismyip.akamai.com]: https://whatismyip.akamai.com/
