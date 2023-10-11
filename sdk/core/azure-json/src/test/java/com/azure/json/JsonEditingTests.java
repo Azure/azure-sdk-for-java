@@ -108,13 +108,21 @@ public class JsonEditingTests {
 
     @Test
     public void deleteObjectPropertyObjectInner() throws IOException {
-        object.getProperty("EntryObject").removeProperty("InnerKey");
+        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we 
+        // must explicitly cast the returned JsonElement type of getElement and 
+        // getProperty to the appropriate JsonArray or JsonObject type to 
+        // chain further JsonArray or JsonObject method calls. 
+        ((JsonObject)object.getProperty("EntryObject")).removeProperty("InnerKey");
         assertEquals("{\"EntryVariable\":\"First\",\"EntryObject\":{},\"EntryArray\":[\"Value\",\"Value2\"]}", object.toJson());
     }
 
     @Test
     public void deleteObjectPropertyArrayInner() throws IOException {
-        object.getProperty("EntryArray").removeElement(0);
+        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we 
+        // must explicitly cast the returned JsonElement type of getElement and 
+        // getProperty to the appropriate JsonArray or JsonObject type to 
+        // chain further JsonArray or JsonObject method calls. 
+        ((JsonArray)object.getProperty("EntryArray")).removeElement(0);
         assertEquals("{\"EntryVariable\":\"First\",\"EntryObject\":{\"InnerKey\":20},\"EntryArray\":[\"Value2\"]}", object.toJson());
     }
 
@@ -173,13 +181,21 @@ public class JsonEditingTests {
 
     @Test
     public void deleteArrayPropertyObjectInner() throws IOException {
-        array.getElement(1).removeProperty("InnerKey");
+        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we 
+        // must explicitly cast the returned JsonElement type of getElement and 
+        // getProperty to the appropriate JsonArray or JsonObject type to 
+        // chain further JsonArray or JsonObject method calls. 
+        ((JsonObject)array.getElement(1)).removeProperty("InnerKey");
         assertEquals("[\"EntryVariable\",{},[null,false]]", array.toJson());
     }
 
     @Test
     public void deleteArrayPropertyArrayInner() throws IOException {
-        array.getElement(2).removeElement(1);
+        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we 
+        // must explicitly cast the returned JsonElement type of getElement and 
+        // getProperty to the appropriate JsonArray or JsonObject type to 
+        // chain further JsonArray or JsonObject method calls. 
+        ((JsonArray)array.getElement(2)).removeElement(1);
         assertEquals("[\"EntryVariable\",{\"InnerKey\":\"Data\"},[null]]", array.toJson());
     }
 

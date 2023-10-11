@@ -41,156 +41,152 @@ public class JsonObject extends JsonElement {
         }
     }
 
-    /**
-     * Adds a new property into the JsonObject object using an object or
-     * primitive directly as the value.
-     *
-     * If a primitive is passed it will be wrapped as an object.
-     *
-     * This method converts the element object into the appropriate JsonElement
-     * type before using it as the new property's value.
-     *
-     * @param key specifies the key of the property being added
-     * @param element specifies the value of the property being added.
-     * @return JsonObject representing the new state of the JsonObject object
-     * after the addition of the new property.
-     */
-    /*
-    addProperty temporarily removed to better guarantee runtime behaviour.
-
-
-
-    public JsonObject addProperty(String key, Object element) throws IllegalArgumentException {
-        // Stores element cast or converted to a valid JsonElement type if such
-        // cast or conversion exists for it.
-        JsonElement value;
-
-        // Case: element is not null, therefore more instance checking needs to
-        // be done to check for valid casts or conversions
-        if(element != null) {
-            // Case: element is a String or Character, therefore value stores
-            // element as a JsonString
-            if((element instanceof String) || (element instanceof Character)) {
-                value = new JsonString(String.valueOf(element));
-            }
-
-            // Case: element is a Number, therefore value stores element as a
-            // JsonNumber
-            else if(element instanceof Number) {
-                value = new JsonNumber((Number)element);
-            }
-            // Case: element is a Boolean, therefore value stores element as a
-            // JsonBoolean
-            else if(element instanceof Boolean) {
-                value = new JsonBoolean((Boolean)element);
-            }
-            // Case: element is a JsonObject, therefore value stores element as
-            // a JsonObject
-            else if(element instanceof JsonObject) { value = (JsonObject)element; }
-            // Case: element is a JsonArray, therefore value stores element as
-            // a JsonArray
-            else if(element instanceof JsonArray) { value = (JsonArray)element; }
-            // Case: element is an Array
-            else if(element.getClass().isArray()) {
-                // Value references a newly constructed JsonArray object. The
-                // array elements in element will be added to this JsonArray object.
-                value = new JsonArray();
-
-                // Case: element is an int array, therefore all elements can be
-                // added as JsonNumber objects.
-                if(element instanceof int[]) {
-                    for(int i : (int[])element) {
-                        ((JsonArray)value).addElement(new JsonNumber(i));
-                    }
-                }
-                // Case: element is a float array, therefore all elements can be
-                // added as JsonNumber objects.
-                else if(element instanceof float[]) {
-                    for(float i : (float[])element) {
-                        ((JsonArray)value).addElement(new JsonNumber(i));
-                    }
-                }
-                // Case: element is a String array, therefore all elements can be
-                // added as JsonString objects.
-                else if(element instanceof String[]) {
-                    for(String i : (String[])element) {
-                        ((JsonArray)value).addElement(new JsonString(i));
-                    }
-                }
-                // Case: element is a boolean array, therefore all elements can
-                // be added as JsonBoolean objects.
-                else if(element instanceof boolean[]) {
-                    for(boolean i : (boolean[])element) {
-                        ((JsonArray)value).addElement(new JsonBoolean(i));
-                    }
-                }
-                // Case: element is a JsonElement array, therefore all elements
-                // can be added as their respective JsonElement objects.
-                else if(element instanceof JsonElement[]) {
-                    for(JsonElement i : (JsonElement[])element) {
-                        // Case: i is another JsonArray, therefore the element
-                        // is added as a JsonArray object
-                        if(i instanceof JsonArray) {
-                            ((JsonArray)value).addElement((JsonArray)i);
-                        }
-                        // Case: i is another JsonArray, therefore the element
-                        // is added as a JsonArray object
-                        else if(i instanceof JsonBoolean) {
-                            ((JsonArray)value).addElement((JsonBoolean)i);
-                        }
-                        // Case: i is a JsonNull object, therefore the element
-                        // is added as a JsonNull object
-                        else if(i instanceof JsonNull) {
-                            ((JsonArray)value).addElement((JsonNull)i);
-                        }
-                        // Case: i is a JsonNumber object, therefore the element
-                        // is added as a JsonNumber object
-                        else if(i instanceof JsonNumber) {
-                            ((JsonArray)value).addElement((JsonNumber)i);
-                        }
-                        // Case: i is a JsonObject object, therefore the element
-                        // is added as a JsonObject object
-                        else if(i instanceof JsonObject) {
-                            ((JsonArray)value).addElement((JsonObject)i);
-                        }
-                        // Case: i is a JsonString object, therefore the element
-                        // is added as a JsonString object
-                        else if(i instanceof JsonString) {
-                            ((JsonArray)value).addElement((JsonString)i);
-                        }
-                        // Case: i is not of a type that can be casted or
-                        // converted to a valid JsonElement type. The valid
-                        // JsonElement types are:
-                        //      - JsonArray
-                        //      - JsonBoolean
-                        //      - JsonNull
-                        //      - JsonNumber
-                        //      - JsonObject
-                        //      - JsonString
-                        else { throw new IllegalArgumentException(); }
-                    }
-                }
-                // Case: element is not an array of a type that can be casted or
-                // converted to a valid JsonElement type.
-                else { throw new IllegalArgumentException(); }
-            }
-            // Case: element is not null, but is also not a valid type that can
-            // be cast or converted to a valid JsonElement type.
-            else { throw new IllegalArgumentException(); }
-        }
-        // Case: element is null, therefore value is a JsonNull object.
-        else { value = new JsonNull(); }
-
-        // Adding the new property, the key with its value pair. The value is
-        // the respective JsonElement cast/conversion of element.
-        this.addProperty(key, value);
-        //properties.put(key, value);
-
-        // Returning the new state of the JsonObject after the successful
-        // addition of the new property
-        return this;
-    }
-     */
+// NOTE: addProperty temporarily removed to better guarantee runtime behaviour.
+// 
+//    /**
+//     * Adds a new property into the JsonObject object using an object or
+//     * primitive directly as the value.
+//     *
+//     * If a primitive is passed it will be wrapped as an object.
+//     *
+//     * This method converts the element object into the appropriate JsonElement
+//     * type before using it as the new property's value.
+//     *
+//     * @param key specifies the key of the property being added
+//     * @param element specifies the value of the property being added.
+//     * @return JsonObject representing the new state of the JsonObject object
+//     * after the addition of the new property.
+//     */
+//    public JsonObject addProperty(String key, Object element) throws IllegalArgumentException {
+//        // Stores element cast or converted to a valid JsonElement type if such
+//        // cast or conversion exists for it.
+//        JsonElement value;
+//
+//        // Case: element is not null, therefore more instance checking needs to
+//        // be done to check for valid casts or conversions
+//        if(element != null) {
+//            // Case: element is a String or Character, therefore value stores
+//            // element as a JsonString
+//            if((element instanceof String) || (element instanceof Character)) {
+//                value = new JsonString(String.valueOf(element));
+//            }
+//
+//            // Case: element is a Number, therefore value stores element as a
+//            // JsonNumber
+//            else if(element instanceof Number) {
+//                value = new JsonNumber((Number)element);
+//            }
+//            // Case: element is a Boolean, therefore value stores element as a
+//            // JsonBoolean
+//            else if(element instanceof Boolean) {
+//                value = new JsonBoolean((Boolean)element);
+//            }
+//            // Case: element is a JsonObject, therefore value stores element as
+//            // a JsonObject
+//            else if(element instanceof JsonObject) { value = (JsonObject)element; }
+//            // Case: element is a JsonArray, therefore value stores element as
+//            // a JsonArray
+//            else if(element instanceof JsonArray) { value = (JsonArray)element; }
+//            // Case: element is an Array
+//            else if(element.getClass().isArray()) {
+//                // Value references a newly constructed JsonArray object. The
+//                // array elements in element will be added to this JsonArray object.
+//                value = new JsonArray();
+//
+//                // Case: element is an int array, therefore all elements can be
+//                // added as JsonNumber objects.
+//                if(element instanceof int[]) {
+//                    for(int i : (int[])element) {
+//                        ((JsonArray)value).addElement(new JsonNumber(i));
+//                    }
+//                }
+//                // Case: element is a float array, therefore all elements can be
+//                // added as JsonNumber objects.
+//                else if(element instanceof float[]) {
+//                    for(float i : (float[])element) {
+//                        ((JsonArray)value).addElement(new JsonNumber(i));
+//                    }
+//                }
+//                // Case: element is a String array, therefore all elements can be
+//                // added as JsonString objects.
+//                else if(element instanceof String[]) {
+//                    for(String i : (String[])element) {
+//                        ((JsonArray)value).addElement(new JsonString(i));
+//                    }
+//                }
+//                // Case: element is a boolean array, therefore all elements can
+//                // be added as JsonBoolean objects.
+//                else if(element instanceof boolean[]) {
+//                    for(boolean i : (boolean[])element) {
+//                        ((JsonArray)value).addElement(new JsonBoolean(i));
+//                    }
+//                }
+//                // Case: element is a JsonElement array, therefore all elements
+//                // can be added as their respective JsonElement objects.
+//                else if(element instanceof JsonElement[]) {
+//                    for(JsonElement i : (JsonElement[])element) {
+//                        // Case: i is another JsonArray, therefore the element
+//                        // is added as a JsonArray object
+//                        if(i instanceof JsonArray) {
+//                            ((JsonArray)value).addElement((JsonArray)i);
+//                        }
+//                        // Case: i is another JsonArray, therefore the element
+//                        // is added as a JsonArray object
+//                        else if(i instanceof JsonBoolean) {
+//                            ((JsonArray)value).addElement((JsonBoolean)i);
+//                        }
+//                        // Case: i is a JsonNull object, therefore the element
+//                        // is added as a JsonNull object
+//                        else if(i instanceof JsonNull) {
+//                            ((JsonArray)value).addElement((JsonNull)i);
+//                        }
+//                        // Case: i is a JsonNumber object, therefore the element
+//                        // is added as a JsonNumber object
+//                        else if(i instanceof JsonNumber) {
+//                            ((JsonArray)value).addElement((JsonNumber)i);
+//                        }
+//                        // Case: i is a JsonObject object, therefore the element
+//                        // is added as a JsonObject object
+//                        else if(i instanceof JsonObject) {
+//                            ((JsonArray)value).addElement((JsonObject)i);
+//                        }
+//                        // Case: i is a JsonString object, therefore the element
+//                        // is added as a JsonString object
+//                        else if(i instanceof JsonString) {
+//                            ((JsonArray)value).addElement((JsonString)i);
+//                        }
+//                        // Case: i is not of a type that can be casted or
+//                        // converted to a valid JsonElement type. The valid
+//                        // JsonElement types are:
+//                        //      - JsonArray
+//                        //      - JsonBoolean
+//                        //      - JsonNull
+//                        //      - JsonNumber
+//                        //      - JsonObject
+//                        //      - JsonString
+//                        else { throw new IllegalArgumentException(); }
+//                    }
+//                }
+//                // Case: element is not an array of a type that can be casted or
+//                // converted to a valid JsonElement type.
+//                else { throw new IllegalArgumentException(); }
+//            }
+//            // Case: element is not null, but is also not a valid type that can
+//            // be cast or converted to a valid JsonElement type.
+//            else { throw new IllegalArgumentException(); }
+//        }
+//        // Case: element is null, therefore value is a JsonNull object.
+//        else { value = new JsonNull(); }
+//
+//        // Adding the new property, the key with its value pair. The value is
+//        // the respective JsonElement cast/conversion of element.
+//        this.addProperty(key, value);
+//        //properties.put(key, value);
+//
+//        // Returning the new state of the JsonObject after the successful
+//        // addition of the new property
+//        return this;
+//    }
 
 //    /**
 //     * Adds a new property into the JsonObject object using JsonElement as the
@@ -246,11 +242,11 @@ public class JsonObject extends JsonElement {
         return properties.get(key);
     }
 
-    /**
-     * Returns the String representation of the JsonObject object
-     *
-     * @return String representation of the JsonObject object
-     */
+//    /**
+//     * Returns the String representation of the JsonObject object
+//     *
+//     * @return String representation of the JsonObject object
+//     */
 //    public String toJson() {
 //        // String reference that will store the resulting JSON string output to
 //        // be returned by toJson
@@ -296,7 +292,6 @@ public class JsonObject extends JsonElement {
 //        return "{" + jsonOutput + "}";
 //    }
 
-    @Override
     public JsonObject setProperty(String key, JsonElement element) throws IllegalArgumentException {
         properties.put(key, element);
         return this;
@@ -305,8 +300,6 @@ public class JsonObject extends JsonElement {
     /**
      * @return boolean of whether this JsonElement object is of type JsonObject.
      */
-
-    @Override
     public JsonElement removeProperty(String key)  {
         if (properties.containsKey(key)) {
             return this.properties.remove(key);

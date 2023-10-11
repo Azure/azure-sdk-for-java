@@ -43,11 +43,13 @@ public class JsonAPIExamples {
     }
 
     public static void main(String[] args) throws IOException {
-        example_1_json_object();
-        example_2_json_object();
-        example_3_json_object();
-        example_4_simple_json_array();
-        example_5_chaining_json_array();
+        // These old sample methods no longer work due current changes. The 
+        // implementation of these methods need changing. 
+        // example_1_json_object();
+        // example_2_json_object();
+        // example_3_json_object();
+        // example_4_simple_json_array();
+        // example_5_chaining_json_array();
 
 
         // Original (old) samples.
@@ -87,6 +89,7 @@ public class JsonAPIExamples {
         */
     } // End of main method
 
+    /* 
     // Showcasing the JsonObject methods in isolation (not chained)
     public static void example_1_json_object() throws IOException {
         System.out.println("---------------------------------------------------------------------------");
@@ -286,4 +289,5 @@ public class JsonAPIExamples {
 
         System.out.println(countryArray);
     }
+    */
 }
