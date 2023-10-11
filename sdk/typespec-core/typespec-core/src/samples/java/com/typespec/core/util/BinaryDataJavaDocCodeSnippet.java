@@ -351,7 +351,7 @@ public class BinaryDataJavaDocCodeSnippet {
         final Person data = new Person().setName("John");
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
-        // com.azure.core.util.serializer.JsonSerializer interface.
+        // com.typespec.core.util.serializer.JsonSerializer interface.
         // Or use Azure provided libraries for this.
         // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
         // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
@@ -371,7 +371,7 @@ public class BinaryDataJavaDocCodeSnippet {
         final Person data = new Person().setName("John");
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
-        // com.azure.core.util.serializer.JsonSerializer interface.
+        // com.typespec.core.util.serializer.JsonSerializer interface.
         // Or use Azure provided libraries for this.
         // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
         // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
@@ -396,7 +396,7 @@ public class BinaryDataJavaDocCodeSnippet {
         personList.add(person2);
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
-        // com.azure.core.util.serializer.JsonSerializer interface.
+        // com.typespec.core.util.serializer.JsonSerializer interface.
         // Or use Azure provided libraries for this.
         // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
         // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
@@ -476,7 +476,7 @@ public class BinaryDataJavaDocCodeSnippet {
         final Person data = new Person().setName("John");
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
-        // com.azure.core.util.serializer.JsonSerializer interface.
+        // com.typespec.core.util.serializer.JsonSerializer interface.
         // Or use Azure provided libraries for this.
         // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
         // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
@@ -500,7 +500,7 @@ public class BinaryDataJavaDocCodeSnippet {
         final Person data = new Person().setName("John");
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
-        // com.azure.core.util.serializer.JsonSerializer interface.
+        // com.typespec.core.util.serializer.JsonSerializer interface.
         // Or use Azure provided libraries for this.
         // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
         // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson

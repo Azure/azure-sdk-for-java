@@ -65,7 +65,7 @@ public class SwaggerInterfaceParserTests {
 
         final SwaggerMethodParser methodParser = interfaceParser.getMethodParser(testMethod4);
         assertNotNull(methodParser);
-        assertEquals("com.azure.core.implementation.http.rest.SwaggerInterfaceParserTests$TestInterface4.testMethod4",
+        assertEquals("com.typespec.core.implementation.http.rest.SwaggerInterfaceParserTests$TestInterface4.testMethod4",
             methodParser.getFullyQualifiedMethodName());
 
         final SwaggerMethodParser methodDetails2 = interfaceParser.getMethodParser(testMethod4);

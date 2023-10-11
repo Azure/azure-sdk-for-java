@@ -112,7 +112,7 @@ public class Context {
      * <!-- src_embed com.azure.core.util.context.addData#object-object -->
      * <pre>
      * &#47;&#47; Users can pass parent trace context information and additional metadata to attach to spans created by SDKs
-     * &#47;&#47; using the com.azure.core.util.Context object.
+     * &#47;&#47; using the com.typespec.core.util.Context object.
      * final String hostNameValue = &quot;host-name-value&quot;;
      * final String entityPathValue = &quot;entity-path-value&quot;;
      *

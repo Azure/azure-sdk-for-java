@@ -29,7 +29,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
     private static final String REACTOR_HTTP_TRACE_CONTEXT_KEY = "instrumentation-context-key";
     private static final HttpHeaderName SERVICE_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
-    private static final String LEGACY_OTEL_POLICY_NAME = "io.opentelemetry.javaagent.instrumentation.azurecore.v1_19.shaded.com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy";
+    private static final String LEGACY_OTEL_POLICY_NAME = "io.opentelemetry.javaagent.instrumentation.azurecore.v1_19.shaded.com.typespec.core.tracing.opentelemetry.OpenTelemetryHttpPolicy";
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
 
     private Tracer tracer;

@@ -89,9 +89,9 @@ public final class ResponseConstructorsCache {
                      * From here we have three, possibly more options, to resolve this.
                      *
                      * 1) setAccessible to true in the response class (requires doPrivilege).
-                     * 2) Use Java 9+ Module class to add reads in com.azure.core and the SDK library exports to
-                     * com.azure.core for implementation.
-                     * 3) SDK libraries create an accessible MethodHandles.Lookup which com.azure.core can use to spoof
+                     * 2) Use Java 9+ Module class to add reads in com.typespec.core and the SDK library exports to
+                     * com.typespec.core for implementation.
+                     * 3) SDK libraries create an accessible MethodHandles.Lookup which com.typespec.core can use to spoof
                      * as the SDK library.
                      */
                     return lookupToUse.unreflectConstructor(constructor);

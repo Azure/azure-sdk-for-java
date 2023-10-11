@@ -26,7 +26,7 @@ final class JacksonJsonWriter extends JsonWriter {
 
     JacksonJsonWriter(JsonGenerator generator) {
         this.generator = Objects.requireNonNull(generator,
-            "Cannot create a Jackson-based instance of com.azure.json.JsonWriter with a null Jackson JsonGenerator.");
+            "Cannot create a Jackson-based instance of com.typespec.json.JsonWriter with a null Jackson JsonGenerator.");
     }
 
     @Override

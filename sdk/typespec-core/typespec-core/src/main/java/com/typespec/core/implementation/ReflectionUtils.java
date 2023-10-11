@@ -106,11 +106,11 @@ public final class ReflectionUtils {
      * <p>
      * If Java 9 or above is being used this will return a {@link MethodHandles.Lookup} based on whether the module
      * containing the {@code targetClass} exports the package containing the class. Otherwise, the
-     * {@link MethodHandles.Lookup} associated to {@code com.azure.core} will attempt to read the module containing
+     * {@link MethodHandles.Lookup} associated to {@code com.typespec.core} will attempt to read the module containing
      * {@code targetClass}.
      *
      * @param targetClass The {@link Class} that will need to be reflectively accessed.
-     * @return The {@link MethodHandles.Lookup} that will allow {@code com.azure.core} to access the {@code targetClass}
+     * @return The {@link MethodHandles.Lookup} that will allow {@code com.typespec.core} to access the {@code targetClass}
      * reflectively.
      * @throws Exception If the underlying reflective calls throw an exception.
      */

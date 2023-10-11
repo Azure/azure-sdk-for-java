@@ -28,7 +28,7 @@ import java.lang.reflect.Proxy;
  * as asynchronous Single objects that resolve to a deserialized Java object.
  */
 public final class RestProxy implements InvocationHandler {
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLED = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLED = "com.typespec.core.http.restproxy.syncproxy.enable";
     private static final boolean GLOBAL_SYNC_PROXY_ENABLED = Configuration.getGlobalConfiguration()
         .get("AZURE_HTTP_REST_PROXY_SYNC_PROXY_ENABLED", true);
 

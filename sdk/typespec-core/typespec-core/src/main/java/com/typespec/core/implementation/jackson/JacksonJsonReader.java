@@ -43,7 +43,7 @@ final class JacksonJsonReader extends JsonReader {
     JacksonJsonReader(JsonParser parser, byte[] jsonBytes, String jsonString, boolean resetSupported,
         JsonOptions jsonOptions) {
         this.parser = Objects.requireNonNull(parser,
-            "Cannot create a Jackson-based instance of com.azure.json.JsonReader with a null Jackson JsonParser.");
+            "Cannot create a Jackson-based instance of com.typespec.json.JsonReader with a null Jackson JsonParser.");
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
         this.resetSupported = resetSupported;

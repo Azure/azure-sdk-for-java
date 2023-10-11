@@ -54,7 +54,7 @@ public class ContextJavaDocCodeSnippets {
     public void addDataToContext() {
         // BEGIN: com.azure.core.util.context.addData#object-object
         // Users can pass parent trace context information and additional metadata to attach to spans created by SDKs
-        // using the com.azure.core.util.Context object.
+        // using the com.typespec.core.util.Context object.
         final String hostNameValue = "host-name-value";
         final String entityPathValue = "entity-path-value";
 

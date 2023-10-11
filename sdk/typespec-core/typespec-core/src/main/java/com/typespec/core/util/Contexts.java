@@ -70,6 +70,6 @@ public final class Contexts {
         /**
          * A {@link Context} key for the outgoing request's {@link ProgressReporter}.
          */
-        public static final String HTTP_REQUEST_PROGRESS_REPORTER = "com.azure.core.http.request.progress.reporter";
+        public static final String HTTP_REQUEST_PROGRESS_REPORTER = "com.typespec.core.http.request.progress.reporter";
     }
 }

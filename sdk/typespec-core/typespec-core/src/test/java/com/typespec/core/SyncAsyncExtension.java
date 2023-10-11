@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 /**
  * An extension that helps to branch out a single test into sync and async invocation.
  *
- * Using azure-core copy of the com.azure.core.test.SyncAsyncExtension class
+ * Using azure-core copy of the com.typespec.core.test.SyncAsyncExtension class
  * since azure-core cannot take dependency on azure-core-test package.
  */
 public class SyncAsyncExtension implements TestTemplateInvocationContextProvider {

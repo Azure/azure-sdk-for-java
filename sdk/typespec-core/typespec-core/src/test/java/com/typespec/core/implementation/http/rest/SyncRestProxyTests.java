@@ -99,7 +99,7 @@ public class SyncRestProxyTests {
             .build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        testInterface.testVoidMethod(new Context("com.azure.core.http.restproxy.syncproxy.enable", false));
+        testInterface.testVoidMethod(new Context("com.typespec.core.http.restproxy.syncproxy.enable", false));
         assertTrue(asyncMethodCalled.get());
     }
 

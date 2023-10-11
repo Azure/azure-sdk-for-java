@@ -14,7 +14,7 @@ import java.util.Objects;
 
 // Copied from azure-core-serializer-json-jackson, with minor edits.
 /**
- * Utility methods for working with {@code com.azure.json}.
+ * Utility methods for working with {@code com.typespec.json}.
  */
 final class AzureJsonUtils {
     private static final JsonFactory FACTORY = JsonFactory.builder().build();

@@ -739,7 +739,7 @@ public class PagedIterableTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
+    @MethodSource("com.typespec.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
     public <C, T, P extends ContinuablePage<C, T>> void streamingTerminatesOn(ContinuablePagedFlux<C, T, P> pagedFlux,
         List<T> expectedItems) {
         List<T> actualItems = new ContinuablePagedIterable<>(pagedFlux).stream().collect(Collectors.toList());
@@ -750,7 +750,7 @@ public class PagedIterableTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
+    @MethodSource("com.typespec.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
     public <C, T, P extends ContinuablePage<C, T>> void iteratingTerminatesOn(ContinuablePagedFlux<C, T, P> pagedFlux,
         List<T> expectedItems) {
         List<T> actualItems = new ArrayList<>();
@@ -762,7 +762,7 @@ public class PagedIterableTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
+    @MethodSource("com.typespec.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
     public <C, T, P extends ContinuablePage<C, T>> void streamingByPageTerminatesOn(
         ContinuablePagedFlux<C, T, P> pagedFlux, List<T> expectedItems) {
         List<T> actualItems = new ArrayList<>();
@@ -775,7 +775,7 @@ public class PagedIterableTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
+    @MethodSource("com.typespec.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
     public <C, T, P extends ContinuablePage<C, T>> void iteratingByPageTerminatesOn(
         ContinuablePagedFlux<C, T, P> pagedFlux, List<T> expectedItems) {
         List<T> actualItems = new ArrayList<>();

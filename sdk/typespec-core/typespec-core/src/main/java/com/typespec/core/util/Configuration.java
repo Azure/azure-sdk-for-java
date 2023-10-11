@@ -166,7 +166,7 @@ public class Configuration implements Cloneable {
      * Sets the name of the {@link TracerProvider} implementation that should be used to construct instances of
      * {@link Tracer}.
      * <p>
-     * The name must be the full class name, e.g. {@code com.azure.core.tracing.opentelemetry.OpenTelemetryTracerProvider} and not
+     * The name must be the full class name, e.g. {@code com.typespec.core.tracing.opentelemetry.OpenTelemetryTracerProvider} and not
      * {@code OpenTelemetryTracerProvider}.
      * <p>
      * If the value isn't set or is an empty string the first {@link TracerProvider} resolved by {@link java.util.ServiceLoader} will be
@@ -185,7 +185,7 @@ public class Configuration implements Cloneable {
      * Sets the name of the {@link MeterProvider} implementation that should be used to construct instances of
      * {@link Meter}.
      * <p>
-     * The name must be the full class name, e.g. {@code com.azure.core.tracing.opentelemetry.OpenTelemetryMeterProvider} and not
+     * The name must be the full class name, e.g. {@code com.typespec.core.tracing.opentelemetry.OpenTelemetryMeterProvider} and not
      * {@code OpenTelemetryMeterProvider}.
      * <p>
      * If the value isn't set or is an empty string the first {@link MeterProvider} resolved by {@link java.util.ServiceLoader} will be
@@ -233,7 +233,7 @@ public class Configuration implements Cloneable {
      * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct instances of
      * {@link HttpClient}.
      * <p>
-     * The name must be the full class name, ex {@code com.azure.core.http.netty.NettyAsyncHttpClientProvider} and not
+     * The name must be the full class name, ex {@code com.typespec.core.http.netty.NettyAsyncHttpClientProvider} and not
      * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
      * packages.
      * <p>

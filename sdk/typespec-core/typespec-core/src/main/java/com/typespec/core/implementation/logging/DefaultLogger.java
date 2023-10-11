@@ -25,7 +25,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
 
     // The template for the log message:
     // YYYY-MM-DD HH:MM:ss.SSS [thread] [level] classpath - message
-    // E.g: 2020-01-09 12:35:14.232 [main] [WARN] com.azure.core.DefaultLogger - This is my log message.
+    // E.g: 2020-01-09 12:35:14.232 [main] [WARN] com.typespec.core.DefaultLogger - This is my log message.
     private static final String WHITESPACE = " ";
     private static final String HYPHEN = " - ";
     private static final String OPEN_BRACKET = " [";

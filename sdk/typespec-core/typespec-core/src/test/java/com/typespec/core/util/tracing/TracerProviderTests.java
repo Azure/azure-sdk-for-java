@@ -30,7 +30,7 @@ public class TracerProviderTests {
     @Test
     public void createTracerCustomProviderDoesNotExistConfiguration() {
         Configuration config = new ConfigurationBuilder()
-            .putProperty("tracing.provider.implementation", "com.azure.core.util.tracing.TestTracerProvider")
+            .putProperty("tracing.provider.implementation", "com.typespec.core.util.tracing.TestTracerProvider")
             .build();
 
         assertThrows(RuntimeException.class, () -> TracingOptions.fromConfiguration(config));
@@ -39,7 +39,7 @@ public class TracerProviderTests {
     @Test
     public void createTracerCustomProviderNoDefaultCtor() {
         Configuration config = new ConfigurationBuilder()
-            .putProperty("tracing.provider.implementation", "com.azure.core.util.tracing.InvalidTracerProvider")
+            .putProperty("tracing.provider.implementation", "com.typespec.core.util.tracing.InvalidTracerProvider")
             .build();
 
         assertThrows(RuntimeException.class, () -> TracingOptions.fromConfiguration(config));
@@ -48,7 +48,7 @@ public class TracerProviderTests {
     @Test
     public void createTracerCustomProviderDoesNotExistEnvVar() {
         TestConfigurationSource envSource = new TestConfigurationSource();
-        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION, "com.azure.core.util.tracing.TracerProviderTests");
+        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION, "com.typespec.core.util.tracing.TracerProviderTests");
         Configuration config = new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource)
             .build();
 
@@ -63,7 +63,7 @@ public class TracerProviderTests {
     @Test
     public void createTracerCustomProviderNotInMetaInf() {
         TestConfigurationSource envSource = new TestConfigurationSource();
-        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION, "com.azure.core.util.tracing.TracerProviderTests$TestTracerProvider");
+        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION, "com.typespec.core.util.tracing.TracerProviderTests$TestTracerProvider");
         Configuration config = new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource)
             .build();
 

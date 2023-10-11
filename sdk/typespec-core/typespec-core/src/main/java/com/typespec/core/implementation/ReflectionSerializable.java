@@ -55,10 +55,10 @@ public final class ReflectionSerializable {
         XmlStreamExceptionCallable<Object> xmlWriterFlush = null;
         boolean xmlSerializableSupported = false;
         try {
-            xmlSerializable = Class.forName("com.azure.xml.XmlSerializable");
-            xmlReader = Class.forName("com.azure.xml.XmlReader");
+            xmlSerializable = Class.forName("com.typespec.xml.XmlSerializable");
+            xmlReader = Class.forName("com.typespec.xml.XmlReader");
 
-            Class<?> xmlProviders = Class.forName("com.azure.xml.XmlProviders");
+            Class<?> xmlProviders = Class.forName("com.typespec.xml.XmlProviders");
             MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(xmlProviders);
 
             MethodHandle handle = lookup.unreflect(xmlProviders.getDeclaredMethod("createReader", byte[].class));
@@ -67,7 +67,7 @@ public final class ReflectionSerializable {
             handle = lookup.unreflect(xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
             xmlWriterCreator = createXmlCallable(AutoCloseable.class, handle);
 
-            Class<?> xmlWriter = Class.forName("com.azure.xml.XmlWriter");
+            Class<?> xmlWriter = Class.forName("com.typespec.xml.XmlWriter");
 
             handle = lookup.unreflect(xmlWriter.getDeclaredMethod("writeStartDocument"));
             xmlWriterWriteStartDocument = createXmlCallable(Object.class, handle);
@@ -82,8 +82,8 @@ public final class ReflectionSerializable {
         } catch (Throwable e) {
             if (e instanceof LinkageError || e instanceof Exception) {
                 LOGGER.log(LogLevel.VERBOSE, () -> "XmlSerializable serialization and deserialization isn't supported. "
-                    + "If it is required add a dependency of 'com.azure:azure-xml', or another dependencies which "
-                    + "include 'com.azure:azure-xml' as a transitive dependency. If your application runs as expected "
+                    + "If it is required add a dependency of 'com.typespec:azure-xml', or another dependencies which "
+                    + "include 'com.typespec:azure-xml' as a transitive dependency. If your application runs as expected "
                     + "this informational message can be ignored.");
             } else {
                 throw (Error) e;

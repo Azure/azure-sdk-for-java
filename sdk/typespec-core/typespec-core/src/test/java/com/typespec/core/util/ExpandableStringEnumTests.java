@@ -38,8 +38,8 @@ public class ExpandableStringEnumTests {
     public void privateStringEnumDifferentPackageInCoreAlwaysReturnsNull() {
         if (ReflectionUtils.isModuleBased()) {
             // on Java 9+, when enum impl is in the core module, we use MethodHandles.lookup
-            // which does not provide access com.azure.core.util.ExpandableStringEnumTests.PrivateStringEnum
-            // from com.azure.core.implementation.ExpandableStringEnum
+            // which does not provide access com.typespec.core.util.ExpandableStringEnumTests.PrivateStringEnum
+            // from com.typespec.core.implementation.ExpandableStringEnum
             //
             // but if it was in a different module, which is open to core, we would be able to access it
             assertNull(PrivateStringEnum.fromString("test"));
@@ -47,8 +47,8 @@ public class ExpandableStringEnumTests {
             assertNull(PrivateStringEnum.fromString("finalTest"));
         } else {
             // Java 8 does not work with modules, we always use private lookups there
-            // and therefore can access com.azure.core.util.ExpandableStringEnumTests.PrivateStringEnum
-            // from com.azure.core.implementation.ExpandableStringEnum
+            // and therefore can access com.typespec.core.util.ExpandableStringEnumTests.PrivateStringEnum
+            // from com.typespec.core.implementation.ExpandableStringEnum
             assertEquals("java8", PrivateStringEnum.fromString("java8").toString());
         }
     }
