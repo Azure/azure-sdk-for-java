@@ -51,22 +51,24 @@ public class BackupAndRestoreOperationsKeyvaultSecrets {
                 .credential(clientSecretCredential)
                 .buildClient();
 
+        String storageAccountPassword = "StorageAccountPassword" + System.currentTimeMillis();
+
         // Let's create secrets holding storage account credentials valid for 1 year. If the secret already exists in
         // the key vault, then a new version of the secret is created.
-        client.setSecret(new KeyVaultSecret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
+        client.setSecret(new KeyVaultSecret(storageAccountPassword, "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // Backups are good to have, if in case secrets get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
-        byte[] secretBackup = client.backupSecret("StorageAccountPassword");
+        byte[] secretBackup = client.backupSecret(storageAccountPassword);
 
         writeBackupToFile(secretBackup, backupFilePath);
 
         // The storage account secret is no longer in use, so you delete it.
         SyncPoller<DeletedSecret, Void> deletedStorageSecretPoller =
-            client.beginDeleteSecret("StorageAccountPassword");
+            client.beginDeleteSecret(storageAccountPassword);
         PollResponse<DeletedSecret>  pollResponse = deletedStorageSecretPoller.poll();
         DeletedSecret deletedStorageSecret = pollResponse.getValue();
 
@@ -80,7 +82,7 @@ public class BackupAndRestoreOperationsKeyvaultSecrets {
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the secret as well for permanent deletion.
-        client.purgeDeletedSecret("StorageAccountPassword");
+        client.purgeDeletedSecret(storageAccountPassword);
 
         // To ensure the secret is purged server-side.
         Thread.sleep(15000);

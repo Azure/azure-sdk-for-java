@@ -53,6 +53,8 @@ public class BackupAndRestoreOperationsKeyvaultCertificates {
                 .credential(clientSecretCredential)
             .buildClient();
 
+        String certificateName = "certificateName" + System.currentTimeMillis();
+
         // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
         // then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
@@ -64,7 +66,7 @@ public class BackupAndRestoreOperationsKeyvaultCertificates {
         tags.put("foo", "bar");
 
         SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
-            certificateClient.beginCreateCertificate("certificateName", policy, true, tags);
+            certificateClient.beginCreateCertificate(certificateName, policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
@@ -72,7 +74,7 @@ public class BackupAndRestoreOperationsKeyvaultCertificates {
         // Backups are good to have, if in case certificates get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
-        byte[] certificateBackup = certificateClient.backupCertificate("certificateName");
+        byte[] certificateBackup = certificateClient.backupCertificate(certificateName);
 
         System.out.printf("Backed up certificate with back up blob length %d", certificateBackup.length);
 
@@ -80,7 +82,7 @@ public class BackupAndRestoreOperationsKeyvaultCertificates {
 
         // The certificate is no longer in use, so you delete it.
         SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
-            certificateClient.beginDeleteCertificate("certificateName");
+            certificateClient.beginDeleteCertificate(certificateName);
         // Deleted Certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
 
@@ -93,7 +95,7 @@ public class BackupAndRestoreOperationsKeyvaultCertificates {
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the certificate as well for permanent deletion.
-        certificateClient.purgeDeletedCertificateWithResponse("certificateName", new Context("key1", "value1"));
+        certificateClient.purgeDeletedCertificateWithResponse(certificateName, new Context("key1", "value1"));
 
         // To ensure the certificate is purged server-side.
         Thread.sleep(15000);
