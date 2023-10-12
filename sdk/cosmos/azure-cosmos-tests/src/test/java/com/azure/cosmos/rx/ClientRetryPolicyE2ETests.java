@@ -101,19 +101,22 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
     @Test(groups = { "multi-master" }, timeOut = TIMEOUT)
     public void queryPlanHttpTimeoutWillNotMarkRegionUnavailable() {
-        if (BridgeInternal.getContextClient(this.clientWithPreferredRegions).getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
-            throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for DIRECT mode");
-        }
-
         TestItem newItem = TestItem.createNewItem();
         this.cosmosAsyncContainer.createItem(newItem).block();
 
         // create fault injection rules for query plan
+        FaultInjectionConditionBuilder conditionBuilder =
+            new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.METADATA_REQUEST_QUERY_PLAN);
+        if (BridgeInternal
+            .getContextClient(this.clientWithPreferredRegions)
+            .getConnectionPolicy()
+            .getConnectionMode() == ConnectionMode.GATEWAY) {
+            conditionBuilder.connectionType(FaultInjectionConnectionType.GATEWAY);
+        }
+
         FaultInjectionRule queryPlanDelayRule = new FaultInjectionRuleBuilder("queryPlanRule")
-            .condition(
-                new FaultInjectionConditionBuilder()
-                    .operationType(FaultInjectionOperationType.METADATA_REQUEST_QUERY_PLAN)
-                    .build())
+            .condition(conditionBuilder.build())
             .result(
                 FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
                     .delay(Duration.ofSeconds(11))
