@@ -40,9 +40,9 @@ public class JsonArray extends JsonElement {
     }
 
     /**
-     * Called by JsonArray methods in order to verify that the JsonElement passed 
-     * to them is an instantiated JsonElement. 
-     * 
+     * Called by JsonArray methods in order to verify that the JsonElement passed
+     * to them is an instantiated JsonElement.
+     *
      * @throws IllegalArgumentException Thrown when a null JsonElement is passed.
      * Instantiated JsonElements must be passed. Must pass instantiated JsonNull
      * to represent JSON null value.
@@ -136,8 +136,7 @@ public class JsonArray extends JsonElement {
      *
      * @param index the index specifying which JsonElement from the JsonArray
      * object to remove.
-     * @return the resulting JsonArray after the specified JsonElement has been
-     * removed.
+     * @return the removed element from the array
      * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or
      * >= size()
      */
@@ -189,16 +188,11 @@ public class JsonArray extends JsonElement {
     }
 
     /**
-     * Takes a JsonWriter and uses it to serialize the JsonArray object. At
-     * every step, it utilises serialize() method, which is inherited from the
-     * parent. This means essentially it doesn't matter what JsonElement is
-     * passed in to the add method, all it has to do is pass the JsonWriter to
-     * the serialize() method of whatever JsonElement it is using, and it will
-     * serialize.
-     *
-     * @param jsonWriter the JsonWriter to use
-     * @return the JsonWriter
-     * @throws IOException if the JsonWriter throws an exception
+     * Serializes the JsonArray object to a JsonWriter. This method writes the array's contents
+     * to the JsonWriter byt recursively calling the serialize method of each of the nested JsonElements.
+     * @param jsonWriter the JsonWriter to serialize the JsonArray to
+     * @return the same jsonWriter for method chaining
+     * @throws IOException if the JsonWriter throws an exception during serialization
      */
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
         // Start writing the array into jsonWriter, if it hits another array or
@@ -215,44 +209,6 @@ public class JsonArray extends JsonElement {
         jsonWriter.writeEndArray();
         return jsonWriter;
     }
-
-//    public String toJson() {
-//        // String reference that will store the resulting JSON string output to
-//        // be returned by toJson
-//        String jsonOutput = "";
-//
-//        // Iterating over all JsonElement objects in the elements JsonArray object,
-//        // appending each JsonElement to jsonOutput
-//        for(Iterator<JsonElement> itr = this.elements.iterator(); itr.hasNext();) {
-//            // Get the next JsonElement from the elements JsonArray object
-//            JsonElement element = itr.next();
-//
-//            // Case: element is a JsonObject, therefore the whole JSON object can
-//            // be stringified via its toJson method, then appended to jsonOutput
-//            if(element instanceof JsonObject) {
-//                jsonOutput += ((JsonObject)element).toJson();
-//            }
-//            // Case: element is a JsonArray, therefore the nested JSON array can
-//            // be stringified via recursively calling toJson and then appending
-//            // the returned String to jsonOutput
-//            else if(element instanceof JsonArray) {
-//                jsonOutput += ((JsonArray)element).toJson();
-//            }
-//            // Case: element is not a JsonObject or JsonArray, therefore it can
-//            // be simply converted to a String object and appended to jsonOutput
-//            else { jsonOutput += element; }
-//
-//            // Case: haven't reached the end of the JSON array, therefore more
-//            // elements must be converted to String objects and appended to the
-//            // jsonOutput
-//            // Elements are separated by commas.
-//            if(itr.hasNext()) { jsonOutput += ", "; }
-//        }
-//
-//        // Returning the resulting String representation of the JsonArray object
-//        // JSON arrays are delimited by opening and closing square brackets.
-//        return "[" + jsonOutput + "]";
-//    }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonArray.
