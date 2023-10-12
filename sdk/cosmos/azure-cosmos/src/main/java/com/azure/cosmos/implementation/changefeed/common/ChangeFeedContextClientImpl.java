@@ -139,8 +139,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         // in the underlying fetcher/pipeline for the change feed processor.
         // Case 2: when split handling should be enabled
         // A ChangeFeedProcessor instance which is backed by a client with a stale
-        // PKRange cache will run into 410/1002s (PartitionKeyRangeGone) if split handling is disabled
-        // in getCurrentState and getEstimatedLag scenarios therefore split handling needs to be explicitly enabled
+        // PKRange cache will run into 410/1002s (PartitionKeyRangeGone) if disable split handling is true
+        // in getCurrentState and getEstimatedLag scenarios therefore disable split handling should explicitly be set to false
         CosmosChangeFeedRequestOptions effectiveRequestOptions =
             isSplitHandlingDisabled ? ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions) : changeFeedRequestOptions;
 
