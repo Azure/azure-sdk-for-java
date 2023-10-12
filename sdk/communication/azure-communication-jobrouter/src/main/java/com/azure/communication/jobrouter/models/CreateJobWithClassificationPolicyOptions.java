@@ -71,14 +71,14 @@ public class CreateJobWithClassificationPolicyOptions {
     /*
      * The matchingMode property.
      */
-    private RouterJobMatchingMode matchingMode;
+    private JobMatchingMode matchingMode;
 
     /**
      * Get the matchingMode property: The matchingMode property.
      *
      * @return the matchingMode value.
      */
-    public RouterJobMatchingMode getMatchingMode() {
+    public JobMatchingMode getMatchingMode() {
         return this.matchingMode;
     }
 
@@ -88,7 +88,7 @@ public class CreateJobWithClassificationPolicyOptions {
      * @param matchingMode the matchingMode value to set.
      * @return the RouterJobInternal object itself.
      */
-    public CreateJobWithClassificationPolicyOptions setMatchingMode(RouterJobMatchingMode matchingMode) {
+    public CreateJobWithClassificationPolicyOptions setMatchingMode(JobMatchingMode matchingMode) {
         this.matchingMode = matchingMode;
         return this;
     }

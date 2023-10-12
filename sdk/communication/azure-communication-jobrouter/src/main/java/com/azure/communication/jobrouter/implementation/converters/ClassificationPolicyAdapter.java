@@ -29,15 +29,13 @@ public class ClassificationPolicyAdapter {
      * @param options Container with options to create a classification policy.
      * @return classification policy.
      */
-    public static ClassificationPolicyInternal convertCreateOptionsToClassificationPolicy(CreateClassificationPolicyOptions options) {
-        return new ClassificationPolicyInternal()
+    public static ClassificationPolicy convertCreateOptionsToClassificationPolicy(CreateClassificationPolicyOptions options) {
+        return new ClassificationPolicy()
             .setName(options.getName())
-            .setPrioritizationRule(RouterRuleAdapter.convertRouterRuleToInternal(options.getPrioritizationRule()))
+            .setPrioritizationRule(options.getPrioritizationRule())
             .setFallbackQueueId(options.getFallbackQueueId())
-            .setQueueSelectors(options.getQueueSelectors().stream()
-                .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToInternal).collect(Collectors.toList()))
-            .setWorkerSelectors(options.getWorkerSelectors().stream()
-                .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToInternal).collect(Collectors.toList()));
+            .setQueueSelectors(options.getQueueSelectors())
+            .setWorkerSelectors(options.getWorkerSelectors());
     }
 
     /**
@@ -45,14 +43,12 @@ public class ClassificationPolicyAdapter {
      * @param options Container with options to update a distribution policy.
      * @return classification policy.
      */
-    public static ClassificationPolicyInternal convertUpdateOptionsToClassificationPolicy(UpdateClassificationPolicyOptions options) {
-        return new ClassificationPolicyInternal()
+    public static ClassificationPolicy convertUpdateOptionsToClassificationPolicy(UpdateClassificationPolicyOptions options) {
+        return new ClassificationPolicy()
             .setName(options.getName())
-            .setPrioritizationRule(RouterRuleAdapter.convertRouterRuleToInternal(options.getPrioritizationRule()))
+            .setPrioritizationRule(options.getPrioritizationRule())
             .setFallbackQueueId(options.getFallbackQueueId())
-            .setQueueSelectors(options.getQueueSelectors().stream()
-                .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToInternal).collect(Collectors.toList()))
-            .setWorkerSelectors(options.getWorkerSelectors().stream()
-                .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToInternal).collect(Collectors.toList()));
+            .setQueueSelectors(options.getQueueSelectors())
+            .setWorkerSelectors(options.getWorkerSelectors());
     }
 }

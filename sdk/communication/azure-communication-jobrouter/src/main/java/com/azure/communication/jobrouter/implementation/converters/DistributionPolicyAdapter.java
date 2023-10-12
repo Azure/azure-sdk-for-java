@@ -3,11 +3,9 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
-import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
 import com.azure.communication.jobrouter.implementation.models.BestWorkerModeInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionModeInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicyItemInternal;
 import com.azure.communication.jobrouter.implementation.models.LongestIdleModeInternal;
 import com.azure.communication.jobrouter.implementation.models.RoundRobinModeInternal;
 import com.azure.communication.jobrouter.implementation.models.ScoringRuleOptionsInternal;
@@ -16,19 +14,12 @@ import com.azure.communication.jobrouter.models.BestWorkerMode;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionMode;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.DistributionPolicyItem;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RoundRobinMode;
 import com.azure.communication.jobrouter.models.ScoringRuleOptions;
 import com.azure.communication.jobrouter.models.ScoringRuleParameterSelector;
 import com.azure.communication.jobrouter.models.UpdateDistributionPolicyOptions;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.ETag;
-import reactor.core.publisher.Flux;
 
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -40,9 +31,9 @@ public class DistributionPolicyAdapter {
      * @param createDistributionPolicyOptions Container with options to create a DistributionPolicy.
      * @return distribution policy.
      */
-    public static DistributionPolicyInternal convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
-        return new DistributionPolicyInternal()
-            .setMode(convertDistributionModeToInternal(createDistributionPolicyOptions.getMode()))
+    public static DistributionPolicy convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
+        return new DistributionPolicy()
+            .setMode(createDistributionPolicyOptions.getMode())
             .setOfferExpiresAfterSeconds(Long.valueOf(createDistributionPolicyOptions.getOfferExpiresAfter().getSeconds()).doubleValue())
             .setName(createDistributionPolicyOptions.getName());
     }
@@ -52,9 +43,9 @@ public class DistributionPolicyAdapter {
      * @param updateDistributionPolicyOptions Container with options to update a DistributionPolicy.
      * @return distribution policy.
      */
-    public static DistributionPolicyInternal convertUpdateOptionsToClassificationPolicy(UpdateDistributionPolicyOptions updateDistributionPolicyOptions) {
-        return new DistributionPolicyInternal()
-            .setMode(convertDistributionModeToInternal(updateDistributionPolicyOptions.getMode()))
+    public static DistributionPolicy convertUpdateOptionsToDistributionPolicy(UpdateDistributionPolicyOptions updateDistributionPolicyOptions) {
+        return new DistributionPolicy()
+            .setMode(updateDistributionPolicyOptions.getMode())
             .setName(updateDistributionPolicyOptions.getName())
             .setOfferExpiresAfterSeconds(Long.valueOf(updateDistributionPolicyOptions.getOfferExpiresAfter().getSeconds()).doubleValue());
     }

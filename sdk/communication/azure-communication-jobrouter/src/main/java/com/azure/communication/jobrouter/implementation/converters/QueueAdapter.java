@@ -32,12 +32,12 @@ public class QueueAdapter {
      * @param createQueueOptions Container with options to create {@link RouterQueue}
      * @return JobQueue
      */
-    public static RouterQueueInternal convertCreateQueueOptionsToRouterQueue(CreateQueueOptions createQueueOptions) {
+    public static RouterQueue convertCreateQueueOptionsToRouterQueue(CreateQueueOptions createQueueOptions) {
         Map<String, LabelValue> labelValueMap = createQueueOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : new HashMap<>();
 
-        return new RouterQueueInternal()
+        return new RouterQueue()
             .setName(createQueueOptions.getName())
             .setLabels(labels)
             .setDistributionPolicyId(createQueueOptions.getDistributionPolicyId())
@@ -49,12 +49,12 @@ public class QueueAdapter {
      * @param updateQueueOptions Container with options to update {@link RouterQueue}
      * @return RouterQueue.
      */
-    public static RouterQueueInternal convertUpdateQueueOptionsToRouterQueue(UpdateQueueOptions updateQueueOptions) {
+    public static RouterQueue convertUpdateQueueOptionsToRouterQueue(UpdateQueueOptions updateQueueOptions) {
         Map<String, LabelValue> labelValueMap = updateQueueOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) :  new HashMap<>();
 
-        return new RouterQueueInternal()
+        return new RouterQueue()
             .setName(updateQueueOptions.getName())
             .setLabels(labels)
             .setDistributionPolicyId(updateQueueOptions.getDistributionPolicyId())

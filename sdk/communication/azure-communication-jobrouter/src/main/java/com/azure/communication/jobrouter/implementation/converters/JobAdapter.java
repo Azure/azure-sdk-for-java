@@ -50,7 +50,7 @@ public class JobAdapter {
      * @param createJobOptions Container with options to create {@link RouterJobInternal}
      * @return RouterJob
      */
-    public static RouterJobInternal convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
+    public static RouterJob convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
         Map<String, LabelValue> labelValueMap = createJobOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
@@ -65,7 +65,7 @@ public class JobAdapter {
         Map<String, String> notes = jobNotes != null ? jobNotes.stream()
             .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : null;
 
-        return new RouterJobInternal()
+        return new RouterJob()
             .setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
             .setQueueId(createJobOptions.getQueueId())
@@ -73,9 +73,9 @@ public class JobAdapter {
             .setNotes(notes)
             .setPriority(createJobOptions.getPriority())
             .setDispositionCode(createJobOptions.getDispositionCode())
-            .setRequestedWorkerSelectors(workerSelectorsInternal)
+            .setRequestedWorkerSelectors(workerSelectors)
             .setTags(tags)
-            .setMatchingMode(convertMatchingModeToInternal(createJobOptions.getMatchingMode()));
+            .setMatchingMode(createJobOptions.getMatchingMode());
     }
 
     /**
@@ -83,7 +83,7 @@ public class JobAdapter {
      * @param createJobWithClassificationPolicyOptions Container with options to create {@link RouterJobInternal}
      * @return RouterJob
      */
-    public static RouterJobInternal convertCreateJobWithClassificationPolicyOptionsToRouterJob(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+    public static RouterJob convertCreateJobWithClassificationPolicyOptionsToRouterJob(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
         Map<String, LabelValue> labelValueMap = createJobWithClassificationPolicyOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
@@ -98,7 +98,7 @@ public class JobAdapter {
         Map<String, String> notes = jobNotes != null ? jobNotes.stream()
             .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : null;
 
-        return new RouterJobInternal()
+        return new RouterJob()
             .setChannelId(createJobWithClassificationPolicyOptions.getChannelId())
             .setChannelReference(createJobWithClassificationPolicyOptions.getChannelReference())
             .setQueueId(createJobWithClassificationPolicyOptions.getQueueId())
@@ -107,9 +107,9 @@ public class JobAdapter {
             .setPriority(createJobWithClassificationPolicyOptions.getPriority())
             .setClassificationPolicyId(createJobWithClassificationPolicyOptions.getClassificationPolicyId())
             .setDispositionCode(createJobWithClassificationPolicyOptions.getDispositionCode())
-            .setRequestedWorkerSelectors(workerSelectorsInternal)
+            .setRequestedWorkerSelectors(workerSelectors)
             .setTags(tags)
-            .setMatchingMode(convertMatchingModeToInternal(createJobWithClassificationPolicyOptions.getMatchingMode()));
+            .setMatchingMode(createJobWithClassificationPolicyOptions.getMatchingMode());
     }
 
     /**
@@ -117,7 +117,7 @@ public class JobAdapter {
      * @param updateJobOptions Container with options to update {@link RouterJobInternal}
      * @return RouterJob
      */
-    public static RouterJobInternal convertUpdateJobOptionsToRouterJob(UpdateJobOptions updateJobOptions) {
+    public static RouterJob convertUpdateJobOptionsToRouterJob(UpdateJobOptions updateJobOptions) {
         Map<String, LabelValue> labelValueMap = updateJobOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : new HashMap<>();
@@ -132,7 +132,7 @@ public class JobAdapter {
         Map<String, String> notes = jobNotes != null ? jobNotes.stream()
             .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : new HashMap<>();
 
-        return new RouterJobInternal()
+        return new RouterJob()
             .setChannelId(updateJobOptions.getChannelId())
             .setChannelReference(updateJobOptions.getChannelReference())
             .setLabels(labels)
@@ -141,9 +141,9 @@ public class JobAdapter {
             .setClassificationPolicyId(updateJobOptions.getClassificationPolicyId())
             .setDispositionCode(updateJobOptions.getDispositionCode())
             .setClassificationPolicyId(updateJobOptions.getClassificationPolicyId())
-            .setRequestedWorkerSelectors(workerSelectorsInternal)
+            .setRequestedWorkerSelectors(workerSelectors)
             .setTags(tags)
-            .setMatchingMode(convertMatchingModeToInternal(updateJobOptions.getMatchingMode()));
+            .setMatchingMode(updateJobOptions.getMatchingMode());
     }
 
     public static RouterJobMatchingMode convertMatchingModeToPublic(JobMatchingModeInternal internal) {

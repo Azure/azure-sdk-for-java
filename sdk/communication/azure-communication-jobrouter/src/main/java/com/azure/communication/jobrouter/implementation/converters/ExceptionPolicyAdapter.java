@@ -38,10 +38,10 @@ public class ExceptionPolicyAdapter {
      * @param createExceptionPolicyOptions
      * @return exception policy.
      */
-    public static ExceptionPolicyInternal convertCreateOptionsToExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
-        return new ExceptionPolicyInternal()
+    public static ExceptionPolicy convertCreateOptionsToExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
+        return new ExceptionPolicy()
             .setName(createExceptionPolicyOptions.getName())
-            .setExceptionRules(convertExceptionRulesToInternal(createExceptionPolicyOptions.getExceptionRules()));
+            .setExceptionRules(createExceptionPolicyOptions.getExceptionRules());
     }
 
     /**
@@ -49,10 +49,10 @@ public class ExceptionPolicyAdapter {
      * @param updateExceptionPolicyOptions
      * @return exception policy.
      */
-    public static ExceptionPolicyInternal convertUpdateOptionsToExceptionPolicy(UpdateExceptionPolicyOptions updateExceptionPolicyOptions) {
-        return new ExceptionPolicyInternal()
+    public static ExceptionPolicy convertUpdateOptionsToExceptionPolicy(UpdateExceptionPolicyOptions updateExceptionPolicyOptions) {
+        return new ExceptionPolicy()
             .setName(updateExceptionPolicyOptions.getName())
-            .setExceptionRules(convertExceptionRulesToInternal(updateExceptionPolicyOptions.getExceptionRules()));
+            .setExceptionRules(updateExceptionPolicyOptions.getExceptionRules());
     }
 
     public static Map<String, ExceptionRuleInternal> convertExceptionRulesToInternal(Map<String, ExceptionRule> rules) {

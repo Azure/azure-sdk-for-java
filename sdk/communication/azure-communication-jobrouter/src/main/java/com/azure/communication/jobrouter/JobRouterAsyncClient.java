@@ -91,7 +91,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> createJob(CreateJobOptions createJobOptions) {
         try {
-            RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+            RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
             return withContext(context -> upsertJobWithResponse(createJobOptions.getId(), routerJob, context)
                 .flatMap(
                     (Response<RouterJob> res) -> {
@@ -118,7 +118,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> createJobWithClassificationPolicy(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
         try {
-            RouterJobInternal routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+            RouterJob routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
             return withContext(context -> upsertJobWithResponse(createJobWithClassificationPolicyOptions.getId(), routerJob, context)
                 .flatMap(
                     (Response<RouterJob> res) -> {
@@ -145,7 +145,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> createJobWithResponse(CreateJobOptions createJobOptions) {
         try {
-            RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+            RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
             return withContext(context -> upsertJobWithResponse(createJobOptions.getId(), routerJob, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -164,7 +164,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> createJobWithClassificationPolicyWithResponse(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
         try {
-            RouterJobInternal routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+            RouterJob routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
             return withContext(context -> upsertJobWithResponse(createJobWithClassificationPolicyOptions.getId(), routerJob, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -184,7 +184,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> updateJob(UpdateJobOptions updateJobOptions) {
         try {
-            RouterJobInternal routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+            RouterJob routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
             return withContext(context -> upsertJobWithResponse(updateJobOptions.getId(), routerJob, context)
                 .flatMap(
                     (Response<RouterJob> res) -> {
@@ -212,18 +212,17 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> updateJobWithResponse(UpdateJobOptions updateJobOptions) {
         try {
-            RouterJobInternal routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+            RouterJob routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
             return withContext(context -> upsertJobWithResponse(updateJobOptions.getId(), routerJob, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<RouterJob>> upsertJobWithResponse(String id, RouterJobInternal routerJob, Context context) {
+    Mono<Response<RouterJob>> upsertJobWithResponse(String id, RouterJob routerJob, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            return jobRouter.upsertJobWithResponseAsync(id, routerJob, context)
-                .map(response -> new SimpleResponse<>(response, RouterJobConstructorProxy.create(response.getValue())));
+            return jobRouter.upsertJobWithResponseAsync(id, routerJob, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

@@ -9,7 +9,6 @@ import com.azure.communication.jobrouter.implementation.converters.ExceptionPoli
 import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
@@ -93,7 +92,7 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy> createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions, Context context) {
-        ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
+        ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
         return this.client.upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context).block();
     }
 
@@ -125,7 +124,7 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy> updateClassificationPolicyWithResponse(UpdateClassificationPolicyOptions updateClassificationPolicyOptions, Context context) {
-        ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
+        ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
         return this.client.upsertClassificationPolicyWithResponse(updateClassificationPolicyOptions.getId(), classificationPolicy, context).block();
     }
 
@@ -253,7 +252,7 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributionPolicy> createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions, Context context) {
-        DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+        DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return this.client.upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getId(), distributionPolicy, context).block();
     }
 
@@ -285,7 +284,7 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributionPolicy> updateDistributionPolicyWithResponse(UpdateDistributionPolicyOptions updateDistributionPolicyOptions, Context context) {
-        DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateDistributionPolicyOptions);
+        DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToDistributionPolicy(updateDistributionPolicyOptions);
         return this.client.upsertDistributionPolicyWithResponse(updateDistributionPolicyOptions.getId(), distributionPolicy, context).block();
     }
 
@@ -413,7 +412,7 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExceptionPolicy> createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions, Context context) {
-        ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+        ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return this.client.upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getId(), exceptionPolicy, context).block();
     }
 
@@ -556,7 +555,7 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions, Context context) {
-        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
+        RouterQueue queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
         return this.client.upsertQueueWithResponse(createQueueOptions.getQueueId(), queue, context).block();
     }
 
@@ -588,7 +587,7 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterQueue> updateQueueWithResponse(UpdateQueueOptions updateQueueOptions, Context context) {
-        RouterQueueInternal queue = QueueAdapter.convertUpdateQueueOptionsToRouterQueue(updateQueueOptions);
+        RouterQueue queue = QueueAdapter.convertUpdateQueueOptionsToRouterQueue(updateQueueOptions);
         return this.client.upsertQueueWithResponse(updateQueueOptions.getQueueId(), queue, context).block();
     }
 

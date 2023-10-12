@@ -17,6 +17,7 @@ import com.azure.communication.jobrouter.implementation.models.RouterWorkerInter
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerStateSelectorInternal;
 import com.azure.communication.jobrouter.implementation.models.UnassignJobRequest;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterQueueStatistics;
@@ -78,11 +79,11 @@ public final class JobRoutersImpl {
         @Patch("/routing/jobs/{id}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJobInternal>> upsertJob(
+        Mono<Response<RouterJob>> upsertJob(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") RouterJobInternal patch,
+                @BodyParam("application/merge-patch+json") RouterJob patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -297,7 +298,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJobInternal>> upsertJobWithResponseAsync(String id, RouterJobInternal patch) {
+    public Mono<Response<RouterJob>> upsertJobWithResponseAsync(String id, RouterJob patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -318,8 +319,8 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJobInternal>> upsertJobWithResponseAsync(
-            String id, RouterJobInternal patch, Context context) {
+    public Mono<Response<RouterJob>> upsertJobWithResponseAsync(
+            String id, RouterJob patch, Context context) {
         final String accept = "application/json";
         return service.upsertJob(this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
     }
@@ -336,7 +337,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJobInternal> upsertJobAsync(String id, RouterJobInternal patch) {
+    public Mono<RouterJob> upsertJobAsync(String id, RouterJob patch) {
         return upsertJobWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -353,7 +354,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJobInternal> upsertJobAsync(String id, RouterJobInternal patch, Context context) {
+    public Mono<RouterJob> upsertJobAsync(String id, RouterJob patch, Context context) {
         return upsertJobWithResponseAsync(id, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -370,7 +371,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJobInternal> upsertJobWithResponse(String id, RouterJobInternal patch, Context context) {
+    public Response<RouterJob> upsertJobWithResponse(String id, RouterJob patch, Context context) {
         return upsertJobWithResponseAsync(id, patch, context).block();
     }
 
@@ -386,7 +387,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJobInternal upsertJob(String id, RouterJobInternal patch) {
+    public RouterJob upsertJob(String id, RouterJob patch) {
         return upsertJobWithResponse(id, patch, Context.NONE).getValue();
     }
 

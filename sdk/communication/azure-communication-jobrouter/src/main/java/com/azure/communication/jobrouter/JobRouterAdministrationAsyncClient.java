@@ -15,9 +15,7 @@ import com.azure.communication.jobrouter.implementation.converters.ExceptionPoli
 import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.ClassificationPolicyItem;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
@@ -93,7 +91,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         try {
-            ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
+            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
             return withContext(context -> upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context)
                 .flatMap(
                     (Response<ClassificationPolicy> res) -> {
@@ -120,7 +118,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         try {
-            ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
+            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
             return withContext(context -> upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -140,7 +138,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> updateClassificationPolicy(UpdateClassificationPolicyOptions updateClassificationPolicyOptions) {
         try {
-            ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
+            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
             return withContext(context -> upsertClassificationPolicyWithResponse(updateClassificationPolicyOptions.getId(), classificationPolicy, context)
                 .flatMap(
                     (Response<ClassificationPolicy> res) -> {
@@ -168,17 +166,16 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> updateClassificationPolicyWithResponse(UpdateClassificationPolicyOptions updateClassificationPolicyOptions) {
         try {
-            ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
+            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
             return withContext(context -> upsertClassificationPolicyWithResponse(updateClassificationPolicyOptions.getId(), classificationPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponse(String id, ClassificationPolicyInternal classificationPolicy, Context context) {
+    Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy, Context context) {
         try {
-            return jobRouterAdmin.upsertClassificationPolicyWithResponseAsync(id, classificationPolicy, context)
-                .map(response -> new SimpleResponse<>(response, ClassificationPolicyConstructorProxy.create(response.getValue())));
+            return jobRouterAdmin.upsertClassificationPolicyWithResponseAsync(id, classificationPolicy, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -353,7 +350,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         try {
-            DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
             return withContext(context -> upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getId(), distributionPolicy, context)
                 .flatMap(
                     (Response<DistributionPolicy> res) -> {
@@ -380,7 +377,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         try {
-            DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
             return withContext(context -> upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getId(), distributionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -400,7 +397,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> updateDistributionPolicy(UpdateDistributionPolicyOptions updateDistributionPolicyOptions) {
         try {
-            DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateDistributionPolicyOptions);
+            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToDistributionPolicy(updateDistributionPolicyOptions);
             return withContext(context -> upsertDistributionPolicyWithResponse(updateDistributionPolicyOptions.getId(), distributionPolicy, context)
                 .flatMap(
                     (Response<DistributionPolicy> res) -> {
@@ -428,17 +425,16 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> updateDistributionPolicyWithResponse(UpdateDistributionPolicyOptions updateDistributionPolicyOptions) {
         try {
-            DistributionPolicyInternal distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateDistributionPolicyOptions);
+            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToDistributionPolicy(updateDistributionPolicyOptions);
             return withContext(context -> upsertDistributionPolicyWithResponse(updateDistributionPolicyOptions.getId(), distributionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicyInternal distributionPolicy, Context context) {
+    Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
         try {
-            return jobRouterAdmin.upsertDistributionPolicyWithResponseAsync(id, distributionPolicy, context)
-                .map(response -> new SimpleResponse<>(response, DistributionPolicyConstructorProxy.create(response.getValue())));
+            return jobRouterAdmin.upsertDistributionPolicyWithResponseAsync(id, distributionPolicy, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -614,7 +610,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         try {
-            ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
             return withContext(context -> upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getId(), exceptionPolicy, context)
                 .flatMap(
                     (Response<ExceptionPolicy> res) -> {
@@ -641,7 +637,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         try {
-            ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
             return withContext(context -> upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getId(), exceptionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -661,7 +657,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> updateExceptionPolicy(UpdateExceptionPolicyOptions updateExceptionPolicyOptions) {
         try {
-            ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertUpdateOptionsToExceptionPolicy(updateExceptionPolicyOptions);
+            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertUpdateOptionsToExceptionPolicy(updateExceptionPolicyOptions);
             return withContext(context -> upsertExceptionPolicyWithResponse(updateExceptionPolicyOptions.getId(), exceptionPolicy, context)
                 .flatMap(
                     (Response<ExceptionPolicy> res) -> {
@@ -689,17 +685,16 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> updateExceptionPolicyWithResponse(UpdateExceptionPolicyOptions updateExceptionPolicyOptions) {
         try {
-            ExceptionPolicyInternal exceptionPolicy = ExceptionPolicyAdapter.convertUpdateOptionsToExceptionPolicy(updateExceptionPolicyOptions);
+            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertUpdateOptionsToExceptionPolicy(updateExceptionPolicyOptions);
             return withContext(context -> upsertExceptionPolicyWithResponse(updateExceptionPolicyOptions.getId(), exceptionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponse(String id, ExceptionPolicyInternal exceptionPolicy, Context context) {
+    Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy, Context context) {
         try {
-            return jobRouterAdmin.upsertExceptionPolicyWithResponseAsync(id, exceptionPolicy, context)
-                .map(response -> new SimpleResponse<>(response, ExceptionPolicyConstructorProxy.create(response.getValue())));
+            return jobRouterAdmin.upsertExceptionPolicyWithResponseAsync(id, exceptionPolicy, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -874,7 +869,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterQueue> createQueue(CreateQueueOptions createQueueOptions) {
         try {
-            RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
+            RouterQueue queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
             return withContext(context -> upsertQueueWithResponse(createQueueOptions.getQueueId(), queue, context)
                 .flatMap(
                     (Response<RouterQueue> res) -> {
@@ -901,7 +896,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterQueue>> createQueueWithResponse(CreateQueueOptions createQueueOptions) {
         try {
-            RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
+            RouterQueue queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
             return withContext(context -> upsertQueueWithResponse(createQueueOptions.getQueueId(), queue, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -921,7 +916,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterQueue> updateQueue(UpdateQueueOptions updateQueueOptions) {
         try {
-            RouterQueueInternal queue = QueueAdapter.convertUpdateQueueOptionsToRouterQueue(updateQueueOptions);
+            RouterQueue queue = QueueAdapter.convertUpdateQueueOptionsToRouterQueue(updateQueueOptions);
             return withContext(context -> upsertQueueWithResponse(updateQueueOptions.getQueueId(), queue, context)
                 .flatMap(
                     (Response<RouterQueue> res) -> {
@@ -949,17 +944,16 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterQueue>> updateQueueWithResponse(UpdateQueueOptions updateQueueOptions) {
         try {
-            RouterQueueInternal queue = QueueAdapter.convertUpdateQueueOptionsToRouterQueue(updateQueueOptions);
+            RouterQueue queue = QueueAdapter.convertUpdateQueueOptionsToRouterQueue(updateQueueOptions);
             return withContext(context -> upsertQueueWithResponse(updateQueueOptions.getQueueId(), queue, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<RouterQueue>> upsertQueueWithResponse(String id, RouterQueueInternal queue, Context context) {
+    Mono<Response<RouterQueue>> upsertQueueWithResponse(String id, RouterQueue queue, Context context) {
         try {
-            return jobRouterAdmin.upsertQueueWithResponseAsync(id, queue, context)
-                .map(response -> new SimpleResponse<>(response, RouterQueueConstructorProxy.create(response.getValue())));
+            return jobRouterAdmin.upsertQueueWithResponseAsync(id, queue, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

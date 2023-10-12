@@ -6,20 +6,20 @@ package com.azure.communication.jobrouter.implementation;
 
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyCollectionInternal;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyItemInternal;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyCollectionInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicyItemInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyCollectionInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyItemInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueCollectionInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterQueueItemInternal;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.ClassificationPolicyItem;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.DistributionPolicyItem;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
+import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterQueueItem;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -75,11 +75,11 @@ public final class JobRouterAdministrationsImpl {
         @Patch("/routing/classificationPolicies/{id}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ClassificationPolicyInternal>> upsertClassificationPolicy(
+        Mono<Response<ClassificationPolicy>> upsertClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") ClassificationPolicyInternal patch,
+                @BodyParam("application/merge-patch+json") ClassificationPolicy patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -116,11 +116,11 @@ public final class JobRouterAdministrationsImpl {
         @Patch("/routing/distributionPolicies/{id}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<DistributionPolicyInternal>> upsertDistributionPolicy(
+        Mono<Response<DistributionPolicy>> upsertDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") DistributionPolicyInternal patch,
+                @BodyParam("application/merge-patch+json") DistributionPolicy patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -157,11 +157,11 @@ public final class JobRouterAdministrationsImpl {
         @Patch("/routing/exceptionPolicies/{id}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ExceptionPolicyInternal>> upsertExceptionPolicy(
+        Mono<Response<ExceptionPolicy>> upsertExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") ExceptionPolicyInternal patch,
+                @BodyParam("application/merge-patch+json") ExceptionPolicy patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -198,11 +198,11 @@ public final class JobRouterAdministrationsImpl {
         @Patch("/routing/queues/{id}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterQueueInternal>> upsertQueue(
+        Mono<Response<RouterQueue>> upsertQueue(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") RouterQueueInternal patch,
+                @BodyParam("application/merge-patch+json") RouterQueue patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -286,8 +286,8 @@ public final class JobRouterAdministrationsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicyInternal>> upsertClassificationPolicyWithResponseAsync(
-            String id, ClassificationPolicyInternal patch) {
+    public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponseAsync(
+            String id, ClassificationPolicy patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -309,8 +309,8 @@ public final class JobRouterAdministrationsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicyInternal>> upsertClassificationPolicyWithResponseAsync(
-            String id, ClassificationPolicyInternal patch, Context context) {
+    public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponseAsync(
+            String id, ClassificationPolicy patch, Context context) {
         final String accept = "application/json";
         return service.upsertClassificationPolicy(
                 this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
@@ -328,8 +328,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicyInternal> upsertClassificationPolicyAsync(
-            String id, ClassificationPolicyInternal patch) {
+    public Mono<ClassificationPolicy> upsertClassificationPolicyAsync(
+            String id, ClassificationPolicy patch) {
         return upsertClassificationPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -346,8 +346,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicyInternal> upsertClassificationPolicyAsync(
-            String id, ClassificationPolicyInternal patch, Context context) {
+    public Mono<ClassificationPolicy> upsertClassificationPolicyAsync(
+            String id, ClassificationPolicy patch, Context context) {
         return upsertClassificationPolicyWithResponseAsync(id, patch, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -365,8 +365,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicyInternal> upsertClassificationPolicyWithResponse(
-            String id, ClassificationPolicyInternal patch, Context context) {
+    public Response<ClassificationPolicy> upsertClassificationPolicyWithResponse(
+            String id, ClassificationPolicy patch, Context context) {
         return upsertClassificationPolicyWithResponseAsync(id, patch, context).block();
     }
 
@@ -382,7 +382,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a container for the rules that govern how jobs are classified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClassificationPolicyInternal upsertClassificationPolicy(String id, ClassificationPolicyInternal patch) {
+    public ClassificationPolicy upsertClassificationPolicy(String id, ClassificationPolicy patch) {
         return upsertClassificationPolicyWithResponse(id, patch, Context.NONE).getValue();
     }
 
@@ -742,8 +742,8 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicyInternal>> upsertDistributionPolicyWithResponseAsync(
-            String id, DistributionPolicyInternal patch) {
+    public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponseAsync(
+            String id, DistributionPolicy patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -765,8 +765,8 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicyInternal>> upsertDistributionPolicyWithResponseAsync(
-            String id, DistributionPolicyInternal patch, Context context) {
+    public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponseAsync(
+            String id, DistributionPolicy patch, Context context) {
         final String accept = "application/json";
         return service.upsertDistributionPolicy(
                 this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
@@ -784,7 +784,7 @@ public final class JobRouterAdministrationsImpl {
      * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicyInternal> upsertDistributionPolicyAsync(String id, DistributionPolicyInternal patch) {
+    public Mono<DistributionPolicy> upsertDistributionPolicyAsync(String id, DistributionPolicy patch) {
         return upsertDistributionPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -801,8 +801,8 @@ public final class JobRouterAdministrationsImpl {
      * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicyInternal> upsertDistributionPolicyAsync(
-            String id, DistributionPolicyInternal patch, Context context) {
+    public Mono<DistributionPolicy> upsertDistributionPolicyAsync(
+            String id, DistributionPolicy patch, Context context) {
         return upsertDistributionPolicyWithResponseAsync(id, patch, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -820,8 +820,8 @@ public final class JobRouterAdministrationsImpl {
      * @return policy governing how jobs are distributed to workers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicyInternal> upsertDistributionPolicyWithResponse(
-            String id, DistributionPolicyInternal patch, Context context) {
+    public Response<DistributionPolicy> upsertDistributionPolicyWithResponse(
+            String id, DistributionPolicy patch, Context context) {
         return upsertDistributionPolicyWithResponseAsync(id, patch, context).block();
     }
 
@@ -837,7 +837,7 @@ public final class JobRouterAdministrationsImpl {
      * @return policy governing how jobs are distributed to workers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicyInternal upsertDistributionPolicy(String id, DistributionPolicyInternal patch) {
+    public DistributionPolicy upsertDistributionPolicy(String id, DistributionPolicy patch) {
         return upsertDistributionPolicyWithResponse(id, patch, Context.NONE).getValue();
     }
 
@@ -1197,8 +1197,8 @@ public final class JobRouterAdministrationsImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicyInternal>> upsertExceptionPolicyWithResponseAsync(
-            String id, ExceptionPolicyInternal patch) {
+    public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponseAsync(
+            String id, ExceptionPolicy patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1220,8 +1220,8 @@ public final class JobRouterAdministrationsImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicyInternal>> upsertExceptionPolicyWithResponseAsync(
-            String id, ExceptionPolicyInternal patch, Context context) {
+    public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponseAsync(
+            String id, ExceptionPolicy patch, Context context) {
         final String accept = "application/json";
         return service.upsertExceptionPolicy(
                 this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
@@ -1240,7 +1240,7 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicyInternal> upsertExceptionPolicyAsync(String id, ExceptionPolicyInternal patch) {
+    public Mono<ExceptionPolicy> upsertExceptionPolicyAsync(String id, ExceptionPolicy patch) {
         return upsertExceptionPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1258,8 +1258,8 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicyInternal> upsertExceptionPolicyAsync(
-            String id, ExceptionPolicyInternal patch, Context context) {
+    public Mono<ExceptionPolicy> upsertExceptionPolicyAsync(
+            String id, ExceptionPolicy patch, Context context) {
         return upsertExceptionPolicyWithResponseAsync(id, patch, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1277,8 +1277,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicyInternal> upsertExceptionPolicyWithResponse(
-            String id, ExceptionPolicyInternal patch, Context context) {
+    public Response<ExceptionPolicy> upsertExceptionPolicyWithResponse(
+            String id, ExceptionPolicy patch, Context context) {
         return upsertExceptionPolicyWithResponseAsync(id, patch, context).block();
     }
 
@@ -1294,7 +1294,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a policy that defines actions to execute when exception are triggered.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicyInternal upsertExceptionPolicy(String id, ExceptionPolicyInternal patch) {
+    public ExceptionPolicy upsertExceptionPolicy(String id, ExceptionPolicy patch) {
         return upsertExceptionPolicyWithResponse(id, patch, Context.NONE).getValue();
     }
 
@@ -1650,7 +1650,7 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterQueueInternal>> upsertQueueWithResponseAsync(String id, RouterQueueInternal patch) {
+    public Mono<Response<RouterQueue>> upsertQueueWithResponseAsync(String id, RouterQueue patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1671,8 +1671,8 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterQueueInternal>> upsertQueueWithResponseAsync(
-            String id, RouterQueueInternal patch, Context context) {
+    public Mono<Response<RouterQueue>> upsertQueueWithResponseAsync(
+            String id, RouterQueue patch, Context context) {
         final String accept = "application/json";
         return service.upsertQueue(this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
     }
@@ -1688,7 +1688,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterQueueInternal> upsertQueueAsync(String id, RouterQueueInternal patch) {
+    public Mono<RouterQueue> upsertQueueAsync(String id, RouterQueue patch) {
         return upsertQueueWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1704,7 +1704,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterQueueInternal> upsertQueueAsync(String id, RouterQueueInternal patch, Context context) {
+    public Mono<RouterQueue> upsertQueueAsync(String id, RouterQueue patch, Context context) {
         return upsertQueueWithResponseAsync(id, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1720,8 +1720,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterQueueInternal> upsertQueueWithResponse(
-            String id, RouterQueueInternal patch, Context context) {
+    public Response<RouterQueue> upsertQueueWithResponse(
+            String id, RouterQueue patch, Context context) {
         return upsertQueueWithResponseAsync(id, patch, context).block();
     }
 
@@ -1736,7 +1736,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a queue that can contain jobs to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterQueueInternal upsertQueue(String id, RouterQueueInternal patch) {
+    public RouterQueue upsertQueue(String id, RouterQueue patch) {
         return upsertQueueWithResponse(id, patch, Context.NONE).getValue();
     }
 

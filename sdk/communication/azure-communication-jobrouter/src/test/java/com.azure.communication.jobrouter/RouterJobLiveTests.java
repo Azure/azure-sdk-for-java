@@ -9,6 +9,7 @@ import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.JobMatchingMode;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueAndMatchMode;
 import com.azure.communication.jobrouter.models.RouterJob;
@@ -154,13 +155,15 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
 
         RouterJob job = jobRouterClient.createJob(new CreateJobOptions(jobId, testName, queue.getId())
-            .setMatchingMode(new RouterJobMatchingMode(
-                new ScheduleAndSuspendMode()
-                .setScheduleAt(OffsetDateTime.of(2040, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC)))));
+            .setMatchingMode(new JobMatchingMode()
+                .setScheduleAndSuspendMode(
+                    new ScheduleAndSuspendMode()
+                        .setScheduleAt(OffsetDateTime.of(2040, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC)))));
 
         // Action
         RouterJob job2 = jobRouterClient.updateJob(new UpdateJobOptions(jobId)
-            .setMatchingMode(new RouterJobMatchingMode(new QueueAndMatchMode())));
+            .setMatchingMode(new JobMatchingMode()
+                .setQueueAndMatchMode(new QueueAndMatchMode())));
 
         // Verify
         assertEquals(job.getStatus(), RouterJobStatus.PENDING_SCHEDULE);
