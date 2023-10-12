@@ -27,7 +27,7 @@ public class CloudEventJavaDocCodeSnippet {
     }
 
     public void createCloudEvent() {
-        // BEGIN: com.azure.core.model.CloudEvent#constructor
+        // BEGIN: com.typespec.core.model.CloudEvent#constructor
         // Use BinaryData.fromBytes() to create data in format CloudEventDataFormat.BYTES
         byte[] exampleBytes = "Hello World".getBytes(StandardCharsets.UTF_8);
         CloudEvent cloudEvent = new CloudEvent("/cloudevents/example/source", "Example.EventType",
@@ -59,13 +59,13 @@ public class CloudEventJavaDocCodeSnippet {
         String jsonStringForData = "\"Hello World\"";  // A json String.
         CloudEvent cloudEventDataJsonStr = new CloudEvent("/cloudevents/example/source", "Example.EventType",
             BinaryData.fromString(jsonStringForData), CloudEventDataFormat.JSON, "text/plain");
-        // END: com.azure.core.model.CloudEvent#constructor
+        // END: com.typespec.core.model.CloudEvent#constructor
     }
 
     public void fromJsonStringWithDataJson() {
         String cloudEventJsonString = "<A CloudEvent Json String>";
 
-        // BEGIN: com.azure.core.model.CloudEvent.fromString
+        // BEGIN: com.typespec.core.model.CloudEvent.fromString
         List<CloudEvent> cloudEventList = CloudEvent.fromString(cloudEventJsonString);
         CloudEvent cloudEvent = cloudEventList.get(0);
         BinaryData cloudEventData = cloudEvent.getData();
@@ -76,6 +76,6 @@ public class CloudEventJavaDocCodeSnippet {
         boolean boolValue = cloudEventData.toObject(Boolean.class);  // If data payload is boolean.
         String stringValue = cloudEventData.toObject(String.class);  // If data payload is String.
         String jsonStringValue = cloudEventData.toString();  // The data payload represented in Json String.
-        // END: com.azure.core.model.CloudEvent.fromString
+        // END: com.typespec.core.model.CloudEvent.fromString
     }
 }

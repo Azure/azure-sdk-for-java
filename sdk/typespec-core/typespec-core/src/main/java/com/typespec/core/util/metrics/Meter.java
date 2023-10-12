@@ -17,7 +17,7 @@ import java.util.Map;
  * This class is intended to be used by Azure client libraries and provides abstraction over different metrics implementations.
  * Application developers should use metrics implementations such as OpenTelemetry or Micrometer directly.
  *
- *  <!-- src_embed com.azure.core.util.metrics.Meter.doubleHistogram -->
+ *  <!-- src_embed com.typespec.core.util.metrics.Meter.doubleHistogram -->
  * <pre>
  *
  * &#47;&#47; Meter and instruments should be created along with service client instance and retained for the client
@@ -41,7 +41,7 @@ import java.util.Map;
  *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, attributes, currentContext&#41;;
  * &#125;
  * </pre>
- *  <!-- end com.azure.core.util.metrics.Meter.doubleHistogram -->
+ *  <!-- end com.typespec.core.util.metrics.Meter.doubleHistogram -->
  */
 public interface Meter extends AutoCloseable {
     /**
@@ -50,7 +50,7 @@ public interface Meter extends AutoCloseable {
      *
      * See https://opentelemetry.io/docs/reference/specification/metrics/api/#histogram for more details.
      *
-     * <!-- src_embed com.azure.core.util.metrics.Meter.doubleHistogram -->
+     * <!-- src_embed com.typespec.core.util.metrics.Meter.doubleHistogram -->
      * <pre>
      *
      * &#47;&#47; Meter and instruments should be created along with service client instance and retained for the client
@@ -74,7 +74,7 @@ public interface Meter extends AutoCloseable {
      *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, attributes, currentContext&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.core.util.metrics.Meter.doubleHistogram -->
+     * <!-- end com.typespec.core.util.metrics.Meter.doubleHistogram -->
      *
      * @param name short histogram name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the instrument
@@ -93,7 +93,7 @@ public interface Meter extends AutoCloseable {
      *
      * See https://opentelemetry.io/docs/reference/specification/metrics/api/#counter for more details.
      *
-     * <!-- src_embed com.azure.core.util.metrics.Meter.longCounter -->
+     * <!-- src_embed com.typespec.core.util.metrics.Meter.longCounter -->
      * <pre>
      * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;new HashMap&lt;String, Object&gt;&#40;&#41; &#123;&#123;
      *         put&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
@@ -105,7 +105,7 @@ public interface Meter extends AutoCloseable {
      *
      * createdHttpConnections.add&#40;1, attributes, currentContext&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.metrics.Meter.longCounter -->
+     * <!-- end com.typespec.core.util.metrics.Meter.longCounter -->
      *
      * @param name short counter  name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the counter
@@ -121,7 +121,7 @@ public interface Meter extends AutoCloseable {
      *
      * See https://opentelemetry.io/docs/reference/specification/metrics/api/#updowncounter for more details.
      *
-     * <!-- src_embed com.azure.core.util.metrics.Meter.upDownCounter -->
+     * <!-- src_embed com.typespec.core.util.metrics.Meter.upDownCounter -->
      * <pre>
      * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;new HashMap&lt;String, Object&gt;&#40;&#41; &#123;&#123;
      *         put&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
@@ -137,7 +137,7 @@ public interface Meter extends AutoCloseable {
      * &#47;&#47; on connection closed:
      * activeHttpConnections.add&#40;-1, attributes, currentContext&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.metrics.Meter.upDownCounter -->
+     * <!-- end com.typespec.core.util.metrics.Meter.upDownCounter -->
      *
      * @param name short counter name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the counter
@@ -152,7 +152,7 @@ public interface Meter extends AutoCloseable {
      *
      * See https://opentelemetry.io/docs/reference/specification/metrics/api/#asynchronous-gauge for more details.
      *
-     * <!-- src_embed com.azure.core.util.metrics.Meter.longGauge -->
+     * <!-- src_embed com.typespec.core.util.metrics.Meter.longGauge -->
      * <pre>
      * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;new HashMap&lt;String, Object&gt;&#40;&#41; &#123;&#123;
      *         put&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
@@ -173,7 +173,7 @@ public interface Meter extends AutoCloseable {
      *     e.printStackTrace&#40;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.core.util.metrics.Meter.longGauge -->
+     * <!-- end com.typespec.core.util.metrics.Meter.longGauge -->
      *
      * @param name short counter  name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the counter
@@ -193,7 +193,7 @@ public interface Meter extends AutoCloseable {
      * For the best performance, client libraries should create and cache attribute collections
      * for the client lifetime and pass cached instance when recoding new measurements.
      *
-     * <!-- src_embed com.azure.core.util.metrics.Meter.longCounter#errorFlag -->
+     * <!-- src_embed com.typespec.core.util.metrics.Meter.longCounter#errorFlag -->
      * <pre>
      *
      * &#47;&#47; Create attributes for possible error codes. Can be done lazily once specific error code is received.
@@ -218,7 +218,7 @@ public interface Meter extends AutoCloseable {
      * &#125;
      *
      * </pre>
-     * <!-- end com.azure.core.util.metrics.Meter.longCounter#errorFlag -->
+     * <!-- end com.typespec.core.util.metrics.Meter.longCounter#errorFlag -->
      * @param attributeMap map of key value pairs to cache.
      * @return an instance of {@code AttributesBuilder}
      */

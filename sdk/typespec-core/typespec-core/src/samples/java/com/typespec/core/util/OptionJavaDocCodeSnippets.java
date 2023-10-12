@@ -15,7 +15,7 @@ public class OptionJavaDocCodeSnippets {
      * Code snippets for using {@link Option}.
      */
     public void optionUsage() {
-        // BEGIN: com.azure.core.util.Option
+        // BEGIN: com.typespec.core.util.Option
         // An Option with non-null-value.
         Option<String> skuOption = Option.of("basic");
         if (skuOption.isInitialized()) {
@@ -43,6 +43,6 @@ public class OptionJavaDocCodeSnippets {
         } catch (NoSuchElementException exception) {
             System.out.println(exception.getMessage()); // print: 'No value initialized'
         }
-        // END: com.azure.core.util.Option
+        // END: com.typespec.core.util.Option
     }
 }

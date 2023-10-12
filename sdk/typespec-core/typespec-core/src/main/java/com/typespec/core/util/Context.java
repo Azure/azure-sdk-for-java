@@ -64,7 +64,7 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.context#object-object -->
+     * <!-- src_embed com.typespec.core.util.context#object-object -->
      * <pre>
      * &#47;&#47; Create an empty context having no data
      * Context emptyContext = Context.NONE;
@@ -75,7 +75,7 @@ public class Context {
      *
      * &#47;&#47; Context contextWithSpan = new Context&#40;PARENT_TRACE_CONTEXT_KEY, openTelemetryContext&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.context#object-object -->
+     * <!-- end com.typespec.core.util.context#object-object -->
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
@@ -109,7 +109,7 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.context.addData#object-object -->
+     * <!-- src_embed com.typespec.core.util.context.addData#object-object -->
      * <pre>
      * &#47;&#47; Users can pass parent trace context information and additional metadata to attach to spans created by SDKs
      * &#47;&#47; using the com.typespec.core.util.Context object.
@@ -128,7 +128,7 @@ public class Context {
      * System.out.printf&#40;&quot;Hostname value: %s%n&quot;, updatedContext.getData&#40;HOST_NAME_KEY&#41;.get&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Entity Path value: %s%n&quot;, updatedContext.getData&#40;ENTITY_PATH_KEY&#41;.get&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.context.addData#object-object -->
+     * <!-- end com.typespec.core.util.context.addData#object-object -->
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
@@ -148,7 +148,7 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.context.of#map -->
+     * <!-- src_embed com.typespec.core.util.context.of#map -->
      * <pre>
      * final String key1 = &quot;Key1&quot;;
      * final String value1 = &quot;first-value&quot;;
@@ -159,7 +159,7 @@ public class Context {
      * Context keyValueContext = Context.of&#40;keyValueMap&#41;;
      * System.out.printf&#40;&quot;Key1 value %s%n&quot;, keyValueContext.getData&#40;key1&#41;.get&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.context.of#map -->
+     * <!-- end com.typespec.core.util.context.of#map -->
      *
      * @param keyValues The input key value pairs that will be added to this context.
      * @return Context object containing all the key-value pairs in the input map.
@@ -187,7 +187,7 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.context.getData#object -->
+     * <!-- src_embed com.typespec.core.util.context.getData#object -->
      * <pre>
      * final String key1 = &quot;Key1&quot;;
      * final String value1 = &quot;first-value&quot;;
@@ -203,7 +203,7 @@ public class Context {
      *     System.out.println&#40;&quot;Key1 does not exist or have data.&quot;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.core.util.context.getData#object -->
+     * <!-- end com.typespec.core.util.context.getData#object -->
      *
      * @param key The key to search for.
      * @return The value of the specified key if it exists.
@@ -235,7 +235,7 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.Context.getValues -->
+     * <!-- src_embed com.typespec.core.util.Context.getValues -->
      * <pre>
      * final String key1 = &quot;Key1&quot;;
      * final String value1 = &quot;first-value&quot;;
@@ -258,7 +258,7 @@ public class Context {
      *     System.out.println&#40;&quot;Key2 does not exist.&quot;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.core.util.Context.getValues -->
+     * <!-- end com.typespec.core.util.Context.getValues -->
      *
      * @return A map containing all values of the context linked-list.
      */

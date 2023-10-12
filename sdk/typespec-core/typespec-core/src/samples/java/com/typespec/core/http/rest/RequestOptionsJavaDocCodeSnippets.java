@@ -22,11 +22,11 @@ public class RequestOptionsJavaDocCodeSnippets {
      */
     @SuppressWarnings("deprecation")
     public RequestOptions createInstance() {
-        // BEGIN: com.azure.core.http.rest.requestoptions.instantiation
+        // BEGIN: com.typespec.core.http.rest.requestoptions.instantiation
         RequestOptions options = new RequestOptions()
             .setBody(BinaryData.fromString("{\"name\":\"Fluffy\"}"))
             .addHeader("x-ms-pet-version", "2021-06-01");
-        // END: com.azure.core.http.rest.requestoptions.instantiation
+        // END: com.typespec.core.http.rest.requestoptions.instantiation
         return options;
     }
 
@@ -35,7 +35,7 @@ public class RequestOptionsJavaDocCodeSnippets {
      * @return An instance of {@link RequestOptions}.
      */
     public RequestOptions setJsonRequestBodyInRequestOptions() {
-        // BEGIN: com.azure.core.http.rest.requestoptions.createjsonrequest
+        // BEGIN: com.typespec.core.http.rest.requestoptions.createjsonrequest
         JsonArray photoUrls = Json.createArrayBuilder()
             .add("https://imgur.com/pet1")
             .add("https://imgur.com/pet2")
@@ -62,9 +62,9 @@ public class RequestOptionsJavaDocCodeSnippets {
             .build();
 
         String requestBodyStr = requestBody.toString();
-        // END: com.azure.core.http.rest.requestoptions.createjsonrequest
+        // END: com.typespec.core.http.rest.requestoptions.createjsonrequest
 
-        // BEGIN: com.azure.core.http.rest.requestoptions.postrequest
+        // BEGIN: com.typespec.core.http.rest.requestoptions.postrequest
         RequestOptions options = new RequestOptions()
             .addRequestCallback(request -> request
                 // may already be set if request is created from a client
@@ -72,7 +72,7 @@ public class RequestOptionsJavaDocCodeSnippets {
                 .setHttpMethod(HttpMethod.POST)
                 .setBody(requestBodyStr)
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json"));
-        // END: com.azure.core.http.rest.requestoptions.postrequest
+        // END: com.typespec.core.http.rest.requestoptions.postrequest
         return options;
     }
 }

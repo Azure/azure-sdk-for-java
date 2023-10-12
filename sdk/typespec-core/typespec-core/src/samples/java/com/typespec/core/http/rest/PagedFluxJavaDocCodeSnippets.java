@@ -31,16 +31,16 @@ public final class PagedFluxJavaDocCodeSnippets {
      */
     public void classDocSnippet() {
         PagedFlux<Integer> pagedFlux = createAnInstance();
-        // BEGIN: com.azure.core.http.rest.pagedflux.items
+        // BEGIN: com.typespec.core.http.rest.pagedflux.items
         // Subscribe to process one item at a time
         pagedFlux
             .log()
             .subscribe(item -> System.out.println("Processing item with value: " + item),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedflux.items
+        // END: com.typespec.core.http.rest.pagedflux.items
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.pages
+        // BEGIN: com.typespec.core.http.rest.pagedflux.pages
         // Subscribe to process one page at a time from the beginning
         pagedFlux
             .byPage()
@@ -49,9 +49,9 @@ public final class PagedFluxJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedflux.pages
+        // END: com.typespec.core.http.rest.pagedflux.pages
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
+        // BEGIN: com.typespec.core.http.rest.pagedflux.pagesWithContinuationToken
         // Subscribe to process one page at a time starting from a page associated with
         // a continuation token
         String continuationToken = getContinuationToken();
@@ -64,7 +64,7 @@ public final class PagedFluxJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
+        // END: com.typespec.core.http.rest.pagedflux.pagesWithContinuationToken
     }
 
     /**
@@ -74,7 +74,7 @@ public final class PagedFluxJavaDocCodeSnippets {
      */
     public PagedFlux<Integer> createAnInstance() {
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.instantiation
+        // BEGIN: com.typespec.core.http.rest.pagedflux.instantiation
         // A supplier that fetches the first page of data from source/service
         Supplier<Mono<PagedResponse<Integer>>> firstPageRetriever = () -> getFirstPage();
 
@@ -84,30 +84,30 @@ public final class PagedFluxJavaDocCodeSnippets {
 
         PagedFlux<Integer> pagedFlux = new PagedFlux<>(firstPageRetriever,
             nextPageRetriever);
-        // END: com.azure.core.http.rest.pagedflux.instantiation
+        // END: com.typespec.core.http.rest.pagedflux.instantiation
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.singlepage.instantiation
+        // BEGIN: com.typespec.core.http.rest.pagedflux.singlepage.instantiation
         // A supplier that fetches the first page of data from source/service
         Supplier<Mono<PagedResponse<Integer>>> firstPageRetrieverFunction = () -> getFirstPage();
 
         PagedFlux<Integer> pagedFluxInstance = new PagedFlux<>(firstPageRetrieverFunction,
             nextPageRetriever);
-        // END: com.azure.core.http.rest.pagedflux.singlepage.instantiation
+        // END: com.typespec.core.http.rest.pagedflux.singlepage.instantiation
         return pagedFlux;
     }
 
     public void createASinglePageInstanceWithPageSizeSupport() {
-        // BEGIN: com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize
+        // BEGIN: com.typespec.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize
         // A function that fetches the single page of data from a source/service.
         Function<Integer, Mono<PagedResponse<Integer>>> singlePageRetriever = pageSize ->
             getFirstPageWithSize(pageSize);
 
         PagedFlux<Integer> singlePageFluxWithPageSize = new PagedFlux<Integer>(singlePageRetriever);
-        // END: com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize
+        // END: com.typespec.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize
     }
 
     public void createAnInstanceWithPageSizeSupport() {
-        // BEGIN: com.azure.core.http.rest.PagedFlux.instantiationWithPageSize
+        // BEGIN: com.typespec.core.http.rest.PagedFlux.instantiationWithPageSize
         // A function that fetches the first page of data from a source/service.
         Function<Integer, Mono<PagedResponse<Integer>>> firstPageRetriever = pageSize -> getFirstPageWithSize(pageSize);
 
@@ -116,7 +116,7 @@ public final class PagedFluxJavaDocCodeSnippets {
             getNextPageWithSize(continuationToken, pageSize);
 
         PagedFlux<Integer> pagedFluxWithPageSize = new PagedFlux<>(firstPageRetriever, nextPageRetriever);
-        // END: com.azure.core.http.rest.PagedFlux.instantiationWithPageSize
+        // END: com.typespec.core.http.rest.PagedFlux.instantiationWithPageSize
     }
 
     /**
@@ -125,7 +125,7 @@ public final class PagedFluxJavaDocCodeSnippets {
     public void byPageSnippet() {
         PagedFlux<Integer> pagedFlux = createAnInstance();
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.bypage
+        // BEGIN: com.typespec.core.http.rest.pagedflux.bypage
         // Start processing the results from first page
         pagedFlux.byPage()
             .log()
@@ -135,9 +135,9 @@ public final class PagedFluxJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedflux.bypage
+        // END: com.typespec.core.http.rest.pagedflux.bypage
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.bypage#String
+        // BEGIN: com.typespec.core.http.rest.pagedflux.bypage#String
         // Start processing the results from a page associated with the continuation token
         String continuationToken = getContinuationToken();
         pagedFlux.byPage(continuationToken)
@@ -148,7 +148,7 @@ public final class PagedFluxJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedflux.bypage#String
+        // END: com.typespec.core.http.rest.pagedflux.bypage#String
     }
 
     /**
@@ -157,7 +157,7 @@ public final class PagedFluxJavaDocCodeSnippets {
     public void byTSnippet() {
         PagedFlux<Integer> pagedFlux = createAnInstance();
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.subscribe
+        // BEGIN: com.typespec.core.http.rest.pagedflux.subscribe
         pagedFlux.subscribe(new BaseSubscriber<Integer>() {
             @Override
             protected void hookOnSubscribe(Subscription subscription) {
@@ -175,7 +175,7 @@ public final class PagedFluxJavaDocCodeSnippets {
                 System.out.println("Processing complete.");
             }
         });
-        // END: com.azure.core.http.rest.pagedflux.subscribe
+        // END: com.typespec.core.http.rest.pagedflux.subscribe
     }
 
     /**
@@ -183,7 +183,7 @@ public final class PagedFluxJavaDocCodeSnippets {
      * another PagedFlux.
      */
     public void pagedFluxFromPagedFlux() {
-        // BEGIN: com.azure.core.http.rest.pagedflux.create.decoration
+        // BEGIN: com.typespec.core.http.rest.pagedflux.create.decoration
 
         // Transform a PagedFlux with Integer items to PagedFlux of String items.
         final PagedFlux<Integer> intPagedFlux = createAnInstance();
@@ -218,7 +218,7 @@ public final class PagedFluxJavaDocCodeSnippets {
                 return flux.onErrorMap(Exception.class, PaginationException::new);
             };
         final PagedFlux<Integer> exceptionMappedPagedFlux = PagedFlux.create(eprovider);
-        // END: com.azure.core.http.rest.pagedflux.create.decoration
+        // END: com.typespec.core.http.rest.pagedflux.create.decoration
     }
 
     /**

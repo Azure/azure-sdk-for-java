@@ -15,7 +15,7 @@ public interface TracerProvider {
     /**
      * Creates named and versioned tracer instance.
      *
-     * <!-- src_embed com.azure.core.util.tracing.TracerProvider#create-tracer -->
+     * <!-- src_embed com.typespec.core.util.tracing.TracerProvider#create-tracer -->
      * <pre>
      * Tracer tracer = TracerProvider.getDefaultProvider&#40;&#41;.createTracer&#40;&quot;azure-storage-blobs&quot;, &quot;12.20.0&quot;,
      *     &quot;Microsoft.Storage&quot;, clientOptions.getTracingOptions&#40;&#41;&#41;;
@@ -24,7 +24,7 @@ public interface TracerProvider {
      *     .clientOptions&#40;clientOptions&#41;
      *     .build&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.tracing.TracerProvider#create-tracer -->
+     * <!-- end com.typespec.core.util.tracing.TracerProvider#create-tracer -->
      *
      * @param libraryName Azure client library package name
      * @param libraryVersion Azure client library version

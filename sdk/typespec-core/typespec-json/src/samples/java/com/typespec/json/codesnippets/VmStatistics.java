@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-// BEGIN: com.azure.json.JsonSerializable.VmStatistics
+// BEGIN: com.typespec.json.JsonSerializable.VmStatistics
 
 /**
  * Implementation of JsonSerializable where some properties are set in the constructor and some properties are set using
@@ -132,4 +132,4 @@ public class VmStatistics implements JsonSerializable<VmStatistics> {
         });
     }
 }
-// END: com.azure.json.JsonSerializable.VmStatistics
+// END: com.typespec.json.JsonSerializable.VmStatistics

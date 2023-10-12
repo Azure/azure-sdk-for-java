@@ -14,7 +14,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
      */
     public void appendAdd() {
         JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
-        // BEGIN: com.azure.core.util.JsonPatchDocument.appendAdd#String-Object
+        // BEGIN: com.typespec.core.util.JsonPatchDocument.appendAdd#String-Object
         /*
          * Add an object member to the JSON document { "foo" : "bar" } to get the JSON document
          * { "bar": "foo", "foo": "bar" }.
@@ -38,7 +38,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
          * { "foo": [ "fizz", "buzz", "fizzbuzz" ] }.
          */
         jsonPatchDocument.appendAdd("/foo/-", "fizzbuzz");
-        // END: com.azure.core.util.JsonPatchDocument.appendAdd#String-Object
+        // END: com.typespec.core.util.JsonPatchDocument.appendAdd#String-Object
     }
 
     /**
@@ -46,7 +46,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
      */
     public void appendAddRaw() {
         JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
-        // BEGIN: com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String
+        // BEGIN: com.typespec.core.util.JsonPatchDocument.appendAddRaw#String-String
         /*
          * Add an object member to the JSON document { "foo" : "bar" } to get the JSON document
          * { "bar": "foo", "foo": "bar" }.
@@ -70,7 +70,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
          * { "foo": [ "fizz", "buzz", "fizzbuzz" ] }.
          */
         jsonPatchDocument.appendAddRaw("/foo/-", "\"fizzbuzz\"");
-        // END: com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String
+        // END: com.typespec.core.util.JsonPatchDocument.appendAddRaw#String-String
     }
 
     /**
@@ -78,7 +78,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
      */
     public void appendReplace() {
         JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
-        // BEGIN: com.azure.core.util.JsonPatchDocument.appendReplace#String-Object
+        // BEGIN: com.typespec.core.util.JsonPatchDocument.appendReplace#String-Object
         /*
          * Replace an object member in the JSON document { "bar": "qux", "foo": "bar" } to get the JSON document
          * { "bar": "foo", "foo": "bar" }.
@@ -96,7 +96,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
          * target path doesn't exist in the document.
          */
         jsonPatchDocument.appendReplace("/baz", "foo");
-        // END: com.azure.core.util.JsonPatchDocument.appendReplace#String-Object
+        // END: com.typespec.core.util.JsonPatchDocument.appendReplace#String-Object
     }
 
     /**
@@ -104,7 +104,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
      */
     public void appendReplaceRaw() {
         JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
-        // BEGIN: com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String
+        // BEGIN: com.typespec.core.util.JsonPatchDocument.appendReplaceRaw#String-String
         /*
          * Replace an object member in the JSON document { "bar": "qux", "foo": "bar" } to get the JSON document
          * { "bar": "foo", "foo": "bar" }.
@@ -122,7 +122,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
          * target path doesn't exist in the document.
          */
         jsonPatchDocument.appendReplaceRaw("/baz", "\"foo\"");
-        // END: com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String
+        // END: com.typespec.core.util.JsonPatchDocument.appendReplaceRaw#String-String
     }
 
     /**
@@ -130,7 +130,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
      */
     public void appendCopy() {
         JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
-        // BEGIN: com.azure.core.util.JsonPatchDocument.appendCopy#String-String
+        // BEGIN: com.typespec.core.util.JsonPatchDocument.appendCopy#String-String
         /*
          * Copy an object member in the JSON document { "foo": "bar" } to get the JSON document
          * { "foo": "bar", "copy": "bar" }.
@@ -148,7 +148,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
          * target from doesn't exist in the document.
          */
         jsonPatchDocument.appendCopy("/baz", "/fizz");
-        // END: com.azure.core.util.JsonPatchDocument.appendCopy#String-String
+        // END: com.typespec.core.util.JsonPatchDocument.appendCopy#String-String
     }
 
     /**
@@ -156,7 +156,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
      */
     public void appendMove() {
         JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
-        // BEGIN: com.azure.core.util.JsonPatchDocument.appendMove#String-String
+        // BEGIN: com.typespec.core.util.JsonPatchDocument.appendMove#String-String
         /*
          * Move an object member in the JSON document { "foo": "bar", "bar": "foo" } to get the JSON document
          * { "bar": "bar" }.
@@ -180,7 +180,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
          * target from doesn't exist in the document.
          */
         jsonPatchDocument.appendMove("/baz", "/fizz");
-        // END: com.azure.core.util.JsonPatchDocument.appendMove#String-String
+        // END: com.typespec.core.util.JsonPatchDocument.appendMove#String-String
     }
 
     /**
@@ -188,7 +188,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
      */
     public void appendRemove() {
         JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
-        // BEGIN: com.azure.core.util.JsonPatchDocument.appendRemove#String
+        // BEGIN: com.typespec.core.util.JsonPatchDocument.appendRemove#String
         /*
          * Remove an object member in the JSON document { "foo": "bar", "bar": "foo" } to get the JSON document
          * { "foo": "bar" }.
@@ -206,7 +206,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
          * target from doesn't exist in the document.
          */
         jsonPatchDocument.appendRemove("/baz");
-        // END: com.azure.core.util.JsonPatchDocument.appendRemove#String
+        // END: com.typespec.core.util.JsonPatchDocument.appendRemove#String
     }
 
     /**
@@ -214,7 +214,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
      */
     public void appendTest() {
         JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
-        // BEGIN: com.azure.core.util.JsonPatchDocument.appendTest#String-Object
+        // BEGIN: com.typespec.core.util.JsonPatchDocument.appendTest#String-Object
         /*
          * Test an object member in the JSON document { "foo": "bar" } to get a successful operation.
          */
@@ -230,7 +230,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
          * the target path doesn't exist in the document.
          */
         jsonPatchDocument.appendTest("/baz", "bar");
-        // END: com.azure.core.util.JsonPatchDocument.appendTest#String-Object
+        // END: com.typespec.core.util.JsonPatchDocument.appendTest#String-Object
     }
 
     /**
@@ -238,7 +238,7 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
      */
     public void appendTestRaw() {
         JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
-        // BEGIN: com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String
+        // BEGIN: com.typespec.core.util.JsonPatchDocument.appendTestRaw#String-String
         /*
          * Test an object member in the JSON document { "foo": "bar" } to get a successful operation.
          */
@@ -254,6 +254,6 @@ public class JsonPatchDocumentJavaDocCodeSnippet {
          * the target path doesn't exist in the document.
          */
         jsonPatchDocument.appendTestRaw("/baz", "\"bar\"");
-        // END: com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String
+        // END: com.typespec.core.util.JsonPatchDocument.appendTestRaw#String-String
     }
 }

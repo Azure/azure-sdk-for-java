@@ -15,13 +15,13 @@ public interface MeterProvider {
     /**
      * Creates named and versioned meter instance.
      *
-     * <!-- src_embed com.azure.core.util.metrics.MeterProvider.createMeter -->
+     * <!-- src_embed com.typespec.core.util.metrics.MeterProvider.createMeter -->
      * <pre>
      * MetricsOptions metricsOptions = new MetricsOptions&#40;&#41;;
      *
      * Meter meter = MeterProvider.getDefaultProvider&#40;&#41;.createMeter&#40;&quot;azure-core&quot;, &quot;1.0.0&quot;, metricsOptions&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.metrics.MeterProvider.createMeter -->
+     * <!-- end com.typespec.core.util.metrics.MeterProvider.createMeter -->
      *
      * @param libraryName Azure client library package name
      * @param libraryVersion Azure client library version

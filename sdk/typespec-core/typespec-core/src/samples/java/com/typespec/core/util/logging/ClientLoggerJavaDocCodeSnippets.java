@@ -24,82 +24,82 @@ public class ClientLoggerJavaDocCodeSnippets {
         ClientLogger logger = new ClientLogger(ClientLoggerJavaDocCodeSnippets.class);
         String name = getName();
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.verbose
+        // BEGIN: com.typespec.core.util.logging.clientlogger.verbose
         logger.verbose("A log message");
-        // END: com.azure.core.util.logging.clientlogger.verbose
+        // END: com.typespec.core.util.logging.clientlogger.verbose
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.verbose#string-object
+        // BEGIN: com.typespec.core.util.logging.clientlogger.verbose#string-object
         logger.verbose("A formattable message. Hello, {}", name);
-        // END: com.azure.core.util.logging.clientlogger.verbose#string-object
+        // END: com.typespec.core.util.logging.clientlogger.verbose#string-object
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.info
+        // BEGIN: com.typespec.core.util.logging.clientlogger.info
         logger.info("A log message");
-        // END: com.azure.core.util.logging.clientlogger.info
+        // END: com.typespec.core.util.logging.clientlogger.info
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.info#string-object
+        // BEGIN: com.typespec.core.util.logging.clientlogger.info#string-object
         logger.info("A formattable message. Hello, {}", name);
-        // END: com.azure.core.util.logging.clientlogger.info#string-object
+        // END: com.typespec.core.util.logging.clientlogger.info#string-object
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.log
+        // BEGIN: com.typespec.core.util.logging.clientlogger.log
         logger.log(LogLevel.VERBOSE,
             () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"));
-        // END: com.azure.core.util.logging.clientlogger.log
+        // END: com.typespec.core.util.logging.clientlogger.log
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.log#throwable
+        // BEGIN: com.typespec.core.util.logging.clientlogger.log#throwable
         Throwable illegalArgumentException = new IllegalArgumentException("An invalid argument was encountered.");
         logger.log(LogLevel.VERBOSE,
             () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"),
             illegalArgumentException);
-        // END: com.azure.core.util.logging.clientlogger.log#throwable
+        // END: com.typespec.core.util.logging.clientlogger.log#throwable
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.warning
+        // BEGIN: com.typespec.core.util.logging.clientlogger.warning
         Throwable detailedException = new IllegalArgumentException("A exception with a detailed message");
         logger.warning(detailedException.getMessage());
-        // END: com.azure.core.util.logging.clientlogger.warning
+        // END: com.typespec.core.util.logging.clientlogger.warning
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.warning#string-object
+        // BEGIN: com.typespec.core.util.logging.clientlogger.warning#string-object
         Throwable exception = new IllegalArgumentException("An invalid argument was encountered.");
         logger.warning("A formattable message. Hello, {}", name, exception);
-        // END: com.azure.core.util.logging.clientlogger.warning#string-object
+        // END: com.typespec.core.util.logging.clientlogger.warning#string-object
 
         File resource = getFile();
-        // BEGIN: com.azure.core.util.logging.clientlogger.error
+        // BEGIN: com.typespec.core.util.logging.clientlogger.error
         try {
             upload(resource);
         } catch (IOException ex) {
             logger.error(ex.getMessage());
         }
-        // END: com.azure.core.util.logging.clientlogger.error
+        // END: com.typespec.core.util.logging.clientlogger.error
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.error#string-object
+        // BEGIN: com.typespec.core.util.logging.clientlogger.error#string-object
         try {
             upload(resource);
         } catch (IOException ex) {
             logger.error("A formattable message. Hello, {}", name, ex);
         }
-        // END: com.azure.core.util.logging.clientlogger.error#string-object
+        // END: com.typespec.core.util.logging.clientlogger.error#string-object
 
-        // BEGIN: com.azure.core.util.logging.clientlogger#globalcontext
+        // BEGIN: com.typespec.core.util.logging.clientlogger#globalcontext
         Map<String, Object> context = new HashMap<>();
         context.put("connectionId", "95a47cf");
 
         ClientLogger loggerWithContext = new ClientLogger(ClientLoggerJavaDocCodeSnippets.class, context);
         loggerWithContext.info("A formattable message. Hello, {}", name);
-        // END: com.azure.core.util.logging.clientlogger#globalcontext
+        // END: com.typespec.core.util.logging.clientlogger#globalcontext
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.atInfo
+        // BEGIN: com.typespec.core.util.logging.clientlogger.atInfo
         logger.atInfo()
             .addKeyValue("key", "value")
             .log("A formattable message. Hello, {}", name);
-        // END: com.azure.core.util.logging.clientlogger.atInfo
+        // END: com.typespec.core.util.logging.clientlogger.atInfo
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.atWarning
+        // BEGIN: com.typespec.core.util.logging.clientlogger.atWarning
         logger.atWarning()
             .addKeyValue("key", "value")
             .log("A formattable message. Hello, {}", name, exception);
-        // END: com.azure.core.util.logging.clientlogger.atWarning
+        // END: com.typespec.core.util.logging.clientlogger.atWarning
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.atError#deffered-value
+        // BEGIN: com.typespec.core.util.logging.clientlogger.atError#deffered-value
         try {
             upload(resource);
         } catch (IOException ex) {
@@ -107,36 +107,36 @@ public class ClientLoggerJavaDocCodeSnippets {
                 .addKeyValue("key", () -> "Expensive to calculate value")
                 .log("A formattable message. Hello, {}", name, ex);
         }
-        // END: com.azure.core.util.logging.clientlogger.atError#deffered-value
+        // END: com.typespec.core.util.logging.clientlogger.atError#deffered-value
 
         Response<Void> response = getResponse();
-        // BEGIN: com.azure.core.util.logging.clientlogger.atLevel
+        // BEGIN: com.typespec.core.util.logging.clientlogger.atLevel
         LogLevel level = response.getStatusCode() == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
         logger.atLevel(level)
             .addKeyValue("key", "value")
             .log("message");
-        // END: com.azure.core.util.logging.clientlogger.atLevel
+        // END: com.typespec.core.util.logging.clientlogger.atLevel
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive
+        // BEGIN: com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#primitive
         logger.atVerbose()
             .addKeyValue("key", 1L)
             .log(() -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"));
-        // END: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive
+        // END: com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#primitive
 
-        // BEGIN: com.azure.core.util.logging.loggingeventbuilder
+        // BEGIN: com.typespec.core.util.logging.loggingeventbuilder
         logger.atInfo()
             .addKeyValue("key1", "value1")
             .addKeyValue("key2", true)
             .addKeyValue("key3", () -> getName())
             .log("A formattable message. Hello, {}", name);
-        // END: com.azure.core.util.logging.loggingeventbuilder
+        // END: com.typespec.core.util.logging.loggingeventbuilder
 
-        // BEGIN: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object
+        // BEGIN: com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#object
         logger.atVerbose()
             // equivalent to addKeyValue("key", () -> new LoggableObject("string representation").toString()
             .addKeyValue("key", new LoggableObject("string representation"))
             .log("Param 1: {}, Param 2: {}, Param 3: {}", "param1", "param2", "param3");
-        // END: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object
+        // END: com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#object
     }
 
     private Response<Void> getResponse() {

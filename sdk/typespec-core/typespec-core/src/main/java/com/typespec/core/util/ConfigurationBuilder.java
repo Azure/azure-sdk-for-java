@@ -26,7 +26,7 @@ public final class ConfigurationBuilder {
     /**
      * Creates {@code ConfigurationBuilder}.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#putProperty -->
+     * <!-- src_embed com.typespec.core.util.ConfigurationBuilder#putProperty -->
      * <pre>
      * configuration = new ConfigurationBuilder&#40;&#41;
      *     .putProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
@@ -48,7 +48,7 @@ public final class ConfigurationBuilder {
     /**
      * Creates {@code ConfigurationBuilder} with configuration source.
      *
-     * <!-- src_embed com.azure.core.util.Configuration -->
+     * <!-- src_embed com.typespec.core.util.Configuration -->
      * <pre>
      * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
      *     .root&#40;&quot;azure.sdk&quot;&#41;
@@ -93,7 +93,7 @@ public final class ConfigurationBuilder {
      * Adds property to the configuration source. In case the source already contains property with the same name, the
      * value will be overwritten with the new value passed.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#putProperty -->
+     * <!-- src_embed com.typespec.core.util.ConfigurationBuilder#putProperty -->
      * <pre>
      * configuration = new ConfigurationBuilder&#40;&#41;
      *     .putProperty&#40;&quot;azure.sdk.client-name.connection-string&quot;, &quot;...&quot;&#41;
@@ -105,7 +105,7 @@ public final class ConfigurationBuilder {
      *
      * System.out.println&#40;configuration.get&#40;connectionStringProperty&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.ConfigurationBuilder#putProperty -->
+     * <!-- end com.typespec.core.util.ConfigurationBuilder#putProperty -->
      *
      * @param name Property name.
      * @param value Property value.
@@ -124,7 +124,7 @@ public final class ConfigurationBuilder {
      * Sets path to root configuration properties where shared Azure SDK properties are defined. When local per-client
      * property is missing, {@link Configuration} falls back to shared properties.
      *
-     * <!-- src_embed com.azure.core.util.Configuration -->
+     * <!-- src_embed com.typespec.core.util.Configuration -->
      * <pre>
      * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
      *     .root&#40;&quot;azure.sdk&quot;&#41;
@@ -151,7 +151,7 @@ public final class ConfigurationBuilder {
      * configuration, use {@link ConfigurationBuilder#buildSection(String)} which can read per-client and shared
      * properties.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#build -->
+     * <!-- src_embed com.typespec.core.util.ConfigurationBuilder#build -->
      * <pre>
      * &#47;&#47; Builds shared Configuration only.
      * Configuration sharedConfiguration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
@@ -175,14 +175,14 @@ public final class ConfigurationBuilder {
      * Builds {@link Configuration} section that supports retrieving properties from client-specific section with
      * fallback to root section for properties that can be shared between clients.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#buildSection -->
+     * <!-- src_embed com.typespec.core.util.ConfigurationBuilder#buildSection -->
      * <pre>
      * &#47;&#47; Builds Configuration for &lt;client-name&gt; with fallback to shared properties.
      * configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
      *     .root&#40;&quot;azure.sdk&quot;&#41;
      *     .buildSection&#40;&quot;client-name&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.ConfigurationBuilder#buildSection -->
+     * <!-- end com.typespec.core.util.ConfigurationBuilder#buildSection -->
      *
      * @param path relative path from {@link ConfigurationBuilder#root(String)} to client section.
      * @return Client {@link Configuration} capable of reading client-specific and shared properties.

@@ -19,7 +19,7 @@ public class PagedFluxCoreJavaDocCodeSnippets {
      * Code snippets for extending from {@link ContinuablePagedFluxCore} and enabling custom continuation token.
      */
     public void customContinuationTokenSnippet() {
-        // BEGIN: com.azure.core.util.paging.pagedfluxcore.continuationtoken
+        // BEGIN: com.typespec.core.util.paging.pagedfluxcore.continuationtoken
         class ContinuationState<C> {
             private C lastContinuationToken;
             private boolean isDone;
@@ -112,6 +112,6 @@ public class PagedFluxCoreJavaDocCodeSnippets {
 
         FilePagedFlux filePagedFlux = new FilePagedFlux(pageRetrieverProvider);
 
-        // END: com.azure.core.util.paging.pagedfluxcore.continuationtoken
+        // END: com.typespec.core.util.paging.pagedfluxcore.continuationtoken
     }
 }

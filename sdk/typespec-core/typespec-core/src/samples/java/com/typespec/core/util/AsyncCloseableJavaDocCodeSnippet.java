@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
  */
 public class AsyncCloseableJavaDocCodeSnippet {
     public void asyncResource() throws IOException {
-        // BEGIN: com.azure.core.util.AsyncCloseable.closeAsync
+        // BEGIN: com.typespec.core.util.AsyncCloseable.closeAsync
         NetworkResource resource = new NetworkResource();
         resource.longRunningDownload("https://longdownload.com")
             .subscribe(
@@ -33,7 +33,7 @@ public class AsyncCloseableJavaDocCodeSnippet {
         // We block here because it is the end of the main Program function. A real-life program may chain this
         // with some other close operations like save download/program state, etc.
         resource.closeAsync().block();
-        // END: com.azure.core.util.AsyncCloseable.closeAsync
+        // END: com.typespec.core.util.AsyncCloseable.closeAsync
     }
 
     /**

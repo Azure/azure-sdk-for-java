@@ -68,7 +68,7 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendAdd#String-Object -->
+     * <!-- src_embed com.typespec.core.util.JsonPatchDocument.appendAdd#String-Object -->
      * <pre>
      * &#47;*
      *  * Add an object member to the JSON document &#123; &quot;foo&quot; : &quot;bar&quot; &#125; to get the JSON document
@@ -94,7 +94,7 @@ public final class JsonPatchDocument {
      *  *&#47;
      * jsonPatchDocument.appendAdd&#40;&quot;&#47;foo&#47;-&quot;, &quot;fizzbuzz&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.JsonPatchDocument.appendAdd#String-Object -->
+     * <!-- end com.typespec.core.util.JsonPatchDocument.appendAdd#String-Object -->
      *
      * @param path The path to apply the addition.
      * @param value The value that will be serialized and added to the path.
@@ -115,7 +115,7 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String -->
+     * <!-- src_embed com.typespec.core.util.JsonPatchDocument.appendAddRaw#String-String -->
      * <pre>
      * &#47;*
      *  * Add an object member to the JSON document &#123; &quot;foo&quot; : &quot;bar&quot; &#125; to get the JSON document
@@ -141,7 +141,7 @@ public final class JsonPatchDocument {
      *  *&#47;
      * jsonPatchDocument.appendAddRaw&#40;&quot;&#47;foo&#47;-&quot;, &quot;&#92;&quot;fizzbuzz&#92;&quot;&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String -->
+     * <!-- end com.typespec.core.util.JsonPatchDocument.appendAddRaw#String-String -->
      *
      * @param path The path to apply the addition.
      * @param rawJson The raw JSON value that will be added to the path.
@@ -165,7 +165,7 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendReplace#String-Object -->
+     * <!-- src_embed com.typespec.core.util.JsonPatchDocument.appendReplace#String-Object -->
      * <pre>
      * &#47;*
      *  * Replace an object member in the JSON document &#123; &quot;bar&quot;: &quot;qux&quot;, &quot;foo&quot;: &quot;bar&quot; &#125; to get the JSON document
@@ -185,7 +185,7 @@ public final class JsonPatchDocument {
      *  *&#47;
      * jsonPatchDocument.appendReplace&#40;&quot;&#47;baz&quot;, &quot;foo&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.JsonPatchDocument.appendReplace#String-Object -->
+     * <!-- end com.typespec.core.util.JsonPatchDocument.appendReplace#String-Object -->
      *
      * @param path The path to replace.
      * @param value The value will be serialized and used as the replacement.
@@ -203,7 +203,7 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String -->
+     * <!-- src_embed com.typespec.core.util.JsonPatchDocument.appendReplaceRaw#String-String -->
      * <pre>
      * &#47;*
      *  * Replace an object member in the JSON document &#123; &quot;bar&quot;: &quot;qux&quot;, &quot;foo&quot;: &quot;bar&quot; &#125; to get the JSON document
@@ -223,7 +223,7 @@ public final class JsonPatchDocument {
      *  *&#47;
      * jsonPatchDocument.appendReplaceRaw&#40;&quot;&#47;baz&quot;, &quot;&#92;&quot;foo&#92;&quot;&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String -->
+     * <!-- end com.typespec.core.util.JsonPatchDocument.appendReplaceRaw#String-String -->
      *
      * @param path The path to replace.
      * @param rawJson The raw JSON value that will be used as the replacement.
@@ -247,7 +247,7 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendCopy#String-String -->
+     * <!-- src_embed com.typespec.core.util.JsonPatchDocument.appendCopy#String-String -->
      * <pre>
      * &#47;*
      *  * Copy an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; to get the JSON document
@@ -267,7 +267,7 @@ public final class JsonPatchDocument {
      *  *&#47;
      * jsonPatchDocument.appendCopy&#40;&quot;&#47;baz&quot;, &quot;&#47;fizz&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.JsonPatchDocument.appendCopy#String-String -->
+     * <!-- end com.typespec.core.util.JsonPatchDocument.appendCopy#String-String -->
      *
      * @param from The path to copy from.
      * @param path The path to copy to.
@@ -290,7 +290,7 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendMove#String-String -->
+     * <!-- src_embed com.typespec.core.util.JsonPatchDocument.appendMove#String-String -->
      * <pre>
      * &#47;*
      *  * Move an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot;, &quot;bar&quot;: &quot;foo&quot; &#125; to get the JSON document
@@ -316,7 +316,7 @@ public final class JsonPatchDocument {
      *  *&#47;
      * jsonPatchDocument.appendMove&#40;&quot;&#47;baz&quot;, &quot;&#47;fizz&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.JsonPatchDocument.appendMove#String-String -->
+     * <!-- end com.typespec.core.util.JsonPatchDocument.appendMove#String-String -->
      *
      * @param from The path to move from.
      * @param path The path to move to.
@@ -337,7 +337,7 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendRemove#String -->
+     * <!-- src_embed com.typespec.core.util.JsonPatchDocument.appendRemove#String -->
      * <pre>
      * &#47;*
      *  * Remove an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot;, &quot;bar&quot;: &quot;foo&quot; &#125; to get the JSON document
@@ -357,7 +357,7 @@ public final class JsonPatchDocument {
      *  *&#47;
      * jsonPatchDocument.appendRemove&#40;&quot;&#47;baz&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.JsonPatchDocument.appendRemove#String -->
+     * <!-- end com.typespec.core.util.JsonPatchDocument.appendRemove#String -->
      *
      * @param path The path to remove.
      * @return The updated JsonPatchDocument object.
@@ -376,7 +376,7 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendTest#String-Object -->
+     * <!-- src_embed com.typespec.core.util.JsonPatchDocument.appendTest#String-Object -->
      * <pre>
      * &#47;*
      *  * Test an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; to get a successful operation.
@@ -394,7 +394,7 @@ public final class JsonPatchDocument {
      *  *&#47;
      * jsonPatchDocument.appendTest&#40;&quot;&#47;baz&quot;, &quot;bar&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.JsonPatchDocument.appendTest#String-Object -->
+     * <!-- end com.typespec.core.util.JsonPatchDocument.appendTest#String-Object -->
      *
      * @param path The path to test.
      * @param value The value that will be serialized and used to test against.
@@ -412,7 +412,7 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String -->
+     * <!-- src_embed com.typespec.core.util.JsonPatchDocument.appendTestRaw#String-String -->
      * <pre>
      * &#47;*
      *  * Test an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; to get a successful operation.
@@ -430,7 +430,7 @@ public final class JsonPatchDocument {
      *  *&#47;
      * jsonPatchDocument.appendTestRaw&#40;&quot;&#47;baz&quot;, &quot;&#92;&quot;bar&#92;&quot;&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String -->
+     * <!-- end com.typespec.core.util.JsonPatchDocument.appendTestRaw#String-String -->
      *
      * @param path The path to test.
      * @param rawJson The raw JSON value that will be used to test against.

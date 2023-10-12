@@ -42,7 +42,7 @@ public class IterableStreamJavaDocCodeSnippets {
         IterableStream<PagedResponseBase<String, Integer>> myIterableStream =
             new IterableStream<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
 
-        // BEGIN: com.azure.core.util.iterableStream.stream
+        // BEGIN: com.typespec.core.util.iterableStream.stream
         // process the stream
         myIterableStream.stream().forEach(resp -> {
             if (resp.getStatusCode() == HttpURLConnection.HTTP_OK) {
@@ -51,7 +51,7 @@ public class IterableStreamJavaDocCodeSnippets {
                 resp.getElements().forEach(value -> System.out.printf("Response value is %d%n", value));
             }
         });
-        // END: com.azure.core.util.iterableStream.stream
+        // END: com.typespec.core.util.iterableStream.stream
     }
 
     /**
@@ -70,7 +70,7 @@ public class IterableStreamJavaDocCodeSnippets {
         IterableStream<PagedResponseBase<String, Integer>> myIterableStream =
             new IterableStream<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
 
-        // BEGIN: com.azure.core.util.iterableStream.iterator.while
+        // BEGIN: com.typespec.core.util.iterableStream.iterator.while
         // Iterate over iterator
         for (PagedResponseBase<String, Integer> resp : myIterableStream) {
             if (resp.getStatusCode() == HttpURLConnection.HTTP_OK) {
@@ -79,7 +79,7 @@ public class IterableStreamJavaDocCodeSnippets {
                 resp.getElements().forEach(value -> System.out.printf("Response value is %d%n", value));
             }
         }
-        // END: com.azure.core.util.iterableStream.iterator.while
+        // END: com.typespec.core.util.iterableStream.iterator.while
     }
 
     /**
@@ -98,7 +98,7 @@ public class IterableStreamJavaDocCodeSnippets {
         IterableStream<PagedResponseBase<String, Integer>> myIterableStream =
             new IterableStream<>(Flux.just(createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, 1, 3)));
 
-        // BEGIN: com.azure.core.util.iterableStream.stream.filter
+        // BEGIN: com.typespec.core.util.iterableStream.stream.filter
         // process the stream
         myIterableStream.stream().filter(resp -> resp.getStatusCode() == HttpURLConnection.HTTP_OK)
             .limit(10)
@@ -107,7 +107,7 @@ public class IterableStreamJavaDocCodeSnippets {
                     resp.getRequest().getUrl());
                 resp.getElements().forEach(value -> System.out.printf("Response value is %d%n", value));
             });
-        // END: com.azure.core.util.iterableStream.stream.filter
+        // END: com.typespec.core.util.iterableStream.stream.filter
     }
 
     private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest, HttpHeaders httpHeaders,

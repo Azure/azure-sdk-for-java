@@ -10,7 +10,7 @@ import com.typespec.json.JsonWriter;
 
 import java.io.IOException;
 
-// BEGIN: com.azure.json.JsonSerializable.ComputerMemory
+// BEGIN: com.typespec.json.JsonSerializable.ComputerMemory
 
 /**
  * Implementation of JsonSerializable where all properties are fluently set.
@@ -120,4 +120,4 @@ public class ComputerMemory implements JsonSerializable<ComputerMemory> {
         });
     }
 }
-// END: com.azure.json.JsonSerializable.ComputerMemory
+// END: com.typespec.json.JsonSerializable.ComputerMemory

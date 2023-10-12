@@ -28,7 +28,7 @@ import static com.typespec.core.implementation.logging.LoggingUtils.removeThrowa
  *
  * <p>Logging event with context.</p>
  *
- * <!-- src_embed com.azure.core.util.logging.loggingeventbuilder -->
+ * <!-- src_embed com.typespec.core.util.logging.loggingeventbuilder -->
  * <pre>
  * logger.atInfo&#40;&#41;
  *     .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
@@ -36,7 +36,7 @@ import static com.typespec.core.implementation.logging.LoggingUtils.removeThrowa
  *     .addKeyValue&#40;&quot;key3&quot;, &#40;&#41; -&gt; getName&#40;&#41;&#41;
  *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
  * </pre>
- * <!-- end com.azure.core.util.logging.loggingeventbuilder -->
+ * <!-- end com.typespec.core.util.logging.loggingeventbuilder -->
  */
 @Fluent
 public final class LoggingEventBuilder {
@@ -82,13 +82,13 @@ public final class LoggingEventBuilder {
      *
      * <p>Adding string value to logging event context.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atInfo -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.atInfo -->
      * <pre>
      * logger.atInfo&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.atInfo -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.atInfo -->
      *
      * @param key String key.
      * @param value String value.
@@ -111,14 +111,14 @@ public final class LoggingEventBuilder {
      *
      * <p>Adding string value to logging event context.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     &#47;&#47; equivalent to addKeyValue&#40;&quot;key&quot;, &#40;&#41; -&gt; new LoggableObject&#40;&quot;string representation&quot;&#41;.toString&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, new LoggableObject&#40;&quot;string representation&quot;&#41;&#41;
      *     .log&#40;&quot;Param 1: &#123;&#125;, Param 2: &#123;&#125;, Param 3: &#123;&#125;&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
      *
      * @param key String key.
      * @param value Object value.
@@ -153,13 +153,13 @@ public final class LoggingEventBuilder {
      *
      * <p>Adding an integer value to logging event context.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @param key String key.
      * @param value long value.

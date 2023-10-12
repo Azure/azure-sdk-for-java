@@ -25,7 +25,7 @@
  *
  * <p><strong>Sample: All JsonSerializable fields are optional</strong></p>
  *
- * <!-- src_embed com.azure.json.JsonSerializable.ComputerMemory -->
+ * <!-- src_embed com.typespec.json.JsonSerializable.ComputerMemory -->
  * <pre>
  *
  * &#47;**
@@ -137,11 +137,11 @@
  *     &#125;
  * &#125;
  * </pre>
- * <!-- end com.azure.json.JsonSerializable.ComputerMemory -->
+ * <!-- end com.typespec.json.JsonSerializable.ComputerMemory -->
  *
  * <p><strong>Sample: All JsonSerializable fields are required</strong></p>
  *
- * <!-- src_embed com.azure.json.JsonSerializable.ComputerProcessor -->
+ * <!-- src_embed com.typespec.json.JsonSerializable.ComputerProcessor -->
  * <pre>
  *
  * &#47;**
@@ -251,11 +251,11 @@
  *     &#125;
  * &#125;
  * </pre>
- * <!-- end com.azure.json.JsonSerializable.ComputerProcessor -->
+ * <!-- end com.typespec.json.JsonSerializable.ComputerProcessor -->
  *
  * <p><strong>Sample: JsonSerializable contains required and optional fields</strong></p>
  *
- * <!-- src_embed com.azure.json.JsonSerializable.VmStatistics -->
+ * <!-- src_embed com.typespec.json.JsonSerializable.VmStatistics -->
  * <pre>
  *
  * &#47;**
@@ -377,7 +377,7 @@
  *     &#125;
  * &#125;
  * </pre>
- * <!-- end com.azure.json.JsonSerializable.VmStatistics -->
+ * <!-- end com.typespec.json.JsonSerializable.VmStatistics -->
  *
  * <h2>Reading and Writing JSON</h2>
  *
@@ -403,7 +403,7 @@
  *
  * <p><strong>Sample: Reading a JSON byte[]</strong></p>
  *
- * <!-- src_embed com.azure.json.JsonReader.readJsonByteArray -->
+ * <!-- src_embed com.typespec.json.JsonReader.readJsonByteArray -->
  * <pre>
  * &#47;&#47; Sample uses String.getBytes as a convenience to show the JSON string in a human-readable form.
  * byte[] json = &#40;&quot;&#123;&#92;&quot;memoryInBytes&#92;&quot;:10000000000,&#92;&quot;clockSpeedInHertz&#92;&quot;:4800000000,&quot;
@@ -413,11 +413,11 @@
  *     return ComputerMemory.fromJson&#40;jsonReader&#41;;
  * &#125;
  * </pre>
- * <!-- end com.azure.json.JsonReader.readJsonByteArray -->
+ * <!-- end com.typespec.json.JsonReader.readJsonByteArray -->
  *
  * <p><strong>Sample: Reading a JSON String</strong></p>
  *
- * <!-- src_embed com.azure.json.JsonReader.readJsonString -->
+ * <!-- src_embed com.typespec.json.JsonReader.readJsonString -->
  * <pre>
  * String json = &quot;&#123;&#92;&quot;cores&#92;&quot;:16,&#92;&quot;threads&#92;&quot;:32,&#92;&quot;manufacturer&#92;&quot;:&#92;&quot;Processor Corp&#92;&quot;,&quot;
  *     + &quot;&#92;&quot;clockSpeedInHertz&#92;&quot;:5000000000,&#92;&quot;releaseDate&#92;&quot;:null&#125;&quot;;
@@ -426,11 +426,11 @@
  *     return ComputerProcessor.fromJson&#40;jsonReader&#41;;
  * &#125;
  * </pre>
- * <!-- end com.azure.json.JsonReader.readJsonString -->
+ * <!-- end com.typespec.json.JsonReader.readJsonString -->
  *
  * <p><strong>Sample: Reading a JSON InputStream</strong></p>
  *
- * <!-- src_embed com.azure.json.JsonReader.readJsonInputStream -->
+ * <!-- src_embed com.typespec.json.JsonReader.readJsonInputStream -->
  * <pre>
  * &#47;&#47; Sample uses String.getBytes as a convenience to show the JSON string in a human-readable form.
  * InputStream json = new ByteArrayInputStream&#40;&#40;&quot;&#123;&#92;&quot;VMSize&#92;&quot;:&#92;&quot;large&#92;&quot;,&#92;&quot;Processor&#92;&quot;:&#123;&#92;&quot;cores&#92;&quot;:8,&quot;
@@ -444,11 +444,11 @@
  *     return VmStatistics.fromJson&#40;jsonReader&#41;;
  * &#125;
  * </pre>
- * <!-- end com.azure.json.JsonReader.readJsonInputStream -->
+ * <!-- end com.typespec.json.JsonReader.readJsonInputStream -->
  *
  * <p><strong>Sample: Reading a JSON Reader</strong></p>
  *
- * <!-- src_embed com.azure.json.JsonReader.readJsonReader -->
+ * <!-- src_embed com.typespec.json.JsonReader.readJsonReader -->
  * <pre>
  * Reader json = new StringReader&#40;&quot;&#123;&#92;&quot;VMSize&#92;&quot;:&#92;&quot;large&#92;&quot;,&#92;&quot;Processor&#92;&quot;:&#123;&#92;&quot;cores&#92;&quot;:8,&#92;&quot;threads&#92;&quot;16&#92;&quot;,&quot;
  *     + &quot;&#92;&quot;manufacturer&#92;&quot;:&#92;&quot;Processor Corp&#92;&quot;,&#92;&quot;clockSpeedInHertz&#92;&quot;:4000000000,&#92;&quot;releaseDate&#92;&quot;:&#92;&quot;2023-01-01&#92;&quot;&#125;,&quot;
@@ -460,11 +460,11 @@
  *     return VmStatistics.fromJson&#40;jsonReader&#41;;
  * &#125;
  * </pre>
- * <!-- end com.azure.json.JsonReader.readJsonReader -->
+ * <!-- end com.typespec.json.JsonReader.readJsonReader -->
  *
  * <p><strong>Sample: Writing to a JSON OutputStream</strong></p>
  *
- * <!-- src_embed com.azure.json.JsonWriter.writeJsonOutputStream -->
+ * <!-- src_embed com.typespec.json.JsonWriter.writeJsonOutputStream -->
  * <pre>
  * Map&lt;String, Object&gt; additionalVmProperties = new LinkedHashMap&lt;&gt;&#40;&#41;;
  * additionalVmProperties.put&#40;&quot;CloudProvider&quot;, &quot;Azure&quot;&#41;;
@@ -492,11 +492,11 @@
  * &#47;&#47;   &quot;AcceleratedNetwork&quot;:true,&quot;CloudProvider&quot;:&quot;Azure&quot;,&quot;Available&quot;:true&#125;
  * System.out.println&#40;json&#41;;
  * </pre>
- * <!-- end com.azure.json.JsonWriter.writeJsonOutputStream -->
+ * <!-- end com.typespec.json.JsonWriter.writeJsonOutputStream -->
  *
  * <p><strong>Sample: Writing to a JSON Writer</strong></p>
  *
- * <!-- src_embed com.azure.json.JsonWriter.writeJsonWriter -->
+ * <!-- src_embed com.typespec.json.JsonWriter.writeJsonWriter -->
  * <pre>
  * Map&lt;String, Object&gt; additionalVmProperties = new LinkedHashMap&lt;&gt;&#40;&#41;;
  * additionalVmProperties.put&#40;&quot;CloudProvider&quot;, &quot;Azure&quot;&#41;;
@@ -524,7 +524,7 @@
  * &#47;&#47;   &quot;AcceleratedNetwork&quot;:true,&quot;CloudProvider&quot;:&quot;Azure&quot;,&quot;Available&quot;:true&#125;
  * System.out.println&#40;json&#41;;
  * </pre>
- * <!-- end com.azure.json.JsonWriter.writeJsonWriter -->
+ * <!-- end com.typespec.json.JsonWriter.writeJsonWriter -->
  *
  * @see com.typespec.json.JsonSerializable
  * @see com.typespec.json.JsonReader

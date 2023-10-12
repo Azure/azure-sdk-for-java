@@ -21,7 +21,7 @@ import java.util.function.Function;
 /**
  * Contains configuration information that is used during construction of client libraries.
  *
- * <!-- src_embed com.azure.core.util.Configuration -->
+ * <!-- src_embed com.typespec.core.util.Configuration -->
  * <pre>
  * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
  *     .root&#40;&quot;azure.sdk&quot;&#41;
@@ -32,7 +32,7 @@ import java.util.function.Function;
  *     .build&#40;&#41;;
  * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
  * </pre>
- * <!-- end com.azure.core.util.Configuration -->
+ * <!-- end com.typespec.core.util.Configuration -->
  */
 public class Configuration implements Cloneable {
 
@@ -474,7 +474,7 @@ public class Configuration implements Cloneable {
      * <p>
      * Property value is converted to specified type. If property value is missing and not required, default value is returned.
      *
-     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <!-- src_embed com.typespec.core.util.Configuration.get#ConfigurationProperty -->
      * <pre>
      * ConfigurationProperty&lt;String&gt; property = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
      *     .shared&#40;true&#41;
@@ -486,7 +486,7 @@ public class Configuration implements Cloneable {
      * &#47;&#47; shared azure.sdk.http.proxy.port
      * System.out.println&#40;configuration.get&#40;property&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <!-- end com.typespec.core.util.Configuration.get#ConfigurationProperty -->
      *
      * @param property instance.
      * @param <T> Type that the configuration is converted to if found.

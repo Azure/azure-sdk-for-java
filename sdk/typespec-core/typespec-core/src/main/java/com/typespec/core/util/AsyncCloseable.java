@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
  * as closing {@literal I/O}. Instead of returning a sync {@code close()}, we use {@code closeAsync()} so users'
  * programs don't block waiting for this operation to complete.</p>
  *
- * <!-- src_embed com.azure.core.util.AsyncCloseable.closeAsync -->
+ * <!-- src_embed com.typespec.core.util.AsyncCloseable.closeAsync -->
  * <pre>
  * NetworkResource resource = new NetworkResource&#40;&#41;;
  * resource.longRunningDownload&#40;&quot;https:&#47;&#47;longdownload.com&quot;&#41;
@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
  * &#47;&#47; with some other close operations like save download&#47;program state, etc.
  * resource.closeAsync&#40;&#41;.block&#40;&#41;;
  * </pre>
- * <!-- end com.azure.core.util.AsyncCloseable.closeAsync -->
+ * <!-- end com.typespec.core.util.AsyncCloseable.closeAsync -->
  */
 public interface AsyncCloseable {
     /**

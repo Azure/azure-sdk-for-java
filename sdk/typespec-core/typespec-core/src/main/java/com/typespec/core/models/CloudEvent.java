@@ -53,7 +53,7 @@ import java.util.Set;
  * serialize the CloudEvent into its Json String representation and send it.</p>
  *
  * <p><strong>Create CloudEvent Samples</strong></p>
- * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
+ * <!-- src_embed com.typespec.core.model.CloudEvent#constructor -->
  * <pre>
  * &#47;&#47; Use BinaryData.fromBytes&#40;&#41; to create data in format CloudEventDataFormat.BYTES
  * byte[] exampleBytes = &quot;Hello World&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -87,13 +87,13 @@ import java.util.Set;
  * CloudEvent cloudEventDataJsonStr = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
  *     BinaryData.fromString&#40;jsonStringForData&#41;, CloudEventDataFormat.JSON, &quot;text&#47;plain&quot;&#41;;
  * </pre>
- * <!-- end com.azure.core.model.CloudEvent#constructor -->
+ * <!-- end com.typespec.core.model.CloudEvent#constructor -->
  *
  * <p>On the contrary, if you receive CloudEvents and have the Json string representation of one or more of CloudEvents,
  * use {@link #fromString(String)} to deserialize them from the Json string.</p>
  *
  * <p><strong>Deserialize CloudEvent Samples</strong></p>
- * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
+ * <!-- src_embed com.typespec.core.model.CloudEvent.fromString -->
  * <pre>
  * List&lt;CloudEvent&gt; cloudEventList = CloudEvent.fromString&#40;cloudEventJsonString&#41;;
  * CloudEvent cloudEvent = cloudEventList.get&#40;0&#41;;
@@ -106,7 +106,7 @@ import java.util.Set;
  * String stringValue = cloudEventData.toObject&#40;String.class&#41;;  &#47;&#47; If data payload is String.
  * String jsonStringValue = cloudEventData.toString&#40;&#41;;  &#47;&#47; The data payload represented in Json String.
  * </pre>
- * <!-- end com.azure.core.model.CloudEvent.fromString -->
+ * <!-- end com.typespec.core.model.CloudEvent.fromString -->
  */
 @Fluent
 public final class CloudEvent {
@@ -229,7 +229,7 @@ public final class CloudEvent {
      * attribute <em>data</em> of the CloudEvent's Json representation.</p>
      *
      * <p><strong>Create CloudEvent Samples</strong></p>
-     * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
+     * <!-- src_embed com.typespec.core.model.CloudEvent#constructor -->
      * <pre>
      * &#47;&#47; Use BinaryData.fromBytes&#40;&#41; to create data in format CloudEventDataFormat.BYTES
      * byte[] exampleBytes = &quot;Hello World&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
@@ -263,7 +263,7 @@ public final class CloudEvent {
      * CloudEvent cloudEventDataJsonStr = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
      *     BinaryData.fromString&#40;jsonStringForData&#41;, CloudEventDataFormat.JSON, &quot;text&#47;plain&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.model.CloudEvent#constructor -->
+     * <!-- end com.typespec.core.model.CloudEvent#constructor -->
      *
      * @param source Identifies the context in which an event happened. The combination of id and source must be unique
      *               for each distinct event.
@@ -312,7 +312,7 @@ public final class CloudEvent {
      * null {@code id}, {@code source}, or {@code type}. If you want to skip this validation, use {@link #fromString(String, boolean)}.
      *
      * <p><strong>Deserialize CloudEvent Samples</strong></p>
-     * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
+     * <!-- src_embed com.typespec.core.model.CloudEvent.fromString -->
      * <pre>
      * List&lt;CloudEvent&gt; cloudEventList = CloudEvent.fromString&#40;cloudEventJsonString&#41;;
      * CloudEvent cloudEvent = cloudEventList.get&#40;0&#41;;
@@ -325,7 +325,7 @@ public final class CloudEvent {
      * String stringValue = cloudEventData.toObject&#40;String.class&#41;;  &#47;&#47; If data payload is String.
      * String jsonStringValue = cloudEventData.toString&#40;&#41;;  &#47;&#47; The data payload represented in Json String.
      * </pre>
-     * <!-- end com.azure.core.model.CloudEvent.fromString -->
+     * <!-- end com.typespec.core.model.CloudEvent.fromString -->
      *
      * @param cloudEventsJson the JSON payload containing one or more events.
      *

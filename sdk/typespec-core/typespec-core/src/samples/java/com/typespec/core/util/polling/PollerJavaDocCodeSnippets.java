@@ -31,7 +31,7 @@ public final class PollerJavaDocCodeSnippets {
      * Instantiating and subscribing to PollerFlux.
      */
     public void initializeAndSubscribe() {
-        // BEGIN: com.azure.core.util.polling.poller.instantiationAndSubscribe
+        // BEGIN: com.typespec.core.util.polling.poller.instantiationAndSubscribe
         LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMillis(800));
 
         // Create poller instance
@@ -59,14 +59,14 @@ public final class PollerJavaDocCodeSnippets {
         });
         // Do something else
 
-        // END: com.azure.core.util.polling.poller.instantiationAndSubscribe
+        // END: com.typespec.core.util.polling.poller.instantiationAndSubscribe
     }
 
     /**
      * Asynchronously wait for polling to complete and then retrieve the final result.
      */
     public void getResult() {
-        // BEGIN: com.azure.core.util.polling.poller.getResult
+        // BEGIN: com.typespec.core.util.polling.poller.getResult
         LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMinutes(5));
 
         // Create poller instance
@@ -99,28 +99,28 @@ public final class PollerJavaDocCodeSnippets {
                     }
                 }).block();
 
-        // END: com.azure.core.util.polling.poller.getResult
+        // END: com.typespec.core.util.polling.poller.getResult
     }
 
     /**
      * Block for polling to complete and then retrieve the final result.
      */
     public void blockAndGetResult() {
-        // BEGIN: com.azure.core.util.polling.poller.blockAndGetResult
+        // BEGIN: com.typespec.core.util.polling.poller.blockAndGetResult
         AsyncPollResponse<String, String> terminalResponse = pollerFlux.blockLast();
         System.out.printf("Polling complete. Final Status: %s", terminalResponse.getStatus());
         if (terminalResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
             String finalResult = terminalResponse.getFinalResult().block();
             System.out.printf("Polling complete. Final Status: %s", finalResult);
         }
-        // END: com.azure.core.util.polling.poller.blockAndGetResult
+        // END: com.typespec.core.util.polling.poller.blockAndGetResult
     }
 
     /**
      * Asynchronously poll until poller receives matching status.
      */
     public void polluntil() {
-        // BEGIN: com.azure.core.util.polling.poller.pollUntil
+        // BEGIN: com.typespec.core.util.polling.poller.pollUntil
         final Predicate<AsyncPollResponse<String, String>> isComplete = response -> {
             return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
                 && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
@@ -131,14 +131,14 @@ public final class PollerJavaDocCodeSnippets {
             .subscribe(completed -> {
                 System.out.println("Completed poll response, status: " + completed.getStatus());
             });
-        // END: com.azure.core.util.polling.poller.pollUntil
+        // END: com.typespec.core.util.polling.poller.pollUntil
     }
 
     /**
      * Asynchronously cancel the long running operation.
      */
     public void cancelOperation() {
-        // BEGIN: com.azure.core.util.polling.poller.cancelOperation
+        // BEGIN: com.typespec.core.util.polling.poller.cancelOperation
         LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMinutes(5));
 
         // Create poller instance
@@ -172,7 +172,7 @@ public final class PollerJavaDocCodeSnippets {
                     }
                 }).block();
 
-        // END: com.azure.core.util.polling.poller.cancelOperation
+        // END: com.typespec.core.util.polling.poller.cancelOperation
     }
 
     /**
@@ -181,7 +181,7 @@ public final class PollerJavaDocCodeSnippets {
      */
     @SuppressWarnings("deprecation")
     public void initializeAndSubscribeWithPollingStrategy() {
-        // BEGIN: com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy
+        // BEGIN: com.typespec.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy
         // Create poller instance
         PollerFlux<BinaryData, String> poller = PollerFlux.create(
             Duration.ofMillis(100),
@@ -203,7 +203,7 @@ public final class PollerJavaDocCodeSnippets {
         });
         // Do something else
 
-        // END: com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy
+        // END: com.typespec.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy
     }
 
     /**
@@ -212,7 +212,7 @@ public final class PollerJavaDocCodeSnippets {
      */
     @SuppressWarnings("deprecation")
     public void initializeAndSubscribeWithCustomPollingStrategy() {
-        // BEGIN: com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy
+        // BEGIN: com.typespec.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy
 
         // Create custom polling strategy based on OperationResourcePollingStrategy
         PollingStrategy<BinaryData, String> strategy = new OperationResourcePollingStrategy<BinaryData, String>(
@@ -248,6 +248,6 @@ public final class PollerJavaDocCodeSnippets {
         });
         // Do something else
 
-        // END: com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy
+        // END: com.typespec.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy
     }
 }

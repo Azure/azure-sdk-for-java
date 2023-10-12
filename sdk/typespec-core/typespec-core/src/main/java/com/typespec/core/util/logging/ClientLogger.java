@@ -81,7 +81,7 @@ public class ClientLogger {
      * Retrieves a logger for the passed class name using the {@link LoggerFactory} with
      * context that will be populated on all log records produced with this logger.
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger#globalcontext -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger#globalcontext -->
      * <pre>
      * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
      * context.put&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;;
@@ -89,7 +89,7 @@ public class ClientLogger {
      * ClientLogger loggerWithContext = new ClientLogger&#40;ClientLoggerJavaDocCodeSnippets.class, context&#41;;
      * loggerWithContext.info&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger#globalcontext -->
+     * <!-- end com.typespec.core.util.logging.clientlogger#globalcontext -->
      *
      * @param className Class name creating the logger.
      * @param context Context to be populated on every log record written with this logger.
@@ -110,12 +110,12 @@ public class ClientLogger {
      *
      * <p>Logging with a specific log level</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.log -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.log -->
      * <pre>
      * logger.log&#40;LogLevel.VERBOSE,
      *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.log -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.log -->
      *
      * @param logLevel Logging level for the log message.
      * @param message The format-able message to log.
@@ -131,14 +131,14 @@ public class ClientLogger {
      *
      * <p>Logging with a specific log level and exception</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.log#throwable -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.log#throwable -->
      * <pre>
      * Throwable illegalArgumentException = new IllegalArgumentException&#40;&quot;An invalid argument was encountered.&quot;&#41;;
      * logger.log&#40;LogLevel.VERBOSE,
      *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;,
      *     illegalArgumentException&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.log#throwable -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.log#throwable -->
      *
      * @param logLevel Logging level for the log message.
      * @param message The format-able message to log.
@@ -157,11 +157,11 @@ public class ClientLogger {
      *
      * <p>Logging a message at verbose log level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.verbose -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.verbose -->
      * <pre>
      * logger.verbose&#40;&quot;A log message&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.verbose -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.verbose -->
      *
      * @param message The message to log.
      */
@@ -182,11 +182,11 @@ public class ClientLogger {
      *
      * <p>Logging a message at verbose log level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.verbose#string-object -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.verbose#string-object -->
      * <pre>
      * logger.verbose&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.verbose#string-object -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.verbose#string-object -->
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
@@ -205,11 +205,11 @@ public class ClientLogger {
      *
      * <p>Logging a message at verbose log level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.info -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.info -->
      * <pre>
      * logger.info&#40;&quot;A log message&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.info -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.info -->
      *
      * @param message The message to log.
      */
@@ -230,11 +230,11 @@ public class ClientLogger {
      *
      * <p>Logging a message at informational log level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.info#string-object -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.info#string-object -->
      * <pre>
      * logger.info&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.info#string-object -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.info#string-object -->
      *
      * @param format The format-able message to log
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
@@ -253,12 +253,12 @@ public class ClientLogger {
      *
      * <p>Logging a message at warning log level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.warning -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.warning -->
      * <pre>
      * Throwable detailedException = new IllegalArgumentException&#40;&quot;A exception with a detailed message&quot;&#41;;
      * logger.warning&#40;detailedException.getMessage&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.warning -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.warning -->
      *
      * @param message The message to log.
      */
@@ -279,12 +279,12 @@ public class ClientLogger {
      *
      * <p>Logging a message at warning log level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.warning#string-object -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.warning#string-object -->
      * <pre>
      * Throwable exception = new IllegalArgumentException&#40;&quot;An invalid argument was encountered.&quot;&#41;;
      * logger.warning&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name, exception&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.warning#string-object -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.warning#string-object -->
      *
      * @param format The format-able message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
@@ -303,7 +303,7 @@ public class ClientLogger {
      *
      * <p>Logging a message at error log level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.error -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.error -->
      * <pre>
      * try &#123;
      *     upload&#40;resource&#41;;
@@ -311,7 +311,7 @@ public class ClientLogger {
      *     logger.error&#40;ex.getMessage&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.error -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.error -->
      *
      * @param message The message to log.
      */
@@ -332,7 +332,7 @@ public class ClientLogger {
      *
      * <p>Logging an error with stack trace.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.error#string-object -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.error#string-object -->
      * <pre>
      * try &#123;
      *     upload&#40;resource&#41;;
@@ -340,7 +340,7 @@ public class ClientLogger {
      *     logger.error&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name, ex&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.error#string-object -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.error#string-object -->
      *
      * @param format The format-able message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
@@ -609,13 +609,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at error level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
@@ -631,13 +631,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at warning level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atWarning -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.atWarning -->
      * <pre>
      * logger.atWarning&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name, exception&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.atWarning -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.atWarning -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
      */
@@ -654,13 +654,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at info level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atInfo -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.atInfo -->
      * <pre>
      * logger.atInfo&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.atInfo -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.atInfo -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
      */
@@ -676,13 +676,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at verbose level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
@@ -699,14 +699,14 @@ public class ClientLogger {
      *
      * <p>Logging with context at provided level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atLevel -->
+     * <!-- src_embed com.typespec.core.util.logging.clientlogger.atLevel -->
      * <pre>
      * LogLevel level = response.getStatusCode&#40;&#41; == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
      * logger.atLevel&#40;level&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .log&#40;&quot;message&quot;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.logging.clientlogger.atLevel -->
+     * <!-- end com.typespec.core.util.logging.clientlogger.atLevel -->
      *
      * @param level log level.
      * @return instance of {@link LoggingEventBuilder} or no-op if logging at provided level is disabled.

@@ -18,7 +18,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <p><strong>Example 1: Named parameters</strong></p>
  *
- * <!-- src_embed com.azure.core.annotation.HostParam.class1 -->
+ * <!-- src_embed com.typespec.core.annotation.HostParam.class1 -->
  * <pre>
  * &#64;Host&#40;&quot;&#123;accountName&#125;.&#123;suffix&#125;&quot;&#41;
  * interface DatalakeService &#123;
@@ -28,11 +28,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *         &#64;PathParam&#40;&quot;jobIdentity&quot;&#41; String jobIdentity&#41;;
  * &#125;
  * </pre>
- * <!-- end com.azure.core.annotation.HostParam.class1 -->
+ * <!-- end com.typespec.core.annotation.HostParam.class1 -->
  *
  * <p><strong>Example 2: Unnamed parameter</strong></p>
  *
- * <!-- src_embed com.azure.core.annotation.HostParam.class2 -->
+ * <!-- src_embed com.typespec.core.annotation.HostParam.class2 -->
  * <pre>
  * String KEY_VAULT_ENDPOINT = &quot;&#123;vaultName&#125;&quot;;
  *
@@ -42,7 +42,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     Secret get&#40;&#64;HostParam&#40;&quot;vaultName&quot;&#41; String vaultName, &#64;PathParam&#40;&quot;secretName&quot;&#41; String secretName&#41;;
  * &#125;
  * </pre>
- * <!-- end com.azure.core.annotation.HostParam.class2 -->
+ * <!-- end com.typespec.core.annotation.HostParam.class2 -->
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)

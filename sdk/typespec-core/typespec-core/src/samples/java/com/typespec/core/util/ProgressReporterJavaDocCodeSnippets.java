@@ -8,7 +8,7 @@ package com.typespec.core.util;
  */
 public class ProgressReporterJavaDocCodeSnippets {
 
-    // BEGIN: com.azure.core.util.ProgressReportingE2ESample
+    // BEGIN: com.typespec.core.util.ProgressReportingE2ESample
     /**
      * A simple operation that simulates I/O activity.
      * @param progressReporter The {@link ProgressReporter}.
@@ -45,5 +45,5 @@ public class ProgressReporterJavaDocCodeSnippets {
             .withProgressListener(progress -> System.out.println("Complex operation progress " + progress));
         complexOperation(complexOperationProgressReporter);
     }
-    // END: com.azure.core.util.ProgressReportingE2ESample
+    // END: com.typespec.core.util.ProgressReportingE2ESample
 }

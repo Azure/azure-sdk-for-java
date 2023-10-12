@@ -29,15 +29,15 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
      */
     public void classDocSnippet() {
         PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
-        // BEGIN: com.azure.core.http.rest.pagedfluxbase.items
+        // BEGIN: com.typespec.core.http.rest.pagedfluxbase.items
         pagedFluxBase
             .log()
             .subscribe(item -> System.out.println("Processing item with value: " + item),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedfluxbase.items
+        // END: com.typespec.core.http.rest.pagedfluxbase.items
 
-        // BEGIN: com.azure.core.http.rest.pagedfluxbase.pages
+        // BEGIN: com.typespec.core.http.rest.pagedfluxbase.pages
         pagedFluxBase
             .byPage()
             .log()
@@ -45,9 +45,9 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedfluxbase.pages
+        // END: com.typespec.core.http.rest.pagedfluxbase.pages
 
-        // BEGIN: com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken
+        // BEGIN: com.typespec.core.http.rest.pagedfluxbase.pagesWithContinuationToken
         String continuationToken = getContinuationToken();
         pagedFluxBase
             .byPage(continuationToken)
@@ -58,7 +58,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken
+        // END: com.typespec.core.http.rest.pagedfluxbase.pagesWithContinuationToken
     }
 
     /**
@@ -68,7 +68,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
      */
     private PagedFluxBase<Integer, PagedResponse<Integer>> createAnInstance() {
 
-        // BEGIN: com.azure.core.http.rest.pagedfluxbase.instantiation
+        // BEGIN: com.typespec.core.http.rest.pagedfluxbase.instantiation
         // A supplier that fetches the first page of data from source/service
         Supplier<Mono<PagedResponse<Integer>>> firstPageRetriever = () -> getFirstPage();
 
@@ -78,16 +78,16 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
 
         PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = new PagedFluxBase<>(firstPageRetriever,
             nextPageRetriever);
-        // END: com.azure.core.http.rest.pagedfluxbase.instantiation
+        // END: com.typespec.core.http.rest.pagedfluxbase.instantiation
 
-        // BEGIN: com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation
+        // BEGIN: com.typespec.core.http.rest.pagedfluxbase.singlepage.instantiation
         // A supplier that fetches the first page of data from source/service
         Supplier<Mono<PagedResponse<Integer>>> firstPageRetrieverFunction = () -> getFirstPage();
 
         PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBaseInstance =
             new PagedFluxBase<>(firstPageRetrieverFunction,
                 nextPageRetriever);
-        // END: com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation
+        // END: com.typespec.core.http.rest.pagedfluxbase.singlepage.instantiation
         return pagedFluxBase;
     }
 
@@ -97,7 +97,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
     public void byPageSnippet() {
         PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
 
-        // BEGIN: com.azure.core.http.rest.pagedfluxbase.bypage
+        // BEGIN: com.typespec.core.http.rest.pagedfluxbase.bypage
         // Start processing the results from first page
         pagedFluxBase.byPage()
             .log()
@@ -107,9 +107,9 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedfluxbase.bypage
+        // END: com.typespec.core.http.rest.pagedfluxbase.bypage
 
-        // BEGIN: com.azure.core.http.rest.pagedfluxbase.bypage#String
+        // BEGIN: com.typespec.core.http.rest.pagedfluxbase.bypage#String
         // Start processing the results from a page associated with the continuation token
         String continuationToken = getContinuationToken();
         pagedFluxBase.byPage(continuationToken)
@@ -120,7 +120,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedfluxbase.bypage#String
+        // END: com.typespec.core.http.rest.pagedfluxbase.bypage#String
     }
 
     /**
@@ -129,7 +129,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
     public void byTSnippet() {
         PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
 
-        // BEGIN: com.azure.core.http.rest.pagedfluxbase.subscribe
+        // BEGIN: com.typespec.core.http.rest.pagedfluxbase.subscribe
         pagedFluxBase.subscribe(new BaseSubscriber<Integer>() {
             @Override
             protected void hookOnSubscribe(Subscription subscription) {
@@ -147,7 +147,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
                 System.out.println("Processing complete.");
             }
         });
-        // END: com.azure.core.http.rest.pagedfluxbase.subscribe
+        // END: com.typespec.core.http.rest.pagedfluxbase.subscribe
     }
 
     /**

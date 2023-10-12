@@ -9,9 +9,9 @@ package com.typespec.core.credential;
 public class AzureNamedKeyCredentialJavadocCodeSnippets {
 
     public void azureNamedKeyCredenialSasKey() {
-        // BEGIN: com.azure.core.credential.azureNamedKeyCredenialSasKey
+        // BEGIN: com.typespec.core.credential.azureNamedKeyCredenialSasKey
         AzureNamedKeyCredential azureNamedKeyCredential =
             new AzureNamedKeyCredential("AZURE-SERVICE-SAS-KEY-NAME", "AZURE-SERVICE-SAS-KEY");
-        // END: com.azure.core.credential.azureNamedKeyCredenialSasKey
+        // END: com.typespec.core.credential.azureNamedKeyCredenialSasKey
     }
 }

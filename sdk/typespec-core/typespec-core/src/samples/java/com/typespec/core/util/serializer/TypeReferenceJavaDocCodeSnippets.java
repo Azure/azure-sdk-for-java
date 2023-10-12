@@ -10,19 +10,19 @@ import java.util.Map;
  */
 public class TypeReferenceJavaDocCodeSnippets {
     public void constructGenericTypeReference() {
-        // BEGIN: com.azure.core.util.serializer.constructor
+        // BEGIN: com.typespec.core.util.serializer.constructor
         // Construct a TypeReference<T> for a Java generic type.
         // This pattern should only be used for generic types, for classes use the createInstance factory method.
         TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
-        // END: com.azure.core.util.serializer.constructor
+        // END: com.typespec.core.util.serializer.constructor
     }
 
     public void useFactoryForClass() {
-        // BEGIN: com.azure.core.util.serializer.createInstance#class
+        // BEGIN: com.typespec.core.util.serializer.createInstance#class
         // Construct a TypeReference<T> for a Java class.
         // This pattern should only be used for non-generic classes when possible, use the constructor for generic
         // class when possible.
         TypeReference<Integer> typeReference = TypeReference.createInstance(int.class);
-        // END: com.azure.core.util.serializer.createInstance#class
+        // END: com.typespec.core.util.serializer.createInstance#class
     }
 }

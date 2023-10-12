@@ -45,7 +45,7 @@ public final class ConfigurationPropertyBuilder<T> {
      * property value does not contain sensitive information, use {@link ConfigurationPropertyBuilder#logValue} to
      * enable logging.
      *
-     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <!-- src_embed com.typespec.core.util.Configuration.get#ConfigurationProperty -->
      * <pre>
      * ConfigurationProperty&lt;String&gt; property = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
      *     .shared&#40;true&#41;
@@ -57,7 +57,7 @@ public final class ConfigurationPropertyBuilder<T> {
      * &#47;&#47; shared azure.sdk.http.proxy.port
      * System.out.println&#40;configuration.get&#40;property&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <!-- end com.typespec.core.util.Configuration.get#ConfigurationProperty -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -70,13 +70,13 @@ public final class ConfigurationPropertyBuilder<T> {
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and parse value using
      * {@link Integer#valueOf(String)}, proxying {@link NumberFormatException} exception.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofInteger -->
+     * <!-- src_embed com.typespec.core.util.ConfigurationPropertyBuilder.ofInteger -->
      * <pre>
      * ConfigurationProperty&lt;Integer&gt; integerProperty = ConfigurationPropertyBuilder.ofInteger&#40;&quot;retry-count&quot;&#41;
      *     .build&#40;&#41;;
      * System.out.println&#40;configuration.get&#40;integerProperty&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder.ofInteger -->
+     * <!-- end com.typespec.core.util.ConfigurationPropertyBuilder.ofInteger -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -89,13 +89,13 @@ public final class ConfigurationPropertyBuilder<T> {
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and parses value as long number of
      * milliseconds, proxying  {@link NumberFormatException} exception.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofDuration -->
+     * <!-- src_embed com.typespec.core.util.ConfigurationPropertyBuilder.ofDuration -->
      * <pre>
      * ConfigurationProperty&lt;Duration&gt; timeoutProperty = ConfigurationPropertyBuilder.ofDuration&#40;&quot;timeout&quot;&#41;
      *     .build&#40;&#41;;
      * System.out.println&#40;configuration.get&#40;timeoutProperty&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder.ofDuration -->
+     * <!-- end com.typespec.core.util.ConfigurationPropertyBuilder.ofDuration -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -108,13 +108,13 @@ public final class ConfigurationPropertyBuilder<T> {
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and parse value using
      * {@link Boolean#parseBoolean(String)}.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofBoolean -->
+     * <!-- src_embed com.typespec.core.util.ConfigurationPropertyBuilder.ofBoolean -->
      * <pre>
      * ConfigurationProperty&lt;Boolean&gt; booleanProperty = ConfigurationPropertyBuilder.ofBoolean&#40;&quot;is-enabled&quot;&#41;
      *     .build&#40;&#41;;
      * System.out.println&#40;configuration.get&#40;booleanProperty&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder.ofBoolean -->
+     * <!-- end com.typespec.core.util.ConfigurationPropertyBuilder.ofBoolean -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -126,7 +126,7 @@ public final class ConfigurationPropertyBuilder<T> {
     /**
      * Constructs {@code ConfigurationPropertyBuilder} instance.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder -->
+     * <!-- src_embed com.typespec.core.util.ConfigurationPropertyBuilder -->
      * <pre>
      * ConfigurationProperty&lt;SampleEnumProperty&gt; modeProperty =
      *     new ConfigurationPropertyBuilder&lt;&gt;&#40;&quot;mode&quot;, SampleEnumProperty::fromString&#41;
@@ -135,7 +135,7 @@ public final class ConfigurationPropertyBuilder<T> {
      *         .build&#40;&#41;;
      * System.out.println&#40;configuration.get&#40;modeProperty&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder -->
+     * <!-- end com.typespec.core.util.ConfigurationPropertyBuilder -->
      *
      * @param name name of the property.
      * @param converter Converter used to map the configuration to {@code T}.

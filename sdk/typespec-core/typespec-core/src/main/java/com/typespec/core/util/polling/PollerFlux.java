@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  * <p><strong>Code samples</strong></p>
  *
  * <p><strong>Instantiating and subscribing to PollerFlux</strong></p>
- * <!-- src_embed com.azure.core.util.polling.poller.instantiationAndSubscribe -->
+ * <!-- src_embed com.typespec.core.util.polling.poller.instantiationAndSubscribe -->
  * <pre>
  * LocalDateTime timeToReturnFinalResponse = LocalDateTime.now&#40;&#41;.plus&#40;Duration.ofMillis&#40;800&#41;&#41;;
  *
@@ -56,10 +56,10 @@ import java.util.function.Supplier;
  * &#47;&#47; Do something else
  *
  * </pre>
- * <!-- end com.azure.core.util.polling.poller.instantiationAndSubscribe -->
+ * <!-- end com.typespec.core.util.polling.poller.instantiationAndSubscribe -->
  *
  * <p><strong>Asynchronously wait for polling to complete and then retrieve the final result</strong></p>
- * <!-- src_embed com.azure.core.util.polling.poller.getResult -->
+ * <!-- src_embed com.typespec.core.util.polling.poller.getResult -->
  * <pre>
  * LocalDateTime timeToReturnFinalResponse = LocalDateTime.now&#40;&#41;.plus&#40;Duration.ofMinutes&#40;5&#41;&#41;;
  *
@@ -94,10 +94,10 @@ import java.util.function.Supplier;
  *         &#125;&#41;.block&#40;&#41;;
  *
  * </pre>
- * <!-- end com.azure.core.util.polling.poller.getResult -->
+ * <!-- end com.typespec.core.util.polling.poller.getResult -->
  *
  * <p><strong>Block for polling to complete and then retrieve the final result</strong></p>
- * <!-- src_embed com.azure.core.util.polling.poller.blockAndGetResult -->
+ * <!-- src_embed com.typespec.core.util.polling.poller.blockAndGetResult -->
  * <pre>
  * AsyncPollResponse&lt;String, String&gt; terminalResponse = pollerFlux.blockLast&#40;&#41;;
  * System.out.printf&#40;&quot;Polling complete. Final Status: %s&quot;, terminalResponse.getStatus&#40;&#41;&#41;;
@@ -106,10 +106,10 @@ import java.util.function.Supplier;
  *     System.out.printf&#40;&quot;Polling complete. Final Status: %s&quot;, finalResult&#41;;
  * &#125;
  * </pre>
- * <!-- end com.azure.core.util.polling.poller.blockAndGetResult -->
+ * <!-- end com.typespec.core.util.polling.poller.blockAndGetResult -->
  *
  * <p><strong>Asynchronously poll until poller receives matching status</strong></p>
- * <!-- src_embed com.azure.core.util.polling.poller.pollUntil -->
+ * <!-- src_embed com.typespec.core.util.polling.poller.pollUntil -->
  * <pre>
  * final Predicate&lt;AsyncPollResponse&lt;String, String&gt;&gt; isComplete = response -&gt; &#123;
  *     return response.getStatus&#40;&#41; != LongRunningOperationStatus.IN_PROGRESS
@@ -122,10 +122,10 @@ import java.util.function.Supplier;
  *         System.out.println&#40;&quot;Completed poll response, status: &quot; + completed.getStatus&#40;&#41;&#41;;
  *     &#125;&#41;;
  * </pre>
- * <!-- end com.azure.core.util.polling.poller.pollUntil -->
+ * <!-- end com.typespec.core.util.polling.poller.pollUntil -->
  *
  * <p><strong>Asynchronously cancel the long running operation</strong></p>
- * <!-- src_embed com.azure.core.util.polling.poller.cancelOperation -->
+ * <!-- src_embed com.typespec.core.util.polling.poller.cancelOperation -->
  * <pre>
  * LocalDateTime timeToReturnFinalResponse = LocalDateTime.now&#40;&#41;.plus&#40;Duration.ofMinutes&#40;5&#41;&#41;;
  *
@@ -161,10 +161,10 @@ import java.util.function.Supplier;
  *         &#125;&#41;.block&#40;&#41;;
  *
  * </pre>
- * <!-- end com.azure.core.util.polling.poller.cancelOperation -->
+ * <!-- end com.typespec.core.util.polling.poller.cancelOperation -->
  *
  * <p><strong>Instantiating and subscribing to PollerFlux from a known polling strategy</strong></p>
- * <!-- src_embed com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy -->
+ * <!-- src_embed com.typespec.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy -->
  * <pre>
  * &#47;&#47; Create poller instance
  * PollerFlux&lt;BinaryData, String&gt; poller = PollerFlux.create&#40;
@@ -188,10 +188,10 @@ import java.util.function.Supplier;
  * &#47;&#47; Do something else
  *
  * </pre>
- * <!-- end com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy -->
+ * <!-- end com.typespec.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy -->
  *
  * <p><strong>Instantiating and subscribing to PollerFlux from a custom polling strategy</strong></p>
- * <!-- src_embed com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy -->
+ * <!-- src_embed com.typespec.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy -->
  * <pre>
  *
  * &#47;&#47; Create custom polling strategy based on OperationResourcePollingStrategy
@@ -229,7 +229,7 @@ import java.util.function.Supplier;
  * &#47;&#47; Do something else
  *
  * </pre>
- * <!-- end com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy -->
+ * <!-- end com.typespec.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy -->
  *
  * @param <T> The type of poll response value.
  * @param <U> The type of the final result of long running operation.

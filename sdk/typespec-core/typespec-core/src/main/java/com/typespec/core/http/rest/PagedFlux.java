@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  *
  * <p>To process one item at a time, simply subscribe to this flux as shown below </p>
  * <p><strong>Code sample</strong></p>
- * <!-- src_embed com.azure.core.http.rest.pagedflux.items -->
+ * <!-- src_embed com.typespec.core.http.rest.pagedflux.items -->
  * <pre>
  * &#47;&#47; Subscribe to process one item at a time
  * pagedFlux
@@ -29,11 +29,11 @@ import java.util.stream.Collectors;
  *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
  *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.core.http.rest.pagedflux.items -->
+ * <!-- end com.typespec.core.http.rest.pagedflux.items -->
  *
  * <p>To process one page at a time, use {@link #byPage()} method as shown below </p>
  * <p><strong>Code sample</strong></p>
- * <!-- src_embed com.azure.core.http.rest.pagedflux.pages -->
+ * <!-- src_embed com.typespec.core.http.rest.pagedflux.pages -->
  * <pre>
  * &#47;&#47; Subscribe to process one page at a time from the beginning
  * pagedFlux
@@ -44,12 +44,12 @@ import java.util.stream.Collectors;
  *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
  *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.core.http.rest.pagedflux.pages -->
+ * <!-- end com.typespec.core.http.rest.pagedflux.pages -->
  *
  * <p>To process items one page at a time starting from any page associated with a continuation token,
  * use {@link #byPage(String)} as shown below</p>
  * <p><strong>Code sample</strong></p>
- * <!-- src_embed com.azure.core.http.rest.pagedflux.pagesWithContinuationToken -->
+ * <!-- src_embed com.typespec.core.http.rest.pagedflux.pagesWithContinuationToken -->
  * <pre>
  * &#47;&#47; Subscribe to process one page at a time starting from a page associated with
  * &#47;&#47; a continuation token
@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
  *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.core.http.rest.pagedflux.pagesWithContinuationToken -->
+ * <!-- end com.typespec.core.http.rest.pagedflux.pagesWithContinuationToken -->
  *
  * @param <T> The type of items in a {@link PagedResponse}
  * @see PagedResponse
@@ -78,7 +78,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * Supplier} that return the single page of {@code T}.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.core.http.rest.pagedflux.singlepage.instantiation -->
+     * <!-- src_embed com.typespec.core.http.rest.pagedflux.singlepage.instantiation -->
      * <pre>
      * &#47;&#47; A supplier that fetches the first page of data from source&#47;service
      * Supplier&lt;Mono&lt;PagedResponse&lt;Integer&gt;&gt;&gt; firstPageRetrieverFunction = &#40;&#41; -&gt; getFirstPage&#40;&#41;;
@@ -86,7 +86,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * PagedFlux&lt;Integer&gt; pagedFluxInstance = new PagedFlux&lt;&gt;&#40;firstPageRetrieverFunction,
      *     nextPageRetriever&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.pagedflux.singlepage.instantiation -->
+     * <!-- end com.typespec.core.http.rest.pagedflux.singlepage.instantiation -->
      *
      * @param firstPageRetriever Supplier that retrieves the first page.
      */
@@ -99,7 +99,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * <!-- src_embed com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize -->
+     * <!-- src_embed com.typespec.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize -->
      * <pre>
      * &#47;&#47; A function that fetches the single page of data from a source&#47;service.
      * Function&lt;Integer, Mono&lt;PagedResponse&lt;Integer&gt;&gt;&gt; singlePageRetriever = pageSize -&gt;
@@ -107,7 +107,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      *
      * PagedFlux&lt;Integer&gt; singlePageFluxWithPageSize = new PagedFlux&lt;Integer&gt;&#40;singlePageRetriever&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize -->
+     * <!-- end com.typespec.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize -->
      *
      * @param firstPageRetriever Function that retrieves the first page.
      */
@@ -122,7 +122,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * <!-- src_embed com.azure.core.http.rest.pagedflux.instantiation -->
+     * <!-- src_embed com.typespec.core.http.rest.pagedflux.instantiation -->
      * <pre>
      * &#47;&#47; A supplier that fetches the first page of data from source&#47;service
      * Supplier&lt;Mono&lt;PagedResponse&lt;Integer&gt;&gt;&gt; firstPageRetriever = &#40;&#41; -&gt; getFirstPage&#40;&#41;;
@@ -134,7 +134,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * PagedFlux&lt;Integer&gt; pagedFlux = new PagedFlux&lt;&gt;&#40;firstPageRetriever,
      *     nextPageRetriever&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.pagedflux.instantiation -->
+     * <!-- end com.typespec.core.http.rest.pagedflux.instantiation -->
      *
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
@@ -151,7 +151,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * <!-- src_embed com.azure.core.http.rest.PagedFlux.instantiationWithPageSize -->
+     * <!-- src_embed com.typespec.core.http.rest.PagedFlux.instantiationWithPageSize -->
      * <pre>
      * &#47;&#47; A function that fetches the first page of data from a source&#47;service.
      * Function&lt;Integer, Mono&lt;PagedResponse&lt;Integer&gt;&gt;&gt; firstPageRetriever = pageSize -&gt; getFirstPageWithSize&#40;pageSize&#41;;
@@ -162,7 +162,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      *
      * PagedFlux&lt;Integer&gt; pagedFluxWithPageSize = new PagedFlux&lt;&gt;&#40;firstPageRetriever, nextPageRetriever&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.PagedFlux.instantiationWithPageSize -->
+     * <!-- end com.typespec.core.http.rest.PagedFlux.instantiationWithPageSize -->
      *
      * @param firstPageRetriever Function that retrieves the first page.
      * @param nextPageRetriever BiFunction that retrieves the next page given a continuation token and page size.
@@ -198,7 +198,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * </ul>
      *
      * <p><strong>Decoration sample</strong></p>
-     * <!-- src_embed com.azure.core.http.rest.pagedflux.create.decoration -->
+     * <!-- src_embed com.typespec.core.http.rest.pagedflux.create.decoration -->
      * <pre>
      *
      * &#47;&#47; Transform a PagedFlux with Integer items to PagedFlux of String items.
@@ -235,7 +235,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      *     &#125;;
      * final PagedFlux&lt;Integer&gt; exceptionMappedPagedFlux = PagedFlux.create&#40;eprovider&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.pagedflux.create.decoration -->
+     * <!-- end com.typespec.core.http.rest.pagedflux.create.decoration -->
      *
      * @param provider the Page Retrieval Provider
      * @param <T> The type of items in a {@link PagedResponse}

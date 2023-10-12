@@ -20,7 +20,7 @@ import java.util.function.Supplier;
  *
  * <p><strong>Process each item in Flux</strong></p>
  * <p>To process one item at a time, simply subscribe to this Flux.</p>
- * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.items -->
+ * <!-- src_embed com.typespec.core.http.rest.pagedfluxbase.items -->
  * <pre>
  * pagedFluxBase
  *     .log&#40;&#41;
@@ -28,11 +28,11 @@ import java.util.function.Supplier;
  *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
  *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.core.http.rest.pagedfluxbase.items -->
+ * <!-- end com.typespec.core.http.rest.pagedfluxbase.items -->
  *
  * <p><strong>Process one page at a time</strong></p>
  * <p>To process one page at a time, starting from the beginning, use {@link #byPage() byPage()} method.</p>
- * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.pages -->
+ * <!-- src_embed com.typespec.core.http.rest.pagedfluxbase.pages -->
  * <pre>
  * pagedFluxBase
  *     .byPage&#40;&#41;
@@ -42,12 +42,12 @@ import java.util.function.Supplier;
  *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
  *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.core.http.rest.pagedfluxbase.pages -->
+ * <!-- end com.typespec.core.http.rest.pagedfluxbase.pages -->
  *
  * <p><strong>Process items starting from a continuation token</strong></p>
  * <p>To process items one page at a time starting from any page associated with a continuation token, use
  * {@link #byPage(String)}.</p>
- * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken -->
+ * <!-- src_embed com.typespec.core.http.rest.pagedfluxbase.pagesWithContinuationToken -->
  * <pre>
  * String continuationToken = getContinuationToken&#40;&#41;;
  * pagedFluxBase
@@ -60,7 +60,7 @@ import java.util.function.Supplier;
  *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
  *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken -->
+ * <!-- end com.typespec.core.http.rest.pagedfluxbase.pagesWithContinuationToken -->
  *
  * @param <T> The type of items in {@code P}.
  * @param <P> The {@link PagedResponse} holding items of type {@code T}.
@@ -76,7 +76,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * Supplier} that return the single page of {@code T}.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation -->
+     * <!-- src_embed com.typespec.core.http.rest.pagedfluxbase.singlepage.instantiation -->
      * <pre>
      * &#47;&#47; A supplier that fetches the first page of data from source&#47;service
      * Supplier&lt;Mono&lt;PagedResponse&lt;Integer&gt;&gt;&gt; firstPageRetrieverFunction = &#40;&#41; -&gt; getFirstPage&#40;&#41;;
@@ -85,7 +85,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      *     new PagedFluxBase&lt;&gt;&#40;firstPageRetrieverFunction,
      *         nextPageRetriever&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.pagedfluxbase.singlepage.instantiation -->
+     * <!-- end com.typespec.core.http.rest.pagedfluxbase.singlepage.instantiation -->
      *
      * @param firstPageRetriever Supplier that retrieves the first page.
      */
@@ -99,7 +99,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * T}.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.instantiation -->
+     * <!-- src_embed com.typespec.core.http.rest.pagedfluxbase.instantiation -->
      * <pre>
      * &#47;&#47; A supplier that fetches the first page of data from source&#47;service
      * Supplier&lt;Mono&lt;PagedResponse&lt;Integer&gt;&gt;&gt; firstPageRetriever = &#40;&#41; -&gt; getFirstPage&#40;&#41;;
@@ -111,7 +111,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * PagedFluxBase&lt;Integer, PagedResponse&lt;Integer&gt;&gt; pagedFluxBase = new PagedFluxBase&lt;&gt;&#40;firstPageRetriever,
      *     nextPageRetriever&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.pagedfluxbase.instantiation -->
+     * <!-- end com.typespec.core.http.rest.pagedfluxbase.instantiation -->
      *
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
@@ -139,7 +139,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * Creates a Flux of {@link PagedResponse} starting from the first page.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.bypage -->
+     * <!-- src_embed com.typespec.core.http.rest.pagedfluxbase.bypage -->
      * <pre>
      * &#47;&#47; Start processing the results from first page
      * pagedFluxBase.byPage&#40;&#41;
@@ -151,7 +151,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.pagedfluxbase.bypage -->
+     * <!-- end com.typespec.core.http.rest.pagedfluxbase.bypage -->
      *
      * @return A {@link PagedFluxBase} starting from the first page
      */
@@ -164,7 +164,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * To start from first page, use {@link #byPage()} instead.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.bypage#String -->
+     * <!-- src_embed com.typespec.core.http.rest.pagedfluxbase.bypage#String -->
      * <pre>
      * &#47;&#47; Start processing the results from a page associated with the continuation token
      * String continuationToken = getContinuationToken&#40;&#41;;
@@ -177,7 +177,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.pagedfluxbase.bypage#String -->
+     * <!-- end com.typespec.core.http.rest.pagedfluxbase.bypage#String -->
      *
      * @param continuationToken The continuation token used to fetch the next page
      * @return A {@link PagedFluxBase} starting from the page associated with the continuation token
@@ -191,7 +191,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * common scenarios. This will seamlessly fetch next page when required and provide with a {@link Flux} of items.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.subscribe -->
+     * <!-- src_embed com.typespec.core.http.rest.pagedfluxbase.subscribe -->
      * <pre>
      * pagedFluxBase.subscribe&#40;new BaseSubscriber&lt;Integer&gt;&#40;&#41; &#123;
      *     &#64;Override
@@ -211,7 +211,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      *     &#125;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.pagedfluxbase.subscribe -->
+     * <!-- end com.typespec.core.http.rest.pagedfluxbase.subscribe -->
      *
      * @param coreSubscriber The subscriber for this {@link PagedFluxBase}
      */

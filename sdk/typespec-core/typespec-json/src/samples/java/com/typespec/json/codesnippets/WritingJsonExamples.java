@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class WritingJsonExamples {
     public void writeJsonOutputStream() throws IOException {
-        // BEGIN: com.azure.json.JsonWriter.writeJsonOutputStream
+        // BEGIN: com.typespec.json.JsonWriter.writeJsonOutputStream
         Map<String, Object> additionalVmProperties = new LinkedHashMap<>();
         additionalVmProperties.put("CloudProvider", "Azure");
         additionalVmProperties.put("Available", true);
@@ -42,11 +42,11 @@ public class WritingJsonExamples {
         //   "clockSpeedInHertz":4800000000.0,"manufacturer":"Memory Corp","errorCorrecting":true},
         //   "AcceleratedNetwork":true,"CloudProvider":"Azure","Available":true}
         System.out.println(json);
-        // END: com.azure.json.JsonWriter.writeJsonOutputStream
+        // END: com.typespec.json.JsonWriter.writeJsonOutputStream
     }
 
     public void writeJsonWriter() throws IOException {
-        // BEGIN: com.azure.json.JsonWriter.writeJsonWriter
+        // BEGIN: com.typespec.json.JsonWriter.writeJsonWriter
         Map<String, Object> additionalVmProperties = new LinkedHashMap<>();
         additionalVmProperties.put("CloudProvider", "Azure");
         additionalVmProperties.put("Available", true);
@@ -72,6 +72,6 @@ public class WritingJsonExamples {
         //   "clockSpeedInHertz":4800000000.0,"manufacturer":"Memory Corp","errorCorrecting":true},
         //   "AcceleratedNetwork":true,"CloudProvider":"Azure","Available":true}
         System.out.println(json);
-        // END: com.azure.json.JsonWriter.writeJsonWriter
+        // END: com.typespec.json.JsonWriter.writeJsonWriter
     }
 }

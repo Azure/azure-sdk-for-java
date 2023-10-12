@@ -20,7 +20,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <p><strong>Example:</strong></p>
  *
- * <!-- src_embed com.azure.core.annotation.UnexpectedResponseExceptionType.class -->
+ * <!-- src_embed com.typespec.core.annotation.UnexpectedResponseExceptionType.class -->
  * <pre>
  * &#47;&#47; Set it so that all response exceptions use a custom exception type.
  *
@@ -47,7 +47,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * &#47;&#47; If multiple annotations share the same HTTP status code or there is multiple default annotations the
  * &#47;&#47; exception, the last annotation in the top to bottom order will be used &#40;so the bottom most annotation&#41;.
  * </pre>
- * <!-- end com.azure.core.annotation.UnexpectedResponseExceptionType.class -->
+ * <!-- end com.typespec.core.annotation.UnexpectedResponseExceptionType.class -->
  */
 @Retention(RUNTIME)
 @Target(METHOD)

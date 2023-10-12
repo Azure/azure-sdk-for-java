@@ -78,38 +78,38 @@ import static com.typespec.core.util.FluxUtil.monoError;
  *
  * <p><strong>Create an instance from a byte array</strong></p>
  *
- * <!-- src_embed com.azure.core.util.BinaryData.fromBytes#byte -->
+ * <!-- src_embed com.typespec.core.util.BinaryData.fromBytes#byte -->
  * <pre>
  * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
  * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
  * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
  * </pre>
- * <!-- end com.azure.core.util.BinaryData.fromBytes#byte -->
+ * <!-- end com.typespec.core.util.BinaryData.fromBytes#byte -->
  *
  * <p><strong>Create an instance from a String</strong></p>
  *
- * <!-- src_embed com.azure.core.util.BinaryData.fromString#String -->
+ * <!-- src_embed com.typespec.core.util.BinaryData.fromString#String -->
  * <pre>
  * final String data = &quot;Some Data&quot;;
  * &#47;&#47; Following will use default character set as StandardCharsets.UTF_8
  * BinaryData binaryData = BinaryData.fromString&#40;data&#41;;
  * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.core.util.BinaryData.fromString#String -->
+ * <!-- end com.typespec.core.util.BinaryData.fromString#String -->
  *
  * <p><strong>Create an instance from an InputStream</strong></p>
  *
- * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream -->
+ * <!-- src_embed com.typespec.core.util.BinaryData.fromStream#InputStream -->
  * <pre>
  * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
  * BinaryData binaryData = BinaryData.fromStream&#40;inputStream&#41;;
  * System.out.println&#40;binaryData&#41;;
  * </pre>
- * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream -->
+ * <!-- end com.typespec.core.util.BinaryData.fromStream#InputStream -->
  *
  * <p><strong>Create an instance from an Object</strong></p>
  *
- * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
+ * <!-- src_embed com.typespec.core.util.BinaryData.fromObject#Object -->
  * <pre>
  * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
  *
@@ -120,11 +120,11 @@ import static com.typespec.core.util.FluxUtil.monoError;
  *
  * System.out.println&#40;binaryData&#41;;
  * </pre>
- * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
+ * <!-- end com.typespec.core.util.BinaryData.fromObject#Object -->
  *
  * <p><strong>Create an instance from {@code Flux<ByteBuffer>}</strong></p>
  *
- * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
+ * <!-- src_embed com.typespec.core.util.BinaryData.fromFlux#Flux -->
  * <pre>
  * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
  * final Flux&lt;ByteBuffer&gt; dataFlux = Flux.just&#40;ByteBuffer.wrap&#40;data&#41;&#41;;
@@ -142,16 +142,16 @@ import static com.typespec.core.util.FluxUtil.monoError;
  * TimeUnit.SECONDS.sleep&#40;5&#41;;
  * subscriber.dispose&#40;&#41;;
  * </pre>
- * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
+ * <!-- end com.typespec.core.util.BinaryData.fromFlux#Flux -->
  *
  * <p><strong>Create an instance from a file</strong></p>
  *
- * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
+ * <!-- src_embed com.typespec.core.util.BinaryData.fromFile -->
  * <pre>
  * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
  * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
  * </pre>
- * <!-- end com.azure.core.util.BinaryData.fromFile -->
+ * <!-- end com.typespec.core.util.BinaryData.fromFile -->
  *
  * @see ObjectSerializer
  * @see JsonSerializer
@@ -192,13 +192,13 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromStream#InputStream -->
      * <pre>
      * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
      * BinaryData binaryData = BinaryData.fromStream&#40;inputStream&#41;;
      * System.out.println&#40;binaryData&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream -->
+     * <!-- end com.typespec.core.util.BinaryData.fromStream#InputStream -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link InputStream}.
@@ -220,14 +220,14 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream-Long -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromStream#InputStream-Long -->
      * <pre>
      * byte[] bytes = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
      * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;bytes&#41;;
      * BinaryData binaryData = BinaryData.fromStream&#40;inputStream, &#40;long&#41; bytes.length&#41;;
      * System.out.println&#40;binaryData&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream-Long -->
+     * <!-- end com.typespec.core.util.BinaryData.fromStream#InputStream-Long -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
@@ -245,7 +245,7 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromStreamAsync#InputStream -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromStreamAsync#InputStream -->
      * <pre>
      * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
      *
@@ -262,7 +262,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromStreamAsync#InputStream -->
+     * <!-- end com.typespec.core.util.BinaryData.fromStreamAsync#InputStream -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link InputStream}.
@@ -279,7 +279,7 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromStreamAsync#InputStream-Long -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromStreamAsync#InputStream-Long -->
      * <pre>
      * byte[] bytes = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
      * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;bytes&#41;;
@@ -297,7 +297,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromStreamAsync#InputStream-Long -->
+     * <!-- end com.typespec.core.util.BinaryData.fromStreamAsync#InputStream-Long -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
@@ -316,7 +316,7 @@ public final class BinaryData {
      *
      * <p>This method aggregates data into single byte array.</p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromFlux#Flux -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
      * final Flux&lt;ByteBuffer&gt; dataFlux = Flux.just&#40;ByteBuffer.wrap&#40;data&#41;&#41;;
@@ -334,7 +334,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
+     * <!-- end com.typespec.core.util.BinaryData.fromFlux#Flux -->
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
@@ -351,7 +351,7 @@ public final class BinaryData {
      *
      * <p>This method aggregates data into single byte array.</p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux-Long -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromFlux#Flux-Long -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
      * final long length = data.length;
@@ -370,7 +370,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux-Long -->
+     * <!-- end com.typespec.core.util.BinaryData.fromFlux#Flux-Long -->
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
@@ -391,7 +391,7 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
      * final long length = data.length;
@@ -411,7 +411,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
+     * <!-- end com.typespec.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
@@ -465,14 +465,14 @@ public final class BinaryData {
      * </p>
      * <p><strong>Create an instance from a String</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromString#String -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromString#String -->
      * <pre>
      * final String data = &quot;Some Data&quot;;
      * &#47;&#47; Following will use default character set as StandardCharsets.UTF_8
      * BinaryData binaryData = BinaryData.fromString&#40;data&#41;;
      * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromString#String -->
+     * <!-- end com.typespec.core.util.BinaryData.fromString#String -->
      *
      * @param data The {@link String} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link String}.
@@ -493,13 +493,13 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a byte array</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromBytes#byte -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromBytes#byte -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
      * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
      * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromBytes#byte -->
+     * <!-- end com.typespec.core.util.BinaryData.fromBytes#byte -->
      *
      * @param data The byte array that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the byte array.
@@ -521,13 +521,13 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a ByteBuffer</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
      * <pre>
      * final ByteBuffer data = ByteBuffer.wrap&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
      * BinaryData binaryData = BinaryData.fromByteBuffer&#40;data&#41;;
      * System.out.println&#40;binaryData&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
+     * <!-- end com.typespec.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
      *
      * @param data The {@link ByteBuffer} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link ByteBuffer}.
@@ -549,7 +549,7 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a List&lt;ByteBuffer&gt;</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromListByteBuffer#List -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromListByteBuffer#List -->
      * <pre>
      * final List&lt;ByteBuffer&gt; data = Stream.of&#40;&quot;Some &quot;, &quot;data&quot;&#41;
      *     .map&#40;s -&gt; ByteBuffer.wrap&#40;s.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
@@ -557,7 +557,7 @@ public final class BinaryData {
      * BinaryData binaryData = BinaryData.fromListByteBuffer&#40;data&#41;;
      * System.out.println&#40;binaryData&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromListByteBuffer#List -->
+     * <!-- end com.typespec.core.util.BinaryData.fromListByteBuffer#List -->
      *
      * @param data The {@link List} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.
@@ -576,7 +576,7 @@ public final class BinaryData {
      * </p>
      * <p><strong>Creating an instance from an Object</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromObject#Object -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -587,7 +587,7 @@ public final class BinaryData {
      *
      * System.out.println&#40;binaryData&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
+     * <!-- end com.typespec.core.util.BinaryData.fromObject#Object -->
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the JSON serialized object.
@@ -608,7 +608,7 @@ public final class BinaryData {
      * </p>
      * <p><strong>Creating an instance from an Object</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromObjectAsync#Object -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromObjectAsync#Object -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -622,7 +622,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromObjectAsync#Object -->
+     * <!-- end com.typespec.core.util.BinaryData.fromObjectAsync#Object -->
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the JSON serialized object.
@@ -648,7 +648,7 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an Object</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -660,7 +660,7 @@ public final class BinaryData {
      *
      * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
+     * <!-- end com.typespec.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
      *
      * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
      * determines how {@code null} data is serialized.
@@ -692,7 +692,7 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an Object</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -707,7 +707,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
+     * <!-- end com.typespec.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
      *
      * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
      * determines how {@code null} data is serialized.
@@ -731,12 +731,12 @@ public final class BinaryData {
      *
      * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromFile -->
      * <pre>
      * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
      * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromFile -->
+     * <!-- end com.typespec.core.util.BinaryData.fromFile -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @return A new {@link BinaryData}.
@@ -753,12 +753,12 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-int -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromFile#Path-int -->
      * <pre>
      * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, 8092&#41;;
      * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-int -->
+     * <!-- end com.typespec.core.util.BinaryData.fromFile#Path-int -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @param chunkSize The requested size for each read of the path.
@@ -781,7 +781,7 @@ public final class BinaryData {
      *
      * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromFile#Path-Long-Long -->
      * <pre>
      * long position = 1024;
      * long length = 100 * 1048;
@@ -789,7 +789,7 @@ public final class BinaryData {
      *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length&#41;;
      * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
+     * <!-- end com.typespec.core.util.BinaryData.fromFile#Path-Long-Long -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @param position Position, or offset, within the path where reading begins.
@@ -811,7 +811,7 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.fromFile#Path-Long-Long-int -->
      * <pre>
      * long position = 1024;
      * long length = 100 * 1048;
@@ -820,7 +820,7 @@ public final class BinaryData {
      *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length, chunkSize&#41;;
      * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int -->
+     * <!-- end com.typespec.core.util.BinaryData.fromFile#Path-Long-Long-int -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @param position Position, or offset, within the path where reading begins.
@@ -884,7 +884,7 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObject#Class -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -899,7 +899,7 @@ public final class BinaryData {
      * Person person = binaryData.toObject&#40;Person.class&#41;;
      * System.out.println&#40;person.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObject#Class -->
+     * <!-- end com.typespec.core.util.BinaryData.toObject#Class -->
      *
      * @param <T> Type of the deserialized Object.
      * @param clazz The {@link Class} representing the Object's type.
@@ -926,7 +926,7 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObject#TypeReference -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -941,11 +941,11 @@ public final class BinaryData {
      * Person person = binaryData.toObject&#40;TypeReference.createInstance&#40;Person.class&#41;&#41;;
      * System.out.println&#40;person.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference -->
+     * <!-- end com.typespec.core.util.BinaryData.toObject#TypeReference -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-generic -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObject#TypeReference-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
@@ -966,7 +966,7 @@ public final class BinaryData {
      * List&lt;Person&gt; persons = binaryData.toObject&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;&#41;;
      * persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-generic -->
+     * <!-- end com.typespec.core.util.BinaryData.toObject#TypeReference-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param <T> Type of the deserialized Object.
@@ -998,7 +998,7 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObject#Class-ObjectSerializer -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -1012,7 +1012,7 @@ public final class BinaryData {
      * Person person = binaryData.toObject&#40;Person.class, serializer&#41;;
      * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer -->
+     * <!-- end com.typespec.core.util.BinaryData.toObject#Class-ObjectSerializer -->
      *
      * @param clazz The {@link Class} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -1048,7 +1048,7 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -1062,11 +1062,11 @@ public final class BinaryData {
      * Person person = binaryData.toObject&#40;TypeReference.createInstance&#40;Person.class&#41;, serializer&#41;;
      * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
+     * <!-- end com.typespec.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
@@ -1082,7 +1082,7 @@ public final class BinaryData {
      * List&lt;Person&gt; persons = binaryData.toObject&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;, serializer&#41;;
      * persons.forEach&#40;person -&gt; System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
+     * <!-- end com.typespec.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -1114,7 +1114,7 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#Class -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObjectAsync#Class -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -1133,7 +1133,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#Class -->
+     * <!-- end com.typespec.core.util.BinaryData.toObjectAsync#Class -->
      *
      * @param clazz The {@link Class} representing the Object's type.
      * @param <T> Type of the deserialized Object.
@@ -1160,7 +1160,7 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObjectAsync#TypeReference -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -1179,11 +1179,11 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference -->
+     * <!-- end com.typespec.core.util.BinaryData.toObjectAsync#TypeReference -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObjectAsync#TypeReference-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
@@ -1201,7 +1201,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic -->
+     * <!-- end com.typespec.core.util.BinaryData.toObjectAsync#TypeReference-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param <T> Type of the deserialized Object.
@@ -1233,7 +1233,7 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -1251,7 +1251,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
+     * <!-- end com.typespec.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
      *
      * @param clazz The {@link Class} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -1287,7 +1287,7 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -1306,11 +1306,11 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
+     * <!-- end com.typespec.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
@@ -1334,7 +1334,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic -->
+     * <!-- end com.typespec.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -1354,7 +1354,7 @@ public final class BinaryData {
      *
      * <p><strong>Get an InputStream from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.toStream -->
+     * <!-- src_embed com.typespec.core.util.BinaryData.toStream -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
      * BinaryData binaryData = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;data&#41;, &#40;long&#41; data.length&#41;;
@@ -1364,7 +1364,7 @@ public final class BinaryData {
      *     System.out.println&#40;new String&#40;bytes&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.toStream -->
+     * <!-- end com.typespec.core.util.BinaryData.toStream -->
      *
      * @return An {@link InputStream} representing the {@link BinaryData}.
      */
@@ -1379,7 +1379,7 @@ public final class BinaryData {
      *
      * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.azure.util.BinaryData.toByteBuffer -->
+     * <!-- src_embed com.typespec.util.BinaryData.toByteBuffer -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
      * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
@@ -1387,7 +1387,7 @@ public final class BinaryData {
      * binaryData.toByteBuffer&#40;&#41;.get&#40;bytes, 0, data.length&#41;;
      * System.out.println&#40;new String&#40;bytes&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.util.BinaryData.toByteBuffer -->
+     * <!-- end com.typespec.util.BinaryData.toByteBuffer -->
      *
      * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
      */
@@ -1424,7 +1424,7 @@ public final class BinaryData {
      * what this method returns.
      * </p>
      *
-     * <!-- src_embed com.azure.util.BinaryData.replayability -->
+     * <!-- src_embed com.typespec.util.BinaryData.replayability -->
      * <pre>
      * BinaryData binaryData = binaryDataProducer&#40;&#41;;
      *
@@ -1435,9 +1435,9 @@ public final class BinaryData {
      * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
      * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.util.BinaryData.replayability -->
+     * <!-- end com.typespec.util.BinaryData.replayability -->
      *
-     * <!-- src_embed com.azure.util.BinaryData.replayabilityAsync -->
+     * <!-- src_embed com.typespec.util.BinaryData.replayabilityAsync -->
      * <pre>
      * Mono.fromCallable&#40;this::binaryDataProducer&#41;
      *     .flatMap&#40;binaryData -&gt; &#123;
@@ -1452,7 +1452,7 @@ public final class BinaryData {
      *             .then&#40;fluxConsumer&#40;replayableBinaryData.toFluxByteBuffer&#40;&#41;&#41;&#41;&#41;
      *     .subscribe&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.util.BinaryData.replayabilityAsync -->
+     * <!-- end com.typespec.util.BinaryData.replayabilityAsync -->
      *
      * @return a flag indicating whether the content can be repeatedly consumed using all accessors.
      */
@@ -1474,7 +1474,7 @@ public final class BinaryData {
      * simultaneously.
      * </p>
      *
-     * <!-- src_embed com.azure.util.BinaryData.replayability -->
+     * <!-- src_embed com.typespec.util.BinaryData.replayability -->
      * <pre>
      * BinaryData binaryData = binaryDataProducer&#40;&#41;;
      *
@@ -1485,7 +1485,7 @@ public final class BinaryData {
      * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
      * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.util.BinaryData.replayability -->
+     * <!-- end com.typespec.util.BinaryData.replayability -->
      *
      * @return Replayable {@link BinaryData}.
      */
@@ -1511,7 +1511,7 @@ public final class BinaryData {
      * simultaneously.
      * </p>
      *
-     * <!-- src_embed com.azure.util.BinaryData.replayabilityAsync -->
+     * <!-- src_embed com.typespec.util.BinaryData.replayabilityAsync -->
      * <pre>
      * Mono.fromCallable&#40;this::binaryDataProducer&#41;
      *     .flatMap&#40;binaryData -&gt; &#123;
@@ -1526,7 +1526,7 @@ public final class BinaryData {
      *             .then&#40;fluxConsumer&#40;replayableBinaryData.toFluxByteBuffer&#40;&#41;&#41;&#41;&#41;
      *     .subscribe&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.util.BinaryData.replayabilityAsync -->
+     * <!-- end com.typespec.util.BinaryData.replayabilityAsync -->
      *
      * @return A {@link Mono} of {@link BinaryData} representing the replayable {@link BinaryData}.
      */

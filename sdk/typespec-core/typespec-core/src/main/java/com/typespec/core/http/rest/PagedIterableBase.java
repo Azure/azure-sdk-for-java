@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  *
  * <p><strong>Code sample using {@link Stream} by page</strong></p>
  *
- * <!-- src_embed com.azure.core.http.rest.pagedIterableBase.streamByPage -->
+ * <!-- src_embed com.typespec.core.http.rest.pagedIterableBase.streamByPage -->
  * <pre>
  * &#47;&#47; process the streamByPage
  * CustomPagedFlux&lt;String&gt; customPagedFlux = createCustomInstance&#40;&#41;;
@@ -29,11 +29,11 @@ import java.util.stream.Stream;
  *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %s %n&quot;, value&#41;&#41;;
  * &#125;&#41;;
  * </pre>
- * <!-- end com.azure.core.http.rest.pagedIterableBase.streamByPage -->
+ * <!-- end com.typespec.core.http.rest.pagedIterableBase.streamByPage -->
  *
  * <p><strong>Code sample using {@link Iterable} by page</strong></p>
  *
- * <!-- src_embed com.azure.core.http.rest.pagedIterableBase.iterableByPage -->
+ * <!-- src_embed com.typespec.core.http.rest.pagedIterableBase.iterableByPage -->
  * <pre>
  * &#47;&#47; process the iterableByPage
  * customPagedIterableResponse.iterableByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
@@ -42,11 +42,11 @@ import java.util.stream.Stream;
  *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %s %n&quot;, value&#41;&#41;;
  * &#125;&#41;;
  * </pre>
- * <!-- end com.azure.core.http.rest.pagedIterableBase.iterableByPage -->
+ * <!-- end com.typespec.core.http.rest.pagedIterableBase.iterableByPage -->
  *
  * <p><strong>Code sample using {@link Iterable} by page and while loop</strong></p>
  *
- * <!-- src_embed com.azure.core.http.rest.pagedIterableBase.iterableByPage.while -->
+ * <!-- src_embed com.typespec.core.http.rest.pagedIterableBase.iterableByPage.while -->
  * <pre>
  * &#47;&#47; iterate over each page
  * for &#40;PagedResponse&lt;String&gt; resp : customPagedIterableResponse.iterableByPage&#40;&#41;&#41; &#123;
@@ -55,7 +55,7 @@ import java.util.stream.Stream;
  *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %s %n&quot;, value&#41;&#41;;
  * &#125;
  * </pre>
- * <!-- end com.azure.core.http.rest.pagedIterableBase.iterableByPage.while -->
+ * <!-- end com.typespec.core.http.rest.pagedIterableBase.iterableByPage.while -->
  *
  * @param <T> The type of value contained in this {@link IterableStream}.
  * @param <P> The response extending from {@link PagedResponse}

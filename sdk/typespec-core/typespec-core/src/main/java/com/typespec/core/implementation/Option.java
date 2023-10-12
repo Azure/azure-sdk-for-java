@@ -11,7 +11,7 @@ import java.util.Objects;
  * non-null-value, null-value, or no-value.
  *
  * <p><strong>Code sample</strong></p>
- * <!-- src_embed com.azure.core.util.Option -->
+ * <!-- src_embed com.typespec.core.util.Option -->
  * <pre>
  * &#47;&#47; An Option with non-null-value.
  * Option&lt;String&gt; skuOption = Option.of&#40;&quot;basic&quot;&#41;;
@@ -41,7 +41,7 @@ import java.util.Objects;
  *     System.out.println&#40;exception.getMessage&#40;&#41;&#41;; &#47;&#47; print: 'No value initialized'
  * &#125;
  * </pre>
- * <!-- end com.azure.core.util.Option -->
+ * <!-- end com.typespec.core.util.Option -->
  *
  * @param <T> The value type.
  */

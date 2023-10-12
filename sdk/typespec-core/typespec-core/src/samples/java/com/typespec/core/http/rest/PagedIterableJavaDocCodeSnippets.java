@@ -22,17 +22,17 @@ import java.util.stream.IntStream;
 public class PagedIterableJavaDocCodeSnippets {
 
     public void createASinglePageInstanceWithPageSizeSupport() {
-        // BEGIN: com.azure.core.http.rest.PagedIterable.singlepage.instantiationWithPageSize
+        // BEGIN: com.typespec.core.http.rest.PagedIterable.singlepage.instantiationWithPageSize
         // A function that fetches the single page of data from a source/service.
         Function<Integer, PagedResponse<Integer>> singlePageRetriever = pageSize ->
             getPage(pageSize);
 
         PagedIterable<Integer> singlePageIterableWithPageSize = new PagedIterable<Integer>(singlePageRetriever);
-        // END: com.azure.core.http.rest.PagedIterable.singlepage.instantiationWithPageSize
+        // END: com.typespec.core.http.rest.PagedIterable.singlepage.instantiationWithPageSize
     }
 
     public void createAnInstanceWithPageSizeSupport() {
-        // BEGIN: com.azure.core.http.rest.PagedIterable.instantiationWithPageSize
+        // BEGIN: com.typespec.core.http.rest.PagedIterable.instantiationWithPageSize
         // A function that fetches the first page of data from a source/service.
         Function<Integer, PagedResponse<Integer>> firstPageRetriever = pageSize -> getPage(pageSize);
 
@@ -41,7 +41,7 @@ public class PagedIterableJavaDocCodeSnippets {
             getPage(continuationToken, pageSize);
 
         PagedIterable<Integer> pagedIterableWithPageSize = new PagedIterable<>(firstPageRetriever, nextPageRetriever);
-        // END: com.azure.core.http.rest.PagedIterable.instantiationWithPageSize
+        // END: com.typespec.core.http.rest.PagedIterable.instantiationWithPageSize
     }
 
     /**
@@ -51,7 +51,7 @@ public class PagedIterableJavaDocCodeSnippets {
         PagedFlux<Integer> pagedFlux = createAnInstance();
         PagedIterable<Integer> pagedIterableResponse = new PagedIterable<>(pagedFlux);
 
-        // BEGIN: com.azure.core.http.rest.PagedIterable.streamByPage
+        // BEGIN: com.typespec.core.http.rest.PagedIterable.streamByPage
         // process the streamByPage
         pagedIterableResponse.streamByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
@@ -59,7 +59,7 @@ public class PagedIterableJavaDocCodeSnippets {
             resp.getElements().forEach(value -> System.out.printf("Response value is %d %n", value));
         });
 
-        // END: com.azure.core.http.rest.PagedIterable.streamByPage
+        // END: com.typespec.core.http.rest.PagedIterable.streamByPage
     }
 
     /**
@@ -70,14 +70,14 @@ public class PagedIterableJavaDocCodeSnippets {
         PagedFlux<Integer> pagedFlux = createAnInstance();
         PagedIterable<Integer> pagedIterableResponse = new PagedIterable<>(pagedFlux);
 
-        // BEGIN: com.azure.core.http.rest.PagedIterable.iterableByPage
+        // BEGIN: com.typespec.core.http.rest.PagedIterable.iterableByPage
         // process the iterableByPage
         pagedIterableResponse.iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getElements().forEach(value -> System.out.printf("Response value is %d %n", value));
         });
-        // END: com.azure.core.http.rest.PagedIterable.iterableByPage
+        // END: com.typespec.core.http.rest.PagedIterable.iterableByPage
     }
 
     /**
@@ -88,14 +88,14 @@ public class PagedIterableJavaDocCodeSnippets {
         PagedFlux<Integer> pagedFlux = createAnInstance();
         PagedIterable<Integer> pagedIterableResponse = new PagedIterable<>(pagedFlux);
 
-        // BEGIN: com.azure.core.http.rest.PagedIterable.iterableByPage.while
+        // BEGIN: com.typespec.core.http.rest.PagedIterable.iterableByPage.while
         // iterate over each page
         for (PagedResponse<Integer> resp : pagedIterableResponse.iterableByPage()) {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getElements().forEach(value -> System.out.printf("Response value is %d %n", value));
         }
-        // END: com.azure.core.http.rest.PagedIterable.iterableByPage.while
+        // END: com.typespec.core.http.rest.PagedIterable.iterableByPage.while
     }
 
     /**
@@ -104,13 +104,13 @@ public class PagedIterableJavaDocCodeSnippets {
     public void iterateByPageContinuationToken() {
         PagedIterable<Integer> pagedIterable = createPagedIterableInstance();
 
-        // BEGIN: com.azure.core.http.rest.PagedIterable.pagesWithContinuationToken
+        // BEGIN: com.typespec.core.http.rest.PagedIterable.pagesWithContinuationToken
         String continuationToken = getContinuationToken();
         pagedIterable
             .iterableByPage(continuationToken)
             .forEach(page -> System.out.printf("Processing page containing item values: %s%n",
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))));
-        // END: com.azure.core.http.rest.PagedIterable.pagesWithContinuationToken
+        // END: com.typespec.core.http.rest.PagedIterable.pagesWithContinuationToken
     }
 
     /**
@@ -119,7 +119,7 @@ public class PagedIterableJavaDocCodeSnippets {
      * @return An instance of {@link PagedFlux}
      */
     public PagedIterable<Integer> createPagedIterableInstance() {
-        // BEGIN: com.azure.core.http.rest.PagedIterable.instantiation
+        // BEGIN: com.typespec.core.http.rest.PagedIterable.instantiation
         // A supplier that fetches the first page of data from source/service
         Supplier<PagedResponse<Integer>> firstPageRetriever = () -> getFirstPage();
 
@@ -129,15 +129,15 @@ public class PagedIterableJavaDocCodeSnippets {
 
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(firstPageRetriever,
             nextPageRetriever);
-        // END: com.azure.core.http.rest.PagedIterable.instantiation
+        // END: com.typespec.core.http.rest.PagedIterable.instantiation
 
-        // BEGIN: com.azure.core.http.rest.PagedIterable.singlepage.instantiation
+        // BEGIN: com.typespec.core.http.rest.PagedIterable.singlepage.instantiation
         // A supplier that fetches the first page of data from source/service
         Supplier<PagedResponse<Integer>> firstPageRetrieverFunction = () -> getFirstPage();
 
         PagedIterable<Integer> pagedIterableInstance = new PagedIterable<>(firstPageRetrieverFunction,
             nextPageRetriever);
-        // END: com.azure.core.http.rest.PagedIterable.singlepage.instantiation
+        // END: com.typespec.core.http.rest.PagedIterable.singlepage.instantiation
         return pagedIterableInstance;
     }
 

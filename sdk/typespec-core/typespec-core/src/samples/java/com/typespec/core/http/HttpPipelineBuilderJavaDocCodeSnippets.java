@@ -10,17 +10,17 @@ import com.typespec.core.http.policy.RetryPolicy;
  */
 public class HttpPipelineBuilderJavaDocCodeSnippets {
     public void noConfigurationBuild() {
-        // BEGIN: com.azure.core.http.HttpPipelineBuilder.noConfiguration
+        // BEGIN: com.typespec.core.http.HttpPipelineBuilder.noConfiguration
         HttpPipeline pipeline = new HttpPipelineBuilder().build();
-        // END: com.azure.core.http.HttpPipelineBuilder.noConfiguration
+        // END: com.typespec.core.http.HttpPipelineBuilder.noConfiguration
     }
 
     public void defaultHttpClientWithRetryPolicyBuild() {
-        // BEGIN: com.azure.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy
+        // BEGIN: com.typespec.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(HttpClient.createDefault())
             .policies(new RetryPolicy())
             .build();
-        // END: com.azure.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy
+        // END: com.typespec.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy
     }
 }

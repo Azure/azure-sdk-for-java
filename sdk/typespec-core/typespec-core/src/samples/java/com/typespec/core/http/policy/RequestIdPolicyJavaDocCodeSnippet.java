@@ -13,8 +13,8 @@ public class RequestIdPolicyJavaDocCodeSnippet {
      */
     public void overrideRequestIdHeaderName() {
 
-        // BEGIN: com.azure.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName
+        // BEGIN: com.typespec.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName
         new RequestIdPolicy("x-ms-my-custom-request-id");
-        // END: com.azure.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName
+        // END: com.typespec.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName
     }
 }

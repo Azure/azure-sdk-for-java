@@ -18,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * <p><strong>Code samples</strong></p>
  *
- * <!-- src_embed com.azure.core.util.ProgressReportingE2ESample -->
+ * <!-- src_embed com.typespec.core.util.ProgressReportingE2ESample -->
  * <pre>
  * &#47;**
  *  * A simple operation that simulates I&#47;O activity.
@@ -57,7 +57,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *     complexOperation&#40;complexOperationProgressReporter&#41;;
  * &#125;
  * </pre>
- * <!-- end com.azure.core.util.ProgressReportingE2ESample -->
+ * <!-- end com.typespec.core.util.ProgressReportingE2ESample -->
  */
 public final class ProgressReporter {
 

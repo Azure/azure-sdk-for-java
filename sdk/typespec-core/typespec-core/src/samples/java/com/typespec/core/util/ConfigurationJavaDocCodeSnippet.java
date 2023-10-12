@@ -42,7 +42,7 @@ public class ConfigurationJavaDocCodeSnippet {
         properties.put("azure.sdk.http.proxy.username", "user");
         properties.put("azure.sdk.http.proxy.password", "pwd");
 
-        // BEGIN: com.azure.core.util.Configuration
+        // BEGIN: com.typespec.core.util.Configuration
         Configuration configuration = new ConfigurationBuilder(new SampleSource(properties))
             .root("azure.sdk")
             .buildSection("client-name");
@@ -51,9 +51,9 @@ public class ConfigurationJavaDocCodeSnippet {
             .shared(true)
             .build();
         System.out.println(configuration.get(proxyHostnameProperty));
-        // END: com.azure.core.util.Configuration
+        // END: com.typespec.core.util.Configuration
 
-        // BEGIN: com.azure.core.util.ConfigurationBuilder#putProperty
+        // BEGIN: com.typespec.core.util.ConfigurationBuilder#putProperty
         configuration = new ConfigurationBuilder()
             .putProperty("azure.sdk.client-name.connection-string", "...")
             .root("azure.sdk")
@@ -63,21 +63,21 @@ public class ConfigurationJavaDocCodeSnippet {
             .build();
 
         System.out.println(configuration.get(connectionStringProperty));
-        // END: com.azure.core.util.ConfigurationBuilder#putProperty
+        // END: com.typespec.core.util.ConfigurationBuilder#putProperty
 
-        // BEGIN: com.azure.core.util.ConfigurationBuilder#buildSection
+        // BEGIN: com.typespec.core.util.ConfigurationBuilder#buildSection
         // Builds Configuration for <client-name> with fallback to shared properties.
         configuration = new ConfigurationBuilder(new SampleSource(properties))
             .root("azure.sdk")
             .buildSection("client-name");
-        // END: com.azure.core.util.ConfigurationBuilder#buildSection
+        // END: com.typespec.core.util.ConfigurationBuilder#buildSection
 
-        // BEGIN: com.azure.core.util.ConfigurationBuilder#build
+        // BEGIN: com.typespec.core.util.ConfigurationBuilder#build
         // Builds shared Configuration only.
         Configuration sharedConfiguration = new ConfigurationBuilder(new SampleSource(properties))
             .root("azure.sdk")
             .build();
-        // END: com.azure.core.util.ConfigurationBuilder#build
+        // END: com.typespec.core.util.ConfigurationBuilder#build
     }
 
     /**
@@ -94,7 +94,7 @@ public class ConfigurationJavaDocCodeSnippet {
             .root("azure.sdk")
             .buildSection("<client-name>");
 
-        // BEGIN: com.azure.core.util.Configuration.get#ConfigurationProperty
+        // BEGIN: com.typespec.core.util.Configuration.get#ConfigurationProperty
         ConfigurationProperty<String> property = ConfigurationPropertyBuilder.ofString("http.proxy.hostname")
             .shared(true)
             .logValue(true)
@@ -104,7 +104,7 @@ public class ConfigurationJavaDocCodeSnippet {
         // attempts to get local `azure.sdk.<client-name>.http.proxy.host` property and falls back to
         // shared azure.sdk.http.proxy.port
         System.out.println(configuration.get(property));
-        // END: com.azure.core.util.Configuration.get#ConfigurationProperty
+        // END: com.typespec.core.util.Configuration.get#ConfigurationProperty
     }
 
     /**
@@ -121,32 +121,32 @@ public class ConfigurationJavaDocCodeSnippet {
             .root("azure.sdk")
             .buildSection("sample");
 
-        // BEGIN: com.azure.core.util.ConfigurationPropertyBuilder.ofDuration
+        // BEGIN: com.typespec.core.util.ConfigurationPropertyBuilder.ofDuration
         ConfigurationProperty<Duration> timeoutProperty = ConfigurationPropertyBuilder.ofDuration("timeout")
             .build();
         System.out.println(configuration.get(timeoutProperty));
-        // END: com.azure.core.util.ConfigurationPropertyBuilder.ofDuration
+        // END: com.typespec.core.util.ConfigurationPropertyBuilder.ofDuration
 
-        // BEGIN: com.azure.core.util.ConfigurationPropertyBuilder
+        // BEGIN: com.typespec.core.util.ConfigurationPropertyBuilder
         ConfigurationProperty<SampleEnumProperty> modeProperty =
             new ConfigurationPropertyBuilder<>("mode", SampleEnumProperty::fromString)
                 .logValue(true)
                 .defaultValue(SampleEnumProperty.MODE_1)
                 .build();
         System.out.println(configuration.get(modeProperty));
-        // END: com.azure.core.util.ConfigurationPropertyBuilder
+        // END: com.typespec.core.util.ConfigurationPropertyBuilder
 
-        // BEGIN: com.azure.core.util.ConfigurationPropertyBuilder.ofBoolean
+        // BEGIN: com.typespec.core.util.ConfigurationPropertyBuilder.ofBoolean
         ConfigurationProperty<Boolean> booleanProperty = ConfigurationPropertyBuilder.ofBoolean("is-enabled")
             .build();
         System.out.println(configuration.get(booleanProperty));
-        // END: com.azure.core.util.ConfigurationPropertyBuilder.ofBoolean
+        // END: com.typespec.core.util.ConfigurationPropertyBuilder.ofBoolean
 
-        // BEGIN: com.azure.core.util.ConfigurationPropertyBuilder.ofInteger
+        // BEGIN: com.typespec.core.util.ConfigurationPropertyBuilder.ofInteger
         ConfigurationProperty<Integer> integerProperty = ConfigurationPropertyBuilder.ofInteger("retry-count")
             .build();
         System.out.println(configuration.get(integerProperty));
-        // END: com.azure.core.util.ConfigurationPropertyBuilder.ofInteger
+        // END: com.typespec.core.util.ConfigurationPropertyBuilder.ofInteger
     }
 
     public static final class SampleEnumProperty extends ExpandableStringEnum<SampleEnumProperty> {

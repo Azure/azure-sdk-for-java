@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <p><strong>Examples:</strong></p>
  *
- * <!-- src_embed com.azure.core.annotation.Headers.class -->
+ * <!-- src_embed com.typespec.core.annotation.Headers.class -->
  * <pre>
  * &#64;Headers&#40;&#123;&quot;Content-Type: application&#47;json; charset=utf-8&quot;, &quot;accept-language: en-US&quot;&#125;&#41;
  * &#64;Post&#40;&quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.CustomerInsights&#47;&quot;
@@ -26,7 +26,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId,
  *     &#64;BodyParam&#40;&quot;application&#47;json&quot;&#41; RequestBody parameters&#41;;
  * </pre>
- * <!-- end com.azure.core.annotation.Headers.class -->
+ * <!-- end com.typespec.core.annotation.Headers.class -->
  */
 @Retention(RUNTIME)
 @Target(METHOD)

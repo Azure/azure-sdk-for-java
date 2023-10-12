@@ -31,7 +31,7 @@ public class TracerJavaDocCodeSnippets {
      */
     @SuppressWarnings("try")
     public void startTracingSpan() {
-        // BEGIN: com.azure.core.util.tracing.start#name
+        // BEGIN: com.typespec.core.util.tracing.start#name
         // start a new tracing span with given name and parent context implicitly propagated
         // in io.opentelemetry.context.Context.current()
 
@@ -44,9 +44,9 @@ public class TracerJavaDocCodeSnippets {
         } finally {
             tracer.end(null, throwable, span);
         }
-        // END: com.azure.core.util.tracing.start#name
+        // END: com.typespec.core.util.tracing.start#name
 
-        // BEGIN: com.azure.core.util.tracing.start#options
+        // BEGIN: com.typespec.core.util.tracing.start#options
         // start a new CLIENT tracing span with the given start options and explicit parent context
         StartSpanOptions options = new StartSpanOptions(SpanKind.CLIENT)
             .setAttribute("key", "value");
@@ -58,11 +58,11 @@ public class TracerJavaDocCodeSnippets {
         } finally {
             tracer.end(null, throwable, spanFromOptions);
         }
-        // END: com.azure.core.util.tracing.start#options
+        // END: com.typespec.core.util.tracing.start#options
 
         Map<String, Object> messageProperties = new HashMap<>();
         messageProperties.put("traceparent", "00-019a557423720cb4c261df2ef14581cd-93174ec2823511fc-01");
-        // BEGIN: com.azure.core.util.tracing.start#remote-parent-extract
+        // BEGIN: com.typespec.core.util.tracing.start#remote-parent-extract
         Context parentContext = tracer.extractContext(name -> {
             Object value = messageProperties.get(name);
             return value instanceof String ? (String) value : null;
@@ -80,14 +80,14 @@ public class TracerJavaDocCodeSnippets {
         } finally {
             tracer.end(null, throwable, spanWithRemoteParent);
         }
-        // END: com.azure.core.util.tracing.start#remote-parent-extract
+        // END: com.typespec.core.util.tracing.start#remote-parent-extract
 
-        // BEGIN: com.azure.core.util.tracing.start#explicit-inproc-parent
+        // BEGIN: com.typespec.core.util.tracing.start#explicit-inproc-parent
         Context parentSpan = tracer.start("parent", Context.NONE);
         Context childSpan = tracer.start("child", parentSpan);
         tracer.end(200, null, childSpan);
         tracer.end("success", null, parentSpan);
-        // END: com.azure.core.util.tracing.start#explicit-inproc-parent
+        // END: com.typespec.core.util.tracing.start#explicit-inproc-parent
     }
 
     /**
@@ -98,17 +98,17 @@ public class TracerJavaDocCodeSnippets {
         Context methodSpan = Context.NONE;
         Throwable throwable = null;
 
-        // BEGIN: com.azure.core.util.tracing.end#success
+        // BEGIN: com.typespec.core.util.tracing.end#success
         Context messageSpan = tracer.start("ServiceBus.message", new StartSpanOptions(SpanKind.PRODUCER), Context.NONE);
         tracer.end(null, null, messageSpan);
-        // END: com.azure.core.util.tracing.end#success
+        // END: com.typespec.core.util.tracing.end#success
 
-        // BEGIN: com.azure.core.util.tracing.end#errorStatus
+        // BEGIN: com.typespec.core.util.tracing.end#errorStatus
         Context span = tracer.start("ServiceBus.send", new StartSpanOptions(SpanKind.CLIENT), Context.NONE);
         tracer.end("amqp:not-found", null, span);
-        // END: com.azure.core.util.tracing.end#errorStatus
+        // END: com.typespec.core.util.tracing.end#errorStatus
 
-        // BEGIN: com.azure.core.util.tracing.end#exception
+        // BEGIN: com.typespec.core.util.tracing.end#exception
         Context sendSpan = tracer.start("ServiceBus.send", new StartSpanOptions(SpanKind.CLIENT), Context.NONE);
         try (AutoCloseable scope = tracer.makeSpanCurrent(sendSpan)) {
             doWork();
@@ -117,7 +117,7 @@ public class TracerJavaDocCodeSnippets {
         } finally {
             tracer.end(null, throwable, sendSpan);
         }
-        // END: com.azure.core.util.tracing.end#exception
+        // END: com.typespec.core.util.tracing.end#exception
     }
 
     /**
@@ -126,7 +126,7 @@ public class TracerJavaDocCodeSnippets {
     @SuppressWarnings("try")
     public void makeCurrent() {
         Throwable throwable = null;
-        // BEGIN: com.azure.core.util.tracing.makeCurrent
+        // BEGIN: com.typespec.core.util.tracing.makeCurrent
         Context span = tracer.start("EventHubs.process", new StartSpanOptions(SpanKind.CONSUMER), Context.NONE);
         try (AutoCloseable scope = tracer.makeSpanCurrent(span)) {
             doWork();
@@ -135,7 +135,7 @@ public class TracerJavaDocCodeSnippets {
         } finally {
             tracer.end(null, throwable, span);
         }
-        // END: com.azure.core.util.tracing.makeCurrent
+        // END: com.typespec.core.util.tracing.makeCurrent
     }
 
     /**
@@ -144,7 +144,7 @@ public class TracerJavaDocCodeSnippets {
     public void isEnabled() {
         Throwable throwable = null;
 
-        // BEGIN: com.azure.core.util.tracing.isEnabled
+        // BEGIN: com.typespec.core.util.tracing.isEnabled
         if (!tracer.isEnabled()) {
             doWork();
         } else {
@@ -157,7 +157,7 @@ public class TracerJavaDocCodeSnippets {
                 tracer.end(null, throwable, span);
             }
         }
-        // END: com.azure.core.util.tracing.isEnabled
+        // END: com.typespec.core.util.tracing.isEnabled
     }
 
     /**
@@ -169,7 +169,7 @@ public class TracerJavaDocCodeSnippets {
         messageProperties.put("traceparent", "00-019a557423720cb4c261df2ef14581cd-93174ec2823511fc-01");
         Throwable throwable = null;
 
-        // BEGIN: com.azure.core.util.tracing.start#links
+        // BEGIN: com.typespec.core.util.tracing.start#links
         Context messageContext = tracer.extractContext(name -> {
             Object value = messageProperties.get(name);
             return value instanceof String ? (String) value : null;
@@ -188,32 +188,32 @@ public class TracerJavaDocCodeSnippets {
         } finally {
             tracer.end(null, throwable, processSpan);
         }
-        // END: com.azure.core.util.tracing.start#links
+        // END: com.typespec.core.util.tracing.start#links
     }
 
     /**
      * Code snippet for setAttribute methods
      */
     public void addAttribute() {
-        // BEGIN: com.azure.core.util.tracing.set-attribute#int
+        // BEGIN: com.typespec.core.util.tracing.set-attribute#int
         Context span = tracer.start("EventHubs.process", Context.NONE);
         tracer.setAttribute("foo", 42, span);
-        // END: com.azure.core.util.tracing.set-attribute#int
+        // END: com.typespec.core.util.tracing.set-attribute#int
 
-        // BEGIN: com.azure.core.util.tracing.set-attribute#string
+        // BEGIN: com.typespec.core.util.tracing.set-attribute#string
         span = tracer.start("EventHubs.process", Context.NONE);
         tracer.setAttribute("bar", "baz", span);
-        // END: com.azure.core.util.tracing.set-attribute#string
+        // END: com.typespec.core.util.tracing.set-attribute#string
     }
 
     /**
      * Code snippet for {@link Tracer#addEvent(String, Map, OffsetDateTime, Context)}
      */
     public void addEvent() {
-        // BEGIN: com.azure.core.util.tracing.addEvent
+        // BEGIN: com.typespec.core.util.tracing.addEvent
         Context span = tracer.start("Cosmos.getItem", Context.NONE);
         tracer.addEvent("trying another endpoint", Collections.singletonMap("endpoint", "westus3"), OffsetDateTime.now(), span);
-        // END: com.azure.core.util.tracing.addEvent
+        // END: com.typespec.core.util.tracing.addEvent
     }
 
     /**
@@ -221,14 +221,14 @@ public class TracerJavaDocCodeSnippets {
      */
     public void createTracer() {
         ClientOptions clientOptions = new HttpClientOptions();
-        // BEGIN: com.azure.core.util.tracing.TracerProvider#create-tracer
+        // BEGIN: com.typespec.core.util.tracing.TracerProvider#create-tracer
         Tracer tracer = TracerProvider.getDefaultProvider().createTracer("azure-storage-blobs", "12.20.0",
             "Microsoft.Storage", clientOptions.getTracingOptions());
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .tracer(tracer)
             .clientOptions(clientOptions)
             .build();
-        // END: com.azure.core.util.tracing.TracerProvider#create-tracer
+        // END: com.typespec.core.util.tracing.TracerProvider#create-tracer
     }
 
     /**
@@ -241,7 +241,7 @@ public class TracerJavaDocCodeSnippets {
         Context methodSpan = Context.NONE;
         int httpResponseCode = 9;
 
-        // BEGIN: com.azure.core.util.tracing.injectContext
+        // BEGIN: com.typespec.core.util.tracing.injectContext
         Context httpSpan = tracer.start("HTTP GET", new StartSpanOptions(SpanKind.CLIENT), methodSpan);
         tracer.injectContext((headerName, headerValue) -> request.setHeader(headerName, headerValue), httpSpan);
 
@@ -253,7 +253,7 @@ public class TracerJavaDocCodeSnippets {
         } finally {
             tracer.end(httpResponseCode, throwable, httpSpan);
         }
-        // END: com.azure.core.util.tracing.injectContext
+        // END: com.typespec.core.util.tracing.injectContext
     }
 
     private Instant getEnqueuedTime(Map<String, Object> messageProperties) {

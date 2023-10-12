@@ -10,7 +10,7 @@ package com.typespec.core.util;
  *
  * <p><strong>Code samples</strong></p>
  *
- * <!-- src_embed com.azure.core.util.ProgressReportingE2ESample -->
+ * <!-- src_embed com.typespec.core.util.ProgressReportingE2ESample -->
  * <pre>
  * &#47;**
  *  * A simple operation that simulates I&#47;O activity.
@@ -49,7 +49,7 @@ package com.typespec.core.util;
  *     complexOperation&#40;complexOperationProgressReporter&#41;;
  * &#125;
  * </pre>
- * <!-- end com.azure.core.util.ProgressReportingE2ESample -->
+ * <!-- end com.typespec.core.util.ProgressReportingE2ESample -->
  */
 @FunctionalInterface
 public interface ProgressListener {

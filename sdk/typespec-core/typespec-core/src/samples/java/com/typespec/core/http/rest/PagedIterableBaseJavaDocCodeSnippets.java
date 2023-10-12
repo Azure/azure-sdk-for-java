@@ -29,7 +29,7 @@ public class PagedIterableBaseJavaDocCodeSnippets {
      * Provides an example for iterate over each response using streamByPage function.
      **/
     public void streamByPageSnippet() {
-        // BEGIN: com.azure.core.http.rest.pagedIterableBase.streamByPage
+        // BEGIN: com.typespec.core.http.rest.pagedIterableBase.streamByPage
         // process the streamByPage
         CustomPagedFlux<String> customPagedFlux = createCustomInstance();
         PagedIterableBase<String, PagedResponse<String>> customPagedIterableResponse =
@@ -39,7 +39,7 @@ public class PagedIterableBaseJavaDocCodeSnippets {
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getElements().forEach(value -> System.out.printf("Response value is %s %n", value));
         });
-        // END: com.azure.core.http.rest.pagedIterableBase.streamByPage
+        // END: com.typespec.core.http.rest.pagedIterableBase.streamByPage
     }
 
 
@@ -52,14 +52,14 @@ public class PagedIterableBaseJavaDocCodeSnippets {
         PagedIterableBase<String, PagedResponse<String>> customPagedIterableResponse =
             new PagedIterableBase<>(customPagedFlux);
 
-        // BEGIN: com.azure.core.http.rest.pagedIterableBase.iterableByPage
+        // BEGIN: com.typespec.core.http.rest.pagedIterableBase.iterableByPage
         // process the iterableByPage
         customPagedIterableResponse.iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getElements().forEach(value -> System.out.printf("Response value is %s %n", value));
         });
-        // END: com.azure.core.http.rest.pagedIterableBase.iterableByPage
+        // END: com.typespec.core.http.rest.pagedIterableBase.iterableByPage
     }
 
     /**
@@ -71,14 +71,14 @@ public class PagedIterableBaseJavaDocCodeSnippets {
         PagedIterableBase<String, PagedResponse<String>> customPagedIterableResponse =
             new PagedIterableBase<>(customPagedFlux);
 
-        // BEGIN: com.azure.core.http.rest.pagedIterableBase.iterableByPage.while
+        // BEGIN: com.typespec.core.http.rest.pagedIterableBase.iterableByPage.while
         // iterate over each page
         for (PagedResponse<String> resp : customPagedIterableResponse.iterableByPage()) {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getElements().forEach(value -> System.out.printf("Response value is %s %n", value));
         }
-        // END: com.azure.core.http.rest.pagedIterableBase.iterableByPage.while
+        // END: com.typespec.core.http.rest.pagedIterableBase.iterableByPage.while
     }
 
 

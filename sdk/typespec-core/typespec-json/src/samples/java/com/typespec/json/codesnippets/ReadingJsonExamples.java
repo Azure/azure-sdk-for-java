@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ReadingJsonExamples {
     public ComputerMemory readJsonByteArray() throws IOException {
-        // BEGIN: com.azure.json.JsonReader.readJsonByteArray
+        // BEGIN: com.typespec.json.JsonReader.readJsonByteArray
         // Sample uses String.getBytes as a convenience to show the JSON string in a human-readable form.
         byte[] json = ("{\"memoryInBytes\":10000000000,\"clockSpeedInHertz\":4800000000,"
             + "\"manufacturer\":\"Memory Corp\",\"errorCorrecting\":true}").getBytes(StandardCharsets.UTF_8);
@@ -23,22 +23,22 @@ public class ReadingJsonExamples {
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
             return ComputerMemory.fromJson(jsonReader);
         }
-        // END: com.azure.json.JsonReader.readJsonByteArray
+        // END: com.typespec.json.JsonReader.readJsonByteArray
     }
 
     public ComputerProcessor readJsonString() throws IOException {
-        // BEGIN: com.azure.json.JsonReader.readJsonString
+        // BEGIN: com.typespec.json.JsonReader.readJsonString
         String json = "{\"cores\":16,\"threads\":32,\"manufacturer\":\"Processor Corp\","
             + "\"clockSpeedInHertz\":5000000000,\"releaseDate\":null}";
 
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
             return ComputerProcessor.fromJson(jsonReader);
         }
-        // END: com.azure.json.JsonReader.readJsonString
+        // END: com.typespec.json.JsonReader.readJsonString
     }
 
     public VmStatistics readJsonInputStream() throws IOException {
-        // BEGIN: com.azure.json.JsonReader.readJsonInputStream
+        // BEGIN: com.typespec.json.JsonReader.readJsonInputStream
         // Sample uses String.getBytes as a convenience to show the JSON string in a human-readable form.
         InputStream json = new ByteArrayInputStream(("{\"VMSize\":\"large\",\"Processor\":{\"cores\":8,"
             + "\"threads\"16\",\"manufacturer\":\"Processor Corp\",\"clockSpeedInHertz\":4000000000,"
@@ -50,11 +50,11 @@ public class ReadingJsonExamples {
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
             return VmStatistics.fromJson(jsonReader);
         }
-        // END: com.azure.json.JsonReader.readJsonInputStream
+        // END: com.typespec.json.JsonReader.readJsonInputStream
     }
 
     public VmStatistics readJsonReader() throws IOException {
-        // BEGIN: com.azure.json.JsonReader.readJsonReader
+        // BEGIN: com.typespec.json.JsonReader.readJsonReader
         Reader json = new StringReader("{\"VMSize\":\"large\",\"Processor\":{\"cores\":8,\"threads\"16\","
             + "\"manufacturer\":\"Processor Corp\",\"clockSpeedInHertz\":4000000000,\"releaseDate\":\"2023-01-01\"},"
             + "\"Memory\":{\"memoryInBytes\":10000000000,\"clockSpeedInHertz\":4800000000,"
@@ -64,6 +64,6 @@ public class ReadingJsonExamples {
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
             return VmStatistics.fromJson(jsonReader);
         }
-        // END: com.azure.json.JsonReader.readJsonReader
+        // END: com.typespec.json.JsonReader.readJsonReader
     }
 }

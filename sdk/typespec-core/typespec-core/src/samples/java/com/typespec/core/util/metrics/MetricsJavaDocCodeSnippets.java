@@ -22,11 +22,11 @@ public class MetricsJavaDocCodeSnippets {
      * Code snippet for {@link MeterProvider#createMeter(String, String, MetricsOptions)}}
      */
     public void createMeter() {
-        // BEGIN: com.azure.core.util.metrics.MeterProvider.createMeter
+        // BEGIN: com.typespec.core.util.metrics.MeterProvider.createMeter
         MetricsOptions metricsOptions = new MetricsOptions();
 
         Meter meter = MeterProvider.getDefaultProvider().createMeter("azure-core", "1.0.0", metricsOptions);
-        // END: com.azure.core.util.metrics.MeterProvider.createMeter
+        // END: com.typespec.core.util.metrics.MeterProvider.createMeter
     }
 
     /**
@@ -34,7 +34,7 @@ public class MetricsJavaDocCodeSnippets {
      */
     public void createCounter() {
         Context currentContext = Context.NONE;
-        // BEGIN: com.azure.core.util.metrics.Meter.longCounter
+        // BEGIN: com.typespec.core.util.metrics.Meter.longCounter
         TelemetryAttributes attributes = defaultMeter.createAttributes(new HashMap<String, Object>() {{
                 put("endpoint", "http://service-endpoint.azure.com");
                 put("status", "ok");
@@ -44,7 +44,7 @@ public class MetricsJavaDocCodeSnippets {
             "Number of created HTTP connections", null);
 
         createdHttpConnections.add(1, attributes, currentContext);
-        // END: com.azure.core.util.metrics.Meter.longCounter
+        // END: com.typespec.core.util.metrics.Meter.longCounter
     }
 
     /**
@@ -52,7 +52,7 @@ public class MetricsJavaDocCodeSnippets {
      */
     public void createUpDownCounter() {
         Context currentContext = Context.NONE;
-        // BEGIN: com.azure.core.util.metrics.Meter.upDownCounter
+        // BEGIN: com.typespec.core.util.metrics.Meter.upDownCounter
         TelemetryAttributes attributes = defaultMeter.createAttributes(new HashMap<String, Object>() {{
                 put("endpoint", "http://service-endpoint.azure.com");
                 put("status", "ok");
@@ -66,7 +66,7 @@ public class MetricsJavaDocCodeSnippets {
 
         // on connection closed:
         activeHttpConnections.add(-1, attributes, currentContext);
-        // END: com.azure.core.util.metrics.Meter.upDownCounter
+        // END: com.typespec.core.util.metrics.Meter.upDownCounter
     }
 
     /**
@@ -75,7 +75,7 @@ public class MetricsJavaDocCodeSnippets {
     public void createLongGauge() {
         AtomicLong sequenceNumber = new AtomicLong();
 
-        // BEGIN: com.azure.core.util.metrics.Meter.longGauge
+        // BEGIN: com.typespec.core.util.metrics.Meter.longGauge
         TelemetryAttributes attributes = defaultMeter.createAttributes(new HashMap<String, Object>() {{
                 put("endpoint", "http://service-endpoint.azure.com");
                 put("container", "my-container");
@@ -94,7 +94,7 @@ public class MetricsJavaDocCodeSnippets {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // END: com.azure.core.util.metrics.Meter.longGauge
+        // END: com.typespec.core.util.metrics.Meter.longGauge
     }
 
 
@@ -103,7 +103,7 @@ public class MetricsJavaDocCodeSnippets {
      */
     public void createHistogram() {
         Context currentContext = Context.NONE;
-        // BEGIN: com.azure.core.util.metrics.Meter.doubleHistogram
+        // BEGIN: com.typespec.core.util.metrics.Meter.doubleHistogram
 
         // Meter and instruments should be created along with service client instance and retained for the client
         // lifetime for optimal performance
@@ -125,7 +125,7 @@ public class MetricsJavaDocCodeSnippets {
         if (amqpLinkDuration.isEnabled()) {
             amqpLinkDuration.record(Instant.now().toEpochMilli() - start.toEpochMilli(), attributes, currentContext);
         }
-        // END: com.azure.core.util.metrics.Meter.doubleHistogram
+        // END: com.typespec.core.util.metrics.Meter.doubleHistogram
     }
 
     /**
@@ -134,7 +134,7 @@ public class MetricsJavaDocCodeSnippets {
     public void createCounterWithErrorFlag() {
         Context currentContext = Context.NONE;
 
-        // BEGIN: com.azure.core.util.metrics.Meter.longCounter#errorFlag
+        // BEGIN: com.typespec.core.util.metrics.Meter.longCounter#errorFlag
 
         // Create attributes for possible error codes. Can be done lazily once specific error code is received.
         TelemetryAttributes successAttributes = defaultMeter.createAttributes(new HashMap<String, Object>() {{
@@ -157,7 +157,7 @@ public class MetricsJavaDocCodeSnippets {
             httpConnections.add(1, success ? successAttributes : errorAttributes, currentContext);
         }
 
-        // END: com.azure.core.util.metrics.Meter.longCounter#errorFlag
+        // END: com.typespec.core.util.metrics.Meter.longCounter#errorFlag
     }
 
     private boolean doThings() {

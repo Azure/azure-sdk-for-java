@@ -20,7 +20,7 @@ public class ContextJavaDocCodeSnippets {
      * Code snippet for {@link Context#Context(Object, Object)}
      */
     public void constructContextObject() {
-        // BEGIN: com.azure.core.util.context#object-object
+        // BEGIN: com.typespec.core.util.context#object-object
         // Create an empty context having no data
         Context emptyContext = Context.NONE;
 
@@ -29,14 +29,14 @@ public class ContextJavaDocCodeSnippets {
         // io.opentelemetry.context.Context.current() is used
 
         // Context contextWithSpan = new Context(PARENT_TRACE_CONTEXT_KEY, openTelemetryContext);
-        // END: com.azure.core.util.context#object-object
+        // END: com.typespec.core.util.context#object-object
     }
 
     /**
      * Code snippet for creating Context object using key-value pair map
      */
     public void contextOfObject() {
-        // BEGIN: com.azure.core.util.context.of#map
+        // BEGIN: com.typespec.core.util.context.of#map
         final String key1 = "Key1";
         final String value1 = "first-value";
         Map<Object, Object> keyValueMap = new HashMap<>();
@@ -45,14 +45,14 @@ public class ContextJavaDocCodeSnippets {
         // Create a context using the provided key value pair map
         Context keyValueContext = Context.of(keyValueMap);
         System.out.printf("Key1 value %s%n", keyValueContext.getData(key1).get());
-        // END: com.azure.core.util.context.of#map
+        // END: com.typespec.core.util.context.of#map
     }
 
     /**
      * Code snippet for {@link Context#addData(Object, Object)}
      */
     public void addDataToContext() {
-        // BEGIN: com.azure.core.util.context.addData#object-object
+        // BEGIN: com.typespec.core.util.context.addData#object-object
         // Users can pass parent trace context information and additional metadata to attach to spans created by SDKs
         // using the com.typespec.core.util.Context object.
         final String hostNameValue = "host-name-value";
@@ -69,14 +69,14 @@ public class ContextJavaDocCodeSnippets {
         // Both key values found on the same updated context object
         System.out.printf("Hostname value: %s%n", updatedContext.getData(HOST_NAME_KEY).get());
         System.out.printf("Entity Path value: %s%n", updatedContext.getData(ENTITY_PATH_KEY).get());
-        // END: com.azure.core.util.context.addData#object-object
+        // END: com.typespec.core.util.context.addData#object-object
     }
 
     /**
      * Code snippet for {@link Context#getData(Object)}
      */
     public void getDataContext() {
-        // BEGIN: com.azure.core.util.context.getData#object
+        // BEGIN: com.typespec.core.util.context.getData#object
         final String key1 = "Key1";
         final String value1 = "first-value";
 
@@ -90,14 +90,14 @@ public class ContextJavaDocCodeSnippets {
         } else {
             System.out.println("Key1 does not exist or have data.");
         }
-        // END: com.azure.core.util.context.getData#object
+        // END: com.typespec.core.util.context.getData#object
     }
 
     /**
      * Code snippet for {@link Context#getValues()}
      */
     public void getValues() {
-        // BEGIN: com.azure.core.util.Context.getValues
+        // BEGIN: com.typespec.core.util.Context.getValues
         final String key1 = "Key1";
         final String value1 = "first-value";
         final String key2 = "Key2";
@@ -118,7 +118,7 @@ public class ContextJavaDocCodeSnippets {
         } else {
             System.out.println("Key2 does not exist.");
         }
-        // END: com.azure.core.util.Context.getValues
+        // END: com.typespec.core.util.Context.getValues
     }
 
     static class TraceContext {

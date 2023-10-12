@@ -11,7 +11,7 @@ import com.typespec.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
-// BEGIN: com.azure.json.JsonSerializable.ComputerProcessor
+// BEGIN: com.typespec.json.JsonSerializable.ComputerProcessor
 
 /**
  * Implementation of JsonSerializable where all properties are set in the constructor.
@@ -119,4 +119,4 @@ public class ComputerProcessor implements JsonSerializable<ComputerProcessor> {
         });
     }
 }
-// END: com.azure.json.JsonSerializable.ComputerProcessor
+// END: com.typespec.json.JsonSerializable.ComputerProcessor
