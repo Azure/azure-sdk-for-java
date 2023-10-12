@@ -58,9 +58,6 @@ public class JobAdapter {
         Map<String, Object> tags = tagValueMap != null ? tagValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
         List<RouterWorkerSelector> workerSelectors = createJobOptions.getRequestedWorkerSelectors();
-        List<RouterWorkerSelectorInternal> workerSelectorsInternal = workerSelectors != null ? workerSelectors.stream()
-            .map(ws -> convertWorkerSelectorToInternal(ws))
-            .collect(Collectors.toList()) : null;
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
         Map<String, String> notes = jobNotes != null ? jobNotes.stream()
             .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : null;

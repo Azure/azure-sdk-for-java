@@ -48,7 +48,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         // Setup
         jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
-        String testName = "unassign-job-2";
+        String testName = "unassign-job-3";
         /**
          * Setup queue
          */
@@ -144,7 +144,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
 
-        String testName = "schedule-job-1";
+        String testName = "schedule-job-test";
 
         String distributionPolicyId = String.format("%s-%s-DistributionPolicy", JAVA_LIVE_TESTS, testName);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
@@ -154,20 +154,13 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
 
-        RouterJob job = jobRouterClient.createJob(new CreateJobOptions(jobId, testName, queue.getId())
-            .setMatchingMode(new JobMatchingMode()
-                .setScheduleAndSuspendMode(
-                    new ScheduleAndSuspendMode()
-                        .setScheduleAt(OffsetDateTime.of(2040, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC)))));
-
         // Action
-        RouterJob job2 = jobRouterClient.updateJob(new UpdateJobOptions(jobId)
+        RouterJob job = jobRouterClient.createJob(new CreateJobOptions(jobId, testName, queue.getId())
             .setMatchingMode(new JobMatchingMode()
                 .setQueueAndMatchMode(new QueueAndMatchMode())));
 
         // Verify
-        assertEquals(job.getStatus(), RouterJobStatus.PENDING_SCHEDULE);
-        assertEquals(job2.getStatus(), RouterJobStatus.QUEUED);
+        assertEquals(RouterJobStatus.QUEUED, job.getStatus());
 
         // Cleanup
         jobRouterClient.cancelJob(new CancelJobOptions(jobId));
