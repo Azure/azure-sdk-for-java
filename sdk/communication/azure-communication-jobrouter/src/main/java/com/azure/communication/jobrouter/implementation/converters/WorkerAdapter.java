@@ -9,6 +9,7 @@ import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.RouterQueueAssignment;
+import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
 
@@ -25,7 +26,7 @@ public class WorkerAdapter {
      * @param createWorkerOptions Container with options to create {@link RouterWorkerInternal}
      * @return RouterWorker
      */
-    public static RouterWorkerInternal convertCreateWorkerOptionsToRouterWorker(CreateWorkerOptions createWorkerOptions) {
+    public static RouterWorker convertCreateWorkerOptionsToRouterWorker(CreateWorkerOptions createWorkerOptions) {
         Map<String, LabelValue> labelValueMap = createWorkerOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : new HashMap<>();
@@ -36,12 +37,12 @@ public class WorkerAdapter {
         Map<String, Object> queueAssignments = queueAssignmentsMap != null ? queueAssignmentsMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, e -> new RouterQueueAssignment())) : new HashMap<>();
 
-        return new RouterWorkerInternal()
+        return new RouterWorker()
             .setLabels(labels)
             .setTags(tags)
             .setQueueAssignments(queueAssignments)
             .setAvailableForOffers(createWorkerOptions.isAvailableForOffers())
-            .setChannelConfigurations(convertChannelConfigurationsToInternal(createWorkerOptions.getChannelConfigurations()))
+            .setChannelConfigurations(createWorkerOptions.getChannelConfigurations())
             .setTotalCapacity(createWorkerOptions.getTotalCapacity());
     }
 
@@ -50,7 +51,7 @@ public class WorkerAdapter {
      * @param updateWorkerOptions Container with options to update {@link RouterWorkerInternal}
      * @return RouterWorker
      */
-    public static RouterWorkerInternal convertUpdateWorkerOptionsToRouterWorker(UpdateWorkerOptions updateWorkerOptions) {
+    public static RouterWorker convertUpdateWorkerOptionsToRouterWorker(UpdateWorkerOptions updateWorkerOptions) {
         Map<String, LabelValue> labelValueMap = updateWorkerOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : new HashMap<>();
@@ -61,12 +62,12 @@ public class WorkerAdapter {
         Map<String, Object> queueAssignments = queueAssignmentsMap != null ? queueAssignmentsMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, e -> new RouterQueueAssignment())) : new HashMap<>();
 
-        return new RouterWorkerInternal()
+        return new RouterWorker()
             .setLabels(labels)
             .setTags(tags)
             .setQueueAssignments(queueAssignments)
             .setAvailableForOffers(updateWorkerOptions.isAvailableForOffers())
-            .setChannelConfigurations(convertChannelConfigurationsToInternal(updateWorkerOptions.getChannelConfigurations()))
+            .setChannelConfigurations(updateWorkerOptions.getChannelConfigurations())
             .setTotalCapacity(updateWorkerOptions.getTotalCapacity());
     }
 

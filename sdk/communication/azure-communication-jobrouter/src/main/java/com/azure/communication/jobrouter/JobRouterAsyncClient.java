@@ -920,7 +920,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> createWorker(CreateWorkerOptions createWorkerOptions) {
         try {
-            RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+            RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
             return withContext(context -> upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), routerWorker, context)
                 .flatMap(
                     (Response<RouterWorker> res) -> {
@@ -947,7 +947,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions) {
         try {
-            RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+            RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
             return withContext(context -> upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), routerWorker, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -967,7 +967,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> updateWorker(UpdateWorkerOptions updateWorkerOptions) {
         try {
-            RouterWorkerInternal routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
+            RouterWorker routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
             return withContext(context -> upsertWorkerWithResponse(updateWorkerOptions.getWorkerId(), routerWorker, context)
                 .flatMap(
                     (Response<RouterWorker> res) -> {
@@ -995,17 +995,16 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> updateWorkerWithResponse(UpdateWorkerOptions updateWorkerOptions) {
         try {
-            RouterWorkerInternal routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
+            RouterWorker routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
             return withContext(context -> upsertWorkerWithResponse(updateWorkerOptions.getWorkerId(), routerWorker, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<RouterWorker>> upsertWorkerWithResponse(String id, RouterWorkerInternal routerWorker, Context context) {
+    Mono<Response<RouterWorker>> upsertWorkerWithResponse(String id, RouterWorker routerWorker, Context context) {
         try {
-            return jobRouter.upsertWorkerWithResponseAsync(id, routerWorker, context)
-                .map(response -> new SimpleResponse<>(response, RouterWorkerConstructorProxy.create(response.getValue())));
+            return jobRouter.upsertWorkerWithResponseAsync(id, routerWorker, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1057,8 +1056,7 @@ public final class JobRouterAsyncClient {
 
     Mono<Response<RouterWorker>> getWorkerWithResponse(String id, Context context) {
         try {
-            return jobRouter.getWorkerWithResponseAsync(id, context)
-                .map(response -> new SimpleResponse<>(response, RouterWorkerConstructorProxy.create(response.getValue())));
+            return jobRouter.getWorkerWithResponseAsync(id, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

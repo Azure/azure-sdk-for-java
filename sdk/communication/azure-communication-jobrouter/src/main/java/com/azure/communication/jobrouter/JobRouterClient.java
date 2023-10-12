@@ -109,8 +109,8 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions, Context context) {
-        RouterJobInternal routerJobInternal = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
-        return this.client.upsertJobWithResponse(createJobOptions.getId(), routerJobInternal, context).block();
+        RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+        return this.client.upsertJobWithResponse(createJobOptions.getId(), routerJob, context).block();
     }
 
     /**
@@ -125,8 +125,8 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> createJobWithClassificationPolicyWithResponse(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions, Context context) {
-        RouterJobInternal routerJobInternal = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
-        return this.client.upsertJobWithResponse(createJobWithClassificationPolicyOptions.getId(), routerJobInternal, context).block();
+        RouterJob routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        return this.client.upsertJobWithResponse(createJobWithClassificationPolicyOptions.getId(), routerJob, context).block();
     }
 
     /**
@@ -157,7 +157,7 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> updateJobWithResponse(UpdateJobOptions updateJobOptions, Context context) {
-        RouterJobInternal routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+        RouterJob routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
         return this.client.upsertJobWithResponse(updateJobOptions.getId(), routerJob, context).block();
     }
 
@@ -549,7 +549,7 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions, Context context) {
-        RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+        RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
         return this.client.upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), routerWorker, context).block();
     }
 
@@ -581,7 +581,7 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> updateWorkerWithResponse(UpdateWorkerOptions updateWorkerOptions, Context context) {
-        RouterWorkerInternal routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
+        RouterWorker routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
         return this.client.upsertWorkerWithResponse(updateWorkerOptions.getWorkerId(), routerWorker, context).block();
     }
 
