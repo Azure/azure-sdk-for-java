@@ -63,29 +63,21 @@ public final class ItemLevelRecoveryConnectionsProvisionWithResponseMockTests {
         manager
             .itemLevelRecoveryConnections()
             .provisionWithResponse(
-                "sdsu",
-                "heqdgcru",
-                "spiny",
-                "m",
-                "gwokmikpazfbmjxu",
-                "jipfdvh",
+                "aghm",
+                "ynwlslrcigtzjcv",
+                "xqlaps",
+                "ssov",
+                "xpavid",
+                "ievw",
                 new IlrRequestResource()
-                    .withLocation("hthdklmvetatlakf")
-                    .withTags(
-                        mapOf(
-                            "bvtooxrpogwp",
-                            "xwgiks",
-                            "bfntumeezbxvq",
-                            "chgjtnhtukfacih",
-                            "sgomtmjz",
-                            "bnuvwcg",
-                            "mkkhtgfredml",
-                            "xuqgovsxpwwztj"))
+                    .withLocation("gcbdsvalpnptw")
+                    .withTags(mapOf("jo", "xgpazwugxyqv"))
                     .withProperties(new IlrRequest())
-                    .withEtag("vwzaehp"),
+                    .withEtag("vvyezslpu"),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
