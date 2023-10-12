@@ -481,6 +481,13 @@
       ]
     },
     {
+      "filename": "sdk/easm/azure-analytics-defender-easm/**/*.md",
+      "words": [
+        "EASM",
+        "easm"
+      ]
+    },
+    {
       "filename": "**/pom.xml",
       "patterns": [
         {

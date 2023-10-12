@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.1 (Unreleased)
 
-- Azure Easm client library for Java. This package contains Microsoft Azure Easm client library.
+- Azure EASM client library for Java. This package contains Microsoft Azure EASM client library.
 
 ### Features Added
 
