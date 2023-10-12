@@ -554,4 +554,52 @@ public class CallAutomationEventParserUnitTests {
         assertEquals("context", sendDtmfFailed.getOperationContext());
         assertEquals("Send DTMF couldn't be completed successfully.", sendDtmfFailed.getResultInformation().getMessage());
     }
+    
+    @Test
+    public void parseTransferAccptedEvent() {
+        String receivedEvent = "[\n"
+                + "    {\n"
+                + "        \"id\": \"91f8b34b-383c-431d-9fa5-79d39fad9300\",\n"
+                + "        \"source\": \"calling/callConnections/411f0b00-dc73-4528-a9e6-968ba983d2a1\",\n"
+                + "        \"type\": \"Microsoft.Communication.CallTransferAccepted\",\n"
+                + "        \"data\": {\n"
+                + "            \"resultInformation\": {\n"
+                + "                \"code\": 200,\n"
+                + "                \"subCode\": 7015,\n"
+                + "                \"message\": \"The transfer operation completed successfully.\"\n"
+                + "            },\n"
+                + "            \"transferTarget\": {\n"
+                + "                \"rawId\": \"8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2f-2234-655d-573a0d00443e\",\n"
+                + "                \"kind\": \"communicationUser\",\n"
+                + "                \"communicationUser\": {\n"
+                + "                    \"id\": \"8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2f-2234-655d-573a0d00443e\"\n"
+                + "                }\n"
+                + "            },\n"
+                + "            \"transferee\": {\n"
+                + "                \"rawId\": \"8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2e-e2b4-655d-573a0d004434\",\n"
+                + "                \"kind\": \"communicationUser\",\n"
+                + "                \"communicationUser\": {\n"
+                + "                    \"id\": \"8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2e-e2b4-655d-573a0d004434\"\n"
+                + "                }\n"
+                + "            },\n"
+                + "            \"callConnectionId\": \"411f0b00-dc73-4528-a9e6-968ba983d2a1\",\n"
+                + "            \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDEuY29udi5za3lwZS5jb20vY29udi8yZWtNYmJRN3VVbUY1RDJERFdITWJnP2k9MTUmZT02MzgyNTMwMzY2ODQ5NzkwMDI=\",\n"
+                + "            \"correlationId\": \"be43dd55-38e9-4de8-9d75-e20b6b32744f\"\n"
+                + "        },\n"
+                + "        \"time\": \"2023-07-19T18:31:16.6795146+00:00\",\n"
+                + "        \"specversion\": \"1.0\",\n"
+                + "        \"datacontenttype\": \"application/json\",\n"
+                + "        \"subject\": \"calling/callConnections/411f0b00-dc73-4528-a9e6-968ba983d2a1\"\n"
+                + "    }\n"
+                + "]";
+        CallTransferAccepted event = (CallTransferAccepted) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDEuY29udi5za3lwZS5jb20vY29udi8yZWtNYmJRN3VVbUY1RDJERFdITWJnP2k9MTUmZT02MzgyNTMwMzY2ODQ5NzkwMDI=", event.getServerCallId());
+        assertEquals("411f0b00-dc73-4528-a9e6-968ba983d2a1", event.getCallConnectionId());
+        assertEquals("be43dd55-38e9-4de8-9d75-e20b6b32744f", event.getCorrelationId());
+        assertEquals("The transfer operation completed successfully.", event.getResultInformation().getMessage());
+        assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2f-2234-655d-573a0d00443e", event.getTransferTarget().getRawId());
+        assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2e-e2b4-655d-573a0d004434", event.getTransferee().getRawId());
+    }
 }

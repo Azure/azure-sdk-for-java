@@ -42,7 +42,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryWithFilter() throws Exception {
 
         String filterId = createdPermissions.get(0).getId();
@@ -66,7 +66,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, TIMEOUT);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void query_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
@@ -82,7 +82,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryAll() throws Exception {
 
         String query = "SELECT * from root";
@@ -105,7 +105,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
 
@@ -119,7 +119,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable.byPage(), validator);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_PermissionQueryTest() {
         client = this.getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
@@ -132,7 +132,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(createdDatabase);
         safeClose(client);

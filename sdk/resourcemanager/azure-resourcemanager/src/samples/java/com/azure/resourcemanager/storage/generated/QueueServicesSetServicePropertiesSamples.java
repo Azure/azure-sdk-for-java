@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.QueueServicePropertiesInner;
 import com.azure.resourcemanager.storage.models.CorsRule;
 import com.azure.resourcemanager.storage.models.CorsRuleAllowedMethodsItem;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for QueueServices SetServiceProperties. */
 public final class QueueServicesSetServicePropertiesSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/QueueServicesPut.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/QueueServicesPut.json
      */
     /**
      * Sample code: QueueServicesPut.
@@ -69,6 +68,6 @@ public final class QueueServicesSetServicePropertiesSamples {
                                             .withExposedHeaders(
                                                 Arrays.asList("x-ms-meta-abc", "x-ms-meta-data*", "x-ms-meta-target*"))
                                             .withAllowedHeaders(Arrays.asList("x-ms-meta-12345675754564*"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

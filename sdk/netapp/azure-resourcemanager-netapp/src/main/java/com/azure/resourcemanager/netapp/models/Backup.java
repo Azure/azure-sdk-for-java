@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import java.time.OffsetDateTime;
@@ -40,13 +39,6 @@ public interface Backup {
      * @return the location value.
      */
     String location();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the backupId property: backupId
@@ -153,11 +145,13 @@ public interface Backup {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The Backup definition stages. */
     interface DefinitionStages {
         /** The first stage of the Backup definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Backup definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -176,6 +170,7 @@ public interface Backup {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Backup definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -190,6 +185,7 @@ public interface Backup {
             WithCreate withExistingVolume(
                 String resourceGroupName, String accountName, String poolName, String volumeName);
         }
+
         /**
          * The stage of the Backup definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -210,6 +206,7 @@ public interface Backup {
              */
             Backup create(Context context);
         }
+
         /** The stage of the Backup definition allowing to specify label. */
         interface WithLabel {
             /**
@@ -220,6 +217,7 @@ public interface Backup {
              */
             WithCreate withLabel(String label);
         }
+
         /** The stage of the Backup definition allowing to specify useExistingSnapshot. */
         interface WithUseExistingSnapshot {
             /**
@@ -233,6 +231,7 @@ public interface Backup {
             WithCreate withUseExistingSnapshot(Boolean useExistingSnapshot);
         }
     }
+
     /**
      * Begins update for the Backup resource.
      *
@@ -257,6 +256,7 @@ public interface Backup {
          */
         Backup apply(Context context);
     }
+
     /** The Backup update stages. */
     interface UpdateStages {
         /** The stage of the Backup update allowing to specify tags. */
@@ -269,6 +269,7 @@ public interface Backup {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Backup update allowing to specify label. */
         interface WithLabel {
             /**
@@ -279,6 +280,7 @@ public interface Backup {
              */
             Update withLabel(String label);
         }
+
         /** The stage of the Backup update allowing to specify useExistingSnapshot. */
         interface WithUseExistingSnapshot {
             /**
@@ -292,6 +294,7 @@ public interface Backup {
             Update withUseExistingSnapshot(Boolean useExistingSnapshot);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

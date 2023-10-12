@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.storage.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionStat
 /** Samples for PrivateEndpointConnections Put. */
 public final class PrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountPutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountPutPrivateEndpointConnection.json
      */
     /**
      * Sample code: StorageAccountPutPrivateEndpointConnection.
@@ -35,6 +34,6 @@ public final class PrivateEndpointConnectionsPutSamples {
                         new PrivateLinkServiceConnectionState()
                             .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
                             .withDescription("Auto-Approved")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

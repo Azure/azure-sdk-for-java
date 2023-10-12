@@ -15,17 +15,19 @@ public final class ElasticMonitorResourceUpdateParametersTests {
     public void testDeserialize() throws Exception {
         ElasticMonitorResourceUpdateParameters model =
             BinaryData
-                .fromString("{\"tags\":{\"kzsmodm\":\"tbciqfouflmm\"}}")
+                .fromString(
+                    "{\"tags\":{\"pspwgcuertu\":\"duqkt\",\"bmdg\":\"kdosvqw\",\"dgmb\":\"bjf\",\"tq\":\"bexppb\"}}")
                 .toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("tbciqfouflmm", model.tags().get("kzsmodm"));
+        Assertions.assertEquals("duqkt", model.tags().get("pspwgcuertu"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticMonitorResourceUpdateParameters model =
-            new ElasticMonitorResourceUpdateParameters().withTags(mapOf("kzsmodm", "tbciqfouflmm"));
+            new ElasticMonitorResourceUpdateParameters()
+                .withTags(mapOf("pspwgcuertu", "duqkt", "bmdg", "kdosvqw", "dgmb", "bjf", "tq", "bexppb"));
         model = BinaryData.fromObject(model).toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("tbciqfouflmm", model.tags().get("kzsmodm"));
+        Assertions.assertEquals("duqkt", model.tags().get("pspwgcuertu"));
     }
 
     @SuppressWarnings("unchecked")

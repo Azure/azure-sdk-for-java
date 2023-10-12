@@ -9,37 +9,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a label selector that will always be attached. */
+import java.util.Objects;
+
+/** Describes a queue selector that will be attached to the job. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("static")
 @Fluent
 public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment {
+    /**
+     * Creates an instance of StaticQueueSelectorAttachment class.
+     *
+     * @param queueSelector Describes a condition that must be met against a set of labels for queue selection
+     */
+    public StaticQueueSelectorAttachment(RouterQueueSelector queueSelector) {
+        this.queueSelector = Objects.requireNonNull(queueSelector, "'queueSelector' cannot be null.");
+    }
+
     /*
      * Describes a condition that must be met against a set of labels for queue
      * selection
      */
-    @JsonProperty(value = "labelSelector", required = true)
-    private QueueSelector labelSelector;
+    @JsonProperty(value = "queueSelector", required = true)
+    private final RouterQueueSelector queueSelector;
 
     /**
-     * Get the labelSelector property: Describes a condition that must be met against a set of labels for queue
+     * Get the queueSelector property: Describes a condition that must be met against a set of labels for queue
      * selection.
      *
-     * @return the labelSelector value.
+     * @return the queueSelector value.
      */
-    public QueueSelector getLabelSelector() {
-        return this.labelSelector;
-    }
-
-    /**
-     * Set the labelSelector property: Describes a condition that must be met against a set of labels for queue
-     * selection.
-     *
-     * @param labelSelector the labelSelector value to set.
-     * @return the StaticQueueSelectorAttachment object itself.
-     */
-    public StaticQueueSelectorAttachment setLabelSelector(QueueSelector labelSelector) {
-        this.labelSelector = labelSelector;
-        return this;
+    public RouterQueueSelector getQueueSelector() {
+        return this.queueSelector;
     }
 }

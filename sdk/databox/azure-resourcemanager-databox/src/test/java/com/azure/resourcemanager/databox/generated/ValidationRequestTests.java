@@ -15,7 +15,7 @@ public final class ValidationRequestTests {
         ValidationRequest model =
             BinaryData
                 .fromString(
-                    "{\"validationCategory\":\"ValidationRequest\",\"individualRequestDetails\":[{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"}]}")
+                    "{\"validationCategory\":\"ValidationRequest\",\"individualRequestDetails\":[{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"},{\"validationType\":\"ValidationInputRequest\"}]}")
                 .toObject(ValidationRequest.class);
     }
 
@@ -26,7 +26,10 @@ public final class ValidationRequestTests {
                 .withIndividualRequestDetails(
                     Arrays
                         .asList(
-                            new ValidationInputRequest(), new ValidationInputRequest(), new ValidationInputRequest()));
+                            new ValidationInputRequest(),
+                            new ValidationInputRequest(),
+                            new ValidationInputRequest(),
+                            new ValidationInputRequest()));
         model = BinaryData.fromObject(model).toObject(ValidationRequest.class);
     }
 }

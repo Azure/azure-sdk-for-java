@@ -40,7 +40,7 @@ public final class DocumentFieldSchema {
     private Map<String, DocumentFieldSchema> properties;
 
     /**
-     * Get the type property: Semantic data type of the field value.
+     * Get the Semantic data type of the field value.
      *
      * @return the type value.
      */
@@ -49,17 +49,16 @@ public final class DocumentFieldSchema {
     }
 
     /**
-     * Set the type property: Semantic data type of the field value.
+     * Set the Semantic data type of the field value.
      *
      * @param type the type value to set.
-     * @return the DocumentFieldSchema object itself.
      */
     private void setType(DocumentFieldType type) {
         this.type = type;
     }
 
     /**
-     * Get the description property: Field description.
+     * Get the Field description.
      *
      * @return the description value.
      */
@@ -68,17 +67,16 @@ public final class DocumentFieldSchema {
     }
 
     /**
-     * Set the description property: Field description.
+     * Set the Field description.
      *
      * @param description the description value to set.
-     * @return the DocumentFieldSchema object itself.
      */
     private void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * Get the example property: Example field content.
+     * Get the example field content.
      *
      * @return the example value.
      */
@@ -87,17 +85,16 @@ public final class DocumentFieldSchema {
     }
 
     /**
-     * Set the example property: Example field content.
+     * Set the Example field content.
      *
      * @param example the example value to set.
-     * @return the DocumentFieldSchema object itself.
      */
     private void setExample(String example) {
         this.example = example;
     }
 
     /**
-     * Get the items property: Field type schema of each array element.
+     * Get the Field type schema of each array element.
      *
      * @return the items value.
      */
@@ -106,10 +103,9 @@ public final class DocumentFieldSchema {
     }
 
     /**
-     * Set the items property: Field type schema of each array element.
+     * Set the Field type schema of each array element.
      *
      * @param items the items value to set.
-     * @return the DocumentFieldSchema object itself.
      */
     private void setItems(DocumentFieldSchema items) {
         this.items = items;
@@ -125,10 +121,9 @@ public final class DocumentFieldSchema {
     }
 
     /**
-     * Set the properties property: Named sub-fields of the object field.
+     * Set the Named sub-fields of the object field.
      *
      * @param properties the properties value to set.
-     * @return the DocumentFieldSchema object itself.
      */
     private void setProperties(Map<String, DocumentFieldSchema> properties) {
         this.properties = properties;

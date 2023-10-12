@@ -11,30 +11,25 @@ import com.azure.resourcemanager.batch.models.UserAssignedIdentities;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BatchPoolIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BatchPoolIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zzikhlyfjhdg\":{\"principalId\":\"mjwosytx\",\"clientId\":\"cskfcktqumiekk\"},\"dsuvarmywdmjsjqb\":{\"principalId\":\"gebdunygaeq\",\"clientId\":\"bqfatpxllrxcyjmo\"}}}")
+                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"vkg\":{\"principalId\":\"tvcof\",\"clientId\":\"f\"},\"sgsahmkycgr\":{\"principalId\":\"bgdknnqv\",\"clientId\":\"znqntoru\"}}}")
                 .toObject(BatchPoolIdentity.class);
         Assertions.assertEquals(PoolIdentityType.USER_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BatchPoolIdentity model =
             new BatchPoolIdentity()
                 .withType(PoolIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
-                    mapOf(
-                        "zzikhlyfjhdg",
-                        new UserAssignedIdentities(),
-                        "dsuvarmywdmjsjqb",
-                        new UserAssignedIdentities()));
+                    mapOf("vkg", new UserAssignedIdentities(), "sgsahmkycgr", new UserAssignedIdentities()));
         model = BinaryData.fromObject(model).toObject(BatchPoolIdentity.class);
         Assertions.assertEquals(PoolIdentityType.USER_ASSIGNED, model.type());
     }

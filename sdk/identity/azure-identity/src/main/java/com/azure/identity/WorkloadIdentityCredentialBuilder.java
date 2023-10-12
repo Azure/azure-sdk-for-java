@@ -3,8 +3,12 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
+
+import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
 
 /**
  * Fluent credential builder for instantiating a {@link WorkloadIdentityCredential}.
@@ -31,7 +35,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
  *
  * <!-- src_embed com.azure.identity.credential.workloadidentitycredential.construct -->
  * <pre>
- * TokenCredential onBehalfOfCredential = new WorkloadIdentityCredentialBuilder&#40;&#41;
+ * TokenCredential workloadIdentityCredential = new WorkloadIdentityCredentialBuilder&#40;&#41;
  *     .clientId&#40;&quot;&lt;clientID&gt;&quot;&#41;
  *     .tenantId&#40;&quot;&lt;tenantID&gt;&quot;&#41;
  *     .tokenFilePath&#40;&quot;&lt;token-file-path&gt;&quot;&#41;
@@ -69,9 +73,22 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      * @return a {@link WorkloadIdentityCredential} with the current configurations.
      */
     public WorkloadIdentityCredential build() {
-        ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientId,
-            "Tenant ID", tenantId, "Service Token File Path", tokenFilePath);
+        Configuration configuration = identityClientOptions.getConfiguration() == null
+            ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
 
-        return new WorkloadIdentityCredential(tenantId, clientId, tokenFilePath, identityClientOptions.clone());
+        String tenantIdInput = CoreUtils.isNullOrEmpty(tenantId)
+            ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : tenantId;
+
+        String federatedTokenFilePathInput = CoreUtils.isNullOrEmpty(tokenFilePath)
+            ? configuration.get(AZURE_FEDERATED_TOKEN_FILE) : tokenFilePath;
+
+        String clientIdInput = CoreUtils.isNullOrEmpty(clientId)
+            ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : clientId;
+
+        ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput,
+            "Tenant ID", tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
+
+        return new WorkloadIdentityCredential(tenantIdInput, clientIdInput, federatedTokenFilePathInput,
+            identityClientOptions.clone());
     }
 }

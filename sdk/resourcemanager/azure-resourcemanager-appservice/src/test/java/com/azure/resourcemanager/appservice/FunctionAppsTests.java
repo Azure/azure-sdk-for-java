@@ -11,6 +11,7 @@ import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
+import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -86,10 +87,11 @@ public class FunctionAppsTests extends AppServiceTest {
                 .create();
         Assertions.assertNotNull(functionApp1);
         Assertions.assertEquals(Region.US_WEST, functionApp1.region());
+        Assertions.assertFalse(functionApp1.alwaysOn());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(Region.US_WEST, plan1.region());
-        Assertions.assertEquals(new PricingTier("Dynamic", "Y1"), plan1.pricingTier());
+        Assertions.assertEquals(new PricingTier(SkuName.DYNAMIC.toString(), "Y1"), plan1.pricingTier());
 
         FunctionAppResource functionAppResource1 = getStorageAccount(storageManager, functionApp1);
         // consumption plan requires this 2 settings
@@ -115,6 +117,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .create();
         Assertions.assertNotNull(functionApp2);
         Assertions.assertEquals(Region.US_WEST, functionApp2.region());
+        Assertions.assertFalse(functionApp2.alwaysOn());
 
         // Create with app service plan
         FunctionApp functionApp3 =
@@ -126,8 +129,9 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withNewAppServicePlan(PricingTier.BASIC_B1)
                 .withExistingStorageAccount(functionApp1.storageAccount())
                 .create();
-        Assertions.assertNotNull(functionApp2);
-        Assertions.assertEquals(Region.US_WEST, functionApp2.region());
+        Assertions.assertNotNull(functionApp3);
+        Assertions.assertEquals(Region.US_WEST, functionApp3.region());
+        Assertions.assertTrue(functionApp3.alwaysOn());
 
         // app service plan does not have this 2 settings
         // https://github.com/Azure/azure-libraries-for-net/issues/485
@@ -196,6 +200,7 @@ public class FunctionAppsTests extends AppServiceTest {
         // Scale
         functionApp3.update().withNewAppServicePlan(PricingTier.STANDARD_S2).apply();
         Assertions.assertNotEquals(functionApp3.appServicePlanId(), functionApp1.appServicePlanId());
+        Assertions.assertTrue(functionApp3.alwaysOn());
     }
 
     private static final String FUNCTION_APP_PACKAGE_URL =
@@ -219,6 +224,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .create();
         Assertions.assertNotNull(functionApp1);
         assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8);
+        Assertions.assertFalse(functionApp1.alwaysOn());
 
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
@@ -261,6 +267,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .create();
         Assertions.assertNotNull(functionApp2);
         assertLinuxJava(functionApp2, FunctionRuntimeStack.JAVA_8);
+        Assertions.assertTrue(functionApp2.alwaysOn());
 
         AppServicePlan plan2 = appServiceManager.appServicePlans().getById(functionApp2.appServicePlanId());
         Assertions.assertNotNull(plan2);
@@ -280,6 +287,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .create();
         Assertions.assertNotNull(functionApp3);
         assertLinuxJava(functionApp3, FunctionRuntimeStack.JAVA_8);
+        Assertions.assertTrue(functionApp3.alwaysOn());
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -320,6 +328,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp1);
+        Assertions.assertFalse(functionApp1.alwaysOn());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"), plan1.pricingTier());
@@ -358,6 +367,8 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withRuntime("java")
                 .withRuntimeVersion("~3")
                 .create();
+
+        Assertions.assertFalse(functionApp1.alwaysOn());
 
         // deploy
         if (!isPlaybackMode()) {
@@ -404,6 +415,47 @@ public class FunctionAppsTests extends AppServiceTest {
         assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_17);
 
         assertRunning(functionApp1);
+    }
+
+    @Test
+    public void canCreateAndUpdateFunctionAppWithContainerSize() {
+        rgName2 = null;
+        webappName1 = generateRandomResourceName("java-function-", 20);
+        String functionDeploymentSlotName = generateRandomResourceName("fds", 15);
+
+        FunctionApp functionApp1 = appServiceManager.functionApps()
+            .define(webappName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName1)
+            .withContainerSize(512)
+            .create();
+
+        FunctionDeploymentSlot functionDeploymentSlot = functionApp1.deploymentSlots()
+            .define(functionDeploymentSlotName)
+            .withConfigurationFromParent()
+            .withContainerSize(256)
+            .create();
+
+        Assertions.assertEquals(512, functionApp1.containerSize());
+        Assertions.assertEquals(256, functionDeploymentSlot.containerSize());
+
+        functionApp1.update()
+            .withContainerSize(320)
+            .apply();
+
+        functionApp1.refresh();
+
+        Assertions.assertEquals(320, functionApp1.containerSize());
+
+        Assertions.assertEquals(256, functionDeploymentSlot.containerSize());
+
+        functionDeploymentSlot.update()
+            .withContainerSize(128)
+            .apply();
+
+        functionDeploymentSlot.refresh();
+
+        Assertions.assertEquals(128, functionDeploymentSlot.containerSize());
     }
 
     private void assertRunning(FunctionApp functionApp) {

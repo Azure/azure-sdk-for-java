@@ -174,6 +174,25 @@ public final class PurviewWorkflowClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/workflows")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listWorkflowsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/workflows/{workflowId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -187,6 +206,26 @@ public final class PurviewWorkflowClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getWorkflow(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("workflowId") String workflowId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/workflows/{workflowId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getWorkflowSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workflowId") String workflowId,
                 @QueryParam("api-version") String apiVersion,
@@ -215,6 +254,27 @@ public final class PurviewWorkflowClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Put("/workflows/{workflowId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createOrReplaceWorkflowSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("workflowId") String workflowId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData workflowCreateOrUpdateCommand,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Delete("/workflows/{workflowId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
@@ -228,6 +288,26 @@ public final class PurviewWorkflowClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteWorkflow(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("workflowId") String workflowId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/workflows/{workflowId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteWorkflowSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workflowId") String workflowId,
                 @QueryParam("api-version") String apiVersion,
@@ -255,6 +335,26 @@ public final class PurviewWorkflowClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/userrequests")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> submitUserRequestsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData userRequestsPayload,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/workflowruns")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -274,6 +374,25 @@ public final class PurviewWorkflowClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/workflowruns")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listWorkflowRunsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/workflowruns/{workflowRunId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -287,6 +406,26 @@ public final class PurviewWorkflowClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getWorkflowRun(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("workflowRunId") String workflowRunId,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/workflowruns/{workflowRunId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getWorkflowRunSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("workflowRunId") String workflowRunId,
@@ -315,6 +454,27 @@ public final class PurviewWorkflowClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/workflowruns/{workflowRunId}/cancel")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> cancelWorkflowRunSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("workflowRunId") String workflowRunId,
+                @BodyParam("application/json") BinaryData runCancelReply,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/workflowtasks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -328,6 +488,25 @@ public final class PurviewWorkflowClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listWorkflowTasks(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/workflowtasks")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listWorkflowTasksSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -353,6 +532,25 @@ public final class PurviewWorkflowClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/workflowtasks/{taskId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getWorkflowTaskSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("taskId") String taskId,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/workflowtasks/{taskId}/approve-approval")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -366,6 +564,27 @@ public final class PurviewWorkflowClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> approveApprovalTask(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("taskId") String taskId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData approvalResponseComment,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/workflowtasks/{taskId}/approve-approval")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> approveApprovalTaskSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("taskId") String taskId,
                 @QueryParam("api-version") String apiVersion,
@@ -395,6 +614,27 @@ public final class PurviewWorkflowClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/workflowtasks/{taskId}/reject-approval")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> rejectApprovalTaskSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("taskId") String taskId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData approvalResponseComment,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/workflowtasks/{taskId}/reassign")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -416,6 +656,27 @@ public final class PurviewWorkflowClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/workflowtasks/{taskId}/reassign")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> reassignWorkflowTaskSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("taskId") String taskId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData reassignCommand,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/workflowtasks/{taskId}/change-task-status")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -429,6 +690,27 @@ public final class PurviewWorkflowClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateTaskStatus(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("taskId") String taskId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData taskUpdateCommand,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/workflowtasks/{taskId}/change-task-status")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> updateTaskStatusSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("taskId") String taskId,
                 @QueryParam("api-version") String apiVersion,
@@ -468,6 +750,25 @@ public final class PurviewWorkflowClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listWorkflowsNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listWorkflowRunsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -487,7 +788,45 @@ public final class PurviewWorkflowClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listWorkflowRunsNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listWorkflowTasksNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listWorkflowTasksNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -626,11 +965,70 @@ public final class PurviewWorkflowClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the workflow list along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listWorkflowsSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listWorkflowsSync(
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * List all workflows.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     triggers (Required): [
+     *          (Required){
+     *             type: String(when_term_creation_is_requested/when_term_deletion_is_requested/when_term_update_is_requested/when_terms_import_is_requested/when_data_access_grant_is_requested/when_asset_update_is_requested) (Required)
+     *             underGlossaryHierarchy: String (Optional)
+     *             underCollection: String (Optional)
+     *             underGlossary: String (Optional)
+     *         }
+     *     ]
+     *     createdTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastUpdateTime: OffsetDateTime (Optional)
+     *     updatedBy: String (Optional)
+     *     name: String (Required)
+     *     isEnabled: boolean (Required)
+     *     description: String (Required)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the workflow list as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listWorkflows(RequestOptions requestOptions) {
-        return new PagedIterable<>(listWorkflowsAsync(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listWorkflowsSinglePage(requestOptions),
+                nextLink -> listWorkflowsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -719,7 +1117,14 @@ public final class PurviewWorkflowClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWorkflowWithResponse(String workflowId, RequestOptions requestOptions) {
-        return getWorkflowWithResponseAsync(workflowId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getWorkflowSync(
+                this.getEndpoint(),
+                workflowId,
+                this.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -851,8 +1256,15 @@ public final class PurviewWorkflowClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceWorkflowWithResponse(
             String workflowId, BinaryData workflowCreateOrUpdateCommand, RequestOptions requestOptions) {
-        return createOrReplaceWorkflowWithResponseAsync(workflowId, workflowCreateOrUpdateCommand, requestOptions)
-                .block();
+        final String accept = "application/json";
+        return service.createOrReplaceWorkflowSync(
+                this.getEndpoint(),
+                workflowId,
+                this.getServiceVersion().getVersion(),
+                workflowCreateOrUpdateCommand,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -893,7 +1305,14 @@ public final class PurviewWorkflowClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWorkflowWithResponse(String workflowId, RequestOptions requestOptions) {
-        return deleteWorkflowWithResponseAsync(workflowId, requestOptions).block();
+        final String accept = "application/json";
+        return service.deleteWorkflowSync(
+                this.getEndpoint(),
+                workflowId,
+                this.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1007,7 +1426,14 @@ public final class PurviewWorkflowClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> submitUserRequestsWithResponse(
             BinaryData userRequestsPayload, RequestOptions requestOptions) {
-        return submitUserRequestsWithResponseAsync(userRequestsPayload, requestOptions).block();
+        final String accept = "application/json";
+        return service.submitUserRequestsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                userRequestsPayload,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1174,11 +1600,81 @@ public final class PurviewWorkflowClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listWorkflowRunsSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listWorkflowRunsSync(
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * List workflow runs.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d", "30d", "90d".</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values: "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime desc", "createdTime asc".</td></tr>
+     *     <tr><td>runStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow runs by workflow run status. In the form of "," separated string.</td></tr>
+     *     <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form of "," separated string.</td></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     workflowId: String (Required)
+     *     startTime: OffsetDateTime (Required)
+     *     requestor: String (Required)
+     *     userRequestId: String (Optional)
+     *     runPayload (Required): {
+     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess) (Required)
+     *         targetValue: String (Required)
+     *     }
+     *     status: String(NotStarted/InProgress/Failed/Completed/Canceling/CancellationFailed/Canceled) (Required)
+     *     endTime: OffsetDateTime (Optional)
+     *     cancelTime: OffsetDateTime (Optional)
+     *     cancelComment: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listWorkflowRuns(RequestOptions requestOptions) {
-        return new PagedIterable<>(listWorkflowRunsAsync(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listWorkflowRunsSinglePage(requestOptions),
+                nextLink -> listWorkflowRunsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1272,7 +1768,14 @@ public final class PurviewWorkflowClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWorkflowRunWithResponse(String workflowRunId, RequestOptions requestOptions) {
-        return getWorkflowRunWithResponseAsync(workflowRunId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getWorkflowRunSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                workflowRunId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1334,7 +1837,15 @@ public final class PurviewWorkflowClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWorkflowRunWithResponse(
             String workflowRunId, BinaryData runCancelReply, RequestOptions requestOptions) {
-        return cancelWorkflowRunWithResponseAsync(workflowRunId, runCancelReply, requestOptions).block();
+        final String accept = "application/json";
+        return service.cancelWorkflowRunSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                workflowRunId,
+                runCancelReply,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1555,11 +2066,99 @@ public final class PurviewWorkflowClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all workflow tasks along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listWorkflowTasksSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listWorkflowTasksSync(
+                        this.getEndpoint(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Get all workflow tasks.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>viewMode</td><td>String</td><td>No</td><td>To filter user's sent, received or history workflow tasks.</td></tr>
+     *     <tr><td>workflowIds</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow id list. In the form of "," separated string.</td></tr>
+     *     <tr><td>timeWindow</td><td>String</td><td>No</td><td>Time window of filtering items. Allowed values: "1d", "7d", "30d", "90d".</td></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum page size to get the items at one time.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>The key word which used to sort the results. Allowed values: "status desc", "status asc", "requestor desc", "requestor asc", "startTime desc", "startTime asc", "createdTime desc", "createdTime asc".</td></tr>
+     *     <tr><td>taskTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Filter items by workflow task type. In the form of "," separated string.</td></tr>
+     *     <tr><td>taskStatuses</td><td>List&lt;String&gt;</td><td>No</td><td>Filter workflow tasks by status. In the form of "," separated string.</td></tr>
+     *     <tr><td>workflowNameKeyword</td><td>String</td><td>No</td><td>The key word which could used to filter workflow item with related workflow.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     title: String (Optional)
+     *     workflowRunId: String (Required)
+     *     workflowId: String (Required)
+     *     requestor: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdateTime: OffsetDateTime (Required)
+     *     payload (Required): {
+     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess) (Required)
+     *         targetValue: String (Required)
+     *         payload: Object (Optional)
+     *     }
+     *     reminderInfo (Optional): {
+     *         lastRemindTime: OffsetDateTime (Optional)
+     *         nextRemindTime: OffsetDateTime (Required)
+     *         reminderSettings: Object (Required)
+     *     }
+     *     expiryInfo (Optional): {
+     *         lastExpiryNotificationTime: OffsetDateTime (Optional)
+     *         nextExpiryNotificationTime: OffsetDateTime (Required)
+     *         expiryTime: OffsetDateTime (Required)
+     *         expirySettings (Required): {
+     *             expireAfter: Object (Required)
+     *             notifyOnExpiration (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all workflow tasks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listWorkflowTasks(RequestOptions requestOptions) {
-        return new PagedIterable<>(listWorkflowTasksAsync(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listWorkflowTasksSinglePage(requestOptions),
+                nextLink -> listWorkflowTasksNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1663,7 +2262,8 @@ public final class PurviewWorkflowClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWorkflowTaskWithResponse(String taskId, RequestOptions requestOptions) {
-        return getWorkflowTaskWithResponseAsync(taskId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getWorkflowTaskSync(this.getEndpoint(), taskId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1725,7 +2325,15 @@ public final class PurviewWorkflowClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> approveApprovalTaskWithResponse(
             String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
-        return approveApprovalTaskWithResponseAsync(taskId, approvalResponseComment, requestOptions).block();
+        final String accept = "application/json";
+        return service.approveApprovalTaskSync(
+                this.getEndpoint(),
+                taskId,
+                this.getServiceVersion().getVersion(),
+                approvalResponseComment,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1787,7 +2395,15 @@ public final class PurviewWorkflowClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rejectApprovalTaskWithResponse(
             String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
-        return rejectApprovalTaskWithResponseAsync(taskId, approvalResponseComment, requestOptions).block();
+        final String accept = "application/json";
+        return service.rejectApprovalTaskSync(
+                this.getEndpoint(),
+                taskId,
+                this.getServiceVersion().getVersion(),
+                approvalResponseComment,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1859,7 +2475,15 @@ public final class PurviewWorkflowClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> reassignWorkflowTaskWithResponse(
             String taskId, BinaryData reassignCommand, RequestOptions requestOptions) {
-        return reassignWorkflowTaskWithResponseAsync(taskId, reassignCommand, requestOptions).block();
+        final String accept = "application/json";
+        return service.reassignWorkflowTaskSync(
+                this.getEndpoint(),
+                taskId,
+                this.getServiceVersion().getVersion(),
+                reassignCommand,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1923,7 +2547,15 @@ public final class PurviewWorkflowClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateTaskStatusWithResponse(
             String taskId, BinaryData taskUpdateCommand, RequestOptions requestOptions) {
-        return updateTaskStatusWithResponseAsync(taskId, taskUpdateCommand, requestOptions).block();
+        final String accept = "application/json";
+        return service.updateTaskStatusSync(
+                this.getEndpoint(),
+                taskId,
+                this.getServiceVersion().getVersion(),
+                taskUpdateCommand,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1988,6 +2620,55 @@ public final class PurviewWorkflowClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
+     *     triggers (Required): [
+     *          (Required){
+     *             type: String(when_term_creation_is_requested/when_term_deletion_is_requested/when_term_update_is_requested/when_terms_import_is_requested/when_data_access_grant_is_requested/when_asset_update_is_requested) (Required)
+     *             underGlossaryHierarchy: String (Optional)
+     *             underCollection: String (Optional)
+     *             underGlossary: String (Optional)
+     *         }
+     *     ]
+     *     createdTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastUpdateTime: OffsetDateTime (Optional)
+     *     updatedBy: String (Optional)
+     *     name: String (Required)
+     *     isEnabled: boolean (Required)
+     *     description: String (Required)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the workflow list along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listWorkflowsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listWorkflowsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
      *     workflowId: String (Required)
      *     startTime: OffsetDateTime (Required)
      *     requestor: String (Required)
@@ -2029,6 +2710,52 @@ public final class PurviewWorkflowClientImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     workflowId: String (Required)
+     *     startTime: OffsetDateTime (Required)
+     *     requestor: String (Required)
+     *     userRequestId: String (Optional)
+     *     runPayload (Required): {
+     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess) (Required)
+     *         targetValue: String (Required)
+     *     }
+     *     status: String(NotStarted/InProgress/Failed/Completed/Canceling/CancellationFailed/Canceled) (Required)
+     *     endTime: OffsetDateTime (Optional)
+     *     cancelTime: OffsetDateTime (Optional)
+     *     cancelComment: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listWorkflowRunsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listWorkflowRunsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
@@ -2095,6 +2822,67 @@ public final class PurviewWorkflowClientImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     title: String (Optional)
+     *     workflowRunId: String (Required)
+     *     workflowId: String (Required)
+     *     requestor: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdateTime: OffsetDateTime (Required)
+     *     payload (Required): {
+     *         type: String(CreateTerm/UpdateTerm/DeleteTerm/ImportTerms/UpdateAsset/GrantDataAccess) (Required)
+     *         targetValue: String (Required)
+     *         payload: Object (Optional)
+     *     }
+     *     reminderInfo (Optional): {
+     *         lastRemindTime: OffsetDateTime (Optional)
+     *         nextRemindTime: OffsetDateTime (Required)
+     *         reminderSettings: Object (Required)
+     *     }
+     *     expiryInfo (Optional): {
+     *         lastExpiryNotificationTime: OffsetDateTime (Optional)
+     *         nextExpiryNotificationTime: OffsetDateTime (Required)
+     *         expiryTime: OffsetDateTime (Required)
+     *         expirySettings (Required): {
+     *             expireAfter: Object (Required)
+     *             notifyOnExpiration (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listWorkflowTasksNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listWorkflowTasksNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

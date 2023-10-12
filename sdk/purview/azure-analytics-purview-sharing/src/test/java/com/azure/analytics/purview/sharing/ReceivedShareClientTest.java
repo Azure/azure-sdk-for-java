@@ -35,14 +35,14 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
     }
 
     @Test
-    void getAllDetachedShareTest() {
+    void listDetachedShareTest() {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         UUID sentShareInvitationId = UUID.fromString(testResourceNamer.randomUuid());
 
         super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);
 
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
-        PagedIterable<BinaryData> receivedShares = receivedSharesClient.getAllDetachedReceivedShares(requestOptions); 
+        PagedIterable<BinaryData> receivedShares = receivedSharesClient.listDetachedReceivedShares(requestOptions); 
         
         assertTrue(receivedShares.stream().findAny().isPresent());
         assertTrue(receivedShares
@@ -59,7 +59,7 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
         super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);
 
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
-        PagedIterable<BinaryData> receivedShares = receivedSharesClient.getAllDetachedReceivedShares(requestOptions); 
+        PagedIterable<BinaryData> receivedShares = receivedSharesClient.listDetachedReceivedShares(requestOptions); 
         
         InPlaceReceivedShare receivedShare = receivedShares.stream().findFirst().get().toObject(InPlaceReceivedShare.class);
         
@@ -81,7 +81,7 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
         super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);
 
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
-        PagedIterable<BinaryData> receivedShares = receivedSharesClient.getAllDetachedReceivedShares(requestOptions); 
+        PagedIterable<BinaryData> receivedShares = receivedSharesClient.listDetachedReceivedShares(requestOptions); 
         
         InPlaceReceivedShare receivedShare = receivedShares.stream().findFirst().get().toObject(InPlaceReceivedShare.class);
        
@@ -101,7 +101,7 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
         super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);
 
         RequestOptions listRequestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
-        PagedIterable<BinaryData> listResponse = receivedSharesClient.getAllDetachedReceivedShares(listRequestOptions);
+        PagedIterable<BinaryData> listResponse = receivedSharesClient.listDetachedReceivedShares(listRequestOptions);
 
         Optional<BinaryData> detachedReceivedShare = listResponse.stream().findFirst();
 

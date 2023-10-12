@@ -17,6 +17,15 @@ public final class ReasonChronicityTypes extends ExpandableStringEnum<ReasonChro
     public static final ReasonChronicityTypes PERSISTENT = fromString("Persistent");
 
     /**
+     * Creates a new instance of ReasonChronicityTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReasonChronicityTypes() {
+    }
+
+    /**
      * Creates or finds a ReasonChronicityTypes from its string representation.
      *
      * @param name a name to look for.

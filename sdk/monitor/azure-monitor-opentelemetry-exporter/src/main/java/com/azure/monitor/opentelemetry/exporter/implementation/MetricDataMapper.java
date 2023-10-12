@@ -52,6 +52,8 @@ public class MetricDataMapper {
 
     static {
         EXCLUDED_METRIC_NAMES.add("http.server.active_requests"); // Servlet
+        EXCLUDED_METRIC_NAMES.add("http.server.response.size");
+        EXCLUDED_METRIC_NAMES.add("http.client.response.size");
 
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.duration"); // Servlet
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.duration"); // HttpClient

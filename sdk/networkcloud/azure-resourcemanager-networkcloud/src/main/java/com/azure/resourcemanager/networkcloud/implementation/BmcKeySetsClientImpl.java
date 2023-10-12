@@ -71,7 +71,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bmcKeySets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BmcKeySetList>> listByResourceGroup(
+        Mono<Response<BmcKeySetList>> listByCluster(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -146,7 +146,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BmcKeySetList>> listByResourceGroupNext(
+        Mono<Response<BmcKeySetList>> listByClusterNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -154,20 +154,20 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
     }
 
     /**
-     * List baseboard management controller key sets of the cluster in the resource group.
+     * List baseboard management controller key sets of the cluster.
      *
-     * <p>Get a list of baseboard management controller key sets of the cluster in the provided resource group.
+     * <p>Get a list of baseboard management controller key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets of the cluster in the provided resource group along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of baseboard management controller key sets for the provided cluster along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BmcKeySetInner>> listByResourceGroupSinglePageAsync(
+    private Mono<PagedResponse<BmcKeySetInner>> listByClusterSinglePageAsync(
         String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -193,7 +193,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
             .withContext(
                 context ->
                     service
-                        .listByResourceGroup(
+                        .listByCluster(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -214,9 +214,9 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
     }
 
     /**
-     * List baseboard management controller key sets of the cluster in the resource group.
+     * List baseboard management controller key sets of the cluster.
      *
-     * <p>Get a list of baseboard management controller key sets of the cluster in the provided resource group.
+     * <p>Get a list of baseboard management controller key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -224,11 +224,11 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets of the cluster in the provided resource group along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of baseboard management controller key sets for the provided cluster along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BmcKeySetInner>> listByResourceGroupSinglePageAsync(
+    private Mono<PagedResponse<BmcKeySetInner>> listByClusterSinglePageAsync(
         String resourceGroupName, String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -252,7 +252,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
+            .listByCluster(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
@@ -272,29 +272,29 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
     }
 
     /**
-     * List baseboard management controller key sets of the cluster in the resource group.
+     * List baseboard management controller key sets of the cluster.
      *
-     * <p>Get a list of baseboard management controller key sets of the cluster in the provided resource group.
+     * <p>Get a list of baseboard management controller key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets of the cluster in the provided resource group as
-     *     paginated response with {@link PagedFlux}.
+     * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BmcKeySetInner> listByResourceGroupAsync(String resourceGroupName, String clusterName) {
+    private PagedFlux<BmcKeySetInner> listByClusterAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, clusterName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName),
+            nextLink -> listByClusterNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List baseboard management controller key sets of the cluster in the resource group.
+     * List baseboard management controller key sets of the cluster.
      *
-     * <p>Get a list of baseboard management controller key sets of the cluster in the provided resource group.
+     * <p>Get a list of baseboard management controller key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -302,39 +302,39 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets of the cluster in the provided resource group as
-     *     paginated response with {@link PagedFlux}.
+     * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BmcKeySetInner> listByResourceGroupAsync(
+    private PagedFlux<BmcKeySetInner> listByClusterAsync(
         String resourceGroupName, String clusterName, Context context) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, clusterName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context),
+            nextLink -> listByClusterNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * List baseboard management controller key sets of the cluster in the resource group.
+     * List baseboard management controller key sets of the cluster.
      *
-     * <p>Get a list of baseboard management controller key sets of the cluster in the provided resource group.
+     * <p>Get a list of baseboard management controller key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets of the cluster in the provided resource group as
-     *     paginated response with {@link PagedIterable}.
+     * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BmcKeySetInner> listByResourceGroup(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, clusterName));
+    public PagedIterable<BmcKeySetInner> listByCluster(String resourceGroupName, String clusterName) {
+        return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName));
     }
 
     /**
-     * List baseboard management controller key sets of the cluster in the resource group.
+     * List baseboard management controller key sets of the cluster.
      *
-     * <p>Get a list of baseboard management controller key sets of the cluster in the provided resource group.
+     * <p>Get a list of baseboard management controller key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -342,13 +342,12 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of baseboard management controller key sets of the cluster in the provided resource group as
-     *     paginated response with {@link PagedIterable}.
+     * @return a list of baseboard management controller key sets for the provided cluster as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BmcKeySetInner> listByResourceGroup(
-        String resourceGroupName, String clusterName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, clusterName, context));
+    public PagedIterable<BmcKeySetInner> listByCluster(String resourceGroupName, String clusterName, Context context) {
+        return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -1538,7 +1537,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BmcKeySetInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BmcKeySetInner>> listByClusterNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1550,8 +1549,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<BmcKeySetInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1577,8 +1575,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BmcKeySetInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BmcKeySetInner>> listByClusterNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1591,7 +1588,7 @@ public final class BmcKeySetsClientImpl implements BmcKeySetsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

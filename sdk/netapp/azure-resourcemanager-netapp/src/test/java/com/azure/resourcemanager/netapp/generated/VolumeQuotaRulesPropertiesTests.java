@@ -15,23 +15,23 @@ public final class VolumeQuotaRulesPropertiesTests {
         VolumeQuotaRulesProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":7362779030746859122,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"z\"}")
+                    "{\"provisioningState\":\"Accepted\",\"quotaSizeInKiBs\":5184068931876509479,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"hqxujxukndxdi\"}")
                 .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(7362779030746859122L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("z", model.quotaTarget());
+        Assertions.assertEquals(5184068931876509479L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("hqxujxukndxdi", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumeQuotaRulesProperties model =
             new VolumeQuotaRulesProperties()
-                .withQuotaSizeInKiBs(7362779030746859122L)
-                .withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
-                .withQuotaTarget("z");
+                .withQuotaSizeInKiBs(5184068931876509479L)
+                .withQuotaType(Type.DEFAULT_GROUP_QUOTA)
+                .withQuotaTarget("hqxujxukndxdi");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(7362779030746859122L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("z", model.quotaTarget());
+        Assertions.assertEquals(5184068931876509479L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("hqxujxukndxdi", model.quotaTarget());
     }
 }

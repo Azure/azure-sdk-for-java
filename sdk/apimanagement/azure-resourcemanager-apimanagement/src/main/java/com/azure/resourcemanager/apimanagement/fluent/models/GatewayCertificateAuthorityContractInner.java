@@ -17,6 +17,10 @@ public final class GatewayCertificateAuthorityContractInner extends ProxyResourc
     @JsonProperty(value = "properties")
     private GatewayCertificateAuthorityContractProperties innerProperties;
 
+    /** Creates an instance of GatewayCertificateAuthorityContractInner class. */
+    public GatewayCertificateAuthorityContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Gateway certificate authority details.
      *

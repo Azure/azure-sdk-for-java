@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.TableInner;
 import com.azure.resourcemanager.storage.models.TableAccessPolicy;
 import com.azure.resourcemanager.storage.models.TableSignedIdentifier;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for Table Create. */
 public final class TableCreateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/TableOperationPut.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/TableOperationPut.json
      */
     /**
      * Sample code: TableOperationPut.
@@ -27,11 +26,11 @@ public final class TableCreateSamples {
             .manager()
             .serviceClient()
             .getTables()
-            .createWithResponse("res3376", "sto328", "table6185", null, Context.NONE);
+            .createWithResponse("res3376", "sto328", "table6185", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/TableOperationPutOrPatchAcls.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/TableOperationPutOrPatchAcls.json
      */
     /**
      * Sample code: TableOperationPutOrPatchAcls.
@@ -66,6 +65,6 @@ public final class TableCreateSamples {
                                             .withStartTime(OffsetDateTime.parse("2022-03-17T08:49:37.0000000Z"))
                                             .withExpiryTime(OffsetDateTime.parse("2022-03-20T08:49:37.0000000Z"))
                                             .withPermission("rad")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

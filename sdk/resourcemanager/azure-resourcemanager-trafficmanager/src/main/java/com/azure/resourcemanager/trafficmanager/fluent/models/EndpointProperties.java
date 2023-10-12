@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.trafficmanager.models.AlwaysServe;
 import com.azure.resourcemanager.trafficmanager.models.EndpointMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
@@ -70,6 +71,20 @@ public final class EndpointProperties {
     private Long minChildEndpoints;
 
     /*
+     * The minimum number of IPv4 (DNS record type A) endpoints that must be available in the child profile in order
+     * for the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'.
+     */
+    @JsonProperty(value = "minChildEndpointsIPv4")
+    private Long minChildEndpointsIPv4;
+
+    /*
+     * The minimum number of IPv6 (DNS record type AAAA) endpoints that must be available in the child profile in order
+     * for the parent profile to be considered available. Only applicable to endpoint of type 'NestedEndpoints'.
+     */
+    @JsonProperty(value = "minChildEndpointsIPv6")
+    private Long minChildEndpointsIPv6;
+
+    /*
      * The list of countries/regions mapped to this endpoint when using the 'Geographic' traffic routing method. Please
      * consult Traffic Manager Geographic documentation for a full list of accepted values.
      */
@@ -88,6 +103,13 @@ public final class EndpointProperties {
      */
     @JsonProperty(value = "customHeaders")
     private List<EndpointPropertiesCustomHeadersItem> customHeaders;
+
+    /*
+     * If Always Serve is enabled, probing for endpoint health will be disabled and endpoints will be included in the
+     * traffic routing method.
+     */
+    @JsonProperty(value = "alwaysServe")
+    private AlwaysServe alwaysServe;
 
     /** Creates an instance of EndpointProperties class. */
     public EndpointProperties() {
@@ -272,6 +294,54 @@ public final class EndpointProperties {
     }
 
     /**
+     * Get the minChildEndpointsIPv4 property: The minimum number of IPv4 (DNS record type A) endpoints that must be
+     * available in the child profile in order for the parent profile to be considered available. Only applicable to
+     * endpoint of type 'NestedEndpoints'.
+     *
+     * @return the minChildEndpointsIPv4 value.
+     */
+    public Long minChildEndpointsIPv4() {
+        return this.minChildEndpointsIPv4;
+    }
+
+    /**
+     * Set the minChildEndpointsIPv4 property: The minimum number of IPv4 (DNS record type A) endpoints that must be
+     * available in the child profile in order for the parent profile to be considered available. Only applicable to
+     * endpoint of type 'NestedEndpoints'.
+     *
+     * @param minChildEndpointsIPv4 the minChildEndpointsIPv4 value to set.
+     * @return the EndpointProperties object itself.
+     */
+    public EndpointProperties withMinChildEndpointsIPv4(Long minChildEndpointsIPv4) {
+        this.minChildEndpointsIPv4 = minChildEndpointsIPv4;
+        return this;
+    }
+
+    /**
+     * Get the minChildEndpointsIPv6 property: The minimum number of IPv6 (DNS record type AAAA) endpoints that must be
+     * available in the child profile in order for the parent profile to be considered available. Only applicable to
+     * endpoint of type 'NestedEndpoints'.
+     *
+     * @return the minChildEndpointsIPv6 value.
+     */
+    public Long minChildEndpointsIPv6() {
+        return this.minChildEndpointsIPv6;
+    }
+
+    /**
+     * Set the minChildEndpointsIPv6 property: The minimum number of IPv6 (DNS record type AAAA) endpoints that must be
+     * available in the child profile in order for the parent profile to be considered available. Only applicable to
+     * endpoint of type 'NestedEndpoints'.
+     *
+     * @param minChildEndpointsIPv6 the minChildEndpointsIPv6 value to set.
+     * @return the EndpointProperties object itself.
+     */
+    public EndpointProperties withMinChildEndpointsIPv6(Long minChildEndpointsIPv6) {
+        this.minChildEndpointsIPv6 = minChildEndpointsIPv6;
+        return this;
+    }
+
+    /**
      * Get the geoMapping property: The list of countries/regions mapped to this endpoint when using the 'Geographic'
      * traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted
      * values.
@@ -334,6 +404,28 @@ public final class EndpointProperties {
      */
     public EndpointProperties withCustomHeaders(List<EndpointPropertiesCustomHeadersItem> customHeaders) {
         this.customHeaders = customHeaders;
+        return this;
+    }
+
+    /**
+     * Get the alwaysServe property: If Always Serve is enabled, probing for endpoint health will be disabled and
+     * endpoints will be included in the traffic routing method.
+     *
+     * @return the alwaysServe value.
+     */
+    public AlwaysServe alwaysServe() {
+        return this.alwaysServe;
+    }
+
+    /**
+     * Set the alwaysServe property: If Always Serve is enabled, probing for endpoint health will be disabled and
+     * endpoints will be included in the traffic routing method.
+     *
+     * @param alwaysServe the alwaysServe value to set.
+     * @return the EndpointProperties object itself.
+     */
+    public EndpointProperties withAlwaysServe(AlwaysServe alwaysServe) {
+        this.alwaysServe = alwaysServe;
         return this;
     }
 

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters ListByResourceGroup. */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetLinuxHadoopAllClustersInResourceGroup.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/GetLinuxHadoopAllClustersInResourceGroup.json
      */
     /**
      * Sample code: Get All Hadoop on Linux clusters in a resource group.
@@ -18,6 +16,6 @@ public final class ClustersListByResourceGroupSamples {
      */
     public static void getAllHadoopOnLinuxClustersInAResourceGroup(
         com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
-        manager.clusters().listByResourceGroup("rg1", Context.NONE);
+        manager.clusters().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

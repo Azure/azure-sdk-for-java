@@ -6,19 +6,16 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.models.SkuCapability;
-import org.junit.jupiter.api.Test;
 
 public final class SkuCapabilityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuCapability model =
-            BinaryData
-                .fromString("{\"name\":\"cputegjvwmfdats\",\"value\":\"dvpjhulsuuvmk\"}")
-                .toObject(SkuCapability.class);
+            BinaryData.fromString("{\"name\":\"hutje\",\"value\":\"mrldhu\"}").toObject(SkuCapability.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuCapability model = new SkuCapability();
         model = BinaryData.fromObject(model).toObject(SkuCapability.class);
     }

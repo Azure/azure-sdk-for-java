@@ -47,7 +47,7 @@ public class DataLakeServiceClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeServiceClient.class);
     private final DataLakeServiceAsyncClient dataLakeServiceAsyncClient;
-    private final BlobServiceClient blobServiceClient;
+    final BlobServiceClient blobServiceClient;
 
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.

@@ -18,12 +18,12 @@ public final class MonitoringTagRulesInnerTests {
         MonitoringTagRulesInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":true,\"filteringTags\":[]}},\"id\":\"rjb\",\"name\":\"norcjxvsnbyxqab\",\"type\":\"mocpc\"}")
+                    "{\"properties\":{\"provisioningState\":\"Accepted\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":false,\"filteringTags\":[]}},\"id\":\"cjxvsnbyxqab\",\"name\":\"mocpc\",\"type\":\"shurzafbljjgpbto\"}")
                 .toObject(MonitoringTagRulesInner.class);
-        Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
-        Assertions.assertEquals(true, model.properties().logRules().sendAadLogs());
-        Assertions.assertEquals(true, model.properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(true, model.properties().logRules().sendActivityLogs());
+        Assertions.assertEquals(ProvisioningState.ACCEPTED, model.properties().provisioningState());
+        Assertions.assertEquals(false, model.properties().logRules().sendAadLogs());
+        Assertions.assertEquals(false, model.properties().logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(false, model.properties().logRules().sendActivityLogs());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,17 +32,17 @@ public final class MonitoringTagRulesInnerTests {
             new MonitoringTagRulesInner()
                 .withProperties(
                     new MonitoringTagRulesProperties()
-                        .withProvisioningState(ProvisioningState.CANCELED)
+                        .withProvisioningState(ProvisioningState.ACCEPTED)
                         .withLogRules(
                             new LogRules()
-                                .withSendAadLogs(true)
-                                .withSendSubscriptionLogs(true)
-                                .withSendActivityLogs(true)
+                                .withSendAadLogs(false)
+                                .withSendSubscriptionLogs(false)
+                                .withSendActivityLogs(false)
                                 .withFilteringTags(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesInner.class);
-        Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
-        Assertions.assertEquals(true, model.properties().logRules().sendAadLogs());
-        Assertions.assertEquals(true, model.properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(true, model.properties().logRules().sendActivityLogs());
+        Assertions.assertEquals(ProvisioningState.ACCEPTED, model.properties().provisioningState());
+        Assertions.assertEquals(false, model.properties().logRules().sendAadLogs());
+        Assertions.assertEquals(false, model.properties().logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(false, model.properties().logRules().sendActivityLogs());
     }
 }

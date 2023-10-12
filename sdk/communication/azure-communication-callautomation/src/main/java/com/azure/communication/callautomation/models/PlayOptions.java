@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.util.Collections;
 import java.util.List;
 
 /** The PlayOptions model. */
@@ -32,6 +33,20 @@ public final class PlayOptions {
     private String operationContext;
 
     /**
+     * The call back URI override.
+     */
+    private String callbackUrl;
+
+    /**
+     * Constructor
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @param playTo The targets to play to.
+     */
+    public PlayOptions(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
+        this(playSources.get(0), playTo);
+    }
+
+    /**
      * Constructor
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo The targets to play to.
@@ -48,6 +63,15 @@ public final class PlayOptions {
      */
     public PlaySource getPlaySource() {
         return this.playSource;
+    }
+
+    /**
+     * Get the play sources.
+     *
+     * @return the playSources value.
+     */
+    public List<PlaySource> getPlaySources() {
+        return Collections.singletonList(playSource);
     }
 
     /**
@@ -78,6 +102,15 @@ public final class PlayOptions {
     }
 
     /**
+     * Get the call back URI override.
+     *
+     * @return the callbackUriOverride
+     */
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    /**
      * Set the loop property: The option to play the provided audio source in loop when set to true.
      *
      * @param loop the loop value to set.
@@ -96,6 +129,17 @@ public final class PlayOptions {
      */
     public PlayOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the call back URI override.
+     *
+     * @param callbackUrl The call back URI override to set
+     * @return the PlayOptions object itself.
+     */
+    public PlayOptions setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
         return this;
     }
 }

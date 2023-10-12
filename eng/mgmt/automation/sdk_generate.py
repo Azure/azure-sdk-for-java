@@ -16,7 +16,7 @@ from generate_data import (
     get_or_update_sdk_readme,
     sdk_automation_readme,
     update_readme,
-    sdk_automation_cadl,
+    sdk_automation_typespec,
 )
 from generate_utils import (
     compare_with_maven_package,
@@ -139,8 +139,8 @@ def sdk_automation(input_file: str, output_file: str):
         config = json.load(fin)
         logging.info(f"sdk_automation input: {config}")
 
-    # cadl
-    packages = sdk_automation_cadl(config)
+    # typespec
+    packages = sdk_automation_typespec(config)
     # autorest
     if not packages:
         packages = sdk_automation_autorest(config)

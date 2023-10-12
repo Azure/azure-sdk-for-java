@@ -35,7 +35,7 @@ public final class ServicesListAvailableSkusByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"sku\":{\"name\":\"DataBox\",\"displayName\":\"shrtdtkcnqxwb\",\"family\":\"kulpiujwaasi\"},\"enabled\":false,\"properties\":{\"dataLocationToServiceLocationMap\":[],\"capacity\":{\"usable\":\"qerpqlpqwcc\",\"maximum\":\"qgbdbuta\"},\"costs\":[],\"apiVersions\":[\"kuwhh\",\"hykojoxafnndlpic\",\"koymkcd\",\"h\"],\"disabledReason\":\"Feature\",\"disabledReasonMessage\":\"pwdreqnovvqf\",\"requiredFeature\":\"ljxywsu\"}}]}";
+            "{\"value\":[{\"sku\":{\"name\":\"DataBoxDisk\",\"displayName\":\"bw\",\"family\":\"nkbykutwpfhp\"},\"enabled\":false,\"properties\":{\"dataLocationToServiceLocationMap\":[],\"capacity\":{\"usable\":\"snfdsdoakgtdl\",\"maximum\":\"kzevdlhewpusds\"},\"costs\":[],\"apiVersions\":[\"gvbbejdcng\",\"qmoa\",\"ufgmjzrwrdg\"],\"disabledReason\":\"Country\",\"disabledReasonMessage\":\"enuuzkopbm\",\"requiredFeature\":\"rfdwoyu\",\"countriesWithinCommerceBoundary\":[\"iuiefozbhdmsm\",\"mzqhoftrmaequi\",\"hxicslfaoqz\"]}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,13 +67,19 @@ public final class ServicesListAvailableSkusByResourceGroupMockTests {
             manager
                 .services()
                 .listAvailableSkusByResourceGroup(
-                    "sdqrhzoymibmrq",
-                    "ibahwflus",
+                    "mrv",
+                    "xztvbtqgsfraoyzk",
                     new AvailableSkuRequest()
                         .withTransferType(TransferType.EXPORT_FROM_AZURE)
-                        .withCountry("tmhrkwofyyvoqacp")
-                        .withLocation("expbtg")
-                        .withSkuNames(Arrays.asList(SkuName.DATA_BOX_DISK, SkuName.DATA_BOX, SkuName.DATA_BOX)),
+                        .withCountry("wtl")
+                        .withLocation("nguxawqaldsy")
+                        .withSkuNames(
+                            Arrays
+                                .asList(
+                                    SkuName.DATA_BOX_CUSTOMER_DISK,
+                                    SkuName.DATA_BOX_CUSTOMER_DISK,
+                                    SkuName.DATA_BOX,
+                                    SkuName.DATA_BOX)),
                     com.azure.core.util.Context.NONE);
     }
 }

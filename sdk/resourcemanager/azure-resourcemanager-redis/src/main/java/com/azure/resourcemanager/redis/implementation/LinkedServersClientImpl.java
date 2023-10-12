@@ -67,8 +67,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     public interface LinkedServersService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/linkedServers/{linkedServerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -84,8 +83,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/linkedServers/{linkedServerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -100,8 +98,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/linkedServers/{linkedServerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisLinkedServerWithPropertiesInner>> get(
@@ -116,8 +113,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/linkedServers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisLinkedServerWithPropertiesList>> list(
@@ -353,7 +349,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
             String name,
             String linkedServerName,
             RedisLinkedServerCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, name, linkedServerName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, name, linkedServerName, parameters).getSyncPoller();
     }
 
     /**
@@ -378,7 +374,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
             String linkedServerName,
             RedisLinkedServerCreateParameters parameters,
             Context context) {
-        return beginCreateAsync(resourceGroupName, name, linkedServerName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, name, linkedServerName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -633,7 +629,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String name, String linkedServerName) {
-        return beginDeleteAsync(resourceGroupName, name, linkedServerName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name, linkedServerName).getSyncPoller();
     }
 
     /**
@@ -651,7 +647,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String name, String linkedServerName, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, linkedServerName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name, linkedServerName, context).getSyncPoller();
     }
 
     /**

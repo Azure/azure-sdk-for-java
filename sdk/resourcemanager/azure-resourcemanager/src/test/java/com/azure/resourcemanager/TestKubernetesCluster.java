@@ -9,7 +9,7 @@ import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeT
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.File;
@@ -23,7 +23,7 @@ import java.util.Properties;
 public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, KubernetesClusters> {
     @Override
     public KubernetesCluster createResource(KubernetesClusters kubernetesClusters) throws Exception {
-        final String sshKeyData = ResourceManagerTestBase.sshPublicKey();
+        final String sshKeyData = ResourceManagerTestProxyTestBase.sshPublicKey();
 
         final String newName = "aks" + kubernetesClusters.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String dnsPrefix = "dns" + newName;

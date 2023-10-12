@@ -58,6 +58,6 @@ public final class ConnectedEnvironmentsDaprComponentsDeleteWithResponseMockTest
 
         manager
             .connectedEnvironmentsDaprComponents()
-            .deleteWithResponse("qhd", "nxaulk", "akdkifmjnnawtqab", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("tsxoatftgz", "npbs", "vefloccsrmozihmi", com.azure.core.util.Context.NONE);
     }
 }

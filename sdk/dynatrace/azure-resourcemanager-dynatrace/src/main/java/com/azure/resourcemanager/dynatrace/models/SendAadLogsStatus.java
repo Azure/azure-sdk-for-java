@@ -17,6 +17,15 @@ public final class SendAadLogsStatus extends ExpandableStringEnum<SendAadLogsSta
     public static final SendAadLogsStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of SendAadLogsStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SendAadLogsStatus() {
+    }
+
+    /**
      * Creates or finds a SendAadLogsStatus from its string representation.
      *
      * @param name a name to look for.

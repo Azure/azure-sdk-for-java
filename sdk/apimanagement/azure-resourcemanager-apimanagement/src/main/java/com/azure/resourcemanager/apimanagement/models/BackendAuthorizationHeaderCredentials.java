@@ -23,6 +23,10 @@ public final class BackendAuthorizationHeaderCredentials {
     @JsonProperty(value = "parameter", required = true)
     private String parameter;
 
+    /** Creates an instance of BackendAuthorizationHeaderCredentials class. */
+    public BackendAuthorizationHeaderCredentials() {
+    }
+
     /**
      * Get the scheme property: Authentication Scheme name.
      *

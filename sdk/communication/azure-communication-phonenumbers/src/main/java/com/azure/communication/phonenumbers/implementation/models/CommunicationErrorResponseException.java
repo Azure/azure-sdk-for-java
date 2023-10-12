@@ -4,10 +4,12 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /** Exception thrown for an invalid response with CommunicationErrorResponse information. */
+@Generated
 public final class CommunicationErrorResponseException extends HttpResponseException {
     /**
      * Initializes a new instance of the CommunicationErrorResponseException class.

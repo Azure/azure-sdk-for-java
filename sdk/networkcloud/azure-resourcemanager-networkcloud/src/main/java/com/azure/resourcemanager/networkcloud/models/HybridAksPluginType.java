@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The network plugin type for Hybrid AKS. */
+/**
+ * Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored. The
+ * network plugin type for Hybrid AKS.
+ */
 public final class HybridAksPluginType extends ExpandableStringEnum<HybridAksPluginType> {
     /** Static value DPDK for HybridAksPluginType. */
     public static final HybridAksPluginType DPDK = fromString("DPDK");

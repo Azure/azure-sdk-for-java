@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -63,7 +64,8 @@ public class StoreClient implements IStoreClient {
             SessionContainer sessionContainer,
             GatewayServiceConfigurationReader serviceConfigurationReader, IAuthorizationTokenProvider userTokenProvider,
             TransportClient transportClient,
-            boolean useMultipleWriteLocations) {
+            boolean useMultipleWriteLocations,
+            SessionRetryOptions sessionRetryOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.transportClient = transportClient;
         this.sessionContainer = sessionContainer;
@@ -77,7 +79,8 @@ public class StoreClient implements IStoreClient {
             serviceConfigurationReader,
             userTokenProvider,
             false,
-            useMultipleWriteLocations);
+            useMultipleWriteLocations,
+            sessionRetryOptions);
 
         addressResolver.setOpenConnectionsProcessor(this.transportClient.getProactiveOpenConnectionsProcessor());
     }

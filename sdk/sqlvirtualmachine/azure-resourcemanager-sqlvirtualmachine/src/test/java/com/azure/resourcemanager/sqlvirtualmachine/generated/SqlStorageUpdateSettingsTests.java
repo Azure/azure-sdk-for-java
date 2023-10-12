@@ -8,31 +8,30 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.DiskConfigurationType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlStorageUpdateSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SqlStorageUpdateSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SqlStorageUpdateSettings model =
             BinaryData
                 .fromString(
-                    "{\"diskCount\":684290279,\"startingDeviceId\":99482426,\"diskConfigurationType\":\"EXTEND\"}")
+                    "{\"diskCount\":738552235,\"startingDeviceId\":1698610201,\"diskConfigurationType\":\"EXTEND\"}")
                 .toObject(SqlStorageUpdateSettings.class);
-        Assertions.assertEquals(684290279, model.diskCount());
-        Assertions.assertEquals(99482426, model.startingDeviceId());
+        Assertions.assertEquals(738552235, model.diskCount());
+        Assertions.assertEquals(1698610201, model.startingDeviceId());
         Assertions.assertEquals(DiskConfigurationType.EXTEND, model.diskConfigurationType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SqlStorageUpdateSettings model =
             new SqlStorageUpdateSettings()
-                .withDiskCount(684290279)
-                .withStartingDeviceId(99482426)
+                .withDiskCount(738552235)
+                .withStartingDeviceId(1698610201)
                 .withDiskConfigurationType(DiskConfigurationType.EXTEND);
         model = BinaryData.fromObject(model).toObject(SqlStorageUpdateSettings.class);
-        Assertions.assertEquals(684290279, model.diskCount());
-        Assertions.assertEquals(99482426, model.startingDeviceId());
+        Assertions.assertEquals(738552235, model.diskCount());
+        Assertions.assertEquals(1698610201, model.startingDeviceId());
         Assertions.assertEquals(DiskConfigurationType.EXTEND, model.diskConfigurationType());
     }
 }

@@ -1,16 +1,63 @@
 # Release History
 
-## 12.22.0-beta.1 (Unreleased)
+## 12.23.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added `ServiceTimeoutPolicy` which allows for service level timeouts to be set on client builders through `HttpPipelinePolicy`. If the
-server timeout interval elapses before the service has finished processing the request, the service returns an error.
-- Added support for 2023-01-03 service version.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.22.1 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 12.23.0-beta.1 (2023-08-08)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+
+## 12.22.0 (2023-07-11)
+
+### Features Added
+- Added `ServiceTimeoutPolicy` which allows for service level timeouts to be set on client builders through `HttpPipelinePolicy`. If the
+  server timeout interval elapses before the service has finished processing the request, the service returns an error.
+- Added support for the `2023-01-03` service version.
+
+### Bugs Fixed
+- Adding support for sas tokens with start and end times that only contain a date, no timestamp, ex: st=2021-06-21&se=2021-06-22.
+
+## 12.21.2 (2023-06-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 12.22.0-beta.1 (2023-05-30)
+
+### Features Added
+- Added `ServiceTimeoutPolicy` which allows for service level timeouts to be set on client builders through `HttpPipelinePolicy`. If the
+server timeout interval elapses before the service has finished processing the request, the service returns an error.
+- Added support for 2023-01-03 service version.
+
+## 12.21.1 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
 
 ## 12.21.0 (2023-04-13)
 

@@ -7,7 +7,9 @@ package com.azure.analytics.purview.sharing.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines a single StorageAccountPath path. */
+/**
+ * Defines a single StorageAccountPath path.
+ */
 @Fluent
 public final class StorageAccountPath {
     /*
@@ -28,12 +30,15 @@ public final class StorageAccountPath {
     @JsonProperty(value = "senderPath")
     private String senderPath;
 
-    /** Creates an instance of StorageAccountPath class. */
-    public StorageAccountPath() {}
+    /**
+     * Creates an instance of StorageAccountPath class.
+     */
+    public StorageAccountPath() {
+    }
 
     /**
      * Get the containerName property: Gets or sets the container name.
-     *
+     * 
      * @return the containerName value.
      */
     public String getContainerName() {
@@ -42,7 +47,7 @@ public final class StorageAccountPath {
 
     /**
      * Set the containerName property: Gets or sets the container name.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the StorageAccountPath object itself.
      */
@@ -53,7 +58,7 @@ public final class StorageAccountPath {
 
     /**
      * Get the receiverPath property: Gets or sets the path on the receiver side where the artifact is to be mapped.
-     *
+     * 
      * @return the receiverPath value.
      */
     public String getReceiverPath() {
@@ -62,7 +67,7 @@ public final class StorageAccountPath {
 
     /**
      * Set the receiverPath property: Gets or sets the path on the receiver side where the artifact is to be mapped.
-     *
+     * 
      * @param receiverPath the receiverPath value to set.
      * @return the StorageAccountPath object itself.
      */
@@ -73,7 +78,7 @@ public final class StorageAccountPath {
 
     /**
      * Get the senderPath property: Gets or sets the path to file/folder within the container to be shared.
-     *
+     * 
      * @return the senderPath value.
      */
     public String getSenderPath() {
@@ -82,7 +87,7 @@ public final class StorageAccountPath {
 
     /**
      * Set the senderPath property: Gets or sets the path to file/folder within the container to be shared.
-     *
+     * 
      * @param senderPath the senderPath value to set.
      * @return the StorageAccountPath object itself.
      */

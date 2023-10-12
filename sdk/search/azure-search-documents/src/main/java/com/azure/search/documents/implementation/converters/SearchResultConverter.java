@@ -32,7 +32,7 @@ public final class SearchResultConverter {
         SearchResultHelper.setCaptions(searchResult, obj.getCaptions());
         SearchResultHelper.setAdditionalProperties(searchResult, new SearchDocument(obj.getAdditionalProperties()));
         SearchResultHelper.setJsonSerializer(searchResult, (JsonSerializer) serializer);
-
+        SearchResultHelper.setDocumentDebugInfo(searchResult, obj.getDocumentDebugInfo());
         return searchResult;
     }
 

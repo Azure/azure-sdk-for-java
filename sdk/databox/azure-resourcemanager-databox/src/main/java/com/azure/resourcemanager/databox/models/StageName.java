@@ -4,90 +4,101 @@
 
 package com.azure.resourcemanager.databox.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Name of the stage which is in progress. */
-public enum StageName {
-    /** Enum value DeviceOrdered. */
-    DEVICE_ORDERED("DeviceOrdered"),
+public final class StageName extends ExpandableStringEnum<StageName> {
+    /** Static value DeviceOrdered for StageName. */
+    public static final StageName DEVICE_ORDERED = fromString("DeviceOrdered");
 
-    /** Enum value DevicePrepared. */
-    DEVICE_PREPARED("DevicePrepared"),
+    /** Static value DevicePrepared for StageName. */
+    public static final StageName DEVICE_PREPARED = fromString("DevicePrepared");
 
-    /** Enum value Dispatched. */
-    DISPATCHED("Dispatched"),
+    /** Static value Dispatched for StageName. */
+    public static final StageName DISPATCHED = fromString("Dispatched");
 
-    /** Enum value Delivered. */
-    DELIVERED("Delivered"),
+    /** Static value Delivered for StageName. */
+    public static final StageName DELIVERED = fromString("Delivered");
 
-    /** Enum value PickedUp. */
-    PICKED_UP("PickedUp"),
+    /** Static value PickedUp for StageName. */
+    public static final StageName PICKED_UP = fromString("PickedUp");
 
-    /** Enum value AtAzureDC. */
-    AT_AZURE_DC("AtAzureDC"),
+    /** Static value AtAzureDC for StageName. */
+    public static final StageName AT_AZURE_DC = fromString("AtAzureDC");
 
-    /** Enum value DataCopy. */
-    DATA_COPY("DataCopy"),
+    /** Static value DataCopy for StageName. */
+    public static final StageName DATA_COPY = fromString("DataCopy");
 
-    /** Enum value Completed. */
-    COMPLETED("Completed"),
+    /** Static value Completed for StageName. */
+    public static final StageName COMPLETED = fromString("Completed");
 
-    /** Enum value CompletedWithErrors. */
-    COMPLETED_WITH_ERRORS("CompletedWithErrors"),
+    /** Static value CompletedWithErrors for StageName. */
+    public static final StageName COMPLETED_WITH_ERRORS = fromString("CompletedWithErrors");
 
-    /** Enum value Cancelled. */
-    CANCELLED("Cancelled"),
+    /** Static value Cancelled for StageName. */
+    public static final StageName CANCELLED = fromString("Cancelled");
 
-    /** Enum value Failed_IssueReportedAtCustomer. */
-    FAILED_ISSUE_REPORTED_AT_CUSTOMER("Failed_IssueReportedAtCustomer"),
+    /** Static value Failed_IssueReportedAtCustomer for StageName. */
+    public static final StageName FAILED_ISSUE_REPORTED_AT_CUSTOMER = fromString("Failed_IssueReportedAtCustomer");
 
-    /** Enum value Failed_IssueDetectedAtAzureDC. */
-    FAILED_ISSUE_DETECTED_AT_AZURE_DC("Failed_IssueDetectedAtAzureDC"),
+    /** Static value Failed_IssueDetectedAtAzureDC for StageName. */
+    public static final StageName FAILED_ISSUE_DETECTED_AT_AZURE_DC = fromString("Failed_IssueDetectedAtAzureDC");
 
-    /** Enum value Aborted. */
-    ABORTED("Aborted"),
+    /** Static value Aborted for StageName. */
+    public static final StageName ABORTED = fromString("Aborted");
 
-    /** Enum value CompletedWithWarnings. */
-    COMPLETED_WITH_WARNINGS("CompletedWithWarnings"),
+    /** Static value CompletedWithWarnings for StageName. */
+    public static final StageName COMPLETED_WITH_WARNINGS = fromString("CompletedWithWarnings");
 
-    /** Enum value ReadyToDispatchFromAzureDC. */
-    READY_TO_DISPATCH_FROM_AZURE_DC("ReadyToDispatchFromAzureDC"),
+    /** Static value ReadyToDispatchFromAzureDC for StageName. */
+    public static final StageName READY_TO_DISPATCH_FROM_AZURE_DC = fromString("ReadyToDispatchFromAzureDC");
 
-    /** Enum value ReadyToReceiveAtAzureDC. */
-    READY_TO_RECEIVE_AT_AZURE_DC("ReadyToReceiveAtAzureDC");
+    /** Static value ReadyToReceiveAtAzureDC for StageName. */
+    public static final StageName READY_TO_RECEIVE_AT_AZURE_DC = fromString("ReadyToReceiveAtAzureDC");
 
-    /** The actual serialized value for a StageName instance. */
-    private final String value;
+    /** Static value Created for StageName. */
+    public static final StageName CREATED = fromString("Created");
 
-    StageName(String value) {
-        this.value = value;
+    /** Static value ShippedToAzureDC for StageName. */
+    public static final StageName SHIPPED_TO_AZURE_DC = fromString("ShippedToAzureDC");
+
+    /** Static value AwaitingShipmentDetails for StageName. */
+    public static final StageName AWAITING_SHIPMENT_DETAILS = fromString("AwaitingShipmentDetails");
+
+    /** Static value PreparingToShipFromAzureDC for StageName. */
+    public static final StageName PREPARING_TO_SHIP_FROM_AZURE_DC = fromString("PreparingToShipFromAzureDC");
+
+    /** Static value ShippedToCustomer for StageName. */
+    public static final StageName SHIPPED_TO_CUSTOMER = fromString("ShippedToCustomer");
+
+    /**
+     * Creates a new instance of StageName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StageName() {
     }
 
     /**
-     * Parses a serialized value to a StageName instance.
+     * Creates or finds a StageName from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed StageName object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding StageName.
      */
     @JsonCreator
-    public static StageName fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        StageName[] items = StageName.values();
-        for (StageName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static StageName fromString(String name) {
+        return fromString(name, StageName.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known StageName values.
+     *
+     * @return known StageName values.
+     */
+    public static Collection<StageName> values() {
+        return values(StageName.class);
     }
 }

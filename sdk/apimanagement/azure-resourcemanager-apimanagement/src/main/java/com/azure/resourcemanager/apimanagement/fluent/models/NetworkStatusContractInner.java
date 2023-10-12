@@ -20,11 +20,14 @@ public final class NetworkStatusContractInner {
     private List<String> dnsServers;
 
     /*
-     * Gets the list of Connectivity Status to the Resources on which the
-     * service depends upon.
+     * Gets the list of Connectivity Status to the Resources on which the service depends upon.
      */
     @JsonProperty(value = "connectivityStatus", required = true)
     private List<ConnectivityStatusContract> connectivityStatus;
+
+    /** Creates an instance of NetworkStatusContractInner class. */
+    public NetworkStatusContractInner() {
+    }
 
     /**
      * Get the dnsServers property: Gets the list of DNS servers IPV4 addresses.

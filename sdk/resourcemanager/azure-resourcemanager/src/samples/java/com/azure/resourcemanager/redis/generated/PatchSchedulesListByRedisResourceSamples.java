@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PatchSchedules ListByRedisResource. */
 public final class PatchSchedulesListByRedisResourceSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCachePatchSchedulesList.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCachePatchSchedulesList.json
      */
     /**
      * Sample code: RedisCachePatchSchedulesList.
@@ -22,6 +20,6 @@ public final class PatchSchedulesListByRedisResourceSamples {
             .manager()
             .serviceClient()
             .getPatchSchedules()
-            .listByRedisResource("rg1", "cache1", Context.NONE);
+            .listByRedisResource("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

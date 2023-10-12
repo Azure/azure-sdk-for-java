@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.LocationBasedCapabilitiesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.CapabilityPropertiesInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CapabilityProperties;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FlexibleServerCapabilityInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FlexibleServerCapability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LocationBasedCapabilities;
 
 public final class LocationBasedCapabilitiesImpl implements LocationBasedCapabilities {
@@ -26,14 +26,14 @@ public final class LocationBasedCapabilitiesImpl implements LocationBasedCapabil
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<CapabilityProperties> execute(String locationName) {
-        PagedIterable<CapabilityPropertiesInner> inner = this.serviceClient().execute(locationName);
-        return Utils.mapPage(inner, inner1 -> new CapabilityPropertiesImpl(inner1, this.manager()));
+    public PagedIterable<FlexibleServerCapability> execute(String locationName) {
+        PagedIterable<FlexibleServerCapabilityInner> inner = this.serviceClient().execute(locationName);
+        return Utils.mapPage(inner, inner1 -> new FlexibleServerCapabilityImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CapabilityProperties> execute(String locationName, Context context) {
-        PagedIterable<CapabilityPropertiesInner> inner = this.serviceClient().execute(locationName, context);
-        return Utils.mapPage(inner, inner1 -> new CapabilityPropertiesImpl(inner1, this.manager()));
+    public PagedIterable<FlexibleServerCapability> execute(String locationName, Context context) {
+        PagedIterable<FlexibleServerCapabilityInner> inner = this.serviceClient().execute(locationName, context);
+        return Utils.mapPage(inner, inner1 -> new FlexibleServerCapabilityImpl(inner1, this.manager()));
     }
 
     private LocationBasedCapabilitiesClient serviceClient() {

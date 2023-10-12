@@ -26,6 +26,15 @@ public final class ExportFormat extends ExpandableStringEnum<ExportFormat> {
     public static final ExportFormat OPENAPI_JSON_LINK = fromString("openapi+json-link");
 
     /**
+     * Creates a new instance of ExportFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExportFormat() {
+    }
+
+    /**
      * Creates or finds a ExportFormat from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class ExportFormat extends ExpandableStringEnum<ExportFormat> {
         return fromString(name, ExportFormat.class);
     }
 
-    /** @return known ExportFormat values. */
+    /**
+     * Gets known ExportFormat values.
+     *
+     * @return known ExportFormat values.
+     */
     public static Collection<ExportFormat> values() {
         return values(ExportFormat.class);
     }

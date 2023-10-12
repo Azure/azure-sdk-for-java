@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.TemplateName;
 
 /** Samples for EmailTemplate Delete. */
 public final class EmailTemplateDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteTemplate.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteTemplate.json
      */
     /**
      * Sample code: ApiManagementDeleteTemplate.
@@ -21,6 +20,11 @@ public final class EmailTemplateDeleteSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .emailTemplates()
-            .deleteWithResponse("rg1", "apimService1", TemplateName.NEW_ISSUE_NOTIFICATION_MESSAGE, "*", Context.NONE);
+            .deleteWithResponse(
+                "rg1",
+                "apimService1",
+                TemplateName.NEW_ISSUE_NOTIFICATION_MESSAGE,
+                "*",
+                com.azure.core.util.Context.NONE);
     }
 }

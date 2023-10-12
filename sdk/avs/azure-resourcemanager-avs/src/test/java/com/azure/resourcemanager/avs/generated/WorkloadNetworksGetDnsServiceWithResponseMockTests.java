@@ -32,7 +32,7 @@ public final class WorkloadNetworksGetDnsServiceWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"gppipifh\",\"dnsServiceIp\":\"e\",\"defaultDnsZone\":\"jvgcxtx\",\"fqdnZones\":[\"heafidlt\",\"gsresmkssj\"],\"logLevel\":\"DEBUG\",\"status\":\"SUCCESS\",\"provisioningState\":\"Canceled\",\"revision\":5511337958940482214},\"id\":\"egprhptil\",\"name\":\"ucb\",\"type\":\"qtgdqohmcwsl\"}";
+            "{\"properties\":{\"displayName\":\"izruwnpqxpxiwfc\",\"dnsServiceIp\":\"jsa\",\"defaultDnsZone\":\"iixtmkzj\",\"fqdnZones\":[\"iirhgfgrwsd\",\"gratzvzbglbyvict\",\"tbrxkjz\"],\"logLevel\":\"ERROR\",\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":5705580041199426767},\"id\":\"wfbkgozxwo\",\"name\":\"dby\",\"type\":\"p\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,14 @@ public final class WorkloadNetworksGetDnsServiceWithResponseMockTests {
         WorkloadNetworkDnsService response =
             manager
                 .workloadNetworks()
-                .getDnsServiceWithResponse("rjeuut", "wxezwzhok", "bwnhhtql", com.azure.core.util.Context.NONE)
+                .getDnsServiceWithResponse("wey", "rdhlis", "gwflq", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("gppipifh", response.displayName());
-        Assertions.assertEquals("e", response.dnsServiceIp());
-        Assertions.assertEquals("jvgcxtx", response.defaultDnsZone());
-        Assertions.assertEquals("heafidlt", response.fqdnZones().get(0));
-        Assertions.assertEquals(DnsServiceLogLevelEnum.DEBUG, response.logLevel());
-        Assertions.assertEquals(5511337958940482214L, response.revision());
+        Assertions.assertEquals("izruwnpqxpxiwfc", response.displayName());
+        Assertions.assertEquals("jsa", response.dnsServiceIp());
+        Assertions.assertEquals("iixtmkzj", response.defaultDnsZone());
+        Assertions.assertEquals("iirhgfgrwsd", response.fqdnZones().get(0));
+        Assertions.assertEquals(DnsServiceLogLevelEnum.ERROR, response.logLevel());
+        Assertions.assertEquals(5705580041199426767L, response.revision());
     }
 }

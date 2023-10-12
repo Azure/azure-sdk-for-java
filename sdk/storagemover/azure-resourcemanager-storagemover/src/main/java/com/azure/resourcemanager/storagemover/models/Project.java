@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storagemover.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.ProjectInner;
 
@@ -30,13 +29,6 @@ public interface Project {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: Resource system metadata.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the description property: A description for the Project.
@@ -70,11 +62,13 @@ public interface Project {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Project definition stages. */
     interface DefinitionStages {
         /** The first stage of the Project definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Project definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -86,6 +80,7 @@ public interface Project {
              */
             WithCreate withExistingStorageMover(String resourceGroupName, String storageMoverName);
         }
+
         /**
          * The stage of the Project definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -106,6 +101,7 @@ public interface Project {
              */
             Project create(Context context);
         }
+
         /** The stage of the Project definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -117,6 +113,7 @@ public interface Project {
             WithCreate withDescription(String description);
         }
     }
+
     /**
      * Begins update for the Project resource.
      *
@@ -141,6 +138,7 @@ public interface Project {
          */
         Project apply(Context context);
     }
+
     /** The Project update stages. */
     interface UpdateStages {
         /** The stage of the Project update allowing to specify description. */
@@ -154,6 +152,7 @@ public interface Project {
             Update withDescription(String description);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

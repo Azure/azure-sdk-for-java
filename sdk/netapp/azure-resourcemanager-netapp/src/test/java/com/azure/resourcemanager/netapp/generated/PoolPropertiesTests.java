@@ -17,10 +17,10 @@ public final class PoolPropertiesTests {
         PoolProperties model =
             BinaryData
                 .fromString(
-                    "{\"poolId\":\"ez\",\"size\":312330781949213255,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"mzsb\",\"totalThroughputMibps\":69.09377,\"utilizedThroughputMibps\":19.846666,\"qosType\":\"Auto\",\"coolAccess\":true,\"encryptionType\":\"Double\"}")
+                    "{\"poolId\":\"nwbmeh\",\"size\":5146449711958438241,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"jusrtslhspk\",\"totalThroughputMibps\":72.538994,\"utilizedThroughputMibps\":68.91014,\"qosType\":\"Auto\",\"coolAccess\":true,\"encryptionType\":\"Double\"}")
                 .toObject(PoolProperties.class);
-        Assertions.assertEquals(312330781949213255L, model.size());
-        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, model.serviceLevel());
+        Assertions.assertEquals(5146449711958438241L, model.size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
         Assertions.assertEquals(QosType.AUTO, model.qosType());
         Assertions.assertEquals(true, model.coolAccess());
         Assertions.assertEquals(EncryptionType.DOUBLE, model.encryptionType());
@@ -30,14 +30,14 @@ public final class PoolPropertiesTests {
     public void testSerialize() throws Exception {
         PoolProperties model =
             new PoolProperties()
-                .withSize(312330781949213255L)
-                .withServiceLevel(ServiceLevel.STANDARD_ZRS)
+                .withSize(5146449711958438241L)
+                .withServiceLevel(ServiceLevel.ULTRA)
                 .withQosType(QosType.AUTO)
                 .withCoolAccess(true)
                 .withEncryptionType(EncryptionType.DOUBLE);
         model = BinaryData.fromObject(model).toObject(PoolProperties.class);
-        Assertions.assertEquals(312330781949213255L, model.size());
-        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, model.serviceLevel());
+        Assertions.assertEquals(5146449711958438241L, model.size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
         Assertions.assertEquals(QosType.AUTO, model.qosType());
         Assertions.assertEquals(true, model.coolAccess());
         Assertions.assertEquals(EncryptionType.DOUBLE, model.encryptionType());

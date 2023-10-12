@@ -19,7 +19,16 @@ public class XmlSerializableSamples {
 
         @Override
         public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-            xmlWriter.writeStartElement("example");
+            return toXml(xmlWriter, null);
+        }
+
+        public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+            // If the passed root element name is null or empty use the default root element name.
+            // This allows for scenarios where the model is defined with one XML root element name but other models use
+            // it with a separate XML element name.
+            rootElementName = (rootElementName == null || rootElementName.isEmpty()) ? "example" : rootElementName;
+
+            xmlWriter.writeStartElement(rootElementName);
 
             // Writing attributes must happen first so that they are written to the object start element.
             xmlWriter.writeBooleanAttribute("aBooleanAttribute", aBooleanAttribute);
@@ -32,13 +41,19 @@ public class XmlSerializableSamples {
         }
 
         public XmlSerializableExample fromXml(XmlReader xmlReader) throws XMLStreamException {
+            return fromXml(xmlReader, null);
+        }
+
+        public XmlSerializableExample fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+            rootElementName = (rootElementName == null || rootElementName.isEmpty()) ? "example" : rootElementName;
+
             // readObject is a convenience method on XmlReader which prepares the XML for being read as an object.
             // If the current token isn't an XmlToken.START_ELEMENT the next token element will be iterated to, if it's
             // still not an XmlToken.START_ELEMENT after iterating to the next element an exception will be thrown. If
             // the next element is an XmlToken.START_ELEMENT it will validate that the XML element matches the name
             // expected, if the name doesn't match an exception will be thrown. If the element name matches the reader
             // function will be called.
-            return xmlReader.readObject("example", reader -> {
+            return xmlReader.readObject(rootElementName, reader -> {
                 // Since this class has no constructor reading to fields can be done inline.
                 // If the class had a constructor with arguments the recommendation is using local variables to track
                 // all field values.

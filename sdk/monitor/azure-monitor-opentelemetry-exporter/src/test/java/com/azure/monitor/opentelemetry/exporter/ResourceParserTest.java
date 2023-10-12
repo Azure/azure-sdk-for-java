@@ -9,6 +9,8 @@ import com.azure.core.util.ConfigurationBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.sdk.resources.Resource;
@@ -23,7 +25,7 @@ import static org.assertj.core.data.MapEntry.entry;
 
 class ResourceParserTest {
 
-    private static final String DEFAULT_ROLE_INSTANCE = "fake-hostname";
+    private static final String DEFAULT_ROLE_INSTANCE = HostName.get();
     private MetricTelemetryBuilder builder;
 
     @BeforeEach

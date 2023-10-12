@@ -36,6 +36,12 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
     public static final SearchFieldDataType COMPLEX = fromString("Edm.ComplexType");
 
     /**
+     * Indicates that a field contains a single-precision floating point number. This is only valid when used with
+     * Collection(Edm.Single).
+     */
+    public static final SearchFieldDataType SINGLE = fromString("Edm.Single");
+
+    /**
      * Creates a new instance of SearchFieldDataType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

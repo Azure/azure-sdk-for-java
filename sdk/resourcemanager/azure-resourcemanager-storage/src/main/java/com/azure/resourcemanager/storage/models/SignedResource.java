@@ -26,6 +26,15 @@ public final class SignedResource extends ExpandableStringEnum<SignedResource> {
     public static final SignedResource S = fromString("s");
 
     /**
+     * Creates a new instance of SignedResource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SignedResource() {
+    }
+
+    /**
      * Creates or finds a SignedResource from its string representation.
      *
      * @param name a name to look for.

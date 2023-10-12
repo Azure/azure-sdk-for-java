@@ -6,20 +6,19 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationPackageInner;
-import org.junit.jupiter.api.Test;
 
 public final class ApplicationPackageInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ApplicationPackageInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"state\":\"Active\",\"format\":\"nsez\",\"storageUrl\":\"tbzsgfyccs\",\"storageUrlExpiry\":\"2021-01-11T19:46:12Z\",\"lastActivationTime\":\"2021-01-16T10:20:52Z\"},\"etag\":\"z\",\"id\":\"eiachboosflnr\",\"name\":\"sfqpteehz\",\"type\":\"vypyqrimzinpv\"}")
+                    "{\"properties\":{\"state\":\"Pending\",\"format\":\"zevndhkrwpdappds\",\"storageUrl\":\"kvwrwjfeu\",\"storageUrlExpiry\":\"2021-11-14T12:39:29Z\",\"lastActivationTime\":\"2021-01-02T14:30:26Z\"},\"etag\":\"eltmrldhugjzzdat\",\"id\":\"xhocdgeablgphuti\",\"name\":\"ndv\",\"type\":\"aozwyiftyhxhu\"}")
                 .toObject(ApplicationPackageInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ApplicationPackageInner model = new ApplicationPackageInner();
         model = BinaryData.fromObject(model).toObject(ApplicationPackageInner.class);
     }

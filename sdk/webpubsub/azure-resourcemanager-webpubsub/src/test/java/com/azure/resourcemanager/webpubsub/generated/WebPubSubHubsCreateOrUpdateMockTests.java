@@ -12,6 +12,13 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
+import com.azure.resourcemanager.webpubsub.models.EventHandler;
+import com.azure.resourcemanager.webpubsub.models.EventListener;
+import com.azure.resourcemanager.webpubsub.models.EventListenerEndpoint;
+import com.azure.resourcemanager.webpubsub.models.EventListenerFilter;
+import com.azure.resourcemanager.webpubsub.models.ManagedIdentitySettings;
+import com.azure.resourcemanager.webpubsub.models.UpstreamAuthSettings;
+import com.azure.resourcemanager.webpubsub.models.UpstreamAuthType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHub;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubProperties;
 import java.nio.ByteBuffer;
@@ -33,7 +40,7 @@ public final class WebPubSubHubsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"eventHandlers\":[],\"eventListeners\":[],\"anonymousConnectPolicy\":\"uq\"},\"id\":\"hwyg\",\"name\":\"lvdnkfx\",\"type\":\"semdwzrmu\"}";
+            "{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"j\",\"userEventPattern\":\"rsxypruuu\",\"systemEvents\":[\"chrszi\",\"oyuelyetn\",\"nb\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}},{\"urlTemplate\":\"agfl\",\"userEventPattern\":\"gm\",\"systemEvents\":[\"ahzjmucftb\",\"r\",\"lrohkpig\",\"fusuckzmkwklsno\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}},{\"urlTemplate\":\"e\",\"userEventPattern\":\"lhhjnh\",\"systemEvents\":[\"dyynfsvkhgb\",\"qtanarfdlpuk\",\"py\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"eogkhnmgbro\"},\"id\":\"xddbhfhpfpaz\",\"name\":\"zoyw\",\"type\":\"xhpdulontacnpqwt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +71,37 @@ public final class WebPubSubHubsCreateOrUpdateMockTests {
         WebPubSubHub response =
             manager
                 .webPubSubHubs()
-                .define("syqtfi")
-                .withExistingWebPubSub("whbotzingamv", "phoszqz")
+                .define("ijtk")
+                .withExistingWebPubSub("usqogsfikayia", "sharujtj")
                 .withProperties(
                     new WebPubSubHubProperties()
-                        .withEventHandlers(Arrays.asList())
-                        .withEventListeners(Arrays.asList())
-                        .withAnonymousConnectPolicy("vdkfwynwcvtbvk"))
+                        .withEventHandlers(
+                            Arrays
+                                .asList(
+                                    new EventHandler()
+                                        .withUrlTemplate("fzyjqt")
+                                        .withUserEventPattern("wkpqhjpenuygbq")
+                                        .withSystemEvents(Arrays.asList("ekewvnqvcdlguauc", "f", "jwnlax"))
+                                        .withAuth(
+                                            new UpstreamAuthSettings()
+                                                .withType(UpstreamAuthType.NONE)
+                                                .withManagedIdentity(new ManagedIdentitySettings()))))
+                        .withEventListeners(
+                            Arrays
+                                .asList(
+                                    new EventListener()
+                                        .withFilter(new EventListenerFilter())
+                                        .withEndpoint(new EventListenerEndpoint()),
+                                    new EventListener()
+                                        .withFilter(new EventListenerFilter())
+                                        .withEndpoint(new EventListenerEndpoint())))
+                        .withAnonymousConnectPolicy("zvvitacgxmfcs"))
                 .create();
 
-        Assertions.assertEquals("uq", response.properties().anonymousConnectPolicy());
+        Assertions.assertEquals("j", response.properties().eventHandlers().get(0).urlTemplate());
+        Assertions.assertEquals("rsxypruuu", response.properties().eventHandlers().get(0).userEventPattern());
+        Assertions.assertEquals("chrszi", response.properties().eventHandlers().get(0).systemEvents().get(0));
+        Assertions.assertEquals(UpstreamAuthType.NONE, response.properties().eventHandlers().get(0).auth().type());
+        Assertions.assertEquals("eogkhnmgbro", response.properties().anonymousConnectPolicy());
     }
 }

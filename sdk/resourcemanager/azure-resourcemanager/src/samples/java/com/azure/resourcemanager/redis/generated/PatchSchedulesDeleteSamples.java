@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.models.DefaultName;
 
 /** Samples for PatchSchedules Delete. */
 public final class PatchSchedulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCachePatchSchedulesDelete.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCachePatchSchedulesDelete.json
      */
     /**
      * Sample code: RedisCachePatchSchedulesDelete.
@@ -23,6 +22,6 @@ public final class PatchSchedulesDeleteSamples {
             .manager()
             .serviceClient()
             .getPatchSchedules()
-            .deleteWithResponse("rg1", "cache1", DefaultName.DEFAULT, Context.NONE);
+            .deleteWithResponse("rg1", "cache1", DefaultName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }

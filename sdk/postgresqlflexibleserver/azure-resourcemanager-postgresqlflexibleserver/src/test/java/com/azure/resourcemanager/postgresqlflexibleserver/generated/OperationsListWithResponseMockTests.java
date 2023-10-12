@@ -31,7 +31,7 @@ public final class OperationsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"altol\",\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"pfuvglsbjjca\":\"datawcsdbnwdcfhucq\",\"t\":\"datavxb\",\"mr\":\"dataudutnco\",\"f\":\"dataxqtvcofu\"}},{\"name\":\"kgjubgdknnqvsazn\",\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"uetae\":\"datagsahmkycgrauw\",\"movsmzlxwabmqoe\":\"datauruv\",\"vtpuqujmqlgk\":\"datakif\"}},{\"name\":\"tndoaongbjc\",\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"twwaezkojvdcpzf\":\"dataed\"}}],\"nextLink\":\"ouicybxarzgszu\"}";
+            "{\"value\":[{\"name\":\"msgaoj\",\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"rctym\":\"datarfh\",\"xacpqjli\":\"dataxoftpipiwyczu\",\"skasdvlmfwdgzxu\":\"datahyus\"}},{\"name\":\"cvpa\",\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"ifqjz\":\"dataxurisjnhnyt\",\"lw\":\"dataxmrhu\",\"woqhihe\":\"datacesutrgjupauut\",\"zpnfqntcypsxj\":\"dataqg\"}},{\"name\":\"oimwkslirc\",\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"t\":\"dataceacvlhvygdy\",\"jslb\":\"datamrtwna\",\"aeqphchqnr\":\"datawkojgcyztsfmzn\"}}],\"nextLink\":\"pxehuwrykqga\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class OperationsListWithResponseMockTests {
         OperationListResult response =
             manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(true, response.value().get(0).isDataAction());
-        Assertions.assertEquals("ouicybxarzgszu", response.nextLink());
+        Assertions.assertEquals(false, response.value().get(0).isDataAction());
+        Assertions.assertEquals("pxehuwrykqga", response.nextLink());
     }
 }

@@ -15,7 +15,7 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
      * Errors by document id.
      */
     @JsonProperty(value = "errors", required = true)
-    private List<InputError> errors;
+    private List<DocumentError> errors;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the request payload.
@@ -37,7 +37,7 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
      *
      * @return the errors value.
      */
-    public List<InputError> getErrors() {
+    public List<DocumentError> getErrors() {
         return this.errors;
     }
 
@@ -47,7 +47,7 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
      * @param errors the errors value to set.
      * @return the AbstractiveSummarizationResult object itself.
      */
-    public AbstractiveSummarizationResult setErrors(List<InputError> errors) {
+    public AbstractiveSummarizationResult setErrors(List<DocumentError> errors) {
         this.errors = errors;
         return this;
     }
@@ -96,8 +96,7 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
 
     /** {@inheritDoc} */
     @Override
-    public AbstractiveSummarizationResult setDocuments(
-            List<AbstractiveSummaryDocumentResultWithDetectedLanguage> documents) {
+    public AbstractiveSummarizationResult setDocuments(List<AbstractiveSummaryDocumentResult> documents) {
         super.setDocuments(documents);
         return this;
     }

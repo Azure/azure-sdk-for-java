@@ -58,9 +58,11 @@ public class CallMediaAsyncUnitTests {
         playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
+        playTextSource.setCustomVoiceEndpointId("customVoiceEndpointId");
 
         playSsmlSource = new SsmlSource();
-        playSsmlSource.setSsmlText("<speak></speak>");
+        playSsmlSource.setSsmlText("<speak><voice name=\"LULU\"></voice></speak>");
+        playSsmlSource.setCustomVoiceEndpointId("customVoiceEndpointId");
     }
 
     @Test
@@ -197,7 +199,7 @@ public class CallMediaAsyncUnitTests {
         callMedia = callConnection.getCallMediaAsync();
         StepVerifier.create(
                 callMedia.stopContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
-                    "operationContext")
+                    "operationContext", null)
             )
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -208,7 +210,8 @@ public class CallMediaAsyncUnitTests {
         StepVerifier.create(
                 callMedia.sendDtmfWithResponse(
                         Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
-                        "operationContext"
+                        "operationContext",
+                        null
                 )
             ).consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
@@ -260,6 +263,7 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
         recognizeOptions.setSpeechLanguage("en-US");
+        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
 
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))
@@ -306,6 +310,7 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
 
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))
@@ -325,6 +330,7 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
 
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))

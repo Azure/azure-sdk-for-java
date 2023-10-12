@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,117 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.6 (2023-07-19)
+
+- Azure Resource Manager MobileNetwork client library for Java. This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2023-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `tenantId()` was removed
+* `principalId()` was removed
+
+#### `models.PacketCoreControlPlaneVersion` was modified
+
+* `systemData()` was removed
+
+#### `models.Sim` was modified
+
+* `systemData()` was removed
+
+#### `models.Installation` was modified
+
+* `withState(models.InstallationState)` was removed
+* `withOperation(models.AsyncOperationId)` was removed
+
+### Features Added
+
+* `models.DiagnosticsPackage` was added
+
+* `models.InstallationReason` was added
+
+* `models.PacketCapture$Definition` was added
+
+* `models.PacketCoreControlPlaneResourceId` was added
+
+* `models.ReinstallRequired` was added
+
+* `models.IdentityAndTagsObject` was added
+
+* `models.PacketCapture$UpdateStages` was added
+
+* `models.PacketCaptureStatus` was added
+
+* `models.PacketCapture$DefinitionStages` was added
+
+* `models.PacketCapture` was added
+
+* `models.PacketCapture$Update` was added
+
+* `models.DiagnosticsPackages` was added
+
+* `models.PacketCaptures` was added
+
+* `models.PacketCaptureListResult` was added
+
+* `models.DesiredInstallationState` was added
+
+* `models.SiteDeletePacketCore` was added
+
+* `models.DiagnosticsPackageStatus` was added
+
+* `models.DiagnosticsPackageListResult` was added
+
+* `models.DiagnosticsUploadConfiguration` was added
+
+#### `models.PacketCoreControlPlane$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.PacketCoreControlPlaneVersions` was modified
+
+* `getBySubscriptionWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `listBySubscription()` was added
+* `listBySubscription(com.azure.core.util.Context)` was added
+* `getBySubscription(java.lang.String)` was added
+
+#### `models.PacketCoreControlPlane` was modified
+
+* `diagnosticsUpload()` was added
+* `installedVersion()` was added
+
+#### `models.Site` was modified
+
+* `deletePacketCore(models.SiteDeletePacketCore)` was added
+* `deletePacketCore(models.SiteDeletePacketCore,com.azure.core.util.Context)` was added
+
+#### `models.Sites` was modified
+
+* `deletePacketCore(java.lang.String,java.lang.String,java.lang.String,models.SiteDeletePacketCore)` was added
+* `deletePacketCore(java.lang.String,java.lang.String,java.lang.String,models.SiteDeletePacketCore,com.azure.core.util.Context)` was added
+
+#### `models.Installation` was modified
+
+* `withDesiredState(models.DesiredInstallationState)` was added
+* `reasons()` was added
+* `reinstallRequired()` was added
+* `desiredState()` was added
+
+#### `models.SimGroup$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `MobileNetworkManager` was modified
+
+* `diagnosticsPackages()` was added
+* `packetCaptures()` was added
+
+#### `models.PacketCoreControlPlane$Definition` was modified
+
+* `withInstallation(models.Installation)` was added
+* `withDiagnosticsUpload(models.DiagnosticsUploadConfiguration)` was added
 
 ## 1.0.0-beta.5 (2023-01-16)
 

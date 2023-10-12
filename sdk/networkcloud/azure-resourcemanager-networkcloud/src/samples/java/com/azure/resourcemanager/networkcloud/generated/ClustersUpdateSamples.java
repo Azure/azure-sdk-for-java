@@ -19,7 +19,7 @@ import java.util.Map;
 /** Samples for Clusters Update. */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Patch_Location.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Clusters_Patch_Location.json
      */
     /**
      * Sample code: Patch cluster location.
@@ -34,13 +34,13 @@ public final class ClustersUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withClusterLocation("Foo Street, 3rd Floor, row 9")
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_Patch_AggregatorOrSingleRackDefinition.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Clusters_Patch_AggregatorOrSingleRackDefinition.json
      */
     /**
      * Sample code: Patch cluster AggregatorOrSingleRackDefinition.
@@ -56,7 +56,7 @@ public final class ClustersUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withAggregatorOrSingleRackDefinition(
                 new RackDefinition()
                     .withBareMetalMachineConfigurationData(
@@ -85,11 +85,11 @@ public final class ClustersUpdateSamples {
                                     .withRackSlot(2L)
                                     .withSerialNumber("BM1219YYY")))
                     .withNetworkRackId(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkRacks/networkRackName")
                     .withRackLocation("Foo Datacenter, Floor 3, Aisle 9, Rack 2")
                     .withRackSerialNumber("newSerialNumber")
                     .withRackSkuId(
-                        "/subscriptions/subscriptionId/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName")
                     .withStorageApplianceConfigurationData(
                         Arrays
                             .asList(
@@ -109,6 +109,7 @@ public final class ClustersUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

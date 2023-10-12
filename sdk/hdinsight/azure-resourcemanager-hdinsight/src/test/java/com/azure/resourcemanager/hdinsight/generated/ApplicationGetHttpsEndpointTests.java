@@ -8,37 +8,36 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.ApplicationGetHttpsEndpoint;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ApplicationGetHttpsEndpointTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ApplicationGetHttpsEndpoint model =
             BinaryData
                 .fromString(
-                    "{\"accessModes\":[\"pzk\",\"mond\",\"mquxvypo\"],\"location\":\"kopkwhojvpajqgx\",\"destinationPort\":608982569,\"publicPort\":146904581,\"privateIPAddress\":\"bq\",\"subDomainSuffix\":\"vmkcx\",\"disableGatewayAuth\":true}")
+                    "{\"accessModes\":[\"iwkuofos\",\"ghsauuimjmvxied\",\"ugidyjrr\",\"byao\"],\"location\":\"e\",\"destinationPort\":981492544,\"publicPort\":635298433,\"privateIPAddress\":\"clhocohsl\",\"subDomainSuffix\":\"vleggzfbuhfmvfax\",\"disableGatewayAuth\":true}")
                 .toObject(ApplicationGetHttpsEndpoint.class);
-        Assertions.assertEquals("pzk", model.accessModes().get(0));
-        Assertions.assertEquals(608982569, model.destinationPort());
-        Assertions.assertEquals("bq", model.privateIpAddress());
-        Assertions.assertEquals("vmkcx", model.subDomainSuffix());
+        Assertions.assertEquals("iwkuofos", model.accessModes().get(0));
+        Assertions.assertEquals(981492544, model.destinationPort());
+        Assertions.assertEquals("clhocohsl", model.privateIpAddress());
+        Assertions.assertEquals("vleggzfbuhfmvfax", model.subDomainSuffix());
         Assertions.assertEquals(true, model.disableGatewayAuth());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ApplicationGetHttpsEndpoint model =
             new ApplicationGetHttpsEndpoint()
-                .withAccessModes(Arrays.asList("pzk", "mond", "mquxvypo"))
-                .withDestinationPort(608982569)
-                .withPrivateIpAddress("bq")
-                .withSubDomainSuffix("vmkcx")
+                .withAccessModes(Arrays.asList("iwkuofos", "ghsauuimjmvxied", "ugidyjrr", "byao"))
+                .withDestinationPort(981492544)
+                .withPrivateIpAddress("clhocohsl")
+                .withSubDomainSuffix("vleggzfbuhfmvfax")
                 .withDisableGatewayAuth(true);
         model = BinaryData.fromObject(model).toObject(ApplicationGetHttpsEndpoint.class);
-        Assertions.assertEquals("pzk", model.accessModes().get(0));
-        Assertions.assertEquals(608982569, model.destinationPort());
-        Assertions.assertEquals("bq", model.privateIpAddress());
-        Assertions.assertEquals("vmkcx", model.subDomainSuffix());
+        Assertions.assertEquals("iwkuofos", model.accessModes().get(0));
+        Assertions.assertEquals(981492544, model.destinationPort());
+        Assertions.assertEquals("clhocohsl", model.privateIpAddress());
+        Assertions.assertEquals("vleggzfbuhfmvfax", model.subDomainSuffix());
         Assertions.assertEquals(true, model.disableGatewayAuth());
     }
 }

@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.35.0-beta.1 (Unreleased)
+### 3.39.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,7 +9,53 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 5.5.0 (2023-08-28)
+
+#### Bugs Fixed
+* Fixed an issue with IN statement in annotated queries not working for `Long` data type - See [PR 36267](https://github.com/Azure/azure-sdk-for-java/pull/36267).
+
+### 3.38.0 (2023-08-25)
+
+#### Bugs Fixed
+* Fixed an issue with IN statement in annotated queries not working for `Long` data type - See [PR 36249](https://github.com/Azure/azure-sdk-for-java/pull/36249).
+
+### 5.4.0 (2023-08-02)
+
+#### Features Added
+* Added Diagnostic Threshold configuration support. In order to use diagnostics they must be enabled on the supplied `CosmosClientBuilder` as part of configuration. - See [PR 36134](https://github.com/Azure/azure-sdk-for-java/pull/36134)
+
+#### Bugs Fixed
+* Fix circular references error when using Cosmos Auditing - See [PR 36123](https://github.com/Azure/azure-sdk-for-java/pull/36123).
+
+### 3.37.0 (2023-08-01)
+
+#### Features Added
+* Added Diagnostic Threshold configuration support. In order to use diagnostics they must be enabled on the supplied `CosmosClientBuilder` as part of configuration. - See [PR 35546](https://github.com/Azure/azure-sdk-for-java/pull/35546)
+
+### 3.36.0 (2023-06-29)
+
+#### Other Changes
+* Optimized default implementation of `findById(ID id)` from `CrudRepository` so that it will execute point reads where id is also the partition key, and log a warning where it is not. The new behaviour is more optimal, especially for large containers with many partitions - see [PR 35261](https://github.com/Azure/azure-sdk-for-java/pull/35261).
+* Updated `azure-cosmos` to version `4.47.0`.
+
+### 5.3.0 (2023-06-28)
+
+#### Features Added
+* Support Spring Boot 3 - See [PR 34874](https://github.com/Azure/azure-sdk-for-java/pull/34874).
+* Support Spring Data Commons 3 - See [PR 34878](https://github.com/Azure/azure-sdk-for-java/pull/34878).
+
+#### Other Changes
+* Optimized default implementation of `findById(ID id)` from `CrudRepository` so that it will execute point reads where id is also the partition key, and log a warning where it is not. The new behavior is more optimal, especially for large containers with many partitions - see [PR 35403](https://github.com/Azure/azure-sdk-for-java/pull/35403).
+* Updated `azure-cosmos` to version `4.46.0`.
+
+### 3.35.0 (2023-05-25)
+
+#### Other Changes
 * The module `azure-spring-data-cosmos` was moved from sdk/cosmos to sdk/spring - See [PR 33905](https://github.com/Azure/azure-sdk-for-java/pull/33905)
+* Updated `azure-cosmos` to version `4.45.1`.
+* Updated `Spring Boot` to version `2.7.11`.
+* Updated `Spring Data Commons` to version `2.7.11`.
 
 ### 3.34.0 (2023-04-21)
 #### Breaking Changes

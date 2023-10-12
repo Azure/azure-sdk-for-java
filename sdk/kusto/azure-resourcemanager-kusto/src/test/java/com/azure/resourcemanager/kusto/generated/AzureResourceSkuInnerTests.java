@@ -19,42 +19,42 @@ public final class AzureResourceSkuInnerTests {
         AzureResourceSkuInner model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"ux\",\"sku\":{\"name\":\"Standard_D11_v2\",\"capacity\":1400002261,\"tier\":\"Standard\"},\"capacity\":{\"scaleType\":\"none\",\"minimum\":1605187994,\"maximum\":1767161087,\"default\":1552769506}}")
+                    "{\"resourceType\":\"zceuojgjrw\",\"sku\":{\"name\":\"Standard_EC16ads_v5\",\"capacity\":1907813820,\"tier\":\"Basic\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":1753683852,\"maximum\":54920560,\"default\":1848522994}}")
                 .toObject(AzureResourceSkuInner.class);
-        Assertions.assertEquals("ux", model.resourceType());
-        Assertions.assertEquals(AzureSkuName.STANDARD_D11_V2, model.sku().name());
-        Assertions.assertEquals(1400002261, model.sku().capacity());
-        Assertions.assertEquals(AzureSkuTier.STANDARD, model.sku().tier());
-        Assertions.assertEquals(AzureScaleType.NONE, model.capacity().scaleType());
-        Assertions.assertEquals(1605187994, model.capacity().minimum());
-        Assertions.assertEquals(1767161087, model.capacity().maximum());
-        Assertions.assertEquals(1552769506, model.capacity().defaultProperty());
+        Assertions.assertEquals("zceuojgjrw", model.resourceType());
+        Assertions.assertEquals(AzureSkuName.STANDARD_EC16ADS_V5, model.sku().name());
+        Assertions.assertEquals(1907813820, model.sku().capacity());
+        Assertions.assertEquals(AzureSkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals(AzureScaleType.MANUAL, model.capacity().scaleType());
+        Assertions.assertEquals(1753683852, model.capacity().minimum());
+        Assertions.assertEquals(54920560, model.capacity().maximum());
+        Assertions.assertEquals(1848522994, model.capacity().defaultProperty());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureResourceSkuInner model =
             new AzureResourceSkuInner()
-                .withResourceType("ux")
+                .withResourceType("zceuojgjrw")
                 .withSku(
                     new AzureSku()
-                        .withName(AzureSkuName.STANDARD_D11_V2)
-                        .withCapacity(1400002261)
-                        .withTier(AzureSkuTier.STANDARD))
+                        .withName(AzureSkuName.STANDARD_EC16ADS_V5)
+                        .withCapacity(1907813820)
+                        .withTier(AzureSkuTier.BASIC))
                 .withCapacity(
                     new AzureCapacity()
-                        .withScaleType(AzureScaleType.NONE)
-                        .withMinimum(1605187994)
-                        .withMaximum(1767161087)
-                        .withDefaultProperty(1552769506));
+                        .withScaleType(AzureScaleType.MANUAL)
+                        .withMinimum(1753683852)
+                        .withMaximum(54920560)
+                        .withDefaultProperty(1848522994));
         model = BinaryData.fromObject(model).toObject(AzureResourceSkuInner.class);
-        Assertions.assertEquals("ux", model.resourceType());
-        Assertions.assertEquals(AzureSkuName.STANDARD_D11_V2, model.sku().name());
-        Assertions.assertEquals(1400002261, model.sku().capacity());
-        Assertions.assertEquals(AzureSkuTier.STANDARD, model.sku().tier());
-        Assertions.assertEquals(AzureScaleType.NONE, model.capacity().scaleType());
-        Assertions.assertEquals(1605187994, model.capacity().minimum());
-        Assertions.assertEquals(1767161087, model.capacity().maximum());
-        Assertions.assertEquals(1552769506, model.capacity().defaultProperty());
+        Assertions.assertEquals("zceuojgjrw", model.resourceType());
+        Assertions.assertEquals(AzureSkuName.STANDARD_EC16ADS_V5, model.sku().name());
+        Assertions.assertEquals(1907813820, model.sku().capacity());
+        Assertions.assertEquals(AzureSkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals(AzureScaleType.MANUAL, model.capacity().scaleType());
+        Assertions.assertEquals(1753683852, model.capacity().minimum());
+        Assertions.assertEquals(54920560, model.capacity().maximum());
+        Assertions.assertEquals(1848522994, model.capacity().defaultProperty());
     }
 }

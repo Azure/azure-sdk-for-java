@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountInner;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountProperties;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of MapsAccount. */
@@ -64,11 +65,18 @@ public interface MapsAccount {
     Kind kind();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
 
     /**
      * Gets the properties property: The map account properties.
@@ -113,11 +121,13 @@ public interface MapsAccount {
             DefinitionStages.WithSku,
             DefinitionStages.WithCreate {
     }
+
     /** The MapsAccount definition stages. */
     interface DefinitionStages {
         /** The first stage of the MapsAccount definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the MapsAccount definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -136,6 +146,7 @@ public interface MapsAccount {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the MapsAccount definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -146,6 +157,7 @@ public interface MapsAccount {
              */
             WithSku withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the MapsAccount definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -156,12 +168,16 @@ public interface MapsAccount {
              */
             WithCreate withSku(Sku sku);
         }
+
         /**
          * The stage of the MapsAccount definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithKind, DefinitionStages.WithProperties {
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithKind,
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -177,6 +193,7 @@ public interface MapsAccount {
              */
             MapsAccount create(Context context);
         }
+
         /** The stage of the MapsAccount definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -187,6 +204,7 @@ public interface MapsAccount {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the MapsAccount definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -197,6 +215,19 @@ public interface MapsAccount {
              */
             WithCreate withKind(Kind kind);
         }
+
+        /** The stage of the MapsAccount definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity (system assigned and/or user assigned
+             * identities).
+             *
+             * @param identity Managed service identity (system assigned and/or user assigned identities).
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
+
         /** The stage of the MapsAccount definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -208,6 +239,7 @@ public interface MapsAccount {
             WithCreate withProperties(MapsAccountProperties properties);
         }
     }
+
     /**
      * Begins update for the MapsAccount resource.
      *
@@ -217,7 +249,14 @@ public interface MapsAccount {
 
     /** The template for MapsAccount update. */
     interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithKind, UpdateStages.WithSku, UpdateStages.WithDisableLocalAuth {
+        extends UpdateStages.WithTags,
+            UpdateStages.WithKind,
+            UpdateStages.WithSku,
+            UpdateStages.WithIdentity,
+            UpdateStages.WithDisableLocalAuth,
+            UpdateStages.WithLinkedResources,
+            UpdateStages.WithCors,
+            UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          *
@@ -233,6 +272,7 @@ public interface MapsAccount {
          */
         MapsAccount apply(Context context);
     }
+
     /** The MapsAccount update stages. */
     interface UpdateStages {
         /** The stage of the MapsAccount update allowing to specify tags. */
@@ -251,6 +291,7 @@ public interface MapsAccount {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the MapsAccount update allowing to specify kind. */
         interface WithKind {
             /**
@@ -261,6 +302,7 @@ public interface MapsAccount {
              */
             Update withKind(Kind kind);
         }
+
         /** The stage of the MapsAccount update allowing to specify sku. */
         interface WithSku {
             /**
@@ -271,19 +313,82 @@ public interface MapsAccount {
              */
             Update withSku(Sku sku);
         }
+
+        /** The stage of the MapsAccount update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity (system assigned and/or user assigned
+             * identities).
+             *
+             * @param identity Managed service identity (system assigned and/or user assigned identities).
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+
         /** The stage of the MapsAccount update allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
              * Specifies the disableLocalAuth property: Allows toggle functionality on Azure Policy to disable Azure
-             * Maps local authentication support. This will disable Shared Keys authentication from any usage..
+             * Maps local authentication support. This will disable Shared Keys and Shared Access Signature Token
+             * authentication from any usage..
              *
              * @param disableLocalAuth Allows toggle functionality on Azure Policy to disable Azure Maps local
-             *     authentication support. This will disable Shared Keys authentication from any usage.
+             *     authentication support. This will disable Shared Keys and Shared Access Signature Token
+             *     authentication from any usage.
              * @return the next definition stage.
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
+        /** The stage of the MapsAccount update allowing to specify linkedResources. */
+        interface WithLinkedResources {
+            /**
+             * Specifies the linkedResources property: The array of associated resources to the Map account. Linked
+             * resource in the array cannot individually update, you must update all linked resources in the array
+             * together. These resources may be used on operations on the Azure Maps REST API. Access is controlled by
+             * the Map Account Managed Identity(s) permissions to those resource(s)..
+             *
+             * @param linkedResources The array of associated resources to the Map account. Linked resource in the array
+             *     cannot individually update, you must update all linked resources in the array together. These
+             *     resources may be used on operations on the Azure Maps REST API. Access is controlled by the Map
+             *     Account Managed Identity(s) permissions to those resource(s).
+             * @return the next definition stage.
+             */
+            Update withLinkedResources(List<LinkedResource> linkedResources);
+        }
+
+        /** The stage of the MapsAccount update allowing to specify cors. */
+        interface WithCors {
+            /**
+             * Specifies the cors property: Specifies CORS rules for the Blob service. You can include up to five
+             * CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS
+             * rules will be deleted, and CORS will be disabled for the Blob service..
+             *
+             * @param cors Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
+             *     the request. If no CorsRule elements are included in the request body, all CORS rules will be
+             *     deleted, and CORS will be disabled for the Blob service.
+             * @return the next definition stage.
+             */
+            Update withCors(CorsRules cors);
+        }
+
+        /** The stage of the MapsAccount update allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: (Optional) Discouraged to include in resource definition. Only needed
+             * where it is possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of
+             * this. Values are enabled and disabled..
+             *
+             * @param encryption (Optional) Discouraged to include in resource definition. Only needed where it is
+             *     possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this.
+             *     Values are enabled and disabled.
+             * @return the next definition stage.
+             */
+            Update withEncryption(Encryption encryption);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -298,6 +403,41 @@ public interface MapsAccount {
      * @return the refreshed resource.
      */
     MapsAccount refresh(Context context);
+
+    /**
+     * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
+     * REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
+     *
+     * <p>Prerequisites: 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the
+     * account. 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed
+     * Identity is placed.
+     *
+     * @param mapsAccountSasParameters The updated parameters for the Maps Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
+     *     identity permissions on Azure (IAM) Role Based Access Control along with {@link Response}.
+     */
+    Response<MapsAccountSasToken> listSasWithResponse(AccountSasParameters mapsAccountSasParameters, Context context);
+
+    /**
+     * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
+     * REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
+     *
+     * <p>Prerequisites: 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the
+     * account. 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed
+     * Identity is placed.
+     *
+     * @param mapsAccountSasParameters The updated parameters for the Maps Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
+     *     identity permissions on Azure (IAM) Role Based Access Control.
+     */
+    MapsAccountSasToken listSas(AccountSasParameters mapsAccountSasParameters);
 
     /**
      * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.

@@ -14,11 +14,11 @@ public final class AvailabilityPropertiesTests {
     public void testDeserialize() throws Exception {
         AvailabilityProperties model =
             BinaryData
-                .fromString("{\"strategy\":\"SingleZone\",\"zone\":1069395538,\"secondaryZone\":1769493620}")
+                .fromString("{\"strategy\":\"SingleZone\",\"zone\":355088461,\"secondaryZone\":1152812045}")
                 .toObject(AvailabilityProperties.class);
         Assertions.assertEquals(AvailabilityStrategy.SINGLE_ZONE, model.strategy());
-        Assertions.assertEquals(1069395538, model.zone());
-        Assertions.assertEquals(1769493620, model.secondaryZone());
+        Assertions.assertEquals(355088461, model.zone());
+        Assertions.assertEquals(1152812045, model.secondaryZone());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,11 +26,11 @@ public final class AvailabilityPropertiesTests {
         AvailabilityProperties model =
             new AvailabilityProperties()
                 .withStrategy(AvailabilityStrategy.SINGLE_ZONE)
-                .withZone(1069395538)
-                .withSecondaryZone(1769493620);
+                .withZone(355088461)
+                .withSecondaryZone(1152812045);
         model = BinaryData.fromObject(model).toObject(AvailabilityProperties.class);
         Assertions.assertEquals(AvailabilityStrategy.SINGLE_ZONE, model.strategy());
-        Assertions.assertEquals(1069395538, model.zone());
-        Assertions.assertEquals(1769493620, model.secondaryZone());
+        Assertions.assertEquals(355088461, model.zone());
+        Assertions.assertEquals(1152812045, model.secondaryZone());
     }
 }

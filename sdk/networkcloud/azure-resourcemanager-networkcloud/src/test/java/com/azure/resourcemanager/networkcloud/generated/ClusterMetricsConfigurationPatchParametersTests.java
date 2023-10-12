@@ -17,35 +17,27 @@ public final class ClusterMetricsConfigurationPatchParametersTests {
         ClusterMetricsConfigurationPatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"collectionInterval\":3493251370423165079,\"enabledMetrics\":[\"yetefyp\"]},\"tags\":{\"vzuyturmlmu\":\"ctfjgtixr\",\"iropionszon\":\"wolba\",\"ixjawrtm\":\"pngajin\",\"ovne\":\"fjmyccxlzhco\"}}")
+                    "{\"properties\":{\"collectionInterval\":1068870497872313988,\"enabledMetrics\":[\"khminqcymc\",\"ngnbdxxew\",\"ninvudbchaqdt\",\"qecrqctmxx\"]},\"tags\":{\"vtzn\":\"dmflhuytx\"}}")
                 .toObject(ClusterMetricsConfigurationPatchParameters.class);
-        Assertions.assertEquals("ctfjgtixr", model.tags().get("vzuyturmlmu"));
-        Assertions.assertEquals(3493251370423165079L, model.collectionInterval());
-        Assertions.assertEquals("yetefyp", model.enabledMetrics().get(0));
+        Assertions.assertEquals("dmflhuytx", model.tags().get("vtzn"));
+        Assertions.assertEquals(1068870497872313988L, model.collectionInterval());
+        Assertions.assertEquals("khminqcymc", model.enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterMetricsConfigurationPatchParameters model =
             new ClusterMetricsConfigurationPatchParameters()
-                .withTags(
-                    mapOf(
-                        "vzuyturmlmu",
-                        "ctfjgtixr",
-                        "iropionszon",
-                        "wolba",
-                        "ixjawrtm",
-                        "pngajin",
-                        "ovne",
-                        "fjmyccxlzhco"))
-                .withCollectionInterval(3493251370423165079L)
-                .withEnabledMetrics(Arrays.asList("yetefyp"));
+                .withTags(mapOf("vtzn", "dmflhuytx"))
+                .withCollectionInterval(1068870497872313988L)
+                .withEnabledMetrics(Arrays.asList("khminqcymc", "ngnbdxxew", "ninvudbchaqdt", "qecrqctmxx"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationPatchParameters.class);
-        Assertions.assertEquals("ctfjgtixr", model.tags().get("vzuyturmlmu"));
-        Assertions.assertEquals(3493251370423165079L, model.collectionInterval());
-        Assertions.assertEquals("yetefyp", model.enabledMetrics().get(0));
+        Assertions.assertEquals("dmflhuytx", model.tags().get("vtzn"));
+        Assertions.assertEquals(1068870497872313988L, model.collectionInterval());
+        Assertions.assertEquals("khminqcymc", model.enabledMetrics().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

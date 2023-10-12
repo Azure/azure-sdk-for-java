@@ -129,8 +129,7 @@ public final class ElevationsImpl {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use POST Data For Points.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -171,8 +170,7 @@ public final class ElevationsImpl {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use POST Data For Points.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -213,8 +211,7 @@ public final class ElevationsImpl {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use POST Data For Points.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -242,8 +239,7 @@ public final class ElevationsImpl {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use POST Data For Points.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -273,8 +269,7 @@ public final class ElevationsImpl {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use POST Data For Points.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -302,8 +297,7 @@ public final class ElevationsImpl {
      *
      * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
      * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use the [POST Data For
-     * Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * delimited string, use POST Data For Points.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -332,8 +326,7 @@ public final class ElevationsImpl {
      * coordinate format.
      *
      * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use the [GET Data For Points
-     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * single coordinate into the API, use GET Data For Points API.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -371,8 +364,7 @@ public final class ElevationsImpl {
      * coordinate format.
      *
      * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use the [GET Data For Points
-     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * single coordinate into the API, use GET Data For Points API.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -409,8 +401,7 @@ public final class ElevationsImpl {
      * coordinate format.
      *
      * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use the [GET Data For Points
-     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * single coordinate into the API, use GET Data For Points API.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -436,8 +427,7 @@ public final class ElevationsImpl {
      * coordinate format.
      *
      * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use the [GET Data For Points
-     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * single coordinate into the API, use GET Data For Points API.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -466,8 +456,7 @@ public final class ElevationsImpl {
      * coordinate format.
      *
      * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use the [GET Data For Points
-     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * single coordinate into the API, use GET Data For Points API.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
@@ -493,8 +482,7 @@ public final class ElevationsImpl {
      * coordinate format.
      *
      * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use the [GET Data For Points
-     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * single coordinate into the API, use GET Data For Points API.
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *

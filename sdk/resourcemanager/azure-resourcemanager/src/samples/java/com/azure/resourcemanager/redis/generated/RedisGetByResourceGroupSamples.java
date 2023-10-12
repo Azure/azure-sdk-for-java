@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Redis GetByResourceGroup. */
 public final class RedisGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheGet.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheGet.json
      */
     /**
      * Sample code: RedisCacheGet.
@@ -22,6 +20,6 @@ public final class RedisGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getRedis()
-            .getByResourceGroupWithResponse("rg1", "cache1", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

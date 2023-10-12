@@ -105,6 +105,7 @@ def update_dependency_dict(dependency_dict, root_pom_id):
             continue
         project_element = tree.getroot()
         property_dict = {}
+        plugin_dict = {}
         parent_element = project_element.find('./maven:parent', MAVEN_NAME_SPACE)
         if parent_element is not None:
             # get properties from parent
@@ -117,16 +118,25 @@ def update_dependency_dict(dependency_dict, root_pom_id):
             parent_project_element = parent_tree.getroot()
             log.debug('Get properties from parent pom. parent_pom_url = {}.'.format(parent_pom_url))
             update_property_dict(parent_project_element, property_dict)
+            update_plugin_dict(parent_project_element, property_dict, plugin_dict)
         update_property_dict(project_element, property_dict)
+        update_plugin_dict(project_element, property_dict, plugin_dict)
         # get dependencies
-        dependency_elements = project_element.findall('./maven:dependencyManagement/maven:dependencies/maven:dependency', MAVEN_NAME_SPACE)
-        for dependency_element in dependency_elements:
-            group_id = dependency_element.find('./maven:groupId', MAVEN_NAME_SPACE).text.strip(' ${}')
+        build_elements = project_element.findall('./maven:build/maven:pluginManagement/maven:plugins/maven:plugin', MAVEN_NAME_SPACE) + project_element.findall('./maven:dependencyManagement/maven:dependencies/maven:dependency', MAVEN_NAME_SPACE)
+        for dependency_element in build_elements:
+            artifact_id = dependency_element.find('./maven:artifactId', MAVEN_NAME_SPACE).text.strip(' ')
+            try:
+                group_id = dependency_element.find('./maven:groupId', MAVEN_NAME_SPACE).text.strip(' ${}')
+            except AttributeError:
+                if artifact_id == 'maven-deploy-plugin' or 'maven-jar-plugin' or 'maven-javadoc-plugin' or 'maven-release-plugin' or 'maven-source-plugin':
+                    group_id = 'org.apache.maven.plugins'
             # some group_id contain 'project.groupId', so put project_version first.
             if group_id in property_dict:
                 group_id = property_dict[group_id]
-            artifact_id = dependency_element.find('./maven:artifactId', MAVEN_NAME_SPACE).text.strip(' ')
-            version = dependency_element.find('./maven:version', MAVEN_NAME_SPACE).text.strip(' ${}')
+            try:
+                version = dependency_element.find('./maven:version', MAVEN_NAME_SPACE).text.strip(' ${}')
+            except AttributeError:
+                version = plugin_dict[artifact_id]
             key = group_id + ':' + artifact_id
             if version in property_dict:
                 version = property_dict[version]
@@ -145,6 +155,22 @@ def update_dependency_dict(dependency_dict, root_pom_id):
                 q.put(new_pom)
                 pom_count = pom_count + 1
     log.info('Root pom summary. pom_count = {}, root_pom_url = {}'.format(pom_count, root_pom.to_url()))
+
+
+def update_plugin_dict(project_element, property_dict, plugin_dict):
+    build_elements = project_element.findall('./maven:build/maven:pluginManagement/maven:plugins/maven:plugin', MAVEN_NAME_SPACE)
+    for dependency_element in build_elements:
+        artifact_id = dependency_element.find('./maven:artifactId', MAVEN_NAME_SPACE).text.strip(' ')
+        try:
+            version = dependency_element.find('./maven:version', MAVEN_NAME_SPACE).text.strip(' ${}')
+            plugin_dict[artifact_id] = version
+        except AttributeError:
+            if property_dict.get(artifact_id+'.version') is not None:
+                plugin_dict[artifact_id] = property_dict[artifact_id+'.version']
+            elif artifact_id == 'native-maven-plugin':
+                plugin_dict[artifact_id] = property_dict['native-build-tools-plugin.version']
+            elif artifact_id == 'git-commit-id-maven-plugin':
+                plugin_dict[artifact_id] = property_dict['git-commit-id-plugin.version']
 
 
 def update_property_dict(project_element, property_dict):

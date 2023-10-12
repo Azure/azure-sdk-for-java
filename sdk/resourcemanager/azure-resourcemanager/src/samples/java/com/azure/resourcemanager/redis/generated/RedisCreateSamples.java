@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.RedisCreateParameters;
 import com.azure.resourcemanager.redis.models.Sku;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** Samples for Redis Create. */
 public final class RedisCreateSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheCreate.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheCreate.json
      */
     /**
      * Sample code: RedisCacheCreate.
@@ -48,11 +47,11 @@ public final class RedisCreateSamples {
                     .withReplicasPerPrimary(2)
                     .withShardCount(2)
                     .withMinimumTlsVersion(TlsVersion.ONE_TWO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheCreateDefaultVersion.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheCreateDefaultVersion.json
      */
     /**
      * Sample code: RedisCacheCreateDefaultVersion.
@@ -81,11 +80,11 @@ public final class RedisCreateSamples {
                     .withReplicasPerPrimary(2)
                     .withShardCount(2)
                     .withMinimumTlsVersion(TlsVersion.ONE_TWO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheCreateLatestVersion.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheCreateLatestVersion.json
      */
     /**
      * Sample code: RedisCacheCreateLatestVersion.
@@ -115,7 +114,7 @@ public final class RedisCreateSamples {
                     .withReplicasPerPrimary(2)
                     .withShardCount(2)
                     .withMinimumTlsVersion(TlsVersion.ONE_TWO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -19,6 +19,10 @@ public final class IssueContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private IssueContractProperties innerProperties;
 
+    /** Creates an instance of IssueContractInner class. */
+    public IssueContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Issue.
      *

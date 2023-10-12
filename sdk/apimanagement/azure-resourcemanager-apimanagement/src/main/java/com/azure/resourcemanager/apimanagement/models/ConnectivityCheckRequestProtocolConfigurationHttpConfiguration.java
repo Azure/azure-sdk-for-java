@@ -29,6 +29,10 @@ public final class ConnectivityCheckRequestProtocolConfigurationHttpConfiguratio
     @JsonProperty(value = "headers")
     private List<HttpHeader> headers;
 
+    /** Creates an instance of ConnectivityCheckRequestProtocolConfigurationHttpConfiguration class. */
+    public ConnectivityCheckRequestProtocolConfigurationHttpConfiguration() {
+    }
+
     /**
      * Get the method property: The HTTP method to be used.
      *

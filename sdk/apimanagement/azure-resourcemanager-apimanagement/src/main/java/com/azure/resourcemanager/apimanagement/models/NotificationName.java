@@ -37,6 +37,15 @@ public final class NotificationName extends ExpandableStringEnum<NotificationNam
         fromString("QuotaLimitApproachingPublisherNotificationMessage");
 
     /**
+     * Creates a new instance of NotificationName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotificationName() {
+    }
+
+    /**
      * Creates or finds a NotificationName from its string representation.
      *
      * @param name a name to look for.
@@ -47,7 +56,11 @@ public final class NotificationName extends ExpandableStringEnum<NotificationNam
         return fromString(name, NotificationName.class);
     }
 
-    /** @return known NotificationName values. */
+    /**
+     * Gets known NotificationName values.
+     *
+     * @return known NotificationName values.
+     */
     public static Collection<NotificationName> values() {
         return values(NotificationName.class);
     }

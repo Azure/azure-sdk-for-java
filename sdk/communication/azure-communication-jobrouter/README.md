@@ -135,12 +135,12 @@ To initialize the JobRouter Client, the connection string can be used to instant
 Alternatively, you can also use Active Directory authentication using DefaultAzureCredential.
 
 ```java 
-RouterClient routerClient = new RouterClientBuilder()
-    .connectionString(connectionString);
-    .buildClient();
+JobRouterClient jobRouterClient = new JobRouterClientBuilder()
+            .connectionString(connectionString)
+            .buildClient();
 ```
 
-Using `RouterClient` created from builder, create Job Router entities as described below.
+Using `JobRouterClient` created from builder, create Job Router entities as described below.
 
 ### Create a Distribution Policy
 
@@ -152,14 +152,14 @@ CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDist
         .setMinConcurrentOffers(1)
         .setMaxConcurrentOffers(10)
 );
-DistributionPolicy distributionPolicy = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
+DistributionPolicy distributionPolicy = jobRouterClient.createDistributionPolicy(createDistributionPolicyOptions);
 ```
 
 ### Create a Queue
 
 ```java 
 CreateQueueOptions createQueueOptions = new CreateQueueOptions("queue-id", distributionPolicy.getId());
-JobQueue jobQueue = routerClient.createQueue(createQueueOptions);
+RouterQueue jobQueue = jobRouterClient.createQueue(createQueueOptions);
 ```
 
 ### Create a Job
@@ -170,13 +170,13 @@ CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel
             .setChannelReference("12345")
             .setRequestedWorkerSelectors(
                 new ArrayList<>() {{
-                    new WorkerSelector()
+                    new RouterWorkerSelector()
                         .setKey("Some-skill")
                         .setLabelOperator(LabelOperator.GREATER_THAN)
-                        .setValue(10);
+                        .setValue(new LabelValue(10));
                 }}
             );
-RouterJob routerJob = routerClient.createJob(createJobOptions);
+RouterJob routerJob = jobRouterClient.createJob(createJobOptions);
 ```
 
 ### Create a Worker
@@ -188,9 +188,9 @@ Map<String, LabelValue> labels = new HashMap<String, LabelValue>() {
     }
 };
 
-Map<String, Object> tags = new HashMap<String, Object>() {
+Map<String, LabelValue> tags = new HashMap<String, LabelValue>() {
     {
-        put("Tag", "Value");
+        put("Tag", new LabelValue("Value"));
     }
 };
 
@@ -200,20 +200,20 @@ Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, Ch
     }
 };
 
-Map<String, QueueAssignment> queueAssignments = new HashMap<String, QueueAssignment>() {
+Map<String, RouterQueueAssignment> queueAssignments = new HashMap<String, RouterQueueAssignment>() {
     {
-        put(jobQueue.getId(), new Object());
+        put(jobQueue.getId(), new RouterQueueAssignment());
     }
 };
 
 CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
     .setLabels(labels)
     .setTags(tags)
-    .setAvailableForOffers(false)
+    .setAvailableForOffers(true)
     .setChannelConfigurations(channelConfigurations)
     .setQueueAssignments(queueAssignments);
 
-RouterWorker routerWorker = routerClient.createWorker(createWorkerOptions);
+RouterWorker routerWorker = jobRouterClient.createWorker(createWorkerOptions);
 ```
 
 ## Troubleshooting

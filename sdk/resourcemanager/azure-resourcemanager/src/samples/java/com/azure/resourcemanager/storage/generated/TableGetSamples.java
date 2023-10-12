@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Table Get. */
 public final class TableGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/TableOperationGet.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/TableOperationGet.json
      */
     /**
      * Sample code: TableOperationGet.
@@ -22,6 +20,6 @@ public final class TableGetSamples {
             .manager()
             .serviceClient()
             .getTables()
-            .getWithResponse("res3376", "sto328", "table6185", Context.NONE);
+            .getWithResponse("res3376", "sto328", "table6185", com.azure.core.util.Context.NONE);
     }
 }

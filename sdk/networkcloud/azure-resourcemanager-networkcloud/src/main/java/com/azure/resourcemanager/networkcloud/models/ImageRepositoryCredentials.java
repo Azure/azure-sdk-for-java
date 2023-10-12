@@ -14,7 +14,7 @@ public final class ImageRepositoryCredentials {
     /*
      * The password or token used to access an image in the target repository.
      */
-    @JsonProperty(value = "password", required = true)
+    @JsonProperty(value = "password")
     private String password;
 
     /*

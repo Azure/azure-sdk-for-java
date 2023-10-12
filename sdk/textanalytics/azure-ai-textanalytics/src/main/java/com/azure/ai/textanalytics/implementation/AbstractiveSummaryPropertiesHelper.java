@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.SummaryContext;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
 import com.azure.core.util.IterableStream;
 
 /**
@@ -21,7 +21,7 @@ public final class AbstractiveSummaryPropertiesHelper {
      */
     public interface AbstractiveSummaryAccessor {
         void setText(AbstractiveSummary abstractiveSummary, String text);
-        void setSummaryContexts(AbstractiveSummary abstractiveSummary, IterableStream<SummaryContext> summaryContexts);
+        void setSummaryContexts(AbstractiveSummary abstractiveSummary, IterableStream<AbstractiveSummaryContext> summaryContexts);
     }
 
     /**
@@ -38,7 +38,7 @@ public final class AbstractiveSummaryPropertiesHelper {
     }
 
     public static void setSummaryContexts(AbstractiveSummary abstractiveSummary,
-        IterableStream<SummaryContext> summaryContexts) {
+        IterableStream<AbstractiveSummaryContext> summaryContexts) {
         accessor.setSummaryContexts(abstractiveSummary, summaryContexts);
     }
 }

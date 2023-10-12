@@ -17,6 +17,10 @@ public final class AgConfiguration {
     @JsonProperty(value = "replicas")
     private List<AgReplica> replicas;
 
+    /** Creates an instance of AgConfiguration class. */
+    public AgConfiguration() {
+    }
+
     /**
      * Get the replicas property: Replica configurations.
      *

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.models.ExportRdbParameters;
 
 /** Samples for Redis ExportData. */
 public final class RedisExportDataSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheExport.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheExport.json
      */
     /**
      * Sample code: RedisCacheExport.
@@ -29,7 +28,8 @@ public final class RedisExportDataSamples {
                 new ExportRdbParameters()
                     .withFormat("RDB")
                     .withPrefix("datadump1")
-                    .withContainer("https://contosostorage.blob.core.window.net/urltoBlobContainer?sasKeyParameters"),
-                Context.NONE);
+                    .withContainer("https://contosostorage.blob.core.window.net/urltoBlobContainer?sasKeyParameters")
+                    .withStorageSubscriptionId("storageSubId"),
+                com.azure.core.util.Context.NONE);
     }
 }

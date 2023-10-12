@@ -7,6 +7,7 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.CustomDomainInner;
 import com.azure.resourcemanager.webpubsub.models.CustomDomainList;
+import com.azure.resourcemanager.webpubsub.models.ResourceReference;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,10 +17,11 @@ public final class CustomDomainListTests {
         CustomDomainList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"domainName\":\"cg\"},\"id\":\"lwn\",\"name\":\"nhjdauw\",\"type\":\"vylwzbtdhxuj\"},{\"properties\":{\"provisioningState\":\"Creating\",\"domainName\":\"pow\"},\"id\":\"wpr\",\"name\":\"qlveualupjmkh\",\"type\":\"xobbcswsrt\"}],\"nextLink\":\"iplrbpbewtghfgb\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"domainName\":\"ivwitqscywugg\",\"customCertificate\":{\"id\":\"luhczbw\"}},\"id\":\"mhairsbrgzdwmsw\",\"name\":\"ypqwdxggiccc\",\"type\":\"xqhuexm\"}],\"nextLink\":\"tlstvlzywem\"}")
                 .toObject(CustomDomainList.class);
-        Assertions.assertEquals("cg", model.value().get(0).domainName());
-        Assertions.assertEquals("iplrbpbewtghfgb", model.nextLink());
+        Assertions.assertEquals("ivwitqscywugg", model.value().get(0).domainName());
+        Assertions.assertEquals("luhczbw", model.value().get(0).customCertificate().id());
+        Assertions.assertEquals("tlstvlzywem", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,11 +31,13 @@ public final class CustomDomainListTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new CustomDomainInner().withDomainName("cg"),
-                            new CustomDomainInner().withDomainName("pow")))
-                .withNextLink("iplrbpbewtghfgb");
+                            new CustomDomainInner()
+                                .withDomainName("ivwitqscywugg")
+                                .withCustomCertificate(new ResourceReference().withId("luhczbw"))))
+                .withNextLink("tlstvlzywem");
         model = BinaryData.fromObject(model).toObject(CustomDomainList.class);
-        Assertions.assertEquals("cg", model.value().get(0).domainName());
-        Assertions.assertEquals("iplrbpbewtghfgb", model.nextLink());
+        Assertions.assertEquals("ivwitqscywugg", model.value().get(0).domainName());
+        Assertions.assertEquals("luhczbw", model.value().get(0).customCertificate().id());
+        Assertions.assertEquals("tlstvlzywem", model.nextLink());
     }
 }

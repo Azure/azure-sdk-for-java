@@ -20,8 +20,6 @@ import com.microsoft.azure.batch.protocol.models.JobDisableHeaders;
 import com.microsoft.azure.batch.protocol.models.JobDisableOptions;
 import com.microsoft.azure.batch.protocol.models.JobEnableHeaders;
 import com.microsoft.azure.batch.protocol.models.JobEnableOptions;
-import com.microsoft.azure.batch.protocol.models.JobGetAllLifetimeStatisticsHeaders;
-import com.microsoft.azure.batch.protocol.models.JobGetAllLifetimeStatisticsOptions;
 import com.microsoft.azure.batch.protocol.models.JobGetHeaders;
 import com.microsoft.azure.batch.protocol.models.JobGetOptions;
 import com.microsoft.azure.batch.protocol.models.JobGetTaskCountsHeaders;
@@ -39,7 +37,6 @@ import com.microsoft.azure.batch.protocol.models.JobPatchHeaders;
 import com.microsoft.azure.batch.protocol.models.JobPatchOptions;
 import com.microsoft.azure.batch.protocol.models.JobPatchParameter;
 import com.microsoft.azure.batch.protocol.models.JobPreparationAndReleaseTaskExecutionInformation;
-import com.microsoft.azure.batch.protocol.models.JobStatistics;
 import com.microsoft.azure.batch.protocol.models.JobTerminateHeaders;
 import com.microsoft.azure.batch.protocol.models.JobTerminateOptions;
 import com.microsoft.azure.batch.protocol.models.JobUpdateHeaders;
@@ -61,87 +58,6 @@ import rx.Observable;
  * in Jobs.
  */
 public interface Jobs {
-    /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     * Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the JobStatistics object if successful.
-     */
-    JobStatistics getAllLifetimeStatistics();
-
-    /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     * Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<JobStatistics> getAllLifetimeStatisticsAsync(final ServiceCallback<JobStatistics> serviceCallback);
-
-    /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     * Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the JobStatistics object
-     */
-    Observable<JobStatistics> getAllLifetimeStatisticsAsync();
-
-    /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     * Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the JobStatistics object
-     */
-    Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync();
-    /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     * Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the JobStatistics object if successful.
-     */
-    JobStatistics getAllLifetimeStatistics(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions);
-
-    /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     * Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<JobStatistics> getAllLifetimeStatisticsAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions, final ServiceCallback<JobStatistics> serviceCallback);
-
-    /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     * Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the JobStatistics object
-     */
-    Observable<JobStatistics> getAllLifetimeStatisticsAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions);
-
-    /**
-     * Gets lifetime summary statistics for all of the Jobs in the specified Account.
-     * Statistics are aggregated across all Jobs that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param jobGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the JobStatistics object
-     */
-    Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions);
-
     /**
      * Deletes a Job.
      * Deleting a Job also deletes all Tasks that are part of that Job, and all Job statistics. This also overrides the retention period for Task data; that is, if the Job contains Tasks which are still retained on Compute Nodes, the Batch services deletes those Tasks' working directories and all their contents.  When a Delete Job request is received, the Batch service sets the Job to the deleting state. All update operations on a Job that is in deleting state will fail with status code 409 (Conflict), with additional information indicating that the Job is being deleted.

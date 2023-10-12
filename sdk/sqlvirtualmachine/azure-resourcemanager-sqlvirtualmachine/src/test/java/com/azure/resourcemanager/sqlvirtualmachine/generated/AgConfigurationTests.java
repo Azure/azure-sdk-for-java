@@ -13,11 +13,10 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.ReadableSecondary;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Role;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AgConfiguration model =
             BinaryData
                 .fromString(
@@ -30,8 +29,8 @@ public final class AgConfigurationTests {
         Assertions.assertEquals(ReadableSecondary.ALL, model.replicas().get(0).readableSecondary());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AgConfiguration model =
             new AgConfiguration()
                 .withReplicas(

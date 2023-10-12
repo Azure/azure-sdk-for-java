@@ -191,8 +191,8 @@ public final class CertificateClientBuilder implements
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
@@ -202,8 +202,8 @@ public final class CertificateClientBuilder implements
         }
 
         if (credential == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED)));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED));
         }
 
         // Closest to API goes first, closest to wire goes last.

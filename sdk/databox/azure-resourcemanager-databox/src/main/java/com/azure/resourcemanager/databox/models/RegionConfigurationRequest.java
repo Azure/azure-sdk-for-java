@@ -22,6 +22,12 @@ public final class RegionConfigurationRequest {
     @JsonProperty(value = "transportAvailabilityRequest")
     private TransportAvailabilityRequest transportAvailabilityRequest;
 
+    /*
+     * Request body to get the datacenter address for given sku.
+     */
+    @JsonProperty(value = "datacenterAddressRequest")
+    private DatacenterAddressRequest datacenterAddressRequest;
+
     /** Creates an instance of RegionConfigurationRequest class. */
     public RegionConfigurationRequest() {
     }
@@ -69,6 +75,26 @@ public final class RegionConfigurationRequest {
     }
 
     /**
+     * Get the datacenterAddressRequest property: Request body to get the datacenter address for given sku.
+     *
+     * @return the datacenterAddressRequest value.
+     */
+    public DatacenterAddressRequest datacenterAddressRequest() {
+        return this.datacenterAddressRequest;
+    }
+
+    /**
+     * Set the datacenterAddressRequest property: Request body to get the datacenter address for given sku.
+     *
+     * @param datacenterAddressRequest the datacenterAddressRequest value to set.
+     * @return the RegionConfigurationRequest object itself.
+     */
+    public RegionConfigurationRequest withDatacenterAddressRequest(DatacenterAddressRequest datacenterAddressRequest) {
+        this.datacenterAddressRequest = datacenterAddressRequest;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -79,6 +105,9 @@ public final class RegionConfigurationRequest {
         }
         if (transportAvailabilityRequest() != null) {
             transportAvailabilityRequest().validate();
+        }
+        if (datacenterAddressRequest() != null) {
+            datacenterAddressRequest().validate();
         }
     }
 }

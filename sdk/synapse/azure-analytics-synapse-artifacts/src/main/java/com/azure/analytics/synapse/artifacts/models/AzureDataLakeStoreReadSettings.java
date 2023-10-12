@@ -57,10 +57,10 @@ public final class AzureDataLakeStoreReadSettings extends StoreReadSettings {
     private Object listBefore;
 
     /*
-     * Indicates whether to enable partition discovery.
+     * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enablePartitionDiscovery")
-    private Boolean enablePartitionDiscovery;
+    private Object enablePartitionDiscovery;
 
     /*
      * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
@@ -226,21 +226,23 @@ public final class AzureDataLakeStoreReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @return the enablePartitionDiscovery value.
      */
-    public Boolean isEnablePartitionDiscovery() {
+    public Object getEnablePartitionDiscovery() {
         return this.enablePartitionDiscovery;
     }
 
     /**
-     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the AzureDataLakeStoreReadSettings object itself.
      */
-    public AzureDataLakeStoreReadSettings setEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
+    public AzureDataLakeStoreReadSettings setEnablePartitionDiscovery(Object enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
         return this;
     }

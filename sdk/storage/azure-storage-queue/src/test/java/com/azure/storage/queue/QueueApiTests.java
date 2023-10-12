@@ -170,6 +170,14 @@ public class QueueApiTests extends QueueTestBase {
         assertEquals(TEST_METADATA, response.getValue().getMetadata());
     }
 
+    @Test
+    public void getPropertiesError() {
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.getPropertiesWithResponse(null, null));
+
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 404, QueueErrorCode.QUEUE_NOT_FOUND);
+    }
+
     @ParameterizedTest
     @MethodSource("setAndClearMetadataSupplier")
     public void setAndClearMetadata(Map<String, String> create, Map<String, String> set,
@@ -351,6 +359,12 @@ public class QueueApiTests extends QueueTestBase {
     }
 
     @Test
+    public void dequeueMessageFromEmptyQueue() {
+        queueClient.create();
+        assertNull(queueClient.receiveMessage());
+    }
+
+    @Test
     public void dequeueMessage() {
         queueClient.create();
         String expectMsg = "test message";
@@ -523,12 +537,18 @@ public class QueueApiTests extends QueueTestBase {
     }
 
     @Test
+    public void peekMessageFromEmptyQueue() {
+        queueClient.create();
+        assertNull(queueClient.peekMessage());
+    }
+
+    @Test
     public void peekMessage() {
         queueClient.create();
         String expectMsg = "test message";
         queueClient.sendMessage(expectMsg);
 
-        assertEquals(expectMsg, queueClient.peekMessage().getMessageText());
+        assertEquals(expectMsg, queueClient.peekMessage().getBody().toString());
     }
 
     @Test

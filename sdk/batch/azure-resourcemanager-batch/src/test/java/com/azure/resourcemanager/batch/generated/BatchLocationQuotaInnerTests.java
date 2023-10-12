@@ -6,17 +6,16 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.BatchLocationQuotaInner;
-import org.junit.jupiter.api.Test;
 
 public final class BatchLocationQuotaInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BatchLocationQuotaInner model =
-            BinaryData.fromString("{\"accountQuota\":1593493877}").toObject(BatchLocationQuotaInner.class);
+            BinaryData.fromString("{\"accountQuota\":581868928}").toObject(BatchLocationQuotaInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BatchLocationQuotaInner model = new BatchLocationQuotaInner();
         model = BinaryData.fromObject(model).toObject(BatchLocationQuotaInner.class);
     }

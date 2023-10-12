@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
 import java.time.Duration;
@@ -20,8 +20,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
 
     private static final int MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS = 5;
     private static final int MAX_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = 10;
-    private final List<CosmosContainerIdentity> cosmosContainerIdentities;
-    private final Map<String, Integer> containerLinkToMinConnectionsMap;
+    private final Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerDirectConnectionMetadataMap;
     private int numProactiveConnectionRegions;
     private Duration aggressiveWarmupDuration;
 
@@ -34,8 +33,14 @@ public final class CosmosContainerProactiveInitConfigBuilder {
         checkArgument(
             cosmosContainerIdentities != null && !cosmosContainerIdentities.isEmpty(),
             "The list of container identities cannot be null or empty.");
-        this.cosmosContainerIdentities = cosmosContainerIdentities;
-        this.containerLinkToMinConnectionsMap = new HashMap<>();
+        this.containerDirectConnectionMetadataMap = new HashMap<>();
+
+        if (cosmosContainerIdentities != null && !cosmosContainerIdentities.isEmpty()) {
+            for (CosmosContainerIdentity cosmosContainerIdentity : cosmosContainerIdentities) {
+                this.containerDirectConnectionMetadataMap.put(cosmosContainerIdentity, new ContainerDirectConnectionMetadata());
+            }
+        }
+
         this.numProactiveConnectionRegions = 1;
     }
 
@@ -90,15 +95,13 @@ public final class CosmosContainerProactiveInitConfigBuilder {
      *
      * @return Current {@link CosmosContainerProactiveInitConfigBuilder}
      * */
-    CosmosContainerProactiveInitConfigBuilder setMinConnectionsPerEndpointForContainer(CosmosContainerIdentity cosmosContainerIdentity, int minConnectionsPerEndpoint) {
+    CosmosContainerProactiveInitConfigBuilder setMinConnectionPoolSizePerEndpointForContainer(CosmosContainerIdentity cosmosContainerIdentity, int minConnectionsPerEndpoint) {
         checkArgument(minConnectionsPerEndpoint >= 0 && minConnectionsPerEndpoint <= MAX_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT,
                 "minConnectionsPerEndpoint cannot be negative or greater than {}", MAX_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT);
 
-        String containerLink = ImplementationBridgeHelpers.CosmosContainerIdentityHelper
-                .getCosmosContainerIdentityAccessor()
-                .getContainerLink(cosmosContainerIdentity);
+        ContainerDirectConnectionMetadata containerDirectConnectionMetadata = this.containerDirectConnectionMetadataMap.get(cosmosContainerIdentity);
+        containerDirectConnectionMetadata.setMinConnectionPoolSizePerEndpointForContainer(minConnectionsPerEndpoint);
 
-        containerLinkToMinConnectionsMap.put(containerLink, minConnectionsPerEndpoint);
         return this;
     }
 
@@ -114,9 +117,8 @@ public final class CosmosContainerProactiveInitConfigBuilder {
                 "The no. of regions to proactively connect to cannot be less than 0 or more than {}.",
                     MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS);
         return new CosmosContainerProactiveInitConfig(
-                this.cosmosContainerIdentities,
                 this.numProactiveConnectionRegions,
-                this.containerLinkToMinConnectionsMap,
+                this.containerDirectConnectionMetadataMap,
                 this.aggressiveWarmupDuration
         );
     }

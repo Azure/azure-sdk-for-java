@@ -16,21 +16,21 @@ public final class SkuLocationInfoItemTests {
         SkuLocationInfoItem model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"ec\",\"zones\":[\"debfqkkrbmpukgri\",\"flz\",\"fbxzpuzycisp\",\"qzahmgkbrp\"],\"zoneDetails\":[{\"name\":[\"bnuqqkpik\",\"drgvtqagn\",\"uynhijg\"],\"capabilities\":[]},{\"name\":[\"siarbutrcvpn\",\"zzmhjrunmpxttd\",\"hrbnlankxmyskpbh\"],\"capabilities\":[]}]}")
+                    "{\"location\":\"udxytlmoyrx\",\"zones\":[\"u\",\"wpzntxhdzh\"],\"zoneDetails\":[{\"name\":[\"hckfrlhrx\"],\"capabilities\":[{\"name\":\"vpycanuzbp\",\"value\":\"afkuwb\"}]}]}")
                 .toObject(SkuLocationInfoItem.class);
-        Assertions.assertEquals("ec", model.location());
-        Assertions.assertEquals("debfqkkrbmpukgri", model.zones().get(0));
+        Assertions.assertEquals("udxytlmoyrx", model.location());
+        Assertions.assertEquals("u", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SkuLocationInfoItem model =
             new SkuLocationInfoItem()
-                .withLocation("ec")
-                .withZones(Arrays.asList("debfqkkrbmpukgri", "flz", "fbxzpuzycisp", "qzahmgkbrp"))
-                .withZoneDetails(Arrays.asList(new ResourceSkuZoneDetails(), new ResourceSkuZoneDetails()));
+                .withLocation("udxytlmoyrx")
+                .withZones(Arrays.asList("u", "wpzntxhdzh"))
+                .withZoneDetails(Arrays.asList(new ResourceSkuZoneDetails()));
         model = BinaryData.fromObject(model).toObject(SkuLocationInfoItem.class);
-        Assertions.assertEquals("ec", model.location());
-        Assertions.assertEquals("debfqkkrbmpukgri", model.zones().get(0));
+        Assertions.assertEquals("udxytlmoyrx", model.location());
+        Assertions.assertEquals("u", model.zones().get(0));
     }
 }

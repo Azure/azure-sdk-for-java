@@ -27,11 +27,15 @@ import com.azure.resourcemanager.elasticsan.fluent.ElasticSanManagement;
 import com.azure.resourcemanager.elasticsan.implementation.ElasticSanManagementBuilder;
 import com.azure.resourcemanager.elasticsan.implementation.ElasticSansImpl;
 import com.azure.resourcemanager.elasticsan.implementation.OperationsImpl;
+import com.azure.resourcemanager.elasticsan.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.elasticsan.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.elasticsan.implementation.SkusImpl;
 import com.azure.resourcemanager.elasticsan.implementation.VolumeGroupsImpl;
 import com.azure.resourcemanager.elasticsan.implementation.VolumesImpl;
 import com.azure.resourcemanager.elasticsan.models.ElasticSans;
 import com.azure.resourcemanager.elasticsan.models.Operations;
+import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.elasticsan.models.PrivateLinkResources;
 import com.azure.resourcemanager.elasticsan.models.Skus;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroups;
 import com.azure.resourcemanager.elasticsan.models.Volumes;
@@ -53,6 +57,10 @@ public final class ElasticSanManager {
     private VolumeGroups volumeGroups;
 
     private Volumes volumes;
+
+    private PrivateEndpointConnections privateEndpointConnections;
+
+    private PrivateLinkResources privateLinkResources;
 
     private final ElasticSanManagement clientObject;
 
@@ -219,7 +227,7 @@ public final class ElasticSanManager {
                 .append("-")
                 .append("com.azure.resourcemanager.elasticsan")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -334,6 +342,31 @@ public final class ElasticSanManager {
             this.volumes = new VolumesImpl(clientObject.getVolumes(), this);
         }
         return volumes;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
+        }
+        return privateLinkResources;
     }
 
     /**

@@ -16,6 +16,10 @@ public final class PortalSigninSettingProperties {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of PortalSigninSettingProperties class. */
+    public PortalSigninSettingProperties() {
+    }
+
     /**
      * Get the enabled property: Redirect Anonymous users to the Sign-In page.
      *

@@ -33,12 +33,15 @@ import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.QueryDebugMode;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
+import com.azure.search.documents.models.SemanticErrorHandling;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -113,6 +116,9 @@ public final class DocumentsImpl {
                 @QueryParam(value = "scoringParameter", multipleQueryParams = true) List<String> scoringParameters,
                 @QueryParam("scoringProfile") String scoringProfile,
                 @QueryParam("semanticConfiguration") String semanticConfiguration,
+                @QueryParam("semanticErrorHandling") SemanticErrorHandling semanticErrorHandling,
+                @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
+                @QueryParam("debug") QueryDebugMode debug,
                 @QueryParam("searchFields") String searchFields,
                 @QueryParam("queryLanguage") QueryLanguage queryLanguage,
                 @QueryParam("speller") QuerySpellerType speller,
@@ -149,6 +155,9 @@ public final class DocumentsImpl {
                 @QueryParam(value = "scoringParameter", multipleQueryParams = true) List<String> scoringParameters,
                 @QueryParam("scoringProfile") String scoringProfile,
                 @QueryParam("semanticConfiguration") String semanticConfiguration,
+                @QueryParam("semanticErrorHandling") SemanticErrorHandling semanticErrorHandling,
+                @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
+                @QueryParam("debug") QueryDebugMode debug,
                 @QueryParam("searchFields") String searchFields,
                 @QueryParam("queryLanguage") QueryLanguage queryLanguage,
                 @QueryParam("speller") QuerySpellerType speller,
@@ -193,7 +202,7 @@ public final class DocumentsImpl {
         @Get("/docs('{key}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Object>> get(
+        Mono<Response<Map<String, Object>>> get(
                 @HostParam("endpoint") String endpoint,
                 @HostParam("indexName") String indexName,
                 @PathParam("key") String key,
@@ -206,7 +215,7 @@ public final class DocumentsImpl {
         @Get("/docs('{key}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<Object> getSync(
+        Response<Map<String, Object>> getSync(
                 @HostParam("endpoint") String endpoint,
                 @HostParam("indexName") String indexName,
                 @PathParam("key") String key,
@@ -652,10 +661,11 @@ public final class DocumentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return a document retrieved via a document lookup operation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(
+    public Mono<Response<Map<String, Object>>> getWithResponseAsync(
             String key, List<String> selectedFields, RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
@@ -693,10 +703,11 @@ public final class DocumentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return a document retrieved via a document lookup operation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(
+    public Mono<Response<Map<String, Object>>> getWithResponseAsync(
             String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
@@ -731,10 +742,10 @@ public final class DocumentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(String key, List<String> selectedFields, RequestOptions requestOptions) {
+    public Mono<Map<String, Object>> getAsync(String key, List<String> selectedFields, RequestOptions requestOptions) {
         return getWithResponseAsync(key, selectedFields, requestOptions)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -750,10 +761,10 @@ public final class DocumentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(
+    public Mono<Map<String, Object>> getAsync(
             String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
         return getWithResponseAsync(key, selectedFields, requestOptions, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -770,10 +781,10 @@ public final class DocumentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
+     * @return a document retrieved via a document lookup operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> getWithResponse(
+    public Response<Map<String, Object>> getWithResponse(
             String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
@@ -808,10 +819,10 @@ public final class DocumentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return a document retrieved via a document lookup operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object get(String key, List<String> selectedFields, RequestOptions requestOptions) {
+    public Map<String, Object> get(String key, List<String> selectedFields, RequestOptions requestOptions) {
         return getWithResponse(key, selectedFields, requestOptions, Context.NONE).getValue();
     }
 

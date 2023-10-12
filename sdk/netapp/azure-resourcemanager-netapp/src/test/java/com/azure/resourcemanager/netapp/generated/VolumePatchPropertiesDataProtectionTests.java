@@ -16,12 +16,12 @@ public final class VolumePatchPropertiesDataProtectionTests {
         VolumePatchPropertiesDataProtection model =
             BinaryData
                 .fromString(
-                    "{\"backup\":{\"backupPolicyId\":\"hckfrlhrx\",\"policyEnforced\":false,\"backupEnabled\":true},\"snapshot\":{\"snapshotPolicyId\":\"ca\"}}")
+                    "{\"backup\":{\"backupPolicyId\":\"abnetshh\",\"policyEnforced\":false,\"backupEnabled\":false},\"snapshot\":{\"snapshotPolicyId\":\"vwiwubmwmbesld\"}}")
                 .toObject(VolumePatchPropertiesDataProtection.class);
-        Assertions.assertEquals("hckfrlhrx", model.backup().backupPolicyId());
+        Assertions.assertEquals("abnetshh", model.backup().backupPolicyId());
         Assertions.assertEquals(false, model.backup().policyEnforced());
-        Assertions.assertEquals(true, model.backup().backupEnabled());
-        Assertions.assertEquals("ca", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals(false, model.backup().backupEnabled());
+        Assertions.assertEquals("vwiwubmwmbesld", model.snapshot().snapshotPolicyId());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,14 +30,14 @@ public final class VolumePatchPropertiesDataProtectionTests {
             new VolumePatchPropertiesDataProtection()
                 .withBackup(
                     new VolumeBackupProperties()
-                        .withBackupPolicyId("hckfrlhrx")
+                        .withBackupPolicyId("abnetshh")
                         .withPolicyEnforced(false)
-                        .withBackupEnabled(true))
-                .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("ca"));
+                        .withBackupEnabled(false))
+                .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("vwiwubmwmbesld"));
         model = BinaryData.fromObject(model).toObject(VolumePatchPropertiesDataProtection.class);
-        Assertions.assertEquals("hckfrlhrx", model.backup().backupPolicyId());
+        Assertions.assertEquals("abnetshh", model.backup().backupPolicyId());
         Assertions.assertEquals(false, model.backup().policyEnforced());
-        Assertions.assertEquals(true, model.backup().backupEnabled());
-        Assertions.assertEquals("ca", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals(false, model.backup().backupEnabled());
+        Assertions.assertEquals("vwiwubmwmbesld", model.snapshot().snapshotPolicyId());
     }
 }

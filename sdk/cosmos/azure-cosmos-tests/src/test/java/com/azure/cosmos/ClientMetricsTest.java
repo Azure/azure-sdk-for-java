@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -50,6 +51,8 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Timer;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.testng.SkipException;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -94,6 +97,12 @@ public class ClientMetricsTest extends BatchTestBase {
     }
 
     public void beforeTest(CosmosMetricCategory... metricCategories) {
+        beforeTest(null, metricCategories);
+    }
+
+    public void beforeTest(
+        CosmosDiagnosticsThresholds thresholds,
+        CosmosMetricCategory... metricCategories) {
         assertThat(this.client).isNull();
         assertThat(this.meterRegistry).isNull();
 
@@ -101,9 +110,21 @@ public class ClientMetricsTest extends BatchTestBase {
 
         this.inputMetricsOptions = new CosmosMicrometerMetricsOptions()
             .meterRegistry(this.meterRegistry)
-            .setMetricCategories(metricCategories);
+            .setMetricCategories(metricCategories)
+            .configureDefaultTagNames(
+                CosmosMetricTagName.DEFAULT,
+                CosmosMetricTagName.PARTITION_ID,
+                CosmosMetricTagName.REPLICA_ID,
+                CosmosMetricTagName.OPERATION_SUB_STATUS_CODE);
+
         this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
             .metricsOptions(this.inputMetricsOptions);
+
+
+        if (thresholds != null) {
+            this.inputClientTelemetryConfig.diagnosticsThresholds(thresholds);
+            this.inputMetricsOptions.applyDiagnosticThresholdsForTransportLevelMeters(true);
+        }
 
         this.client = getClientBuilder()
             .clientTelemetryConfig(inputClientTelemetryConfig)
@@ -217,17 +238,37 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag expectedOperationTag = Tag.of(TagName.OperationStatusCode.toString(), "201");
                 // Latency meter can be disabled
                 this.assertMetrics("cosmos.client.op.latency", !disableLatencyMeter, expectedOperationTag);
+                Tag expectedSubStatusCodeOperationTag = Tag.of(TagName.OperationSubStatusCode.toString(), "0");
+                this.assertMetrics("cosmos.client.op.latency", !disableLatencyMeter, expectedSubStatusCodeOperationTag);
 
                 // Calls meter is never disabled - should always show up
                 this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
 
                 if (!disableLatencyMeter) {
+                    Tag expectedRequestTag = Tag.of(TagName.RequestStatusCode.toString(), "201/0");
                     this.validateMetrics(
                         expectedOperationTag,
-                        Tag.of(TagName.RequestStatusCode.toString(), "201/0"),
+                        expectedRequestTag,
                         1,
                         300
                     );
+
+                    // also ensure the replicaId dimension is populated for DIRECT mode
+                    if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+                        Meter foundMeter = this.assertMetrics(
+                            "cosmos.client.req.rntbd.latency",
+                            true,
+                            expectedRequestTag);
+                        assertThat(foundMeter).isNotNull();
+                        boolean replicaIdDimensionExists = foundMeter
+                            .getId()
+                            .getTags()
+                            .stream()
+                            .anyMatch(tag -> tag.getKey().equals(TagName.ReplicaId.toString()) &&
+                                !tag.getValue().equals("NONE"));
+                        assertThat(replicaIdDimensionExists)
+                            .isEqualTo(true);
+                    }
 
                     this.validateMetrics(
                         Tag.of(
@@ -351,6 +392,57 @@ public class ClientMetricsTest extends BatchTestBase {
         } finally {
             this.afterTest();
         }
+    }
+
+    private void runReadItemTestWithThresholds(
+        CosmosDiagnosticsThresholds thresholds,
+        boolean expectRequestMetrics
+    ) {
+        this.beforeTest(thresholds, CosmosMetricCategory.DEFAULT);
+        try {
+
+            if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+                throw new SkipException("Test case only relevant for direct model.");
+            }
+
+            InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+            container.createItem(properties);
+
+            CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
+                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+                new CosmosItemRequestOptions(),
+                InternalObjectNode.class);
+            validateItemResponse(properties, readResponse1);
+
+            CosmosDiagnosticsThresholds maxThresholds = new CosmosDiagnosticsThresholds()
+                .setPointOperationLatencyThreshold(Duration.ofDays(1));
+
+            Tag operationTag = Tag.of(TagName.OperationStatusCode.toString(), "200");
+            Tag expectedSubStatusCodeOperationTag = Tag.of(TagName.OperationSubStatusCode.toString(), "0");
+            Tag requestTag = Tag.of(TagName.RequestStatusCode.toString(), "200/0");
+            this.assertMetrics("cosmos.client.op.latency", true, operationTag);
+            this.assertMetrics("cosmos.client.op.latency", true, expectedSubStatusCodeOperationTag);
+            this.assertMetrics("cosmos.client.op.calls", true, operationTag);
+            this.assertMetrics("cosmos.client.op.calls", true, expectedSubStatusCodeOperationTag);
+            this.assertMetrics("cosmos.client.req.rntbd.latency", expectRequestMetrics, requestTag);
+            this.assertMetrics("cosmos.client.req.rntbd.backendLatency", expectRequestMetrics, requestTag);
+            this.assertMetrics("cosmos.client.req.rntbd.requests", expectRequestMetrics, requestTag);
+            Meter reportedRntbdRequestCharge =
+                this.assertMetrics("cosmos.client.req.rntbd.RUs", expectRequestMetrics, requestTag);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readItemWithThresholdsApplied() throws Exception {
+        CosmosDiagnosticsThresholds maxThresholds = new CosmosDiagnosticsThresholds()
+            .setPointOperationLatencyThreshold(Duration.ofDays(1));
+        CosmosDiagnosticsThresholds minThresholds = new CosmosDiagnosticsThresholds()
+            .setPointOperationLatencyThreshold(Duration.ZERO);
+
+        runReadItemTestWithThresholds(maxThresholds, false);
+        runReadItemTestWithThresholds(minThresholds, true);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -901,7 +993,7 @@ public class ClientMetricsTest extends BatchTestBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void endpointMetricsAreDurable() {
+    public void endpointMetricsAreDurable() throws IllegalAccessException {
         this.beforeTest(CosmosMetricCategory.ALL);
         try {
             if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
@@ -913,14 +1005,15 @@ public class ClientMetricsTest extends BatchTestBase {
                 (RntbdServiceEndpoint.Provider) ReflectionUtils.getRntbdEndpointProvider(transportClient);
             ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor =
                     ReflectionUtils.getProactiveOpenConnectionsProcessor(transportClient);
+            AddressSelector addressSelector = (AddressSelector) FieldUtils.readField(transportClient, "addressSelector", true);
 
             String address = "https://localhost:12345";
-            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint(), addressSelector);
             RntbdDurableEndpointMetrics firstDurableMetricsInstance = firstEndpoint.durableEndpointMetrics();
             firstEndpoint.close();
             assertThat(firstEndpoint.durableEndpointMetrics().getEndpoint()).isNull();
 
-            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint(), addressSelector);
 
             // ensure metrics are durable across multiple endpoint instances
             assertThat(firstEndpoint).isNotSameAs(secondEndpoint);
@@ -1035,6 +1128,11 @@ public class ClientMetricsTest extends BatchTestBase {
             .isSameAs(CosmosMetricTagName.SERVICE_ADDRESS);
         assertThat(CosmosMetricTagName.fromString("serviceEndpoint"))
             .isSameAs(CosmosMetricTagName.SERVICE_ENDPOINT);
+        assertThat(CosmosMetricTagName.fromString("partitionID"))
+            .isSameAs(CosmosMetricTagName.PARTITION_ID);
+        assertThat(CosmosMetricTagName.fromString("REPLICAid"))
+            .isSameAs(CosmosMetricTagName.REPLICA_ID);
+
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -1175,6 +1273,14 @@ public class ClientMetricsTest extends BatchTestBase {
     private void validateMetrics(Tag expectedOperationTag, Tag expectedRequestTag, int minRu, int maxRu) {
         this.assertMetrics("cosmos.client.op.latency", true, expectedOperationTag);
         this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
+
+        if (expectedOperationTag.getKey() == "OperationStatusCode" &&
+            ("200".equals(expectedOperationTag.getValue()) || "201".equals(expectedOperationTag.getValue()))) {
+
+            Tag expectedSubStatusCodeOperationTag = Tag.of(TagName.OperationSubStatusCode.toString(), "0");
+            this.assertMetrics("cosmos.client.op.latency", true, expectedSubStatusCodeOperationTag);
+            this.assertMetrics("cosmos.client.op.calls", true, expectedSubStatusCodeOperationTag);
+        }
         Meter reportedOpRequestCharge = this.assertMetrics(
             "cosmos.client.op.RUs", true, expectedOperationTag);
         validateReasonableRUs(reportedOpRequestCharge, minRu, maxRu);

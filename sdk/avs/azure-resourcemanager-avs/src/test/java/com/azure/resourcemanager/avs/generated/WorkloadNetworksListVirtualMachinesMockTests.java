@@ -32,7 +32,7 @@ public final class WorkloadNetworksListVirtualMachinesMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"dqbwpypqtgsfja\",\"vmType\":\"REGULAR\"},\"id\":\"lhhxudbxvodhtnsi\",\"name\":\"ud\",\"type\":\"z\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"xu\",\"vmType\":\"EDGE\"},\"id\":\"ksxwpnd\",\"name\":\"cpfnznthjtwkja\",\"type\":\"srxuzvoam\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,10 @@ public final class WorkloadNetworksListVirtualMachinesMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetworkVirtualMachine> response =
-            manager.workloadNetworks().listVirtualMachines("itvtzeexavo", "tfgle", com.azure.core.util.Context.NONE);
+            manager
+                .workloadNetworks()
+                .listVirtualMachines("cjxgrytf", "pcycilrmcaykg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dqbwpypqtgsfja", response.iterator().next().displayName());
+        Assertions.assertEquals("xu", response.iterator().next().displayName());
     }
 }

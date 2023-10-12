@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class UserEmailIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserEmailId model = BinaryData.fromString("{\"emailId\":\"ochcbonqvpkvl\"}").toObject(UserEmailId.class);
-        Assertions.assertEquals("ochcbonqvpkvl", model.emailId());
+        UserEmailId model = BinaryData.fromString("{\"emailId\":\"rxnjeaseipheofl\"}").toObject(UserEmailId.class);
+        Assertions.assertEquals("rxnjeaseipheofl", model.emailId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserEmailId model = new UserEmailId().withEmailId("ochcbonqvpkvl");
+        UserEmailId model = new UserEmailId().withEmailId("rxnjeaseipheofl");
         model = BinaryData.fromObject(model).toObject(UserEmailId.class);
-        Assertions.assertEquals("ochcbonqvpkvl", model.emailId());
+        Assertions.assertEquals("rxnjeaseipheofl", model.emailId());
     }
 }

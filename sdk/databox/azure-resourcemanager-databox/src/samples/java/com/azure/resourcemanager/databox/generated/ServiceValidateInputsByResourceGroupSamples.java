@@ -25,7 +25,7 @@ import java.util.Arrays;
 /** Samples for Service ValidateInputsByResourceGroup. */
 public final class ServiceValidateInputsByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/ValidateInputsByResourceGroup.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/ValidateInputsByResourceGroup.json
      */
     /**
      * Sample code: ValidateInputsByResourceGroup.
@@ -36,7 +36,7 @@ public final class ServiceValidateInputsByResourceGroupSamples {
         manager
             .services()
             .validateInputsByResourceGroupWithResponse(
-                "SdkRg6861",
+                "YourResourceGroupName",
                 "westus",
                 new CreateJobValidations()
                     .withIndividualRequestDetails(
@@ -50,19 +50,19 @@ public final class ServiceValidateInputsByResourceGroupSamples {
                                                     .withAccountDetails(
                                                         new StorageAccountDetails()
                                                             .withStorageAccountId(
-                                                                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"))))
+                                                                "/subscriptions/YourSubscriptionId/resourcegroups/YourResourceGroupName/providers/Microsoft.Storage/storageAccounts/YourStorageAccountName"))))
                                     .withDeviceType(SkuName.DATA_BOX)
                                     .withTransferType(TransferType.IMPORT_TO_AZURE),
                                 new ValidateAddress()
                                     .withShippingAddress(
                                         new ShippingAddress()
-                                            .withStreetAddress1("16 TOWNSEND ST")
-                                            .withStreetAddress2("Unit 1")
-                                            .withCity("San Francisco")
-                                            .withStateOrProvince("CA")
-                                            .withCountry("US")
+                                            .withStreetAddress1("XXXX XXXX")
+                                            .withStreetAddress2("XXXX XXXX")
+                                            .withCity("XXXX XXXX")
+                                            .withStateOrProvince("XX")
+                                            .withCountry("XX")
                                             .withPostalCode("fakeTokenPlaceholder")
-                                            .withCompanyName("Microsoft")
+                                            .withCompanyName("XXXX XXXX")
                                             .withAddressType(AddressType.COMMERCIAL))
                                     .withDeviceType(SkuName.DATA_BOX)
                                     .withTransportPreferences(
@@ -72,7 +72,7 @@ public final class ServiceValidateInputsByResourceGroupSamples {
                                 new SkuAvailabilityValidationRequest()
                                     .withDeviceType(SkuName.DATA_BOX)
                                     .withTransferType(TransferType.IMPORT_TO_AZURE)
-                                    .withCountry("US")
+                                    .withCountry("XX")
                                     .withLocation("westus"),
                                 new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX),
                                 new PreferencesValidationRequest()

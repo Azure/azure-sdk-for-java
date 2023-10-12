@@ -31,6 +31,12 @@ public final class VirtualMachineProperties {
     private String adminUsername;
 
     /*
+     * The cluster availability zone containing this virtual machine.
+     */
+    @JsonProperty(value = "availabilityZone", access = JsonProperty.Access.WRITE_ONLY)
+    private String availabilityZone;
+
+    /*
      * The resource ID of the bare metal machine the virtual machine has landed to.
      */
     @JsonProperty(value = "bareMetalMachineId", access = JsonProperty.Access.WRITE_ONLY)
@@ -195,6 +201,15 @@ public final class VirtualMachineProperties {
     public VirtualMachineProperties withAdminUsername(String adminUsername) {
         this.adminUsername = adminUsername;
         return this;
+    }
+
+    /**
+     * Get the availabilityZone property: The cluster availability zone containing this virtual machine.
+     *
+     * @return the availabilityZone value.
+     */
+    public String availabilityZone() {
+        return this.availabilityZone;
     }
 
     /**

@@ -108,6 +108,16 @@ public final class L3NetworkInner extends Resource {
     }
 
     /**
+     * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
+     * that have attached this network.
+     *
+     * @return the associatedResourceIds value.
+     */
+    public List<String> associatedResourceIds() {
+        return this.innerProperties() == null ? null : this.innerProperties().associatedResourceIds();
+    }
+
+    /**
      * Get the clusterId property: The resource ID of the Network Cloud cluster this L3 network is associated with.
      *
      * @return the clusterId value.
@@ -135,8 +145,8 @@ public final class L3NetworkInner extends Resource {
     }
 
     /**
-     * Get the hybridAksClustersAssociatedIds property: The list of Hybrid AKS cluster resource IDs that are associated
-     * with this L3 network.
+     * Get the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
+     * of Hybrid AKS cluster resource IDs that are associated with this L3 network.
      *
      * @return the hybridAksClustersAssociatedIds value.
      */
@@ -145,7 +155,8 @@ public final class L3NetworkInner extends Resource {
     }
 
     /**
-     * Get the hybridAksIpamEnabled property: The indicator of whether or not to disable IPAM allocation on the network
+     * Get the hybridAksIpamEnabled property: Field Deprecated. The field was previously optional, now it will have no
+     * defined behavior and will be ignored. The indicator of whether or not to disable IPAM allocation on the network
      * attachment definition injected into the Hybrid AKS Cluster.
      *
      * @return the hybridAksIpamEnabled value.
@@ -155,7 +166,8 @@ public final class L3NetworkInner extends Resource {
     }
 
     /**
-     * Set the hybridAksIpamEnabled property: The indicator of whether or not to disable IPAM allocation on the network
+     * Set the hybridAksIpamEnabled property: Field Deprecated. The field was previously optional, now it will have no
+     * defined behavior and will be ignored. The indicator of whether or not to disable IPAM allocation on the network
      * attachment definition injected into the Hybrid AKS Cluster.
      *
      * @param hybridAksIpamEnabled the hybridAksIpamEnabled value to set.
@@ -170,7 +182,8 @@ public final class L3NetworkInner extends Resource {
     }
 
     /**
-     * Get the hybridAksPluginType property: The network plugin type for Hybrid AKS.
+     * Get the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
+     * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
      *
      * @return the hybridAksPluginType value.
      */
@@ -179,7 +192,8 @@ public final class L3NetworkInner extends Resource {
     }
 
     /**
-     * Set the hybridAksPluginType property: The network plugin type for Hybrid AKS.
+     * Set the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
+     * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
      *
      * @param hybridAksPluginType the hybridAksPluginType value to set.
      * @return the L3NetworkInner object itself.
@@ -323,8 +337,9 @@ public final class L3NetworkInner extends Resource {
     }
 
     /**
-     * Get the virtualMachinesAssociatedIds property: The list of virtual machine resource IDs, excluding any Hybrid AKS
-     * virtual machines, that are currently using this L3 network.
+     * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
+     * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this L3
+     * network.
      *
      * @return the virtualMachinesAssociatedIds value.
      */

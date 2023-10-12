@@ -24,6 +24,7 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.identity.CredentialUnavailableException;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
 public class AppConfigurationReplicaClientTest {
@@ -99,6 +100,34 @@ public class AppConfigurationReplicaClientTest {
 
         when(responseMock.getStatusCode()).thenReturn(499);
         assertThrows(HttpResponseException.class, () -> client.listSettings(new SettingSelector()));
+    }
+
+    @Test
+    public void listSettingsNoCredentialTest() {
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
+            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+
+        List<ConfigurationSetting> configurations = new ArrayList<>();
+
+        when(clientMock.listConfigurationSettings(Mockito.any()))
+            .thenThrow(new CredentialUnavailableException("No Credential"));
+        when(settingsMock.iterator()).thenReturn(configurations.iterator());
+
+        assertThrows(CredentialUnavailableException.class, () -> client.listSettings(new SettingSelector()));
+    }
+
+    @Test
+    public void getWatchNoCredentialTest() {
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
+            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+
+        List<ConfigurationSetting> configurations = new ArrayList<>();
+
+        when(clientMock.getConfigurationSetting(Mockito.anyString(), Mockito.anyString()))
+            .thenThrow(new CredentialUnavailableException("No Credential"));
+        when(settingsMock.iterator()).thenReturn(configurations.iterator());
+
+        assertThrows(CredentialUnavailableException.class, () -> client.getWatchKey("key", "label"));
     }
 
     @Test

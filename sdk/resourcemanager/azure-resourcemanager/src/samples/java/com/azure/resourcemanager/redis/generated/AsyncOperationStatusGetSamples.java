@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AsyncOperationStatus Get. */
 public final class AsyncOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheAsyncOperationStatus.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheAsyncOperationStatus.json
      */
     /**
      * Sample code: RedisCacheAsyncOperationStatus.
@@ -22,6 +20,6 @@ public final class AsyncOperationStatusGetSamples {
             .manager()
             .serviceClient()
             .getAsyncOperationStatus()
-            .getWithResponse("East US", "c7ba2bf5-5939-4d79-b037-2964ccf097da", Context.NONE);
+            .getWithResponse("East US", "c7ba2bf5-5939-4d79-b037-2964ccf097da", com.azure.core.util.Context.NONE);
     }
 }

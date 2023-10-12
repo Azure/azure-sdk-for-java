@@ -13,8 +13,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AsyncOperationStatusInner;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneInner;
+import com.azure.resourcemanager.mobilenetwork.models.IdentityAndTagsObject;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneCollectDiagnosticsPackage;
-import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 
 /** An instance of this class provides access to all the operations defined in PacketCoreControlPlanesClient. */
 public interface PacketCoreControlPlanesClient {
@@ -168,11 +168,11 @@ public interface PacketCoreControlPlanesClient {
         Context context);
 
     /**
-     * Updates packet core control planes tags.
+     * Patch packet core control plane resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update packet core control plane tags.
+     * @param parameters Parameters supplied to patch packet core control plane resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -181,14 +181,14 @@ public interface PacketCoreControlPlanesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PacketCoreControlPlaneInner> updateTagsWithResponse(
-        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters, Context context);
+        String resourceGroupName, String packetCoreControlPlaneName, IdentityAndTagsObject parameters, Context context);
 
     /**
-     * Updates packet core control planes tags.
+     * Patch packet core control plane resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update packet core control plane tags.
+     * @param parameters Parameters supplied to patch packet core control plane resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -196,7 +196,7 @@ public interface PacketCoreControlPlanesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PacketCoreControlPlaneInner updateTags(
-        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters);
+        String resourceGroupName, String packetCoreControlPlaneName, IdentityAndTagsObject parameters);
 
     /**
      * Lists all the packet core control planes in a subscription.

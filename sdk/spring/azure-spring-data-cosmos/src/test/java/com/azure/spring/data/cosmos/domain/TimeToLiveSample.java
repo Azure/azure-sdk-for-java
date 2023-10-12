@@ -5,7 +5,7 @@ package com.azure.spring.data.cosmos.domain;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 
-@Container(timeToLive = TestConstants.TIME_TO_LIVE)
+@Container(timeToLive = TestConstants.TIME_TO_LIVE, ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class TimeToLiveSample {
     private String id;
 

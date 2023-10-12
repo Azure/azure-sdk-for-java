@@ -144,14 +144,11 @@ public class Batcher implements Iterator<LogsIngestionRequest> {
             generator.writeStartArray();
             generator.writeRaw(serializedLogs.stream().collect(Collectors.joining(",")));
             generator.writeEndArray();
+            generator.close();
 
             byte[] zippedRequestBody = gzipRequest(byteArrayOutputStream.toByteArray());
-
             return new LogsIngestionRequest(originalLogsRequest, zippedRequestBody);
         } finally {
-            generator.close();
-            byteArrayOutputStream.close();
-
             if (!last) {
                 originalLogsRequest = new ArrayList<>();
                 serializedLogs.clear();

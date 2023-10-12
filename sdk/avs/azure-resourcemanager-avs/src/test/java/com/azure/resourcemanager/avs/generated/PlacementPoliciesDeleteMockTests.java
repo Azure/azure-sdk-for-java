@@ -58,6 +58,6 @@ public final class PlacementPoliciesDeleteMockTests {
 
         manager
             .placementPolicies()
-            .delete("bydpizqaclnapxb", "yg", "ugjknf", "mfcttux", com.azure.core.util.Context.NONE);
+            .delete("skw", "qjjyslurl", "shhkvpedw", "slsrhmpq", com.azure.core.util.Context.NONE);
     }
 }

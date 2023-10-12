@@ -14,15 +14,15 @@ public final class WorkloadNetworkGatewayInnerTests {
         WorkloadNetworkGatewayInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"displayName\":\"xgk\",\"path\":\"mgucna\"},\"id\":\"kteo\",\"name\":\"llwptfdy\",\"type\":\"pfqbuaceopzf\"}")
+                    "{\"properties\":{\"displayName\":\"yxxrwlycoduh\",\"path\":\"xkgymareqnajxqu\"},\"id\":\"jhkycub\",\"name\":\"ddg\",\"type\":\"sofwqmzqalkrmnji\"}")
                 .toObject(WorkloadNetworkGatewayInner.class);
-        Assertions.assertEquals("xgk", model.displayName());
+        Assertions.assertEquals("yxxrwlycoduh", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkGatewayInner model = new WorkloadNetworkGatewayInner().withDisplayName("xgk");
+        WorkloadNetworkGatewayInner model = new WorkloadNetworkGatewayInner().withDisplayName("yxxrwlycoduh");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkGatewayInner.class);
-        Assertions.assertEquals("xgk", model.displayName());
+        Assertions.assertEquals("yxxrwlycoduh", model.displayName());
     }
 }

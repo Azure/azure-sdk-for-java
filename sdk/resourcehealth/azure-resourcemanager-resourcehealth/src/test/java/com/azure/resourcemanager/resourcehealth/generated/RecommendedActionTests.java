@@ -7,27 +7,27 @@ package com.azure.resourcemanager.resourcehealth.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcehealth.models.RecommendedAction;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RecommendedActionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RecommendedAction model =
             BinaryData
-                .fromString("{\"action\":\"vtb\",\"actionUrl\":\"ysszdnrujqguh\",\"actionUrlText\":\"ouqfprwz\"}")
+                .fromString(
+                    "{\"action\":\"ex\",\"actionUrl\":\"bhtqqrolfpfpsa\",\"_ActionUrl.Comment\":\"bquxigjy\",\"actionUrlText\":\"zjaoyfhrtxil\"}")
                 .toObject(RecommendedAction.class);
-        Assertions.assertEquals("vtb", model.action());
-        Assertions.assertEquals("ysszdnrujqguh", model.actionUrl());
-        Assertions.assertEquals("ouqfprwz", model.actionUrlText());
+        Assertions.assertEquals("ex", model.action());
+        Assertions.assertEquals("bhtqqrolfpfpsa", model.actionUrl());
+        Assertions.assertEquals("zjaoyfhrtxil", model.actionUrlText());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RecommendedAction model =
-            new RecommendedAction().withAction("vtb").withActionUrl("ysszdnrujqguh").withActionUrlText("ouqfprwz");
+            new RecommendedAction().withAction("ex").withActionUrl("bhtqqrolfpfpsa").withActionUrlText("zjaoyfhrtxil");
         model = BinaryData.fromObject(model).toObject(RecommendedAction.class);
-        Assertions.assertEquals("vtb", model.action());
-        Assertions.assertEquals("ysszdnrujqguh", model.actionUrl());
-        Assertions.assertEquals("ouqfprwz", model.actionUrlText());
+        Assertions.assertEquals("ex", model.action());
+        Assertions.assertEquals("bhtqqrolfpfpsa", model.actionUrl());
+        Assertions.assertEquals("zjaoyfhrtxil", model.actionUrlText());
     }
 }

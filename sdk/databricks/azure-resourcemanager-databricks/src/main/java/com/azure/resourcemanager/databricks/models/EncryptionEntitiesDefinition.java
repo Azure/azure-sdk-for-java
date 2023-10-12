@@ -16,6 +16,12 @@ public final class EncryptionEntitiesDefinition {
     @JsonProperty(value = "managedServices")
     private EncryptionV2 managedServices;
 
+    /*
+     * Encryption properties for the databricks managed disks.
+     */
+    @JsonProperty(value = "managedDisk")
+    private ManagedDiskEncryption managedDisk;
+
     /** Creates an instance of EncryptionEntitiesDefinition class. */
     public EncryptionEntitiesDefinition() {
     }
@@ -41,6 +47,26 @@ public final class EncryptionEntitiesDefinition {
     }
 
     /**
+     * Get the managedDisk property: Encryption properties for the databricks managed disks.
+     *
+     * @return the managedDisk value.
+     */
+    public ManagedDiskEncryption managedDisk() {
+        return this.managedDisk;
+    }
+
+    /**
+     * Set the managedDisk property: Encryption properties for the databricks managed disks.
+     *
+     * @param managedDisk the managedDisk value to set.
+     * @return the EncryptionEntitiesDefinition object itself.
+     */
+    public EncryptionEntitiesDefinition withManagedDisk(ManagedDiskEncryption managedDisk) {
+        this.managedDisk = managedDisk;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -48,6 +74,9 @@ public final class EncryptionEntitiesDefinition {
     public void validate() {
         if (managedServices() != null) {
             managedServices().validate();
+        }
+        if (managedDisk() != null) {
+            managedDisk().validate();
         }
     }
 }

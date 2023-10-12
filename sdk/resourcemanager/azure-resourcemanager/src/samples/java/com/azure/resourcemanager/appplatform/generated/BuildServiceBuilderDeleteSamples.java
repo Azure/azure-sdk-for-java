@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BuildServiceBuilder Delete. */
 public final class BuildServiceBuilderDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildServiceBuilder_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildServiceBuilder_Delete.json
      */
     /**
      * Sample code: BuildServiceBuilder_Delete.

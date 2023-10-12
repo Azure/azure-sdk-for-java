@@ -14,15 +14,15 @@ public final class DataConnectionInnerTests {
         DataConnectionInner model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"DataConnection\",\"location\":\"beddgssofw\",\"id\":\"mzqa\",\"name\":\"krmnjijpxacqqud\",\"type\":\"nbyxbaaabjyv\"}")
+                    "{\"kind\":\"DataConnection\",\"location\":\"ncyg\",\"id\":\"p\",\"name\":\"vipmdscwxqupevzh\",\"type\":\"stotxh\"}")
                 .toObject(DataConnectionInner.class);
-        Assertions.assertEquals("beddgssofw", model.location());
+        Assertions.assertEquals("ncyg", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataConnectionInner model = new DataConnectionInner().withLocation("beddgssofw");
+        DataConnectionInner model = new DataConnectionInner().withLocation("ncyg");
         model = BinaryData.fromObject(model).toObject(DataConnectionInner.class);
-        Assertions.assertEquals("beddgssofw", model.location());
+        Assertions.assertEquals("ncyg", model.location());
     }
 }

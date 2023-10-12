@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for NetworkCloud class. */
 public interface NetworkCloud {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -80,18 +80,11 @@ public interface NetworkCloud {
     ClustersClient getClusters();
 
     /**
-     * Gets the DefaultCniNetworksClient object to access its operations.
+     * Gets the KubernetesClustersClient object to access its operations.
      *
-     * @return the DefaultCniNetworksClient object.
+     * @return the KubernetesClustersClient object.
      */
-    DefaultCniNetworksClient getDefaultCniNetworks();
-
-    /**
-     * Gets the HybridAksClustersClient object to access its operations.
-     *
-     * @return the HybridAksClustersClient object.
-     */
-    HybridAksClustersClient getHybridAksClusters();
+    KubernetesClustersClient getKubernetesClusters();
 
     /**
      * Gets the L2NetworksClient object to access its operations.
@@ -169,6 +162,13 @@ public interface NetworkCloud {
      * @return the MetricsConfigurationsClient object.
      */
     MetricsConfigurationsClient getMetricsConfigurations();
+
+    /**
+     * Gets the AgentPoolsClient object to access its operations.
+     *
+     * @return the AgentPoolsClient object.
+     */
+    AgentPoolsClient getAgentPools();
 
     /**
      * Gets the ConsolesClient object to access its operations.

@@ -96,7 +96,8 @@ public class ReplicatedResourceClientGoneForWriteTest {
             gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
             authorizationTokenProvider,
             false,
-            false);
+            false,
+            null);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
             mockDiagnosticsClientContext(),

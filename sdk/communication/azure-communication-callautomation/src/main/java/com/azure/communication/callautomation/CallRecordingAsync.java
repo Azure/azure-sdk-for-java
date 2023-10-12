@@ -37,7 +37,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -124,7 +123,7 @@ public final class CallRecordingAsync {
                     .startRecordingWithResponseAsync(
                         request,
                         UUID.randomUUID(),
-                        DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                        OffsetDateTime.now(),
                         contextValue)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))
