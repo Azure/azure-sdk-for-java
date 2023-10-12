@@ -21,6 +21,7 @@
 
   <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
   <suppress checks="Header" files="com.azure.core.implementation.jackson.(OptionModule|OptionPropertiesModifier|OptionBeanPropertyWriter|OptionTypeModifier|OptionSerializerProvider|OptionSerializer)"/>
+  <suppress checks="Header" files="com.typespec.core.implementation.jackson.(OptionModule|OptionPropertiesModifier|OptionBeanPropertyWriter|OptionTypeModifier|OptionSerializerProvider|OptionSerializer)"/>
 
   <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
   <suppress checks="Header" files="com.azure.core.serializer.json.jackson.implementation.(OptionModule|OptionPropertiesModifier|OptionBeanPropertyWriter|OptionTypeModifier|OptionSerializerProvider|OptionSerializer)"/>
@@ -105,6 +106,7 @@
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]opentelemetry[/\\]exporter[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]applicationinsights[/\\]spring[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]typespec[/\\]core[/\\](metrics|tracing)[/\\]opentelemetry[/\\]*"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.IntegrationTestBase.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.TracingIntegrationTests.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.LoggingSpanProcessor.java"/>
@@ -166,6 +168,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- False positive in this case : This should not change behavior for UseCaughtExceptionCauseCheck when checking for throwing caught exceptions -->
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.azure.core.http.policy.RetryPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.typespec.core.http.policy.RetryPolicy.java"/>
 
   <!-- Suppress public/private constructor check since BlobClients need protected constructors to create EncryptedClients -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
@@ -179,6 +182,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Any code in any package, it should never be a 'throw' keyword in the client library codebase except for in the client logger -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files=".*[/\\]com[/\\]azure[/\\]core[/\\]util[/\\]logging[/\\]*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files=".*[/\\]com[/\\]typespec[/\\]core[/\\]util[/\\]logging[/\\]*"/>
 
   <!-- Suppress IO exception for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
@@ -251,16 +256,23 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress external dependency checkstyle for test classes as JUnit 5 has TestInfo dependency injection and should be part of method args -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]core[/\\]test[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]typespec[/\\]core[/\\]test[/\\].*"/>
 
   <!-- Temporary suppressions -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.util.serializer.JacksonAdapter"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.typespec.core.util.serializer.JacksonAdapter"/>
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTag"
             files="com.azure.core.util.serializer.SerializerAdapter"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTag"
+            files="com.typespec.core.util.serializer.SerializerAdapter"/>
 
   <!-- JavadocInlineTagCheck Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
             files="com.azure.core.http.HttpResponse.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
+            files="com.typespec.core.http.HttpResponse.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"
             files="com.azure.security.keyvault.keys.(KeyClient|KeyAsyncClient).java"/>
 
@@ -286,6 +298,9 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.logging.ClientLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.implementation.logging.DefaultLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.typespec.core.util.logging.ClientLogger.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.typespec.core.implementation.logging.DefaultLogger.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.typespec.core.util.serializer.SerializerEncoding.java"/>
 
   <!-- TODO: Synapse access control API does not support PagedResponse and Response. -->
   <!-- Checkstyle suppressions for naming issues reported in the Synapse artifacts related clients-->
@@ -491,6 +506,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Don't enforce non-static ClientLogger instances in com.azure.core.util.Option types-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.core.implementation.Option.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files="com.typespec.core.implementation.Option.java"/>
 
   <!-- Suppress non-conforming service builder and service clients -->
   <!-- The clients don't end with 'Client' but instead with 'Sender' -->
@@ -538,6 +555,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="VisibilityModifier" files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
   <suppress checks="VisibilityModifier" files="com.azure.core.serializer.json.jackson.implementation.MemberNameConverterImplTests.java"/>
   <suppress checks="VisibilityModifier" files="com.azure.search.documents.indexes.FieldBuilderTests.java"/>
+  <suppress checks="VisibilityModifier" files="com.typespec.core.implementation.jackson.MemberNameConverterImplTests.java"/>
 
   <!-- These APIs have already leaked implementation and cannot be changed -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.eventhubs.LogPartitionProcessor"/>
@@ -565,7 +583,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- azure-json doesn't have a dependency on azure-core -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.json..*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.typespec.json..*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.json..*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.typespec.json..*"/>
 
   <!-- azure-xml doesn't have a dependency on azure-core -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.xml..*"/>
@@ -591,4 +611,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ConsoleLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.sdk.build.tool.*\.java"/>
+
+  <!-- Suppress the package name check for generic core -->
+  <suppress checks="GoodLoggingCheck" files="com.typespec.*"/>
+  <suppress checks="ExternalDependencyExposedCheck" files="com.typespec.*"/>
 </suppressions>

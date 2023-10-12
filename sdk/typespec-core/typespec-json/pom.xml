@@ -51,6 +51,7 @@
     </javaModulesSurefireArgLine>
 
     <!-- Ignore shaded code -->
+    <checkstyle.excludes>**/jackson/core/**/*.java</checkstyle.excludes>
 
     <javadoc.excludePackageNames/>
     <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
