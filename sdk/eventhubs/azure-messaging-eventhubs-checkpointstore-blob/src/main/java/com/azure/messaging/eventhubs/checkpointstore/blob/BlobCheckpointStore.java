@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
@@ -221,82 +222,7 @@ public class BlobCheckpointStore implements CheckpointStore {
 
         return Flux.fromIterable(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
             try {
-                final String partitionId = partitionOwnership.getPartitionId();
-                final String blobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
-                        partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId,
-                        OWNERSHIP_PATH, true);
-                final BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-
-                final Map<String, String> metadata = new HashMap<>();
-                metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
-
-                // Blob clients are only added to the map when they have been used to create/update a blob.  So, we
-                // always update in this case.
-                if (blobClients.containsKey(blobName)) {
-                    final BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
-
-                    blobRequestConditions.setIfMatch(partitionOwnership.getETag());
-                    return updateBlob(blobAsyncClient, metadata, blobRequestConditions, partitionOwnership);
-                }
-
-                // New blob should be created.  It was not in the existing blobClients map, so we have to create it.
-                if (CoreUtils.isNullOrEmpty(partitionOwnership.getETag())) {
-                    final BlobAsyncClient client = blobClients.compute(blobName, (key, existing) -> {
-                        if (existing != null) {
-                            return existing;
-                        }
-
-                        return blobContainerAsyncClient.getBlobAsyncClient(blobName);
-                    });
-
-                    blobRequestConditions.setIfNoneMatch("*");
-
-                    return client.getBlockBlobAsyncClient()
-                        .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null,
-                            blobRequestConditions)
-                        .map(response -> updateOwnershipETag(response, partitionOwnership))
-                        .onErrorResume(error -> {
-                            LOGGER.atVerbose()
-                                    .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
-                                    .log(Messages.CLAIM_ERROR, error);
-                            return Mono.<PartitionOwnership>empty();
-                        });
-                }
-
-                // Update existing blob.  Try to update with the new blob name (lowercase), and if that does not exist,
-                // then try updating with legacy blob name.  If neither work, then log a warning and return normally.
-                blobRequestConditions.setIfMatch(partitionOwnership.getETag());
-
-                final BlobAsyncClient blobClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
-
-                return blobClient.exists().flatMap(exists -> {
-                    if (exists) {
-                        blobClients.put(blobName, blobClient);
-                        return Mono.just(blobClient);
-                    }
-
-                    final String legacyBlobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
-                            partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId,
-                            OWNERSHIP_PATH, false);
-                    final BlobAsyncClient legacyBlobClient =
-                            blobContainerAsyncClient.getBlobAsyncClient(legacyBlobName);
-
-                    return legacyBlobClient.exists().handle((doesExist, sink) -> {
-                        if (doesExist) {
-                            blobClients.put(blobName, legacyBlobClient);
-                            sink.next(legacyBlobClient);
-                        } else {
-                            LOGGER.atWarning()
-                                    .addKeyValue(BLOB_NAME_LOG_KEY, blobName)
-                                    .addKeyValue(PARTITION_ID_LOG_KEY, partitionOwnership.getPartitionId())
-                                    .log(Messages.CLAIM_ERROR
-                                            + ".  No existing blob with current or legacy blob name.");
-                            sink.complete();
-                        }
-                    });
-                }).flatMap(client -> {
-                    return updateBlob(client, metadata, blobRequestConditions, partitionOwnership);
-                });
+                return claimOwnership(partitionOwnership);
             } catch (Exception ex) {
                 LOGGER.atWarning()
                     .addKeyValue(PARTITION_ID_LOG_KEY, partitionOwnership.getPartitionId())
@@ -306,8 +232,88 @@ public class BlobCheckpointStore implements CheckpointStore {
         });
     }
 
-    private static PartitionOwnership updateOwnershipETag(Response<?> response, PartitionOwnership ownership) {
-        return ownership.setETag(response.getHeaders().get(HttpHeaderName.ETAG).getValue());
+    private Mono<PartitionOwnership> claimOwnership(PartitionOwnership partitionOwnership) {
+        final String partitionId = partitionOwnership.getPartitionId();
+        final String blobName = getBlobPrefix(partitionOwnership.getFullyQualifiedNamespace(),
+            partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), OWNERSHIP_PATH, true)
+            + partitionId;
+
+        final BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+
+        final Map<String, String> metadata = new HashMap<>();
+        metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
+
+        // Blob clients are only added to the map when they have been used to create/update a blob.  So, we
+        // always update in this case.  We had already touched this blob, so update the partition ownership.
+        if (blobClients.containsKey(blobName)) {
+            final BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
+
+            blobRequestConditions.setIfMatch(partitionOwnership.getETag());
+
+            return updateBlobMetadata(blobAsyncClient, metadata, blobRequestConditions, partitionId, false)
+                .map(headers -> updateOwnershipETag(headers, partitionOwnership));
+        }
+
+        // We don't have it in the map. We haven't worked with this blob yet in the BlobCheckpointStore.
+        // 1.   Check eTag, if it is empty, this is likely the first time we've processed this Event Hub.
+        //      Create a new blob. eTag = "*".
+        // 2.   If it is not empty, that means we have to update an existing ownership record in the store.
+        // 3.   Try updating with new blob name (lowercase).
+        //      a. If successful, add this blob client to our map.
+        //      b. If a 404 is returned, means that blob does not exist, and we can try the legacy blob name.
+        //          1. If it works, then add this legacy blob client to the map.
+        //      c. If some other error, we log warning.
+        if (CoreUtils.isNullOrEmpty(partitionOwnership.getETag())) {
+            final BlobAsyncClient client = blobClients.compute(blobName, (key, existing) -> {
+                if (existing != null) {
+                    return existing;
+                }
+
+                return blobContainerAsyncClient.getBlobAsyncClient(blobName);
+            });
+
+            blobRequestConditions.setIfNoneMatch("*");
+
+            return client.getBlockBlobAsyncClient()
+                .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null,
+                    blobRequestConditions)
+                .map(response -> updateOwnershipETag(response, partitionOwnership))
+                .onErrorResume(error -> {
+                    LOGGER.atVerbose()
+                        .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
+                        .log(Messages.CLAIM_ERROR, error);
+                    return Mono.empty();
+                });
+        }
+
+        // 2. Update existing blob.  Try to update with the new blob name (lowercase), and if that does not
+        // exist, then try updating with legacy blob name.  If neither work, then log a warning and return
+        // normally.
+        blobRequestConditions.setIfMatch(partitionOwnership.getETag());
+
+        final BlobAsyncClient blobClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
+
+        return updateBlobMetadata(blobClient, metadata, blobRequestConditions, partitionId, false)
+            .map(headers -> {
+                blobClients.putIfAbsent(blobName, blobClient);
+                return updateOwnershipETag(headers, partitionOwnership);
+            })
+            .switchIfEmpty(Mono.defer(() -> {
+                final String legacyBlobName = getBlobPrefix(partitionOwnership.getFullyQualifiedNamespace(),
+                    partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), OWNERSHIP_PATH, false)
+                    + partitionId;
+                final BlobAsyncClient legacyBlobClient =
+                    blobContainerAsyncClient.getBlobAsyncClient(legacyBlobName);
+                return updateBlobMetadata(legacyBlobClient, metadata, blobRequestConditions, partitionId, false)
+                    .map(headers -> {
+                        blobClients.put(legacyBlobName, legacyBlobClient);
+                        return updateOwnershipETag(headers, partitionOwnership);
+                    })
+                    .onErrorResume(error -> {
+                        isBlobNotFoundException(error, partitionId);
+                        return Mono.empty();
+                    });
+            }));
     }
 
     /**
@@ -336,84 +342,49 @@ public class BlobCheckpointStore implements CheckpointStore {
         metadata.put(OFFSET, offset);
 
         final String partitionId = checkpoint.getPartitionId();
-        final String blobName = getBlobName(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
-            checkpoint.getConsumerGroup(), partitionId, CHECKPOINT_PATH, true);
+        final String blobName = getBlobPrefix(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
+            checkpoint.getConsumerGroup(), CHECKPOINT_PATH, true) + partitionId;
 
-        // Blob clients are only added to map when we create an entry for them.
+        // Blob clients are only added to map when we created/updated a blob using this checkpoint store.
         if (blobClients.containsKey(blobName)) {
             final BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
-            final Mono<Void> response = updateBlob(blobAsyncClient, metadata, true);
+            final Mono<HttpHeaders> response = updateBlobMetadata(blobAsyncClient, metadata, null,
+                partitionId, true);
 
-            return reportMetrics(response, checkpoint, blobName);
+            return reportMetrics(response, checkpoint, blobName).then();
         }
 
-        // The checkpoint either:
-        // 1. Legacy format (keeps existing casing)
-        // 2. Does not exist.
-        final String legacyBlobName = getBlobName(checkpoint.getFullyQualifiedNamespace(),
-                checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), partitionId, CHECKPOINT_PATH, false);
+        // We don't have it in the map. We haven't worked with this blob yet in the BlobCheckpointStore.
+        // 1. Try to update metadata for a legacy format.
+        // 2. If it does not exist, then try to update or create the checkpoint.
+        // 3. Add the blob client, so we don't have to try this path again.
+        final String legacyBlobName = getBlobPrefix(checkpoint.getFullyQualifiedNamespace(),
+            checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), CHECKPOINT_PATH, false)
+            + partitionId;
         final BlobAsyncClient legacyBlobClient = blobContainerAsyncClient.getBlobAsyncClient(legacyBlobName);
 
-        final Mono<Void> response = legacyBlobClient.exists().flatMap(exists -> {
-            // The checkpoint is in legacy format.
-            if (exists) {
-                // Store it as the correct (all-lowercase) blob name, but the blob client will update the legacy
-                // checkpoint.  This way we do not have to do check for existence of both legacy and new one every
-                // iteration.
-                blobClients.put(blobName, legacyBlobClient);
+        final Mono<HttpHeaders> operation = updateBlobMetadata(legacyBlobClient, metadata, null, partitionId, false)
+            .map(headers -> {
+                blobClients.put(legacyBlobName, legacyBlobClient);
+                return headers;
+            })
+            .switchIfEmpty(Mono.defer(() -> {
+                final BlobAsyncClient blobClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
+                return updateBlobMetadata(blobClient, metadata, null, partitionId, true)
+                    .map(headers -> {
+                        blobClients.put(blobName, blobClient);
+                        return headers;
+                    });
+            }));
 
-                return updateBlob(legacyBlobClient, metadata, false);
-            } else {
-                // Does not exist at all.  Create a new client and update the checkpoint.
-                final BlobAsyncClient blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
+        return reportMetrics(operation, checkpoint, blobName).then();
 
-                blobClients.put(blobName, blobAsyncClient);
-
-                return blobAsyncClient.getBlockBlobAsyncClient()
-                        .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null,
-                                null, null)
-                        .then();
-            }
-        });
-
-        return reportMetrics(response, checkpoint, blobName);
     }
 
-    private static Mono<Void> updateBlob(BlobAsyncClient client, Map<String, String> metadata,
-            boolean createIfNotExists) {
-        return client.setMetadata(metadata).onErrorResume(error -> {
-            if (!(error instanceof BlobStorageException)) {
-                return false;
-            }
-
-            return ((BlobStorageException) error).getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
-                    && createIfNotExists;
-        }, error -> {
-            return client.getBlockBlobAsyncClient()
-                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null,
-                            null, null)
-                    .then();
-        });
-    }
-
-    private static Mono<PartitionOwnership> updateBlob(BlobAsyncClient client, Map<String, String> metadata,
-            BlobRequestConditions blobRequestConditions, PartitionOwnership partitionOwnership) {
-
-        return client.setMetadataWithResponse(metadata, blobRequestConditions)
-                .map(response -> {
-                    return updateOwnershipETag(response, partitionOwnership);
-                }).onErrorResume(error -> {
-                    LOGGER.atVerbose()
-                            .addKeyValue(PARTITION_ID_LOG_KEY, partitionOwnership.getPartitionId())
-                            .log(Messages.CLAIM_ERROR, error);
-                    return Mono.empty();
-                });
-    }
-
-    private Mono<Void> reportMetrics(Mono<Void> checkpointMono, Checkpoint checkpoint, String blobName) {
+    private <T> Mono<T> reportMetrics(Mono<T> checkpointMono, Checkpoint checkpoint, String blobName) {
         AtomicReference<Instant> startTime = metricsHelper.isCheckpointDurationEnabled() ? new AtomicReference<>() : null;
         return checkpointMono
-            .doOnEach(signal ->  {
+            .doOnEach(signal -> {
                 if (signal.isOnComplete() || signal.isOnError()) {
                     metricsHelper.reportCheckpoint(checkpoint,
                             blobName,
@@ -428,6 +399,22 @@ public class BlobCheckpointStore implements CheckpointStore {
             });
     }
 
+    private static boolean isBlobNotFoundException(Throwable error, String partitionId) {
+        if (!(error instanceof BlobStorageException)) {
+            LOGGER.atVerbose()
+                .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
+                .log(Messages.CLAIM_ERROR + ". Not BlobStorageException.", error);
+            return false;
+        } else if (((BlobStorageException) error).getErrorCode() != BlobErrorCode.BLOB_NOT_FOUND) {
+            LOGGER.atVerbose()
+                .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
+                .log(Messages.CLAIM_ERROR + ". Not BlobErrorCode.BLOB_NOT_FOUND.", error);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private static String getBlobPrefix(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,
         String typeSuffix, boolean isLowercase) {
 
@@ -437,13 +424,47 @@ public class BlobCheckpointStore implements CheckpointStore {
         return isLowercase ? prefix.toLowerCase(Locale.ROOT) : prefix;
     }
 
-    private static String getBlobName(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,
-        String partitionId, String typeSuffix, boolean isLowercase) {
-        final String name = fullyQualifiedNamespace + BLOB_PATH_SEPARATOR + eventHubName + BLOB_PATH_SEPARATOR
-                + consumerGroupName + typeSuffix + partitionId;
+    /**
+     * Updates a blob's metadata.  If there is an error other than 404, will propagate the error downstream.
+     * Otherwise {@code createIfNotExists} is true, will try to create the blob. Else, completes with nothing.
+     *
+     * @param client Blob client to use.
+     * @param metadata Metadata to update blob with.
+     * @param blobRequestConditions Conditions for update.
+     * @param partitionId Partition id.
+     * @param createIfNotExists True to create if blob does not exist, false otherwise.
+     *
+     * @return HttpHeaders for successful update/creation. Empty Mono if the blob does not exist and
+     *     {@code createIfNotExists} is false.  Error if the update results in an exception that is not a 404.
+     */
+    private static Mono<HttpHeaders> updateBlobMetadata(BlobAsyncClient client, Map<String, String> metadata,
+        BlobRequestConditions blobRequestConditions, String partitionId, boolean createIfNotExists) {
 
-        return isLowercase ? name.toLowerCase(Locale.ROOT) : name;
+        return client.setMetadataWithResponse(metadata, blobRequestConditions)
+            .map(response -> response.getHeaders())
+            .onErrorResume(throwable -> {
+                if (!isBlobNotFoundException(throwable, partitionId)) {
+                    return Mono.error(throwable);
+                } else if (createIfNotExists) {
+                    return client.getBlockBlobAsyncClient()
+                        .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null,
+                            null, null)
+                        .map(response -> response.getHeaders());
+                } else {
+                    // This is a blob not found error, but we don't want to try and create a new blob item for it.
+                    return Mono.empty();
+                }
+            });
     }
+
+    private static PartitionOwnership updateOwnershipETag(Response<?> response, PartitionOwnership ownership) {
+        return ownership.setETag(response.getHeaders().get(HttpHeaderName.ETAG).getValue());
+    }
+
+    private static PartitionOwnership updateOwnershipETag(HttpHeaders headers, PartitionOwnership ownership) {
+        return ownership.setETag(headers.get(HttpHeaderName.ETAG).getValue());
+    }
+
 
     private static PartitionOwnership convertToPartitionOwnership(BlobItem blobItem, String[] names) {
         BlobItemProperties blobProperties = blobItem.getProperties();
