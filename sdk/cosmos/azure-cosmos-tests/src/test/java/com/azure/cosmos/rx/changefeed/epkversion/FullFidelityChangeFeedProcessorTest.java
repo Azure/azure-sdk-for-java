@@ -1267,6 +1267,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdFeedCollectionForSplit);
             safeDeleteCollection(createdLeaseCollection);
 
+            if (clientWithStaleCache != null) {
+                safeClose(clientWithStaleCache);
+            }
+
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
         }

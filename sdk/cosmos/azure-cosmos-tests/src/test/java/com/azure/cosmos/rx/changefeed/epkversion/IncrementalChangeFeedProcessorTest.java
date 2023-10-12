@@ -1299,7 +1299,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             safeDeleteCollection(createdLeaseCollection);
 
             if (clientWithStaleCache != null) {
-                safeCloseAsync(clientWithStaleCache);
+                safeClose(clientWithStaleCache);
             }
 
             // Allow some time for the collections to be deleted before exiting.
