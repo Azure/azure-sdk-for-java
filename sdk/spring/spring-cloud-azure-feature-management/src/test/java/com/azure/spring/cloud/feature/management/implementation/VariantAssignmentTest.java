@@ -1,10 +1,13 @@
-package com.azure.spring.cloud.feature.management;
+package com.azure.spring.cloud.feature.management.implementation;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +15,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 
+import com.azure.spring.cloud.feature.management.TestBanner;
+import com.azure.spring.cloud.feature.management.TestConfiguration;
+import com.azure.spring.cloud.feature.management.Variant;
+import com.azure.spring.cloud.feature.management.VariantProperties;
 import com.azure.spring.cloud.feature.management.implementation.models.Allocation;
 import com.azure.spring.cloud.feature.management.implementation.models.GroupAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.UserAllocation;
@@ -30,6 +38,12 @@ public class VariantAssignmentTest {
 
     @Mock
     private ApplicationContext context;
+
+    @Mock
+    ObjectProvider<VariantProperties> objectProviderMock;
+
+    @Mock
+    VariantProperties variantPropertiesMock;
 
     private TargetingContextAccessor contextAccessor;
 
@@ -51,7 +65,7 @@ public class VariantAssignmentTest {
         };
         evaluationOptions = new TargetingEvaluationOptions();
         evaluationOptions.setIgnoreCase(true);
-        variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions, null);
+        variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions, objectProviderMock);
     }
 
     @Test
@@ -93,11 +107,11 @@ public class VariantAssignmentTest {
         variant = variantAssignment.assignVariant(allocation, variantReferences);
         assertNotNull(variant.block());
     }
-    
+
     @Test
     public void groupAllocation() {
         Allocation allocation = new Allocation();
-        Map<String,GroupAllocation> groupAllocations = new HashMap<>();
+        Map<String, GroupAllocation> groupAllocations = new HashMap<>();
         GroupAllocation groupAllocation = new GroupAllocation();
         Map<String, String> groups = new HashMap<>();
         groups.put("0", "prod");
@@ -126,4 +140,57 @@ public class VariantAssignmentTest {
         assertNotNull(variant.block());
     }
 
+    @Test
+    public void getVariantTest() {
+        Map<Integer, VariantReference> variants = new LinkedHashMap<Integer, VariantReference>();
+        VariantReference v1 = new VariantReference();
+        v1.setName("Small");
+        v1.setConfigurationReference("Banner.Small");
+        VariantReference v2 = new VariantReference();
+        v2.setName("Big");
+        v2.setConfigurationReference("Banner.Big");
+        variants.put(1, v1);
+        variants.put(2, v2);
+
+        List<VariantProperties> properties = new ArrayList<>();
+        TestConfiguration testConfiguration = new TestConfiguration();
+
+        Map<String, TestBanner> testBanners = new HashMap<>();
+        testBanners.put("Small", new TestBanner().setColor("Azure").setSize(1));
+        testBanners.put("Big", new TestBanner().setColor("Orange").setSize(9));
+
+        testConfiguration.setBanner(testBanners);
+
+        properties.add(testConfiguration);
+
+        when(objectProviderMock.stream()).thenReturn(properties.stream());
+
+        Variant assignedVariant = variantAssignment.getVariant(variants.values(), "Small").block();
+        assertEquals(assignedVariant.getName(), "Small");
+        assertEquals(1, ((TestBanner) assignedVariant.getValue()).getSize());
+        assertEquals("Azure", ((TestBanner) assignedVariant.getValue()).getColor());
+    }
+    
+    @Test
+    public void getVariantTestNoProperties() {
+        Map<Integer, VariantReference> variants = new LinkedHashMap<Integer, VariantReference>();
+        VariantReference v1 = new VariantReference();
+        v1.setName("Small");
+        v1.setConfigurationReference("Banner.Small");
+        VariantReference v2 = new VariantReference();
+        v2.setName("Big");
+        v2.setConfigurationReference("Banner.Big");
+        variants.put(1, v1);
+        variants.put(2, v2);
+
+        List<VariantProperties> properties = new ArrayList<>();
+
+
+        when(objectProviderMock.stream()).thenReturn(properties.stream());
+
+        Variant assignedVariant = variantAssignment.getVariant(variants.values(), "Small").block();
+        assertEquals(assignedVariant.getName(), "Small");
+        assertEquals(1, ((TestBanner) assignedVariant.getValue()).getSize());
+        assertEquals("Azure", ((TestBanner) assignedVariant.getValue()).getColor());
+    }
 }

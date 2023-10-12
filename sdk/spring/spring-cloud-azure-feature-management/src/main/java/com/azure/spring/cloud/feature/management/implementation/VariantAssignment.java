@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.management;
+package com.azure.spring.cloud.feature.management.implementation;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,10 +12,13 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.StringUtils;
 
+import com.azure.spring.cloud.feature.management.Variant;
+import com.azure.spring.cloud.feature.management.VariantProperties;
 import com.azure.spring.cloud.feature.management.implementation.models.Allocation;
 import com.azure.spring.cloud.feature.management.implementation.models.GroupAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.PercentileAllocation;
@@ -47,7 +50,7 @@ public final class VariantAssignment {
      * @param contextAccessor Context for evaluating the users/groups.
      * @param options enables customization of the filter.
      */
-    VariantAssignment(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options,
+    public VariantAssignment(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options,
         ObjectProvider<VariantProperties> propertiesProvider) {
         this.contextAccessor = contextAccessor;
         this.evaluationOptions = options;
@@ -61,7 +64,7 @@ public final class VariantAssignment {
      * @param variants List of the possible variants.
      * @return Variant object containing an instance of the type
      */
-    Mono<Variant> assignVariant(Allocation allocation, Collection<VariantReference> variants) {
+    public Mono<Variant> assignVariant(Allocation allocation, Collection<VariantReference> variants) {
         TargetingFilterContext targetingContext = new TargetingFilterContext();
 
         if (contextAccessor == null) {
@@ -136,18 +139,20 @@ public final class VariantAssignment {
      * @param variantName Name of the assigned variant
      * @return Variant object containing an instance of the type
      */
-    Mono<Variant> getVariant(Collection<VariantReference> variants, String variantName) {
+    public Mono<Variant> getVariant(Collection<VariantReference> variants, String variantName) {
         if (variantName == null || variants == null || variants.size() == 0) {
             return Mono.justOrEmpty(null);
         }
-        return Flux.fromStream(
-            variants.stream().filter(variant -> variant.getName().equals(variantName))
-                .map(variant -> this.assignVariant(variant)))
-            .single();
+
+        Stream<Variant> streamVariant = variants.stream().filter(variant -> {
+            return variant.getName().equals(variantName);
+        }).map(variant -> this.makeVariant(variant));
+
+        return Flux.fromStream(streamVariant).single();
     }
 
     @SuppressWarnings("unchecked")
-    private Variant assignVariant(VariantReference variant) {
+    private Variant makeVariant(VariantReference variant) {
         if (variant.getConfigurationValue() != null) {
             return new Variant(variant.getName(), variant.getConfigurationValue());
         }
