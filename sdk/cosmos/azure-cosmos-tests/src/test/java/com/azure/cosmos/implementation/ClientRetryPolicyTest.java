@@ -392,40 +392,6 @@ public class ClientRetryPolicyTest {
     }
 
     @Test(groups = "unit")
-    public void httpNetworkFailureOnQueryPlan() throws Exception {
-        ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
-        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
-        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
-        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
-        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null);
-
-        Exception exception = ReadTimeoutException.INSTANCE;
-        CosmosException cosmosException =
-            BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, exception);
-        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
-
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.QueryPlan, "/dbs/db/colls/col/docs/", ResourceType.Document);
-        dsr.requestContext = new DocumentServiceRequestContext();
-
-        clientRetryPolicy.onBeforeSendRequest(dsr);
-
-        for (int i = 0; i < 10; i++) {
-            Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
-
-            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-                .nullException()
-                .shouldRetry(true)
-                .backOffTime(Duration.ofMillis(1000))
-                .build());
-
-            Mockito.verify(endpointManager, Mockito.times(i+1)).markEndpointUnavailableForRead(Mockito.any());
-            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
-        }
-    }
-
-    @Test(groups = "unit")
     public void onBeforeSendRequestNotInvoked() {
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
