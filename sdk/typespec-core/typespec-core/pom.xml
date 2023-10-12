@@ -44,6 +44,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-exports com.typespec.core/com.typespec.core.implementation.http=ALL-UNNAMED
       --add-exports com.typespec.core/com.typespec.core.implementation.http.rest=ALL-UNNAMED
