@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
 
 import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusEntityProperties;
 import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties;
 import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
@@ -68,13 +69,11 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
         Assert.notNull(producerProperties.getEntityType(), "The EntityType of the producer can't be null.");
         if (QUEUE == producerProperties.getEntityType()) {
             ServiceBusQueueProperties queueProperties = new ServiceBusQueueProperties();
-            queueProperties.setDefaultMessageTimeToLive(producerProperties.getDefaultMessageTimeToLive());
-            queueProperties.setMaxSizeInMegabytes(producerProperties.getMaxSizeInMegabytes());
+            setEntityProperties(producerProperties, queueProperties);
             this.serviceBusProvisioner.provisionQueue(namespace, name, queueProperties);
         } else {
             ServiceBusTopicProperties topicProperties = new ServiceBusTopicProperties();
-            topicProperties.setDefaultMessageTimeToLive(producerProperties.getDefaultMessageTimeToLive());
-            topicProperties.setMaxSizeInMegabytes(producerProperties.getMaxSizeInMegabytes());
+            setEntityProperties(producerProperties, topicProperties);
             this.serviceBusProvisioner.provisionTopic(namespace, name, topicProperties);
         }
         return new ServiceBusProducerDestination(name);
@@ -87,16 +86,24 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
         Assert.notNull(consumerProperties.getEntityType(), "The EntityType of the consumer can't be null.");
         if (QUEUE == consumerProperties.getEntityType()) {
             ServiceBusQueueProperties queueProperties = new ServiceBusQueueProperties();
-            queueProperties.setDefaultMessageTimeToLive(consumerProperties.getDefaultMessageTimeToLive());
-            queueProperties.setMaxSizeInMegabytes(consumerProperties.getMaxSizeInMegabytes());
+            setEntityProperties(consumerProperties, queueProperties);
             this.serviceBusProvisioner.provisionQueue(namespace, name, queueProperties);
         } else {
             ServiceBusTopicProperties topicProperties = new ServiceBusTopicProperties();
-            topicProperties.setDefaultMessageTimeToLive(consumerProperties.getDefaultMessageTimeToLive());
-            topicProperties.setMaxSizeInMegabytes(consumerProperties.getMaxSizeInMegabytes());
+            setEntityProperties(consumerProperties, topicProperties);
             this.serviceBusProvisioner.provisionSubscription(namespace, name, group, topicProperties);
         }
         return new ServiceBusConsumerDestination(name);
+    }
+
+    private void setEntityProperties(ServiceBusProducerProperties producerProperties, ServiceBusEntityProperties entityProperties) {
+        entityProperties.setDefaultMessageTimeToLive(producerProperties.getDefaultMessageTimeToLive());
+        entityProperties.setMaxSizeInMegabytes(producerProperties.getMaxSizeInMegabytes());
+    }
+
+    private void setEntityProperties(ServiceBusConsumerProperties consumerProperties, ServiceBusEntityProperties entityProperties) {
+        entityProperties.setDefaultMessageTimeToLive(consumerProperties.getDefaultMessageTimeToLive());
+        entityProperties.setMaxSizeInMegabytes(consumerProperties.getMaxSizeInMegabytes());
     }
 
 }
