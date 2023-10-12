@@ -52,8 +52,11 @@
 
   <!-- Do not worry about leaking implementation API out of azure-core-test -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.core.test.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.typespec.core.test.*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.test.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.typespec.core.test.*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.core.test.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.typespec.core.test.*"/>
 
   <!-- The variables are assigned by json creator annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization"/>
@@ -528,6 +531,8 @@ the main ServiceBusClientBuilder. -->
 
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.core.test.(AzureTestWatcher|ThreadDumper).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.typespec.core.test.(AzureTestWatcher|ThreadDumper).java"/>
 
   <!-- This policy is purely an implementation detail and should not be used by customers -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
@@ -602,8 +607,11 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.search.documents.indexes.models.SynonymMap"/>
 
   <suppress checks="MissingJavadocMethod" files="com.azure.core.test.http.HttpClientTests"/>
+  <suppress checks="MissingJavadocMethod" files="com.typespec.core.test.http.HttpClientTests"/>
   <suppress checks="MissingJavadocType" files="com.azure.core.test.http.HttpClientTests"/>
+  <suppress checks="MissingJavadocType" files="com.typespec.core.test.http.HttpClientTests"/>
   <suppress checks="JavadocThrowsChecks" files="com.azure.core.test.http.HttpClientTests"/>
+  <suppress checks="JavadocThrowsChecks" files="com.typespec.core.test.http.HttpClientTests"/>
 
   <!-- The build tool plugin checkstyle exceptions -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
