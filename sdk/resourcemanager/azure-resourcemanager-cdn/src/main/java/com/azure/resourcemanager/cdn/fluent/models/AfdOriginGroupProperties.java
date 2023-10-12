@@ -27,6 +27,10 @@ public final class AfdOriginGroupProperties extends AfdOriginGroupUpdateProperti
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
+    /** Creates an instance of AfdOriginGroupProperties class. */
+    public AfdOriginGroupProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning status.
      *

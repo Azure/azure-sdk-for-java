@@ -29,6 +29,15 @@ public final class EndpointResourceState extends ExpandableStringEnum<EndpointRe
     public static final EndpointResourceState STOPPING = fromString("Stopping");
 
     /**
+     * Creates a new instance of EndpointResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointResourceState() {
+    }
+
+    /**
      * Creates or finds a EndpointResourceState from its string representation.
      *
      * @param name a name to look for.

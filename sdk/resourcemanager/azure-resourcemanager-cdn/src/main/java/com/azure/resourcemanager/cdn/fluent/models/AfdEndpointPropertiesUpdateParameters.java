@@ -23,6 +23,10 @@ public class AfdEndpointPropertiesUpdateParameters {
     @JsonProperty(value = "enabledState")
     private EnabledState enabledState;
 
+    /** Creates an instance of AfdEndpointPropertiesUpdateParameters class. */
+    public AfdEndpointPropertiesUpdateParameters() {
+    }
+
     /**
      * Get the profileName property: The name of the profile which holds the endpoint.
      *

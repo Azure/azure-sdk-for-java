@@ -17,6 +17,15 @@ public final class CustomRuleEnabledState extends ExpandableStringEnum<CustomRul
     public static final CustomRuleEnabledState ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of CustomRuleEnabledState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomRuleEnabledState() {
+    }
+
+    /**
      * Creates or finds a CustomRuleEnabledState from its string representation.
      *
      * @param name a name to look for.

@@ -41,6 +41,15 @@ public final class ServerPortOperator extends ExpandableStringEnum<ServerPortOpe
     public static final ServerPortOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of ServerPortOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerPortOperator() {
+    }
+
+    /**
      * Creates or finds a ServerPortOperator from its string representation.
      *
      * @param name a name to look for.
