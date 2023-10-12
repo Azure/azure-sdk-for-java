@@ -12,25 +12,28 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
-import com.azure.resourcemanager.netapp.models.BackupRestoreFiles;
+import com.azure.resourcemanager.netapp.models.NetworkFeatures;
+import com.azure.resourcemanager.netapp.models.NetworkSiblingSet;
+import com.azure.resourcemanager.netapp.models.QueryNetworkSiblingSetRequest;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class BackupsRestoreFilesMockTests {
+public final class NetAppResourcesQueryNetworkSiblingSetWithResponseMockTests {
     @Test
-    public void testRestoreFiles() throws Exception {
+    public void testQueryNetworkSiblingSetWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"networkSiblingSetId\":\"odpvruudlgzib\",\"subnetId\":\"ostgkts\",\"networkSiblingSetStateId\":\"dxeclzedqbcvh\",\"networkFeatures\":\"Basic\",\"provisioningState\":\"Updating\",\"nicInfoList\":[{\"ipAddress\":\"kdl\",\"volumeResourceIds\":[\"fbumlkx\",\"rqjfsmlm\",\"txhwgfws\",\"tawc\"]},{\"ipAddress\":\"zbrhubskhudyg\",\"volumeResourceIds\":[\"kkqfqjbvle\",\"rfmluiqtq\",\"fa\"]},{\"ipAddress\":\"vnqqybaryeua\",\"volumeResourceIds\":[\"qabqgzslesjcb\"]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -58,18 +61,19 @@ public final class BackupsRestoreFilesMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .backups()
-            .restoreFiles(
-                "r",
-                "ochpprpr",
-                "nmokayzejnhlbk",
-                "bzpcpiljhahzvec",
-                "ndbnwieh",
-                new BackupRestoreFiles()
-                    .withFileList(Arrays.asList("ewjwiuubw", "fqsfa", "aqtferr"))
-                    .withRestoreFilePath("ex")
-                    .withDestinationVolumeId("kmfx"),
-                com.azure.core.util.Context.NONE);
+        NetworkSiblingSet response =
+            manager
+                .netAppResources()
+                .queryNetworkSiblingSetWithResponse(
+                    "htba",
+                    new QueryNetworkSiblingSetRequest().withNetworkSiblingSetId("kgxywr").withSubnetId("kpyklyhp"),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
+
+        Assertions.assertEquals("odpvruudlgzib", response.networkSiblingSetId());
+        Assertions.assertEquals("ostgkts", response.subnetId());
+        Assertions.assertEquals("dxeclzedqbcvh", response.networkSiblingSetStateId());
+        Assertions.assertEquals(NetworkFeatures.BASIC, response.networkFeatures());
+        Assertions.assertEquals("fbumlkx", response.nicInfoList().get(0).volumeResourceIds().get(0));
     }
 }

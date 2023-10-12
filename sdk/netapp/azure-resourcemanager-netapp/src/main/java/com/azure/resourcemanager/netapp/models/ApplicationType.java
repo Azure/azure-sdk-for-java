@@ -13,6 +13,9 @@ public final class ApplicationType extends ExpandableStringEnum<ApplicationType>
     /** Static value SAP-HANA for ApplicationType. */
     public static final ApplicationType SAP_HANA = fromString("SAP-HANA");
 
+    /** Static value ORACLE for ApplicationType. */
+    public static final ApplicationType ORACLE = fromString("ORACLE");
+
     /**
      * Creates a new instance of ApplicationType value.
      *

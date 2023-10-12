@@ -1,14 +1,136 @@
 # Release History
 
-## 1.0.0-beta.14 (Unreleased)
+## 1.0.0 (2023-10-12)
 
-### Features Added
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2023-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.BackupStatus` was removed
 
-### Other Changes
+* `models.BackupType` was removed
+
+* `models.Backup` was removed
+
+* `models.BackupsList` was removed
+
+* `models.BackupRestoreFiles` was removed
+
+* `models.BackupPatch` was removed
+
+* `models.Backup$DefinitionStages` was removed
+
+* `models.Backup$Update` was removed
+
+* `models.AccountBackups` was removed
+
+* `models.Backup$Definition` was removed
+
+* `models.Backup$UpdateStages` was removed
+
+* `models.VolumeBackupProperties` was removed
+
+#### `models.VolumePropertiesDataProtection` was modified
+
+* `withBackup(models.VolumeBackupProperties)` was removed
+* `backup()` was removed
+
+#### `NetAppFilesManager` was modified
+
+* `accountBackups()` was removed
+
+#### `models.Backups` was modified
+
+* `restoreFiles(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.BackupRestoreFiles,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `restoreFiles(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.BackupRestoreFiles)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `getStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `list(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `getStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteById(java.lang.String)` was removed
+* `list(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `define(java.lang.String)` was removed
+* `getById(java.lang.String)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.VolumePatchPropertiesDataProtection` was modified
+
+* `backup()` was removed
+* `withBackup(models.VolumeBackupProperties)` was removed
+
+#### `models.ReplicationObject` was modified
+
+* `withReplicationId(java.lang.String)` was removed
+
+### Features Added
+
+* `models.NetworkSiblingSet` was added
+
+* `models.NetworkSiblingSetProvisioningState` was added
+
+* `models.CoolAccessRetrievalPolicy` was added
+
+* `models.NicInfo` was added
+
+* `models.UpdateNetworkSiblingSetRequest` was added
+
+* `models.QueryNetworkSiblingSetRequest` was added
+
+#### `models.Volume` was modified
+
+* `populateAvailabilityZone(com.azure.core.util.Context)` was added
+* `populateAvailabilityZone()` was added
+* `coolAccessRetrievalPolicy()` was added
+
+#### `models.Volume$Update` was modified
+
+* `withSmbNonBrowsable(models.SmbNonBrowsable)` was added
+* `withCoolAccessRetrievalPolicy(models.CoolAccessRetrievalPolicy)` was added
+* `withSmbAccessBasedEnumeration(models.SmbAccessBasedEnumeration)` was added
+
+#### `models.VolumePatch` was modified
+
+* `withSmbAccessBasedEnumeration(models.SmbAccessBasedEnumeration)` was added
+* `withCoolAccessRetrievalPolicy(models.CoolAccessRetrievalPolicy)` was added
+* `smbAccessBasedEnumeration()` was added
+* `withSmbNonBrowsable(models.SmbNonBrowsable)` was added
+* `coolAccessRetrievalPolicy()` was added
+* `smbNonBrowsable()` was added
+
+#### `models.NetAppResources` was modified
+
+* `queryNetworkSiblingSetWithResponse(java.lang.String,models.QueryNetworkSiblingSetRequest,com.azure.core.util.Context)` was added
+* `updateNetworkSiblingSet(java.lang.String,models.UpdateNetworkSiblingSetRequest,com.azure.core.util.Context)` was added
+* `updateNetworkSiblingSet(java.lang.String,models.UpdateNetworkSiblingSetRequest)` was added
+* `queryNetworkSiblingSet(java.lang.String,models.QueryNetworkSiblingSetRequest)` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withCoolAccessRetrievalPolicy(models.CoolAccessRetrievalPolicy)` was added
+
+#### `models.Snapshot` was modified
+
+* `systemData()` was added
+
+#### `models.Volumes` was modified
+
+* `populateAvailabilityZone(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `populateAvailabilityZone(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.SubvolumeInfo` was modified
+
+* `systemData()` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withZones(java.util.List)` was added
+* `coolAccessRetrievalPolicy()` was added
+* `withCoolAccessRetrievalPolicy(models.CoolAccessRetrievalPolicy)` was added
+* `zones()` was added
 
 ## 1.0.0-beta.13 (2023-07-25)
 
