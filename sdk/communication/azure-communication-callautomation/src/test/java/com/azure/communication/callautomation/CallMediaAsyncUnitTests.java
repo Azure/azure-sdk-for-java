@@ -245,6 +245,8 @@ public class CallMediaAsyncUnitTests {
         RecognitionChoice recognitionChoice2 = new RecognitionChoice();
         recognitionChoice1.setTone(DtmfTone.ZERO);
         recognitionChoice2.setTone(DtmfTone.SIX);
+        recognitionChoice2.setLabel("label");
+        recognitionChoice2.setPhrases(Collections.singletonList("phrase"));
         List<RecognitionChoice> recognitionChoices = new ArrayList<>(
             Arrays.asList(recognitionChoice1, recognitionChoice2)
         );
@@ -272,6 +274,8 @@ public class CallMediaAsyncUnitTests {
         RecognitionChoice recognitionChoice2 = new RecognitionChoice();
         recognitionChoice1.setTone(DtmfTone.ZERO);
         recognitionChoice2.setTone(DtmfTone.THREE);
+        recognitionChoice2.setLabel("label");
+        recognitionChoice2.setPhrases(Collections.singletonList("phrase"));
         List<RecognitionChoice> recognitionChoices = new ArrayList<>(
             Arrays.asList(recognitionChoice1, recognitionChoice2)
         );

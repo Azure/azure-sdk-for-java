@@ -124,6 +124,17 @@ public class CallMediaUnitTests {
     }
 
     @Test
+    public void startContinuousDtmfRecognitionTest() {
+        // override callMedia to mock 200 response code
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
+            );
+        //expect no exception
+        callConnection.getCallMedia().startContinuousDtmfRecognition(new CommunicationUserIdentifier("id"));
+    }
+
+    @Test
     public void startContinuousDtmfRecognitionWithResponseTest() {
         // override callMedia to mock 200 response code
         CallConnection callConnection =
@@ -135,6 +146,18 @@ public class CallMediaUnitTests {
         options.setOperationContext(CALL_OPERATION_CONTEXT);
         Response<Void> response = callMedia.startContinuousDtmfRecognitionWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 200);
+    }
+
+
+    @Test
+    public void stopContinuousDtmfRecognitionTest() {
+        // override callMedia to mock 200 response code
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
+            );
+        //expect no exception
+        callConnection.getCallMedia().stopContinuousDtmfRecognition(new CommunicationUserIdentifier("id"));
     }
 
     @Test
@@ -150,6 +173,20 @@ public class CallMediaUnitTests {
         options.setOverrideCallbackUrl(OVERRIDE_CALL_CALLBACK_URL);
         Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void sendDtmfTonesTest() {
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>(
+                    serializeObject(new SendDtmfTonesResultInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202)))
+            );
+        //expect no exception
+        callConnection.getCallMedia().sendDtmfTones(
+                Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()),
+                new CommunicationUserIdentifier("id")
+        );
     }
 
     @Test

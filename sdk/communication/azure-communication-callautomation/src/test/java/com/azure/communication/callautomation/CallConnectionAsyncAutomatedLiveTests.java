@@ -9,14 +9,12 @@ import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.CancelAddParticipantResult;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
-import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -33,7 +31,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
     @DoNotRecord(skipInPlayback = true)
@@ -155,6 +155,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         }
     }
 
+/*    TODO: uncomment once the the invitation-id fix is deployed on server
     @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -163,13 +164,13 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         matches = "(?i)(true)",
         disabledReason = "Requires environment to be set up")
     public void createVOIPCallAndAnswerThenAddParticipantFinallyCancelAddParticipant(HttpClient httpClient) {
-        /* Test case: ACS to ACS call
+        *//* Test case: ACS to ACS call
          * 1. create a CallAutomationClient.
          * 2. create a call from source to one ACS target.
          * 3. get updated call properties and check for the connected state.
          * 4. add one more ACS target to the call.
          * 5. cancel the add participant request.
-         */
+         *//*
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyCancelAddParticipant", next))
             .buildAsyncClient();
@@ -255,5 +256,5 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
                 }
             }
         }
-    }
+    }*/
 }
