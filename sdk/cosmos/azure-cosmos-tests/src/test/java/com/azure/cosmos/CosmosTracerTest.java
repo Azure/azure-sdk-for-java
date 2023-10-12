@@ -103,7 +103,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         super(clientBuilder.contentResponseOnWriteEnabled(true));
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         try {
             client = getClientBuilder().buildAsyncClient();
@@ -161,7 +161,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"simple"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
     public void cosmosAsyncClient(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -250,7 +250,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-    @Test(groups = {"simple"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
     public void cosmosAsyncDatabase(
                                     boolean useLegacyTracing,
                                     boolean enableRequestLevelTracing,
@@ -333,7 +333,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-    @Test(groups = {"simple"}, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
     public void cosmosAsyncContainerWithFaultInjectionOnCreate(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -425,7 +425,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
     public void cosmosAsyncContainerWithFaultInjectionOnRead(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -525,7 +525,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
     public void cosmosAsyncContainer(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -784,7 +784,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-    @Test(groups = {"simple"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
     public void cosmosAsyncScripts(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -1073,7 +1073,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-    @Test(groups = {"simple"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
     public void tracerExceptionSpan(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -1129,7 +1129,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @AfterClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void afterClass() {
         LifeCycleUtils.closeQuietly(client);
     }

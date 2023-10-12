@@ -15,16 +15,16 @@ import java.util.function.Consumer;
  * Fluent credential builder for instantiating a {@link DeviceCodeCredential}.
  *
  * <p>Device code authentication is a type of authentication flow offered by
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a> that allows users to sign in to applications on devices that don't have a web browser or a keyboard.
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> that
+ * allows users to sign in to applications on devices that don't have a web browser or a keyboard.
  * This authentication method is particularly useful for devices such as smart TVs, gaming consoles, and
  * Internet of Things (IoT) devices that may not have the capability to enter a username and password.
  * With device code authentication, the user is presented with a device code on the device that needs to be
  * authenticated. The user then navigates to a web browser on a separate device and enters the code on the
- * Microsoft sign-in page. After the user enters the code, Azure AD verifies it and prompts the user to sign in
+ * Microsoft sign-in page. After the user enters the code, Microsoft Entra ID verifies it and prompts the user to sign in
  * with their credentials, such as a username and password or a multi-factor authentication (MFA) method.
- * Device code authentication can be initiated using various Azure AD-supported protocols, such as OAuth 2.0 and
- * OpenID Connect, and it can be used with a wide range of Azure AD-integrated applications.
+ * Device code authentication can be initiated using various Microsoft Entra-supported protocols, such as OAuth 2.0 and
+ * OpenID Connect, and it can be used with a wide range of Microsoft Entra-integrated applications.
  * The DeviceCodeCredential interactively authenticates a user and acquires a token on devices with limited UI.
  * It works by prompting the user to visit a login URL on a browser-enabled machine when the application attempts to
  * authenticate. The user then enters the device code mentioned in the instructions along with their login credentials.

@@ -25,7 +25,7 @@ public final class PrivateLinkServiceConnectionState {
     /*
      * Gets or sets actions required
      */
-    @JsonProperty(value = "actionRequired")
+    @JsonProperty(value = "actionsRequired")
     private String actionRequired;
 
     /** Creates an instance of PrivateLinkServiceConnectionState class. */
