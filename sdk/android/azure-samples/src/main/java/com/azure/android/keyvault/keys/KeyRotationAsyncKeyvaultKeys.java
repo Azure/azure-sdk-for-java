@@ -46,7 +46,7 @@ public class KeyRotationAsyncKeyvaultKeys {
             .buildAsyncClient();
 
         // Let's create an RSA key.
-        String keyName = "MyKey";
+        String keyName = "MyKey" + System.currentTimeMillis();
         keyAsyncClient.createRsaKey(new CreateRsaKeyOptions(keyName).setKeySize(2048))
             .subscribe(originalKey ->
                 Log.i(TAG, String.format("Key created with name: %s, and type: %s%n", originalKey.getName(),

@@ -41,9 +41,12 @@ public class ListOperationsAsyncKeyvaultSecrets {
                 .credential(clientSecretCredential)
                 .buildAsyncClient();
 
+        String bankAccountPassword = "BankAccountPassword" + System.currentTimeMillis();
+        String storageAccountPassword = "StorageAccountPassword" + System.currentTimeMillis();
+
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. If the secret already
         // exists in the key vault, then a new version of the secret is created.
-        secretAsyncClient.setSecret(new KeyVaultSecret("BankAccountPassword", "f4G34fMh8v")
+        secretAsyncClient.setSecret(new KeyVaultSecret(bankAccountPassword, "f4G34fMh8v")
                 .setProperties(new SecretProperties()
                     .setExpiresOn(OffsetDateTime.now().plusYears(1))))
             .subscribe(secretResponse ->
@@ -52,7 +55,7 @@ public class ListOperationsAsyncKeyvaultSecrets {
 
         Thread.sleep(2000);
 
-        secretAsyncClient.setSecret(new KeyVaultSecret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
+        secretAsyncClient.setSecret(new KeyVaultSecret(storageAccountPassword, "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
                 .setProperties(new SecretProperties()
                     .setExpiresOn(OffsetDateTime.now().plusYears(1))))
             .subscribe(secretResponse ->
@@ -75,7 +78,7 @@ public class ListOperationsAsyncKeyvaultSecrets {
         // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects
         // the new password. Calling setSecret on an existing secret creates a new version of the secret in the key
         // vault with the new value.
-        secretAsyncClient.setSecret(new KeyVaultSecret("BankAccountPassword", "sskdjfsdasdjsd")
+        secretAsyncClient.setSecret(new KeyVaultSecret(bankAccountPassword, "sskdjfsdasdjsd")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))))
             .subscribe(secretResponse ->
@@ -86,7 +89,7 @@ public class ListOperationsAsyncKeyvaultSecrets {
 
         // You need to check all the different values your bank account password secret had previously. Lets print all
         // the versions of this secret.
-        secretAsyncClient.listPropertiesOfSecretVersions("BankAccountPassword")
+        secretAsyncClient.listPropertiesOfSecretVersions(bankAccountPassword)
             .subscribe(secret ->
                 secretAsyncClient.getSecret(secret.getName(), secret.getVersion())
                     .subscribe(secretResponse ->

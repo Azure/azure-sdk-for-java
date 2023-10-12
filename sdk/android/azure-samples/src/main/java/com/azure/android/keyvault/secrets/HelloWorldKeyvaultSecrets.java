@@ -42,14 +42,16 @@ public class HelloWorldKeyvaultSecrets {
                 .credential(clientSecretCredential)
                 .buildClient();
 
+        String bankAccountPassword = "BankAccountPassword" + System.currentTimeMillis();
+
         // Let's create a secret holding bank account credentials valid for 1 year. If the secret already exists in the
         // key vault, then a new version of the secret is created.
-        secretClient.setSecret(new KeyVaultSecret("BankAccountPassword", "f4G34fMh8v")
+        secretClient.setSecret(new KeyVaultSecret(bankAccountPassword, "f4G34fMh8v")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // Let's get the bank secret from the key vault.
-        KeyVaultSecret bankSecret = secretClient.getSecret("BankAccountPassword");
+        KeyVaultSecret bankSecret = secretClient.getSecret(bankAccountPassword);
 
         Log.i(TAG, String.format("Secret is returned with name %s and value %s \n", bankSecret.getName(), bankSecret.getValue()));
 
@@ -65,13 +67,13 @@ public class HelloWorldKeyvaultSecrets {
         // Bank forced a password update for security purposes. Let's change the value of the secret in the key vault.
         // To achieve this, we need to create a new version of the secret in the key vault. The update operation cannot
         // change the value of the secret.
-        secretClient.setSecret(new KeyVaultSecret("BankAccountPassword", "bhjd4DDgsa")
+        secretClient.setSecret(new KeyVaultSecret(bankAccountPassword, "bhjd4DDgsa")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // The bank account was closed, need to delete its credentials from the key vault.
         SyncPoller<DeletedSecret, Void> deletedBankSecretPoller =
-            secretClient.beginDeleteSecret("BankAccountPassword");
+            secretClient.beginDeleteSecret(bankAccountPassword);
         PollResponse<DeletedSecret> deletedBankSecretPollResponse = deletedBankSecretPoller.poll();
 
         Log.i(TAG, "Deleted Date " + deletedBankSecretPollResponse.getValue().getDeletedOn().toString());
@@ -81,6 +83,6 @@ public class HelloWorldKeyvaultSecrets {
         deletedBankSecretPoller.waitForCompletion();
 
         // If the key vault is soft-delete enabled, then deleted secrets need to be purged for permanent deletion.
-        secretClient.purgeDeletedSecret("BankAccountPassword");
+        secretClient.purgeDeletedSecret(bankAccountPassword);
     }
 }

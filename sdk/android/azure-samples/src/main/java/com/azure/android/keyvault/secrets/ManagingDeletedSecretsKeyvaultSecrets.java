@@ -48,18 +48,21 @@ public class ManagingDeletedSecretsKeyvaultSecrets {
                 .credential(clientSecretCredential)
                 .buildClient();
 
+        String bankAccountPassword = "BankAccountPassword" + System.currentTimeMillis();
+        String storageAccountPassword = "StorageAccountPasword" + System.currentTimeMillis();
+
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. If the secret already
         // exists in the key vault, then a new version of the secret is created.
-        client.setSecret(new KeyVaultSecret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
+        client.setSecret(new KeyVaultSecret(storageAccountPassword, "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
-        client.setSecret(new KeyVaultSecret("BankAccountPassword", "f4G34fMh8v")
+        client.setSecret(new KeyVaultSecret(bankAccountPassword, "f4G34fMh8v")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // The storage account was closed, need to delete its credentials from the key vault.
-        SyncPoller<DeletedSecret, Void> deletedBankSecretPoller = client.beginDeleteSecret("BankAccountPassword");
+        SyncPoller<DeletedSecret, Void> deletedBankSecretPoller = client.beginDeleteSecret(bankAccountPassword);
 
         PollResponse<DeletedSecret> deletedBankSecretPollResponse = deletedBankSecretPoller.poll();
 
@@ -72,7 +75,7 @@ public class ManagingDeletedSecretsKeyvaultSecrets {
         // We accidentally deleted bank account secret. Let's recover it.
         // A deleted secret can only be recovered if the key vault is soft-delete enabled.
         SyncPoller<KeyVaultSecret, Void> recoverSecretPoller =
-            client.beginRecoverDeletedSecret("BankAccountPassword");
+            client.beginRecoverDeletedSecret(bankAccountPassword);
 
         PollResponse<KeyVaultSecret> recoverSecretResponse = recoverSecretPoller.poll();
 
@@ -85,7 +88,7 @@ public class ManagingDeletedSecretsKeyvaultSecrets {
         // The bank account and storage accounts got closed.
         // Let's delete bank and storage accounts secrets.
         SyncPoller<DeletedSecret, Void> deletedBankPwdSecretPoller =
-            client.beginDeleteSecret("BankAccountPassword");
+            client.beginDeleteSecret(bankAccountPassword);
         PollResponse<DeletedSecret> deletedBankPwdSecretPollResponse = deletedBankPwdSecretPoller.poll();
 
         Log.i(TAG, String.format("Deleted Date %s", deletedBankPwdSecretPollResponse.getValue().getDeletedOn().toString()));
@@ -96,7 +99,7 @@ public class ManagingDeletedSecretsKeyvaultSecrets {
         deletedBankPwdSecretPoller.waitForCompletion();
 
         SyncPoller<DeletedSecret, Void> deletedStorageSecretPoller =
-            client.beginDeleteSecret("StorageAccountPassword");
+            client.beginDeleteSecret(storageAccountPassword);
         PollResponse<DeletedSecret> deletedStorageSecretPollResponse = deletedStorageSecretPoller.poll();
 
         Log.i(TAG, String.format("Deleted Date  %s", deletedStorageSecretPollResponse.getValue().getDeletedOn().toString()));
@@ -111,8 +114,8 @@ public class ManagingDeletedSecretsKeyvaultSecrets {
         }
 
         // If the key vault is soft-delete enabled, then for permanent deletion deleted secrets need to be purged.
-        client.purgeDeletedSecret("StorageAccountPassword");
-        client.purgeDeletedSecret("BankAccountPassword");
+        client.purgeDeletedSecret(storageAccountPassword);
+        client.purgeDeletedSecret(bankAccountPassword);
 
         // To ensure the secret is purged server-side.
         Thread.sleep(15000);

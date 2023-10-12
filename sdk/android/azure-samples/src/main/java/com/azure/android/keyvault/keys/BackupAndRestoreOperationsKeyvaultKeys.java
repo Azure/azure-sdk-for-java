@@ -52,21 +52,23 @@ public class BackupAndRestoreOperationsKeyvaultKeys {
             .credential(clientSecretCredential)
             .buildClient();
 
+        String backupCloudRsaKey = "BackupCloudRsaKey" + System.currentTimeMillis();
+
         // Let's create an RSA key valid for 1 year. If the key already exists in the key vault, then a new version of
         // the key is created.
-        keyClient.createRsaKey(new CreateRsaKeyOptions("BackupCloudRsaKey")
+        keyClient.createRsaKey(new CreateRsaKeyOptions(backupCloudRsaKey)
             .setExpiresOn(OffsetDateTime.now().plusYears(1))
             .setKeySize(2048));
 
         // Backups are good to have, if in case keys get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "java/com/azuresamples/keyvault";
-        byte[] keyBackup = keyClient.backupKey("BackupCloudRsaKey");
+        byte[] keyBackup = keyClient.backupKey(backupCloudRsaKey);
 
         writeBackupToFile(keyBackup, backupFilePath);
 
         // The RSA key is no longer in use, so you delete it.
-        SyncPoller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("BackupCloudRsaKey");
+        SyncPoller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey(backupCloudRsaKey);
         PollResponse<DeletedKey> pollResponse = rsaDeletedKeyPoller.poll();
         DeletedKey rsaDeletedKey = pollResponse.getValue();
 
@@ -80,7 +82,7 @@ public class BackupAndRestoreOperationsKeyvaultKeys {
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the key as well for permanent deletion.
-        keyClient.purgeDeletedKey("BackupCloudRsaKey");
+        keyClient.purgeDeletedKey(backupCloudRsaKey);
 
         // To ensure the key is purged server-side.
         Thread.sleep(15000);

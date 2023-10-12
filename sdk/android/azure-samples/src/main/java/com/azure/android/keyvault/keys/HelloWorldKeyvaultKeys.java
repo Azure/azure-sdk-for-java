@@ -48,10 +48,12 @@ public class HelloWorldKeyvaultKeys {
             .credential(clientSecretCredential)
             .buildClient();
 
+        String helloCloudRsaKey = "HelloCloudRsaKey" + System.currentTimeMillis();
+
         // Let's create an RSA key valid for 1 year. If the key already exists in the key vault, then a new version of
         // the key is created.
         Response<KeyVaultKey> createKeyResponse =
-            keyClient.createRsaKeyWithResponse(new CreateRsaKeyOptions("HelloCloudRsaKey")
+            keyClient.createRsaKeyWithResponse(new CreateRsaKeyOptions(helloCloudRsaKey)
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048), new Context("key1", "value1"));
 
@@ -59,7 +61,7 @@ public class HelloWorldKeyvaultKeys {
         Log.i(TAG, String.format("Create Key operation succeeded with status code %s \n", createKeyResponse.getStatusCode()));
 
         // Let's get the RSA key from the key vault.
-        KeyVaultKey cloudRsaKey = keyClient.getKey("HelloCloudRsaKey");
+        KeyVaultKey cloudRsaKey = keyClient.getKey(helloCloudRsaKey);
 
         Log.i(TAG, String.format("Key is returned with name %s and type %s \n", cloudRsaKey.getName(),
             cloudRsaKey.getKeyType()));
@@ -75,12 +77,12 @@ public class HelloWorldKeyvaultKeys {
         // We need the RSA key with bigger key size, so you want to update the key in key vault to ensure it has the
         // required size. Calling createRsaKey() on an existing key creates a new version of the key in the key vault
         // with the new specified size.
-        keyClient.createRsaKey(new CreateRsaKeyOptions("HelloCloudRsaKey")
+        keyClient.createRsaKey(new CreateRsaKeyOptions(helloCloudRsaKey)
             .setExpiresOn(OffsetDateTime.now().plusYears(1))
             .setKeySize(4096));
 
         // The RSA key is no longer needed, need to delete it from the key vault.
-        SyncPoller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("HelloCloudRsaKey");
+        SyncPoller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey(helloCloudRsaKey);
         PollResponse<DeletedKey> pollResponse = rsaDeletedKeyPoller.poll();
         DeletedKey rsaDeletedKey = pollResponse.getValue();
 
@@ -94,7 +96,7 @@ public class HelloWorldKeyvaultKeys {
         Thread.sleep(30000);
 
         // If the keyvault is soft-delete enabled, then deleted keys need to be purged for permanent deletion.
-        keyClient.purgeDeletedKey("HelloCloudRsaKey");
+        keyClient.purgeDeletedKey(helloCloudRsaKey);
         Log.i(TAG, "HelloCloudRsaKey purged from vault");
     }
 }
