@@ -53,7 +53,9 @@ public final class TransitiveCoreChangesTransform<E extends Element<E>> extends 
 
         if (!newArchive.startsWith("com.azure:azure-core:")
             && !newArchive.startsWith("com.azure:azure-json:")
-            && !newArchive.startsWith("com.azure:azure-xml:")) {
+            && !newArchive.startsWith("com.azure:azure-xml:")
+            && !newArchive.startsWith("com.azure:typespec-core:")
+            && !newArchive.startsWith("com.azure:typespec-json:")) {
             // The difference isn't from the azure-core, azure-json, or azure-xml SDK, keep the current result.
             return TransformationResult.keep();
         }

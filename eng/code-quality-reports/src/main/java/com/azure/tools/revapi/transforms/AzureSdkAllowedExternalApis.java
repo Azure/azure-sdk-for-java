@@ -70,7 +70,9 @@ public final class AzureSdkAllowedExternalApis<E extends Element<E>> extends Bas
         String className = element.getQualifiedName().toString();
 
         if (className.startsWith("com.")) {
-            if ("azure.".regionMatches(0, className, 4, 6)) {
+            if ("azure.".regionMatches(0, className, 4, 6)
+                || "typespec.".regionMatches(0, className, 4, 6)) {
+
                 if ("communication.common.".regionMatches(0, className, 10, 21)
                     || "core.".regionMatches(0, className, 10, 5)
                     || "cosmos.".regionMatches(0, className, 10, 7)

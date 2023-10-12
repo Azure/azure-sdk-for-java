@@ -123,7 +123,9 @@ public final class AzureSdkTreeFilterProvider implements TreeFilterProvider {
 
     static boolean excludePackage(String packageName) {
         if (packageName.startsWith("com.")) {
-            if ("azure.".regionMatches(0, packageName, 4, 6)) {
+            if ("azure.".regionMatches(0, packageName, 4, 6)
+                || "typespec".regionMatches(0, packageName, 4, 6)) {
+
                 if ("data.cosmos".regionMatches(0, packageName, 10, 11)) {
                     // Exclude com.azure.data.cosmos*
                     return true;
