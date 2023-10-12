@@ -64,6 +64,7 @@
       <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
       <!-- Testing model. -->
       <Class name="com.azure.core.test.http.HttpClientTests$BinaryDataTestData"/>
+      <Class name="com.typespec.core.test.http.HttpClientTests$BinaryDataTestData"/>
     </Or>
     <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
   </Match>
@@ -125,9 +126,13 @@
   <Match>
     <Or>
       <Class name="com.azure.core.util.Base64Url"/>
+      <Class name="com.typespec.core.util.Base64Url"/>
       <Class name="com.azure.core.util.CoreUtils"/>
+      <Class name="com.typespec.core.util.CoreUtils"/>
       <Class name="com.azure.core.implementation.serializer.HttpResponseDecodeData"/>
+      <Class name="com.typespec.core.implementation.serializer.HttpResponseDecodeData"/>
       <Class name="com.azure.core.util.serializer.JacksonAdapter"/>
+      <Class name="com.typespec.core.util.serializer.JacksonAdapter"/>
       <Class name="com.azure.core.serializer.json.jackson.JacksonAdapter"/>
       <And>
         <Class name="com.microsoft.azure.servicebus.Utils"/>
@@ -162,7 +167,15 @@
         <Method name="getBinary"/>
       </And>
       <And>
+        <Class name="com.typespec.core.implementation.jackson.JacksonJsonReader"/>
+        <Method name="getBinary"/>
+      </And>
+      <And>
         <Class name="com.azure.json.implementation.DefaultJsonReader"/>
+        <Method name="getBinary"/>
+      </And>
+      <And>
+        <Class name="com.typespec.json.implementation.DefaultJsonReader"/>
         <Method name="getBinary"/>
       </And>
       <And>
@@ -193,6 +206,7 @@
   <Match>
     <Or>
       <Class name="com.azure.core.implementation.jackson.ObjectMapperShim"/>
+      <Class name="com.typespec.core.implementation.jackson.ObjectMapperShim"/>
       <Class name="com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim"/>
     </Or>
     <Method name="createJsonMapper"/>
@@ -204,9 +218,11 @@
   <Match>
     <Or>
       <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
+      <Class name="com.typespec.core.util.CoreUtils"/> <!-- false positive -->
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
       <Class name="com.azure.core.test.utils.TestProxyDownloader"/>
+      <Class name="com.typespec.core.test.utils.TestProxyDownloader"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -223,14 +239,16 @@
   <Match>
     <Or>
       <Class name="com.azure.core.implementation.util.FileContent"/> <!-- false positive -->
-      <Method name="getBytes"/>
+      <Class name="com.typespec.core.implementation.util.FileContent"/> <!-- false positive -->
     </Or>
+    <Method name="getBytes"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
   <Match>
     <Or>
       <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
+      <Class name="com.typespec.core.util.CoreUtils"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
@@ -277,7 +295,9 @@
     <Or>
       <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
       <Class name="~com\.azure\.(.+)Impl"/>
+      <Class name="~com\.typespec\.(.+)Impl"/>
       <Class name="com.azure.core.util.CoreUtils"/>
+      <Class name="com.typespec.core.util.CoreUtils"/>
     </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
   </Match>
@@ -433,9 +453,13 @@
   <Match>
     <Or>
       <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
+      <Class name="com.typespec.core.http.HttpPipelineNextPolicy"/>
       <Class name="com.azure.core.http.HttpPipelineNextSyncPolicy"/>
+      <Class name="com.typespec.core.http.HttpPipelineNextSyncPolicy"/>
       <Class name="com.azure.core.http.HttpRequest"/>
+      <Class name="com.typespec.core.http.HttpRequest"/>
       <Class name="com.azure.core.implementation.http.HttpPipelineCallState"/>
+      <Class name="com.typespec.core.implementation.http.HttpPipelineCallState"/>
     </Or>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
@@ -444,9 +468,13 @@
   <Match>
     <Or>
       <Class name="com.azure.core.util.FluxUtil"/>
+      <Class name="com.typespec.core.util.FluxUtil"/>
       <Class name="com.azure.core.util.FluxUtil$1"/>
+      <Class name="com.typespec.core.util.FluxUtil$1"/>
       <Class name="com.azure.core.implementation.FileWriteSubscriber"/>
+      <Class name="com.typespec.core.implementation.FileWriteSubscriber"/>
       <Class name="com.azure.core.implementation.OutputStreamWriteSubscriber"/>
+      <Class name="com.typespec.core.implementation.OutputStreamWriteSubscriber"/>
     </Or>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
@@ -454,8 +482,12 @@
   <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
   -->
   <Match>
-    <Class
-      name="~com\.azure\.core\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
+    <Or>
+      <Class
+        name="~com\.azure\.core\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
+      <Class
+        name="~com\.typespec\.core\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
+    </Or>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
@@ -463,8 +495,12 @@
   <Match>
     <Or>
       <Class name="com.azure.core.implementation.MethodHandleReflectiveInvoker"/>
+      <Class name="com.typespec.core.implementation.MethodHandleReflectiveInvoker"/>
       <Class name="com.azure.core.implementation.ReflectionUtilsMethodHandle"/>
+      <Class name="com.typespec.core.implementation.ReflectionUtils"/>
+      <Class name="com.typespec.core.implementation.ReflectionUtilsMethodHandle"/>
       <Class name="com.azure.core.implementation.TypeUtil"/>
+      <Class name="com.typespec.core.implementation.TypeUtil"/>
     </Or>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
@@ -537,13 +573,19 @@
 
   <!-- The HttpRequest fields are serializable. Flux<T> and HttpHeaders are able to serialize and deserialize. -->
   <Match>
-    <Class name="com.azure.core.http.HttpRequest"/>
+    <Or>
+      <Class name="com.azure.core.http.HttpRequest"/>
+      <Class name="com.typespec.core.http.HttpRequest"/>
+    </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Storing HttpResponseError as the Object value is not required to be serializable or transient -->
   <Match>
-    <Class name="com.azure.core.exception.HttpResponseException"/>
+    <Or>
+      <Class name="com.azure.core.exception.HttpResponseException"/>
+      <Class name="com.typespec.core.exception.HttpResponseException"/>
+    </Or>
     <Bug pattern="SE_BAD_FIELD_STORE"/>
   </Match>
 
@@ -583,7 +625,10 @@
 
   <!-- Incorrect flagging, the surrounding hasValue() checks that get() isn't null -->
   <Match>
-    <Class name="com.azure.core.implementation.http.rest.AsyncRestProxy"/>
+    <Or>
+      <Class name="com.azure.core.implementation.http.rest.AsyncRestProxy"/>
+      <Class name="com.typespec.core.implementation.http.rest.AsyncRestProxy"/>
+    </Or>
     <Method name="~(.*)\$endSpanWhenDone\$(.*)"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
@@ -625,7 +670,10 @@
 
   <!-- Super doesn't need to be cloned since it is Object -->
   <Match>
-    <Class name="com.azure.core.util.Configuration"/>
+    <Or>
+      <Class name="com.azure.core.util.Configuration"/>
+      <Class name="com.typespec.core.util.Configuration"/>
+    </Or>
     <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
   </Match>
 
@@ -663,7 +711,9 @@
   <Match>
     <Or>
       <Class name="com.azure.core.util.polling.PollResponseJavaDocCodeSnippets"/>
+      <Class name="com.typespec.core.util.polling.PollResponseJavaDocCodeSnippets"/>
       <Class name="com.azure.core.util.polling.PollerJavaDocCodeSnippets"/>
+      <Class name="com.typespec.core.util.polling.PollerJavaDocCodeSnippets"/>
     </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,NP_ALWAYS_NULL,UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -706,6 +756,7 @@
     <Or>
       <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
       <Class name="com.azure.core.http.rest.ResponseExceptionConstructorCache"/>
+      <Class name="com.typespec.core.http.rest.ResponseExceptionConstructorCache"/>
       <Class name="com.azure.core.tracing.opentelemetry.implementation.OpenTelemetrySpanSuppressionHelper"/>
     </Or>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
@@ -742,6 +793,7 @@
   <Match>
     <Or>
       <Class name="~com\.azure\.core\.implementation\.jackson\.(FlatteningSerializer|FlatteningDeserializer|AdditionalPropertiesSerializer|AdditionalPropertiesDeserializer)"/>
+      <Class name="~com\.typespec\.core\.implementation\.jackson\.(FlatteningSerializer|FlatteningDeserializer|AdditionalPropertiesSerializer|AdditionalPropertiesDeserializer)"/>
       <Class name="~com\.azure\.core\.serializer\.json\.jackson\.implementation\.(FlatteningSerializer|FlatteningDeserializer|AdditionalPropertiesSerializer|AdditionalPropertiesDeserializer)"/>
       <Class name="com.azure.core.serializer.json.jackson.JacksonAdapter$GlobalSerializerAdapter"/>
     </Or>
@@ -761,6 +813,17 @@
                   UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
+  <Match>
+    <Package name="com.typespec.core.test(.(implementation|http))?"/>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING,
+                  DM_CONVERT_CASE,
+                  EC_UNRELATED_TYPES,
+                  REC_CATCH_EXCEPTION,
+                  DM_DEFAULT_ENCODING,
+                  NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
+                  UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
 
   <!-- The field is read by parent class StorageOutputStream methods. -->
   <Match>
@@ -778,6 +841,7 @@
   <Match>
     <Or>
       <Class name="com.azure.core.implementation.http.UrlBuilder"/>
+      <Class name="com.typespec.core.implementation.http.UrlBuilder"/>
       <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
       <Class name="com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders"/>
       <Class name="com.azure.storage.file.datalake.implementation.models.PathAppendDataHeaders"/>
@@ -806,35 +870,50 @@
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
+    <Or>
+      <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
+      <Class name="com.typespec.core.util.polling.SyncOverAsyncPoller"/>
+    </Or>
     <Method name="getFinalResult"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
+    <Or>
+      <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
+      <Class name="com.typespec.core.util.polling.SyncOverAsyncPoller"/>
+    </Or>
     <Method name="poll"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
+    <Or>
+      <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
+      <Class name="com.typespec.core.util.polling.SyncOverAsyncPoller"/>
+    </Or>
     <Method name="waitForCompletion"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
+    <Or>
+      <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
+      <Class name="com.typespec.core.util.polling.SyncOverAsyncPoller"/>
+    </Or>
     <Method name="waitUntil"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.PollingContext"/>
+    <Or>
+      <Class name="com.azure.core.util.polling.PollingContext"/>
+      <Class name="com.typespec.core.util.polling.PollingContext"/>
+    </Or>
     <Method name="clone"/>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
@@ -842,6 +921,7 @@
   <Match>
     <Or>
       <Class name="com.azure.core.util.paging.PagedFluxCoreJavaDocCodeSnippets"/>
+      <Class name="com.typespec.core.util.paging.PagedFluxCoreJavaDocCodeSnippets"/>
       <Class name="com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload"/>
     </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,
@@ -2307,6 +2387,7 @@
       <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>
       <Class name="com.azure.core.serializer.json.gson.GsonJsonSerializer"/>
       <Class name="com.azure.core.test.http.LocalTestServer"/>
+      <Class name="com.typespec.core.test.http.LocalTestServer"/>
     </Or>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
@@ -2331,7 +2412,9 @@
     <Bug pattern="EI_EXPOSE_REP"/>
     <Or>
       <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+      <Class name="com.typespec.core.implementation.AccessibleByteArrayOutputStream"/>
       <Class name="com.azure.core.implementation.ByteBufferCollector"/>
+      <Class name="com.typespec.core.implementation.ByteBufferCollector"/>
     </Or>
   </Match>
 
@@ -2361,11 +2444,17 @@
   <!-- Disabling false positives in azure-core -->
   <!-- This Issue has been resolved as per spotbugs's recommended solution but the static checker still flags it, its a known issue with this rule. -->
   <Match>
-    <Class name="com.azure.core.util.logging.ClientLogger"/>
+    <Or>
+      <Class name="com.azure.core.util.logging.ClientLogger"/>
+      <Class name="com.typespec.core.util.logging.ClientLogger"/>
+    </Or>
     <Bug pattern="CRLF_INJECTION_LOGS"/>
   </Match>
   <Match>
-    <Class name="com.azure.core.util.logging.LoggingEventBuilder"/>
+    <Or>
+      <Class name="com.azure.core.util.logging.LoggingEventBuilder"/>
+      <Class name="com.typespec.core.util.logging.LoggingEventBuilder"/>
+    </Or>
     <Bug pattern="CRLF_INJECTION_LOGS"/>
   </Match>
 
@@ -2373,8 +2462,13 @@
   <Match>
     <Or>
       <Class name="com.azure.core.http.policy.ExponentialBackoff"/>
+      <Class name="com.typespec.core.http.policy.ExponentialBackoff"/>
       <And>
         <Class name="com.azure.core.util.CoreUtils"/>
+        <Method name="randomUuid"/>
+      </And>
+      <And>
+        <Class name="com.typespec.core.util.CoreUtils"/>
         <Method name="randomUuid"/>
       </And>
     </Or>
@@ -2383,7 +2477,10 @@
 
   <!-- In the default log level azure-core will not print the stack trace, but when the user opt-in for the lowest level log (DEBUG) we'll print it, which is expected. -->
   <Match>
-    <Class name="com.azure.core.implementation.logging.DefaultLogger"/>
+    <Or>
+      <Class name="com.azure.core.implementation.logging.DefaultLogger"/>
+      <Class name="com.typespec.core.implementation.logging.DefaultLogger"/>
+    </Or>
     <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE"/>
   </Match>
 
@@ -2396,6 +2493,10 @@
       </And>
       <And>
         <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser"/>
+        <Method name="serialize"/>
+      </And>
+      <And>
+        <Class name="com.typespec.core.implementation.http.rest.SwaggerMethodParser"/>
         <Method name="serialize"/>
       </And>
     </Or>
@@ -2438,7 +2539,10 @@
 
   <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
   <Match>
-    <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
+    <Or>
+      <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
+      <Class name="com.typespec.core.implementation.util.ByteArrayContent"/>
+    </Or>
     <Field name="content"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
@@ -2521,7 +2625,10 @@
 
   <!-- If the ServiceVersion type doesn't implement Enum it would have already thrown an exception. -->
   <Match>
-    <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider"/>
+    <Or>
+      <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider"/>
+      <Class name="com.typespec.core.test.implementation.AzureMethodSourceArgumentsProvider"/>
+    </Or>
     <Method name="getServiceVersions"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
@@ -2574,6 +2681,7 @@
   <Match>
     <Or>
       <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
+      <Class name="com.typespec.core.implementation.jackson.FlatteningSerializer"/>
       <Class name="com.azure.core.serializer.json.jackson.implementation.FlatteningSerializer"/>
     </Or>
     <Method name="propertyOnlyFlattenSerialize"/>
@@ -2591,14 +2699,20 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
+    <Or>
+      <Class name="com.azure.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
+      <Class name="com.typespec.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
+    </Or>
     <Method name="locateExceptionConstructor"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- Shaded code shouldn't run Spotbugs -->
   <Match>
-    <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
+    <Or>
+      <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
+      <Package name="~com\.typespec\.json\.implementation\.jackson\.core.*"/>
+    </Or>
   </Match>
 
   <Match>
@@ -2629,7 +2743,10 @@
   <!-- Spotbugs raises a VO_VOLATILE_REFERENCE_TO_ARRAY now but this has the same issue as before where the array elements aren't volatile. -->
   <Match>
     <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY"/>
-    <Class name="~com\.azure\.core\.implementation\.util\.(.*)Content"/>
+    <Or>
+      <Class name="~com\.azure\.core\.implementation\.util\.(.*)Content"/>
+      <Class name="~com\.typespec\.core\.implementation\.util\.(.*)Content"/>
+    </Or>
     <Field name="bytes"/>
   </Match>
 
@@ -2647,25 +2764,37 @@
   </Match>
   <!-- Derived type changes this field as a marker. -->
   <Match>
-    <Class name="com.azure.core.test.TestBase"/>
+    <Or>
+      <Class name="com.azure.core.test.TestBase"/>
+      <Class name="com.typespec.core.test.TestBase"/>
+    </Or>
     <Field name="enableTestProxy"/>
     <Bug pattern="MS_SHOULD_BE_FINAL"/>
   </Match>
   <!-- Exception is ignored in a loop waiting for an http endpoint -->
   <Match>
-    <Class name="com.azure.core.test.utils.TestProxyManager"/>
+    <Or>
+      <Class name="com.azure.core.test.utils.TestProxyManager"/>
+      <Class name="com.typespec.core.test.utils.TestProxyManager"/>
+    </Or>
     <Method name="checkAlive"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
-    <Class name="com.azure.core.test.models.RecordFilePayload"/>
+    <Or>
+      <Class name="com.azure.core.test.models.RecordFilePayload"/>
+      <Class name="com.typespec.core.test.models.RecordFilePayload"/>
+    </Or>
     <Field name="recordingFile"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
   <Match>
-    <Class name="com.azure.core.test.models.RecordFilePayload"/>
+    <Or>
+      <Class name="com.azure.core.test.models.RecordFilePayload"/>
+      <Class name="com.typespec.core.test.models.RecordFilePayload"/>
+    </Or>
     <Field name="assetFile"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
@@ -2694,7 +2823,10 @@
 
   <!-- False positive, complaining about dereference of null 'source' on some paths, which can't happen based on the null validation checks. -->
   <Match>
-    <Class name="com.azure.core.util.io.IOUtils"/>
+    <Or>
+      <Class name="com.azure.core.util.io.IOUtils"/>
+      <Class name="com.typespec.core.util.io.IOUtils"/>
+    </Or>
     <Method name="transfer"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
