@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -160,7 +159,7 @@ public class DownloadResponseTests extends BlobTestBase {
         BlockBlobAsyncClient blockBlobAsyncClient = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient();
 
         Flux<ByteBuffer> bufferMono = blockBlobAsyncClient.downloadStreamWithResponse(null, options, null, false)
-            .flatMapMany(Response::getValue);
+            .flatMapMany(r -> r.getValue());
 
         StepVerifier.create(bufferMono.timeout(Duration.ofSeconds(1)))
             .expectSubscription()
