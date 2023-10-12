@@ -127,6 +127,13 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     @JsonProperty(value = "isPrivateAccessEnabledOnAnyDisk")
     private Boolean isPrivateAccessEnabledOnAnyDisk;
 
+    /*
+     * Extended location of the VM recovery point,
+     * should be null if VM is in public cloud
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
     /** Creates an instance of IaasVMRecoveryPoint class. */
     public IaasVMRecoveryPoint() {
     }
@@ -499,6 +506,28 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     }
 
     /**
+     * Get the extendedLocation property: Extended location of the VM recovery point, should be null if VM is in public
+     * cloud.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Extended location of the VM recovery point, should be null if VM is in public
+     * cloud.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the IaasVMRecoveryPoint object itself.
+     */
+    public IaasVMRecoveryPoint withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -527,6 +556,9 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
         }
         if (recoveryPointProperties() != null) {
             recoveryPointProperties().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
     }
 }
