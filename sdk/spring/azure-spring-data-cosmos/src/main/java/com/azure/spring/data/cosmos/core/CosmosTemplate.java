@@ -839,6 +839,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
         String finalContainerName = getContainerNameOverride(containerName);
 
+        @SuppressWarnings("unchecked")
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
 
         final List<JsonNode> results = findItemsAsFlux(query, finalContainerName, domainType).collectList().block();

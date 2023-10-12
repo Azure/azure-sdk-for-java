@@ -720,6 +720,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
 
+        @SuppressWarnings("unchecked")
         CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
 
         final Flux<JsonNode> results = findItems(query, finalContainerName, domainType);
