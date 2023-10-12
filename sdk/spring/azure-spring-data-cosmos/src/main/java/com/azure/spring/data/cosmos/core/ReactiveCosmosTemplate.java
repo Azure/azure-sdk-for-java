@@ -727,8 +727,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         if (entityInfo.getPartitionKeyFieldName() != null) {
             Flux<CosmosItemOperation> cosmosItemOperationFlux = results.map(item -> {
                 T object = toDomainObject(domainType, item);
-                String id = entityInfo.getId(object) != null ? entityInfo.getId(object).toString() : "";
-                return CosmosBulkOperations.getDeleteItemOperation(id, new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)));
+                Object id = entityInfo.getId(object);
+                String idString = id != null ? id.toString() : "";
+                return CosmosBulkOperations.getDeleteItemOperation(idString, new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)));
             });
 
             this.getCosmosAsyncClient()
