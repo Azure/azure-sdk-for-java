@@ -9,7 +9,6 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
@@ -24,8 +23,8 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
@@ -34,7 +33,6 @@ import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
@@ -55,14 +53,14 @@ import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -81,7 +79,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.zip.CRC32;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
@@ -378,7 +375,7 @@ public class BlobTestBase extends TestProxyTestBase {
                 int readCount2 = stream2.read(buffer2);
 
                 // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
-                assertArrayEquals(buffer1, buffer2);
+                TestUtils.assertArraysEqual(buffer1, buffer2);
                 assertEquals(readCount1, readCount2);
 
                 pos += expectedReadCount;
@@ -460,27 +457,12 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupContainerMatchCondition(BlobContainerClient cu, String match) {
-        if (Objects.equals(match, RECEIVED_ETAG)) {
-            return cu.getProperties().getETag();
-        } else {
-            return match;
-        }
-    }
-
     protected String setupContainerLeaseCondition(BlobContainerClient cu, String leaseID) {
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
             return createLeaseClient(cu).acquireLease(-1);
         } else {
             return leaseID;
         }
-    }
-
-    HttpRequest getMockRequest() throws MalformedURLException {
-        HttpHeaders headers = new HttpHeaders();
-        headers.put(Constants.HeaderConstants.CONTENT_ENCODING, "en-US");
-        URL url = new URL("http://devtest.blob.core.windows.net/test-container/test-blob");
-        return new HttpRequest(HttpMethod.POST, url, headers, (Flux<ByteBuffer>) null);
     }
 
     protected BlobServiceClient getOAuthServiceClient() {
@@ -572,20 +554,20 @@ public class BlobTestBase extends TestProxyTestBase {
 
     /**
      * Some tests require extra configuration for retries when writing.
-     *
+     * <p>
      * It is possible that tests which upload a reasonable amount of data with tight resource limits may cause the
      * service to silently close a connection without returning a response due to high read latency (the resource
      * constraints cause a latency between sending the headers and writing the body often due to waiting for buffer pool
      * buffers). Without configuring a retry timeout, the operation will hang indefinitely. This is always something
      * that must be configured by the customer.
-     *
+     * <p>
      * Typically this needs to be configured in retries so that we can retry the individual block writes rather than
      * the overall operation.
-     *
+     * <p>
      * According to the following link, writes can take up to 10 minutes per MB before the service times out. In this
      * case, most of our instrumentation (e.g. CI pipelines) will timeout and fail anyway, so we don't want to wait that
      * long. The value is going to be a best guess and should be played with to allow test passes to succeed
-     *
+     * <p>
      * https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations
      *
      * @param perRequestDataSize The amount of data expected to go out in each request. Will be used to calculate a
@@ -1014,5 +996,20 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         return URL_SANITIZER.matcher(url).replaceAll("REDACTED");
+    }
+
+    public static byte[] convertInputStreamToByteArray(InputStream inputStream) {
+        byte[] buffer = new byte[4096];
+        int b;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            while ((b = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, b);
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+
+        return outputStream.toByteArray();
     }
 }

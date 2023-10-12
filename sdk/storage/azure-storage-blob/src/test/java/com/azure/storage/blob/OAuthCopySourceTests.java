@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpAuthorization;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -21,7 +22,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Base64;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OAuthCopySourceTests extends BlobTestBase {
@@ -58,7 +58,7 @@ public class OAuthCopySourceTests extends BlobTestBase {
             appendBlobClient.appendBlockFromUrlWithResponse(
                 new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
                     .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE);
-            assertArrayEquals(appendBlobClient.downloadContent().toBytes(), DATA.getDefaultBytes());
+            TestUtils.assertArraysEqual(appendBlobClient.downloadContent().toBytes(), DATA.getDefaultBytes());
         });
     }
 
@@ -82,7 +82,7 @@ public class OAuthCopySourceTests extends BlobTestBase {
             blockBlobClient.uploadFromUrlWithResponse(
                 new BlobUploadFromUrlOptions(defaultDataSourceBlobClient.getBlobUrl())
                     .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE);
-            assertArrayEquals(blockBlobClient.downloadContent().toBytes(), DATA.getDefaultBytes());
+            TestUtils.assertArraysEqual(blockBlobClient.downloadContent().toBytes(), DATA.getDefaultBytes());
         });
     }
 
@@ -109,7 +109,7 @@ public class OAuthCopySourceTests extends BlobTestBase {
                     .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
                 null, Context.NONE);
             blockBlobClient.commitBlockList(Collections.singletonList(blockId), true);
-            assertArrayEquals(blockBlobClient.downloadContent().toBytes(), DATA.getDefaultBytes());
+            TestUtils.assertArraysEqual(blockBlobClient.downloadContent().toBytes(), DATA.getDefaultBytes());
         });
 
     }
@@ -140,7 +140,7 @@ public class OAuthCopySourceTests extends BlobTestBase {
                     pageBlobDataSourceBlobClient.getBlobUrl()).setSourceAuthorization(
                         new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE);
 
-            assertArrayEquals(pageBlobClient.downloadContent().toBytes(),
+            TestUtils.assertArraysEqual(pageBlobClient.downloadContent().toBytes(),
                 pageBlobDataSourceBlobClient.downloadContent().toBytes());
         });
     }

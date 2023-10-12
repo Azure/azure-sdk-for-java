@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -36,7 +37,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Iterator;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -108,8 +108,8 @@ public class VersioningTests extends BlobTestBase {
         blobClient.getVersionClient(blobItemV1.getVersionId()).downloadStream(outputV1);
         blobClient.getVersionClient(blobItemV2.getVersionId()).downloadStream(outputV2);
 
-        assertArrayEquals(outputV1.toByteArray(), contentV1.getBytes(StandardCharsets.UTF_8));
-        assertArrayEquals(outputV2.toByteArray(), contentV2.getBytes(StandardCharsets.UTF_8));
+        TestUtils.assertArraysEqual(outputV1.toByteArray(), contentV1.getBytes(StandardCharsets.UTF_8));
+        TestUtils.assertArraysEqual(outputV2.toByteArray(), contentV2.getBytes(StandardCharsets.UTF_8));
     }
 
     @Test
@@ -124,8 +124,8 @@ public class VersioningTests extends BlobTestBase {
         blobClient.getVersionClient(blobItemV1.getVersionId()).downloadStream(outputV1);
         blobClient.getVersionClient(blobItemV2.getVersionId()).downloadStream(outputV2);
 
-        assertArrayEquals(outputV1.toByteArray(), contentV1.getBytes(StandardCharsets.UTF_8));
-        assertArrayEquals(outputV2.toByteArray(), contentV2.getBytes(StandardCharsets.UTF_8));
+        TestUtils.assertArraysEqual(outputV1.toByteArray(), contentV1.getBytes(StandardCharsets.UTF_8));
+        TestUtils.assertArraysEqual(outputV2.toByteArray(), contentV2.getBytes(StandardCharsets.UTF_8));
     }
 
     @Test

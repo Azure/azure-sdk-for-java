@@ -133,7 +133,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             if (response.getStatusCode() != 201) {
                 System.out.println(response.getBodyAsString().block());
             }
-            assert response.getStatusCode() == 201;
+            assertEquals(201, response.getStatusCode());
         }
     }
 

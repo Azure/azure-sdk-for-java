@@ -6,7 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -38,8 +38,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BuilderHelperTests {
     private static final StorageSharedKeyCredential CREDENTIALS =
@@ -60,16 +59,17 @@ public class BuilderHelperTests {
     private static final RetryOptions CORE_RETRY_OPTIONS = new RetryOptions(
         new FixedDelayOptions(1, Duration.ofSeconds(2)));
 
-    private static HttpRequest request(String url) throws MalformedURLException {
-        return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
-            Flux.empty());
+    private static HttpRequest request(String url) {
+        return new HttpRequest(HttpMethod.HEAD, url)
+            .setBody(Flux.empty())
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
     }
 
     /**
      * Tests that a new date will be applied to every retry when using the default pipeline builder.
      */
     @Test
-    public void freshDateAppliedOnRetry() throws MalformedURLException {
+    public void freshDateAppliedOnRetry() {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
             ENDPOINT, REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(),
             new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null,
@@ -80,10 +80,10 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a new date will be applied to every retry when using the serviceClientbuilder's default pipeline.
+     * Tests that a new date will be applied to every retry when using the serviceClientBuilder's default pipeline.
      */
     @Test
-    public void serviceClientFreshDateOnRetry() throws MalformedURLException {
+    public void serviceClientFreshDateOnRetry() {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
@@ -97,10 +97,10 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a new date will be applied to every retry when using the containerClientbuilder's default pipeline.
+     * Tests that a new date will be applied to every retry when using the serviceClientBuilder's default pipeline.
      */
     @Test
-    public void containerClientFreshDateOnRetry() throws MalformedURLException {
+    public void containerClientFreshDateOnRetry() {
         BlobContainerClient containerClient = new BlobContainerClientBuilder()
             .endpoint(ENDPOINT)
             .containerName("container")
@@ -115,10 +115,10 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a new date will be applied to every retry when using the blobClientbuilder's default pipeline.
+     * Tests that a new date will be applied to every retry when using the blobClientBuilder's default pipeline.
      */
     @Test
-    public void blobClientFreshDateOnRetry() throws MalformedURLException {
+    public void blobClientFreshDateOnRetry() {
         BlobClient blobClient = new BlobClientBuilder()
             .endpoint(ENDPOINT)
             .containerName("container")
@@ -134,11 +134,11 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a new date will be applied to every retry when using the specializedBlobClientbuilder's default
+     * Tests that a new date will be applied to every retry when using the specializedBlobClientBuilder's default
      * pipeline.
      */
     @Test
-    public void specializedBlobClientFreshDateOnRetry() throws MalformedURLException {
+    public void specializedBlobClientFreshDateOnRetry() {
         SpecializedBlobClientBuilder specializedBlobClientBuilder = new SpecializedBlobClientBuilder()
             .endpoint(ENDPOINT)
             .containerName("container")
@@ -174,8 +174,7 @@ public class BuilderHelperTests {
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
-    public void customApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
-        throws MalformedURLException {
+    public void customApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA) {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
             ENDPOINT, new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
             new ClientOptions().setApplicationId(clientOptionsUA), new ApplicationIdUAStringTestClient(expectedUA),
@@ -196,13 +195,13 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the serviceClientbuilder's
+     * Tests that a user application id will be honored in the UA string when using the serviceClientBuilder's
      * default pipeline.
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void serviceClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
-        String expectedUA) throws MalformedURLException {
+        String expectedUA) {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
@@ -217,13 +216,13 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the containerClientbuilder
+     * Tests that a user application id will be honored in the UA string when using the serviceClientBuilder
      * default pipeline.
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void containerClientcustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
-        String expectedUA) throws MalformedURLException {
+        String expectedUA) {
         BlobContainerClient containerClient = new BlobContainerClientBuilder()
             .endpoint(ENDPOINT)
             .containerName("container")
@@ -239,12 +238,12 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the blobClientbuilder default pipeline.
+     * Tests that a user application id will be honored in the UA string when using the blobClientBuilder default pipeline.
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void blobClientcustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
-        String expectedUA) throws MalformedURLException {
+        String expectedUA) {
         BlobClient blobClient = new BlobClientBuilder()
             .endpoint(ENDPOINT)
             .containerName("container")
@@ -261,13 +260,13 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the specializedBlobClientbuilder
+     * Tests that a user application id will be honored in the UA string when using the specializedBlobClientBuilder
      * default pipeline.
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void specializedBlobClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
-        String expectedUA) throws MalformedURLException {
+        String expectedUA) {
         SpecializedBlobClientBuilder specializedBlobClientBuilder = new SpecializedBlobClientBuilder()
             .endpoint(ENDPOINT)
             .containerName("container")
@@ -303,7 +302,7 @@ public class BuilderHelperTests {
      * Tests that a custom headers will be honored when using the default pipeline builder.
      */
     @Test
-    public void customHeadersClientOptions() throws MalformedURLException {
+    public void customHeadersClientOptions() {
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("custom", "header"));
         headers.add(new Header("Authorization", "notthis"));
@@ -321,10 +320,10 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that custom headers will be honored when using the serviceClientbuilder's default pipeline.
+     * Tests that custom headers will be honored when using the serviceClienBuilder's default pipeline.
      */
     @Test
-    public void serviceClientcustomHeadersClientoptions() throws MalformedURLException {
+    public void serviceClientcustomHeadersClientoptions() {
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("custom", "header"));
         headers.add(new Header("Authorization", "notthis"));
@@ -343,10 +342,10 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that custom headers will be honored when using the containerClientbuilder's default pipeline.
+     * Tests that custom headers will be honored when using the serviceClientBuilder's default pipeline.
      */
     @Test
-    public void containerClientCustomHeadersClientOptions() throws MalformedURLException {
+    public void containerClientCustomHeadersClientOptions() {
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("custom", "header"));
         headers.add(new Header("Authorization", "notthis"));
@@ -366,10 +365,10 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that custom headers will be honored when using the blobClientbuilder's default pipeline.
+     * Tests that custom headers will be honored when using the blobClientBuilder's default pipeline.
      */
     @Test
-    public void blobClientCustomHeadersClientoptions() throws MalformedURLException {
+    public void blobClientCustomHeadersClientoptions() {
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("custom", "header"));
         headers.add(new Header("Authorization", "notthis"));
@@ -390,11 +389,11 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that custom headers will be honored when using the specializedBlobClientbuilder's default
+     * Tests that custom headers will be honored when using the specializedBlobClientBuilder's default
      * pipeline.
      */
     @Test
-    public void specializedBlobClientCustomHeadersClientOptions() throws MalformedURLException {
+    public void specializedBlobClientCustomHeadersClientOptions() {
         List<Header> headers = new ArrayList<>();
         headers.add(new Header("custom", "header"));
         headers.add(new Header("Authorization", "notthis"));
@@ -608,11 +607,11 @@ public class BuilderHelperTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (firstDate == null) {
-                firstDate = convertToDateObject(request.getHeaders().getValue("Date"));
+                firstDate = convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE));
                 return Mono.error(new IOException("IOException!"));
             }
 
-            assertNotEquals(firstDate, convertToDateObject(request.getHeaders().getValue("Date")));
+            assertNotEquals(firstDate, convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE)));
             return Mono.just(new MockHttpResponse(request, 200));
         }
 
@@ -635,10 +634,10 @@ public class BuilderHelperTests {
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
-            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
+            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue(HttpHeaderName.USER_AGENT))) {
                 throw new RuntimeException("Failed to set 'User-Agent' header.");
             }
-            assert request.getHeaders().getValue("User-Agent").startsWith(expectedUA);
+            assertTrue(request.getHeaders().getValue(HttpHeaderName.USER_AGENT).startsWith(expectedUA));
             return Mono.just(new MockHttpResponse(request, 200));
         }
     }

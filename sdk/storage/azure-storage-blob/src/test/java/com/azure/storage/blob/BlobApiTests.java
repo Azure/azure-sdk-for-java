@@ -9,11 +9,11 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.ProgressListener;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -119,7 +119,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -169,7 +168,7 @@ public class BlobApiTests extends BlobTestBase {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bc.downloadStreamWithResponse(stream, null, null, null, false,
             null, null);
-        assertArrayEquals(stream.toByteArray(), randomData);
+        TestUtils.assertArraysEqual(stream.toByteArray(), randomData);
     }
 
     @Test
@@ -179,7 +178,7 @@ public class BlobApiTests extends BlobTestBase {
         bc.upload(BinaryData.fromBytes(randomData), true);
 
         BinaryData blobContent = bc.downloadContent();
-        assertArrayEquals(blobContent.toBytes(), randomData);
+        TestUtils.assertArraysEqual(blobContent.toBytes(), randomData);
     }
 
     /* Tests an issue found where buffered upload would not deep copy buffers while determining what upload path to
@@ -197,7 +196,7 @@ public class BlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bc.downloadStreamWithResponse(stream, null, null, null, false, null, null);
-        assertArrayEquals(stream.toByteArray(), randomData);
+        TestUtils.assertArraysEqual(stream.toByteArray(), randomData);
     }
 
     /* TODO (gapra): Add more tests to test large data sizes. */
@@ -262,7 +261,7 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void uploadInputStreamMin() {
         assertDoesNotThrow(() -> bc.upload(DATA.getDefaultInputStream()));
-        assertArrayEquals(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
+        TestUtils.assertArraysEqual(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
     }
 
     @Test
@@ -274,14 +273,14 @@ public class BlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bc.downloadWithResponse(stream, null, null, null, false, null, null);
-        assertArrayEquals(stream.toByteArray(), randomData);
+        TestUtils.assertArraysEqual(stream.toByteArray(), randomData);
     }
 
     @Test
     public void uploadInputStreamNoLength() {
         assertDoesNotThrow(() -> bc.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()),
             null, null));
-        assertArrayEquals(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
+        TestUtils.assertArraysEqual(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
     }
 
     @Test
@@ -300,7 +299,7 @@ public class BlobApiTests extends BlobTestBase {
 
         assertNotNull(clientWithFailure);
         clientWithFailure.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()), null, null);
-        assertArrayEquals(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
+        TestUtils.assertArraysEqual(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
     }
 
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
@@ -447,7 +446,7 @@ public class BlobApiTests extends BlobTestBase {
         BinaryData body = response.getValue();
         BlobDownloadHeaders headers = response.getDeserializedHeaders();
 
-        assertArrayEquals(DATA.getDefaultBytes(), body.toBytes());
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), body.toBytes());
         assertTrue(CoreUtils.isNullOrEmpty(headers.getMetadata()));
         assertEquals(1, headers.getTagCount());
         assertNotNull(headers.getContentLength());
@@ -522,7 +521,7 @@ public class BlobApiTests extends BlobTestBase {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         bc.downloadStream(outStream);
         byte[] result = outStream.toByteArray();
-        assertArrayEquals(DATA.getDefaultBytes(), result);
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), result);
     }
 
     @Test
@@ -530,13 +529,13 @@ public class BlobApiTests extends BlobTestBase {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         bc.downloadStream(outStream);
         byte[] result = outStream.toByteArray();
-        assertArrayEquals(DATA.getDefaultBytes(), result);
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), result);
     }
 
     @Test
     public void downloadBinaryDataMin() {
         BinaryData result = bc.downloadContent();
-        assertArrayEquals(DATA.getDefaultBytes(), result.toBytes());
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), result.toBytes());
     }
 
     @ParameterizedTest
@@ -678,7 +677,7 @@ public class BlobApiTests extends BlobTestBase {
         BlobDownloadResponse response = bc.downloadStreamWithResponse(new ByteArrayOutputStream(), new BlobRange(0, 3L),
             null, null, true, null, null);
         byte[] contentMD5 = response.getDeserializedHeaders().getContentMd5();
-        assertArrayEquals(MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().substring(0, 3).getBytes()),
+        TestUtils.assertArraysEqual(MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().substring(0, 3).getBytes()),
             contentMD5);
     }
 
@@ -712,7 +711,7 @@ public class BlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream snapshotStream = new ByteArrayOutputStream();
         bc2.downloadStream(snapshotStream);
-        assertArrayEquals(originalStream.toByteArray(), snapshotStream.toByteArray());
+        TestUtils.assertArraysEqual(originalStream.toByteArray(), snapshotStream.toByteArray());
     }
 
     @Test
@@ -726,7 +725,7 @@ public class BlobApiTests extends BlobTestBase {
             .upload(new ByteArrayInputStream("ABC".getBytes()), 3, true);
 
         BinaryData snapshotContent = bc2.downloadContent();
-        assertArrayEquals(originalContent.toBytes(), snapshotContent.toBytes());
+        TestUtils.assertArraysEqual(originalContent.toBytes(), snapshotContent.toBytes());
     }
 
     @Test

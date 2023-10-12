@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.test.utils.TestUtils;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -25,11 +26,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -50,13 +48,11 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         bc.upload(new ByteArrayInputStream(data), data.length, true);
         BlobInputStream is = bc.openInputStream();
         byte[] outArr = new byte[10 * 1024 * 1024];
+        byte[] emptyData = new byte[outArr.length - dataSize];
         int count = is.read(outArr);
-        for (int i = 0; i < dataSize; i++) {
-            assert data[i] == outArr[i];
-        }
-        for (int i = dataSize; i < (outArr.length); i++) {
-            assertEquals(0, outArr[i]);
-        }
+
+        TestUtils.assertArraysEqual(data, 0, outArr, 0, dataSize);
+        TestUtils.assertArraysEqual(emptyData, 0, outArr, dataSize, emptyData.length);
         assertEquals(count, retVal);
     }
 
@@ -79,20 +75,11 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         outStream.close();
 
         BlobInputStream inputStream = bc.openInputStream();
-        int b;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
-            while ((b = inputStream.read()) != -1) {
-                outputStream.write(b);
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
+
         BlobProperties propertiesAfter = inputStream.getProperties();
         assertEquals(propertiesAfter.getBlobType(), BlobType.BLOCK_BLOB);
         assertEquals(propertiesAfter.getBlobSize(), 5 * Constants.MB);
-        byte[] randomBytes2 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes2, Arrays.copyOfRange(randomBytes, Constants.MB, 6 * Constants.MB));
+        TestUtils.assertArraysEqual(randomBytes, Constants.MB, convertInputStreamToByteArray(inputStream), 0, 5 * Constants.MB);
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
@@ -132,7 +119,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         assertEquals(propertiesAfter.getBlobType(), BlobType.BLOCK_BLOB);
         assertEquals(propertiesAfter.getBlobSize(), 6 * Constants.MB);
         byte[] randomBytes2 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes2, randomBytes);
+        TestUtils.assertArraysEqual(randomBytes2, randomBytes);
     }
 
     private static Stream<Arguments> uploadDownloadBlockSizeSupplier() {
@@ -163,8 +150,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         inputStream.read(resultBytes); // read the whole range
 
         assertEquals(inputStream.read(), -1);
-        assertEquals(ByteBuffer.wrap(randomBytes, start, (int) finalCount),
-            ByteBuffer.wrap(resultBytes));
+        TestUtils.assertArraysEqual(randomBytes, start, resultBytes, 0, (int) finalCount);
     }
 
     private static Stream<Arguments> blobRangeSupplier() {
@@ -199,19 +185,9 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
         BlobInputStream inputStream = bc.openInputStream();
         BlobProperties propertiesBefore = inputStream.getProperties();
-        int b;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
-            while ((b = inputStream.read()) != -1) {
-                outputStream.write(b);
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
         assertEquals(propertiesBefore.getBlobType(), BlobType.BLOCK_BLOB);
         assertEquals(propertiesBefore.getBlobSize(), 5 * Constants.MB);
-        byte[] randomBytes2 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes2, Arrays.copyOfRange(randomBytes, Constants.MB, 6 * Constants.MB));
+        TestUtils.assertArraysEqual(randomBytes, Constants.MB, convertInputStreamToByteArray(inputStream), 0, 5 * Constants.MB);
     }
 
     @Test
@@ -252,7 +228,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     @Test
-    public void inputStreamConsistentReadControlETagClientChoosesETag() throws IOException {
+    public void inputStreamConsistentReadControlETagClientChoosesETag() {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
@@ -262,20 +238,12 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         // No eTag specified - client will lock on latest one.
         BlobInputStream inputStream = blobClient.openInputStream(new BlobInputStreamOptions()
             .setConsistentReadControl(ConsistentReadControl.ETAG));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        // then: "Successful read"
-        int b;
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b);
-        }
-
-        byte[] randomBytes1 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes, randomBytes1);
+        TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
     @Test
-    public void inputStreamConsistentReadControlETagUserProvidesETag() throws IOException {
+    public void inputStreamConsistentReadControlETagUserProvidesETag() {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
@@ -287,20 +255,12 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
             .setConsistentReadControl(ConsistentReadControl.ETAG)
             // User provides eTag to use
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        // then: "Successful read"
-        int b;
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b);
-        }
-
-        byte[] randomBytes1 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes, randomBytes1);
+        TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
     @Test
-    public void inputStreamConsistentReadControlETagUserProvidesVersionAndETag() throws IOException {
+    public void inputStreamConsistentReadControlETagUserProvidesVersionAndETag() {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
@@ -313,21 +273,13 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
             .openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG)
             // User provides eTag to use
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        // then: "Successful read"
-        int b;
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b);
-        }
-
-        byte[] randomBytes1 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes, randomBytes1);
+        TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
-    public void inputStreamConsistentReadControlETagUserProvidesVersionClientChoosesETag() throws IOException {
+    public void inputStreamConsistentReadControlETagUserProvidesVersionClientChoosesETag() {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
@@ -338,18 +290,10 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         // User provides version client
         BlobInputStream inputStream = blobClient.getVersionClient(properties.getVersionId())
             .openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
 
-        // then: "Successful read"
-        int b;
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b);
-        }
-
-        byte[] randomBytes1 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes, randomBytes1);
+        TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
     // Error case
@@ -378,7 +322,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
-    public void inputStreamConsistentReadControlVersionClientChoosesVersion() throws IOException {
+    public void inputStreamConsistentReadControlVersionClientChoosesVersion() {
         int length = Constants.KB;
         byte[] randomBytes = getRandomByteArray(length);
         BlobContainerClient blobContainerClient = versionedBlobServiceClient.createBlobContainer(generateContainerName());
@@ -388,17 +332,11 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         // No version specified - client will lock on it.
         BlobInputStream inputStream = blobClient.openInputStream(new BlobInputStreamOptions()
             .setConsistentReadControl(ConsistentReadControl.VERSION_ID));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(getRandomByteArray(length)), length, true);
 
-        int b;
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b);
-        }
-        byte[] randomBytes2 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes2, randomBytes);
+        TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -416,17 +354,11 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         // User provides version client
         BlobInputStream inputStream = blobClient.getVersionClient(properties.getVersionId())
             .openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(getRandomByteArray(length)), length, true);
 
-        int b;
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b);
-        }
-        byte[] randomBytes2 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes2, randomBytes);
+        TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -444,17 +376,11 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
             .openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID)
             // User provides eTag to use
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(getRandomByteArray(length)), length, true);
 
-        int b;
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b);
-        }
-        byte[] randomBytes2 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes2, randomBytes);
+        TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -472,18 +398,11 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
             .setConsistentReadControl(ConsistentReadControl.VERSION_ID)
             // User provides eTag to use
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())));
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
         // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true);
 
-        // then: "Successful read"
-        int b;
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b);
-        }
-
-        byte[] randomBytes1 = outputStream.toByteArray();
-        assertArrayEquals(randomBytes, randomBytes1);
+        TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")

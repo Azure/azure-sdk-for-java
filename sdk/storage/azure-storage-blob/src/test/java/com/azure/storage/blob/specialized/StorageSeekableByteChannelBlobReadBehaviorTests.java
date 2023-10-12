@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
@@ -28,11 +29,11 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -146,7 +147,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
         buffer.get(actual);
         byte[] expected = new byte[read1];
         initialCache.get(expected);
-        assertArrayEquals(expected, actual);
+        TestUtils.assertArraysEqual(expected, actual);
 
         // when: "Read again at same offset"
         buffer.clear();
@@ -215,8 +216,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
             byte[] validBufferContent = new byte[buffer.limit()];
             buffer.get(validBufferContent);
 
-            byte[] expectedData = Arrays.copyOfRange(data, offset, offset + validBufferContent.length);
-            assertArrayEquals(expectedData, validBufferContent);
+            TestUtils.assertArraysEqual(data, offset, validBufferContent, 0, validBufferContent.length);
         }
     }
 
@@ -244,7 +244,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
         // Blob at half size
         String blockId1 = new String(Base64.getEncoder().encode("blockId1".getBytes()));
         blockBlobClient.stageBlock(blockId1, BinaryData.fromBytes(Arrays.copyOfRange(data, 0, halfLength)));
-        blockBlobClient.commitBlockList(Arrays.asList(blockId1));
+        blockBlobClient.commitBlockList(Collections.singletonList(blockId1));
 
         // behavior to read blob
         StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
@@ -260,7 +260,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
 
         // buffer correctly filled
         assertEquals(buffer.capacity(), buffer.position());
-        assertArrayEquals(Arrays.copyOfRange(data, 0, halfLength), buffer.array());
+        TestUtils.assertArraysEqual(data, 0, buffer.array(), 0, halfLength);
 
         // read at end of blob
         buffer.clear();
@@ -288,7 +288,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
 
         // buffer correctly filled
         assertEquals(buffer.capacity(), buffer.position());
-        assertArrayEquals(Arrays.copyOfRange(data, halfLength, data.length), buffer.array());
+        TestUtils.assertArraysEqual(data, halfLength, buffer.array(), 0, data.length - halfLength);
     }
 }
 

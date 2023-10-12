@@ -4,8 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.storage.blob.BlobTestBase;
@@ -16,7 +15,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 
@@ -155,7 +153,6 @@ public class DownloadResponseMockFlux {
         return (context, next) -> {
             tryNumber++;
             HttpHeader rangeHeader = context.getHttpRequest().getHeaders().get("x-ms-range");
-            String eTag = context.getHttpRequest().getHeaders().getValue("if-match");
             long offset = 0L;
             Long count = null;
             if (rangeHeader != null) {
@@ -176,8 +173,8 @@ public class DownloadResponseMockFlux {
             };
             Long contentUpperBound = finalCount == null
                 ? scenarioData.remaining() - 1 : finalOffset + finalCount - 1;
-            response.addHeader("Content-Range", String.format("%d-%d/%d", finalOffset, contentUpperBound,
-                scenarioData.remaining()));
+            response.getHeaders().set(HttpHeaderName.CONTENT_RANGE, String.format("%d-%d/%d", finalOffset,
+                contentUpperBound, scenarioData.remaining()));
 
             switch (scenario) {
                 case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
@@ -189,47 +186,11 @@ public class DownloadResponseMockFlux {
                              This validates that we don't retry in the getter even if it's a retryable error from the
                              service.
                              */
-                            throw new BlobStorageException("Message", new HttpResponse(null) {
-                                @Override
-                                public int getStatusCode() {
-                                    return 500;
-                                }
-
-                                @Override
-                                public String getHeaderValue(String s) {
-                                    return null;
-                                }
-
-                                @Override
-                                public HttpHeaders getHeaders() {
-                                    return null;
-                                }
-
-                                @Override
-                                public Flux<ByteBuffer> getBody() {
-                                    return null;
-                                }
-
-                                @Override
-                                public Mono<byte[]> getBodyAsByteArray() {
-                                    return null;
-                                }
-
-                                @Override
-                                public Mono<String> getBodyAsString() {
-                                    return null;
-                                }
-
-                                @Override
-                                public Mono<String> getBodyAsString(Charset charset) {
-                                    return null;
-                                }
-                            }, null);
+                            throw new BlobStorageException("Message", new MockHttpResponse(null, 500), null);
                         default:
                             throw new IllegalArgumentException("Retried after error in getter");
                     }
                 case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
-                    // Construct a new flux each time to mimic getting a new download stream.
                     // Construct a new flux each time to mimic getting a new download stream.
                     DownloadResponseMockFlux nextFlux = new DownloadResponseMockFlux(scenario, tryNumber, scenarioData, options);
                     MockHttpResponse newResponse = new MockHttpResponse(null, 200) {

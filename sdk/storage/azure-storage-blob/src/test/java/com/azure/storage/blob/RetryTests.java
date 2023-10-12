@@ -77,10 +77,10 @@ public class RetryTests extends BlobTestBase {
                     RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS,
                     REQUEST_RETRY_OPTIONS);
 
-            HttpResponse response = retryTestFactory.sendSync(retryTestURL);
-
-            assertEquals(response.getStatusCode(), 200);
-            assertEquals(retryTestFactory.getTryNumber(), 6);
+            try (HttpResponse response = retryTestFactory.sendSync(retryTestURL)) {
+                assertEquals(response.getStatusCode(), 200);
+                assertEquals(retryTestFactory.getTryNumber(), 6);
+            }
         });
     }
 

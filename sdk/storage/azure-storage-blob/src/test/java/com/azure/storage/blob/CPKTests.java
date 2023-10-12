@@ -4,7 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
-import com.azure.storage.blob.models.AccessTier;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
@@ -23,13 +23,11 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -79,7 +77,7 @@ public class CPKTests extends BlobTestBase {
             null);
 
         assertResponseStatusCode(response, 200);
-        assertArrayEquals(dataStream.toByteArray(), DATA.getDefaultBytes());
+        TestUtils.assertArraysEqual(dataStream.toByteArray(), DATA.getDefaultBytes());
     }
 
     @Test

@@ -217,7 +217,7 @@ public class HelperTests extends BlobTestBase {
             + "   </PageRange>  \n"
             + "</PageList>";
 
-        PageList pageList = (PageList) new JacksonAdapter().deserialize(responseXml, PageList.class,
+        PageList pageList = JacksonAdapter.createDefaultSerializerAdapter().deserialize(responseXml, PageList.class,
             SerializerEncoding.XML);
 
         assertEquals(2, pageList.getPageRange().size());

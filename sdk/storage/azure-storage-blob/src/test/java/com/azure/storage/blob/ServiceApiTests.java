@@ -45,7 +45,6 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -69,7 +68,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -80,7 +78,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ResourceLock("ServiceProperties")
 public class ServiceApiTests extends BlobTestBase {
     private BlobServiceClient anonymousClient;
     private String tagKey;
@@ -92,6 +89,12 @@ public class ServiceApiTests extends BlobTestBase {
         anonymousClient = new BlobServiceClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
             .buildClient();
+
+        tagKey = testResourceNamer.randomName(prefix, 20);
+        tagValue = testResourceNamer.randomName(prefix, 20);
+    }
+
+    private void setInitialProperties() {
         BlobRetentionPolicy disabled = new BlobRetentionPolicy().setEnabled(false);
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
             .setStaticWebsite(new StaticWebsite().setEnabled(false))
@@ -104,13 +107,9 @@ public class ServiceApiTests extends BlobTestBase {
             .setLogging(new BlobAnalyticsLogging().setVersion("1.0")
                 .setRetentionPolicy(disabled))
             .setDefaultServiceVersion("2018-03-28"));
-
-        tagKey = testResourceNamer.randomName(prefix, 20);
-        tagValue = testResourceNamer.randomName(prefix, 20);
     }
 
-    @AfterEach
-    public void cleanup() {
+    private void resetProperties() {
         BlobRetentionPolicy disabled = new BlobRetentionPolicy().setEnabled(false);
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
             .setStaticWebsite(new StaticWebsite().setEnabled(false))
@@ -350,31 +349,29 @@ public class ServiceApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
     @Test
+    @ResourceLock("ServiceProperties")
     public void listSystemContainers() {
-        BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
-        BlobAnalyticsLogging logging = new BlobAnalyticsLogging().setRead(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy);
-        BlobServiceProperties serviceProps = new BlobServiceProperties()
-            .setLogging(logging);
+        setInitialProperties();
 
-        // Ensure $logs container exists. These will be reverted in test cleanup
-        primaryBlobServiceClient.setPropertiesWithResponse(serviceProps, null, null);
+        try {
+            BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
+            BlobAnalyticsLogging logging =
+                new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
+            BlobServiceProperties serviceProps = new BlobServiceProperties().setLogging(logging);
 
-        sleepIfRunningAgainstService(30 * 1000); // allow the service properties to take effect
+            // Ensure $logs container exists. These will be reverted in test cleanup
+            primaryBlobServiceClient.setPropertiesWithResponse(serviceProps, null, null);
 
-        PagedIterable<BlobContainerItem> containers = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions().setDetails(
-                new BlobContainerListDetails().setRetrieveSystemContainers(true)), null);
+            sleepIfRunningAgainstService(30 * 1000); // allow the service properties to take effect
 
-        boolean foundLogs = false;
-        for (BlobContainerItem container : containers) {
-            if (container.getName().equals("$logs")) {
-                foundLogs = true;
-                break;
-            }
+            PagedIterable<BlobContainerItem> containers = primaryBlobServiceClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true)), null);
+
+            assertTrue(containers.stream().anyMatch(c -> c.getName().equals("$logs")));
+        } finally {
+            resetProperties();
         }
-
-        assertTrue(foundLogs);
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -560,167 +557,225 @@ public class ServiceApiTests extends BlobTestBase {
         cc.delete();
     }
 
-    private boolean validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
-        return received.getLogging().isRead() == sent.getLogging().isRead()
-            && received.getLogging().isDelete() == sent.getLogging().isDelete()
-            && received.getLogging().isWrite() == sent.getLogging().isWrite()
-            && received.getLogging().getVersion().equals(sent.getLogging().getVersion())
-            && Objects.equals(received.getLogging().getRetentionPolicy().getDays(),
-            sent.getLogging().getRetentionPolicy().getDays())
-            && received.getLogging().getRetentionPolicy().isEnabled() == sent.getLogging().getRetentionPolicy().isEnabled()
-            && received.getCors().size() == sent.getCors().size()
-            && received.getCors().get(0).getAllowedMethods().equals(sent.getCors().get(0).getAllowedMethods())
-            && received.getCors().get(0).getAllowedHeaders().equals(sent.getCors().get(0).getAllowedHeaders())
-            && received.getCors().get(0).getAllowedOrigins().equals(sent.getCors().get(0).getAllowedOrigins())
-            && received.getCors().get(0).getExposedHeaders().equals(sent.getCors().get(0).getExposedHeaders())
-            && received.getCors().get(0).getMaxAgeInSeconds() == sent.getCors().get(0).getMaxAgeInSeconds()
-            && received.getDefaultServiceVersion().equals(sent.getDefaultServiceVersion())
-            && received.getHourMetrics().isEnabled() == sent.getHourMetrics().isEnabled()
-            && received.getHourMetrics().isIncludeApis() == sent.getHourMetrics().isIncludeApis()
-            && received.getHourMetrics().getRetentionPolicy().isEnabled() == sent.getHourMetrics().getRetentionPolicy().isEnabled()
-            && received.getHourMetrics().getRetentionPolicy().getDays().equals(sent.getHourMetrics().getRetentionPolicy().getDays())
-            && received.getHourMetrics().getVersion().equals(sent.getHourMetrics().getVersion())
-            && received.getMinuteMetrics().isEnabled() == sent.getMinuteMetrics().isEnabled()
-            && received.getMinuteMetrics().isIncludeApis() == sent.getMinuteMetrics().isIncludeApis()
-            && received.getMinuteMetrics().getRetentionPolicy().isEnabled() == sent.getMinuteMetrics().getRetentionPolicy().isEnabled()
-            && received.getMinuteMetrics().getRetentionPolicy().getDays().equals(sent.getMinuteMetrics().getRetentionPolicy().getDays())
-            && received.getMinuteMetrics().getVersion().equals(sent.getMinuteMetrics().getVersion())
-            && received.getDeleteRetentionPolicy().isEnabled() == sent.getDeleteRetentionPolicy().isEnabled()
-            && received.getDeleteRetentionPolicy().getDays().equals(sent.getDeleteRetentionPolicy().getDays())
-            && received.getStaticWebsite().isEnabled() == sent.getStaticWebsite().isEnabled()
-            && received.getStaticWebsite().getIndexDocument().equals(sent.getStaticWebsite().getIndexDocument())
-            && received.getStaticWebsite().getErrorDocument404Path().equals(sent.getStaticWebsite().getErrorDocument404Path());
+    private static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
+        assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
+        assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());
+        assertEquals(sent.getLogging().isDelete(), received.getLogging().isDelete());
+        assertEquals(sent.getLogging().getVersion(), received.getLogging().getVersion());
+        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(),
+            received.getLogging().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getLogging().getRetentionPolicy().getDays(),
+            received.getLogging().getRetentionPolicy().getDays());
+        assertEquals(sent.getCors().size(), received.getCors().size());
+        assertEquals(sent.getCors().get(0).getAllowedMethods(), received.getCors().get(0).getAllowedMethods());
+        assertEquals(sent.getCors().get(0).getAllowedHeaders(), received.getCors().get(0).getAllowedHeaders());
+        assertEquals(sent.getCors().get(0).getAllowedOrigins(), received.getCors().get(0).getAllowedOrigins());
+        assertEquals(sent.getCors().get(0).getExposedHeaders(), received.getCors().get(0).getExposedHeaders());
+        assertEquals(sent.getCors().get(0).getMaxAgeInSeconds(), received.getCors().get(0).getMaxAgeInSeconds());
+        assertEquals(sent.getDefaultServiceVersion(), received.getDefaultServiceVersion());
+        assertEquals(sent.getHourMetrics().isEnabled(), received.getHourMetrics().isEnabled());
+        assertEquals(sent.getHourMetrics().isIncludeApis(), received.getHourMetrics().isIncludeApis());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(),
+            received.getHourMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(),
+            received.getHourMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getHourMetrics().getVersion(), received.getHourMetrics().getVersion());
+        assertEquals(sent.getMinuteMetrics().isEnabled(), received.getMinuteMetrics().isEnabled());
+        assertEquals(sent.getMinuteMetrics().isIncludeApis(), received.getMinuteMetrics().isIncludeApis());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(),
+            received.getMinuteMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(),
+            received.getMinuteMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getMinuteMetrics().getVersion(), received.getMinuteMetrics().getVersion());
+        assertEquals(sent.getDeleteRetentionPolicy().isEnabled(), received.getDeleteRetentionPolicy().isEnabled());
+        assertEquals(sent.getDeleteRetentionPolicy().getDays(), received.getDeleteRetentionPolicy().getDays());
+        assertEquals(sent.getStaticWebsite().isEnabled(), received.getStaticWebsite().isEnabled());
+        assertEquals(sent.getStaticWebsite().getIndexDocument(), received.getStaticWebsite().getIndexDocument());
+        assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
+            received.getStaticWebsite().getErrorDocument404Path());
     }
 
     @Test
+    @ResourceLock("ServiceProperties")
     public void setGetProperties() {
-        BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
-        BlobAnalyticsLogging logging = new BlobAnalyticsLogging().setRead(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy);
-        List<BlobCorsRule> corsRules = new ArrayList<>();
-        corsRules.add(new BlobCorsRule().setAllowedMethods("GET,PUT,HEAD")
-            .setAllowedOrigins("*")
-            .setAllowedHeaders("x-ms-version")
-            .setExposedHeaders("x-ms-client-request-id")
-            .setMaxAgeInSeconds(10));
-        String defaultServiceVersion = "2016-05-31";
-        BlobMetrics hourMetrics = new BlobMetrics().setEnabled(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy).setIncludeApis(true);
-        BlobMetrics minuteMetrics = new BlobMetrics().setEnabled(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy).setIncludeApis(true);
-        StaticWebsite website = new StaticWebsite().setEnabled(true)
-            .setIndexDocument("myIndex.html")
-            .setErrorDocument404Path("custom/error/path.html");
+        setInitialProperties();
 
-        BlobServiceProperties sentProperties = new BlobServiceProperties()
-            .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
-            .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
-            .setDeleteRetentionPolicy(retentionPolicy)
-            .setStaticWebsite(website);
+        try {
+            BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
+            BlobAnalyticsLogging logging =
+                new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
+            List<BlobCorsRule> corsRules = new ArrayList<>();
+            corsRules.add(new BlobCorsRule()
+                .setAllowedMethods("GET,PUT,HEAD")
+                .setAllowedOrigins("*")
+                .setAllowedHeaders("x-ms-version")
+                .setExposedHeaders("x-ms-client-request-id")
+                .setMaxAgeInSeconds(10));
+            String defaultServiceVersion = "2016-05-31";
+            BlobMetrics hourMetrics = new BlobMetrics()
+                .setEnabled(true)
+                .setVersion("1.0")
+                .setRetentionPolicy(retentionPolicy)
+                .setIncludeApis(true);
+            BlobMetrics minuteMetrics = new BlobMetrics()
+                .setEnabled(true)
+                .setVersion("1.0")
+                .setRetentionPolicy(retentionPolicy)
+                .setIncludeApis(true);
+            StaticWebsite website = new StaticWebsite().setEnabled(true).setIndexDocument("myIndex.html")
+                .setErrorDocument404Path("custom/error/path.html");
 
-        HttpHeaders headers = primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null)
-            .getHeaders();
+            BlobServiceProperties sentProperties = new BlobServiceProperties()
+                .setLogging(logging)
+                .setCors(corsRules)
+                .setDefaultServiceVersion(defaultServiceVersion)
+                .setMinuteMetrics(minuteMetrics)
+                .setHourMetrics(hourMetrics)
+                .setDeleteRetentionPolicy(retentionPolicy)
+                .setStaticWebsite(website);
 
-        // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
-        sleepIfRunningAgainstService(30 * 1000);
+            HttpHeaders headers =
+                primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders();
 
-        BlobServiceProperties receivedProperties = primaryBlobServiceClient.getProperties();
+            // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+            sleepIfRunningAgainstService(30 * 1000);
 
-        assertNotNull(headers.getValue(X_MS_REQUEST_ID));
-        assertNotNull(headers.getValue(X_MS_VERSION));
-        assertTrue(validatePropsSet(sentProperties, receivedProperties));
+            BlobServiceProperties receivedProperties = primaryBlobServiceClient.getProperties();
+
+            assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+            assertNotNull(headers.getValue(X_MS_VERSION));
+            validatePropsSet(sentProperties, receivedProperties);
+        } finally {
+            resetProperties();
+        }
     }
 
     // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
-
     @Test
+    @ResourceLock("ServiceProperties")
     public void setPropsMin() {
-        BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
-        BlobAnalyticsLogging logging = new BlobAnalyticsLogging().setRead(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy);
-        List<BlobCorsRule> corsRules = new ArrayList<>();
-        corsRules.add(new BlobCorsRule().setAllowedMethods("GET,PUT,HEAD")
-            .setAllowedOrigins("*")
-            .setAllowedHeaders("x-ms-version")
-            .setExposedHeaders("x-ms-client-request-id")
-            .setMaxAgeInSeconds(10));
-        String defaultServiceVersion = "2016-05-31";
-        BlobMetrics hourMetrics = new BlobMetrics().setEnabled(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy).setIncludeApis(true);
-        BlobMetrics minuteMetrics = new BlobMetrics().setEnabled(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy).setIncludeApis(true);
-        StaticWebsite website = new StaticWebsite().setEnabled(true)
-            .setIndexDocument("myIndex.html")
-            .setErrorDocument404Path("custom/error/path.html");
+        setInitialProperties();
 
-        BlobServiceProperties sentProperties = new BlobServiceProperties()
-            .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
-            .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
-            .setDeleteRetentionPolicy(retentionPolicy)
-            .setStaticWebsite(website);
+        try {
+            BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
+            BlobAnalyticsLogging logging =
+                new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
+            List<BlobCorsRule> corsRules = new ArrayList<>();
+            corsRules.add(new BlobCorsRule()
+                .setAllowedMethods("GET,PUT,HEAD")
+                .setAllowedOrigins("*")
+                .setAllowedHeaders("x-ms-version")
+                .setExposedHeaders("x-ms-client-request-id")
+                .setMaxAgeInSeconds(10));
+            String defaultServiceVersion = "2016-05-31";
+            BlobMetrics hourMetrics = new BlobMetrics()
+                .setEnabled(true)
+                .setVersion("1.0")
+                .setRetentionPolicy(retentionPolicy)
+                .setIncludeApis(true);
+            BlobMetrics minuteMetrics = new BlobMetrics()
+                .setEnabled(true)
+                .setVersion("1.0")
+                .setRetentionPolicy(retentionPolicy)
+                .setIncludeApis(true);
+            StaticWebsite website = new StaticWebsite().setEnabled(true).setIndexDocument("myIndex.html")
+                .setErrorDocument404Path("custom/error/path.html");
 
-        assertResponseStatusCode(primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null), 202);
+            BlobServiceProperties sentProperties = new BlobServiceProperties()
+                .setLogging(logging)
+                .setCors(corsRules)
+                .setDefaultServiceVersion(defaultServiceVersion)
+                .setMinuteMetrics(minuteMetrics)
+                .setHourMetrics(hourMetrics)
+                .setDeleteRetentionPolicy(retentionPolicy)
+                .setStaticWebsite(website);
+
+            assertResponseStatusCode(primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null), 202);
+        } finally {
+            resetProperties();
+        }
     }
 
     @Test
+    @ResourceLock("ServiceProperties")
     public void setPropsCorsCheck() {
-        BlobServiceProperties serviceProperties = primaryBlobServiceClient.getProperties();
+        setInitialProperties();
 
-        // Some properties are not set and this test validates that they are not null when sent to the service
-        BlobCorsRule rule = new BlobCorsRule()
-            .setAllowedOrigins("microsoft.com")
-            .setMaxAgeInSeconds(60)
-            .setAllowedMethods("GET")
-            .setAllowedHeaders("x-ms-version");
+        try {
+            BlobServiceProperties serviceProperties = primaryBlobServiceClient.getProperties();
 
-        serviceProperties.setCors(Collections.singletonList(rule));
-        assertResponseStatusCode(primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null),
-            202);
+            // Some properties are not set and this test validates that they are not null when sent to the service
+            BlobCorsRule rule = new BlobCorsRule()
+                .setAllowedOrigins("microsoft.com")
+                .setMaxAgeInSeconds(60)
+                .setAllowedMethods("GET")
+                .setAllowedHeaders("x-ms-version");
+
+            serviceProperties.setCors(Collections.singletonList(rule));
+            assertResponseStatusCode(primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null),
+                202);
+        } finally {
+            resetProperties();
+        }
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
+    @ResourceLock("ServiceProperties")
     public void setPropsStaticWebsite() {
-        BlobServiceProperties serviceProperties = primaryBlobServiceClient.getProperties();
-        String errorDocument404Path = "error/404.html";
-        String defaultIndexDocumentPath = "index.html";
+        setInitialProperties();
 
-        serviceProperties.setStaticWebsite(new StaticWebsite()
-            .setEnabled(true)
-            .setErrorDocument404Path(errorDocument404Path)
-            .setDefaultIndexDocumentPath(defaultIndexDocumentPath)
-        );
+        try {
+            BlobServiceProperties serviceProperties = primaryBlobServiceClient.getProperties();
+            String errorDocument404Path = "error/404.html";
+            String defaultIndexDocumentPath = "index.html";
 
-        Response<Void> resp = primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null);
+            serviceProperties.setStaticWebsite(new StaticWebsite()
+                .setEnabled(true)
+                .setErrorDocument404Path(errorDocument404Path)
+                .setDefaultIndexDocumentPath(defaultIndexDocumentPath));
 
-        assertResponseStatusCode(resp, 202);
-        StaticWebsite staticWebsite = primaryBlobServiceClient.getProperties().getStaticWebsite();
-        assertTrue(staticWebsite.isEnabled());
-        assertEquals(errorDocument404Path, staticWebsite.getErrorDocument404Path());
-        assertEquals(defaultIndexDocumentPath, staticWebsite.getDefaultIndexDocumentPath());
+            Response<Void> resp = primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null);
+
+            assertResponseStatusCode(resp, 202);
+            StaticWebsite staticWebsite = primaryBlobServiceClient.getProperties().getStaticWebsite();
+            assertTrue(staticWebsite.isEnabled());
+            assertEquals(errorDocument404Path, staticWebsite.getErrorDocument404Path());
+            assertEquals(defaultIndexDocumentPath, staticWebsite.getDefaultIndexDocumentPath());
+        } finally {
+            resetProperties();
+        }
     }
 
     @Test
+    @ResourceLock("ServiceProperties")
     public void setPropsError() {
         assertThrows(BlobStorageException.class, () -> getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             "https://error.blob.core.windows.net").setProperties(new BlobServiceProperties()));
     }
 
     @Test
+    @ResourceLock("ServiceProperties")
     public void setPropsAnonymous() {
         assertThrows(IllegalStateException.class, () -> anonymousClient.setProperties(new BlobServiceProperties()));
     }
 
     @Test
+    @ResourceLock("ServiceProperties")
     public void getPropsMin() {
-        assertResponseStatusCode(primaryBlobServiceClient.getPropertiesWithResponse(null, null), 200);
+        setInitialProperties();
+
+        try {
+            assertResponseStatusCode(primaryBlobServiceClient.getPropertiesWithResponse(null, null), 200);
+        } finally {
+            resetProperties();
+        }
     }
 
     @Test
     public void getPropsError() {
         assertThrows(BlobStorageException.class, () -> getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             "https://error.blob.core.windows.net").getProperties());
-
     }
 
     @Test
@@ -833,6 +888,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
     @Test
+    @ResourceLock("ServiceProperties")
     public void invalidAccountName() throws MalformedURLException {
         URL badURL = new URL("http://fake.blobfake.core.windows.net");
         BlobServiceClient client = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
@@ -1080,7 +1136,8 @@ public class ServiceApiTests extends BlobTestBase {
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
         BlobServiceClient sc = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy())
+            primaryBlobServiceClient.getAccountUrl())
+            .addPolicy(getPerCallVersionPolicy())
             .buildClient();
 
         Response<BlobServiceProperties> response = sc.getPropertiesWithResponse(null, null);

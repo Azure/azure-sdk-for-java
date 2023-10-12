@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -43,7 +44,8 @@ public class BlobUserAgentPropertiesTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).policies(uaPolicy).build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "https://account.blob.core.windows.net/")
-                .setHeader("User-Agent", userAgentBefore))).assertNext(it -> assertEquals(it.getStatusCode(), 200))
+                .setHeader(HttpHeaderName.USER_AGENT, userAgentBefore)))
+            .assertNext(it -> assertEquals(it.getStatusCode(), 200))
             .verifyComplete();
     }
 
@@ -82,10 +84,10 @@ public class BlobUserAgentPropertiesTests {
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
-            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
+            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue(HttpHeaderName.USER_AGENT))) {
                 throw new RuntimeException("Failed to set 'User-Agent' header.");
             }
-            assert request.getHeaders().getValue("User-Agent").equals(expectedUA);
+            assert request.getHeaders().getValue(HttpHeaderName.USER_AGENT).equals(expectedUA);
             return Mono.just(new MockHttpResponse(request, 200));
         }
     }

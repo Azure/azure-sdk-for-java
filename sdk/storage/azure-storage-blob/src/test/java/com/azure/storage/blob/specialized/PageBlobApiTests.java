@@ -7,6 +7,7 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -48,7 +49,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,7 +57,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -513,7 +512,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         bc.downloadStream(os);
-        assertArrayEquals(os.toByteArray(), data);
+        TestUtils.assertArraysEqual(os.toByteArray(), data);
     }
 
     @Test
@@ -551,8 +550,8 @@ public class PageBlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         destURL.downloadStream(outputStream);
-        assertArrayEquals(outputStream.toByteArray(),
-            Arrays.copyOfRange(data, PageBlobClient.PAGE_BYTES * 2, PageBlobClient.PAGE_BYTES * 4));
+        TestUtils.assertArraysEqual(data, PageBlobClient.PAGE_BYTES * 2, outputStream.toByteArray(), 0,
+            PageBlobClient.PAGE_BYTES * 2);
     }
 
     @Test

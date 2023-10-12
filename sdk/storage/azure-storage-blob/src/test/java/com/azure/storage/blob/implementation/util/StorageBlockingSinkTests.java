@@ -14,8 +14,8 @@ import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -63,12 +63,11 @@ public class StorageBlockingSinkTests {
     @Test
     void producerDelayedConsumerRandomBuffers() {
         int num = 50;
-        Random rand = new Random();
         ByteBuffer[] buffers = new ByteBuffer[num];
         for (int i = 0; i < num; i++) {
-            int size = rand.nextInt(8 * Constants.KB);
+            int size = ThreadLocalRandom.current().nextInt(8 * Constants.KB);
             byte[] b = new byte[size];
-            rand.nextBytes(b);
+            ThreadLocalRandom.current().nextBytes(b);
             buffers[i] = ByteBuffer.wrap(b);
         }
 
@@ -108,12 +107,11 @@ public class StorageBlockingSinkTests {
     @Test
     void delayedProducerConsumerRandomBuffers() {
         int num = 50;
-        Random rand = new Random();
         ByteBuffer[] buffers = new ByteBuffer[num];
         for (int i = 0; i < num; i++) {
-            int size = rand.nextInt(8 * Constants.KB);
+            int size = ThreadLocalRandom.current().nextInt(8 * Constants.KB);
             byte[] b = new byte[size];
-            rand.nextBytes(b);
+            ThreadLocalRandom.current().nextBytes(b);
             buffers[i] = ByteBuffer.wrap(b);
         }
 
@@ -191,7 +189,7 @@ public class StorageBlockingSinkTests {
         assertEquals(ex.getReason(), Sinks.EmitResult.FAIL_CANCELLED);
     }
 
-    private void sleep(int millis) {
+    private static void sleep(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {

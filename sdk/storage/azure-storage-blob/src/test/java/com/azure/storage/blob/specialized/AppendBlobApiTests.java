@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -35,13 +36,11 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -344,7 +343,7 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream downloadStream = new ByteArrayOutputStream();
         bc.downloadStream(downloadStream);
-        assertArrayEquals(downloadStream.toByteArray(), DATA.getDefaultBytes());
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), downloadStream.toByteArray());
 
         validateBasicHeaders(appendResponse.getHeaders());
         assertNotNull(appendResponse.getHeaders().getValue(X_MS_CONTENT_CRC64));
@@ -493,7 +492,7 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         bc.downloadStream(os);
-        assertArrayEquals(DATA.getDefaultBytes(), os.toByteArray());
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20221102ServiceVersion")
@@ -507,7 +506,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         assertResponseStatusCode(bc.appendBlockWithResponse(uploadStream, size, null, null, null, null), 201);
 
         bc.downloadStream(downloadStream); // Check if block was appended correctly by downloading the block
-        assertArrayEquals(randomData, downloadStream.toByteArray());
+        TestUtils.assertArraysEqual(randomData, downloadStream.toByteArray());
     }
 
     @Test
@@ -541,7 +540,7 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream downloadStream = new ByteArrayOutputStream(1024);
         destURL.downloadStream(downloadStream);
-        assertArrayEquals(Arrays.copyOfRange(data, 2 * 1024, 3 * 1024), downloadStream.toByteArray());
+        TestUtils.assertArraysEqual(data, 2 * 1024, downloadStream.toByteArray(), 0, 1024);
     }
 
     @Test

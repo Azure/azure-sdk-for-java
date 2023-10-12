@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PageRange;
@@ -26,15 +27,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -53,7 +50,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         outputStream.close();
 
         assertEquals(data.length, blockBlobClient.getProperties().getBlobSize());
-        assertArrayEquals(convertInputStreamToByteArray(blockBlobClient.openInputStream()), data);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(blockBlobClient.openInputStream()), data);
     }
 
     @Test
@@ -76,7 +73,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         assertEquals(etag, blockBlobClient.getProperties().getETag());
 
         assertEquals(data.length, blockBlobClient.getProperties().getBlobSize());
-        assertArrayEquals(convertInputStreamToByteArray(blockBlobClient.openInputStream()), data);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(blockBlobClient.openInputStream()), data);
     }
 
     @Test
@@ -119,7 +116,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         outputStream.close();
 
         assertEquals(blockBlobClient.getProperties().getBlobSize(), randomData.length);
-        assertArrayEquals(convertInputStreamToByteArray(blockBlobClient.openInputStream()), randomData);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(blockBlobClient.openInputStream()), randomData);
     }
 
     @ParameterizedTest
@@ -170,7 +167,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         outputStream.close();
 
         assertEquals(data.length, blockBlobClient.getProperties().getBlobSize());
-        assertArrayEquals(convertInputStreamToByteArray(blockBlobClient.openInputStream()), data);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(blockBlobClient.openInputStream()), data);
     }
 
     @Test
@@ -185,7 +182,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         outputStream.write(data);
         outputStream.close();
 
-        assertArrayEquals(convertInputStreamToByteArray(pageBlobClient.openInputStream()), data);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(pageBlobClient.openInputStream()), data);
     }
 
     @Test
@@ -201,7 +198,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         outputStream.close();
 
         assertEquals(appendBlobClient.getProperties().getBlobSize(), data.length);
-        assertArrayEquals(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20221102ServiceVersion")
@@ -216,7 +213,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         outputStream.write(data);
         outputStream.close();
 
-        assertArrayEquals(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
     }
 
     @Test
@@ -229,7 +226,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         outputStream.write(data);
         outputStream.close();
 
-        assertArrayEquals(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
 
         byte[] data2 = getRandomByteArray(FOUR_MB);
 
@@ -238,7 +235,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         outputStream2.close();
 
         assertEquals(appendBlobClient.getProperties().getBlobSize(), data2.length);
-        assertArrayEquals(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data2);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data2);
     }
 
     @Test
@@ -251,7 +248,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         outputStream.write(data);
         outputStream.close();
 
-        assertArrayEquals(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
 
         byte[] data2 = getRandomByteArray(Constants.MB);
         outputStream = appendBlobClient.getBlobOutputStream(false);
@@ -261,20 +258,6 @@ public class BlobOutputStreamTests extends BlobTestBase {
         byte[] finalData = new byte[2 * Constants.MB];
         System.arraycopy(data, 0, finalData, 0, data.length);
         System.arraycopy(data2, 0, finalData, data.length, data2.length);
-        assertArrayEquals(convertInputStreamToByteArray(appendBlobClient.openInputStream()), finalData);
-    }
-
-    private static byte[] convertInputStreamToByteArray(InputStream inputStream) {
-        int b;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
-            while ((b = inputStream.read()) != -1) {
-                outputStream.write(b);
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
-
-        return outputStream.toByteArray();
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(appendBlobClient.openInputStream()), finalData);
     }
 }

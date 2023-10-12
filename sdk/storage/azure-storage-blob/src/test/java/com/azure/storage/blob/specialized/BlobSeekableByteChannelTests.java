@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -40,7 +42,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions.WriteMode.OVERWRITE;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -89,7 +90,7 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
         assertEquals(dataLength, channel.position());
 
         // and: "expected data downloaded"
-        assertArrayEquals(data, downloadedData.toByteArray());
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
     }
 
     static Stream<Arguments> channelReadDataSupplier() {
@@ -162,7 +163,7 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
         channel.close();
 
         // then: "appropriate data uploaded"
-        assertArrayEquals(data, blockClient.downloadContent().toBytes());
+        TestUtils.assertArraysEqual(data, blockClient.downloadContent().toBytes());
     }
 
     @ParameterizedTest
@@ -198,7 +199,7 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
                 os.write(data.array());
                 String contentRange = "bytes " + offset + "-" + (offset + toRead - 1) + "/" + blobSize;
                 HttpHeaders headers = new HttpHeaders();
-                headers.put("Content-Range", contentRange);
+                headers.set(HttpHeaderName.CONTENT_RANGE, contentRange);
                 return new BlobDownloadResponse(new BlobDownloadAsyncResponse(null, 206, headers, null,
                     new BlobDownloadHeaders().setContentRange(contentRange)));
             });
@@ -209,7 +210,7 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
 
         // Then: "appropriate data read"
         assertEquals(toRead, read);
-        assertArrayEquals(data.array(), readBuffer.array());
+        TestUtils.assertArraysEqual(data.array(), readBuffer.array());
 
         doThrow(new RuntimeException("Incorrect parameters")).when(client)
             .downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());

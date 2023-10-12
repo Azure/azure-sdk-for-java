@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -96,7 +97,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -364,7 +364,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         blobClient.download(os);
-        assertArrayEquals(os.toByteArray(), data);
+        TestUtils.assertArraysEqual(data, os.toByteArray());
     }
 
     @SuppressWarnings("deprecation")
@@ -386,7 +386,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             blobClient.download(os);
-            assertArrayEquals(os.toByteArray(), binaryData.toBytes());
+            TestUtils.assertArraysEqual(os.toByteArray(), binaryData.toBytes());
         }
     }
 
@@ -876,7 +876,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertResponseStatusCode(response, 201);
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         blockBlobClient.downloadStream(outStream);
-        assertArrayEquals(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
+        TestUtils.assertArraysEqual(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
         validateBasicHeaders(response.getHeaders());
         assertNotNull(response.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
@@ -899,7 +899,7 @@ public class BlockBlobApiTests extends BlobTestBase {
             assertResponseStatusCode(response, 201);
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             blockBlobClient.download(outStream);
-            assertArrayEquals(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
+            TestUtils.assertArraysEqual(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
             validateBasicHeaders(response.getHeaders());
             assertNotNull(response.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
             assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
@@ -998,7 +998,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         assertEquals(metadata, blockBlobClient.getProperties().getMetadata());
         blockBlobClient.downloadStream(outStream);
-        assertArrayEquals(outStream.toByteArray(), Files.readAllBytes(file.toPath()));
+        TestUtils.assertArraysEqual(outStream.toByteArray(), Files.readAllBytes(file.toPath()));
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -1019,7 +1019,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertEquals(tags, blockBlobClient.getTags());
         blockBlobClient.downloadStream(outStream);
 
-        assertArrayEquals(outStream.toByteArray(), Files.readAllBytes(file.toPath()));
+        TestUtils.assertArraysEqual(outStream.toByteArray(), Files.readAllBytes(file.toPath()));
     }
 
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
@@ -1181,7 +1181,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         blockBlobClient.download(outStream);
-        assertArrayEquals(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
+        TestUtils.assertArraysEqual(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
     }
 
     // Override name to prevent BinaryData.toString() invocation by test framework.
@@ -1198,7 +1198,7 @@ public class BlockBlobApiTests extends BlobTestBase {
             blockBlobClient.upload(binaryData, true);
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             blockBlobClient.downloadStream(outStream);
-            assertArrayEquals(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
+            TestUtils.assertArraysEqual(outStream.toByteArray(), DATA.getDefaultText().getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -1424,7 +1424,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         blobClient.downloadStream(os);
-        assertArrayEquals(os.toByteArray(), data);
+        TestUtils.assertArraysEqual(os.toByteArray(), data);
     }
 
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
@@ -1448,7 +1448,7 @@ public class BlockBlobApiTests extends BlobTestBase {
                 null, true)).assertNext(it -> assertNotNull(it.getETag())).verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.downloadStream()))
-            .assertNext(it -> assertArrayEquals(it, expectedDownload))
+            .assertNext(it -> TestUtils.assertArraysEqual(it, expectedDownload))
             .verifyComplete();
     }
 
@@ -1514,7 +1514,8 @@ public class BlockBlobApiTests extends BlobTestBase {
     public void asyncUploadBinaryData() {
         blobAsyncClient.upload(DATA.getDefaultBinaryData(), true).block();
         StepVerifier.create(blockBlobAsyncClient.downloadContent())
-            .assertNext(it -> assertArrayEquals(it.toBytes(), DATA.getDefaultBinaryData().toBytes())).verifyComplete();
+            .assertNext(it -> TestUtils.assertArraysEqual(it.toBytes(), DATA.getDefaultBinaryData().toBytes()))
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -1819,7 +1820,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream(dataSize);
         blobClient.downloadStream(os);
-        assertArrayEquals(data, os.toByteArray());
+        TestUtils.assertArraysEqual(data, os.toByteArray());
 
         assertEquals(blobClient.getBlockBlobClient().listBlocks(BlockListType.ALL).getCommittedBlocks().size(),
             blockCount);
@@ -2314,7 +2315,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertNotNull(blockBlobItem);
         assertNotNull(blockBlobItem.getETag());
         assertNotNull(blockBlobItem.getLastModified());
-        assertArrayEquals(DATA.getDefaultBytes(), os.toByteArray());
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
@@ -2333,7 +2334,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertNotNull(blockBlobItem);
         assertNotNull(blockBlobItem.getETag());
         assertNotNull(blockBlobItem.getLastModified());
-        assertArrayEquals(DATA.getDefaultBytes(), os.toByteArray());
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
@@ -2390,7 +2391,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertNotNull(blockBlobItem);
         assertNotNull(blockBlobItem.getETag());
         assertNotNull(blockBlobItem.getLastModified());
-        assertArrayEquals(DATA.getDefaultBytes(), os.toByteArray());
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
         assertEquals("en-GB", destinationProperties.getContentLanguage());
         assertEquals("text", destinationProperties.getContentType());
         assertEquals(AccessTier.COOL, destinationProperties.getAccessTier());

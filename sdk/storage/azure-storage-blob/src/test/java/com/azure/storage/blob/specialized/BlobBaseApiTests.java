@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.test.utils.TestUtils;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobQueryArrowField;
@@ -42,7 +43,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -129,7 +129,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         400, // 12 ish KB
         4000,  // 125 KB
     })
-    public void queryMin(int numCopies) throws IOException {
+    public void queryMin(int numCopies) {
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
             .setRecordSeparator('\n')
             .setColumnSeparator(',')
@@ -153,13 +153,12 @@ public class BlobBaseApiTests extends BlobTestBase {
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
-            assertArrayEquals(downloadedData, queryData);
+            TestUtils.assertArraysEqual(downloadedData, queryData);
 
             /* Output Stream. */
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             bc.query(os, expression);
-            byte[] osData = os.toByteArray();
-            assertArrayEquals(downloadedData, osData);
+            TestUtils.assertArraysEqual(downloadedData, os.toByteArray());
         });
     }
 
@@ -167,7 +166,7 @@ public class BlobBaseApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("queryCsvSerializationSeparatorSupplier")
     public void queryCsvSerializationSeparator(char recordSeparator, char columnSeparator, boolean headersPresentIn,
-        boolean headersPresentOut) throws IOException {
+        boolean headersPresentOut) {
         BlobQueryDelimitedSerialization serIn = new BlobQueryDelimitedSerialization()
             .setRecordSeparator(recordSeparator)
             .setColumnSeparator(columnSeparator)
@@ -200,14 +199,13 @@ public class BlobBaseApiTests extends BlobTestBase {
 
             if (headersPresentIn && !headersPresentOut) {
                 /* Account for 16 bytes of header. */
-                for (int j = 16; j < downloadedData.length; j++) {
-                    assert queryData[j - 16] == downloadedData[j];
-                }
+                TestUtils.assertArraysEqual(downloadedData, 16, queryData, 0, downloadedData.length - 16);
+
                 for (int k = downloadedData.length - 16; k < downloadedData.length; k++) {
-                    assert queryData[k] == 0;
+                    assertEquals((byte) 0, queryData[k]);
                 }
             } else {
-                assertArrayEquals(downloadedData, queryData);
+                TestUtils.assertArraysEqual(downloadedData, queryData);
             }
 
             /* Output Stream. */
@@ -217,13 +215,12 @@ public class BlobBaseApiTests extends BlobTestBase {
             byte[] osData = os.toByteArray();
 
             if (headersPresentIn && !headersPresentOut) {
-                assert osData.length == downloadedData.length - 16;
+                assertEquals(downloadedData.length - 16, osData.length);
+
                 /* Account for 16 bytes of header. */
-                for (int j = 16; j < downloadedData.length; j++) {
-                    assert osData[j - 16] == downloadedData[j];
-                }
+                TestUtils.assertArraysEqual(downloadedData, 16, osData, 0, downloadedData.length - 16);
             } else {
-                assertArrayEquals(downloadedData, osData);
+                TestUtils.assertArraysEqual(downloadedData, osData);
             }
         });
     }
@@ -278,7 +275,7 @@ public class BlobBaseApiTests extends BlobTestBase {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
 
-            assertArrayEquals(downloadedData, queryData);
+            TestUtils.assertArraysEqual(downloadedData, queryData);
 
             /* Output Stream. */
             ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -286,7 +283,7 @@ public class BlobBaseApiTests extends BlobTestBase {
                 .setInputSerialization(ser).setOutputSerialization(ser), null, null);
             byte[] osData = os.toByteArray();
 
-            assertArrayEquals(downloadedData, osData);
+            TestUtils.assertArraysEqual(downloadedData, osData);
         });
     }
 
@@ -316,13 +313,13 @@ public class BlobBaseApiTests extends BlobTestBase {
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
-            assertArrayEquals(downloadedData, queryData);
+            TestUtils.assertArraysEqual(downloadedData, queryData);
 
             /* Output Stream. */
             bc.queryWithResponse(options, null, null);
             byte[] osData = os.toByteArray();
 
-            assertArrayEquals(downloadedData, osData);
+            TestUtils.assertArraysEqual(downloadedData, osData);
         });
 
     }
@@ -352,11 +349,11 @@ public class BlobBaseApiTests extends BlobTestBase {
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
-            assertArrayEquals(queryData, expectedData);
+            TestUtils.assertArraysEqual(queryData, expectedData);
             /* Output Stream. */
             bc.queryWithResponse(optionsOs, null, null);
             byte[] osData = os.toByteArray();
-            assertArrayEquals(osData, expectedData);
+            TestUtils.assertArraysEqual(osData, expectedData);
         });
     }
 
@@ -387,17 +384,13 @@ public class BlobBaseApiTests extends BlobTestBase {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
 
-            for (int j = 0; j < expectedData.length; j++) {
-                assertEquals(queryData[j], expectedData[j]);
-            }
+            TestUtils.assertArraysEqual(expectedData, 0, queryData, 0, expectedData.length);
 
             /* Output Stream. */
             bc.queryWithResponse(options, null, null);
             byte[] osData = os.toByteArray();
 
-            for (int j = 0; j < expectedData.length; j++) {
-                assertEquals(osData[j], expectedData[j]);
-            }
+            TestUtils.assertArraysEqual(expectedData, 0, osData, 0, expectedData.length);
         });
     }
 
@@ -422,24 +415,20 @@ public class BlobBaseApiTests extends BlobTestBase {
         liveTestScenarioWithRetry(() -> {
             /* Input Stream. */
             InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
-            byte[] queryData = new byte[0];
+            byte[] queryData;
             try {
                 queryData = readFromInputStream(qqStream, expectedData.length);
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
 
-            for (int j = 0; j < expectedData.length; j++) {
-                assertEquals(queryData[j], expectedData[j]);
-            }
+            TestUtils.assertArraysEqual(expectedData, 0, queryData, 0, expectedData.length);
 
             /* Output Stream. */
             bc.queryWithResponse(options, null, null);
             byte[] osData = os.toByteArray();
 
-            for (int j = 0; j < expectedData.length; j++) {
-                assertEquals(osData[j], expectedData[j]);
-            }
+            TestUtils.assertArraysEqual(expectedData, 0, osData, 0, expectedData.length);
         });
     }
 
@@ -662,21 +651,21 @@ public class BlobBaseApiTests extends BlobTestBase {
         liveTestScenarioWithRetry(() -> {
             /* Input Stream. */
             InputStream qqStream = snapshotClient.openQueryInputStream(expression);
-            byte[] queryData = new byte[0];
+            byte[] queryData;
             try {
                 queryData = readFromInputStream(qqStream, downloadedData.length);
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
 
-            assertArrayEquals(queryData, downloadedData);
+            TestUtils.assertArraysEqual(queryData, downloadedData);
 
             /* Output Stream. */
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             snapshotClient.query(os, expression);
             byte[] osData = os.toByteArray();
 
-            assertArrayEquals(osData, downloadedData);
+            TestUtils.assertArraysEqual(osData, downloadedData);
         });
     }
 
