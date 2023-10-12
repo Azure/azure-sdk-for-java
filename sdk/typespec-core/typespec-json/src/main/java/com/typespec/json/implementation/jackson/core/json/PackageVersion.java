@@ -12,7 +12,7 @@ import com.typespec.json.implementation.jackson.core.util.VersionUtil;
  */
 public final class PackageVersion implements Versioned {
     public final static Version VERSION = VersionUtil.parseVersion(
-        "2.13.2", "com.azure.json.implementation.jackson.core", "jackson-core");
+        "2.13.2", "com.typespec.json.implementation.jackson.core", "jackson-core");
 
     @Override
     public Version version() {

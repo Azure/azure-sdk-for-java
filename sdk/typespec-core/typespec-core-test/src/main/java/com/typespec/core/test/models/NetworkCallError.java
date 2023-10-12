@@ -52,7 +52,7 @@ public class NetworkCallError {
             case "java.net.UnknownHostException":
                 return new UnknownHostException(this.errorMessage);
 
-            case "com.azure.core.exception.UnexpectedLengthException":
+            case "com.typespec.core.exception.UnexpectedLengthException":
                 return new UnexpectedLengthException(this.errorMessage, 0L, 0L);
 
             default:

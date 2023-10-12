@@ -71,7 +71,7 @@ For more details on proxy startup, please refer to the [proxy documentation][det
 The test proxy has to be available in order for tests to work; this is done automatically when the test is extended from
 `[TestProxyTestBase]`[test_proxy_base].
 
-The `com.azure.core.test.TestProxyTestBase#setupTestProxy()` method is responsible for starting the test proxy and
+The `com.typespec.core.test.TestProxyTestBase#setupTestProxy()` method is responsible for starting the test proxy and
 downloading if not present already.
 
 ```java

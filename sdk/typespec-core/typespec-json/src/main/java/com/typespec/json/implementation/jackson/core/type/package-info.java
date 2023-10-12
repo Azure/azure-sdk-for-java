@@ -6,7 +6,7 @@
  * to determine how contained types (of {@link java.util.Collection} and
  * {@link java.util.Map} classes) are to be handled.
  *<p>
- * With 2.9, an additional type ({@link com.azure.json.implementation.jackson.core.type.WritableTypeId})
+ * With 2.9, an additional type ({@link com.typespec.json.implementation.jackson.core.type.WritableTypeId})
  * was added to help handling of type identifiers needed to support polymorphic
  * type serialization, deserialization.
  */

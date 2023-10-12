@@ -184,12 +184,12 @@ public class AzureMethodSourceArgumentsProviderTests {
     private static Stream<Arguments> invokeSupplierMethodSupplier() {
         return Stream.of(
             // Using a fully-qualified source that's in this class.
-            Arguments.of(null, "com.azure.core.test.implementation.AzureMethodSourceArgumentsProviderTests"
+            Arguments.of(null, "com.typespec.core.test.implementation.AzureMethodSourceArgumentsProviderTests"
                 + "#staticAndValidReturnType", staticAndValidReturnType()),
 
             // Using a fully-qualified source that's in another class.
             Arguments.of(null,
-                "com.azure.core.test.implementation.FullyQualifiedSourceSupplierTestHelper#staticAndValidReturnType",
+                "com.typespec.core.test.implementation.FullyQualifiedSourceSupplierTestHelper#staticAndValidReturnType",
                 FullyQualifiedSourceSupplierTestHelper.staticAndValidReturnType()),
 
             // Using a relative source.
@@ -211,7 +211,7 @@ public class AzureMethodSourceArgumentsProviderTests {
             Arguments.of("#", PreconditionViolationException.class),
 
             // Missing method.
-            Arguments.of("com.azure.core.test.TestBase#", PreconditionViolationException.class),
+            Arguments.of("com.typespec.core.test.TestBase#", PreconditionViolationException.class),
 
             // Missing class.
             Arguments.of("#supplierMethod", PreconditionViolationException.class),
@@ -222,12 +222,12 @@ public class AzureMethodSourceArgumentsProviderTests {
             // Non-existent method.
             // This one is odd as the internal tooling wraps this into an optional and this is what is thrown
             // when Optional.get() is called.
-            Arguments.of("com.azure.core.test.TestBase#notARealMethod", IllegalArgumentException.class),
+            Arguments.of("com.typespec.core.test.TestBase#notARealMethod", IllegalArgumentException.class),
 
             // Valid return types but have parameters.
-            Arguments.of("com.azure.core.test.implementation.FullyQualifiedSourceSupplierTestHelper"
+            Arguments.of("com.typespec.core.test.implementation.FullyQualifiedSourceSupplierTestHelper"
                 + "#staticAndValidReturnTypeButHasParameters", IllegalArgumentException.class),
-            Arguments.of("com.azure.core.test.implementation.FullyQualifiedSourceSupplierTestHelper"
+            Arguments.of("com.typespec.core.test.implementation.FullyQualifiedSourceSupplierTestHelper"
                 + "#staticAndValidReturnTypeButHasParameters", IllegalArgumentException.class)
         );
     }

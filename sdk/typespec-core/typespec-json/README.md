@@ -12,12 +12,12 @@ Azure JSON provides shared primitives, abstractions, and helpers for JSON.
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-json;current})
+[//]: # ({x-version-update-start;com.typespec:typespec-json;current})
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-json</artifactId>
-  <version>1.1.0</version>
+  <groupId>com.typespec</groupId>
+  <artifactId>typespec-json</artifactId>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

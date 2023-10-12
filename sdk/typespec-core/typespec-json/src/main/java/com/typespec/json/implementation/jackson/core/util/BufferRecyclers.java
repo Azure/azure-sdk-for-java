@@ -23,7 +23,7 @@ public class BufferRecyclers
      * @since 2.9.6
      */
     public final static String SYSTEM_PROPERTY_TRACK_REUSABLE_BUFFERS
-        = "com.azure.json.implementation.jackson.core.util.BufferRecyclers.trackReusableBuffers";
+        = "com.typespec.json.implementation.jackson.core.util.BufferRecyclers.trackReusableBuffers";
 
     /*
     /**********************************************************

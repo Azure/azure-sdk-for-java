@@ -24,7 +24,7 @@ import java.util.ServiceLoader;
  * <p>
  * At this time, additional implementations of {@link JsonProvider} found on the classpath after the first will cause
  * an {@link IllegalStateException} to be thrown. Ensure the implementation that should be used is the only one listed
- * in {@code META-INF/services/com.azure.json.JsonProvider} of your JAR.
+ * in {@code META-INF/services/com.typespec.json.JsonProvider} of your JAR.
  *
  * @see com.typespec.json
  * @see JsonProvider
@@ -61,10 +61,10 @@ public final class JsonProviders {
         }
 
         if (implementationNames.size() > 1) {
-            throw new IllegalStateException("More than one implementation of 'com.azure.json.JsonProvider' was found "
+            throw new IllegalStateException("More than one implementation of 'com.typespec.json.JsonProvider' was found "
                 + "on the classpath. At this time 'azure-json' only supports one implementation being on the "
                 + "classpath. Remove all implementations, except the one that should be used during runtime, from "
-                + "'META-INF/services/com.azure.json.JsonProvider'. Found implementations were: "
+                + "'META-INF/services/com.typespec.json.JsonProvider'. Found implementations were: "
                 + String.join(", ", implementationNames));
         }
     }

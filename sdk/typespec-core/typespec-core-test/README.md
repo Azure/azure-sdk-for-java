@@ -28,14 +28,14 @@ refer to the [test proxy migration guide][test-proxy-migration-guide].
 
 To use this package, add the following to your _pom.xml_.
 
-[//]: # ({x-version-update-start;com.azure:azure-core-test;current})
+[//]: # ({x-version-update-start;com.typespec:typespec-core-test;current})
 
 ```xml
 
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-test</artifactId>
-  <version>1.20.0</version>
+  <groupId>com.typespec</groupId>
+  <artifactId>typespec-core-test</artifactId>
+  <version>1.0.0</version>
 </dependency>
 ```
 
@@ -119,7 +119,7 @@ and `AZURE_CLIENT_SECRET` in your environment variables.
 
 The test proxy has to be available in order for tests to work; this is done automatically when the test is extended from
 `TestProxyTestBase`.
-The `com.azure.core.test.TestProxyTestBase#setupTestProxy()` method is responsible for starting test proxy.
+The `com.typespec.core.test.TestProxyTestBase#setupTestProxy()` method is responsible for starting test proxy.
 
 ```java
 public class MyTest extends TestProxyTestBase {

@@ -136,7 +136,7 @@ public abstract class HttpClientTests {
 
     private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
 
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.typespec.core.http.restproxy.syncproxy.enable";
 
     /**
      * Get the HTTP client that will be used for each test. This will be called once per test.
