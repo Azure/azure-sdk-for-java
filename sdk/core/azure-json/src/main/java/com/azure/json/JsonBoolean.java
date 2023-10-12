@@ -28,7 +28,7 @@ public final class JsonBoolean extends JsonElement {
      * @return The instance of JsonBoolean representing the specified boolean value.
      */
     public static JsonBoolean getInstance(boolean value) {
-        return (value) ? TRUE : FALSE;
+        return value ? TRUE : FALSE;
     }
 
     /**
