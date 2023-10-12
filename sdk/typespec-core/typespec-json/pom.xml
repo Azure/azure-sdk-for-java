@@ -86,7 +86,7 @@
 
   <build>
     <plugins>
-      <!-- JsonWriterContractTests is inherited by tests in azure-json-* -->
+      <!-- JsonWriterContractTests is inherited by tests in typespec-json-* -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -148,8 +148,8 @@
     <!-- DO NOT run this profile with release, it is only meant to be run locally when the shaded jackson-core code needs to be updated. -->
     <!-- -->
     <!-- To update the shaded jackson-core code, run Maven build with '-Dshade-jackson-core' included in the command. -->
-    <!-- In the target folder, extract the sources azure-core JAR, the path com/azure/core/implementation/jackson/core will contain the jackson-core source code. -->
-    <!-- Copy this code into the com.typespec.core.implementation.jackson.core package in the azure-core project and overwrite the existing files. -->
+    <!-- In the target folder, extract the sources typespec-core JAR, the path com/typespec/core/implementation/jackson/core will contain the jackson-core source code. -->
+    <!-- Copy this code into the com.typespec.core.implementation.jackson.core package in the typespec-core project and overwrite the existing files. -->
     <!-- -->
     <!-- After following the steps above the project should be rebuilt with the 'add-license-comment' profile enable to add a comment about the shaded code's license. -->
     <!-- This serves as another way to attribute the shaded code to Jackson Core. -->
