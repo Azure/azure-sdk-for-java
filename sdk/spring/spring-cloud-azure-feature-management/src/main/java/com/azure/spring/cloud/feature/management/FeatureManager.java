@@ -235,7 +235,7 @@ public class FeatureManager {
 
     private void validateVariant(Feature feature, String featureName) {
         if (feature.getVariants() == null || feature.getVariants().size() == 0) {
-            throw new FeatureManagementException("The " + feature.getKey() + " has no assigned Variants.");
+            throw new FeatureManagementException("The feature " + feature.getKey() + " has no assigned Variants.");
         }
 
         for (VariantReference variant : feature.getVariants().values()) {
@@ -245,7 +245,7 @@ public class FeatureManager {
 
             if (variant.getConfigurationValue() == null && variant.getConfigurationReference() == null) {
                 throw new FeatureManagementException(
-                    "The " + feature.getKey() + " neededs a Configuration Value or Configuration Reference.");
+                    "The feature " + feature.getKey() + " neededs a Configuration Value or Configuration Reference.");
             }
         }
     }
