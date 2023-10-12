@@ -67,10 +67,10 @@ public class JobTests extends BatchServiceClientTestBase {
             Assertions.assertTrue(found);
 
 
-            // UPDATE
-            BatchJobUpdateOptions jobUpdateOptions = new BatchJobUpdateOptions();
-            jobUpdateOptions.setPriority(1);
-            batchClient.updateJob(jobId, jobUpdateOptions);
+            // REPLACE
+            BatchJob replacementJob = job;
+            replacementJob.setPriority(1);
+            batchClient.replaceJob(jobId, replacementJob);
 
             job = batchClient.getJob(jobId);
             Assertions.assertEquals((Integer) 1, job.getPriority());
@@ -113,14 +113,14 @@ public class JobTests extends BatchServiceClientTestBase {
             BatchJob job = batchClient.getJob(jobId);
             Assertions.assertEquals(JobState.ACTIVE, job.getState());
 
-            // UPDATE
+            // REPLACE
             Integer maxTaskRetryCount = 3;
             Integer priority = 500;
-            BatchJobUpdateOptions jobUpdateOptions = new BatchJobUpdateOptions();
-            jobUpdateOptions.setPriority(priority);
-            jobUpdateOptions.setConstraints(new JobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
-            jobUpdateOptions.setPoolInfo(new PoolInformation().setPoolId(poolId));
-            batchClient.updateJob(jobId, jobUpdateOptions);
+            job.setPriority(priority);
+            job.setConstraints(new JobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
+            job.setPoolInfo(new PoolInformation().setPoolId(poolId));
+            batchClient.replaceJob(jobId, job);
+
             job = batchClient.getJob(jobId);
             Assertions.assertEquals(priority, job.getPriority());
             Assertions.assertEquals(maxTaskRetryCount, job.getConstraints().getMaxTaskRetryCount());
@@ -135,10 +135,10 @@ public class JobTests extends BatchServiceClientTestBase {
             Assertions.assertTrue(job.getState() == JobState.DISABLED || job.getState() == JobState.DISABLING);
             Assertions.assertEquals(OnAllTasksComplete.NO_ACTION, job.getOnAllTasksComplete());
 
-            //PATCH
-            BatchJobUpdateOptions jobUpdateOptions2 = new BatchJobUpdateOptions();
-            jobUpdateOptions2.setOnAllTasksComplete(OnAllTasksComplete.TERMINATE_JOB);
-            batchClient.updateJob(jobId, jobUpdateOptions2);
+            // UPDATE
+            BatchJobUpdateOptions jobUpdateOptions = new BatchJobUpdateOptions();
+            jobUpdateOptions.setOnAllTasksComplete(OnAllTasksComplete.TERMINATE_JOB);
+            batchClient.updateJob(jobId, jobUpdateOptions);
             job = batchClient.getJob(jobId);
             Assertions.assertEquals(OnAllTasksComplete.TERMINATE_JOB, job.getOnAllTasksComplete());
 

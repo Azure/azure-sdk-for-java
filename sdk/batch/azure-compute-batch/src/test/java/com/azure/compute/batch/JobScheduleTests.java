@@ -10,7 +10,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import static java.time.OffsetDateTime.now;
 
@@ -72,6 +74,19 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
                 }
             }
             Assert.assertTrue(found);
+
+            // REPLACE
+            List<MetadataItem> metadataList = new ArrayList<>();
+            metadataList.add(new MetadataItem("name1", "value1"));
+            metadataList.add(new MetadataItem("name2", "value2"));
+
+            jobSchedule.setMetadata(metadataList);
+            batchClient.replaceJobSchedule(jobScheduleId, jobSchedule);
+
+            List<MetadataItem> retrievedMetadata = jobSchedule.getMetadata();
+            Assertions.assertNotNull(retrievedMetadata, "Metadata in jobSchedule should not be null");
+            Assertions.assertTrue(retrievedMetadata.containsAll(metadataList), "jobSchedule metadata does not match expected");
+            Assertions.assertTrue(retrievedMetadata.size() > 0 && retrievedMetadata.get(0).getValue().equals("value1"), "jobSchedule metadata does not contain the specific item at index 0 with value 'value1'");
 
             // UPDATE
             LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
