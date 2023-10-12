@@ -144,7 +144,7 @@ public class JsonArray extends JsonElement {
         return this.elements.remove(index);
     }
 
-    public int arrayLength(){
+    public int getSize() {
         return elements.size();
     }
 
@@ -276,6 +276,8 @@ public class JsonArray extends JsonElement {
             throw new RuntimeException(e);
         }
     }
+
+
 
     /**
      * Builds the JsonArray from an opened JsonReader.
