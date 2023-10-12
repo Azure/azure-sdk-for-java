@@ -16,9 +16,9 @@ public final class VaultJobExtendedInfoTests {
         VaultJobExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"propertyBag\":{\"bnchrsziz\":\"sxypruuu\",\"etndnbfqyggagf\":\"yuel\",\"ftbyrplro\":\"nlgmtrwahzjmu\"}}")
+                    "{\"propertyBag\":{\"qtanarfdlpuk\":\"dyynfsvkhgb\",\"neizjcpe\":\"py\",\"hpfpazjzoywjxhp\":\"gkhnmgbrouxddbh\"}}")
                 .toObject(VaultJobExtendedInfo.class);
-        Assertions.assertEquals("sxypruuu", model.propertyBag().get("bnchrsziz"));
+        Assertions.assertEquals("dyynfsvkhgb", model.propertyBag().get("qtanarfdlpuk"));
     }
 
     @org.junit.jupiter.api.Test
@@ -26,11 +26,12 @@ public final class VaultJobExtendedInfoTests {
         VaultJobExtendedInfo model =
             new VaultJobExtendedInfo()
                 .withPropertyBag(
-                    mapOf("bnchrsziz", "sxypruuu", "etndnbfqyggagf", "yuel", "ftbyrplro", "nlgmtrwahzjmu"));
+                    mapOf("qtanarfdlpuk", "dyynfsvkhgb", "neizjcpe", "py", "hpfpazjzoywjxhp", "gkhnmgbrouxddbh"));
         model = BinaryData.fromObject(model).toObject(VaultJobExtendedInfo.class);
-        Assertions.assertEquals("sxypruuu", model.propertyBag().get("bnchrsziz"));
+        Assertions.assertEquals("dyynfsvkhgb", model.propertyBag().get("qtanarfdlpuk"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

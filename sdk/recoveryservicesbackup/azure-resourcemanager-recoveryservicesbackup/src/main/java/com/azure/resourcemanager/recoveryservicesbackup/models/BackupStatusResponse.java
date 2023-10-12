@@ -74,6 +74,20 @@ public interface BackupStatusResponse {
     String registrationStatus();
 
     /**
+     * Gets the protectedItemsCount property: Number of protected items.
+     *
+     * @return the protectedItemsCount value.
+     */
+    Integer protectedItemsCount();
+
+    /**
+     * Gets the acquireStorageAccountLock property: Specifies whether the storage account lock has been acquired or not.
+     *
+     * @return the acquireStorageAccountLock value.
+     */
+    AcquireStorageAccountLock acquireStorageAccountLock();
+
+    /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupStatusResponseInner object.
      *
      * @return the inner object.
