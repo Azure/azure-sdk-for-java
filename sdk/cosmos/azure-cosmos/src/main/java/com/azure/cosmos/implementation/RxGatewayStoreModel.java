@@ -240,7 +240,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
                 httpHeaders,
                 contentAsByteArray);
 
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            Duration responseTimeout = Duration.ofSeconds(1);
             if (OperationType.QueryPlan.equals(request.getOperationType())) {
                 responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
             } else if (request.isAddressRefresh()) {
