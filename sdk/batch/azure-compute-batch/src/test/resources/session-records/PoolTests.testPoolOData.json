@@ -6,19 +6,19 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "421ccb3b-42a7-448a-8930-30feaf2ea2e3",
+        "client-request-id": "9da44562-b782-4396-9f9a-baf4448803e2",
         "Content-Length": "0",
-        "Date": "Thu, 05 Oct 2023 23:52:33 GMT",
+        "Date": "Thu, 12 Oct 2023 08:35:33 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Thu, 05 Oct 2023 23:52:34 GMT",
+        "Date": "Thu, 12 Oct 2023 08:35:36 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "85a3232d-15d0-4a9e-aa17-6a8ca52e60f2",
+        "request-id": "da279415-79d3-4d2b-93bc-047db92c0181",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -32,9 +32,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "dae9622e-4854-4549-8af7-5f9d7705f82a",
+        "client-request-id": "09a942c0-184d-425c-99fc-22e28327f71a",
         "Content-Length": "0",
-        "Date": "Thu, 05 Oct 2023 23:52:34 GMT",
+        "Date": "Thu, 12 Oct 2023 08:35:35 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -42,10 +42,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Thu, 05 Oct 2023 23:52:35 GMT",
+        "Date": "Thu, 12 Oct 2023 08:35:36 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "e34b9fa8-3c1a-4a94-ae9d-22e92dc06d26",
+        "request-id": "1562fa0f-f18c-4dbe-9bf9-67dfaf70f5b1",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -107,9 +107,9 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "93bcbd75-9582-405c-b6fc-3e852e228ded",
+        "client-request-id": "275be86e-bdfb-454c-b475-926821ce7a82",
         "Content-Length": "0",
-        "Date": "Thu, 05 Oct 2023 23:52:35 GMT",
+        "Date": "Thu, 12 Oct 2023 08:35:38 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -117,8 +117,8 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Thu, 05 Oct 2023 23:52:36 GMT",
-        "request-id": "043cd7aa-17c8-47a6-9588-df43e2bcdf09",
+        "Date": "Thu, 12 Oct 2023 08:35:40 GMT",
+        "request-id": "9c6d3eb1-2efa-4026-aef9-6d1b0d7e9d1a",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -128,8 +128,8 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools",
         "value": [
           {
-            "id": "B7A9DC53-9D36-4BB0-B960-D5608A5D2F0F",
-            "state": "active"
+            "id": "29AA6A93-93B6-46BF-803E-F0BEF399CA71",
+            "state": "deleting"
           },
           {
             "id": "BatchUser-testpool",
