@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
+import com.azure.spring.cloud.feature.management.testobjects.DiscountBanner;
 
 @Configuration
 @ConfigurationProperties
@@ -19,19 +20,19 @@ public class TestConfiguration implements VariantProperties {
         return new FeatureManagementConfigProperties();
     }
 
-    private Map<String, TestBanner> banner;
+    private Map<String, DiscountBanner> banner;
 
     /**
      * @return the banner
      */
-    public Map<String, TestBanner> getBanner() {
+    public Map<String, DiscountBanner> getBanner() {
         return banner;
     }
 
     /**
      * @param banner the banner to set
      */
-    public void setBanner(Map<String, TestBanner> banner) {
+    public void setBanner(Map<String, DiscountBanner> banner) {
         this.banner = banner;
     }
 

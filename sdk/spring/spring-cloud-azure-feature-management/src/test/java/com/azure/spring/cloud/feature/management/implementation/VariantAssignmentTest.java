@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -18,7 +21,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 
-import com.azure.spring.cloud.feature.management.TestBanner;
 import com.azure.spring.cloud.feature.management.TestConfiguration;
 import com.azure.spring.cloud.feature.management.Variant;
 import com.azure.spring.cloud.feature.management.VariantProperties;
@@ -26,9 +28,11 @@ import com.azure.spring.cloud.feature.management.implementation.models.Allocatio
 import com.azure.spring.cloud.feature.management.implementation.models.GroupAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.UserAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantReference;
+import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
+import com.azure.spring.cloud.feature.management.testobjects.DiscountBanner;
 
 import reactor.core.publisher.Mono;
 
@@ -155,9 +159,9 @@ public class VariantAssignmentTest {
         List<VariantProperties> properties = new ArrayList<>();
         TestConfiguration testConfiguration = new TestConfiguration();
 
-        Map<String, TestBanner> testBanners = new HashMap<>();
-        testBanners.put("Small", new TestBanner().setColor("Azure").setSize(1));
-        testBanners.put("Big", new TestBanner().setColor("Orange").setSize(9));
+        Map<String, DiscountBanner> testBanners = new HashMap<>();
+        testBanners.put("Small", new DiscountBanner().setColor("Azure").setSize(1));
+        testBanners.put("Big", new DiscountBanner().setColor("Orange").setSize(9));
 
         testConfiguration.setBanner(testBanners);
 
@@ -167,8 +171,8 @@ public class VariantAssignmentTest {
 
         Variant assignedVariant = variantAssignment.getVariant(variants.values(), "Small").block();
         assertEquals(assignedVariant.getName(), "Small");
-        assertEquals(1, ((TestBanner) assignedVariant.getValue()).getSize());
-        assertEquals("Azure", ((TestBanner) assignedVariant.getValue()).getColor());
+        assertEquals(1, ((DiscountBanner) assignedVariant.getValue()).getSize());
+        assertEquals("Azure", ((DiscountBanner) assignedVariant.getValue()).getColor());
     }
     
     @Test
@@ -187,10 +191,8 @@ public class VariantAssignmentTest {
 
 
         when(objectProviderMock.stream()).thenReturn(properties.stream());
-
-        Variant assignedVariant = variantAssignment.getVariant(variants.values(), "Small").block();
-        assertEquals(assignedVariant.getName(), "Small");
-        assertEquals(1, ((TestBanner) assignedVariant.getValue()).getSize());
-        assertEquals("Azure", ((TestBanner) assignedVariant.getValue()).getColor());
+        
+        Exception exception = assertThrows(FeatureManagementException.class, () -> variantAssignment.getVariant(variants.values(), "Small").block());
+        assertEquals("Failed to load getBanner. No ConfigurationProperties where found containing it.. Make sure it exists and is publicly accessible.", exception.getMessage());
     }
 }

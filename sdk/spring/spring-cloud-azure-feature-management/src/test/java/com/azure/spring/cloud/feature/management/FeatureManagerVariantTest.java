@@ -80,7 +80,7 @@ public class FeatureManagerVariantTest {
         when(featureManagementPropertiesMock.getFeatureManagement()).thenReturn(features);
         FeatureManagementException e = assertThrows(FeatureManagementException.class,
             () -> featureManager.getVariant("No Variants"));
-        assertThat(e).hasMessage("The No Variants has no assigned Variants.");
+        assertThat(e).hasMessage("The feature No Variants has no assigned Variants.");
     }
 
     @Test
