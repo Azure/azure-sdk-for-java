@@ -158,7 +158,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         TestItem newItem = TestItem.createNewItem();
         this.cosmosAsyncContainer.createItem(newItem).block();
 
-        // create fault injection rules for query plan
+        // create fault injection rules for address refresh
         FaultInjectionRule addressRefreshDelayRule = new FaultInjectionRuleBuilder("addressRefreshDelayRule")
             .condition(
                 new FaultInjectionConditionBuilder()
