@@ -3,24 +3,26 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+
 import java.util.concurrent.CountDownLatch;
 
 /**
- * This sample shows how to setup an Event Processor that uses a different version of blob storage service that is
- * not directly supported by Storage Blob SDK as checkpoint store.
+ * <p>This sample shows how to set up an Event Processor that uses a different version of blob storage service that is
+ * not directly supported by Storage Blob SDK as checkpoint store.</p>
  *
- * The following sample can be used if the environment you are targeting supports a different version of Storage Blob
+ * <p>The following sample can be used if the environment you are targeting supports a different version of Storage Blob
  * SDK than those typically available on Azure. For example, if you are running Event Hubs on an Azure Stack Hub version
  * 2002, the highest available version for the Storage service is version 2017-11-09. In this case, you will need to use
  * the following code to change the Storage service API version to 2017-11-09. For more information on the Azure Storage
  * service versions supported on Azure Stack Hub, please refer to
- * <a href=docs.microsoft.com/azure-stack/user/azure-stack-acs-differences>Azure Stack Hub Documentation</a>
+ * <a href=docs.microsoft.com/azure-stack/user/azure-stack-acs-differences>Azure Stack Hub Documentation</a></p>
  */
 public class EventProcessorWithCustomStorageVersion {
 
@@ -41,12 +43,14 @@ public class EventProcessorWithCustomStorageVersion {
      */
     public static void main(String[] args) throws InterruptedException {
 
-        // Setup the container client by adding a header policy to specify older version of storage
+        HttpHeaderName versionHeader = HttpHeaderName.fromString("x-ms-version");
+
+        // Set up the container client by adding a header policy to specify older version of storage
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString(STORAGE_CONNECTION_STRING)
             .containerName(CONTAINER_NAME)
             .sasToken(SAS_TOKEN)
-            .addPolicy(new AddHeadersPolicy(new HttpHeaders().put("x-ms-version", STORAGE_SERVICE_VERSION)))
+            .addPolicy(new AddHeadersPolicy(new HttpHeaders().add(versionHeader, STORAGE_SERVICE_VERSION)))
             .buildAsyncClient();
 
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
@@ -59,12 +63,12 @@ public class EventProcessorWithCustomStorageVersion {
             .consumerGroup(CONSUMER_GROUP)
             .processEvent(eventContext -> {
                 if (eventContext.getEventData().getSequenceNumber() % 100 == 0) {
-                    System.out.println(
-                        String.format("Event = %s, partition = %s, seq num = %d, offset = %d",
-                            eventContext.getEventData().getBodyAsString(),
-                            eventContext.getPartitionContext().getPartitionId(),
-                            eventContext.getEventData().getSequenceNumber(),
-                            eventContext.getEventData().getOffset()));
+                    System.out.printf("Event = %s, partition = %s, seq num = %d, offset = %d%n",
+                        eventContext.getEventData().getBodyAsString(),
+                        eventContext.getPartitionContext().getPartitionId(),
+                        eventContext.getEventData().getSequenceNumber(),
+                        eventContext.getEventData().getOffset());
+
                     eventContext.updateCheckpoint();
                 }
             })
@@ -72,13 +76,20 @@ public class EventProcessorWithCustomStorageVersion {
                 if (!isNumeric(errorContext.getPartitionContext().getPartitionId())) {
                     countDownLatch.countDown();
                 }
-                System.out.println(
-                    "Error " + errorContext.getPartitionContext().getPartitionId() + " " + errorContext.getThrowable()
-                        .getMessage());
+
+                System.err.printf("Error occurred while processing partition = %s.  Error: %s%n",
+                    errorContext.getPartitionContext().getPartitionId(),
+                    errorContext.getThrowable());
             })
             .buildEventProcessorClient();
 
+        // This is a non-blocking call. Will set up and start the processor then move onto the next line of code to
+        // execute.
         processor.start();
+
+        // Wait until three errors have been called by the processError handler.
+        // This is for purposes of demo-ing.  In practice, users will have the processor running in the background while
+        // their program does other things and stop the processor when their application terminates.
         countDownLatch.await();
         processor.stop();
     }
