@@ -263,6 +263,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return getServiceClientBuilder(account.getCredential(), account.getDataLakeEndpoint()).buildAsyncClient();
     }
 
+    protected DataLakeServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint) {
+        return getServiceClientBuilder(credential, endpoint).buildAsyncClient();
+    }
+
     /**
      * Some tests require extra configuration for retries when writing.
      * <p>
@@ -553,7 +557,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseClient(fsc).acquireLease(-1) : leaseID;
     }
 
-    protected String setupFileSystemLeaseCondition(DataLakeFileSystemAsyncClient fsc, String leaseID) {
+    protected String setupFileSystemLeaseAsyncCondition(DataLakeFileSystemAsyncClient fsc, String leaseID) {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1).block() : leaseID;
     }
 
@@ -930,4 +934,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
     private static boolean olderThan20210410ServiceVersion() {
         return olderThan(DataLakeServiceVersion.V2021_04_10);
     }
+
+
 }

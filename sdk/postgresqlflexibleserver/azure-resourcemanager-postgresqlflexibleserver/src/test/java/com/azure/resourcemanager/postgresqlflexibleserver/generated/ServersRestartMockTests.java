@@ -61,9 +61,9 @@ public final class ServersRestartMockTests {
         manager
             .servers()
             .restart(
-                "bnhlmc",
-                "l",
-                new RestartParameter().withRestartWithFailover(true).withFailoverMode(FailoverMode.FORCED_SWITCHOVER),
+                "ibrxkp",
+                "loazuruocbgoo",
+                new RestartParameter().withRestartWithFailover(false).withFailoverMode(FailoverMode.PLANNED_SWITCHOVER),
                 com.azure.core.util.Context.NONE);
     }
 }

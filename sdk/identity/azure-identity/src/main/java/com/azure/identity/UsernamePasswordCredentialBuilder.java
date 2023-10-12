@@ -14,8 +14,8 @@ import java.util.List;
  * Fluent credential builder for instantiating a {@link UsernamePasswordCredential}.
  *
  * <p>Username password authentication is a common type of authentication flow used by many applications and services,
- * including <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory
- * (Azure AD)</a> . With username password authentication, users enter their username and password credentials to sign
+ * including <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * With username password authentication, users enter their username and password credentials to sign
  * in to an application or service.
  * The {@link UsernamePasswordCredential} authenticates a public client application and acquires a token using the
  * user credentials that don't require 2FA/MFA (Multi-factored) authentication. For more information refer to the
