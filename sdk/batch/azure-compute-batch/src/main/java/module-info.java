@@ -7,7 +7,6 @@ module com.azure.compute.batch {
 
     exports com.azure.compute.batch;
     exports com.azure.compute.batch.models;
-    exports com.azure.compute.batch.auth;
 
     opens com.azure.compute.batch.models to
             com.azure.core,

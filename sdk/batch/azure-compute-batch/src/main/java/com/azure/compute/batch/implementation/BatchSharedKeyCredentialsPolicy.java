@@ -1,4 +1,4 @@
-package com.azure.compute.batch.auth;
+package com.azure.compute.batch.implementation;
 
 import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
