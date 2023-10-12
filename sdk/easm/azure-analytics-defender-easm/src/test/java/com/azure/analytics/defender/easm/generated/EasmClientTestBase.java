@@ -16,9 +16,13 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import reactor.core.publisher.Mono;
 
@@ -31,7 +35,7 @@ public class EasmClientTestBase extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-//        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
         EasmClientBuilder easmClientbuilder =
                 new EasmClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
@@ -52,8 +56,8 @@ public class EasmClientTestBase extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             easmClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-//        customSanitizers.add(new TestProxySanitizer(REQUEST_URI_REGEX, SANITIZED_REQUEST_URI, TestProxySanitizerType.URL));
-//        interceptorManager.addSanitizers(customSanitizers);
+        customSanitizers.add(new TestProxySanitizer(requestUriRegex, sanitizedRequestUri, TestProxySanitizerType.URL));
+        interceptorManager.addSanitizers(customSanitizers);
         easmClient = easmClientbuilder.buildClient();
     }
 }
