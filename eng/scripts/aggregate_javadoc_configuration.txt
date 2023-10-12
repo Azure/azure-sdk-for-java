@@ -63,9 +63,12 @@ Group;Azure Synapse;com.azure.analytics.synapse*
 Group;Azure Tables;com.azure.data.tables*
 Group;Azure Text Analytics;com.azure.ai.textanalytics*
 Group;Azure Web Pub Sub;com.azure.messaging.webpubsub*
+Group;Core;com.typespec.core:com.typespec.core.annotation:com.typespec.core.credential:com.typespec.core.cryptography:com.typespec.core.exception:com.typespec.core.http*:com.typespec.core.models*:com.typespec.core.util*:com.typespec.core.client.traits*
+Group;Core - JSON;com.typespec.json*
+Group;Core - Test;com.typespec.core.test*
 
 # Adds the following links to external javadocs
-# Link;URL 
+# Link;URL
 Link;https://docs.oracle.com/javase/8/docs/api/
 Link;https://projectreactor.io/docs/core/release/api/
 Link;https://projectreactor.io/docs/netty/release/api/
@@ -85,7 +88,7 @@ OfflineLink;https://fasterxml.github.io/jackson-core/javadoc/2.12/;eng/javadoc-p
 OfflineLink;https://netty.io/4.1/api/;eng/javadoc-package-lists/netty/
 OfflineLink;https://avro.apache.org/docs/current/api/java/;eng/javadoc-package-lists/apache-avro/
 
-# Adds the following packages to excludedPackages section 
+# Adds the following packages to excludedPackages section
 # ExcludePackage;Package
 ExcludePackage;*.impl*
 ExcludePackage;*.implementation*
@@ -95,8 +98,9 @@ ExcludePackage;com.azure.core.test*
 ExcludePackage;com.azure.endtoend
 ExcludePackage;com.azure.perf*
 ExcludePackage;com.azure.storage.internal.avro*
+ExcludePackage;com.typespec.core.test*
 
-# Adds the following files to sourceFileExcludes section 
+# Adds the following files to sourceFileExcludes section
 # ExcludeFile;FilePath
 ExcludeFile;com/azure/cosmos/*BridgeInternal.java
 ExcludeFile;com/azure/cosmos/models/*BridgeInternal.java
