@@ -4,11 +4,18 @@
 
 ### Features Added
 
-- `SemanticQuery` has been added to `SearchOptions` to support semantic search.
+- `SemanticQuery` has been added to `SearchOptions`, allowing the setting of a separate search query that will be solely 
+used for semantic reranking, semantic captions and semantic answers.
+
 
 ### Breaking Changes
 
-- `SearchQueryVector` has been replaced by `VectorQuery`.
+- `SearchQueryVector` model has been replaced by `VectorQuery`.
+- `SearchOptions` instance method `SearchOptions setVectors(List<SearchQueryVector>)` has been replaced by `SearchOptions setVectorQueries(List<VectorQuery>)`.
+- `SearchOptions` instance method `SearchOptions setVectors(SearchQueryVector...)` has been replaced by `SearchOptions setVetorQueries(VectorQuery...)`.
+- `SearchOptions` instance method `List<SearchQueryVector> getVectors()` has been replaced by `List<VectorQuery> getVectorQueries()`.
+- `VectorSearch` instance property `List<VectorSearchAlgorithmConfiguration> algorithmConfigurations` has been replaced by properties `List<VectorSearchProfile> profiles`, 
+`List<VectorSearchAlgorithmConfiguration> algorithms`, and `List<VectorSearchVectorizer> vectorizers`.
 
 ### Other Changes
 
