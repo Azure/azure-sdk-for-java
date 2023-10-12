@@ -5,6 +5,7 @@ package com.azure.cosmos.rx.changefeed.epkversion;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -51,6 +52,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -1673,8 +1675,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"query"}, dataProvider = "getCurrentStateTestConfigs", timeOut = 2 * TIMEOUT)
+    @Test(groups = {"query"}, dataProvider = "getCurrentStateTestConfigs")
     public void getCurrentStateWithFaultInjection(FaultInjectionServerErrorType faultInjectionServerErrorType) throws InterruptedException {
+
+        if (ReflectionUtils.getConnectionPolicy(this.client).getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("Fault injected is not valid in the gateway connectivity mode.");
+        }
+
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
@@ -1717,20 +1724,20 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-            FaultInjectionServerErrorResult serviceUnavailableServerErrorResult = FaultInjectionResultBuilders
+            FaultInjectionServerErrorResult serverErrorResult = FaultInjectionResultBuilders
                 .getResultBuilder(faultInjectionServerErrorType)
                 .build();
 
-            FaultInjectionRuleBuilder serviceUnavailableRuleBuilder = new FaultInjectionRuleBuilder("serverErrorRule-serviceUnavailable-" + UUID.randomUUID());
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("faultInjectionRule-" + UUID.randomUUID());
 
             FaultInjectionCondition faultInjectionConditionForRegion = new FaultInjectionConditionBuilder()
-                .operationType(FaultInjectionOperationType.READ_ITEM)
+                .operationType(FaultInjectionOperationType.READ_FEED_ITEM)
                 .build();
 
-            FaultInjectionRule faultInjectionRule = serviceUnavailableRuleBuilder
+            FaultInjectionRule faultInjectionRule = faultInjectionRuleBuilder
                 .condition(faultInjectionConditionForRegion)
-                .result(serviceUnavailableServerErrorResult)
-                .duration(Duration.ofMillis(100))
+                .result(serverErrorResult)
+                .duration(Duration.ofSeconds(10))
                 .build();
 
             CosmosFaultInjectionHelper
@@ -1740,6 +1747,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             int leaseCount = changeFeedProcessor.getCurrentState().map(List::size).block();
 
             assertThat(leaseCount).isEqualTo(1);
+            assertThat(faultInjectionRule.getHitCount()).isGreaterThanOrEqualTo(1);
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
