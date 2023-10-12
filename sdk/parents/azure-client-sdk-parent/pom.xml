@@ -224,8 +224,8 @@
     <!-- Azure core source path is included here and it's packages are excluded as almost all client libraries
     need inherited javadocs from core and explicitly adding this exclusion in each library is not maintainable. So,
     by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
-    <javadoc.excludePackageNames>com.azure.json,com.azure.core.*</javadoc.excludePackageNames>
-    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java:${basedir}/../../core/azure-json/src/main/java</javadoc.sourcepath>
+    <javadoc.excludePackageNames>com.azure.json,com.azure.core.*,com.typespec.json,com.typespec.core.*</javadoc.excludePackageNames>
+    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java:${basedir}/../../core/azure-json/src/main/java:${basedir}/../../typespec/typespec-core/src/main/java:${basedir}/../../typespec/typespec-json/src/main/java</javadoc.sourcepath>
   </properties>
 
   <build>
@@ -725,6 +725,7 @@
               com.azure.perf*:
               com.azure.storage.internal.avro*:
               com.azure.cosmos.encryption.implementation.mdesrc*:
+              com.typespec.core.test*:
               ${javadoc.excludePackageNames}
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->

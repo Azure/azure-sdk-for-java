@@ -889,7 +889,7 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
-     * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; com.typespec.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
      * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
      * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
@@ -931,7 +931,7 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
-     * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; com.typespec.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
      * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
      * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
@@ -955,7 +955,7 @@ public final class BinaryData {
      * personList.add&#40;person2&#41;;
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
-     * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; com.typespec.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
      * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
      * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
@@ -1119,7 +1119,7 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
-     * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; com.typespec.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
      * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
      * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
@@ -1165,7 +1165,7 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
-     * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; com.typespec.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
      * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
      * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
