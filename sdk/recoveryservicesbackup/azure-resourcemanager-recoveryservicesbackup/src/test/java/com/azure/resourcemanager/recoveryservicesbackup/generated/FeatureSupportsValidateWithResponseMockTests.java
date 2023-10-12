@@ -32,7 +32,7 @@ public final class FeatureSupportsValidateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"supportStatus\":\"DefaultON\"}";
+        String responseStr = "{\"supportStatus\":\"Supported\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,9 @@ public final class FeatureSupportsValidateWithResponseMockTests {
         AzureVMResourceFeatureSupportResponse response =
             manager
                 .featureSupports()
-                .validateWithResponse("mt", new FeatureSupportRequest(), com.azure.core.util.Context.NONE)
+                .validateWithResponse("urnpnuhzafccnuh", new FeatureSupportRequest(), com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(SupportStatus.DEFAULT_ON, response.supportStatus());
+        Assertions.assertEquals(SupportStatus.SUPPORTED, response.supportStatus());
     }
 }
