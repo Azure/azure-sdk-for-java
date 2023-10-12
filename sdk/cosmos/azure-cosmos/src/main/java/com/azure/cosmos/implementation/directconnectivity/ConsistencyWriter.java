@@ -119,7 +119,10 @@ public class ConsistencyWriter {
         return  BackoffRetryUtility
             .executeRetry(
                 () -> this.writePrivateAsync(entity, timeout, forceRefresh),
-                new SessionTokenMismatchRetryPolicy(BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics), sessionRetryOptions))
+                new SessionTokenMismatchRetryPolicy(
+                    BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics),
+                    sessionRetryOptions,
+                    true))
             .doOnEach(
             arg -> {
                 try {

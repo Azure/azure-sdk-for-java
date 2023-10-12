@@ -21,8 +21,12 @@ public class TimeoutHelper {
     }
 
     public boolean isElapsed() {
+        return this.isElapsed(this.timeOut);
+    }
+
+    public boolean isElapsed(Duration timeoutToCompareTo) {
         Duration elapsed = Duration.ofMillis(Instant.now().toEpochMilli() - startTime.toEpochMilli());
-        return elapsed.compareTo(this.timeOut) >= 0;
+        return elapsed.compareTo(timeoutToCompareTo) >= 0;
     }
 
     public Duration getRemainingTime() {

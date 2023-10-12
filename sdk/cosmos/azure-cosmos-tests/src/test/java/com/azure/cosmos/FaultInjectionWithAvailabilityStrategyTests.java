@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -53,6 +54,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -728,6 +730,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             endToEndTimeout,
             availabilityStrategy,
             regionSwitchHint,
+            null,
             notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
             ArrayUtils.toArray(FaultInjectionOperationType.READ_ITEM),
             readItemCallback,
@@ -746,6 +749,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     public Object[][] testConfigs_writeAfterCreation() {
         final boolean nonIdempotentWriteRetriesEnabled = true;
         final boolean nonIdempotentWriteRetriesDisabled = false;
+        final String SECOND_REGION_NAME = writeableRegions.get(1).toLowerCase(Locale.ROOT);
+        final Duration NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES = null;
 
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> createAnotherItemCallback =
             (params) -> {
@@ -854,6 +859,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(3),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -870,6 +876,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -887,6 +894,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -903,6 +911,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -919,6 +928,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -936,6 +946,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -948,6 +959,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -960,6 +972,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.PATCH_ITEM,
                 patchItemCallback,
@@ -972,6 +985,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.DELETE_ITEM,
                 deleteItemCallback,
@@ -984,6 +998,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertExistingItemCallback,
@@ -996,6 +1011,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertAnotherItemCallback,
@@ -1008,6 +1024,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.PATCH_ITEM,
                 patchItemCallback,
@@ -1025,6 +1042,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.DELETE_ITEM,
                 deleteItemCallback,
@@ -1037,6 +1055,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1049,6 +1068,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertAnotherItemCallback,
@@ -1061,6 +1081,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertExistingItemCallback,
@@ -1073,6 +1094,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -1089,6 +1111,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -1107,6 +1130,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 reluctantThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.DELETE_ITEM,
                 deleteItemCallback,
@@ -1123,6 +1147,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.DELETE_ITEM,
                 deleteItemCallback,
@@ -1139,6 +1164,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 reluctantThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.PATCH_ITEM,
                 patchItemCallback,
@@ -1155,6 +1181,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.PATCH_ITEM,
                 patchItemCallback,
@@ -1173,6 +1200,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1190,6 +1218,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1205,6 +1234,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1221,6 +1251,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1237,6 +1268,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertExistingItemCallback,
@@ -1254,6 +1286,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertExistingItemCallback,
@@ -1270,6 +1303,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertAnotherItemCallback,
@@ -1284,6 +1318,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(90),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertAnotherItemCallback,
@@ -1303,6 +1338,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -1322,6 +1358,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1341,6 +1378,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1358,6 +1396,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1374,6 +1413,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1392,6 +1432,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1410,6 +1451,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesDisabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1427,6 +1469,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1444,6 +1487,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
@@ -1462,6 +1506,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 reluctantThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -1469,6 +1514,164 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs201Created,
                 // no hedging even with availability strategy because nonIdempotentWrites are disabled
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
+
+            // 404/1022 into local region only
+            // No Availability strategy exists.
+            // Expected to get successful response from cross regional retry - region switch is remote allowing the
+            // cross regional retry to finish within e2e timeout.
+            new Object[] {
+                "Create_404-1002_FirstRegionOnly_RemotePreferred_NoAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs201Created,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                (Consumer<CosmosDiagnosticsContext>)(ctx -> {
+                    assertThat(ctx).isNotNull();
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                    assertThat(diagnostics).isNotNull();
+                    assertThat(diagnostics.length).isEqualTo(1);
+                    assertThat(diagnostics[0].getClientSideRequestStatistics()).isNotNull();
+                    ClientSideRequestStatistics[] clientStats =
+                        diagnostics[0].getClientSideRequestStatistics().toArray(new ClientSideRequestStatistics[0]);
+                    assertThat(clientStats.length).isEqualTo(1);
+                    assertThat(clientStats[0].getResponseStatisticsList()).isNotNull();
+                    ClientSideRequestStatistics.StoreResponseStatistics[] storeResponses =
+                        clientStats[0].getResponseStatisticsList().toArray(
+                            new ClientSideRequestStatistics.StoreResponseStatistics[0]);
+                    assertThat(storeResponses.length).isGreaterThanOrEqualTo(2);
+
+
+                    Instant firstRequestStart = Instant.MAX;
+                    Instant firstRequestStartInSecondRegion = Instant.MAX;
+                    for (ClientSideRequestStatistics.StoreResponseStatistics currentStoreResponse : storeResponses) {
+                        if (currentStoreResponse.getRequestStartTimeUTC().isBefore(firstRequestStart)) {
+                            firstRequestStart = currentStoreResponse.getRequestStartTimeUTC();
+                        }
+
+                        if (currentStoreResponse.getRegionName().equals(SECOND_REGION_NAME) &&
+                            currentStoreResponse.getRequestStartTimeUTC().isBefore(firstRequestStartInSecondRegion)) {
+
+                            firstRequestStartInSecondRegion = currentStoreResponse.getRequestStartTimeUTC();
+                        }
+                    }
+
+                    logger.info("FirstRequestStart: {}, FirstRequestInSecondReqionStart: {}",
+                        firstRequestStart,
+                        firstRequestStartInSecondRegion);
+
+                    assertThat(firstRequestStartInSecondRegion.isAfter(firstRequestStart)).isEqualTo(true);
+                    assertThat(
+                        firstRequestStartInSecondRegion
+                            .minus(
+                                Configs.DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES.minus(Duration.ofMillis(5)))
+                            .isAfter(firstRequestStart)).isEqualTo(true);
+
+                    validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover.accept(ctx);
+                })
+            },
+
+            // 404/1022 into local region only
+            // No availability strategy exists.
+            // Expected to get successful response from cross regional retry - region switch is remote allowing the
+            // cross regional retry to finish within e2e timeout.
+            new Object[] {
+                "Create_404-1002_FirstRegionOnly_RemotePreferredWithHighInRegionRetryTime_NoAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                Duration.ofMillis(600),
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs201Created,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                (Consumer<CosmosDiagnosticsContext>)(ctx -> {
+                    assertThat(ctx).isNotNull();
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                    assertThat(diagnostics).isNotNull();
+                    assertThat(diagnostics.length).isEqualTo(1);
+                    assertThat(diagnostics[0].getClientSideRequestStatistics()).isNotNull();
+                    ClientSideRequestStatistics[] clientStats =
+                        diagnostics[0].getClientSideRequestStatistics().toArray(new ClientSideRequestStatistics[0]);
+                    assertThat(clientStats.length).isEqualTo(1);
+                    assertThat(clientStats[0].getResponseStatisticsList()).isNotNull();
+                    ClientSideRequestStatistics.StoreResponseStatistics[] storeResponses =
+                        clientStats[0].getResponseStatisticsList().toArray(
+                            new ClientSideRequestStatistics.StoreResponseStatistics[0]);
+                    assertThat(storeResponses.length).isGreaterThanOrEqualTo(2);
+
+
+                    Instant firstRequestStart = Instant.MAX;
+                    Instant firstRequestStartInSecondRegion = Instant.MAX;
+                    for (ClientSideRequestStatistics.StoreResponseStatistics currentStoreResponse : storeResponses) {
+                        if (currentStoreResponse.getRequestStartTimeUTC().isBefore(firstRequestStart)) {
+                            firstRequestStart = currentStoreResponse.getRequestStartTimeUTC();
+                        }
+
+                        if (currentStoreResponse.getRegionName().equals(SECOND_REGION_NAME) &&
+                            currentStoreResponse.getRequestStartTimeUTC().isBefore(firstRequestStartInSecondRegion)) {
+
+                            firstRequestStartInSecondRegion = currentStoreResponse.getRequestStartTimeUTC();
+                        }
+                    }
+
+                    logger.info("FirstRequestStart: {}, FirstRequestInSecondReqionStart: {}",
+                        firstRequestStart,
+                        firstRequestStartInSecondRegion);
+
+                    assertThat(firstRequestStartInSecondRegion.isAfter(firstRequestStart)).isEqualTo(true);
+                    assertThat(
+                        firstRequestStartInSecondRegion
+                            .minus(Duration.ofMillis(600-5))
+                            .isAfter(firstRequestStart)).isEqualTo(true);
+
+                    validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover.accept(ctx);
+                })
+            },
+
+            // 404/1022 into local region only
+            // No availability strategy exists.
+            // Expected to get 408 because min. in-region wait time is larger than e2e timeout.
+            new Object[] {
+                "Create_404-1002_FirstRegionOnly_RemotePreferredWithTooHighInRegionRetryTime_NoAvailabilityStrategy_408",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                Duration.ofMillis(1100),
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIsOperationCancelled,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                (Consumer<CosmosDiagnosticsContext>)(ctx -> {
+                    assertThat(ctx).isNotNull();
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
+                    assertThat(diagnostics).isNotNull();
+                    assertThat(diagnostics.length).isEqualTo(1);
+                    assertThat(diagnostics[0].getClientSideRequestStatistics()).isNotNull();
+                    ClientSideRequestStatistics[] clientStats =
+                        diagnostics[0].getClientSideRequestStatistics().toArray(new ClientSideRequestStatistics[0]);
+                    assertThat(clientStats.length).isEqualTo(1);
+                    assertThat(clientStats[0].getResponseStatisticsList()).isNotNull();
+                    ClientSideRequestStatistics.StoreResponseStatistics[] storeResponses =
+                        clientStats[0].getResponseStatisticsList().toArray(
+                            new ClientSideRequestStatistics.StoreResponseStatistics[0]);
+                    assertThat(storeResponses.length).isGreaterThanOrEqualTo(2);
+
+                    validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion.accept(ctx);
+                })
             },
 
             // 404/1022 into local region only
@@ -1480,6 +1683,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -1499,6 +1703,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.DELETE_ITEM,
                 deleteNonExistingItemCallback,
@@ -1516,6 +1721,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Duration endToEndTimeout,
         ThresholdBasedAvailabilityStrategy availabilityStrategy,
         CosmosRegionSwitchHint regionSwitchHint,
+        Duration customMinRetryTimeInLocalRegionForWrites,
         Boolean nonIdempotentWriteRetriesEnabled,
         FaultInjectionOperationType faultInjectionOperationType,
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> actionAfterInitialCreation,
@@ -1528,6 +1734,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             endToEndTimeout,
             availabilityStrategy,
             regionSwitchHint,
+            customMinRetryTimeInLocalRegionForWrites,
             nonIdempotentWriteRetriesEnabled,
             ArrayUtils.toArray(faultInjectionOperationType),
             actionAfterInitialCreation,
@@ -2477,6 +2684,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             endToEndTimeout,
             availabilityStrategy,
             regionSwitchHint,
+            null,
             notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
             ArrayUtils.toArray(FaultInjectionOperationType.QUERY_ITEM),
             (params) -> queryExecution.apply(queryGenerator.apply(params), params),
@@ -2951,6 +3159,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             endToEndTimeout,
             availabilityStrategy,
             regionSwitchHint,
+            null,
             notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
             ArrayUtils.toArray(
                 FaultInjectionOperationType.QUERY_ITEM,
@@ -3566,6 +3775,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             endToEndTimeout,
             availabilityStrategy,
             regionSwitchHint,
+            null,
             notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
             ArrayUtils.toArray(FaultInjectionOperationType.QUERY_ITEM),
             readAllOperation,
@@ -3794,6 +4004,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Duration endToEndTimeout,
         ThresholdBasedAvailabilityStrategy availabilityStrategy,
         CosmosRegionSwitchHint regionSwitchHint,
+        Duration customMinRetryTimeInLocalRegionForWrites,
         Boolean nonIdempotentWriteRetriesEnabled,
         FaultInjectionOperationType[] faultInjectionOperationTypes,
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> actionAfterInitialCreation,
@@ -3809,7 +4020,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         logger.info("START {}", testCaseId);
 
-        CosmosAsyncClient clientWithPreferredRegions = buildCosmosClient(this.writeableRegions, regionSwitchHint, nonIdempotentWriteRetriesEnabled);
+        CosmosAsyncClient clientWithPreferredRegions = buildCosmosClient(
+            this.writeableRegions,
+            regionSwitchHint,
+            customMinRetryTimeInLocalRegionForWrites,
+            nonIdempotentWriteRetriesEnabled);
         try {
 
             if (clearContainerBeforeExecution) {
@@ -3950,17 +4165,28 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     private static CosmosAsyncClient buildCosmosClient(
         List<String> preferredRegions,
         CosmosRegionSwitchHint regionSwitchHint,
+        Duration customMinRetryTimeInLocalRegionForWrites,
         Boolean nonIdempotentWriteRetriesEnabled) {
 
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
             .diagnosticsHandler(new CosmosDiagnosticsLogger());
+
+        CosmosRegionSwitchHint effectiveRegionSwitchHint = regionSwitchHint != null
+            ? regionSwitchHint
+            : CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED;
+        SessionRetryOptionsBuilder retryOptionsBuilder = new SessionRetryOptionsBuilder()
+            .regionSwitchHint(effectiveRegionSwitchHint);
+
+        if (customMinRetryTimeInLocalRegionForWrites != null) {
+            retryOptionsBuilder.minRetryTimeInLocalRegionForWriteOperations(customMinRetryTimeInLocalRegionForWrites);
+        }
 
         CosmosClientBuilder builder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .consistencyLevel(ConsistencyLevel.SESSION)
             .preferredRegions(preferredRegions)
-            .sessionRetryOptions(new SessionRetryOptions(regionSwitchHint))
+            .sessionRetryOptions(retryOptionsBuilder.build())
             .directMode()
             .multipleWriteRegionsEnabled(true)
             .clientTelemetryConfig(telemetryConfig);

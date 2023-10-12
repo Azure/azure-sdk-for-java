@@ -235,7 +235,10 @@ public class ConsistencyReader {
                 if (targetConsistencyLevel.v == ConsistencyLevel.SESSION) {
                     return BackoffRetryUtility.executeRetry(
                         () -> this.readSessionAsync(entity, desiredReadMode),
-                        new SessionTokenMismatchRetryPolicy(BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics), sessionRetryOptions));
+                        new SessionTokenMismatchRetryPolicy(
+                            BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics),
+                            sessionRetryOptions,
+                            false));
                 } else {
                     return this.readAnyAsync(entity, desiredReadMode);
                 }

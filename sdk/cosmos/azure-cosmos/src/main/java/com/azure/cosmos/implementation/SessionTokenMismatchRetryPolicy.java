@@ -16,6 +16,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
 
+    private final static ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor
+        sessionRetryOptionsAccessor = ImplementationBridgeHelpers
+            .CosmosSessionRetryOptionsHelper
+            .getCosmosSessionRetryOptionsAccessor();
     private final static Logger LOGGER = LoggerFactory.getLogger(SessionTokenMismatchRetryPolicy.class);
     private static final int BACKOFF_MULTIPLIER = 2;
     private final Duration maximumBackoff;
@@ -25,8 +29,13 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private RetryContext retryContext;
     private final AtomicInteger maxRetryAttemptsInCurrentRegion;
     private final SessionRetryOptions sessionRetryOptions;
+    private final boolean isWriteOperation;
 
-    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliseconds, SessionRetryOptions sessionRetryOptions) {
+    public SessionTokenMismatchRetryPolicy(
+        RetryContext retryContext,
+        SessionRetryOptions sessionRetryOptions,
+        boolean isWriteOperation) {
+
         this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs()));
         this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
         this.retryCount = new AtomicInteger();
@@ -35,10 +44,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         this.maxRetryAttemptsInCurrentRegion = new AtomicInteger(Configs.getMaxRetriesInLocalRegionWhenRemoteRegionPreferred());
         this.retryContext = retryContext;
         this.sessionRetryOptions = sessionRetryOptions;
-    }
-
-    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, SessionRetryOptions sessionRetryOptions) {
-        this(retryContext, Configs.getSessionTokenMismatchDefaultWaitTimeInMs(), sessionRetryOptions);
+        this.isWriteOperation = isWriteOperation;
     }
 
     @Override
@@ -129,12 +135,18 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             return true;
         }
 
-        CosmosRegionSwitchHint regionSwitchHint = ImplementationBridgeHelpers
-            .CosmosSessionRetryOptionsHelper
-            .getCosmosSessionRetryOptionsAccessor()
+        CosmosRegionSwitchHint regionSwitchHint = sessionRetryOptionsAccessor
             .getRegionSwitchHint(sessionRetryOptions);
 
-        if (regionSwitchHint == null || regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED) {
+        if (regionSwitchHint != CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
+            return true;
+        }
+
+        // For write operations we need to retry at least MinInRegionRetryTimeForWriteOperations
+        // to allow the region to catch up on replication
+        if (this.isWriteOperation  && !this.waitTimeTimeoutHelper.isElapsed(
+            sessionRetryOptionsAccessor.getMinInRegionRetryTimeForWriteOperations(sessionRetryOptions))) {
+
             return true;
         }
 
@@ -143,7 +155,6 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         // another attempt on the same region
         // hence to curb the retry attempts on a region,
         // compare sessionTokenMismatchRetryAttempts with max retry attempts allowed on the region - 1
-        return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
-            && sessionTokenMismatchRetryAttempts == (this.maxRetryAttemptsInCurrentRegion.get() - 1));
+        return sessionTokenMismatchRetryAttempts < (this.maxRetryAttemptsInCurrentRegion.get() - 1);
     }
 }
