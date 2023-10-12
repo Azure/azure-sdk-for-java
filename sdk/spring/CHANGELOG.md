@@ -13,7 +13,7 @@
 This section includes changes in `spring-cloud-azure-starter-appconfiguration-config` and `spring-cloud-azure-appconfiguration-config-web`
 
 ### Bug Fixed
-- Fixes a issue where Web Hook authorization was validated incorrectly, resulting in a Unauthorized error.
+- Fixes an issue where Web Hook authorization was validated incorrectly, resulting in an Unauthorized error [#37141](https://github.com/Azure/azure-sdk-for-java/pull/37141).
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
