@@ -1,11 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
 import com.azure.analytics.defender.easm.models.CountPagedIterable;
 import com.azure.analytics.defender.easm.models.DiscoTemplate;
-import com.azure.analytics.defender.easm.models.DiscoTemplatePageResult;
-import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -17,7 +16,7 @@ public class DiscoveryTemplatesTest extends EasmClientTestBase {
     String partialName = "ku";
 
     @Test
-    public void testdiscoveryTemplatesListWithResponse(){
+    public void testdiscoveryTemplatesListWithResponse() {
 
         CountPagedIterable<DiscoTemplate> discoTemplatePageResponse = easmClient.listDiscoTemplate(partialName, 0, 25);
         DiscoTemplate discoTemplateResponse = discoTemplatePageResponse.stream().iterator().next();
@@ -26,7 +25,7 @@ public class DiscoveryTemplatesTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testdiscoveryTemplatesGetWithResponse(){
+    public void testdiscoveryTemplatesGetWithResponse() {
         DiscoTemplate discoTemplateResponse = easmClient.getDiscoTemplate(templateId);
         assertNotNull(discoTemplateResponse.getName());
         assertNotNull(discoTemplateResponse.getId());

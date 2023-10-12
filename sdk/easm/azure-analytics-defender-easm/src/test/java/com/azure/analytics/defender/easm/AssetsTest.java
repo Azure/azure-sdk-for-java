@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
@@ -7,15 +9,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 public class AssetsTest extends EasmClientTestBase {
     private String assetName = "kumed.com";
     private String assetKind = "domain";
     private String filter = "name = " + assetName + " and type = " + assetKind;
     private String assetId = assetKind + "$$" + "kumc.edu";
-    private Class<?> getAssetResourceClass(String kind){
-        switch(kind){
+    private Class<?> getAssetResourceClass(String kind) {
+        switch (kind) {
             case "as":
                 return AsAssetResource.class;
             case "contact":
@@ -32,13 +32,15 @@ public class AssetsTest extends EasmClientTestBase {
                 return PageAssetResource.class;
             case "sslCert":
                 return SslCertAssetResource.class;
+            default:
+                return null;
+
         }
-        return null;
     }
 
 
     @Test
-    public void testAssetsListWithResponse(){
+    public void testAssetsListWithResponse() {
 
         CountPagedIterable<AssetResource> assetPageResponse = easmClient.listAssetResource(filter, "lastSeen", 0, 25, null);
         AssetResource assetResponse = assetPageResponse.iterator().next();
@@ -47,7 +49,7 @@ public class AssetsTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testAssetsUpdateWithResponse(){
+    public void testAssetsUpdateWithResponse() {
         AssetUpdateData assetUpdateData = new AssetUpdateData().setExternalId("new_external_id");
         Task taskResponse = easmClient.updateAssets(filter, assetUpdateData);
         assertEquals(TaskState.COMPLETE, taskResponse.getState());
@@ -56,7 +58,7 @@ public class AssetsTest extends EasmClientTestBase {
     }
     //
     @Test
-    public void testAssetsGetWithResponse(){
+    public void testAssetsGetWithResponse() {
         AssetResource assetResponse = easmClient.getAssetResource(assetId);
         assertInstanceOf(getAssetResourceClass(assetKind), assetResponse);
         //assertTrue(assetResponse.getUuid().matches(UUID_REGEX));

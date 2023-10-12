@@ -6,7 +6,6 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 

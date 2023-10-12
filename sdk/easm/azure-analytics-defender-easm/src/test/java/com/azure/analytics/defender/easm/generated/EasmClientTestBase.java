@@ -16,20 +16,16 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import reactor.core.publisher.Mono;
 
 public class EasmClientTestBase extends TestProxyTestBase {
-    private final String SANITIZED_REQUEST_URI =  "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED/";
-    private final String REQUEST_URI_REGEX = "https://.*/subscriptions/.*/resourceGroups/.*/workspaces/.*?/";
-    protected final String UUID_REGEX = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+    private final String sanitizedRequestUri =  "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED/";
+    private final String requestUriRegex = "https://.*/subscriptions/.*/resourceGroups/.*/workspaces/.*?/";
+    protected final String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
     protected EasmClient easmClient;
 
 

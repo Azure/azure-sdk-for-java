@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
@@ -15,7 +17,7 @@ public class DataConnectionsTest extends EasmClientTestBase {
 
 
     @Test
-    public void testdataConnectionsListWithResponse(){
+    public void testdataConnectionsListWithResponse() {
         CountPagedIterable<DataConnection> dataConnectionPageResult = easmClient.listDataConnection();
         DataConnection dataConnection = dataConnectionPageResult.stream().iterator().next();
         assertNotNull(dataConnection.getName());
@@ -24,7 +26,7 @@ public class DataConnectionsTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testdataConnectionsValidateWithResponse(){
+    public void testdataConnectionsValidateWithResponse() {
         AzureDataExplorerDataConnectionProperties properties = new AzureDataExplorerDataConnectionProperties()
             .setClusterName(clusterName)
             .setDatabaseName(databaseName)
@@ -38,14 +40,14 @@ public class DataConnectionsTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testdataConnectionsGetWithResponse(){
+    public void testdataConnectionsGetWithResponse() {
         DataConnection response = easmClient.getDataConnection(dataConnectionName);
         assertEquals(dataConnectionName, response.getName());
         assertEquals(dataConnectionName, response.getDisplayName());
     }
 
     @Test
-    public void testdataConnectionsPutWithResponse(){
+    public void testdataConnectionsPutWithResponse() {
         AzureDataExplorerDataConnectionProperties properties = new AzureDataExplorerDataConnectionProperties()
             .setClusterName(clusterName)
             .setDatabaseName(databaseName)
@@ -61,7 +63,7 @@ public class DataConnectionsTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testdataConnectionsDeleteWithResponse(){
+    public void testdataConnectionsDeleteWithResponse() {
         easmClient.deleteDataConnection(dataConnectionName);
     }
 }

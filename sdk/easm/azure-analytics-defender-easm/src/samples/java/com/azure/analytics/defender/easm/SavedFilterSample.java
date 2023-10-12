@@ -1,7 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.EasmClient;
-import com.azure.analytics.defender.easm.EasmClientBuilder;
 import com.azure.analytics.defender.easm.models.AssetUpdateData;
 import com.azure.analytics.defender.easm.models.AssetUpdateState;
 import com.azure.analytics.defender.easm.models.SavedFilter;

@@ -1,14 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
 import com.azure.analytics.defender.easm.models.*;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,12 +19,12 @@ public class DiscoveryGroupsTest extends EasmClientTestBase {
     String seedKind = "domain";
     String seedName = "example.org";
 
-    private boolean doSeedsMatch(DiscoSource seedA, DiscoSource seedB){
+    private boolean doSeedsMatch(DiscoSource seedA, DiscoSource seedB) {
         return seedA.getKind() == seedB.getKind() && seedA.getName().equals(seedB.getName());
     }
 
     @Test
-    public void testdiscoveryGroupsListWithResponse(){
+    public void testdiscoveryGroupsListWithResponse() {
         CountPagedIterable<DiscoGroup> discoGroups = easmClient.listDiscoGroup(null, 0, 5);
         DiscoGroup discoGroup = discoGroups.stream().iterator().next();
         assertNotNull(discoGroup.getName());
@@ -36,7 +35,7 @@ public class DiscoveryGroupsTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testdiscoveryGroupsValidateWithResponse(){
+    public void testdiscoveryGroupsValidateWithResponse() {
         List<DiscoSource> seeds = Arrays.asList(new DiscoSource()
             .setKind(DiscoSourceKind.fromString(seedKind))
             .setName(seedName));
@@ -51,7 +50,7 @@ public class DiscoveryGroupsTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testdiscoveryGroupsGetWithResponse(){
+    public void testdiscoveryGroupsGetWithResponse() {
         DiscoGroup discoGroupResponse = easmClient.getDiscoGroup(knownGroupName);
         assertEquals(knownGroupName, discoGroupResponse.getId());
         assertEquals(knownGroupName, discoGroupResponse.getName());
@@ -62,7 +61,7 @@ public class DiscoveryGroupsTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testdiscoveryGroupsPutWithResponse(){
+    public void testdiscoveryGroupsPutWithResponse() {
         List<DiscoSource> seeds = Arrays.asList(new DiscoSource()
             .setKind(DiscoSourceKind.fromString(seedKind))
             .setName(seedName));
@@ -80,12 +79,12 @@ public class DiscoveryGroupsTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testdiscoveryGroupsRunWithResponse(){
+    public void testdiscoveryGroupsRunWithResponse() {
         easmClient.runDiscoGroup(knownGroupName);
     }
 
     @Test
-    public void testdiscoveryGroupsListRunsWithResponse(){
+    public void testdiscoveryGroupsListRunsWithResponse() {
         CountPagedIterable<DiscoRunResult> discoRunPageResponse = easmClient.listRuns(knownGroupName, null, 0, 5);
 //        DiscoRunResult discoRunResponse = discoRunPageResponse.s().get(0);
 //        assertNotNull(discoRunResponse.getState());

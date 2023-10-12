@@ -5,7 +5,25 @@
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.implementation.EasmClientImpl;
-import com.azure.analytics.defender.easm.models.*;
+import com.azure.analytics.defender.easm.models.AssetResource;
+
+import com.azure.analytics.defender.easm.models.CountPagedIterable;
+import com.azure.analytics.defender.easm.models.DiscoRunResult;
+import com.azure.analytics.defender.easm.models.DataConnection;
+import com.azure.analytics.defender.easm.models.DiscoTemplate;
+import com.azure.analytics.defender.easm.models.Task;
+import com.azure.analytics.defender.easm.models.AssetUpdateData;
+import com.azure.analytics.defender.easm.models.DiscoGroup;
+import com.azure.analytics.defender.easm.models.SavedFilter;
+import com.azure.analytics.defender.easm.models.ValidateResult;
+import com.azure.analytics.defender.easm.models.DataConnectionData;
+import com.azure.analytics.defender.easm.models.DiscoGroupData;
+import com.azure.analytics.defender.easm.models.ReportBillableAssetSummaryResult;
+import com.azure.analytics.defender.easm.models.ReportAssetSnapshotRequest;
+import com.azure.analytics.defender.easm.models.ReportAssetSnapshotResult;
+import com.azure.analytics.defender.easm.models.ReportAssetSummaryResult;
+import com.azure.analytics.defender.easm.models.ReportAssetSummaryRequest;
+import com.azure.analytics.defender.easm.models.SavedFilterData;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -18,8 +36,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-
-import javax.crypto.*;
 
 /** Initializes a new instance of the synchronous EasmClient type. */
 @ServiceClient(builder = EasmClientBuilder.class)
@@ -740,7 +756,7 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CountPagedIterable<DiscoRunResult> listRunsWithResponse(String groupName, RequestOptions requestOptions) {
+    public CountPagedIterable<DiscoRunResult> listRuns(String groupName, RequestOptions requestOptions) {
         return this.serviceClient.listRunsWithResponse(groupName, requestOptions);
     }
 
@@ -1523,11 +1539,11 @@ public final class EasmClient {
      * Retrieve a list of discovery group for the provided search parameters.
      *
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
-     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException              all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1603,7 +1619,7 @@ public final class EasmClient {
             .toObject(DiscoGroup.class);
     }
 
-    private BinaryData cleanUp(BinaryData input){
+    private BinaryData cleanUp(BinaryData input) {
         return BinaryData.fromString(input.toString().replaceAll("\\+0000", "+00:00"));
     }
 
@@ -1656,7 +1672,7 @@ public final class EasmClient {
             requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
         }
         // return listRunsWithResponse(groupName, requestOptions).getValue().toObject(DiscoRunPageResult.class);
-        return listRunsWithResponse(groupName, requestOptions);
+        return listRuns(groupName, requestOptions);
     }
 
     /**
@@ -1676,7 +1692,7 @@ public final class EasmClient {
     public CountPagedIterable<DiscoRunResult> listRuns(String groupName) {
         // Generated convenience method for listRunsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listRunsWithResponse(groupName, requestOptions);
+        return listRuns(groupName, requestOptions);
         //.getValue().toObject(DiscoRunPageResult.class);
     }
 

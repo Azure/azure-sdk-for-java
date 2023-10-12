@@ -1,7 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.EasmClient;
-import com.azure.analytics.defender.easm.EasmClientBuilder;
 import com.azure.analytics.defender.easm.models.AssetUpdateData;
 import com.azure.analytics.defender.easm.models.Task;
 import com.azure.core.util.Configuration;
@@ -71,10 +71,10 @@ public class ManagingExternalIdsSample {
 
             AssetUpdateData assetUpdateRequest = new AssetUpdateData()
                 .setExternalId(mappingInstance.get("externalId").toString());
-            String filter = "kind = " +
-                mappingInstance.get("kind") +
-                " AND name = " +
-                mappingInstance.get("name");
+            String filter = "kind = "
+                + mappingInstance.get("kind")
+                + " AND name = "
+                + mappingInstance.get("name");
             Task taskResponse = easmClient.updateAssets(filter, assetUpdateRequest);
             updateIds.add(taskResponse.getId());
         });

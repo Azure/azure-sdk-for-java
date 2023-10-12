@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
@@ -17,7 +19,7 @@ public class SavedFiltersTest extends EasmClientTestBase {
     String filter = "name = \"" + putSavedFilterName + "\"";
 
     @Test
-    public void testsavedFiltersListWithResponse(){
+    public void testsavedFiltersListWithResponse() {
         CountPagedIterable<SavedFilter> savedFilters = easmClient.listSavedFilter();
         SavedFilter savedFilterResponse = savedFilters.stream().iterator().next();
         assertNotNull(savedFilterResponse.getId());
@@ -26,7 +28,7 @@ public class SavedFiltersTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testsavedFiltersGetWithResponse(){
+    public void testsavedFiltersGetWithResponse() {
         SavedFilter savedFilterResponse = easmClient.getSavedFilter(knownExistingFilter);
         assertEquals(knownExistingFilter, savedFilterResponse.getId());
         assertEquals(knownExistingFilter, savedFilterResponse.getName());
@@ -36,7 +38,7 @@ public class SavedFiltersTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testsavedFiltersPutWithResponse(){
+    public void testsavedFiltersPutWithResponse() {
         SavedFilterData savedFilterData = new SavedFilterData(filter, "Sample description");
         SavedFilter savedFilterResponse = easmClient.createOrReplaceSavedFilter(putSavedFilterName, savedFilterData);
         assertEquals(putSavedFilterName, savedFilterResponse.getName());
@@ -46,7 +48,7 @@ public class SavedFiltersTest extends EasmClientTestBase {
     }
 
     @Test
-    public void testsavedFiltersDeleteWithResponse(){
+    public void testsavedFiltersDeleteWithResponse() {
         easmClient.deleteSavedFilter(deleteSavedFilterName);
     }
 

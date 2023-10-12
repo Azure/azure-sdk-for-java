@@ -5,7 +5,23 @@
 package com.azure.analytics.defender.easm.implementation;
 
 import com.azure.analytics.defender.easm.EasmServiceVersion;
-import com.azure.analytics.defender.easm.models.*;
+import com.azure.analytics.defender.easm.models.AssetResource;
+
+import com.azure.analytics.defender.easm.models.CountPagedIterable;
+import com.azure.analytics.defender.easm.models.DiscoRunResult;
+import com.azure.analytics.defender.easm.models.DataConnection;
+import com.azure.analytics.defender.easm.models.DiscoTemplate;
+import com.azure.analytics.defender.easm.models.Task;
+import com.azure.analytics.defender.easm.models.DiscoGroup;
+import com.azure.analytics.defender.easm.models.SavedFilter;
+import com.azure.analytics.defender.easm.models.CountPagedResponse;
+import com.azure.analytics.defender.easm.models.AssetPageResult;
+import com.azure.analytics.defender.easm.models.DiscoRunPageResult;
+import com.azure.analytics.defender.easm.models.DataConnectionPageResult;
+import com.azure.analytics.defender.easm.models.DiscoGroupPageResult;
+import com.azure.analytics.defender.easm.models.DiscoTemplatePageResult;
+import com.azure.analytics.defender.easm.models.TaskPageResult;
+import com.azure.analytics.defender.easm.models.SavedFilterPageResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -6278,7 +6294,7 @@ public final class EasmClientImpl {
         }
     }
 
-    private BinaryData cleanUp(BinaryData input){
+    private BinaryData cleanUp(BinaryData input) {
         return BinaryData.fromString(input.toString().replaceAll("\\+0000", "+00:00"));
     }
 }

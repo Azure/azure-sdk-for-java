@@ -1,8 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.EasmClient;
-import com.azure.analytics.defender.easm.EasmClientBuilder;
-import com.azure.analytics.defender.easm.models.*;
+import com.azure.analytics.defender.easm.models.DiscoRunResult;
+import com.azure.analytics.defender.easm.models.CountPagedIterable;
+import com.azure.analytics.defender.easm.models.DiscoSource;
+import com.azure.analytics.defender.easm.models.DiscoSourceKind;
+import com.azure.analytics.defender.easm.models.DiscoGroupData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
 
