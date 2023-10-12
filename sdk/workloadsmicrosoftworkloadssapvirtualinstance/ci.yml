@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/workloadsmicrosoftworkloadssapvirtualinstance/ci.yml
+      - sdk/workloadsmicrosoftworkloadssapvirtualinstance/azure-resourcemanager-workloadsmicrosoftworkloadssapvirtualinstance/
+    exclude:
+      - sdk/workloadsmicrosoftworkloadssapvirtualinstance/pom.xml
+      - sdk/workloadsmicrosoftworkloadssapvirtualinstance/azure-resourcemanager-workloadsmicrosoftworkloadssapvirtualinstance/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/workloadsmicrosoftworkloadssapvirtualinstance/ci.yml
+      - sdk/workloadsmicrosoftworkloadssapvirtualinstance/azure-resourcemanager-workloadsmicrosoftworkloadssapvirtualinstance/
+    exclude:
+      - sdk/workloadsmicrosoftworkloadssapvirtualinstance/pom.xml
+      - sdk/workloadsmicrosoftworkloadssapvirtualinstance/azure-resourcemanager-workloadsmicrosoftworkloadssapvirtualinstance/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerworkloadsmicrosoftworkloadssapvirtualinstance
+    displayName: azure-resourcemanager-workloadsmicrosoftworkloadssapvirtualinstance
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: workloadsmicrosoftworkloadssapvirtualinstance
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-workloadsmicrosoftworkloadssapvirtualinstance
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerworkloadsmicrosoftworkloadssapvirtualinstance
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerworkloadsmicrosoftworkloadssapvirtualinstance }}
