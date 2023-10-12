@@ -9,6 +9,12 @@
 #### Dependency Updates
 - Upgrade `azure-sdk-bom` to 1.2.17.
 
+### Spring Cloud Azure AppConfiguration Config
+This section includes changes in `spring-cloud-azure-starter-appconfiguration-config` and `spring-cloud-azure-appconfiguration-config-web`
+
+### Bug Fixed
+- Fixes a issue where Web Hook authorization was validated incorrectly, resulting in a Unauthorized error.
+
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
