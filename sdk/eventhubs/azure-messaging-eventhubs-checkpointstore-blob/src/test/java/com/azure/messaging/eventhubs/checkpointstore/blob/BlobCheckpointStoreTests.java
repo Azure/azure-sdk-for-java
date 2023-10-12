@@ -8,8 +8,11 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -273,7 +276,7 @@ public class BlobCheckpointStoreTests {
 
 
     /**
-     * Verifies that it will fallback to legacy checkpoints if there are no lowercase variant ones.
+     * Verifies that it will fall back to legacy checkpoints if there are no lowercase variant ones.
      */
     @Test
     public void testListCheckpointLegacy() {
@@ -333,7 +336,7 @@ public class BlobCheckpointStoreTests {
             .setSequenceNumber(2L)
             .setOffset(100L);
 
-        BlobItem blobItem = getCheckpointBlobItem("230", "1", "ns/eh/cg/checkpoint/0");
+        BlobItem blobItem = getCheckpointBlobItem("230", "1", "ns/eh/cg/checkpoint/0");878717
         PagedFlux<BlobItem> response = new PagedFlux<BlobItem>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
             BlobItem>(null, 200, null,
             Collections.singletonList(blobItem), null,
@@ -343,8 +346,6 @@ public class BlobCheckpointStoreTests {
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
         when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blobAsyncClient.exists()).thenReturn(Mono.just(true));
-        when(blobAsyncClient.setMetadata(ArgumentMatchers.<Map<String, String>>any()))
-            .thenReturn(Mono.empty());
 
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
         StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
@@ -736,6 +737,9 @@ public class BlobCheckpointStoreTests {
             .expectError(SocketTimeoutException.class).verify();
     }
 
+    /**
+     * Tests that a failed ownership claim returns normally instead of throwing exception downstream.
+     */
     @Test
     public void testFailedOwnershipClaim() {
         PartitionOwnership po = createPartitionOwnership("ns", "eh", "cg", "0", "owner1");
