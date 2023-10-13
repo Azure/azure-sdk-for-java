@@ -27,6 +27,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.HeartbeatExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageStats;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
@@ -34,6 +35,9 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTag
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Feature;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
@@ -55,9 +59,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
+import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * This class provides a fluent builder API to configure the OpenTelemetry SDK with Azure Monitor Exporters.
@@ -70,6 +77,9 @@ public final class AzureMonitorExporterBuilder {
         "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
         "https://monitor.azure.com//.default";
+
+    private static final String STATSBEAT_LONG_INTERVAL_SECONDS = "STATSBEAT_LONG_INTERVAL_SECONDS";
+    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS = "STATSBEAT_SHORT_INTERVAL_SECONDS";
 
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
@@ -257,7 +267,7 @@ public final class AzureMonitorExporterBuilder {
     public MetricExporter buildMetricExporter() {
         internalBuildAndFreeze();
         // TODO (trask) how to pass along configuration properties?
-        return buildMetricExporter(DefaultConfigProperties.createForTest(Collections.emptyMap()));
+        return buildMetricExporter(DefaultConfigProperties.create(Collections.emptyMap()));
     }
 
     /**
@@ -271,7 +281,7 @@ public final class AzureMonitorExporterBuilder {
     public LogRecordExporter buildLogRecordExporter() {
         internalBuildAndFreeze();
         // TODO (trask) how to pass along configuration properties?
-        return buildLogRecordExporter(DefaultConfigProperties.createForTest(Collections.emptyMap()));
+        return buildLogRecordExporter(DefaultConfigProperties.create(Collections.emptyMap()));
     }
 
     /**
@@ -351,8 +361,43 @@ public final class AzureMonitorExporterBuilder {
     private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), createDefaultsPopulator(configProperties), builtTelemetryItemExporter::send);
+        if (connectionString != null) {
+            StatsbeatModule statsbeatModule = new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
+            statsbeatModule.start(
+                builtTelemetryItemExporter,
+                this::getStatsbeatConnectionString,
+                connectionString::getInstrumentationKey,
+                false,
+                getStatsbeaLongInterval(configProperties.getInt(STATSBEAT_LONG_INTERVAL_SECONDS)),
+                getStatsbeatShortInterval(configProperties.getInt(STATSBEAT_SHORT_INTERVAL_SECONDS)),
+                false,
+                initStatsbeatFeatures());
+        }
         return new AzureMonitorMetricExporter(
             new MetricDataMapper(createDefaultsPopulator(configProperties), true), builtTelemetryItemExporter);
+    }
+
+    private long getStatsbeaLongInterval(Integer intervalFromConfig) {
+        if (intervalFromConfig == null) {
+            return DAYS.toSeconds(1); // default to every 24 hours
+        }
+        return SECONDS.toSeconds(intervalFromConfig);
+    }
+
+    private long getStatsbeatShortInterval(Integer intervalFromConfig) {
+        if (intervalFromConfig == null) {
+            return MINUTES.toSeconds(15); // default to every 15 mins
+        }
+        return SECONDS.toSeconds(intervalFromConfig);
+    }
+
+    private Set<Feature> initStatsbeatFeatures() {
+        // TODO (jean): start tracking native image usage based on a system property or env var to indicate it's from the native image path
+        return Collections.emptySet();
+    }
+
+    private StatsbeatConnectionString getStatsbeatConnectionString() {
+        return StatsbeatConnectionString.create(connectionString, null, null);
     }
 
     private LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {

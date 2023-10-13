@@ -1,60 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.stream.binder.servicebus.core.properties;
-
-import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
+package com.azure.spring.cloud.resourcemanager.provisioning.properties;
 
 import java.time.Duration;
 
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
-
 /**
- *
+ * Entity configuration properties of Service Bus.
  */
-public class ServiceBusProducerProperties extends ProducerProperties implements ServiceBusEntityOptionsProvider {
-    private boolean sync = false;
-    private Duration sendTimeout = Duration.ofMillis(10000);
-
-    private Long maxSizeInMegabytes = 1024L;
-    private Duration defaultMessageTimeToLive = MAX_DURATION;
+public class ServiceBusEntityProperties {
+    private Long maxSizeInMegabytes;
+    private Duration defaultMessageTimeToLive;
 
     /**
-     * Check whether is sync.
-     *
-     * @return true if is sync,false otherwise
+     * Get the maxSizeInMegabytes property.
+     * @return the maxSizeInMegabytes value.
      */
-    public boolean isSync() {
-        return sync;
-    }
-
-    /**
-     * Set sync.
-     *
-     * @param sync the sync
-     */
-    public void setSync(boolean sync) {
-        this.sync = sync;
-    }
-
-    /**
-     * Get send time out.
-     *
-     * @return sendTimeout the send time out
-     */
-    public Duration getSendTimeout() {
-        return sendTimeout;
-    }
-
-    /**
-     * Set send time out.
-     *
-     * @param sendTimeout the send time out
-     */
-    public void setSendTimeout(Duration sendTimeout) {
-        this.sendTimeout = sendTimeout;
-    }
-
     public Long getMaxSizeInMegabytes() {
         return maxSizeInMegabytes;
     }
@@ -67,6 +28,10 @@ public class ServiceBusProducerProperties extends ProducerProperties implements 
         this.maxSizeInMegabytes = maxSizeInMegabytes;
     }
 
+    /**
+     * Set the defaultMessageTimeToLive property.
+     * @return the defaultMessageTimeToLive value.
+     */
     public Duration getDefaultMessageTimeToLive() {
         return defaultMessageTimeToLive;
     }
@@ -80,4 +45,5 @@ public class ServiceBusProducerProperties extends ProducerProperties implements 
     public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
         this.defaultMessageTimeToLive = defaultMessageTimeToLive;
     }
+
 }
