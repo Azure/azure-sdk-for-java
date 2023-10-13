@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.StatsbeatTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.SystemInformation;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
 
@@ -21,18 +20,7 @@ public class CustomDimensions {
 
     // visible for testing
     CustomDimensions() {
-        if ("java".equals(System.getenv("FUNCTIONS_WORKER_RUNTIME"))) {
-            resourceProvider = ResourceProvider.RP_FUNCTIONS;
-        } else if (!Strings.isNullOrEmpty(System.getenv("WEBSITE_SITE_NAME"))) {
-            resourceProvider = ResourceProvider.RP_APPSVC;
-        } else if (!Strings.isNullOrEmpty(System.getenv("KUBERNETES_SERVICE_HOST"))) {
-            resourceProvider = ResourceProvider.RP_AKS;
-        } else if (!Strings.isNullOrEmpty(System.getenv("APPLICATIONINSIGHTS_SPRINGCLOUD_SERVICE_ID"))) {
-            resourceProvider = ResourceProvider.RP_SPRING_CLOUD;
-        } else {
-            resourceProvider = ResourceProvider.UNKNOWN;
-        }
-
+        resourceProvider = ResourceProvider.initResourceProvider();
         operatingSystem = initOperatingSystem();
         sdkVersion = initSdkVersion();
         runtimeVersion = System.getProperty("java.version");
@@ -41,19 +29,19 @@ public class CustomDimensions {
         language = "java";
     }
 
-    public ResourceProvider getResourceProvider() {
+    ResourceProvider getResourceProvider() {
         return resourceProvider;
     }
 
-    public OperatingSystem getOperatingSystem() {
+    OperatingSystem getOperatingSystem() {
         return operatingSystem;
     }
 
-    public void setResourceProvider(ResourceProvider resourceProvider) {
-        this.resourceProvider = resourceProvider;
+    void setResourceProviderVm() {
+        this.resourceProvider = ResourceProvider.RP_VM;
     }
 
-    public void setOperatingSystem(OperatingSystem operatingSystem) {
+    void setOperatingSystem(OperatingSystem operatingSystem) {
         this.operatingSystem = operatingSystem;
     }
 
@@ -77,8 +65,7 @@ public class CustomDimensions {
         }
     }
 
-    // package protected - visible for test
-    static String initSdkVersion() {
+    private static String initSdkVersion() {
         if (RpAttachType.getRpAttachType() == RpAttachType.MANUAL) {
             return VersionGenerator.getSdkVersion();
         }

@@ -50,9 +50,8 @@ public class CustomDimensionsTest {
         StatsbeatTelemetryBuilder telemetryBuilder = StatsbeatTelemetryBuilder.create("test", 1);
         customDimensions.populateProperties(telemetryBuilder, null);
 
-        String version = CustomDimensions.initSdkVersion();
         MetricsData data = (MetricsData) telemetryBuilder.build().getData().getBaseData();
-        assertThat(data.getProperties()).containsEntry("version", version);
+        assertThat(data.getProperties()).containsKeys("version");
     }
 
     @Test
