@@ -8,6 +8,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTe
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.AttributeType;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.DoubleCounter;
 import io.opentelemetry.api.metrics.DoubleHistogram;
@@ -20,6 +21,8 @@ import io.opentelemetry.sdk.metrics.data.PointData;
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
 import io.opentelemetry.sdk.testing.exporter.InMemoryMetricExporter;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -34,6 +37,7 @@ import static io.opentelemetry.sdk.metrics.data.MetricDataType.HISTOGRAM;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.LONG_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.LONG_SUM;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AzureMonitorMetricExporterTest {
 
@@ -102,6 +106,76 @@ public class AzureMonitorMetricExporterTest {
 
         assertThat(metricData.getType()).isEqualTo(DOUBLE_GAUGE);
         assertThat(metricData.getName()).isEqualTo("testDoubleGauge");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"net.peer.name", "foo"})
+    public void testAttributesOnCustomMetric(String attributeName) {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+            .registerMetricReader(
+                PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
+        DoubleCounter counter = meter.counterBuilder("testAttributes").ofDoubles().build();
+        counter.add(1, Attributes.of(AttributeKey.stringKey(attributeName), "bar"));
+
+        meterProvider.forceFlush();
+
+        List<MetricData> metricDatas = inMemoryMetricExporter.getFinishedMetricItems();
+
+        MetricData metric = metricDatas.get(0);
+        PointData pointData = metric.getData().getPoints().stream().findFirst().get();
+        MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
+        MetricDataMapper.updateMetricPointBuilder(
+            builder, metric, pointData, true, false);
+
+        MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
+        assertThat(metricsData.getMetrics().size()).isEqualTo(1);
+        Map<String, String> attributes = metricsData.getProperties();
+
+        assertThat(attributes.size()).isEqualTo(1);
+        assertThat(attributes.get(attributeName)).isEqualTo("bar");
+    }
+
+    @Test
+    public void testAttributesOnStandardMetric() {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+            .registerMetricReader(
+                PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
+        DoubleHistogram serverDuration = meter.histogramBuilder("http.server.duration").build();
+        Attributes attributes = Attributes.builder()
+            .put(AttributeKey.longKey("http.status_code"), 200)
+            .put(AttributeKey.stringKey("net.host.name"), "example.io")
+            .put(AttributeKey.stringKey("foo"), "baz")
+            .build();
+        serverDuration.record(0.1, attributes);
+
+        meterProvider.forceFlush();
+
+        List<MetricData> metricDatas = inMemoryMetricExporter.getFinishedMetricItems();
+
+        MetricData metric = metricDatas.get(0);
+        PointData pointData = metric.getData().getPoints().stream().findFirst().get();
+        MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
+        MetricDataMapper.updateMetricPointBuilder(
+            builder, metric, pointData, true, true);
+
+        MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
+        assertThat(metricsData.getMetrics().size()).isEqualTo(1);
+        Map<String, String> properties = metricsData.getProperties();
+
+        assertThat(properties.size()).isEqualTo(5);
+        assertThat(properties.get("operation/synthetic")).isEqualTo("False");
+        assertThat(properties.get("Request.Success")).isEqualTo("True");
+        assertThat(properties.get("request/resultCode")).isEqualTo("200");
+        assertThat(properties.get("_MS.IsAutocollected")).isEqualTo("True");
+        assertThat(properties.get("_MS.MetricId")).isEqualTo("requests/duration");
     }
 
     @Test
