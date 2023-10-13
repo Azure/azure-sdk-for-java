@@ -55,6 +55,7 @@ public class ServiceBusProducerProperties extends ProducerProperties implements 
         this.sendTimeout = sendTimeout;
     }
 
+    @Override
     public Long getMaxSizeInMegabytes() {
         return maxSizeInMegabytes;
     }
@@ -67,6 +68,7 @@ public class ServiceBusProducerProperties extends ProducerProperties implements 
         this.maxSizeInMegabytes = maxSizeInMegabytes;
     }
 
+    @Override
     public Duration getDefaultMessageTimeToLive() {
         return defaultMessageTimeToLive;
     }
