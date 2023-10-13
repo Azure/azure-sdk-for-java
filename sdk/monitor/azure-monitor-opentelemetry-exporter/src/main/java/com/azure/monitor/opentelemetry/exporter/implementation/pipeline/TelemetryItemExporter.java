@@ -10,7 +10,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTe
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.io.SerializedString;
@@ -69,13 +68,13 @@ public class TelemetryItemExporter {
 
     private final TelemetryPipeline telemetryPipeline;
     private final TelemetryPipelineListener listener;
+
     private final Set<CompletableResultCode> activeExportResults =
         Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     // e.g. construct with diagnostic listener and local storage listener
     public TelemetryItemExporter(
-        TelemetryPipeline telemetryPipeline,
-        TelemetryPipelineListener listener) {
+        TelemetryPipeline telemetryPipeline, TelemetryPipelineListener listener) {
         this.telemetryPipeline = telemetryPipeline;
         this.listener = listener;
     }
