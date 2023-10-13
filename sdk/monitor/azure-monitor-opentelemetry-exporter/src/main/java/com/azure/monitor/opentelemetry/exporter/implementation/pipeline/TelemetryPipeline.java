@@ -35,17 +35,19 @@ public class TelemetryPipeline {
     private static final HttpHeaderName LOCATION =  HttpHeaderName.fromString("Location");
 
     private final HttpPipeline pipeline;
+    private final StatsbeatModule statsbeatModule;
 
     // key is connectionString, value is redirectUrl
     private final Map<String, URL> redirectCache =
         Collections.synchronizedMap(new BoundedHashMap<>(100));
 
-    public TelemetryPipeline(HttpPipeline pipeline) {
+    public TelemetryPipeline(HttpPipeline pipeline, StatsbeatModule statsbeatModule) {
         this.pipeline = pipeline;
+        this.statsbeatModule = statsbeatModule;
     }
 
     public CompletableResultCode send(
-        List<ByteBuffer> telemetry, String connectionString, TelemetryPipelineListener listener, StatsbeatModule statsbeatModule) {
+        List<ByteBuffer> telemetry, String connectionString, TelemetryPipelineListener listener) {
 
         ConnectionString connectionStringObj = ConnectionString.parse(connectionString);
 
@@ -59,7 +61,7 @@ public class TelemetryPipeline {
 
         try {
             CompletableResultCode result = new CompletableResultCode();
-            sendInternal(request, listener, result, MAX_REDIRECTS, statsbeatModule);
+            sendInternal(request, listener, result, MAX_REDIRECTS);
             return result;
         } catch (Throwable t) {
             listener.onException(request, t.getMessage() + " (" + request.getUrl() + ")", t);
@@ -79,8 +81,7 @@ public class TelemetryPipeline {
         TelemetryPipelineRequest request,
         TelemetryPipelineListener listener,
         CompletableResultCode result,
-        int remainingRedirects,
-        StatsbeatModule statsbeatModule) {
+        int remainingRedirects) {
 
         // Add instrumentation key to context to use in StatsbeatHttpPipelinePolicy
         Map<Object, Object> contextKeyValues = new HashMap<>();
@@ -102,8 +103,7 @@ public class TelemetryPipeline {
                                     responseBody,
                                     listener,
                                     result,
-                                    remainingRedirects,
-                                    statsbeatModule),
+                                    remainingRedirects),
                             throwable -> {
                                 listener.onException(
                                     request,
@@ -124,8 +124,7 @@ public class TelemetryPipeline {
         String responseBody,
         TelemetryPipelineListener listener,
         CompletableResultCode result,
-        int remainingRedirects,
-        StatsbeatModule statsbeatModule) {
+        int remainingRedirects) {
 
         int responseCode = response.getStatusCode();
 
@@ -140,7 +139,7 @@ public class TelemetryPipeline {
             }
             redirectCache.put(request.getConnectionString(), locationUrl);
             request.setUrl(locationUrl);
-            sendInternal(request, listener, result, remainingRedirects - 1, statsbeatModule);
+            sendInternal(request, listener, result, remainingRedirects - 1);
             return;
         }
 
@@ -148,7 +147,7 @@ public class TelemetryPipeline {
         if (responseCode == 200) {
             result.succeed();
         } else {
-            if (responseCode == 400) {
+            if (responseCode == 400 && statsbeatModule != null) {
                 LOGGER.warning("400 status code is returned. It indicates that customer is using an invalid ikey");
                 statsbeatModule.shutdown();
             }

@@ -69,19 +69,15 @@ public class TelemetryItemExporter {
 
     private final TelemetryPipeline telemetryPipeline;
     private final TelemetryPipelineListener listener;
-    private final StatsbeatModule statsbeatModule;
-
     private final Set<CompletableResultCode> activeExportResults =
         Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     // e.g. construct with diagnostic listener and local storage listener
     public TelemetryItemExporter(
         TelemetryPipeline telemetryPipeline,
-        TelemetryPipelineListener listener,
-        StatsbeatModule statsbeatModule) {
+        TelemetryPipelineListener listener) {
         this.telemetryPipeline = telemetryPipeline;
         this.listener = listener;
-        this.statsbeatModule = statsbeatModule;
     }
 
     public CompletableResultCode send(List<TelemetryItem> telemetryItems) {
@@ -156,7 +152,7 @@ public class TelemetryItemExporter {
             encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
             return CompletableResultCode.ofFailure();
         }
-        return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener, statsbeatModule);
+        return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener);
     }
 
     private TelemetryItem createOtelResourceMetric(TelemetryItemBatchKey telemetryItemBatchKey) {

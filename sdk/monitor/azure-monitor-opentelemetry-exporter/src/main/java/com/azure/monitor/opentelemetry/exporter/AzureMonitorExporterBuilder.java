@@ -435,7 +435,8 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private TelemetryItemExporter createTelemetryItemExporter() {
-        TelemetryPipeline pipeline = new TelemetryPipeline(builtHttpPipeline);
+        // TODO (heya) will add StatsbeatModule when enable-statsbeat PR is merged.
+        TelemetryPipeline pipeline = new TelemetryPipeline(builtHttpPipeline, null);
 
         File tempDir =
             TempDirs.getApplicationInsightsTempDir(
