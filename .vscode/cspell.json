@@ -483,7 +483,12 @@
     {
       "filename": "sdk/easm/azure-analytics-defender-easm/**/*.md",
       "words": [
-        "EASM",
+        "easm"
+      ]
+    },
+    {
+      "filename": "sdk/easm/**/pom.xml",
+      "words": [
         "easm"
       ]
     },
