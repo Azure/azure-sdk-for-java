@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Nullable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,6 +38,7 @@ public class TelemetryPipeline {
     private static final HttpHeaderName LOCATION =  HttpHeaderName.fromString("Location");
 
     private final HttpPipeline pipeline;
+    @Nullable
     private final StatsbeatModule statsbeatModule;
 
     // key is connectionString, value is redirectUrl
