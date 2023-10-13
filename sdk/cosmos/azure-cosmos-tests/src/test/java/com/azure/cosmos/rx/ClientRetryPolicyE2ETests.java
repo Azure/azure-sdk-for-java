@@ -72,6 +72,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
         Map<String, String> readRegionMap = this.getRegionMap(databaseAccount, false);
+        System.out.println("ClientRetryPolicyE2ETests writeRegionMap " + this.getRegionMap(databaseAccount, true));
         this.preferredRegions =
             readRegionMap
                 .keySet()
@@ -252,6 +253,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     this.performDocumentOperation(cosmosAsyncContainer, operationType, newItem).block();
                     fail("dataPlaneRequestHttpTimeout() should have failed for operationType " + operationType);
                 } catch (CosmosException e) {
+                    System.out.println("dataPlaneRequestHttpTimeout() preferredRegions " + this.preferredRegions.toString() + " " + e.getDiagnostics());
                     assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
                     assertThat(e.getDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
                     assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
