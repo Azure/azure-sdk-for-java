@@ -12,7 +12,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 /**
  *
  */
-public class ServiceBusProducerProperties extends ProducerProperties {
+public class ServiceBusProducerProperties extends ProducerProperties implements ServiceBusEntityOptionsProvider {
     private boolean sync = false;
     private Duration sendTimeout = Duration.ofMillis(10000);
 
@@ -55,11 +55,6 @@ public class ServiceBusProducerProperties extends ProducerProperties {
         this.sendTimeout = sendTimeout;
     }
 
-
-    /**
-     * Get the maxSizeInMegabytes property.
-     * @return the maxSizeInMegabytes value.
-     */
     public Long getMaxSizeInMegabytes() {
         return maxSizeInMegabytes;
     }
@@ -72,10 +67,6 @@ public class ServiceBusProducerProperties extends ProducerProperties {
         this.maxSizeInMegabytes = maxSizeInMegabytes;
     }
 
-    /**
-     * Set the defaultMessageTimeToLive property.
-     * @return the defaultMessageTimeToLive value.
-     */
     public Duration getDefaultMessageTimeToLive() {
         return defaultMessageTimeToLive;
     }
