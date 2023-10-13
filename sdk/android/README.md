@@ -22,12 +22,94 @@ The following libraries have known issues with Android:
 - `azure-core`'s `ReflectionSerializable` class also requires an external StAX dependency.
 
 ## Dependency management
+- Dependency version management should use the azure BOM
+- Must use OkHttp instead of Netty for http
 - Recommend `azure-core` version `1.44.0` or greater.  This adds behaviour to ReflectionUtils that improves Android compatibility.
 - Recommend `com.fasterxml.jackson:jackson-core`, `com.fasterxml.jackson:jackson-databind`, `com.fasterxml.jackson:jackson-dataformat-xml`, `com.fasterxml.jackson:jackson-datatype-jsr310` version `2.15.0` or greater for transitive dependencies.  An example of how to do this is found in the build.gradle.kts file in the android-samples app.
 - The use of Jackson also requires an external StAX dependency.
 
+### Overriding dependencies
+
+
+#### Include the BOM file
+
+Include the `azure-sdk-bom` in your project to take a dependency on the stable version of the library. In the following snippet, replace the `{bom_version_to_target}` placeholder with the version number. To learn more about the BOM, see the [Azure SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```
+dependencies{
+    implementation(project.dependencies.platform("com.azure:azure-sdk-bom:{bom_version_to_target}"))
+}
+```
+
+Then include the direct dependency in the `dependencies` section without the version tag:
+
+```
+dependencies{
+    implementation("com.azure:azure-storage")
+}
+```
+
+#### Include direct dependency
+
+To take dependency on a particular version of the library that isn't present in the BOM, add the direct dependency to your project as follows:
+
+[//]: # ({x-version-update-start;com.azure:azure-core;dependency})
+```
+dependencies{
+    // azure core -- specifically declare 1.44.0 to get updated reflectionutils
+    implementation("com.azure:azure-core:1.44.0")
+}
+```
+[//]: # ({x-version-update-end})
+
+#### Overriding transitive dependencies
+
+in build.gradle use the following structure to override jackson version
+```
+dependencies{
+    constraints {
+        implementation("com.fasterxml.jackson:jackson-bom") {
+            version {
+                require("2.15.2")
+                reject("2.13.5")
+            }
+            because("earlier versions declared as transitive dependencies use android non-compatible factory method")
+        }
+        implementation("com.fasterxml.jackson:jackson-core") {
+            version {
+                require("2.15.2")
+                reject("2.13.5")
+            }
+            because("earlier versions declared as transitive dependencies for azure are not android compatible")
+        }
+        implementation("com.fasterxml.jackson:jackson-databind") {
+            version {
+                require("2.15.2")
+                reject("2.13.5")
+            }
+            because("earlier versions declared as transitive dependencies for azure are not android compatible")
+        }
+        implementation("com.fasterxml.jackson:jackson-dataformat-xml") {
+            version {
+                require("2.15.2")
+                reject("2.13.5")
+            }
+            because("earlier versions declared as transitive dependencies for azure are not android compatible")
+        }
+        implementation("com.fasterxml.jackson:jackson-datatype-jsr310") {
+            version {
+                require("2.15.2")
+                reject("2.13.5")
+            }
+            because("earlier versions declared as transitive dependencies for azure are not android compatible")
+        }
+    }
+}
+```
 ## Credential management on Android
-- The method used in the samples to pass credentials from System Environment Variables to the sample app on a device or emulator via the BuildConfig class is not suitable for production or use in real apps.  There is a risk of keys being exposed, as data in BuildConfig is stored in plaintext in the APK on the device.  
+- The method used in the samples to pass credentials from System Environment Variables to the sample app on a device or emulator via the BuildConfig class is not suitable for production or use in real apps.  There is a risk of keys being exposed, as data in BuildConfig is stored in plaintext in the APK on the device.
+- Recommend using active directory as documented here:
+  https://learn.microsoft.com/en-us/azure/active-directory-b2c/configure-authentication-sample-android-app?tabs=kotlin
 
 ## Reporting and troubleshooting errors when using the SDK
 If you encounter an error caused by the SDK that occurs in Android only, it is best to make an issue in the Azure SDK for Java repository, beginning the issue name with [ANDROID] to help distinguish it.
