@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.pkversion.ServiceItemLease;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -1189,7 +1188,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         ChangeFeedProcessor leaseMonitoringChangeFeedProcessor = null;
 
         try {
-
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
             LeaseStateMonitor leaseStateMonitor = new LeaseStateMonitor();
@@ -1344,7 +1342,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
             leaseMonitoringChangeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-            int leaseCount = changeFeedProcessor.getCurrentState().map(List::size).block();
+            int leaseCount = changeFeedProcessor.getCurrentState() .map(List::size).block();
             assertThat(leaseCount > 1).as("Found %d leases", leaseCount).isTrue();
 
             assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
