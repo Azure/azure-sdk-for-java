@@ -4,20 +4,22 @@
 
 package com.azure.ai.openai.implementation.models;
 
+import com.azure.ai.openai.models.ImageLocation;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.List;
 
-/** The FunctionCallPresetFunctionCallModel model. */
+/** The ImageLocationListDataModel model. */
 @Immutable
-public final class FunctionCallPresetFunctionCallModel extends FunctionCallModelBase {
-    private final FunctionCallPreset value;
+public final class ImageLocationListDataModel extends DataModelBase {
+    private final List<ImageLocation> value;
 
     /**
-     * Creates an instance of FunctionCallPresetFunctionCallModel class.
+     * Creates an instance of ImageLocationListDataModel class.
      *
      * @param value the value.
      */
-    public FunctionCallPresetFunctionCallModel(FunctionCallPreset value) {
+    public ImageLocationListDataModel(List<ImageLocation> value) {
         this.value = value;
     }
 
@@ -27,7 +29,7 @@ public final class FunctionCallPresetFunctionCallModel extends FunctionCallModel
      * @return the value.
      */
     @JsonValue
-    public FunctionCallPreset getValue() {
+    public List<ImageLocation> getValue() {
         return this.value;
     }
 }

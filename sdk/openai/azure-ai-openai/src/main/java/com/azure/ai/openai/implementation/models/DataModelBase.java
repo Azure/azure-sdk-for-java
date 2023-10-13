@@ -4,8 +4,8 @@
 
 package com.azure.ai.openai.implementation.models;
 
-/** The FunctionCallModelBase model. */
-public abstract class FunctionCallModelBase {
-    /** Creates an instance of FunctionCallModelBase class. */
-    protected FunctionCallModelBase() {}
+/** The DataModelBase model. */
+public abstract class DataModelBase {
+    /** Creates an instance of DataModelBase class. */
+    protected DataModelBase() {}
 }
