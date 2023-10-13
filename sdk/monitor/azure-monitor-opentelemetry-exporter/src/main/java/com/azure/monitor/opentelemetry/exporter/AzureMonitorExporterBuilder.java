@@ -64,7 +64,6 @@ import java.util.function.BiConsumer;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * This class provides a fluent builder API to configure the OpenTelemetry SDK with Azure Monitor Exporters.
@@ -78,8 +77,10 @@ public final class AzureMonitorExporterBuilder {
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
         "https://monitor.azure.com//.default";
 
-    private static final String STATSBEAT_LONG_INTERVAL_SECONDS = "STATSBEAT_LONG_INTERVAL_SECONDS";
-    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS = "STATSBEAT_SHORT_INTERVAL_SECONDS";
+    private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME =
+        "APPLICATIONINSIGHTS_INTERNAL_STATSBEAT_LONG_INTERVAL_SECONDS";
+    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME =
+        "APPLICATIONINSIGHTS_INTERNAL_STATSBEAT_SHORT_INTERVAL_SECONDS";
 
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
@@ -368,27 +369,13 @@ public final class AzureMonitorExporterBuilder {
                 this::getStatsbeatConnectionString,
                 connectionString::getInstrumentationKey,
                 false,
-                getStatsbeaLongInterval(configProperties.getInt(STATSBEAT_LONG_INTERVAL_SECONDS)),
-                getStatsbeatShortInterval(configProperties.getInt(STATSBEAT_SHORT_INTERVAL_SECONDS)),
+                configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)),
+                configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)),
                 false,
                 initStatsbeatFeatures());
         }
         return new AzureMonitorMetricExporter(
             new MetricDataMapper(createDefaultsPopulator(configProperties), true), builtTelemetryItemExporter);
-    }
-
-    private long getStatsbeaLongInterval(Integer intervalFromConfig) {
-        if (intervalFromConfig == null) {
-            return DAYS.toSeconds(1); // default to every 24 hours
-        }
-        return SECONDS.toSeconds(intervalFromConfig);
-    }
-
-    private long getStatsbeatShortInterval(Integer intervalFromConfig) {
-        if (intervalFromConfig == null) {
-            return MINUTES.toSeconds(15); // default to every 15 mins
-        }
-        return SECONDS.toSeconds(intervalFromConfig);
     }
 
     private Set<Feature> initStatsbeatFeatures() {
