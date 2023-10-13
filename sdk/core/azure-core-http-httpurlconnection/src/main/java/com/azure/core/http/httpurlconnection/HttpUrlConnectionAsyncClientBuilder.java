@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpClient;
@@ -7,7 +10,9 @@ import com.azure.core.util.Configuration;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.time.Duration;
-import java.util.*;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class HttpUrlConnectionAsyncClientBuilder {
 
@@ -34,7 +39,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
 
     public HttpUrlConnectionAsyncClientBuilder() {
     }
-    
+
     public HttpUrlConnectionAsyncClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
