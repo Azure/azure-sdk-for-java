@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpClient;
@@ -16,12 +17,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.mockito.Mockito;
 import reactor.test.StepVerifier;
 
 import javax.servlet.ServletException;
-import java.net.ConnectException;
 import java.net.InetSocketAddress;
+
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 

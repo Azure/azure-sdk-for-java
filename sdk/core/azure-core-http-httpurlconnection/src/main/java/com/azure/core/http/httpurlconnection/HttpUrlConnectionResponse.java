@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpHeaderName;
@@ -10,7 +13,6 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -61,7 +63,6 @@ class HttpUrlConnectionResponse extends HttpResponse {
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         return FluxUtil.collectBytesFromNetworkResponse(getBody(), getHeaders())
-            // Map empty byte[] into Mono.empty, this matches how the other HttpResponse implementations handle this.
             .flatMap(bytes -> (bytes == null || bytes.length == 0)
                 ? Mono.empty()
                 : Mono.just(bytes));

@@ -1,32 +1,53 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.http.httpurlconnection;
 
-import com.azure.core.http.*;
-import com.azure.core.util.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.core.http.HttpHeader;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.ProtocolException;
+import java.net.Proxy;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
 
 /**
- * This class provides a HttpUrlConnection implementation for the {@link HttpClient} interface.
- * Creating an instance of this class can be achieved by using the {@link HttpUrlConnectionAsyncClientBuilder} class.
- *
- * @see HttpClient
- * @see HttpUrlConnectionAsyncClientBuilder
+ * HttpClient implementation for the HttpUrlConnectionAsyncClient.
  */
 public class HttpUrlConnectionAsyncClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionAsyncClient.class);
-    private final long connectionTimeout; // in milliseconds format for HttpUrlConnection methods
-    private final long readTimeout; // in milliseconds format for HttpUrlConnection methods
+    private final long connectionTimeout;
+    private final long readTimeout;
     private final Duration writeTimeout;
     private final Duration responseTimeout;
     private final ProxyOptions proxyOptions;
@@ -51,6 +72,13 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         return sendAsync(request, context);
     }
 
+    /**
+     * Synchronously send the HttpRequest.
+     *
+     * @param httpRequest The HTTP request being sent
+     * @param context The context of the request, for any additional changes
+     * @return The HttpResponse object
+     */
     @Override
     public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
@@ -65,11 +93,11 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     }
 
     /**
-     * Asynchronously send the HttpRequest
+     * Asynchronously send the HttpRequest.
      *
-     * @param httpRequest The HTTP Request being sent
+     * @param httpRequest The HTTP request being sent
      * @param context The context of the request, for any additional changes
-     * @return A Mono containing a HttpResponse object
+     * @return A Mono containing the HttpResponse object
      */
     private Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
@@ -87,15 +115,21 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     }
 
     /**
-     * Send a PATCH request via a SocketClient
+     * Asynchronously sends a PATCH request via a socket client.
      *
-     * @param httpRequest The HTTP Request being sent
-     * @return A Mono containing a HttpResponse object
+     * @param httpRequest The HTTP request being sent
+     * @return A Mono containing the HttpResponse object
      */
     private Mono<HttpResponse> sendPatchViaSocket(HttpRequest httpRequest) {
         return Mono.fromCallable(() -> sendPatchViaSocketSync(httpRequest));
     }
 
+    /**
+     * Synchronously sends a PATCH request via a socket client.
+     *
+     * @param httpRequest The HTTP request being sent
+     * @return The HttpResponse object
+     */
     private HttpResponse sendPatchViaSocketSync(HttpRequest httpRequest) {
         try {
             return SocketClient.sendPatchRequest(httpRequest);
@@ -115,8 +149,7 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      */
     private HttpURLConnection connect(HttpRequest httpRequest) {
         try {
-            // Make connection
-            HttpURLConnection connection = null;
+            HttpURLConnection connection;
             URL url = httpRequest.getUrl();
 
             if (proxyOptions != null) {
@@ -124,7 +157,6 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 if (address != null) {
                     Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
                     connection = (HttpURLConnection) url.openConnection(proxy);
-
                     if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
                         String token = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
                         if (token != null && token.startsWith("Digest")) {
@@ -151,24 +183,18 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             } else {
                 connection = (HttpURLConnection) url.openConnection();
             }
-
             assert connection != null;
-
             if (connectionTimeout != -1) {
                 connection.setConnectTimeout((int) connectionTimeout);
             }
-
             if (readTimeout != -1) {
                 connection.setReadTimeout((int) readTimeout);
             }
-
-            // SetConnectionRequest
             try {
                 connection.setRequestMethod(httpRequest.getHttpMethod().toString());
             } catch (ProtocolException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
-
             for (HttpHeader header : httpRequest.getHeaders()) {
                 for (String value : header.getValues()) {
                     connection.addRequestProperty(header.getName(), value);
@@ -183,10 +209,10 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     /**
      * Asynchronously sends the content of an HttpRequest via an HttpUrlConnection instance.
      *
-     * @param httpRequest The HTTP Request being sent.
-     * @param progressReporter A reporter for the progress of the request.
-     * @param connection The HttpURLConnection that is being sent to.
-     * @return A Mono that represents the completion of the request sending process.
+     * @param httpRequest The HTTP Request being sent
+     * @param progressReporter A reporter for the progress of the request
+     * @param connection The HttpURLConnection that is being sent to
+     * @return A Mono that represents the completion of the request sending process
      */
     private Mono<Void> sendBodyAsync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
         Mono<Void> requestSendMono = Mono.empty();
@@ -243,10 +269,10 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
     /**
      * Synchronously sends the content of an HttpRequest via an HttpUrlConnection instance.
      *
-     * @param httpRequest The HTTP Request being sent.
-     * @param progressReporter A reporter for the progress of the request.
-     * @param connection The HttpURLConnection that is being sent to.
-     * @return This method does not return any value.
+     * @param httpRequest The HTTP Request being sent
+     * @param progressReporter A reporter for the progress of the request
+     * @param connection The HttpURLConnection that is being sent to
+     * @return This method does not return any value
      */
     private Void sendBodySync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
         Void requestSendMono = null;
@@ -256,16 +282,13 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
             case PUT:
             case DELETE: {
                 connection.setDoOutput(true);
-
                 BinaryData binaryBodyData = httpRequest.getBodyAsBinaryData();
 
                 if (binaryBodyData != null) {
                     byte[] bytes = binaryBodyData.toBytes();
-
                     if (progressReporter != null) {
                         progressReporter.reportProgress(bytes.length);
                     }
-
                     try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
                         os.write(bytes);
                         os.flush();
@@ -298,7 +321,6 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      */
     private HttpResponse receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
         try {
-            // Read response
             int responseCode = connection.getResponseCode();
 
             HttpHeaders responseHeaders = new HttpHeaders();
@@ -306,13 +328,11 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                 if (entry.getKey() != null) {
                     List<String> values = new ArrayList<>();
                     entry.getValue().forEach(v -> values.add(0, v));
-
                     for (String headerValue : values) {
                         responseHeaders.add(HttpHeaderName.fromString(entry.getKey()), headerValue);
                     }
                 }
             }
-
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             try (InputStream errorStream = connection.getErrorStream()) {
                 InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream;
@@ -322,7 +342,6 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
                     outputStream.write(buffer, 0, length);
                 }
             }
-
             connection.disconnect();
 
             return new HttpUrlConnectionResponse(
