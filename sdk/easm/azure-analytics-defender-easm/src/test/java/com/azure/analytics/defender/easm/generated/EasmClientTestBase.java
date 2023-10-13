@@ -30,6 +30,7 @@ public class EasmClientTestBase extends TestProxyTestBase {
     private final String sanitizedRequestUri =  "https://REDACTED/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED/workspaces/REDACTED/";
     private final String requestUriRegex = "https://.*/subscriptions/.*/resourceGroups/.*/workspaces/.*?/";
     protected final String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+    private final String sanitizedUuid = "00000000-0000-0000-0000-000000000000";
     protected EasmClient easmClient;
 
 
@@ -57,7 +58,10 @@ public class EasmClientTestBase extends TestProxyTestBase {
             easmClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         customSanitizers.add(new TestProxySanitizer(requestUriRegex, sanitizedRequestUri, TestProxySanitizerType.URL));
-        interceptorManager.addSanitizers(customSanitizers);
+        customSanitizers.add(new TestProxySanitizer("$..uuid", uuidRegex, sanitizedUuid, TestProxySanitizerType.BODY_KEY));
+        if (getTestMode() != TestMode.LIVE) {
+            interceptorManager.addSanitizers(customSanitizers);
+        }
         easmClient = easmClientbuilder.buildClient();
     }
 }
