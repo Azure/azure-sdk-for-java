@@ -311,7 +311,6 @@ public final class AzureMonitorExporterBuilder {
         sdkBuilder.addMetricExporterCustomizer(
             (metricExporter, configProperties) -> {
                 if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                    // do we need to enable statsbeat in this case?
                     metricExporter = buildMetricExporter(configProperties);
                 }
                 return metricExporter;
