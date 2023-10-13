@@ -23,7 +23,7 @@ import java.util.UUID
 
 //scalastyle:off multiple.string.literals
 //scalastyle:off magic.number
-class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer  {
+class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   val objectMapper = new ObjectMapper()
 
   "Point Writer" can "upsert item" in  {

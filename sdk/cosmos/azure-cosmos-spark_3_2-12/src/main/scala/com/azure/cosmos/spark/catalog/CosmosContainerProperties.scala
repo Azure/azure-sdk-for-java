@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark.catalog
 
-import java.util
-
 private[spark] object CosmosContainerProperties {
   val OnlySystemPropertiesIndexingPolicyName: String = "OnlySystemProperties"
   val AllPropertiesIndexingPolicyName: String = "AllProperties"
