@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>Authorization Code authentication in Azure is a type of authentication mechanism that allows users to
- * authenticate with <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active
- * Directory (Azure AD)</a> and obtain an authorization code that can be used to request an access token to access
+ * authenticate with <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * and obtain an authorization code that can be used to request an access token to access
  * Azure resources. It is a widely used authentication mechanism and is supported by a wide range of Azure services
  * and applications. It provides a secure and scalable way to authenticate users and grant them access to Azure
  * resources.
@@ -68,7 +68,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
      * @param clientSecret the client secret of the application
      * @param tenantId the tenant ID of the application
      * @param authCode the Oauth 2.0 authorization code grant
-     * @param redirectUri the redirect URI used to authenticate to Azure Active Directory
+     * @param redirectUri the redirect URI used to authenticate to Microsoft Entra ID
      * @param identityClientOptions the options for configuring the identity client
      */
     AuthorizationCodeCredential(String clientId, String clientSecret, String tenantId, String authCode,

@@ -16,14 +16,14 @@ public final class AzureFileShareRecoveryPointTests {
         AzureFileShareRecoveryPoint model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"AzureFileShareRecoveryPoint\",\"recoveryPointType\":\"ceacvlhvygdy\",\"recoveryPointTime\":\"2021-04-02T04:25:09Z\",\"fileShareSnapshotUri\":\"rtwnawjslbi\",\"recoveryPointSizeInGB\":1632414232,\"recoveryPointProperties\":{\"expiryTime\":\"cyztsfmznbaeqp\",\"ruleName\":\"hqnrn\",\"isSoftDeleted\":false}}")
+                    "{\"objectType\":\"AzureFileShareRecoveryPoint\",\"recoveryPointType\":\"ycnunvjsrtk\",\"recoveryPointTime\":\"2021-11-28T07:38:04Z\",\"fileShareSnapshotUri\":\"opqgikyzirtxdyux\",\"recoveryPointSizeInGB\":1444158285,\"recoveryPointProperties\":{\"expiryTime\":\"psew\",\"ruleName\":\"oi\",\"isSoftDeleted\":false}}")
                 .toObject(AzureFileShareRecoveryPoint.class);
-        Assertions.assertEquals("ceacvlhvygdy", model.recoveryPointType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T04:25:09Z"), model.recoveryPointTime());
-        Assertions.assertEquals("rtwnawjslbi", model.fileShareSnapshotUri());
-        Assertions.assertEquals(1632414232, model.recoveryPointSizeInGB());
-        Assertions.assertEquals("cyztsfmznbaeqp", model.recoveryPointProperties().expiryTime());
-        Assertions.assertEquals("hqnrn", model.recoveryPointProperties().ruleName());
+        Assertions.assertEquals("ycnunvjsrtk", model.recoveryPointType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-28T07:38:04Z"), model.recoveryPointTime());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.fileShareSnapshotUri());
+        Assertions.assertEquals(1444158285, model.recoveryPointSizeInGB());
+        Assertions.assertEquals("psew", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("oi", model.recoveryPointProperties().ruleName());
         Assertions.assertEquals(false, model.recoveryPointProperties().isSoftDeleted());
     }
 
@@ -31,22 +31,19 @@ public final class AzureFileShareRecoveryPointTests {
     public void testSerialize() throws Exception {
         AzureFileShareRecoveryPoint model =
             new AzureFileShareRecoveryPoint()
-                .withRecoveryPointType("ceacvlhvygdy")
-                .withRecoveryPointTime(OffsetDateTime.parse("2021-04-02T04:25:09Z"))
-                .withFileShareSnapshotUri("rtwnawjslbi")
-                .withRecoveryPointSizeInGB(1632414232)
+                .withRecoveryPointType("ycnunvjsrtk")
+                .withRecoveryPointTime(OffsetDateTime.parse("2021-11-28T07:38:04Z"))
+                .withFileShareSnapshotUri("opqgikyzirtxdyux")
+                .withRecoveryPointSizeInGB(1444158285)
                 .withRecoveryPointProperties(
-                    new RecoveryPointProperties()
-                        .withExpiryTime("cyztsfmznbaeqp")
-                        .withRuleName("hqnrn")
-                        .withIsSoftDeleted(false));
+                    new RecoveryPointProperties().withExpiryTime("psew").withRuleName("oi").withIsSoftDeleted(false));
         model = BinaryData.fromObject(model).toObject(AzureFileShareRecoveryPoint.class);
-        Assertions.assertEquals("ceacvlhvygdy", model.recoveryPointType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T04:25:09Z"), model.recoveryPointTime());
-        Assertions.assertEquals("rtwnawjslbi", model.fileShareSnapshotUri());
-        Assertions.assertEquals(1632414232, model.recoveryPointSizeInGB());
-        Assertions.assertEquals("cyztsfmznbaeqp", model.recoveryPointProperties().expiryTime());
-        Assertions.assertEquals("hqnrn", model.recoveryPointProperties().ruleName());
+        Assertions.assertEquals("ycnunvjsrtk", model.recoveryPointType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-28T07:38:04Z"), model.recoveryPointTime());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.fileShareSnapshotUri());
+        Assertions.assertEquals(1444158285, model.recoveryPointSizeInGB());
+        Assertions.assertEquals("psew", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("oi", model.recoveryPointProperties().ruleName());
         Assertions.assertEquals(false, model.recoveryPointProperties().isSoftDeleted());
     }
 }

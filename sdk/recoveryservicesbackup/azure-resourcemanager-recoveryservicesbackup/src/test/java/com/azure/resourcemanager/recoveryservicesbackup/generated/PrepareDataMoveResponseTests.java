@@ -16,23 +16,24 @@ public final class PrepareDataMoveResponseTests {
         PrepareDataMoveResponse model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"iqxf\",\"sourceVaultProperties\":{\"kpqhjpenuygbq\":\"qttv\"}}")
+                    "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"lwntsjgqrs\",\"sourceVaultProperties\":{\"szizoyuelyetndnb\":\"ruuuybnch\"}}")
                 .toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("iqxf", model.correlationId());
-        Assertions.assertEquals("qttv", model.sourceVaultProperties().get("kpqhjpenuygbq"));
+        Assertions.assertEquals("lwntsjgqrs", model.correlationId());
+        Assertions.assertEquals("ruuuybnch", model.sourceVaultProperties().get("szizoyuelyetndnb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrepareDataMoveResponse model =
             new PrepareDataMoveResponse()
-                .withCorrelationId("iqxf")
-                .withSourceVaultProperties(mapOf("kpqhjpenuygbq", "qttv"));
+                .withCorrelationId("lwntsjgqrs")
+                .withSourceVaultProperties(mapOf("szizoyuelyetndnb", "ruuuybnch"));
         model = BinaryData.fromObject(model).toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("iqxf", model.correlationId());
-        Assertions.assertEquals("qttv", model.sourceVaultProperties().get("kpqhjpenuygbq"));
+        Assertions.assertEquals("lwntsjgqrs", model.correlationId());
+        Assertions.assertEquals("ruuuybnch", model.sourceVaultProperties().get("szizoyuelyetndnb"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

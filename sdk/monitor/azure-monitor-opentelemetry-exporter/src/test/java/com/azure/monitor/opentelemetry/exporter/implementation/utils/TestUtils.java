@@ -70,16 +70,21 @@ public final class TestUtils {
 
     public static OpenTelemetrySdk createOpenTelemetrySdk(
         HttpPipeline httpPipeline, Map<String, String> configuration) {
+        return createOpenTelemetrySdk(httpPipeline, configuration, TRACE_CONNECTION_STRING);
 
+    }
+
+    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline, Map<String, String> configuration, String connectionString) {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
         new AzureMonitorExporterBuilder()
-            .connectionString(TRACE_CONNECTION_STRING)
+            .connectionString(connectionString)
             .httpPipeline(httpPipeline)
             .build(sdkBuilder);
 
         return sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
     }
+
 
     private TestUtils() {
     }

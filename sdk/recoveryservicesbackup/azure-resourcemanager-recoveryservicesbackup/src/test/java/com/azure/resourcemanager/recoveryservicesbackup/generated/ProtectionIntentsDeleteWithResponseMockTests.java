@@ -58,6 +58,6 @@ public final class ProtectionIntentsDeleteWithResponseMockTests {
 
         manager
             .protectionIntents()
-            .deleteWithResponse("pjfe", "qerpptcbgqnzm", "h", "ilialwcjgc", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("jubyqjfkakfq", "rke", "yildudxjascow", "f", com.azure.core.util.Context.NONE);
     }
 }
