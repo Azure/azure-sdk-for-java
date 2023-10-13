@@ -12,6 +12,9 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.StatusCode;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import reactor.core.publisher.Mono;
 
@@ -20,11 +23,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Collections.singleton;
 
 public class TelemetryPipeline {
 
@@ -143,12 +145,13 @@ public class TelemetryPipeline {
             return;
         }
 
-        listener.onResponse(request, new TelemetryPipelineResponse(responseCode, responseBody));
+        TelemetryPipelineResponse telemetryPipelineResponse = new TelemetryPipelineResponse(responseCode, responseBody);
+        listener.onResponse(request, telemetryPipelineResponse);
         if (responseCode == 200) {
             result.succeed();
         } else {
-            if (responseCode == 400 && statsbeatModule != null) {
-                LOGGER.warning("400 status code is returned. It indicates that customer is using an invalid ikey");
+            if (responseCode == 400 && statsbeatModule != null && telemetryPipelineResponse.invalidInstrumentationKey()) {
+                LOGGER.warning("400 status code is returned. It indicates that customer is using an invalid instrumentation key.");
                 statsbeatModule.shutdown();
             }
             result.fail();
