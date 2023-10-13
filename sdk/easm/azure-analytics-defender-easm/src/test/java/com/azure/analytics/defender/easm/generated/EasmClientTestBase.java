@@ -39,11 +39,11 @@ public class EasmClientTestBase extends TestProxyTestBase {
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
         EasmClientBuilder easmClientbuilder =
                 new EasmClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://REDACTED"))
+                        .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "00000000-0000-0000-0000-000000000000"))
                         .resourceGroupName(
-                                Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
-                        .workspaceName(Configuration.getGlobalConfiguration().get("WORKSPACENAME", "workspacename"))
+                                Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "REDACTED"))
+                        .workspaceName(Configuration.getGlobalConfiguration().get("WORKSPACENAME", "REDACTED"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
