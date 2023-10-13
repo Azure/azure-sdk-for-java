@@ -14,6 +14,10 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpURLConnection,
+ * first introduced in JDK 1.1.
+ */
 public class HttpUrlConnectionAsyncClientBuilder {
 
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
@@ -37,9 +41,30 @@ public class HttpUrlConnectionAsyncClientBuilder {
     private ProxyOptions proxyOptions;
     private Configuration configuration;
 
+    /**
+     * HttpUrlConnectionAsyncClientBuilder.
+     */
     public HttpUrlConnectionAsyncClientBuilder() {
     }
 
+    /**
+     * Sets the connection timeout.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.core.http.httpurlconnection.HttpUrlConnectionAsyncClientBuilder.connectionTimeout#Duration -->
+     * <pre>
+     * HttpClient client = new HttpUrlConnectionAsyncClientBuilder&#40;&#41;
+     *         .connectionTimeout&#40;Duration.ofSeconds&#40;250&#41;&#41; &#47;&#47; connection timeout of 250 seconds
+     *         .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.httpurlconnection.HttpUrlConnectionAsyncClientBuilder.connectionTimeout#Duration -->
+     *
+     * The default connection timeout is 60 seconds.
+     *
+     * @param connectionTimeout the connection timeout
+     * @return the updated HttpUrlConnectionAsyncClientBuilder object
+     */
     public HttpUrlConnectionAsyncClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
@@ -61,17 +86,14 @@ public class HttpUrlConnectionAsyncClientBuilder {
     }
 
     static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
-        // Timeout is null, use the default timeout.
         if (configuredTimeout == null) {
             return defaultTimeout;
         }
 
-        // Timeout is less than or equal to zero, return no timeout.
         if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
             return Duration.ZERO;
         }
 
-        // Return the maximum of the timeout period and the minimum allowed timeout period.
         if (configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0) {
             return MINIMUM_TIMEOUT;
         } else  {
@@ -79,16 +101,50 @@ public class HttpUrlConnectionAsyncClientBuilder {
         }
     }
 
+    /**
+     * Sets the proxy.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.core.http.httpurlconnection.HttpUrlConnectionAsyncClientBuilder.proxy#ProxyOptions -->
+     * <pre>
+     * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
+     * final int proxyPort = 9999; &#47;&#47; Proxy port
+     * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
+     *         new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
+     * HttpClient client = new HttpUrlConnectionAsyncClientBuilder&#40;&#41;
+     *         .proxy&#40;proxyOptions&#41;
+     *         .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.httpurlconnection.HttpUrlConnectionAsyncClientBuilder.proxy#ProxyOptions -->
+     *
+     * @param proxyOptions The proxy configuration to use.
+     * @return the updated HttpUrlConnectionAsyncClientBuilder object
+     */
     public HttpUrlConnectionAsyncClientBuilder proxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }
 
+    /**
+     * Sets the configuration store that is used during construction of the HTTP client.
+     * <p>
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated HttpUrlConnectionAsyncClientBuilder object.
+     */
     public HttpUrlConnectionAsyncClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
 
+    /**
+     * Build a HttpClient with current configurations.
+     *
+     * @return a {@link HttpClient}.
+     */
     public HttpClient build() {
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()

@@ -33,7 +33,7 @@ class SocketClient {
      * Opens a socket connection, then writes the PATCH request across the
      * connection and reads the response
      *
-     * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
+     * @param httpRequest The HTTP Request being sent
      * @return an instance of HttpUrlConnectionResponse
      */
     public static HttpUrlConnectionResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
@@ -57,8 +57,8 @@ class SocketClient {
      * stream, then calls buildResponse to get an instance of HttpUrlConnectionResponse
      * from the input stream
      *
-     * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
-     * @param socket {@link java.net.Socket} instance
+     * @param httpRequest The HTTP Request being sent
+     * @param socket An instance of the SocketClient
      * @return an instance of HttpUrlConnectionResponse
      */
     private static HttpUrlConnectionResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
@@ -71,7 +71,6 @@ class SocketClient {
              OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
 
             buildAndSend(httpRequest, out);
-
             HttpUrlConnectionResponse response = buildResponse(httpRequest, in);
 
             String redirectLocation = response.getHeaders().stream()
@@ -96,8 +95,8 @@ class SocketClient {
      * Converts an instance of HttpRequest to a String representation for sending
      * over the output stream
      *
-     * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
-     * @param out {@link java.io.OutputStreamWriter } output stream for writing the request
+     * @param httpRequest The HTTP Request being sent
+     * @param out output stream for writing the request
      */
     private static void buildAndSend(HttpRequest httpRequest, OutputStreamWriter out) throws IOException {
         final StringBuilder request = new StringBuilder();
@@ -116,7 +115,6 @@ class SocketClient {
                     .append("\r\n"));
             }
         }
-        // Add the body if there is a body to add
         if (httpRequest.getBody() != null) {
             request.append("\r\n")
                 .append(httpRequest.getBodyAsBinaryData().toString())
@@ -131,8 +129,8 @@ class SocketClient {
      * Reads the response from the input stream and extracts the information
      * needed to construct an instance of HttpUrlConnectionResponse
      *
-     * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
-     * @param reader {@link java.io.BufferedReader} instance
+     * @param httpRequest The HTTP Request being sent
+     * @param reader the input stream from the socket
      * @return an instance of HttpUrlConnectionResponse
      */
     private static HttpUrlConnectionResponse buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {

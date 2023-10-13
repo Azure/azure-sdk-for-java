@@ -63,7 +63,6 @@ class HttpUrlConnectionResponse extends HttpResponse {
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         return FluxUtil.collectBytesFromNetworkResponse(getBody(), getHeaders())
-            // Map empty byte[] into Mono.empty, this matches how the other HttpResponse implementations handle this.
             .flatMap(bytes -> (bytes == null || bytes.length == 0)
                 ? Mono.empty()
                 : Mono.just(bytes));
