@@ -34,9 +34,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.zip.GZIPInputStream;
@@ -51,6 +49,11 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;"
             + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
             + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
+
+    private static final String STATSBEAT_CONNECTION_STRING =
+        "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
+        + "IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/;"
+        + "LiveEndpoint=https://westus.livediagnostics.monitor.azure.com/";
     private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-000000000000";
 
     @Test
@@ -192,9 +195,64 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // TODO (trask) also export and validate logs in this test
     }
 
+    @Test
+    public void testStatsbeat() throws Exception {
+        // create the OpenTelemetry SDK
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
+        OpenTelemetrySdk openTelemetry =
+            TestUtils.createOpenTelemetrySdk(
+                getHttpPipeline(customValidationPolicy), getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
+
+        // generate a metric
+        generateMetric(openTelemetry);
+
+        // close to flush
+        openTelemetry.close();
+
+        Thread.sleep(1000);
+
+        // wait for export
+        countDownLatch.await(10, SECONDS);
+        assertThat(customValidationPolicy.url)
+            .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
+        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(4);
+
+        TelemetryItem attachStatsbeat =
+            customValidationPolicy.actualTelemetryItems.stream()
+                .filter(item -> item.getName().equals("Statsbeat"))
+                .filter(item -> {
+                    MetricsData metricsData = (MetricsData) item.getData().getBaseData();
+                    return metricsData.getMetrics().stream().allMatch(metricDataPoint -> metricDataPoint.getName().equals("Attach"));
+                })
+                .findFirst()
+                .get();
+        validateAttachStatsbeat(attachStatsbeat);
+
+        TelemetryItem featureStatsbeat =
+            customValidationPolicy.actualTelemetryItems.stream()
+                .filter(item -> item.getName().equals("Statsbeat"))
+                .filter(item -> {
+                    MetricsData metricsData = (MetricsData) item.getData().getBaseData();
+                    return metricsData.getMetrics().stream().allMatch(metricDataPoint -> metricDataPoint.getName().equals("Feature"));
+                })
+                .findFirst()
+                .get();
+        validateFeatureStatsbeat(featureStatsbeat);
+    }
+
     private static Map<String, String> getConfiguration() {
         return Collections.singletonMap("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV);
     }
+
+    private static Map<String, String> getStatsbeatConfiguration() {
+        Map<String, String> map = new HashMap<>(3);
+        map.put("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV);
+        map.put("STATSBEAT_LONG_INTERVAL_SECONDS", "1");
+        map.put("STATSBEAT_SHORT_INTERVAL_SECONDS", "1");
+        return map;
+    }
+
 
     @SuppressWarnings("try")
     private static void generateSpan(OpenTelemetry openTelemetry) {
@@ -240,8 +298,23 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             .containsExactly(entry("color", "red"), entry("name", "apple"));
     }
 
+    private static void validateAttachStatsbeat(TelemetryItem telemetryItem) {
+        assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
+        MetricsData actualMetricsData = (MetricsData) telemetryItem.getData().getBaseData();
+        assertThat(actualMetricsData.getMetrics().get(0).getName()).isEqualTo("Attach");
+        assertThat(actualMetricsData.getProperties()).contains(entry("rp", "unknown"), entry("attach", "Manual"), entry("language", "java"));
+        assertThat(actualMetricsData.getProperties()).containsKeys("attach", "cikey", "language", "os", "rp", "runtimeVersion", "version");
+    }
+
+    private static void validateFeatureStatsbeat(TelemetryItem telemetryItem) {
+        assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
+        MetricsData actualMetricsData = (MetricsData) telemetryItem.getData().getBaseData();
+        assertThat(actualMetricsData.getMetrics().get(0).getName()).isEqualTo("Feature");
+        assertThat(actualMetricsData.getProperties()).contains(entry("type", "0"), entry("language", "java"));
+        assertThat(actualMetricsData.getProperties()).containsKeys("feature", "cikey", "language", "os", "rp", "runtimeVersion", "version");
+    }
+
     private static void validateMetric(TelemetryItem telemetryItem) {
-        assertThat(telemetryItem.getName()).isEqualTo("Metric");
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
         assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
         assertThat(telemetryItem.getTags())
