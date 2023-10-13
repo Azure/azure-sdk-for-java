@@ -20,6 +20,8 @@ public final class RawVectorQuery extends VectorQuery {
     /*
      * The kind of vector query being performed.
      */
+    private static final VectorQueryKind KIND = VectorQueryKind.VECTOR;
+
     /*
      * The vector representation of a search query.
      */
@@ -72,7 +74,7 @@ public final class RawVectorQuery extends VectorQuery {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(VectorQueryKind.VECTOR, null));
+        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
         jsonWriter.writeStringField("fields", getFields());
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
@@ -99,9 +101,11 @@ public final class RawVectorQuery extends VectorQuery {
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!VectorQueryKind.VECTOR.equals(kind)) {
+                            if (!KIND.equals(kind)) {
                                 throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to '\"VectorQueryKind.VECTOR\"'. The found 'kind' was '"
+                                        "'kind' was expected to be non-null and equal to '"
+                                                + KIND
+                                                + "'. The found 'kind' was '"
                                                 + kind
                                                 + "'.");
                             }

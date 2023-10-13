@@ -1096,8 +1096,6 @@ public final class SearchAsyncClient {
             .setScoringProfile(options.getScoringProfile())
             .setSemanticConfiguration(options.getSemanticConfigurationName())
             .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
-            .setQueryLanguage(options.getQueryLanguage())
-            .setSpeller(options.getSpeller())
             .setAnswers(createSearchRequestAnswers(options))
             .setSearchMode(options.getSearchMode())
             .setScoringStatistics(options.getScoringStatistics())
@@ -1106,12 +1104,9 @@ public final class SearchAsyncClient {
             .setSkip(options.getSkip())
             .setTop(options.getTop())
             .setCaptions(createSearchRequestCaptions(options))
-            .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()))
             .setSemanticErrorHandling(options.getSemanticErrorHandling())
             .setSemanticMaxWaitInMilliseconds(options.getSemanticMaxWaitInMilliseconds())
-            .setDebug(options.getDebug())
-            .setVectorQueries(options.getVectorQueries())
-            .setSemanticQuery(options.getSemanticQuery());
+            .setVectorQueries(options.getVectorQueries());
     }
 
     static String createSearchRequestAnswers(SearchOptions searchOptions) {
@@ -1128,9 +1123,9 @@ public final class SearchAsyncClient {
 
         if (answersCount != null && answerThreshold != null) {
             return answerString + "|count-" + answersCount + ",threshold-" + answerThreshold;
-        } else if (answersCount != null && answerThreshold == null) {
+        } else if (answersCount != null) {
             return answerString + "|count-" + answersCount;
-        } else if (answersCount == null && answerThreshold != null) {
+        } else if (answerThreshold != null) {
             return answerString + "|threshold-" + answerThreshold;
         } else {
             return answerString;
