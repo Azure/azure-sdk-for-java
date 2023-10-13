@@ -52,6 +52,7 @@ import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -310,6 +311,7 @@ public final class AzureMonitorExporterBuilder {
         sdkBuilder.addMetricExporterCustomizer(
             (metricExporter, configProperties) -> {
                 if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
+                    // do we need to enable statsbeat in this case?
                     metricExporter = buildMetricExporter(configProperties);
                 }
                 return metricExporter;
@@ -354,25 +356,13 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
-
         return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter);
     }
 
     private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), createDefaultsPopulator(configProperties), builtTelemetryItemExporter::send);
-        if (connectionString != null) {
-            StatsbeatModule statsbeatModule = new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
-            statsbeatModule.start(
-                builtTelemetryItemExporter,
-                this::getStatsbeatConnectionString,
-                connectionString::getInstrumentationKey,
-                false,
-                getStatsbeaLongInterval(configProperties.getInt(STATSBEAT_LONG_INTERVAL_SECONDS)),
-                getStatsbeatShortInterval(configProperties.getInt(STATSBEAT_SHORT_INTERVAL_SECONDS)),
-                false,
-                initStatsbeatFeatures());
-        }
+        builtTelemetryItemExporter.getTelemetryPipeline().setStatsbeatModule(initStatsbeatModule(configProperties));
         return new AzureMonitorMetricExporter(
             new MetricDataMapper(createDefaultsPopulator(configProperties), true), builtTelemetryItemExporter);
     }
@@ -479,10 +469,26 @@ public final class AzureMonitorExporterBuilder {
             .build();
     }
 
-    private TelemetryItemExporter createTelemetryItemExporter() {
-        // TODO (heya) will add StatsbeatModule when enable-statsbeat PR is merged.
-        TelemetryPipeline pipeline = new TelemetryPipeline(builtHttpPipeline, null);
+    @Nullable
+    private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
+        StatsbeatModule statsbeatModule = null;
+        if (connectionString != null) {
+            statsbeatModule = new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
+            statsbeatModule.start(
+                builtTelemetryItemExporter,
+                this::getStatsbeatConnectionString,
+                connectionString::getInstrumentationKey,
+                false,
+                getStatsbeaLongInterval(configProperties.getInt(STATSBEAT_LONG_INTERVAL_SECONDS)),
+                getStatsbeatShortInterval(configProperties.getInt(STATSBEAT_SHORT_INTERVAL_SECONDS)),
+                false,
+                initStatsbeatFeatures());
+        }
+        return statsbeatModule;
+    }
 
+    private TelemetryItemExporter createTelemetryItemExporter() {
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline);
         File tempDir =
             TempDirs.getApplicationInsightsTempDir(
                 LOGGER,
@@ -492,16 +498,16 @@ public final class AzureMonitorExporterBuilder {
         if (tempDir != null) {
             telemetryItemExporter =
                 new TelemetryItemExporter(
-                    pipeline,
+                    telemetryPipeline,
                     new LocalStorageTelemetryPipelineListener(
                         50, // default to 50MB
                         TempDirs.getSubDir(tempDir, "telemetry"),
-                        pipeline,
+                        telemetryPipeline,
                         LocalStorageStats.noop(),
                         false));
         } else {
             telemetryItemExporter = new TelemetryItemExporter(
-                pipeline,
+                telemetryPipeline,
                 TelemetryPipelineListener.noop());
         }
         return telemetryItemExporter;

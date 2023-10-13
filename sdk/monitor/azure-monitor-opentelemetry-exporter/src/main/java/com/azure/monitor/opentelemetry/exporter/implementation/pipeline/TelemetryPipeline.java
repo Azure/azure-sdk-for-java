@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.StatusCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,6 +28,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.list;
 import static java.util.Collections.singleton;
 
 public class TelemetryPipeline {
@@ -38,16 +40,14 @@ public class TelemetryPipeline {
     private static final HttpHeaderName LOCATION =  HttpHeaderName.fromString("Location");
 
     private final HttpPipeline pipeline;
-    @Nullable
-    private final StatsbeatModule statsbeatModule;
+    private StatsbeatModule statsbeatModule;
 
     // key is connectionString, value is redirectUrl
     private final Map<String, URL> redirectCache =
         Collections.synchronizedMap(new BoundedHashMap<>(100));
 
-    public TelemetryPipeline(HttpPipeline pipeline, StatsbeatModule statsbeatModule) {
+    public TelemetryPipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
-        this.statsbeatModule = statsbeatModule;
     }
 
     public CompletableResultCode send(
@@ -71,6 +71,11 @@ public class TelemetryPipeline {
             listener.onException(request, t.getMessage() + " (" + request.getUrl() + ")", t);
             return CompletableResultCode.ofFailure();
         }
+    }
+
+    // Statsbeat is enabled when metric exporter is used
+    public void setStatsbeatModule(StatsbeatModule statsbeatModule) {
+        this.statsbeatModule = statsbeatModule;
     }
 
     private static URL getFullIngestionUrl(String ingestionEndpoint) {
@@ -152,9 +157,14 @@ public class TelemetryPipeline {
         if (responseCode == 200) {
             result.succeed();
         } else {
-            if (responseCode == 400 && statsbeatModule != null && telemetryPipelineResponse.invalidInstrumentationKey()) {
-                LOGGER.warning("400 status code is returned for an invalid customer's instrumentation key. Shutting down Statsbeat.");
+            if (responseCode == 400
+                && statsbeatModule != null
+                && telemetryPipelineResponse.invalidInstrumentationKey()) {
+                LOGGER.warning("400 status code is returned for an invalid customer's instrumentation key. Shutting down Statsbeat and its listeners.");
                 statsbeatModule.shutdown();
+                if (listener instanceof LocalStorageTelemetryPipelineListener) {
+                    listener.shutdown();
+                }
             }
             result.fail();
         }

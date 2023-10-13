@@ -64,7 +64,7 @@ public class TelemetryItemExporterTest {
         HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
             .httpClient(recordingHttpClient)
             .tracer(new NoopTracer());
-        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
 
         return new TelemetryItemExporter(
             telemetryPipeline,
