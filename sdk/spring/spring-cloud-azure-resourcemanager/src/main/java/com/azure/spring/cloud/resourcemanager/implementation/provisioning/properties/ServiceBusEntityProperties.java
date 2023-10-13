@@ -1,43 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.stream.binder.servicebus.core.properties;
-
-import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
+package com.azure.spring.cloud.resourcemanager.implementation.provisioning.properties;
 
 import java.time.Duration;
 
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
-
 /**
- * Service Bus consumer properties.
+ * Entity configuration properties of Service Bus.
  */
-public class ServiceBusConsumerProperties extends ProcessorProperties implements ServiceBusEntityOptionsProvider {
-
-    private boolean requeueRejected;
-
-    private Long maxSizeInMegabytes = 1024L;
-    private Duration defaultMessageTimeToLive = MAX_DURATION;
+public class ServiceBusEntityProperties {
+    private Long maxSizeInMegabytes;
+    private Duration defaultMessageTimeToLive;
 
     /**
-     * Controls if the failed messages are routed to the DLQ
-     *
-     * @return boolean, default : false
+     * Get the maxSizeInMegabytes property.
+     * @return the maxSizeInMegabytes value.
      */
-    public boolean isRequeueRejected() {
-        return requeueRejected;
-    }
-
-    /**
-     * Set checkpoint mode.
-     *
-     * @param requeueRejected the requeue Rejected
-     */
-    public void setRequeueRejected(boolean requeueRejected) {
-        this.requeueRejected = requeueRejected;
-    }
-
-    @Override
     public Long getMaxSizeInMegabytes() {
         return maxSizeInMegabytes;
     }
@@ -50,7 +28,10 @@ public class ServiceBusConsumerProperties extends ProcessorProperties implements
         this.maxSizeInMegabytes = maxSizeInMegabytes;
     }
 
-    @Override
+    /**
+     * Set the defaultMessageTimeToLive property.
+     * @return the defaultMessageTimeToLive value.
+     */
     public Duration getDefaultMessageTimeToLive() {
         return defaultMessageTimeToLive;
     }
@@ -64,4 +45,5 @@ public class ServiceBusConsumerProperties extends ProcessorProperties implements
     public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
         this.defaultMessageTimeToLive = defaultMessageTimeToLive;
     }
+
 }
