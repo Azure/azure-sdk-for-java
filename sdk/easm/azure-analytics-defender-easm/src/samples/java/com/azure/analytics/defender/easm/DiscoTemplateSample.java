@@ -15,7 +15,7 @@ import java.util.Scanner;
  * This sample shows you how to use the discovery_groups module to create discovery groups using templates provided by the discovery_templates module of the EasmClient
  *
  * Set the following environment variables before running the sample:
- *     1) SUBSCRIPTIONID - the subscription id for your resource
+ *     1) SUBSCRIPTION_ID - the subscription id for your resource
  *     2) WORKSPACENAME - the workspace name for your resource
  *     3) RESOURCEGROUPNAME - the resource group for your resource
  *     4) REGION - the azure region your resource is in
