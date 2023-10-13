@@ -433,3 +433,20 @@ directive:
   where: $.definitions.QueryResultDocumentSemanticFieldState
   transform: $["x-ms-enum"].name = "SemanticFieldState";
 ```
+
+### Add Edm.Single to SearchFieldDataType
+
+Adds `Edm.Single` to `SearchFieldDataType` to support vector search.
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.SearchFieldDataType
+  transform: >
+    $.enum.push("Edm.Single");
+    $["x-ms-enum"].values.push({
+      "value": "Edm.Single",
+      "name": "Vector",
+      "description": "Indicates that a field contains a single-precision floating point number. This is only valid when used with Collection(Edm.Single)."
+    });  
+```

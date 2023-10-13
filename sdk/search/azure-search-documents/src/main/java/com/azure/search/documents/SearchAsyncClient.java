@@ -976,13 +976,6 @@ public final class SearchAsyncClient {
         return new SuggestPagedFlux(() -> withContext(context -> suggest(suggestRequest, context)));
     }
 
-    SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions, Context context) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText,
-            suggesterName, Utility.ensureSuggestOptions(suggestOptions));
-
-        return new SuggestPagedFlux(() -> suggest(suggestRequest, context));
-    }
-
     private Mono<SuggestPagedResponse> suggest(SuggestRequest suggestRequest, Context context) {
         return restClient.getDocuments().suggestPostWithResponseAsync(suggestRequest, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)

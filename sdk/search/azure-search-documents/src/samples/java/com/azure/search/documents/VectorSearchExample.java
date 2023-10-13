@@ -23,7 +23,6 @@ import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.CaptionResult;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaptionType;
-import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RawVectorQuery;
 import com.azure.search.documents.models.SearchOptions;
@@ -247,7 +246,6 @@ public class VectorSearchExample {
         SearchOptions searchOptions = new SearchOptions()
             .setVectorQueries(searchQueryVector)
             .setQueryType(QueryType.SEMANTIC)
-            .setQueryLanguage(QueryLanguage.EN_US)
             .setSemanticConfigurationName("my-semantic-config")
             .setQueryCaption(QueryCaptionType.EXTRACTIVE)
             .setQueryAnswer(QueryAnswerType.EXTRACTIVE);

@@ -15,7 +15,6 @@ import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import reactor.util.annotation.Nullable;
@@ -273,7 +272,6 @@ public final class FieldBuilder {
         String analyzerName = null;
         String searchAnalyzerName = null;
         String indexAnalyzerName = null;
-        String normalizerName;
         String[] synonymMapNames = null;
 
         if (simpleField != null) {
@@ -282,7 +280,6 @@ public final class FieldBuilder {
             filterable = simpleField.isFilterable();
             sortable = simpleField.isSortable();
             facetable = simpleField.isFacetable();
-            normalizerName = simpleField.normalizerName();
         } else {
             key = searchableField.isKey();
             hidden = searchableField.isHidden();
@@ -292,7 +289,6 @@ public final class FieldBuilder {
             analyzerName = searchableField.analyzerName();
             searchAnalyzerName = searchableField.searchAnalyzerName();
             indexAnalyzerName = searchableField.indexAnalyzerName();
-            normalizerName = searchableField.normalizerName();
             synonymMapNames = searchableField.synonymMapNames();
         }
 
@@ -302,7 +298,6 @@ public final class FieldBuilder {
         boolean hasAnalyzerName = !CoreUtils.isNullOrEmpty(analyzerName);
         boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
         boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
-        boolean hasNormalizerName = !CoreUtils.isNullOrEmpty(normalizerName);
         if (searchable) {
             if (!isStringOrCollectionString) {
                 errorMessage.append("SearchField can only be used on string properties. Property '")
@@ -316,13 +311,6 @@ public final class FieldBuilder {
                 || (hasAnalyzerName && (hasSearchAnalyzerName || hasIndexAnalyzerName))) {
                 errorMessage.append("Please specify either analyzer or both searchAnalyzer and indexAnalyzer. ");
             }
-        }
-
-        // Any field is allowed to have a normalizer but it must be either a STRING or Collection(STRING) and have one
-        // of filterable, sortable, or facetable set to true.
-        if (hasNormalizerName && (!isStringOrCollectionString || !(filterable || sortable || facetable))) {
-            errorMessage.append("A field with a normalizer name can only be used on string properties and must have ")
-                .append("one of filterable, sortable, or facetable set to true. ");
         }
 
         if (errorMessage.length() > 0) {
@@ -341,10 +329,6 @@ public final class FieldBuilder {
         } else if (hasSearchAnalyzerName || hasIndexAnalyzerName) {
             searchField.setSearchAnalyzerName(LexicalAnalyzerName.fromString(searchAnalyzerName));
             searchField.setIndexAnalyzerName(LexicalAnalyzerName.fromString(indexAnalyzerName));
-        }
-
-        if (hasNormalizerName) {
-            searchField.setNormalizerName(LexicalNormalizerName.fromString(normalizerName));
         }
 
         if (!CoreUtils.isNullOrEmpty(synonymMapNames)) {
