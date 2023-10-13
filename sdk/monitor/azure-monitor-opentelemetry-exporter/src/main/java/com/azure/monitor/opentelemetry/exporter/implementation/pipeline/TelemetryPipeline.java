@@ -153,7 +153,7 @@ public class TelemetryPipeline {
             result.succeed();
         } else {
             if (responseCode == 400 && statsbeatModule != null && telemetryPipelineResponse.invalidInstrumentationKey()) {
-                LOGGER.warning("400 status code is returned. It indicates that customer is using an invalid instrumentation key.");
+                LOGGER.warning("400 status code is returned for an invalid customer's instrumentation key. Shutting down Statsbeat.");
                 statsbeatModule.shutdown();
             }
             result.fail();
