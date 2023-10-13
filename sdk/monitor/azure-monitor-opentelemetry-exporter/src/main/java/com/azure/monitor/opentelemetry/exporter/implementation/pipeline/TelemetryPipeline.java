@@ -7,8 +7,10 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import reactor.core.publisher.Mono;
@@ -26,6 +28,8 @@ import java.util.Map;
 
 public class TelemetryPipeline {
 
+    private static final ClientLogger LOGGER = new ClientLogger(TelemetryPipeline.class);
+
     // Based on Stamp specific redirects design doc
     private static final int MAX_REDIRECTS = 10;
     private static final HttpHeaderName LOCATION =  HttpHeaderName.fromString("Location");
@@ -41,7 +45,7 @@ public class TelemetryPipeline {
     }
 
     public CompletableResultCode send(
-        List<ByteBuffer> telemetry, String connectionString, TelemetryPipelineListener listener) {
+        List<ByteBuffer> telemetry, String connectionString, TelemetryPipelineListener listener, StatsbeatModule statsbeatModule) {
 
         ConnectionString connectionStringObj = ConnectionString.parse(connectionString);
 
@@ -55,7 +59,7 @@ public class TelemetryPipeline {
 
         try {
             CompletableResultCode result = new CompletableResultCode();
-            sendInternal(request, listener, result, MAX_REDIRECTS);
+            sendInternal(request, listener, result, MAX_REDIRECTS, statsbeatModule);
             return result;
         } catch (Throwable t) {
             listener.onException(request, t.getMessage() + " (" + request.getUrl() + ")", t);
@@ -75,7 +79,8 @@ public class TelemetryPipeline {
         TelemetryPipelineRequest request,
         TelemetryPipelineListener listener,
         CompletableResultCode result,
-        int remainingRedirects) {
+        int remainingRedirects,
+        StatsbeatModule statsbeatModule) {
 
         // Add instrumentation key to context to use in StatsbeatHttpPipelinePolicy
         Map<Object, Object> contextKeyValues = new HashMap<>();
@@ -97,7 +102,8 @@ public class TelemetryPipeline {
                                     responseBody,
                                     listener,
                                     result,
-                                    remainingRedirects),
+                                    remainingRedirects,
+                                    statsbeatModule),
                             throwable -> {
                                 listener.onException(
                                     request,
@@ -118,7 +124,8 @@ public class TelemetryPipeline {
         String responseBody,
         TelemetryPipelineListener listener,
         CompletableResultCode result,
-        int remainingRedirects) {
+        int remainingRedirects,
+        StatsbeatModule statsbeatModule) {
 
         int responseCode = response.getStatusCode();
 
@@ -133,7 +140,7 @@ public class TelemetryPipeline {
             }
             redirectCache.put(request.getConnectionString(), locationUrl);
             request.setUrl(locationUrl);
-            sendInternal(request, listener, result, remainingRedirects - 1);
+            sendInternal(request, listener, result, remainingRedirects - 1, statsbeatModule);
             return;
         }
 
@@ -141,6 +148,10 @@ public class TelemetryPipeline {
         if (responseCode == 200) {
             result.succeed();
         } else {
+            if (responseCode == 400) {
+                LOGGER.warning("400 status code is returned. It indicates that customer is using an invalid ikey");
+                statsbeatModule.shutdown();
+            }
             result.fail();
         }
     }
