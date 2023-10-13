@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
@@ -37,7 +38,6 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -90,7 +90,7 @@ public class HttpFaultInjectingTests extends BlobTestBase {
             try {
                 downloadClient.downloadToFile(it.getAbsolutePath(), true);
                 byte[] actualFileBytes = Files.readAllBytes(it.toPath());
-                assertArrayEquals(realFileBytes, actualFileBytes);
+                TestUtils.assertArraysEqual(realFileBytes, actualFileBytes);
                 successCount.incrementAndGet();
                 Files.deleteIfExists(it.toPath());
             } catch (Exception ex) {
@@ -115,13 +115,13 @@ public class HttpFaultInjectingTests extends BlobTestBase {
         switch (ENVIRONMENT.getHttpClientType()) {
             case NETTY:
                 return HttpClient.createDefault(new HttpClientOptions()
-                    .readTimeout(Duration.ofSeconds(5))
-                    .responseTimeout(Duration.ofSeconds(5))
+                    .readTimeout(Duration.ofSeconds(2))
+                    .responseTimeout(Duration.ofSeconds(2))
                     .setHttpClientProvider(NettyAsyncHttpClientProvider.class));
             case OK_HTTP:
                 return HttpClient.createDefault(new HttpClientOptions()
-                    .readTimeout(Duration.ofSeconds(5))
-                    .responseTimeout(Duration.ofSeconds(5))
+                    .readTimeout(Duration.ofSeconds(2))
+                    .responseTimeout(Duration.ofSeconds(2))
                     .setHttpClientProvider(OkHttpAsyncClientProvider.class));
 
             default:
