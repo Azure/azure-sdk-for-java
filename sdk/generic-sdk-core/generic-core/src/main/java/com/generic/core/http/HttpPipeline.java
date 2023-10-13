@@ -4,7 +4,6 @@
 package com.generic.core.http;
 
 import com.generic.core.http.policy.HttpPipelinePolicy;
-import com.generic.core.implementation.http.HttpPipelineCallState;
 import com.generic.core.util.Context;
 
 import java.util.List;
@@ -74,8 +73,7 @@ public final class HttpPipeline {
      * upon completion.
      */
     public HttpResponse sendSync(HttpRequest request, Context data) {
-        HttpPipelineNextSyncPolicy next = new HttpPipelineNextSyncPolicy(
-            new HttpPipelineCallState(this, new HttpPipelineCallContext(request, data)));
+        HttpPipelineNextSyncPolicy next = new HttpPipelineNextSyncPolicy();
         return next.processSync();
     }
 }

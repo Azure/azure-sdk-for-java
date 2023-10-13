@@ -165,7 +165,7 @@
     <parallelizeLiveTests>false</parallelizeLiveTests>
 
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
-    <codesnippet.skip>true</codesnippet.skip>
+    <codesnippet.skip>false</codesnippet.skip>
 
     <!-- The following properties configure the maven-checkstyle-plugin. -->
     <!-- This property configures whether the maven-checkstyle-plugin should be used. -->

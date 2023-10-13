@@ -4,13 +4,12 @@
 package com.generic.core.http;
 
 import com.generic.core.http.policy.HttpPipelinePolicy;
-import com.generic.core.implementation.http.HttpPipelineCallState;
 
 /**
  * A type that invokes next policy in the pipeline.
  */
 public class HttpPipelineNextSyncPolicy {
-    private final HttpPipelineCallState state;
+    // private final HttpPipelineCallState state;
 
     /**
      * Package Private ctr.
@@ -18,8 +17,8 @@ public class HttpPipelineNextSyncPolicy {
      *
      * @param state the pipeline call state.
      */
-    HttpPipelineNextSyncPolicy(HttpPipelineCallState state) {
-        this.state = state;
+    HttpPipelineNextSyncPolicy() {
+        // this.state = state;
     }
 
     /**
@@ -28,13 +27,14 @@ public class HttpPipelineNextSyncPolicy {
      * @return The response.
      */
     public HttpResponse processSync() {
-        HttpPipelinePolicy nextPolicy = state.getNextPolicy();
-        if (nextPolicy == null) {
-            return this.state.getPipeline().getHttpClient().sendSync(
-                this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());
-        } else {
-            return nextPolicy.processSync(this.state.getCallContext(), this);
-        }
+        // HttpPipelinePolicy nextPolicy = state.getNextPolicy();
+        // if (nextPolicy == null) {
+        //     return this.state.getPipeline().getHttpClient().sendSync(
+        //         this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());
+        // } else {
+        //     return nextPolicy.processSync(this.state.getCallContext(), this);
+        // }
+        return null;
     }
 
     /**
@@ -44,7 +44,7 @@ public class HttpPipelineNextSyncPolicy {
      */
     @Override
     public HttpPipelineNextSyncPolicy clone() {
-        return new HttpPipelineNextSyncPolicy(this.state.clone());
+        return new HttpPipelineNextSyncPolicy();
     }
 
 }

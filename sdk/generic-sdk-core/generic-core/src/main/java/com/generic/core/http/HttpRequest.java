@@ -3,11 +3,9 @@
 
 package com.generic.core.http;
 
-import com.generic.core.implementation.ImplUtils;
 import com.generic.core.util.BinaryData;
 import com.generic.core.util.logging.ClientLogger;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -122,11 +120,11 @@ public class HttpRequest {
      * @throws IllegalArgumentException if {@code url} is null or it cannot be parsed into a valid URL.
      */
     public HttpRequest setUrl(String url) {
-        try {
-            this.url = ImplUtils.createUrl(url);
-        } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
-        }
+        // try {
+        //     this.url =
+        // } catch (MalformedURLException ex) {
+        //     throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
+        // }
         return this;
     }
 
@@ -196,7 +194,8 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(String content) {
-        return setBody(BinaryData.fromString(content));
+        // return setBody(BinaryData.fromString(content));
+        return null;
     }
 
     /**
@@ -208,15 +207,14 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(byte[] content) {
-        return setBody(BinaryData.fromBytes(content));
+        // return setBody(BinaryData.fromBytes(content));
+        return null;
     }
 
     /**
      * Set request content.
      * <p>
-     * If provided content has known length, i.e. {@link BinaryData#getLength()} returns non-null then
      * Content-Length header is updated. Otherwise,
-     * if provided content has unknown length, i.e. {@link BinaryData#getLength()} returns null then
      * the caller must set the Content-Length header to indicate the length of the content, or use Transfer-Encoding:
      * chunked.
      *
@@ -225,9 +223,9 @@ public class HttpRequest {
      */
     public HttpRequest setBody(BinaryData content) {
         this.body = content;
-        if (content != null && content.getLength() != null) {
-            setContentLength(content.getLength());
-        }
+        // if (content != null && content.getLength() != null) {
+        //     setContentLength(content.getLength());
+        // }
         return this;
     }
 

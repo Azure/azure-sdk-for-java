@@ -3,7 +3,6 @@
 
 package com.generic.core.util.serializer;
 
-import com.generic.core.implementation.TypeUtil;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.lang.reflect.ParameterizedType;
@@ -46,7 +45,8 @@ public abstract class TypeReference<T> {
         } else {
             this.javaType = ((ParameterizedType) superClass).getActualTypeArguments()[0];
         }
-        this.clazz = (Class<T>) TypeUtil.getRawClass(javaType);
+        // this.clazz = (Class<T>) TypeUtil.getRawClass(javaType);
+        this.clazz = null;
     }
 
     private TypeReference(Class<T> clazz) {

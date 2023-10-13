@@ -64,7 +64,8 @@ public abstract class HttpResponse implements Closeable {
      * @return The {@link BinaryData} response body.
      */
     public BinaryData getBodyAsBinaryData() {
-        return BinaryData.fromBytes("".getBytes());
+        // return BinaryData.fromBytes("".getBytes());
+        return null;
     }
 
     /**

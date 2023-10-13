@@ -28,7 +28,7 @@ public final class HttpClientOptions extends ClientOptions {
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientOptions.class);
 
-    private ProxyOptions proxyOptions;
+    // private ProxyOptions proxyOptions;
     private Configuration configuration;
     private Duration connectTimeout;
     private Duration writeTimeout;
@@ -44,12 +44,12 @@ public final class HttpClientOptions extends ClientOptions {
     public HttpClientOptions() {
     }
 
-    @Override
-    public HttpClientOptions setApplicationId(String applicationId) {
-        super.setApplicationId(applicationId);
-
-        return this;
-    }
+    // @Override
+    // public HttpClientOptions setApplicationId(String applicationId) {
+    //     // super.setApplicationId(applicationId);
+    //
+    //     return this;
+    // }
 
     @Override
     public HttpClientOptions setHeaders(Iterable<Header> headers) {

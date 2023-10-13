@@ -5,8 +5,9 @@ package com.generic.core.util.serializer;
 
 import com.generic.core.http.HttpHeaders;
 import com.generic.core.util.Header;
-import com.generic.core.annotation.HeaderCollection;
+// import com.generic.core.annotation.HeaderCollection;
 import com.generic.core.http.rest.ResponseBase;
+import com.generic.core.util.serializer.CollectionFormat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -170,21 +171,12 @@ public interface SerializerAdapter {
      *
      * <ol>
      *   <li>header names same as name of a properties in the entity.</li>
-     *   <li>header names start with value of {@link HeaderCollection} annotation applied to
      *   the properties in the entity.</li>
      * </ol>
      *
      * When needed, the 'header entity' types must be declared as first generic argument of
      * {@link ResponseBase} returned by java proxy method corresponding to the REST API.
      * e.g.
-     * {@code Mono<RestResponseBase<FooMetadataHeaders, Void>> getMetadata(args);}
-     * {@code
-     *      class FooMetadataHeaders {
-     *          String name;
-     *          {@literal @}HeaderCollection("header-collection-prefix-")
-     *          Map<String,String> headerCollection;
-     *      }
-     * }
      *
      * in the case of above example, this method produces an instance of FooMetadataHeaders from provided
      * {@code headers}.

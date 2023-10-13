@@ -141,7 +141,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
                                                 Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
             LOGGER.atError()
-                .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
+                // .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
                 .log("Request was redirected more than once to the same URL.");
 
             return true;
@@ -177,7 +177,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
             return true;
         } else {
             LOGGER.atError()
-                .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
+                // .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
                 .log("Request was redirected from an invalid redirect allowed method.");
 
             return false;

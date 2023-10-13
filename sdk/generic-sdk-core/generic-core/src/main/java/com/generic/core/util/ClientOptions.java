@@ -4,7 +4,6 @@
 package com.generic.core.util;
 
 import com.generic.core.annotation.Fluent;
-import com.generic.core.http.policy.UserAgentPolicy;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.Collections;
@@ -40,41 +39,41 @@ public class ClientOptions {
         return applicationId;
     }
 
-    /**
-     * Sets the application ID.
-     * <p>
-     * The {@code applicationId} is used to configure {@link UserAgentPolicy} for telemetry/monitoring purposes.
-     * <p>
-     * See <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry
-     * policy</a> for additional information.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Create ClientOptions with application ID 'myApplicationId'</p>
-     *
-     * <!-- src_embed com.azure.core.util.ClientOptions.setApplicationId#String -->
-     * <!-- end com.azure.core.util.ClientOptions.setApplicationId#String -->
-     *
-     * @param applicationId The application ID.
-     *
-     * @return The updated ClientOptions object.
-     *
-     * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
-     * length.
-     */
-    public ClientOptions setApplicationId(String applicationId) {
-        if (!CoreUtils.isNullOrEmpty(applicationId)) {
-            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
-            } else if (applicationId.contains(" ")) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
-            }
-        }
-
-        this.applicationId = applicationId;
-
-        return this;
-    }
+    // /**
+    //  * Sets the application ID.
+    //  * <p>
+    //  * The {@code applicationId} is used to configure {@link UserAgentPolicy} for telemetry/monitoring purposes.
+    //  * <p>
+    //  * See <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry
+    //  * policy</a> for additional information.
+    //  *
+    //  * <p><strong>Code Samples</strong></p>
+    //  *
+    //  * <p>Create ClientOptions with application ID 'myApplicationId'</p>
+    //  *
+    //  * <!-- src_embed com.azure.core.util.ClientOptions.setApplicationId#String -->
+    //  * <!-- end com.azure.core.util.ClientOptions.setApplicationId#String -->
+    //  *
+    //  * @param applicationId The application ID.
+    //  *
+    //  * @return The updated ClientOptions object.
+    //  *
+    //  * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
+    //  * length.
+    //  */
+    // public ClientOptions setApplicationId(String applicationId) {
+    //     if (!CoreUtils.isNullOrEmpty(applicationId)) {
+    //         if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
+    //             throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
+    //         } else if (applicationId.contains(" ")) {
+    //             throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
+    //         }
+    //     }
+    //
+    //     this.applicationId = applicationId;
+    //
+    //     return this;
+    // }
 
     /**
      * Sets the {@link Header Headers}.

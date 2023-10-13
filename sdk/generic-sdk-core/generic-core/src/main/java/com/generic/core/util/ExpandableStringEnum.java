@@ -3,11 +3,8 @@
 
 package com.generic.core.util;
 
-import com.azure.core.implementation.ReflectionUtils;
-import com.azure.core.implementation.ReflectiveInvoker;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.logging.LogLevel;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
-    private static final Map<Class<?>, ReflectiveInvoker> CONSTRUCTORS = new ConcurrentHashMap<>();
+    // private static final Map<Class<?>, ReflectiveInvoker> CONSTRUCTORS = new ConcurrentHashMap<>();
     private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES
         = new ConcurrentHashMap<>();
 
@@ -53,51 +50,52 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      */
     @SuppressWarnings({"unchecked", "deprecation"})
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
-        if (name == null) {
-            return null;
-        }
-
-        ConcurrentHashMap<String, ?> clazzValues = VALUES.computeIfAbsent(clazz, key -> new ConcurrentHashMap<>());
-        T value = (T) clazzValues.get(name);
-
-        if (value != null) {
-            return value;
-        } else {
-            if (CONSTRUCTORS.size() > 10000) {
-                CONSTRUCTORS.clear();
-            }
-
-            ReflectiveInvoker ctor = CONSTRUCTORS.computeIfAbsent(clazz, ExpandableStringEnum::getDefaultConstructor);
-
-            if (ctor == null) {
-                // logged in ExpandableStringEnum::getDefaultConstructor
-                return null;
-            }
-
-            try {
-                value = (T) ctor.invokeWithArguments(null);
-            } catch (Exception e) {
-                LOGGER.log(LogLevel.WARNING,
-                    () -> "Failed to create " + clazz.getName() + ", default constructor threw exception", e);
-                return null;
-            }
-
-            return value.nameAndAddValue(name, value, clazz);
-        }
-    }
-
-    private static <T> ReflectiveInvoker getDefaultConstructor(Class<T> clazz) {
-        try {
-            return ReflectionUtils.getConstructorInvoker(clazz, clazz.getDeclaredConstructor());
-        } catch (NoSuchMethodException | IllegalAccessException e) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Can't find or access default constructor for " + clazz.getName()
-                + ", make sure corresponding package is open to azure-core", e);
-        } catch (Exception e) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to get default constructor for " + clazz.getName(), e);
-        }
-
+        // if (name == null) {
+        //     return null;
+        // }
+        //
+        // ConcurrentHashMap<String, ?> clazzValues = VALUES.computeIfAbsent(clazz, key -> new ConcurrentHashMap<>());
+        // T value = (T) clazzValues.get(name);
+        //
+        // if (value != null) {
+        //     return value;
+        // } else {
+        //     if (CONSTRUCTORS.size() > 10000) {
+        //         CONSTRUCTORS.clear();
+        //     }
+        //
+        //     // ReflectiveInvoker ctor = CONSTRUCTORS.computeIfAbsent(clazz, ExpandableStringEnum::getDefaultConstructor);
+        //
+        //     if (ctor == null) {
+        //         // logged in ExpandableStringEnum::getDefaultConstructor
+        //         return null;
+        //     }
+        //
+        //     try {
+        //         value = (T) ctor.invokeWithArguments(null);
+        //     } catch (Exception e) {
+        //         LOGGER.log(LogLevel.WARNING,
+        //             () -> "Failed to create " + clazz.getName() + ", default constructor threw exception", e);
+        //         return null;
+        //     }
+        //
+        //     return value.nameAndAddValue(name, value, clazz);
+        // }
         return null;
     }
+
+    // private static <T> ReflectiveInvoker getDefaultConstructor(Class<T> clazz) {
+    //     try {
+    //         return ReflectionUtils.getConstructorInvoker(clazz, clazz.getDeclaredConstructor());
+    //     } catch (NoSuchMethodException | IllegalAccessException e) {
+    //         LOGGER.log(LogLevel.VERBOSE, () -> "Can't find or access default constructor for " + clazz.getName()
+    //             + ", make sure corresponding package is open to azure-core", e);
+    //     } catch (Exception e) {
+    //         LOGGER.log(LogLevel.VERBOSE, () -> "Failed to get default constructor for " + clazz.getName(), e);
+    //     }
+    //
+    //     return null;
+    // }
 
     @SuppressWarnings("unchecked")
     T nameAndAddValue(String name, T value, Class<T> clazz) {
@@ -121,7 +119,6 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     }
 
     @Override
-    @JsonValue
     public String toString() {
         return this.name;
     }

@@ -11,23 +11,12 @@ import com.generic.core.http.HttpPipelineCallContext;
 import com.generic.core.http.HttpPipelineNextSyncPolicy;
 import com.generic.core.http.HttpRequest;
 import com.generic.core.http.HttpResponse;
-import com.generic.core.implementation.ImplUtils;
-import com.generic.core.implementation.jackson.ObjectMapperShim;
-import com.generic.core.implementation.logging.LoggingKeys;
-import com.generic.core.implementation.util.BinaryDataContent;
-import com.generic.core.implementation.util.BinaryDataHelper;
-import com.generic.core.implementation.util.ByteArrayContent;
-import com.generic.core.implementation.util.ByteBufferContent;
-import com.generic.core.implementation.util.InputStreamContent;
-import com.generic.core.implementation.util.SerializableContent;
-import com.generic.core.implementation.util.StringContent;
 import com.generic.core.util.BinaryData;
 import com.generic.core.util.Context;
 import com.generic.core.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.logging.LogLevel;
 import com.generic.core.util.logging.LoggingEventBuilder;
-import com.generic.core.util.url.UrlBuilder;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -43,7 +32,7 @@ import java.util.stream.Collectors;
  * The pipeline policy that handles logging of HTTP requests and responses.
  */
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
-    private static final ObjectMapperShim PRETTY_PRINTER = ObjectMapperShim.createPrettyPrintMapper();
+    // private static final ObjectMapperShim PRETTY_PRINTER = ObjectMapperShim.createPrettyPrintMapper();
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
 
@@ -159,31 +148,31 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             final HttpRequest request = loggingOptions.getHttpRequest();
             LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
 
-            if (httpLogDetailLevel.shouldLogUrl()) {
-                logBuilder
-                    .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, request.getHttpMethod())
-                    .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(request.getUrl(), allowedQueryParameterNames));
-
-                Integer retryCount = loggingOptions.getTryCount();
-                if (retryCount != null) {
-                    logBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount);
-                }
-            }
-
-            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-                addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), logBuilder);
-            }
-
-            if (request.getBodyAsBinaryData() == null) {
-                logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, 0)
-                    .log(REQUEST_LOG_MESSAGE);
-                return;
-            }
+            // if (httpLogDetailLevel.shouldLogUrl()) {
+            //     logBuilder
+            //         .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, request.getHttpMethod())
+            //         .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(request.getUrl(), allowedQueryParameterNames));
+            //
+            //     Integer retryCount = loggingOptions.getTryCount();
+            //     if (retryCount != null) {
+            //         logBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount);
+            //     }
+            // }
+            //
+            // if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+            //     addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), logBuilder);
+            // }
+            //
+            // if (request.getBodyAsBinaryData() == null) {
+            //     logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, 0)
+            //         .log(REQUEST_LOG_MESSAGE);
+            //     return;
+            // }
 
             String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             long contentLength = getContentLength(logger, request.getHeaders());
 
-            logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
+            // logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
 
             if (httpLogDetailLevel.shouldLogBody() && shouldBodyBeLogged(contentType, contentLength)) {
                 logBody(request, (int) contentLength, logBuilder, logger, contentType);
@@ -196,23 +185,23 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void logBody(HttpRequest request, int contentLength, LoggingEventBuilder logBuilder, ClientLogger logger, String contentType) {
         BinaryData data = request.getBodyAsBinaryData();
-        BinaryDataContent content = BinaryDataHelper.getContent(data);
-        if (content instanceof StringContent
-            || content instanceof ByteBufferContent
-            || content instanceof SerializableContent
-            || content instanceof ByteArrayContent) {
-            logBody(logBuilder, logger, contentType, content.toString());
-        } else if (content instanceof InputStreamContent) {
-            // TODO (limolkova) Implement sync version with logging stream wrapper
-            byte[] contentBytes = content.toBytes();
-            request.setBody(contentBytes);
-            logBody(logBuilder, logger, contentType, new String(contentBytes, StandardCharsets.UTF_8));
-        }
+        // BinaryDataContent content = BinaryDataHelper.getContent(data);
+        // if (content instanceof StringContent
+        //     || content instanceof ByteBufferContent
+        //     || content instanceof SerializableContent
+        //     || content instanceof ByteArrayContent) {
+        //     logBody(logBuilder, logger, contentType, content.toString());
+        // } else if (content instanceof InputStreamContent) {
+        //     // TODO (limolkova) Implement sync version with logging stream wrapper
+        //     byte[] contentBytes = content.toBytes();
+        //     request.setBody(contentBytes);
+        //     logBody(logBuilder, logger, contentType, new String(contentBytes, StandardCharsets.UTF_8));
+        // }
     }
 
     private void logBody(LoggingEventBuilder logBuilder, ClientLogger logger, String contentType, String data) {
-        logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType, data))
-            .log(REQUEST_LOG_MESSAGE);
+        // logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType, data))
+        //     .log(REQUEST_LOG_MESSAGE);
     }
 
 
@@ -227,17 +216,17 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         private void logUrl(HttpResponseLoggingContext loggingOptions, HttpResponse response,
                                LoggingEventBuilder logBuilder) {
             if (httpLogDetailLevel.shouldLogUrl()) {
-                logBuilder
-                    .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
-                    .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
-                    .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
+                // logBuilder
+                //     .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
+                //     .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
+                //     .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
             }
         }
 
         private void logContentLength(HttpResponse response, LoggingEventBuilder logBuilder) {
             String contentLengthString = response.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
             if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
-                logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
+                // logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
             }
         }
 
@@ -286,17 +275,18 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         // URL does have a query string that may need redactions.
         // Use UrlBuilder to break apart the URL, clear the query string, and add the redacted query string.
-        UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
+        // UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
+        //
+        // CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
+        //     if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
+        //         urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
+        //     } else {
+        //         urlBuilder.addQueryParameter(queryParam.getKey(), REDACTED_PLACEHOLDER);
+        //     }
+        // });
 
-        CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
-            if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
-                urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
-            } else {
-                urlBuilder.addQueryParameter(queryParam.getKey(), REDACTED_PLACEHOLDER);
-            }
-        });
-
-        return urlBuilder.toString();
+        // return urlBuilder.toString();
+        return null;
     }
 
     /*
@@ -331,8 +321,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         if (prettyPrintBody && contentType != null
             && (contentType.startsWith(ContentType.APPLICATION_JSON) || contentType.startsWith("text/json"))) {
             try {
-                final Object deserialized = PRETTY_PRINTER.readTree(body);
-                result = PRETTY_PRINTER.writeValueAsString(deserialized);
+                // final Object deserialized = PRETTY_PRINTER.readTree(body);
+                // result = PRETTY_PRINTER.writeValueAsString(deserialized);
             } catch (Exception e) {
                 logger.warning("Failed to pretty print JSON", e);
             }
@@ -479,9 +469,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         private void doLog(String body) {
-            logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
-                    prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader, body))
-                .log(RESPONSE_LOG_MESSAGE);
+            // logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
+            //         prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader, body))
+            //     .log(RESPONSE_LOG_MESSAGE);
         }
     }
 }

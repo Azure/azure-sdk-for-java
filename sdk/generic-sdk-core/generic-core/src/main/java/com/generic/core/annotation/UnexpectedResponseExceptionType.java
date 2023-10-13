@@ -25,7 +25,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(RUNTIME)
 @Target(METHOD)
-@Repeatable(UnexpectedResponseExceptionTypes.class)
 public @interface UnexpectedResponseExceptionType {
     /**
      * The type of HttpResponseException that should be thrown/returned when the API returns an unrecognized

@@ -3,7 +3,6 @@
 
 package com.generic.core.http;
 
-import com.generic.core.implementation.http.HttpClientProviders;
 import com.generic.core.util.Context;
 import com.generic.core.util.HttpClientOptions;
 
@@ -36,6 +35,7 @@ public interface HttpClient {
      * @return A new {@link HttpClient} instance.
      */
     static HttpClient createDefault(HttpClientOptions clientOptions) {
-        return HttpClientProviders.createInstance(clientOptions);
+        return null;
+        // return HttpClientProviders.createInstance(clientOptions);
     }
 }

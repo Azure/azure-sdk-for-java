@@ -3,10 +3,8 @@
 
 package com.generic.core.util.logging;
 
-import com.generic.core.implementation.logging.DefaultLogger;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.CoreUtils;
-import com.generic.core.implementation.logging.LoggingUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
@@ -88,7 +86,7 @@ public class ClientLogger {
      */
     public ClientLogger(String className, Map<String, Object> context) {
         Logger initLogger = LoggerFactory.getLogger(className);
-        logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
+        logger = initLogger;
         globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
         hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);
     }
@@ -147,7 +145,7 @@ public class ClientLogger {
             if (hasGlobalContext) {
                 atVerbose().log(message);
             } else {
-                logger.debug(LoggingUtils.removeNewLinesFromLogMessage(message));
+                // logger.debug(LoggingUtils.removeNewLinesFromLogMessage(message));
             }
         }
     }
@@ -189,7 +187,7 @@ public class ClientLogger {
             if (hasGlobalContext) {
                 atInfo().log(message);
             } else {
-                logger.info(LoggingUtils.removeNewLinesFromLogMessage(message));
+                // logger.info(LoggingUtils.removeNewLinesFromLogMessage(message));
             }
         }
     }
@@ -231,7 +229,7 @@ public class ClientLogger {
             if (hasGlobalContext) {
                 atWarning().log(message);
             } else {
-                logger.warn(LoggingUtils.removeNewLinesFromLogMessage(message));
+                // logger.warn(LoggingUtils.removeNewLinesFromLogMessage(message));
             }
         }
     }
@@ -273,7 +271,7 @@ public class ClientLogger {
             if (hasGlobalContext) {
                 atError().log(message);
             } else {
-                logger.error(LoggingUtils.removeNewLinesFromLogMessage(message));
+                // logger.error(LoggingUtils.removeNewLinesFromLogMessage(message));
             }
         }
     }
@@ -408,52 +406,52 @@ public class ClientLogger {
         }
 
         // If the logging level is less granular than verbose remove the potential throwable from the args.
-        String throwableMessage = "";
-        if (LoggingUtils.doesArgsHaveThrowable(args)) {
-            // If we are logging an exception the format string is already the exception message, don't append it.
-            if (!isExceptionLogging) {
-                Object throwable = args[args.length - 1];
-
-                // This is true from before but is needed to appease SpotBugs.
-                if (throwable instanceof Throwable) {
-                    throwableMessage = ((Throwable) throwable).getMessage();
-                }
-            }
-
-            /*
-             * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
-             * stack trace which is only expected when logging at a verbose level.
-             */
-            if (!logger.isDebugEnabled()) {
-                args = LoggingUtils.removeThrowable(args);
-            }
-        }
-
-        format = LoggingUtils.removeNewLinesFromLogMessage(format);
-
-        switch (logLevel) {
-            case VERBOSE:
-                logger.debug(format, args);
-                break;
-            case INFORMATIONAL:
-                logger.info(format, args);
-                break;
-            case WARNING:
-                if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
-                    format += System.lineSeparator() + throwableMessage;
-                }
-                logger.warn(format, args);
-                break;
-            case ERROR:
-                if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
-                    format += System.lineSeparator() + throwableMessage;
-                }
-                logger.error(format, args);
-                break;
-            default:
-                // Don't do anything, this state shouldn't be possible.
-                break;
-        }
+        // String throwableMessage = "";
+        // if (LoggingUtils.doesArgsHaveThrowable(args)) {
+        //     // If we are logging an exception the format string is already the exception message, don't append it.
+        //     if (!isExceptionLogging) {
+        //         Object throwable = args[args.length - 1];
+        //
+        //         // This is true from before but is needed to appease SpotBugs.
+        //         if (throwable instanceof Throwable) {
+        //             throwableMessage = ((Throwable) throwable).getMessage();
+        //         }
+        //     }
+        //
+        //     /*
+        //      * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
+        //      * stack trace which is only expected when logging at a verbose level.
+        //      */
+        //     if (!logger.isDebugEnabled()) {
+        //         args = LoggingUtils.removeThrowable(args);
+        //     }
+        // }
+        //
+        // format = LoggingUtils.removeNewLinesFromLogMessage(format);
+        //
+        // switch (logLevel) {
+        //     case VERBOSE:
+        //         logger.debug(format, args);
+        //         break;
+        //     case INFORMATIONAL:
+        //         logger.info(format, args);
+        //         break;
+        //     case WARNING:
+        //         if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
+        //             format += System.lineSeparator() + throwableMessage;
+        //         }
+        //         logger.warn(format, args);
+        //         break;
+        //     case ERROR:
+        //         if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
+        //             format += System.lineSeparator() + throwableMessage;
+        //         }
+        //         logger.error(format, args);
+        //         break;
+        //     default:
+        //         // Don't do anything, this state shouldn't be possible.
+        //         break;
+        // }
     }
 
     /*
@@ -472,36 +470,36 @@ public class ClientLogger {
             return;
         }
 
-        String message = LoggingUtils.removeNewLinesFromLogMessage(messageSupplier.get());
-        String throwableMessage = (throwable != null) ? throwable.getMessage() : "";
-
-        switch (logLevel) {
-            case VERBOSE:
-                if (throwable != null) {
-                    logger.debug(message, throwable);
-                } else {
-                    logger.debug(message);
-                }
-                break;
-            case INFORMATIONAL:
-                logger.info(message);
-                break;
-            case WARNING:
-                if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
-                    message += System.lineSeparator() + throwableMessage;
-                }
-                logger.warn(message);
-                break;
-            case ERROR:
-                if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
-                    message += System.lineSeparator() + throwableMessage;
-                }
-                logger.error(message);
-                break;
-            default:
-                // Don't do anything, this state shouldn't be possible.
-                break;
-        }
+        // String message = LoggingUtils.removeNewLinesFromLogMessage(messageSupplier.get());
+        // String throwableMessage = (throwable != null) ? throwable.getMessage() : "";
+        //
+        // switch (logLevel) {
+        //     case VERBOSE:
+        //         if (throwable != null) {
+        //             logger.debug(message, throwable);
+        //         } else {
+        //             logger.debug(message);
+        //         }
+        //         break;
+        //     case INFORMATIONAL:
+        //         logger.info(message);
+        //         break;
+        //     case WARNING:
+        //         if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
+        //             message += System.lineSeparator() + throwableMessage;
+        //         }
+        //         logger.warn(message);
+        //         break;
+        //     case ERROR:
+        //         if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
+        //             message += System.lineSeparator() + throwableMessage;
+        //         }
+        //         logger.error(message);
+        //         break;
+        //     default:
+        //         // Don't do anything, this state shouldn't be possible.
+        //         break;
+        // }
     }
 
     /*

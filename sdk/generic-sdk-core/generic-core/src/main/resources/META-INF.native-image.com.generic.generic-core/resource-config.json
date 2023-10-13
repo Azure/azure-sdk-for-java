@@ -2,7 +2,7 @@
   "resources": {
     "includes": [
       {
-        "pattern": "META-INF/services/com.azure.core.http.HttpClientProvider"
+        "pattern": "META-INF/services/com.generic.core.http.HttpClientProvider"
       },
       {
         "pattern": "\\QMETA-INF/services/jdk.vm.ci.hotspot.HotSpotJVMCIBackendFactory\\E"

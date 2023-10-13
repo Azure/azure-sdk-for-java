@@ -4,7 +4,6 @@
 package com.generic.core.util;
 
 import com.generic.core.http.policy.HttpLogOptions;
-import com.generic.core.implementation.ImplUtils;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.io.IOException;
@@ -204,7 +203,8 @@ public final class CoreUtils {
             return null;
         }
 
-        return ImplUtils.bomAwareToString(bytes, 0, bytes.length, contentType);
+        // return ImplUtils.bomAwareToString(bytes, 0, bytes.length, contentType);
+        return "";
     }
 
     /**
@@ -376,9 +376,10 @@ public final class CoreUtils {
      * @return An {@link Iterator} over the query parameter key-value pairs.
      */
     public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
-        return (CoreUtils.isNullOrEmpty(queryParameters))
-            ? Collections.emptyIterator()
-            : new ImplUtils.QueryParameterIterator(queryParameters);
+        // return (CoreUtils.isNullOrEmpty(queryParameters))
+        //     ? Collections.emptyIterator()
+            // : new ImplUtils.QueryParameterIterator(queryParameters);
+        return null;
     }
 
     /**
@@ -444,7 +445,7 @@ public final class CoreUtils {
             } else if (cause instanceof RuntimeException) {
                 throw (RuntimeException) cause;
             } else {
-                ImplUtils.sneakyThrows(cause);
+                // ImplUtils.sneakyThrows(cause);
                 throw e;
             }
         }
