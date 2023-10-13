@@ -17,8 +17,9 @@ import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SearchQueryVector;
 import com.azure.search.documents.models.SemanticErrorHandling;
+import com.azure.search.documents.models.VectorFilterMode;
+import com.azure.search.documents.models.VectorQuery;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -111,13 +112,20 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private String scoringProfile;
 
     /*
+     * Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and
+     * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
+     * retrieval and ranking phase, and the L2 semantic phase.
+     */
+    private String semanticQuery;
+
+    /*
      * The name of a semantic configuration that will be used when processing documents for queries of type semantic.
      */
     private String semanticConfiguration;
 
     /*
-     * Allows the user to choose whether a semantic call should fail completely (default / current behavior), or to
-     * return partial results.
+     * Allows the user to choose whether a semantic call should fail completely, or to return partial results
+     * (default).
      */
     private SemanticErrorHandling semanticErrorHandling;
 
@@ -204,9 +212,15 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private String semanticFields;
 
     /*
-     * The query parameters for multi-vector search queries.
+     * The query parameters for vector and hybrid search queries.
      */
-    private List<SearchQueryVector> vectors;
+    private List<VectorQuery> vectorQueries;
+
+    /*
+     * Determines whether or not filters are applied before or after the vector search is performed. Default is
+     * 'preFilter'.
+     */
+    private VectorFilterMode vectorFilterMode;
 
     /** Creates an instance of SearchRequest class. */
     public SearchRequest() {}
@@ -518,6 +532,30 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
+     * Get the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
+     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @return the semanticQuery value.
+     */
+    public String getSemanticQuery() {
+        return this.semanticQuery;
+    }
+
+    /**
+     * Set the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
+     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @param semanticQuery the semanticQuery value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setSemanticQuery(String semanticQuery) {
+        this.semanticQuery = semanticQuery;
+        return this;
+    }
+
+    /**
      * Get the semanticConfiguration property: The name of a semantic configuration that will be used when processing
      * documents for queries of type semantic.
      *
@@ -540,8 +578,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely
-     * (default / current behavior), or to return partial results.
+     * Get the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
+     * or to return partial results (default).
      *
      * @return the semanticErrorHandling value.
      */
@@ -550,8 +588,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely
-     * (default / current behavior), or to return partial results.
+     * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
+     * or to return partial results (default).
      *
      * @param semanticErrorHandling the semanticErrorHandling value to set.
      * @return the SearchRequest object itself.
@@ -862,22 +900,44 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the vectors property: The query parameters for multi-vector search queries.
+     * Get the vectorQueries property: The query parameters for vector and hybrid search queries.
      *
-     * @return the vectors value.
+     * @return the vectorQueries value.
      */
-    public List<SearchQueryVector> getVectors() {
-        return this.vectors;
+    public List<VectorQuery> getVectorQueries() {
+        return this.vectorQueries;
     }
 
     /**
-     * Set the vectors property: The query parameters for multi-vector search queries.
+     * Set the vectorQueries property: The query parameters for vector and hybrid search queries.
      *
-     * @param vectors the vectors value to set.
+     * @param vectorQueries the vectorQueries value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setVectors(List<SearchQueryVector> vectors) {
-        this.vectors = vectors;
+    public SearchRequest setVectorQueries(List<VectorQuery> vectorQueries) {
+        this.vectorQueries = vectorQueries;
+        return this;
+    }
+
+    /**
+     * Get the vectorFilterMode property: Determines whether or not filters are applied before or after the vector
+     * search is performed. Default is 'preFilter'.
+     *
+     * @return the vectorFilterMode value.
+     */
+    public VectorFilterMode getVectorFilterMode() {
+        return this.vectorFilterMode;
+    }
+
+    /**
+     * Set the vectorFilterMode property: Determines whether or not filters are applied before or after the vector
+     * search is performed. Default is 'preFilter'.
+     *
+     * @param vectorFilterMode the vectorFilterMode value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setVectorFilterMode(VectorFilterMode vectorFilterMode) {
+        this.vectorFilterMode = vectorFilterMode;
         return this;
     }
 
@@ -898,6 +958,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeArrayField(
                 "scoringParameters", this.scoringParameters, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scoringProfile", this.scoringProfile);
+        jsonWriter.writeStringField("semanticQuery", this.semanticQuery);
         jsonWriter.writeStringField("semanticConfiguration", this.semanticConfiguration);
         jsonWriter.writeStringField("semanticErrorHandling", Objects.toString(this.semanticErrorHandling, null));
         jsonWriter.writeNumberField("semanticMaxWaitInMilliseconds", this.semanticMaxWaitInMilliseconds);
@@ -913,7 +974,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeNumberField("top", this.top);
         jsonWriter.writeStringField("captions", this.captions);
         jsonWriter.writeStringField("semanticFields", this.semanticFields);
-        jsonWriter.writeArrayField("vectors", this.vectors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vectorQueries", this.vectorQueries, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("vectorFilterMode", Objects.toString(this.vectorFilterMode, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -963,6 +1025,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                             deserializedSearchRequest.scoringParameters = scoringParameters;
                         } else if ("scoringProfile".equals(fieldName)) {
                             deserializedSearchRequest.scoringProfile = reader.getString();
+                        } else if ("semanticQuery".equals(fieldName)) {
+                            deserializedSearchRequest.semanticQuery = reader.getString();
                         } else if ("semanticConfiguration".equals(fieldName)) {
                             deserializedSearchRequest.semanticConfiguration = reader.getString();
                         } else if ("semanticErrorHandling".equals(fieldName)) {
@@ -995,10 +1059,13 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                             deserializedSearchRequest.captions = reader.getString();
                         } else if ("semanticFields".equals(fieldName)) {
                             deserializedSearchRequest.semanticFields = reader.getString();
-                        } else if ("vectors".equals(fieldName)) {
-                            List<SearchQueryVector> vectors =
-                                    reader.readArray(reader1 -> SearchQueryVector.fromJson(reader1));
-                            deserializedSearchRequest.vectors = vectors;
+                        } else if ("vectorQueries".equals(fieldName)) {
+                            List<VectorQuery> vectorQueries =
+                                    reader.readArray(reader1 -> VectorQuery.fromJson(reader1));
+                            deserializedSearchRequest.vectorQueries = vectorQueries;
+                        } else if ("vectorFilterMode".equals(fieldName)) {
+                            deserializedSearchRequest.vectorFilterMode =
+                                    VectorFilterMode.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

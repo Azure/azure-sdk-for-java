@@ -249,7 +249,7 @@ public class BlobClientBase {
      *
      * @return the encryption scope used for encryption.
      */
-    String getEncryptionScope() {
+    public String getEncryptionScope() {
         return client.getEncryptionScope();
     }
 
