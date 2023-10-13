@@ -72,7 +72,6 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
         Map<String, String> readRegionMap = this.getRegionMap(databaseAccount, false);
-        System.out.println("ClientRetryPolicyE2ETests writeRegionMap " + this.getRegionMap(databaseAccount, true));
         this.preferredRegions =
             readRegionMap
                 .keySet()
@@ -82,6 +81,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         this.clientWithPreferredRegions = getClientBuilder()
             .preferredRegions(preferredRegions)
             .consistencyLevel(ConsistencyLevel.SESSION)
+            .endpointDiscoveryEnabled(true)
+            .multipleWriteRegionsEnabled(true)
             .buildAsyncClient();
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithPreferredRegions);
     }
