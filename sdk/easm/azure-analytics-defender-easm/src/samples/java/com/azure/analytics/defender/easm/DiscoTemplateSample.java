@@ -23,7 +23,7 @@ import java.util.Scanner;
  */
 public class DiscoTemplateSample {
     public static void main(String[] args) {
-        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
+        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTION_ID");
         String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
         String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
         String region = Configuration.getGlobalConfiguration().get("REGION");
@@ -50,7 +50,7 @@ public class DiscoTemplateSample {
         // To get more detail about a disco template, we can use the discoveryTemplatesGet method.
         // From here, we can see the names and seeds which would be used in a discovery run.
 
-        System.out.println("Enter the templateid:");
+        System.out.println("Enter the template id:");
 
         Scanner scanner = new Scanner(System.in);
         String templateId = scanner.nextLine();

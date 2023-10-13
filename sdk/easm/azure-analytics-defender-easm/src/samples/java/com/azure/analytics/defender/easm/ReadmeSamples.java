@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: readme-sample-createDefenderEasmClient
-        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
+        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTION_ID");
         String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
         String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
         String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");

@@ -30,7 +30,7 @@ public class SavedFilterSample {
 
 
     public static void main(String[] args) {
-        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
+        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTION_ID");
         String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
         String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
         String region = Configuration.getGlobalConfiguration().get("REGION");

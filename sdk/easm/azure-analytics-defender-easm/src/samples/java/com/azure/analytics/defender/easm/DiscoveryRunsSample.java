@@ -31,7 +31,7 @@ public class DiscoveryRunsSample {
     public static void main(String[] args) {
 
         // To create an easmClient, you need your subscription ID, endpoint, and some sort of credential.
-        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
+        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTION_ID");
         String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
         String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
         String region = Configuration.getGlobalConfiguration().get("REGION");
