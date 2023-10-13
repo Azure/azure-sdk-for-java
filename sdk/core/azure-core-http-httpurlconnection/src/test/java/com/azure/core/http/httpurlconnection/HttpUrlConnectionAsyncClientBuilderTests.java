@@ -58,7 +58,6 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
         }
     }
 
-
     @Test
     public void buildWithConfigurationNone() {
         HttpClient httpClient = new HttpUrlConnectionAsyncClientBuilder()
@@ -71,69 +70,6 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
-
-    //Options not yet impl
-//    @Test
-//    public void buildWithConnectionOptions() {
-//        HttpUrlConnectionClientBuilder builder = new HttpUrlConnectionClientBuilder();
-//        HttpUrlConnectionClient httpClient = (HttpUrlConnectionClient) builder.connectionTimeout(Duration.ofSeconds(10))
-//            //.idleTimeout(Duration.ofSeconds(20))
-//            //.readIdleTimeout(Duration.ofSeconds(30))
-//            //.writeIdleTimeout(Duration.ofSeconds(40))
-//            .build();
-//
-//        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
-//
-//        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
-//
-//        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-//            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-//            .verifyComplete();
-//
-//        assertEquals(10000, options.getConnectTimeout());
-//        assertEquals(20, options.getIdleTimeout());
-//        assertEquals(30, options.getReadIdleTimeout());
-//        assertEquals(40, options.getWriteIdleTimeout());
-//    }
-
-    // To be made without vertx classes
-//    @ParameterizedTest
-//    @EnumSource(ProxyOptions.Type.class)
-//    public void buildWithAllProxyTypes(ProxyOptions.Type type) throws Exception {
-//        if (type.equals(ProxyOptions.Type.SOCKS5)) {
-//            return;
-//        }
-//
-//        String proxyUser = "user";
-//        String proxyPassword = "secret";
-//
-//        InetSocketAddress address = new InetSocketAddress("localhost", 8888);
-//        ProxyOptions proxyOptions = new ProxyOptions(type, address);
-//        proxyOptions.setCredentials("user", "secret");
-//        proxyOptions.setNonProxyHosts("foo.*|*bar.com|microsoft.com");
-//
-//        HttpUrlConnectionClient httpClient = (HttpUrlConnectionClient) new HttpUrlConnectionClientBuilder()
-//            .proxy(proxyOptions)
-//            .build();
-//
-//        HttpClientImpl HttpUrlConnectionClientImpl = (HttpClientImpl) httpClient.client;
-//        io.vertx.core.http.HttpClientOptions options = HttpClientImpl.options();
-//
-//        io.vertx.core.net.ProxyOptions vertxProxyOptions = options.getProxyOptions();
-//        assertNotNull(vertxProxyOptions);
-//        assertEquals(address.getHostName(), vertxProxyOptions.getHost());
-//        assertEquals(address.getPort(), vertxProxyOptions.getPort());
-//        assertEquals(type.name(), vertxProxyOptions.getType().name());
-//        assertEquals(proxyUser, vertxProxyOptions.getUsername());
-//        assertEquals(proxyPassword, vertxProxyOptions.getPassword());
-//
-//        Predicate<SocketAddress> proxyFilter = getVertxInternalProxyFilter(HttpClientImpl);
-//        assertFalse(proxyFilter.test(inetSocketAddress(80, "foo.com")));
-//        assertFalse(proxyFilter.test(inetSocketAddress(80, "foo.bar.com")));
-//        assertFalse(proxyFilter.test(inetSocketAddress(80, "test.bar.com")));
-//        assertFalse(proxyFilter.test(inetSocketAddress(80, "microsoft.com")));
-//        assertTrue(proxyFilter.test(inetSocketAddress(80, "allowed.host.com")));
-//    }
 
     @Test
     public void buildWithHttpProxy() {
@@ -212,36 +148,6 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
             proxyServer.shutdown();
         }
     }
-
-    // Options not yet impl
-//    @Test
-//    public void buildWithCustomHttpClientOptions() {
-//        HttpClientOptions options = new HttpClientOptions();
-//        options.setConnectTimeout(30000);
-//        options.setIdleTimeout(50);
-//        options.setReadIdleTimeout(60);
-//        options.setWriteIdleTimeout(70);
-//
-//        HttpClient httpClient = new AsyncHttpUrlConnectionClientBuilder()
-//            .connectTimeout(Duration.ofSeconds(10))
-//            .idleTimeout(Duration.ofSeconds(20))
-//            .readIdleTimeout(Duration.ofSeconds(30))
-//            .writeIdleTimeout(Duration.ofSeconds(40))
-//            .httpClientOptions(options)
-//            .build();
-//
-//        // Verify the original configuration was preserved and not overwritten
-//        assertEquals(30000, options.getConnectTimeout());
-//        assertEquals(50, options.getIdleTimeout());
-//        assertEquals(60, options.getReadIdleTimeout());
-//        assertEquals(70, options.getWriteIdleTimeout());
-//
-//        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
-//
-//        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-//            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-//            .verifyComplete();
-//    }
 
     @Test
     public void buildWithNullProxyAddress() {

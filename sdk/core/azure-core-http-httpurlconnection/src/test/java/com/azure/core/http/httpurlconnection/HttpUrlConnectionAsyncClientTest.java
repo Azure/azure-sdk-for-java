@@ -165,17 +165,6 @@ public class HttpUrlConnectionAsyncClientTest {
         }
     }
 
-    // Needs to have HttpClosedException modified, as this is a dependency from Vertx
-//    @Test
-//    public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
-//        HttpClient client = new HttpUrlConnectionClientProvider().createInstance();
-//
-//        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
-//
-//        StepVerifier.create(client.send(request).flatMap(HttpResponse::getBodyAsByteArray))
-//            .verifyError(HttpClosedException.class);
-//    }
-
     @Test
     public void testConcurrentRequests() {
         int numRequests = 100; // 100 = 1GB of data read

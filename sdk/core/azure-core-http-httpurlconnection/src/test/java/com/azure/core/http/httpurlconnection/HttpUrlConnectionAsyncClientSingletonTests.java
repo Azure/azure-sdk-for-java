@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
 
-@Execution(ExecutionMode.SAME_THREAD) // because singleton http client, it can avoid race condition.
+@Execution(ExecutionMode.SAME_THREAD) // Avoiding race conditions caused by singleton
 public class HttpUrlConnectionAsyncClientSingletonTests {
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
