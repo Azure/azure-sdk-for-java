@@ -18,6 +18,8 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -73,6 +75,7 @@ public class HttpFaultInjectingTests extends BlobTestBase {
             .containerName(cc.getBlobContainerName())
             .blobName(blobName)
             .httpClient(new HttpFaultInjectingHttpClient(getFaultInjectingWrappedHttpClient()))
+            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 4, null, 10L, 10L, null))
             .buildClient();
 
         List<File> files = new ArrayList<>(500);
