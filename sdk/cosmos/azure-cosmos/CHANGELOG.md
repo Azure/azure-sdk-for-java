@@ -7,8 +7,8 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Added 410/1002 handling for `ChangeFeedProcessor#getCurrentState` in **Latest Version**, **All Version and Deletes** changes modes and  
-for `ChangeFeedProcessor#getEstimatedLag` in **Latest Version** changes mode. - See [PR 37107](https://github.com/Azure/azure-sdk-for-java/pull/37107)
+* Added 410/1002 handling for `ChangeFeedProcessor#getCurrentState` in **Latest Version**, **All Version and Deletes** changes modes. - See [PR 37107](https://github.com/Azure/azure-sdk-for-java/pull/37107)
+    * **NOTE :** Here the `ChengeFeedProcessor` instance is built with either `handleLatestVersionChanges` or `handleAllVersionsAndDeletesChanges`.
 
 #### Other Changes
 
