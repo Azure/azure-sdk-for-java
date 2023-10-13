@@ -77,11 +77,13 @@ public interface Policy {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Policy definition stages. */
     interface DefinitionStages {
         /** The first stage of the Policy definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Policy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -93,6 +95,7 @@ public interface Policy {
              */
             WithCreate withExistingVault(String resourceName, String resourceGroupName);
         }
+
         /**
          * The stage of the Policy definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -113,6 +116,7 @@ public interface Policy {
              */
             Policy create(Context context);
         }
+
         /** The stage of the Policy definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -124,6 +128,7 @@ public interface Policy {
             WithCreate withProperties(CreatePolicyInputProperties properties);
         }
     }
+
     /**
      * Begins update for the Policy resource.
      *
@@ -148,6 +153,7 @@ public interface Policy {
          */
         Policy apply(Context context);
     }
+
     /** The Policy update stages. */
     interface UpdateStages {
         /** The stage of the Policy update allowing to specify properties. */
@@ -161,6 +167,7 @@ public interface Policy {
             Update withProperties(UpdatePolicyInputProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

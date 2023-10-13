@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -36,7 +37,8 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"routes\":[{}]}";
+        String responseStr =
+            "{\"routes\":[{\"properties\":{\"name\":\"zsjqlh\",\"source\":\"TwinChangeEvents\",\"condition\":\"ibdeibq\",\"endpointNames\":[\"qkgh\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"dzwmkrefajpj\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"kqnyh\",\"endpointNames\":[\"ij\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"vfxzsjab\",\"source\":\"TwinChangeEvents\",\"condition\":\"ystawfsdjpvkvp\",\"endpointNames\":[\"xbkzbzkdvncj\",\"budurgkakmo\",\"zhjjklffhmouwq\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"rfzeey\",\"source\":\"Invalid\",\"condition\":\"zi\",\"endpointNames\":[\"yuhqlbjbsybbqwrv\",\"ldgmfpgvmpip\",\"slthaq\"],\"isEnabled\":false}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,26 +70,33 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
             manager
                 .iotHubResources()
                 .testAllRoutesWithResponse(
-                    "ygqukyhejh",
-                    "isxgfp",
+                    "kyhejhzisxgf",
+                    "elolppvksrpqvuj",
                     new TestAllRoutesInput()
-                        .withRoutingSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
+                        .withRoutingSource(RoutingSource.DEVICE_LIFECYCLE_EVENTS)
                         .withMessage(
                             new RoutingMessage()
-                                .withBody("pv")
-                                .withAppProperties(mapOf("swibyr", "pqvujzraehtwdwrf"))
-                                .withSystemProperties(mapOf("hevxcced", "bhshfwpracstwity")))
+                                .withBody("twdw")
+                                .withAppProperties(mapOf("dl", "swibyr", "hfwpracstwit", "h"))
+                                .withSystemProperties(mapOf("md", "evxccedcp", "zxltjcvn", "odn")))
                         .withTwin(
                             new RoutingTwin()
-                                .withTags("datamd")
+                                .withTags("dataiugcxnavvwxq")
                                 .withProperties(
                                     new RoutingTwinProperties()
-                                        .withDesired("datanwzxltjcv")
-                                        .withReported("dataltiugcxnavv"))),
+                                        .withDesired("dataqunyowxwlmdjr")
+                                        .withReported("datafgbvfvpdbo"))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
+
+        Assertions.assertEquals("zsjqlh", response.routes().get(0).properties().name());
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, response.routes().get(0).properties().source());
+        Assertions.assertEquals("ibdeibq", response.routes().get(0).properties().condition());
+        Assertions.assertEquals("qkgh", response.routes().get(0).properties().endpointNames().get(0));
+        Assertions.assertEquals(false, response.routes().get(0).properties().isEnabled());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

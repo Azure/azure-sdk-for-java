@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for ManagedClusters GetCommandResult. */
 public final class ManagedClustersGetCommandResultSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-07-01/examples/RunCommandResultFailed.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/RunCommandResultFailed.json
      */
     /**
      * Sample code: commandFailedResult.
@@ -25,7 +25,7 @@ public final class ManagedClustersGetCommandResultSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-07-01/examples/RunCommandResultSucceed.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-08-01/examples/RunCommandResultSucceed.json
      */
     /**
      * Sample code: commandSucceedResult.

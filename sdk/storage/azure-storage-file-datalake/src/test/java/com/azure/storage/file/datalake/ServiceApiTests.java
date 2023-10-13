@@ -208,7 +208,7 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertEquals(202, primaryDataLakeServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode());
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ResourceLock("ServiceProperties")
     @Test
     public void setPropsStaticWebsite() {
@@ -382,7 +382,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     }
 
     @ResourceLock("ServiceProperties")
-    @DisabledIf("olderThan20201002ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201002ServiceVersion")
     @Test
     public void listSystemFileSystems() {
         DataLakeAnalyticsLogging logging = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0")
@@ -503,7 +503,7 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertEquals("2019-02-02", response.getHeaders().getValue(X_MS_VERSION));
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystem() {
         DataLakeFileSystemClient cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
@@ -556,7 +556,7 @@ public class ServiceApiTests extends DataLakeTestBase {
 //        assertEquals(blobName, pathItems.get(0).getName());
 //    }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemWithResponse() {
         DataLakeFileSystemClient cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
@@ -582,7 +582,7 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertEquals(blobName, pathItems.get(0).getName());
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemAsync() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -607,7 +607,7 @@ public class ServiceApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemAsyncWithResponse() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -640,7 +640,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemIntoExistingFileSystemError() {
         DataLakeFileSystemClient cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
@@ -772,14 +772,6 @@ public class ServiceApiTests extends DataLakeTestBase {
 //        assertThrows(DataLakeStorageException.class, () ->
 //                primaryDataLakeServiceClient.renameFileSystem(generateFileSystemName(), generateFileSystemName()));
 //    }
-
-    private static boolean olderThan20191212ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2019_12_12);
-    }
-
-    private static boolean olderThan20201002ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_10_02);
-    }
 
     private static <T> T waitUntilFileSystemIsDeleted(
         Callable<T> waitUntilOperation) {

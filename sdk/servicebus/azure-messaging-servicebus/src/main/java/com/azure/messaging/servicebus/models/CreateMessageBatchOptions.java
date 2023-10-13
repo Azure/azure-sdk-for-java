@@ -21,6 +21,12 @@ public final class CreateMessageBatchOptions {
     private int maximumSizeInBytes;
 
     /**
+     * Creates a new instance of options to specify when creating a {@link ServiceBusMessageBatch}.
+     */
+    public CreateMessageBatchOptions() {
+    }
+
+    /**
      * Sets the maximum size for the batch of messages.
      *
      * @param maximumSizeInBytes The maximum size to allow for the batch of messages.

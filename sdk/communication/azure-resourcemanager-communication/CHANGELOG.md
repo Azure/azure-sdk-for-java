@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.1.0-beta.1 (2023-09-18)
+
+- Azure Resource Manager Communication client library for Java. This package contains Microsoft Azure SDK for Communication Management SDK. REST API for Azure Communication Services. Package tag package-preview-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.UserAssignedIdentity` was added
+
+#### `models.CommunicationServiceResource$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.CommunicationServiceResource$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.CommunicationServiceResourceUpdate` was modified
+
+* `identity()` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.CommunicationServiceResource` was modified
+
+* `identity()` was added
 
 ## 2.0.0 (2023-04-03)
 
