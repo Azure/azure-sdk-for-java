@@ -250,7 +250,9 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             // Check if the SessionTokenMismatchRetryPolicy retries on the bad / lagging region
             // for sessionTokenMismatchRetryAttempts by tracking the badSessionTokenRule hit count
             if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
-                assertThat(badSessionTokenRule.getHitCount()).isEqualTo(sessionTokenMismatchRetryAttempts);
+                // higher hit count is possible while in MinRetryWaitTimeWithinRegion
+                assertThat(badSessionTokenRule.getHitCount()).isGreaterThanOrEqualTo(
+                    sessionTokenMismatchRetryAttempts);
             }
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
