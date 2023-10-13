@@ -403,7 +403,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         if (cosmosException instanceof ServiceUnavailableException) {
             ServiceUnavailableException serviceUnavailableException = (ServiceUnavailableException) cosmosException;
             return serviceUnavailableException.isBasedOn503ResponseFromService()
-                || serviceUnavailableException.getStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_410;
+                || serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_410;
         }
 
         return false;
