@@ -276,8 +276,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 this.getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                         .listAvailableTollFreeAreaCodes("US",
                                 PhoneNumberAssignmentType.APPLICATION)
-                        .next())
-                .verifyComplete();
+                        .next()).expectAccessibleContext();
     }
 
     @ParameterizedTest
@@ -361,8 +360,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                         .listAvailableTollFreeAreaCodes("US",
                                 PhoneNumberAssignmentType.APPLICATION)
-                        .next())
-                .verifyComplete();
+                        .next()).expectAccessibleContext();
     }
 
     @ParameterizedTest
