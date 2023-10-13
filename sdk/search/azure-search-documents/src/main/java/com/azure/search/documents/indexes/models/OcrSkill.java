@@ -33,12 +33,6 @@ public final class OcrSkill extends SearchIndexerSkill {
      */
     private Boolean shouldDetectOrientation;
 
-    /*
-     * Defines the sequence of characters to use between the lines of text recognized by the OCR skill. The default
-     * value is "space".
-     */
-    private LineEnding lineEnding;
-
     /**
      * Creates an instance of OcrSkill class.
      *
@@ -91,28 +85,6 @@ public final class OcrSkill extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * Get the lineEnding property: Defines the sequence of characters to use between the lines of text recognized by
-     * the OCR skill. The default value is "space".
-     *
-     * @return the lineEnding value.
-     */
-    public LineEnding getLineEnding() {
-        return this.lineEnding;
-    }
-
-    /**
-     * Set the lineEnding property: Defines the sequence of characters to use between the lines of text recognized by
-     * the OCR skill. The default value is "space".
-     *
-     * @param lineEnding the lineEnding value to set.
-     * @return the OcrSkill object itself.
-     */
-    public OcrSkill setLineEnding(LineEnding lineEnding) {
-        this.lineEnding = lineEnding;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public OcrSkill setName(String name) {
@@ -145,7 +117,6 @@ public final class OcrSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("context", getContext());
         jsonWriter.writeStringField("defaultLanguageCode", Objects.toString(this.defaultLanguageCode, null));
         jsonWriter.writeBooleanField("detectOrientation", this.shouldDetectOrientation);
-        jsonWriter.writeStringField("lineEnding", Objects.toString(this.lineEnding, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -171,7 +142,6 @@ public final class OcrSkill extends SearchIndexerSkill {
                     String context = null;
                     OcrSkillLanguage defaultLanguageCode = null;
                     Boolean shouldDetectOrientation = null;
-                    LineEnding lineEnding = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -202,8 +172,6 @@ public final class OcrSkill extends SearchIndexerSkill {
                             defaultLanguageCode = OcrSkillLanguage.fromString(reader.getString());
                         } else if ("detectOrientation".equals(fieldName)) {
                             shouldDetectOrientation = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("lineEnding".equals(fieldName)) {
-                            lineEnding = LineEnding.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }
@@ -215,7 +183,6 @@ public final class OcrSkill extends SearchIndexerSkill {
                         deserializedOcrSkill.setContext(context);
                         deserializedOcrSkill.defaultLanguageCode = defaultLanguageCode;
                         deserializedOcrSkill.shouldDetectOrientation = shouldDetectOrientation;
-                        deserializedOcrSkill.lineEnding = lineEnding;
 
                         return deserializedOcrSkill;
                     }

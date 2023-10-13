@@ -12,7 +12,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.models.CaptionResult;
-import com.azure.search.documents.models.DocumentDebugInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -44,11 +43,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * used as document summary. Captions are only returned for queries of type 'semantic'.
      */
     private List<CaptionResult> captions;
-
-    /*
-     * Contains debugging information that can be used to further explore your search results.
-     */
-    private List<DocumentDebugInfo> documentDebugInfo;
 
     /*
      * Contains a document found by a search query, plus associated metadata.
@@ -105,16 +99,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
     }
 
     /**
-     * Get the documentDebugInfo property: Contains debugging information that can be used to further explore your
-     * search results.
-     *
-     * @return the documentDebugInfo value.
-     */
-    public List<DocumentDebugInfo> getDocumentDebugInfo() {
-        return this.documentDebugInfo;
-    }
-
-    /**
      * Get the additionalProperties property: Contains a document found by a search query, plus associated metadata.
      *
      * @return the additionalProperties value.
@@ -137,15 +121,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeDoubleField("@search.score", this.score);
-        jsonWriter.writeNumberField("@search.rerankerScore", this.rerankerScore);
-        jsonWriter.writeMapField(
-                "@search.highlights",
-                this.highlights,
-                (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
-        jsonWriter.writeArrayField("@search.captions", this.captions, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField(
-                "@search.documentDebugInfo", this.documentDebugInfo, (writer, element) -> writer.writeJson(element));
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -171,7 +146,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                     Double rerankerScore = null;
                     Map<String, List<String>> highlights = null;
                     List<CaptionResult> captions = null;
-                    List<DocumentDebugInfo> documentDebugInfo = null;
                     Map<String, Object> additionalProperties = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
@@ -186,8 +160,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                             highlights = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
                         } else if ("@search.captions".equals(fieldName)) {
                             captions = reader.readArray(reader1 -> CaptionResult.fromJson(reader1));
-                        } else if ("@search.documentDebugInfo".equals(fieldName)) {
-                            documentDebugInfo = reader.readArray(reader1 -> DocumentDebugInfo.fromJson(reader1));
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
@@ -201,7 +173,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                         deserializedSearchResult.rerankerScore = rerankerScore;
                         deserializedSearchResult.highlights = highlights;
                         deserializedSearchResult.captions = captions;
-                        deserializedSearchResult.documentDebugInfo = documentDebugInfo;
                         deserializedSearchResult.additionalProperties = additionalProperties;
 
                         return deserializedSearchResult;

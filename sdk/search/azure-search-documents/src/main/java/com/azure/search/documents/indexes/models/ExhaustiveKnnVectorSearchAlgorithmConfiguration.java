@@ -91,7 +91,7 @@ public final class ExhaustiveKnnVectorSearchAlgorithmConfiguration extends Vecto
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!KIND.toString().equals(kind)) {
+                            if (!KIND.equals(kind)) {
                                 throw new IllegalStateException(
                                         "'kind' was expected to be non-null and equal to '"
                                                 + KIND
