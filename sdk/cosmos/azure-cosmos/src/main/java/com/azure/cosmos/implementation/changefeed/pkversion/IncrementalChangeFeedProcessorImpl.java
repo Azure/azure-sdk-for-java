@@ -89,7 +89,6 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
     private final ChangeFeedObserverFactory<JsonNode> observerFactory;
     private volatile String databaseId;
     private volatile String collectionId;
-    private volatile String collectionResourceId;
     private final ChangeFeedContextClient leaseContextClient;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private LeaseStoreManager leaseStoreManager;
@@ -214,7 +213,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                     .flatMap(lease -> {
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(this.collectionResourceId, ChangeFeedMode.INCREMENTAL));
+                                lease.getContinuationState(this.collectionId, ChangeFeedMode.INCREMENTAL));
                         options.setMaxItemCount(1);
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
@@ -298,7 +297,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
                             this.feedContextClient.getContainerClient(),
-                            options, JsonNode.class, false)
+                            options, JsonNode.class)
                             .take(1)
                             .map(feedResponse -> {
                                 String sessionTokenLsn = feedResponse.getSessionToken();
@@ -361,7 +360,6 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                 .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
                     this.collectionId = documentCollectionResourceResponse.getProperties().getId();
-                    this.collectionResourceId = documentCollectionResourceResponse.getProperties().getResourceId();
                     return this;
                 }));
     }
