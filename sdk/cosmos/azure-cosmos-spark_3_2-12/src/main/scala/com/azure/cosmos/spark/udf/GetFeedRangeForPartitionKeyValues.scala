@@ -8,7 +8,7 @@ import org.apache.spark.sql.api.java.UDF2
 
 
 @SerialVersionUID(1L)
-class GetFeedRangeForPartitionKeyValue extends UDF2[String, Object, String] {
+class GetFeedRangeForPartitionKeyValues extends UDF2[String, Object, String] {
   override def call
   (
     partitionKeyDefinitionJson: String,
@@ -18,7 +18,7 @@ class GetFeedRangeForPartitionKeyValue extends UDF2[String, Object, String] {
     requireNotNullOrEmpty(partitionKeyDefinitionJson, "partitionKeyDefinitionJson")
 
     val range = SparkBridgeImplementationInternal
-      .partitionKeyValueToNormalizedRange(partitionKeyValue, partitionKeyDefinitionJson)
+      .partitionKeyValuesToNormalizedRange(partitionKeyValue, partitionKeyDefinitionJson)
 
     s"${range.min}-${range.max}"
   }

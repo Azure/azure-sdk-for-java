@@ -8,9 +8,11 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientB
 import com.azure.cosmos.implementation.changefeed.common.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{FeedRange, PartitionKey, SparkModelBridgeInternal}
+import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyBuilder, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.{ChangeFeedOffset, NormalizedRange}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.gson.Gson
 
 import scala.::
 import scala.collection.mutable
@@ -184,12 +186,46 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     partitionKeyDefinitionJson: String
   ): NormalizedRange = {
 
+
     val feedRange = FeedRange
       .forLogicalPartition(new PartitionKey(partitionKeyValue))
       .asInstanceOf[FeedRangePartitionKeyImpl]
 
     val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
     rangeToNormalizedRange(feedRange.getEffectiveRange(pkDefinition))
+  }
+
+  private[cosmos] def partitionKeyValuesToNormalizedRange
+  (
+      partitionKeyValue: Object,
+      partitionKeyDefinitionJson: String
+  ): NormalizedRange = {
+
+      val partitionKey = new PartitionKeyBuilder()
+      val objectMapper = new ObjectMapper()
+      val json = partitionKeyValue.toString
+      var isMultiplePartitionKeyPaths = false
+      try {
+          val partitionKeyValues = objectMapper.readValue(json, classOf[Array[String]])
+          for (value <- partitionKeyValues) {
+              partitionKey.add(value.trim)
+          }
+          partitionKey.build()
+          isMultiplePartitionKeyPaths = true
+      } catch {
+          case e: Exception =>
+              logInfo("Invalid partition key paths: " + json, e)
+      }
+      if (!isMultiplePartitionKeyPaths) {
+          partitionKey.add(partitionKeyValue.toString.trim)
+      }
+
+      val feedRange = FeedRange
+          .forLogicalPartition(partitionKey.build())
+          .asInstanceOf[FeedRangePartitionKeyImpl]
+
+      val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
+      rangeToNormalizedRange(feedRange.getEffectiveRange(pkDefinition))
   }
 
   def setIoThreadCountPerCoreFactor

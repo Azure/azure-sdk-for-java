@@ -127,8 +127,6 @@ def getPatchItemWithFullSchemaSubpartitions(id: String, partitionKeyPath: String
 
   // add id and partitionKey
   objectNode.put(IdAttributeName, baseObjectNode.get(IdAttributeName).textValue())
-  /*objectNode.put(partitionKeyPath, baseObjectNode.get(partitionKeyPath).textValue())*/
-
   objectNode
  }
 
