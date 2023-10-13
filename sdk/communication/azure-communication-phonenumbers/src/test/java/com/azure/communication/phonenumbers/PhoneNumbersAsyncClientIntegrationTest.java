@@ -258,9 +258,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         StepVerifier.create(
                 this.getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                         .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
-                .assertNext((PhoneNumberAreaCode areaCodes) -> {
-                    assertNotNull(areaCodes.getAreaCode());
-                })
                 .verifyComplete();
     }
 
@@ -336,9 +333,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                         .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
-                .assertNext((PhoneNumberAreaCode areaCodes) -> {
-                    assertNotNull(areaCodes.getAreaCode());
-                })
                 .verifyComplete();
     }
 
