@@ -57,7 +57,7 @@ Custom discoveries are organized into Discovery Groups. They are independent see
 ## Examples
 
 ```java readme-sample-createDefenderEasmClient
-String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
+String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTION_ID");
 String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
 String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
 String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
@@ -70,10 +70,10 @@ EasmClient easmClient = new EasmClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
-| **File Name**                                                  | **Description**                                         |
-|----------------------------------------------------------------|---------------------------------------------------------|
-| [DiscoveryRunsSample.java][discovery_runs_sample]              | Create and manage a discovery group                     |
-| [DiscoTemplateSample.java][disco_template_sample]              | Create disccovery groups using a template               |
+| **File Name**                                                  | **Description**                                        |
+|----------------------------------------------------------------|--------------------------------------------------------|
+| [DiscoveryRunsSample.java][discovery_runs_sample]              | Create and manage a discovery group                    |
+| [DiscoTemplateSample.java][disco_template_sample]              | Create discovery groups using a template               |
 | [SavedFilterSample.java][saved_filter_sample]                  | Use saved filters to synchronize queries across scripts |
 | [ManagingExternalIdsSample.java][external_ids_sample] | Tag assets automatically with external ids      |
 
