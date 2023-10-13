@@ -8,7 +8,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTe
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import io.opentelemetry.api.common.AttributeKey;
-import io.opentelemetry.api.common.AttributeType;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.DoubleCounter;
 import io.opentelemetry.api.metrics.DoubleHistogram;
@@ -21,8 +20,6 @@ import io.opentelemetry.sdk.metrics.data.PointData;
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
 import io.opentelemetry.sdk.testing.exporter.InMemoryMetricExporter;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -31,13 +28,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.HTTP_STATUS_CODE;
+import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.NET_HOST_NAME;
+import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.NET_PEER_NAME;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.HISTOGRAM;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.LONG_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.LONG_SUM;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AzureMonitorMetricExporterTest {
 
@@ -108,9 +107,8 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricData.getName()).isEqualTo("testDoubleGauge");
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"net.peer.name", "foo"})
-    public void testAttributesOnCustomMetric(String attributeName) {
+    @Test
+    public void testAttributesOnCustomMetric() {
         InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
             .registerMetricReader(
@@ -119,7 +117,12 @@ public class AzureMonitorMetricExporterTest {
         Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
 
         DoubleCounter counter = meter.counterBuilder("testAttributes").ofDoubles().build();
-        counter.add(1, Attributes.of(AttributeKey.stringKey(attributeName), "bar"));
+        Attributes attributes = Attributes.builder()
+            .put(NET_PEER_NAME, "example.io")
+            .put(AttributeKey.stringKey("foo"), "bar")
+            .build();
+
+        counter.add(1, attributes);
 
         meterProvider.forceFlush();
 
@@ -133,10 +136,11 @@ public class AzureMonitorMetricExporterTest {
 
         MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
-        Map<String, String> attributes = metricsData.getProperties();
+        Map<String, String> properties = metricsData.getProperties();
 
-        assertThat(attributes.size()).isEqualTo(1);
-        assertThat(attributes.get(attributeName)).isEqualTo("bar");
+        assertThat(properties.size()).isEqualTo(2);
+        assertThat(properties.get(NET_PEER_NAME.getKey())).isEqualTo("example.io");
+        assertThat(properties.get("foo")).isEqualTo("bar");
     }
 
     @Test
@@ -150,8 +154,8 @@ public class AzureMonitorMetricExporterTest {
 
         DoubleHistogram serverDuration = meter.histogramBuilder("http.server.duration").build();
         Attributes attributes = Attributes.builder()
-            .put(AttributeKey.longKey("http.status_code"), 200)
-            .put(AttributeKey.stringKey("net.host.name"), "example.io")
+            .put(HTTP_STATUS_CODE, 200)
+            .put(NET_HOST_NAME, "example.io")
             .put(AttributeKey.stringKey("foo"), "baz")
             .build();
         serverDuration.record(0.1, attributes);
