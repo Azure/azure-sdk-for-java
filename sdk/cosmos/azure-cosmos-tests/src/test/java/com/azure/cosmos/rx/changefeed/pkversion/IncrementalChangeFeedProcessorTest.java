@@ -1186,53 +1186,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseMonitorCollection = createLeaseMonitorCollection(LEASE_COLLECTION_THROUGHPUT);
 
-        CosmosAsyncClient clientWithStaleCache = null;
         ChangeFeedProcessor leaseMonitoringChangeFeedProcessor = null;
 
         try {
-
-            clientWithStaleCache = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .contentResponseOnWriteEnabled(true)
-                .buildAsyncClient();
-
-            CosmosAsyncDatabase databaseFromStaleClient =
-                clientWithStaleCache.getDatabase(createdFeedCollectionForSplit.getDatabase().getId());
-            CosmosAsyncContainer feedCollectionFromStaleClient =
-                databaseFromStaleClient.getContainer(createdFeedCollectionForSplit.getId());
-            CosmosAsyncContainer leaseCollectionFromStaleClient =
-                databaseFromStaleClient.getContainer(createdLeaseCollection.getId());
-
-            ChangeFeedProcessor staleCfpForGetCurrentStateValidation = new ChangeFeedProcessorBuilder()
-                .hostName(hostName)
-                .feedContainer(feedCollectionFromStaleClient)
-                .leaseContainer(leaseCollectionFromStaleClient)
-                .handleChanges(changeFeedProcessorItems -> {
-                })
-                .options(new ChangeFeedProcessorOptions()
-                    .setLeasePrefix("TEST")
-                    .setStartFromBeginning(true)
-                    .setMaxItemCount(100)
-                    .setLeaseExpirationInterval(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .setFeedPollDelay(Duration.ofMillis(200))
-                )
-                .buildChangeFeedProcessor();
-
-            ChangeFeedProcessor staleCfpForGetEstimatedLagValidation = new ChangeFeedProcessorBuilder()
-                .hostName(hostName)
-                .feedContainer(feedCollectionFromStaleClient)
-                .leaseContainer(leaseCollectionFromStaleClient)
-                .handleChanges(changeFeedProcessorItems -> {
-                })
-                .options(new ChangeFeedProcessorOptions()
-                    .setLeasePrefix("TEST")
-                    .setStartFromBeginning(true)
-                    .setMaxItemCount(100)
-                    .setLeaseExpirationInterval(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .setFeedPollDelay(Duration.ofMillis(200))
-                )
-                .buildChangeFeedProcessor();
 
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
@@ -1303,13 +1259,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                         )
                 )
                 .subscribe();
-
-
-            // this call populates the pkRangeCache being the first data-plane request
-            // this will force using a stale pkRangeCache
-            // in the getCurrentState call after the split
-            staleCfpForGetCurrentStateValidation.getCurrentState().block();
-            staleCfpForGetEstimatedLagValidation.getEstimatedLag().block();
 
             // Wait for the feed processor to receive and process the first batch of documents and apply throughput change.
             Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -1398,14 +1347,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             int leaseCount = changeFeedProcessor.getCurrentState().map(List::size).block();
             assertThat(leaseCount > 1).as("Found %d leases", leaseCount).isTrue();
 
-            int leaseCountFromStaleCfpGetCurrentStateValidation
-                = staleCfpForGetCurrentStateValidation.getCurrentState().map(List::size).block();
-            assertThat(leaseCountFromStaleCfpGetCurrentStateValidation).isEqualTo(leaseCount);
-
-            int leaseCountFromStaleCfpGetEstimatedLagValidation
-                = staleCfpForGetEstimatedLagValidation.getEstimatedLag().map(Map::size).block();
-            assertThat(leaseCountFromStaleCfpGetEstimatedLagValidation).isEqualTo(leaseCount);
-
             assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -1443,10 +1384,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             safeDeleteCollection(createdFeedCollectionForSplit);
             safeDeleteCollection(createdLeaseCollection);
-
-            if (clientWithStaleCache != null) {
-                safeClose(clientWithStaleCache);
-            }
 
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);

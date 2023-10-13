@@ -219,7 +219,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
                                 this.feedContextClient.getContainerClient(),
-                                options, JsonNode.class, false)
+                                options, JsonNode.class)
                             .take(1)
                             .map(feedResponse -> {
                                 String ownerValue = lease.getOwner();
@@ -293,7 +293,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(this.collectionResourceId, ChangeFeedMode.INCREMENTAL));
+                                lease.getContinuationState(this.collectionId, ChangeFeedMode.INCREMENTAL));
                         options.setMaxItemCount(1);
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(

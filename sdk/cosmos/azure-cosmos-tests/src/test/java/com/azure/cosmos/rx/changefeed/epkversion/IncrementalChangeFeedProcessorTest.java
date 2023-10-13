@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.rx.changefeed.epkversion;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.ConnectionMode;
@@ -1297,10 +1298,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             System.out.println("Start to delete FeedCollectionForSplit");
             safeDeleteCollection(createdFeedCollectionForSplit);
             safeDeleteCollection(createdLeaseCollection);
-
-            if (clientWithStaleCache != null) {
-                safeClose(clientWithStaleCache);
-            }
+            safeClose(clientWithStaleCache);
 
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
@@ -1678,7 +1676,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     @Test(groups = {"query"}, dataProvider = "getCurrentStateTestConfigs")
     public void getCurrentStateWithFaultInjection(FaultInjectionServerErrorType faultInjectionServerErrorType) throws InterruptedException {
 
-        if (ReflectionUtils.getConnectionPolicy(this.client).getConnectionMode() == ConnectionMode.GATEWAY) {
+        if (BridgeInternal.getContextClient(this.client).getConnectionPolicy().getConnectionMode()
+            == ConnectionMode.GATEWAY) {
             throw new SkipException("Fault injected is not valid in the gateway connectivity mode.");
         }
 

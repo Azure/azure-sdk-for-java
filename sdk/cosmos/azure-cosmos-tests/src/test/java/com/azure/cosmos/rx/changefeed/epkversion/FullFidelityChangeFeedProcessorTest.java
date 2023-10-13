@@ -1020,7 +1020,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
     // todo: this test was run against an FFCF account, worth re-enabling
     //  when we have such an account for the live tests pipeline
-    @Test(groups = { "cfp-split" }, dataProvider = "contextTestConfigs", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
+    @Test(groups = { "cfp-split" }, dataProvider = "contextTestConfigs", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = true)
     public void readFeedDocumentsAfterSplit(boolean isContextRequired) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
@@ -1266,10 +1266,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             System.out.println("Start to delete FeedCollectionForSplit");
             safeDeleteCollection(createdFeedCollectionForSplit);
             safeDeleteCollection(createdLeaseCollection);
-
-            if (clientWithStaleCache != null) {
-                safeClose(clientWithStaleCache);
-            }
+            safeClose(clientWithStaleCache);
 
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
