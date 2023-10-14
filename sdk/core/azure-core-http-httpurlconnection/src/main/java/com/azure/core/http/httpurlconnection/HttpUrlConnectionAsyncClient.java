@@ -64,12 +64,30 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest httpRequest) {
-        return sendAsync(httpRequest, Context.NONE);
+        return send(httpRequest, Context.NONE);
     }
 
+    /**
+     * Asynchronously send the HttpRequest.
+     *
+     * @param httpRequest The HTTP request being sent
+     * @param context The context of the request, for any additional changes
+     * @return A Mono containing the HttpResponse object
+     */
     @Override
-    public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        return sendAsync(request, context);
+    public Mono<HttpResponse> send(HttpRequest httpRequest, Context context) {
+        if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
+            return sendPatchViaSocket(httpRequest);
+        }
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+
+        return Mono.defer(() -> {
+            HttpURLConnection connection = connect(httpRequest);
+            return sendBodyAsync(httpRequest, progressReporter, connection)
+                .then(Mono.defer(() -> Mono.fromCallable(() -> receiveResponse(httpRequest, connection))))
+                .timeout(responseTimeout)
+                .publishOn(Schedulers.boundedElastic());
+        });
     }
 
     /**
@@ -90,28 +108,6 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
         HttpURLConnection connection = connect(httpRequest);
         sendBodySync(httpRequest, progressReporter, connection);
         return receiveResponse(httpRequest, connection);
-    }
-
-    /**
-     * Asynchronously send the HttpRequest.
-     *
-     * @param httpRequest The HTTP request being sent
-     * @param context The context of the request, for any additional changes
-     * @return A Mono containing the HttpResponse object
-     */
-    private Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
-        if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
-            return sendPatchViaSocket(httpRequest);
-        }
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-
-        return Mono.defer(() -> {
-            HttpURLConnection connection = connect(httpRequest);
-            return sendBodyAsync(httpRequest, progressReporter, connection)
-                .then(Mono.defer(() -> Mono.fromCallable(() -> receiveResponse(httpRequest, connection))))
-                .timeout(responseTimeout)
-                .publishOn(Schedulers.boundedElastic());
-        });
     }
 
     /**
