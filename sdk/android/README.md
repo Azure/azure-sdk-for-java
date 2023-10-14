@@ -29,7 +29,7 @@ The following libraries have known issues with Android:
 - The use of Jackson also requires an external StAX dependency.
 
 ### Overriding dependencies
-
+An example [build.gradle.kts](sdk/android/azure-samples/build.gradle.kts) is included.
 
 #### Include the BOM file
 
@@ -71,41 +71,53 @@ dependencies{
         implementation("com.fasterxml.jackson:jackson-bom") {
             version {
                 require("2.15.2")
-                reject("2.13.5")
             }
             because("earlier versions declared as transitive dependencies use android non-compatible factory method")
         }
         implementation("com.fasterxml.jackson:jackson-core") {
             version {
                 require("2.15.2")
-                reject("2.13.5")
             }
             because("earlier versions declared as transitive dependencies for azure are not android compatible")
         }
         implementation("com.fasterxml.jackson:jackson-databind") {
             version {
                 require("2.15.2")
-                reject("2.13.5")
             }
             because("earlier versions declared as transitive dependencies for azure are not android compatible")
         }
         implementation("com.fasterxml.jackson:jackson-dataformat-xml") {
             version {
                 require("2.15.2")
-                reject("2.13.5")
             }
             because("earlier versions declared as transitive dependencies for azure are not android compatible")
         }
         implementation("com.fasterxml.jackson:jackson-datatype-jsr310") {
             version {
                 require("2.15.2")
-                reject("2.13.5")
             }
             because("earlier versions declared as transitive dependencies for azure are not android compatible")
         }
     }
 }
 ```
+#### Replacing Netty dependency with OkHttp
+
+Exclude the netty dependency as shown in the following snippet.
+```
+configurations{
+    implementation{
+        exclude(group = "com.azure", module = "azure-core-http-netty")
+    }
+}
+```
+Then include OkHttp in the dependencies.
+```
+dependencies{
+    implementation("com.azure:azure-core-http-okhttp")
+}
+```
+
 ## Credential management on Android
 - The method used in the samples to pass credentials from System Environment Variables to the sample app on a device or emulator via the BuildConfig class is not suitable for production or use in real apps.  There is a risk of keys being exposed, as data in BuildConfig is stored in plaintext in the APK on the device.
 - Recommend using active directory as documented here:
