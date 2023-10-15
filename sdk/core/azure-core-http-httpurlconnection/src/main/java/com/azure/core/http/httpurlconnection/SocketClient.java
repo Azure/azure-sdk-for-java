@@ -80,10 +80,10 @@ class SocketClient {
                 .orElse(null);
 
             if (redirectLocation != null) {
-                if (!redirectLocation.startsWith("http")) {
-                    httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
-                } else {
+                if (redirectLocation.startsWith("http")) {
                     httpRequest.setUrl(redirectLocation);
+                } else {
+                    httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
                 }
                 return sendPatchRequest(httpRequest);
             }
