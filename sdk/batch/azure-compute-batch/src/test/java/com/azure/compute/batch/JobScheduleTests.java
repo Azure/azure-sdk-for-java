@@ -83,10 +83,9 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
             jobSchedule.setMetadata(metadataList);
             batchClient.replaceJobSchedule(jobScheduleId, jobSchedule);
 
-            List<MetadataItem> retrievedMetadata = jobSchedule.getMetadata();
-            Assertions.assertNotNull(retrievedMetadata, "Metadata in jobSchedule should not be null");
-            Assertions.assertTrue(retrievedMetadata.containsAll(metadataList), "jobSchedule metadata does not match expected");
-            Assertions.assertTrue(retrievedMetadata.size() > 0 && retrievedMetadata.get(0).getValue().equals("value1"), "jobSchedule metadata does not contain the specific item at index 0 with value 'value1'");
+            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
+            Assert.assertTrue(jobSchedule.getMetadata().size() == 2);
+            Assert.assertTrue(jobSchedule.getMetadata().get(1).getValue().equals("value2"));
 
             // UPDATE
             LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
