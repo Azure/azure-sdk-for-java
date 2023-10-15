@@ -60,7 +60,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
      * </pre>
      * <!-- end com.azure.core.http.httpurlconnection.HttpUrlConnectionAsyncClientBuilder.connectionTimeout#Duration -->
      *
-     * The default connection timeout is 60 seconds.
+     * The default connection timeout is 10 seconds.
      *
      * @param connectionTimeout the connection timeout
      * @return the updated HttpUrlConnectionAsyncClientBuilder object
