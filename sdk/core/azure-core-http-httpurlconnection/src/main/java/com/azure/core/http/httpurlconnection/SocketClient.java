@@ -74,7 +74,7 @@ class SocketClient {
             HttpUrlConnectionResponse response = buildResponse(httpRequest, in);
 
             String redirectLocation = response.getHeaders().stream()
-                .filter(h -> h.getName().equals("Location"))
+                .filter(h -> h.getName().equalsIgnoreCase("Location"))
                 .map(HttpHeader::getValue)
                 .findFirst()
                 .orElse(null);
