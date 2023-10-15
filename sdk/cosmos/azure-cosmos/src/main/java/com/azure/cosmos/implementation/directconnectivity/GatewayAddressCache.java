@@ -49,6 +49,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
@@ -422,21 +423,25 @@ public class GatewayAddressCache implements IAddressCache {
         Instant addressCallStartTime = Instant.now();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
-        Duration responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+        // TODO: Clean this code up later
+        if (request.getResponseTimeout() == null) {
+            request.setResponseTimeout(HttpTimeoutPolicy.getTimeoutPolicy(request).
+                getTimeoutAndDelaysList().get(0).getResponseTimeout());
+        }
 
         Mono<HttpResponse> httpResponseMono;
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
-            httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
+            httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
         } else {
             httpResponseMono = tokenProvider
                 .populateAuthorizationHeader(httpHeaders)
-                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,responseTimeout));
+                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,request.getResponseTimeout()));
         }
 
         if (this.gatewayServerErrorInjector != null) {
             httpResponseMono =
                 this.gatewayServerErrorInjector.injectGatewayErrors(
-                    responseTimeout,
+                    request.getResponseTimeout(),
                     httpRequest,
                     request,
                     httpResponseMono,
@@ -801,14 +806,20 @@ public class GatewayAddressCache implements IAddressCache {
         Instant addressCallStartTime = Instant.now();
         Mono<HttpResponse> httpResponseMono;
 
+        // TODO: Clean this code up later
+        if (request.getResponseTimeout() == null) {
+            request.setResponseTimeout(HttpTimeoutPolicy.getTimeoutPolicy(request).
+                getTimeoutAndDelaysList().get(0).getResponseTimeout());
+        }
+
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
             httpResponseMono = this.httpClient.send(httpRequest,
-                Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
+                request.getResponseTimeout());
         } else {
             httpResponseMono = tokenProvider
                 .populateAuthorizationHeader(defaultHttpHeaders)
                 .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,
-                    Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
+                    request.getResponseTimeout()));
         }
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, this.clientContext, httpResponseMono, httpRequest);

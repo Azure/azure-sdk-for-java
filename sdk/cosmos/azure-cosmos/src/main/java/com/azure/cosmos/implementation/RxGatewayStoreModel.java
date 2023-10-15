@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
@@ -240,17 +241,16 @@ public class RxGatewayStoreModel implements RxStoreModel {
                 httpHeaders,
                 contentAsByteArray);
 
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
-            if (OperationType.QueryPlan.equals(request.getOperationType())) {
-                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
-            } else if (request.isAddressRefresh()) {
-                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+            // TODO: Clean this code up later
+            if (request.getResponseTimeout() == null) {
+                request.setResponseTimeout(HttpTimeoutPolicy.getTimeoutPolicy(request).
+                    getTimeoutAndDelaysList().get(0).getResponseTimeout());
             }
-
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
 
             if (this.gatewayServerErrorInjector != null) {
-                httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(responseTimeout, httpRequest, request, httpResponseMono);
+                httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(request.getResponseTimeout(),
+                    httpRequest, request, httpResponseMono);
                 return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
             }
 

@@ -50,6 +50,7 @@ import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
@@ -134,15 +135,14 @@ public class HttpTransportClient extends TransportClient {
 
             MutableVolatile<Instant> sendTimeUtc = new MutableVolatile<>();
 
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
-            if (OperationType.QueryPlan.equals(request.getOperationType())) {
-                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
-            } else if (request.isAddressRefresh()) {
-                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+            // TODO: Clean this code up later
+            if (request.getResponseTimeout() == null) {
+                request.setResponseTimeout(HttpTimeoutPolicy.getTimeoutPolicy(request).
+                    getTimeoutAndDelaysList().get(0).getResponseTimeout());
             }
 
             Mono<HttpResponse> httpResponseMono = this.httpClient
-                    .send(httpRequest, responseTimeout)
+                    .send(httpRequest, request.getResponseTimeout())
                     .doOnSubscribe(subscription -> {
                         sendTimeUtc.v = Instant.now();
                         this.beforeRequest(

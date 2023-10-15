@@ -102,7 +102,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         //Default HttpTimeout Policy
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.Read, "/dbs/db/colls/col/docs/doc", ResourceType.DatabaseAccount);
+            OperationType.Read, "/dbs/db", ResourceType.DatabaseAccount);
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
@@ -244,7 +244,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         //Metadata Write - Should not Retry
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Database);
+            OperationType.Create, "/dbs/db", ResourceType.DatabaseAccount);
 
         webExceptionRetryPolicy = new WebExceptionRetryPolicy(new RetryContext());
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
