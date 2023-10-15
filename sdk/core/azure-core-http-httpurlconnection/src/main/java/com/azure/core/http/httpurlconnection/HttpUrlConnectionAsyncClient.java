@@ -99,11 +99,10 @@ public class HttpUrlConnectionAsyncClient implements HttpClient {
      */
     @Override
     public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
             return sendPatchViaSocketSync(httpRequest);
         }
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         HttpURLConnection connection = connect(httpRequest);
         sendBodySync(httpRequest, progressReporter, connection);
