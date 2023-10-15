@@ -37,16 +37,22 @@ class SocketClient {
      * @return an instance of HttpUrlConnectionResponse
      */
     public static HttpUrlConnectionResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
-        String host = httpRequest.getUrl().getHost();
-        int port = httpRequest.getUrl().getPort();
-        if (httpRequest.getUrl().getProtocol().equals("https")) {
-            SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-            try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port)) {
-                return doInputOutput(httpRequest, socket);
+        final URL requestUrl = httpRequest.getUrl();
+        final String protocol = requestUrl.getProtocol();
+        final String host = requestUrl.getHost();
+        final int port = requestUrl.getPort();
+
+        switch (protocol) {
+            case "https": {
+                SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+                try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port)) {
+                    return doInputOutput(httpRequest, socket);
+                }
             }
-        } else if (httpRequest.getUrl().getProtocol().equals("http")) {
-            try (Socket socket = new Socket(host, port)) {
-                return doInputOutput(httpRequest, socket);
+            case "http": {
+                try (Socket socket = new Socket(host, port)) {
+                    return doInputOutput(httpRequest, socket);
+                }
             }
         }
         throw new ProtocolException("Only HTTP and HTTPS are supported by this client.");
