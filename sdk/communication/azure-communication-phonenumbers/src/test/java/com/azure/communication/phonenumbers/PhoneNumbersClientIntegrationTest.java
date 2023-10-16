@@ -184,9 +184,9 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        String[] expectedAreaCodes = { "888", "877", "866", "855", "844", "800", "833", "88" };        
+        String[] expectedAreaCodes = { "888", "877", "866", "855", "844", "800", "833", "88" };
         for (PhoneNumberAreaCode areaCode : areaCodesResult) {
-                assertTrue(Arrays.asList(expectedAreaCodes).contains(areaCode));
+            assertTrue(Arrays.asList(expectedAreaCodes).contains(areaCode));
         }
     }
 
@@ -251,9 +251,9 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        String[] expectedAreaCodes = { "888", "877", "866", "855", "844", "800", "833", "88" };        
+        String[] expectedAreaCodes = { "888", "877", "866", "855", "844", "800", "833", "88" };
         for (PhoneNumberAreaCode areaCode : areaCodesResult) {
-                assertTrue(Arrays.asList(expectedAreaCodes).contains(areaCode));
+            assertTrue(Arrays.asList(expectedAreaCodes).contains(areaCode));
         }
     }
 
