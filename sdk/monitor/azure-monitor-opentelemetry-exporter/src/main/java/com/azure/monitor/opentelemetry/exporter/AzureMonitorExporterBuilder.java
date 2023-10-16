@@ -293,64 +293,66 @@ public final class AzureMonitorExporterBuilder {
      * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporter.
      */
     public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
-        if (!frozen) {
-            sdkBuilder.addPropertiesSupplier(() -> {
-                Map<String, String> props = new HashMap<>();
-                props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-                props.put("otel.metrics.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-                props.put("otel.logs.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-                props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_AZURE_MONITOR_EXPORTER_BUILDER, "true");
-                return props;
+        sdkBuilder.addPropertiesSupplier(() -> {
+            Map<String, String> props = new HashMap<>();
+            props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
+            props.put("otel.metrics.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
+            props.put("otel.logs.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
+            props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_AZURE_MONITOR_EXPORTER_BUILDER, "true");
+            return props;
+        });
+        sdkBuilder.addSpanExporterCustomizer(
+            (spanExporter, config) -> {
+                if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
+                    internalBuildAndFreeze(config);
+                    spanExporter = buildTraceExporter(config);
+                }
+                return spanExporter;
             });
-            sdkBuilder.addSpanExporterCustomizer(
-                (spanExporter, config) -> {
-                    if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                        internalBuildAndFreeze(config);
-                        spanExporter = buildTraceExporter(config);
-                    }
-                    return spanExporter;
-                });
-            sdkBuilder.addMetricExporterCustomizer(
-                (metricExporter, config) -> {
-                    if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                        internalBuildAndFreeze(config);
-                        metricExporter = buildMetricExporter(config);
-                    }
-                    return metricExporter;
-                });
-            sdkBuilder.addLogRecordExporterCustomizer(
-                (logRecordExporter, config) -> {
-                    if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                        internalBuildAndFreeze(config);
-                        logRecordExporter = buildLogRecordExporter(config);
-                    }
-                    return logRecordExporter;
-                });
-            // TODO
+        sdkBuilder.addMetricExporterCustomizer(
+            (metricExporter, config) -> {
+                if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
+                    internalBuildAndFreeze(config);
+                    metricExporter = buildMetricExporter(config);
+                }
+                return metricExporter;
+            });
+        sdkBuilder.addLogRecordExporterCustomizer(
+            (logRecordExporter, config) -> {
+                if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
+                    internalBuildAndFreeze(config);
+                    logRecordExporter = buildLogRecordExporter(config);
+                }
+                return logRecordExporter;
+            });
+        // TODO
 //        sdkBuilder.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
 //            QuickPulse quickPulse = QuickPulse.create(getHttpPipeline());
 //            return sdkTracerProviderBuilder.addSpanProcessor(
 //                new LiveMetricsSpanProcessor(quickPulse, createSpanDataMapper()));
 //        });
-            sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, config) ->
-                sdkMeterProviderBuilder.registerView(
-                    InstrumentSelector.builder()
-                        .setMeterName("io.opentelemetry.sdk.trace")
-                        .build(),
-                    View.builder()
-                        .setAggregation(Aggregation.drop())
-                        .build()
-                ).registerView(
-                    InstrumentSelector.builder()
-                        .setMeterName("io.opentelemetry.sdk.logs")
-                        .build(),
-                    View.builder()
-                        .setAggregation(Aggregation.drop())
-                        .build()
-                ));
-        }
+        sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, config) ->
+            sdkMeterProviderBuilder.registerView(
+                InstrumentSelector.builder()
+                    .setMeterName("io.opentelemetry.sdk.trace")
+                    .build(),
+                View.builder()
+                    .setAggregation(Aggregation.drop())
+                    .build()
+            ).registerView(
+                InstrumentSelector.builder()
+                    .setMeterName("io.opentelemetry.sdk.logs")
+                    .build(),
+                View.builder()
+                    .setAggregation(Aggregation.drop())
+                    .build()
+            ));
     }
 
+    // One caveat: ConfigProperties will get used only once when initializing/starting StatsbeatModule.
+    // When a customer call build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) multiple times with a diff ConfigProperties each time,
+    // the new ConfigProperties will not get applied to StatsbeatModule because of "frozen" guard. Luckily, we're using it for testing only.
+    // We might need to revisit this approach later.
     private void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
             builtHttpPipeline = createHttpPipeline();
