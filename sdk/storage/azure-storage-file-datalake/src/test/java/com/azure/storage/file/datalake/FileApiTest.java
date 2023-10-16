@@ -1687,7 +1687,10 @@ public class FileApiTest extends DataLakeTestBase {
     @SuppressWarnings("deprecation")
     @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
-    @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
+    @ValueSource(ints = {
+        100,
+        8 * 1026 * 1024 + 10
+    })
     public void downloadFileProgressReceiver(int fileSize) {
         File file = getRandomFile(fileSize);
         file.deleteOnExit();
@@ -1711,7 +1714,10 @@ public class FileApiTest extends DataLakeTestBase {
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be
         // received if there are empty buffers in the stream.
-        assertTrue(mockReceiver.progresses.stream().anyMatch(progress -> progress == fileSize));
+        assertTrue(mockReceiver.progresses.stream().anyMatch(progress -> {
+            System.out.println("progress is: " + progress + " and equal: " + (progress == fileSize));
+            return progress == fileSize;
+        }));
 
         // There should be NO notification with a larger than expected size.
         assertFalse(mockReceiver.progresses.stream().anyMatch(progress -> progress > fileSize));

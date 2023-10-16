@@ -21,6 +21,10 @@ public final class DeliveryRuleUrlFileNameCondition extends DeliveryRuleConditio
     @JsonProperty(value = "parameters", required = true)
     private UrlFileNameMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleUrlFileNameCondition class. */
+    public DeliveryRuleUrlFileNameCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

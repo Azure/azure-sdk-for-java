@@ -21,6 +21,10 @@ public final class DeliveryRuleHttpVersionCondition extends DeliveryRuleConditio
     @JsonProperty(value = "parameters", required = true)
     private HttpVersionMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleHttpVersionCondition class. */
+    public DeliveryRuleHttpVersionCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

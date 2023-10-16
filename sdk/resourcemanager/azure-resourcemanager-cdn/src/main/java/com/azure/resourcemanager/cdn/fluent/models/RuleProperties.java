@@ -28,6 +28,10 @@ public final class RuleProperties extends RuleUpdatePropertiesParameters {
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
+    /** Creates an instance of RuleProperties class. */
+    public RuleProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning status.
      *

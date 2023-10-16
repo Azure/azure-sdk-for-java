@@ -100,21 +100,6 @@ public interface SecretsClient {
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      *     within the resource group.
      * @param secretName Name of the Secret under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing Secret within a profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecretInner get(String resourceGroupName, String profileName, String secretName);
-
-    /**
-     * Gets an existing Secret within a profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param secretName Name of the Secret under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,6 +109,21 @@ public interface SecretsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecretInner> getWithResponse(
         String resourceGroupName, String profileName, String secretName, Context context);
+
+    /**
+     * Gets an existing Secret within a profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param secretName Name of the Secret under the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing Secret within a profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecretInner get(String resourceGroupName, String profileName, String secretName);
 
     /**
      * Creates a new Secret within the specified profile.

@@ -667,17 +667,33 @@ public class IdentityClient extends IdentityClientBase {
      */
     @SuppressWarnings("deprecation")
     public Mono<AccessToken> authenticateWithConfidentialClientCache(TokenRequestContext request) {
+        return authenticateWithConfidentialClientCache(request, null);
+    }
+
+    /**
+     * Asynchronously acquire a token from the currently logged in client.
+     *
+     * @param request the details of the token request
+     * @param account the account used to log in to acquire the last token
+     *
+     * @return a Publisher that emits an AccessToken
+     */
+    @SuppressWarnings("deprecation")
+    public Mono<AccessToken> authenticateWithConfidentialClientCache(TokenRequestContext request, IAccount account) {
         return getConfidentialClientInstance(request).getValue()
             .flatMap(confidentialClient -> Mono.fromFuture(() -> {
                 SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                         new HashSet<>(request.getScopes()))
                     .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+                if (account != null) {
+                    parametersBuilder.account(account);
+                }
                 try {
                     return confidentialClient.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
                     return getFailedCompletableFuture(LOGGER.logExceptionAsError(new RuntimeException(e)));
                 }
-            }).map(ar -> (AccessToken) new MsalToken(ar))
+            }).map(ar -> new MsalToken(ar))
                 .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(REFRESH_OFFSET))));
     }
 
