@@ -47,7 +47,7 @@ import static org.mockito.Mockito.when;
 /**
  * Unit tests for {@link BlobCheckpointStore}.
  */
-public class BlobEventProcessorClientStoreTest {
+public class BlobCheckpointStoreTests {
 
     @Mock
     private BlobContainerAsyncClient blobContainerAsyncClient;
