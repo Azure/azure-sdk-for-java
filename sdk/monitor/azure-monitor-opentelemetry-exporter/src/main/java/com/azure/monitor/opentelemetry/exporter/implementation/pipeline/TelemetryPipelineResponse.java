@@ -19,7 +19,6 @@ public class TelemetryPipelineResponse {
     private static final String INVALID_INSTRUMENTATION_KEY = "Invalid instrumentation key"; // 400 status code
     private final int statusCode;
     private final String body;
-    private Set<String> errors;
 
     TelemetryPipelineResponse(int statusCode, String body) {
         this.statusCode = statusCode;
@@ -35,11 +34,11 @@ public class TelemetryPipelineResponse {
     }
 
     public Set<String> getErrors() {
-        errors = parseErrors(body); // parseErrors on demand
-        return errors;
+        return parseErrors(body); // parseErrors on demand
     }
 
     public boolean invalidInstrumentationKey() {
+        Set<String> errors = parseErrors(body);
         return errors != null && errors.contains(INVALID_INSTRUMENTATION_KEY);
     }
 
