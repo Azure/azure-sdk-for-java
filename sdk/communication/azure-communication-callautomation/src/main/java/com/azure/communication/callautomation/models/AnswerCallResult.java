@@ -5,14 +5,18 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.CallConnection;
 import com.azure.communication.callautomation.CallConnectionAsync;
+import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
+import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.core.annotation.Immutable;
+import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * The result of answering a call
  */
 @Immutable
-public final class AnswerCallResult extends CallResult {
-
+public final class AnswerCallResult extends CallResult<AnswerCallEventResult> {
     /**
      * Constructor
      *
@@ -22,5 +26,33 @@ public final class AnswerCallResult extends CallResult {
      */
     public AnswerCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
         super(callConnectionProperties, callConnection, callConnectionAsync);
+    }
+
+    /**
+     * Waits for the event processor to process the event
+     *
+     * @return the result of the event processing
+     */
+    @Override
+    public Mono<AnswerCallEventResult> waitForEventProcessorAsync() {
+        if (eventProcessor == null) {
+            return Mono.empty();
+        }
+
+        return eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
+            && (event.getClass() == CallConnected.class)
+        ).flatMap(event -> Mono.just(getReturnedEvent(event)));
+    }
+
+    /**
+     * Sets the returned event
+     *
+     * @param event the event to set
+     * @return the result of the event processing
+     */
+    @Override
+    protected AnswerCallEventResult getReturnedEvent(CallAutomationEventBase event) {
+        return new AnswerCallEventResult(true, (CallConnected) event);
     }
 }

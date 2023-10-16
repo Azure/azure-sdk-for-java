@@ -3,18 +3,22 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
+import com.azure.communication.callautomation.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.PlayOptions;
-import com.azure.communication.callautomation.models.PlayToAllOptions;
+import com.azure.communication.callautomation.models.PlayResult;
 import com.azure.communication.callautomation.models.PlaySource;
-import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
+import com.azure.communication.callautomation.models.SendDtmfResult;
 import com.azure.communication.callautomation.models.StartHoldMusicOptions;
+import com.azure.communication.callautomation.models.StartRecognizingCallMediaResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.exception.HttpResponseException;
 
 import java.util.List;
 
@@ -35,10 +39,11 @@ public final class CallMedia {
      * @param playTo the targets to play to.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful play request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void play(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
-        callMediaAsync.play(playSources, playTo).block();
+    public PlayResult play(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
+        return callMediaAsync.play(playSources, playTo).block();
     }
 
     /**
@@ -48,10 +53,11 @@ public final class CallMedia {
      * @param playTo the targets to play to.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful play request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        callMediaAsync.play(playSource, playTo).block();
+    public PlayResult play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+        return callMediaAsync.play(playSource, playTo).block();
     }
 
     /**
@@ -60,10 +66,11 @@ public final class CallMedia {
      * @param playSources A List of {@link PlaySource} representing the sources to play.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful play request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void playToAll(List<PlaySource> playSources) {
-        callMediaAsync.playToAll(playSources).block();
+    public PlayResult playToAll(List<PlaySource> playSources) {
+        return callMediaAsync.playToAll(playSources).block();
     }
 
     /**
@@ -72,10 +79,11 @@ public final class CallMedia {
      * @param playSource A {@link PlaySource} representing the source to play.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful play request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void playToAll(PlaySource playSource) {
-        callMediaAsync.playToAll(playSource).block();
+    public PlayResult playToAll(PlaySource playSource) {
+        return callMediaAsync.playToAll(playSource).block();
     }
 
     /**
@@ -88,7 +96,7 @@ public final class CallMedia {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> playWithResponse(PlayOptions options, Context context) {
+    public Response<PlayResult> playWithResponse(PlayOptions options, Context context) {
         return callMediaAsync.playWithResponseInternal(options, context).block();
     }
 
@@ -102,7 +110,7 @@ public final class CallMedia {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> playToAllWithResponse(PlayToAllOptions options, Context context) {
+    public Response<PlayResult> playToAllWithResponse(PlayToAllOptions options, Context context) {
         return callMediaAsync
             .playToAllWithResponseInternal(options, context)
             .block();
@@ -111,10 +119,11 @@ public final class CallMedia {
     /**
      * Recognize tones.
      * @param callMediaRecognizeOptions Optional elements for recognize.
+     * @return Response for a successful recognize request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startRecognizing(CallMediaRecognizeOptions callMediaRecognizeOptions) {
-        callMediaAsync.startRecognizing(callMediaRecognizeOptions).block();
+    public StartRecognizingCallMediaResult startRecognizing(CallMediaRecognizeOptions callMediaRecognizeOptions) {
+        return callMediaAsync.startRecognizing(callMediaRecognizeOptions).block();
     }
 
     /**
@@ -124,7 +133,7 @@ public final class CallMedia {
      * @return Response for a successful recognize request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startRecognizingWithResponse(CallMediaRecognizeOptions callMediaRecognizeOptions, Context context) {
+    public Response<StartRecognizingCallMediaResult> startRecognizingWithResponse(CallMediaRecognizeOptions callMediaRecognizeOptions, Context context) {
         return callMediaAsync
             .recognizeWithResponseInternal(callMediaRecognizeOptions, context)
             .block();
@@ -144,7 +153,7 @@ public final class CallMedia {
      * @return Response for successful playAll request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelAllMediaOperationsWithResponse(Context context) {
+    public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(Context context) {
         return callMediaAsync.cancelAllMediaOperationsWithResponseInternal(context).block();
     }
 
@@ -153,10 +162,11 @@ public final class CallMedia {
      *
      * @param tones tones to be sent
      * @param targetParticipant the target participant
+     * @return Response for successful sendDtmf request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        callMediaAsync.sendDtmf(tones, targetParticipant).block();
+    public SendDtmfResult sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        return callMediaAsync.sendDtmf(tones, targetParticipant).block();
     }
 
     /**
@@ -170,8 +180,8 @@ public final class CallMedia {
      * @return Response for successful sendDtmf request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
-                                               String operationContext, String callbackUrl, Context context) {
+    public Response<SendDtmfResult> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
+                                                         String operationContext, String callbackUrl, Context context) {
         return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, callbackUrl, context).block();
     }
 

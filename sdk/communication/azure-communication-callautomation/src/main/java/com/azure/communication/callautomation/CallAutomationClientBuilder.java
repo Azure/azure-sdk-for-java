@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.eventprocessor.CallAutomationEventProcessor;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImplBuilder;
 import com.azure.communication.callautomation.implementation.CustomHmacAuthenticationPolicy;
@@ -310,7 +311,7 @@ public final class CallAutomationClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity);
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, new CallAutomationEventProcessor());
     }
 
     /**
@@ -388,7 +389,7 @@ public final class CallAutomationClientBuilder implements
 
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
         clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
-            
+
         return clientBuilder.buildClient();
     }
 

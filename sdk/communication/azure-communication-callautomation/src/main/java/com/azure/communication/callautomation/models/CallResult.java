@@ -9,7 +9,7 @@ import com.azure.communication.callautomation.CallConnectionAsync;
 /**
  * The abstract class used as parent of [action]CallResult
  */
-public abstract class CallResult {
+public abstract class CallResult<TEventResult> extends ResultWithEventHandling<TEventResult> {
     /*
      * The callConnectionProperties
      */

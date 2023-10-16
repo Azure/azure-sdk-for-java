@@ -9,6 +9,7 @@ module com.azure.communication.callautomation {
     exports com.azure.communication.callautomation;
     exports com.azure.communication.callautomation.models;
     exports com.azure.communication.callautomation.models.events;
+    exports com.azure.communication.callautomation.eventprocessor;
 
     // exporting some packages specifically for Jackson
     opens com.azure.communication.callautomation.implementation.models to com.fasterxml.jackson.databind, com.azure.core;

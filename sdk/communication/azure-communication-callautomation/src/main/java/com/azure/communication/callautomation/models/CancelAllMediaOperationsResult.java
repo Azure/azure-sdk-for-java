@@ -3,10 +3,9 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.CallConnection;
-import com.azure.communication.callautomation.CallConnectionAsync;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.PlayCanceled;
+import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.core.annotation.Immutable;
 import reactor.core.publisher.Mono;
 
@@ -16,17 +15,12 @@ import java.util.Objects;
  * The result of answering a call
  */
 @Immutable
-public final class CreateCallResult extends CallResult<CreateCallEventResult> {
+public final class CancelAllMediaOperationsResult extends ResultWithEventHandling<CancelAllMediaOperationsEventResult>  {
 
     /**
-     * Constructor
-     *
-     * @param callConnectionProperties The callConnectionProperties
-     * @param callConnection The callConnection
-     * @param callConnectionAsync The callConnectionAsync
+     * Initializes a new instance of CancelAllMediaOperationsResult.
      */
-    public CreateCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
-        super(callConnectionProperties, callConnection, callConnectionAsync);
+    public CancelAllMediaOperationsResult() {
     }
 
     /**
@@ -35,14 +29,14 @@ public final class CreateCallResult extends CallResult<CreateCallEventResult> {
      * @return the result of the event processing
      */
     @Override
-    public Mono<CreateCallEventResult> waitForEventProcessorAsync() {
+    public Mono<CancelAllMediaOperationsEventResult> waitForEventProcessorAsync() {
         if (eventProcessor == null) {
             return Mono.empty();
         }
 
         return eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
             && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallConnected.class)
+            && (event.getClass() == PlayCanceled.class || event.getClass() == RecognizeCanceled.class)
         ).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
@@ -53,7 +47,14 @@ public final class CreateCallResult extends CallResult<CreateCallEventResult> {
      * @return the result of the event processing
      */
     @Override
-    protected CreateCallEventResult getReturnedEvent(CallAutomationEventBase event) {
-        return new CreateCallEventResult(true, (CallConnected) event);
+    protected CancelAllMediaOperationsEventResult getReturnedEvent(CallAutomationEventBase event) {
+        CancelAllMediaOperationsEventResult result = null;
+        if (event.getClass() == PlayCanceled.class) {
+            result = new CancelAllMediaOperationsEventResult(true, (PlayCanceled) event, null);
+        } else if (event.getClass() == RecognizeCanceled.class) {
+            result = new CancelAllMediaOperationsEventResult(true, null, (RecognizeCanceled) event);
+        }
+
+        return result;
     }
 }
