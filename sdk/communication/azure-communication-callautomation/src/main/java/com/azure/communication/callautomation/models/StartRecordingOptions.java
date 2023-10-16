@@ -27,6 +27,8 @@ public final class StartRecordingOptions {
 
     private RecordingFormat recordingFormat;
 
+    private Boolean pauseOnStart;
+
     private List<CommunicationIdentifier> audioChannelParticipantOrdering;
 
     private List<ChannelAffinity> channelAffinity;
@@ -129,6 +131,26 @@ public final class StartRecordingOptions {
      */
     public StartRecordingOptions setRecordingFormat(RecordingFormat recordingFormat) {
         this.recordingFormat = recordingFormat;
+        return this;
+    }
+
+    /**
+     * Get pause on start.
+     *
+     * @return pause on start.
+     */
+    public Boolean getPauseOnStart() {
+        return pauseOnStart;
+    }
+
+    /**
+     * Set the pause on start property.
+     *
+     * @param pauseOnStart the {@link pauseOnStart}.
+     * @return the {@link StartRecordingOptions}
+     */
+    public StartRecordingOptions setPauseOnStart(Boolean pauseOnStart) {
+        this.pauseOnStart = pauseOnStart;
         return this;
     }
 
