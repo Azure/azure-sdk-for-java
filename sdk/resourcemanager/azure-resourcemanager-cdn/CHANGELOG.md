@@ -4,7 +4,10 @@
 
 ### Breaking Changes
 
-- Fixed incorrect class names `MetricsResponseGranularity`, `MetricsResponseSeriesItemUnit`, `WafMetricsResponseGranularity`, `WafMetricsResponseSeriesItemUnit`.
+- Renamed `MetricsResponseGranularity` to `MetricsGranularity`.
+- Renamed `MetricsResponseSeriesItemUnit` to `MetricsSeriesUnit`.
+- Renamed `WafMetricsResponseGranularity` to `WafMetricsGranularity`.
+- Renamed `WafMetricsResponseSeriesItemUnit` to `WafMetricsSeriesUnit`.
 
 ### Other Changes
 
