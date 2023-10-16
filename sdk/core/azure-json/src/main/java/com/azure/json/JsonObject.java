@@ -216,30 +216,8 @@ public class JsonObject extends JsonElement {
      * JsonObject.
      * @return JsonElement representing the value of the property specified by
      * the key.
-     *
-     * TODO: this method currently does what the new getValueBykey method does.
-     * This getProperty method should do what it suggests, which is get a property.
-     * Properties are the whole key-value pair not just their key or value.
-     * Therefore, this method needs to be redefined to return key value pairs,
-     * for example Entry objects since properties is currently utilising HashMap.
-     * Perhaps we could confirm with the dev team on discord if this method is
-     * required to behave in the current way that it is, if so, then we could
-     * keep this method as it is and remove the getKeyByValue and getValueByKey
-     * methods that I have defined.
      */
     public JsonElement getProperty(String key) {
-        return properties.get(key);
-    }
-
-    /**
-     * Gets the value for a given property by key.
-     *
-     * @param key specifying the key to match a property with to find the
-     * respective value pair of
-     * @return JsonElement object representing the respective value pair of the
-     * search key
-     */
-    public JsonElement getValueByKey(String key) {
         return properties.get(key);
     }
 
