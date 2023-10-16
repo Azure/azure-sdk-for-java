@@ -28,6 +28,7 @@ import javax.net.ssl.SSLSocketFactory;
 class SocketClient {
 
     private static final String HTTP_VERSION = " HTTP/1.1";
+    private static final SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 
     /**
      * Opens a socket connection, then writes the PATCH request across the
@@ -44,7 +45,6 @@ class SocketClient {
 
         switch (protocol) {
             case "https": {
-                SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
                 try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port)) {
                     return doInputOutput(httpRequest, socket);
                 }
