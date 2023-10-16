@@ -302,7 +302,7 @@ public final class DeploymentImpl extends
             this.deploymentCreateUpdateParameters.withProperties(new DeploymentProperties());
         }
         this.deploymentCreateUpdateParameters.properties()
-            .withParameters(getDeploymentParameterFromObject(parameters))
+            .withParameters(getParametersFromObject(parameters))
             .withParametersLink(null);
         return this;
     }
@@ -313,7 +313,7 @@ public final class DeploymentImpl extends
             this.deploymentCreateUpdateParameters.withProperties(new DeploymentProperties());
         }
         this.deploymentCreateUpdateParameters.properties()
-            .withParameters(getDeploymentParameterFromString(parametersJson))
+            .withParameters(getParametersFromJsonString(parametersJson))
             .withParametersLink(null);
         return this;
     }
@@ -406,7 +406,7 @@ public final class DeploymentImpl extends
             deploymentCreateUpdateParameters.properties().withDebugSetting(inner.properties().debugSetting());
             deploymentCreateUpdateParameters.properties().withMode(inner.properties().mode());
             deploymentCreateUpdateParameters.properties()
-                .withParameters(getDeploymentParameterFromObject(inner.properties().parameters()));
+                .withParameters(getParametersFromObject(inner.properties().parameters()));
             deploymentCreateUpdateParameters.properties().withParametersLink(inner.properties().parametersLink());
             deploymentCreateUpdateParameters.properties().withTemplateLink(inner.properties().templateLink());
             if (inner.properties().onErrorDeployment() != null) {
@@ -562,7 +562,7 @@ public final class DeploymentImpl extends
         if (deploymentWhatIf.properties() == null) {
             deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.properties().withParameters(getDeploymentParameterFromObject(parameters));
+        deploymentWhatIf.properties().withParameters(getParametersFromObject(parameters));
         return this;
     }
 
@@ -600,16 +600,16 @@ public final class DeploymentImpl extends
             .map(WhatIfOperationResultImpl::new);
     }
 
-    private Map<String, DeploymentParameter> getDeploymentParameterFromObject(Object parameters) {
+    private Map<String, DeploymentParameter> getParametersFromObject(Object parameters) {
         try {
             String parametersJson = SERIALIZER_ADAPTER.serialize(parameters, SerializerEncoding.JSON);
-            return getDeploymentParameterFromString(parametersJson);
+            return getParametersFromJsonString(parametersJson);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
-    private Map<String, DeploymentParameter> getDeploymentParameterFromString(String parametersJson)
+    private Map<String, DeploymentParameter> getParametersFromJsonString(String parametersJson)
         throws IOException {
 
         return SERIALIZER_ADAPTER.deserialize(parametersJson, new TypeReference<Map<String, DeploymentParameter>>() {
