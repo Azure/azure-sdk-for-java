@@ -21,6 +21,10 @@ public final class DeliveryRuleSocketAddrCondition extends DeliveryRuleCondition
     @JsonProperty(value = "parameters", required = true)
     private SocketAddrMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleSocketAddrCondition class. */
+    public DeliveryRuleSocketAddrCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

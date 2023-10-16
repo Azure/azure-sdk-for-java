@@ -55,7 +55,7 @@ public final class EdgeNodesClientImpl implements EdgeNodesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientE")
-    private interface EdgeNodesService {
+    public interface EdgeNodesService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Cdn/edgenodes")
         @ExpectedResponses({200})

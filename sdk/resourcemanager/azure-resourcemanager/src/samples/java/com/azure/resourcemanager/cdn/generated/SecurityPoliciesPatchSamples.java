@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.SecurityPolicyUpdateParameters;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for SecurityPolicies Patch. */
 public final class SecurityPoliciesPatchSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/SecurityPolicies_Patch.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/SecurityPolicies_Patch.json
      */
     /**
      * Sample code: SecurityPolicies_Patch.
@@ -53,6 +52,6 @@ public final class SecurityPoliciesPatchSamples {
                                                             .withId(
                                                                 "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Cdn/profiles/profile1/customdomains/testdomain2")))
                                             .withPatternsToMatch(Arrays.asList("/*"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

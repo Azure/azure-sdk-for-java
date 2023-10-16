@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.OriginProvisioningState;
 import com.azure.resourcemanager.cdn.models.OriginResourceState;
 import com.azure.resourcemanager.cdn.models.PrivateEndpointStatus;
@@ -24,11 +23,9 @@ public final class OriginInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private OriginProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of OriginInner class. */
+    public OriginInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin.
@@ -37,15 +34,6 @@ public final class OriginInner extends ProxyResource {
      */
     private OriginProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

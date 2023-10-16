@@ -35,6 +35,10 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
+    /** Creates an instance of UrlSigningKeyParameters class. */
+    public UrlSigningKeyParameters() {
+    }
+
     /**
      * Get the keyId property: Defines the customer defined key Id. This id will exist in the incoming request to
      * indicate the key used to form the hash.

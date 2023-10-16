@@ -27,6 +27,10 @@ public final class EdgenodeResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of EdgenodeResult class. */
+    public EdgenodeResult() {
+    }
+
     /**
      * Get the value property: Edge node of CDN service.
      *

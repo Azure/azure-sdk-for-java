@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
@@ -15,8 +14,9 @@ import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by an endpoint do
- * not have the requested content cached, they attempt to fetch it from one or more of the configured origins.
+ * Azure Front Door origin is the source of the content being delivered via Azure Front Door. When the edge nodes
+ * represented by an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+ * configured origins.
  */
 @Fluent
 public final class AfdOriginInner extends ProxyResource {
@@ -26,11 +26,9 @@ public final class AfdOriginInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AfdOriginProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of AfdOriginInner class. */
+    public AfdOriginInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin.
@@ -39,15 +37,6 @@ public final class AfdOriginInner extends ProxyResource {
      */
     private AfdOriginProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -173,9 +162,9 @@ public final class AfdOriginInner extends ProxyResource {
 
     /**
      * Get the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default. This overrides the host header
-     * defined at Endpoint.
+     * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
+     * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
+     * header defined at Endpoint.
      *
      * @return the originHostHeader value.
      */
@@ -185,9 +174,9 @@ public final class AfdOriginInner extends ProxyResource {
 
     /**
      * Set the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default. This overrides the host header
-     * defined at Endpoint.
+     * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
+     * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
+     * header defined at Endpoint.
      *
      * @param originHostHeader the originHostHeader value to set.
      * @return the AfdOriginInner object itself.
