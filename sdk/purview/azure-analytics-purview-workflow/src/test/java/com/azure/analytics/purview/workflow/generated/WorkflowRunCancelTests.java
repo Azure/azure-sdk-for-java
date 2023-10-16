@@ -18,7 +18,7 @@ public final class WorkflowRunCancelTests extends PurviewWorkflowClientTestBase 
         BinaryData runCancelReply = BinaryData.fromString("{\"comment\":\"Thanks!\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
-                purviewWorkflowClient.cancelWorkflowRunWithResponse(
+                workflowRunClient.cancelWithResponse(
                         "b7aaf54b-59c2-4a0e-a7d0-f431044f2198", runCancelReply, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
