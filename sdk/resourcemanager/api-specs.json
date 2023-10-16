@@ -113,7 +113,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-features-2021-07"
+    "args": "--tag=package-features-2021-07 --graalvm-config-suffix=feature"
   },
   "features-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
@@ -126,7 +126,7 @@
     "dir": "azure-resourcemanager-authorization",
     "source": "azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=v1.0 --title=MicrosoftGraphClient --models-subpackage=fluent.models"
+    "args": "--tag=v1.0 --graalvm-config-suffix=msgraph --title=MicrosoftGraphClient --models-subpackage=fluent.models"
   },
   "msgraph-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-authorization",
@@ -151,7 +151,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-locks-2017-04"
+    "args": "--tag=package-locks-2017-04 --graalvm-config-suffix=lock"
   },
   "locks-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
@@ -188,7 +188,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-policy-2022-06 --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue",
+    "args": "--tag=package-policy-2022-06 --graalvm-config-suffix=policy --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue",
     "note": "Remove policyVariables.json and policyVariableValues.json from tag, as they are still in preview."
   },
   "policy-hybrid": {
@@ -264,7 +264,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2022-12 --modelerfour.lenient-model-deduplication --name-for-ungrouped-operations=ResourceName --remove-operation-group=Operations"
+    "args": "--tag=package-subscriptions-2022-12 --graalvm-config-suffix=subscription --modelerfour.lenient-model-deduplication --name-for-ungrouped-operations=ResourceName --remove-operation-group=Operations"
   },
   "subscriptions-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
@@ -288,6 +288,6 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-changes-2022-05 --rename-model=ChangeType:ResourceChangeType,PropertyChangeType:ResourcePropertyChangeType"
+    "args": "--tag=package-changes-2022-05 --graalvm-config-suffix=change --rename-model=ChangeType:ResourceChangeType,PropertyChangeType:ResourcePropertyChangeType"
   }
 }
