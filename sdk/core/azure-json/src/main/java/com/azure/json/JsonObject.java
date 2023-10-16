@@ -4,6 +4,7 @@ import com.azure.json.implementation.StringBuilderWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class JsonObject extends JsonElement {
     }
 
 // NOTE: addProperty temporarily removed to better guarantee runtime behaviour.
-// 
+//
 //    /**
 //     * Adds a new property into the JsonObject object using an object or
 //     * primitive directly as the value.
@@ -365,7 +366,7 @@ public class JsonObject extends JsonElement {
         try {
             return this.toJson();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 

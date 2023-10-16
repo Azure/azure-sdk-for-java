@@ -317,7 +317,6 @@ public class JsonArray extends JsonElement {
                     break;
 
                 case END_ARRAY:
-                    //throw new IOException("Invalid JsonToken.END_ARRAY token read prematurely from deserialised JSON array. Deserialisation aborted.");
                     break;
 
                     /*
