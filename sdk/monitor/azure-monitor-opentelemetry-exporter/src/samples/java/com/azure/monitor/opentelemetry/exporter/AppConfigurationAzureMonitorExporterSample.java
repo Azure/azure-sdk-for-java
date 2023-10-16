@@ -11,10 +11,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
-import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
-
-import java.util.Collections;
 
 /**
  * Sample to demonstrate using {@link AzureMonitorTraceExporter} to export telemetry events when setting a configuration
@@ -44,7 +41,7 @@ public class AppConfigurationAzureMonitorExporterSample {
 
         new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .build(sdkBuilder, DefaultConfigProperties.create(Collections.emptyMap()));
+            .build(sdkBuilder);
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 

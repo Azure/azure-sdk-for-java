@@ -5,13 +5,11 @@ package com.azure.monitor.opentelemetry.exporter;
 
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
-import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Collections;
 import java.util.stream.Stream;
 
 /**
@@ -28,7 +26,7 @@ public class AzureMonitorExporterBuilderTest {
                 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
                 new AzureMonitorExporterBuilder()
                     .connectionString(connectionString)
-                    .build(sdkBuilder, DefaultConfigProperties.create(Collections.emptyMap()));
+                    .build(sdkBuilder);
                 sdkBuilder.build();
             });
     }
