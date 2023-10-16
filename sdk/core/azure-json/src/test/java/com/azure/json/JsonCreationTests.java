@@ -22,7 +22,7 @@ public class JsonCreationTests {
 
     @Test
     public void createJsonNumber(){
-        JsonNumber test = new JsonNumber();
+        JsonNumber test = new JsonNumber(0);
         assertTrue(test.isNumber());
     }
 
@@ -82,31 +82,31 @@ public class JsonCreationTests {
     //2.2: Number
     @Test
     public void JsonNumberNotJsonString(){
-        JsonNumber test = new JsonNumber();
+        JsonNumber test = new JsonNumber(0);
         assertFalse(test.isString());
     }
 
     @Test
     public void JsonNumberNotJsonObject(){
-        JsonNumber test = new JsonNumber();
+        JsonNumber test = new JsonNumber(0);
         assertFalse(test.isObject());
     }
 
     @Test
     public void JsonNumberNotJsonBoolean(){
-        JsonNumber test = new JsonNumber();
+        JsonNumber test = new JsonNumber(0);
         assertFalse(test.isBoolean());
     }
 
     @Test
     public void JsonNumberNotJsonNull(){
-        JsonNumber test = new JsonNumber();
+        JsonNumber test = new JsonNumber(0);
         assertFalse(test.isNull());
     }
 
     @Test
     public void JsonNumberNotJsonArray(){
-        JsonNumber test = new JsonNumber();
+        JsonNumber test = new JsonNumber(0);
         assertFalse(test.isArray());
     }
 

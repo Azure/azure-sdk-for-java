@@ -343,7 +343,7 @@ public class JsonObject extends JsonElement {
         if (properties.size() >= 1) {
             return properties.get(properties.keySet().iterator().next()).asNumber(); //Should only get the first element.
         } else {
-            return new JsonNumber();
+            return new JsonNumber(0);
         }
     }
 

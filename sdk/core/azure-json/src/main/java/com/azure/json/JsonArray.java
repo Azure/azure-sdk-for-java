@@ -250,7 +250,7 @@ public class JsonArray extends JsonElement {
         if (elements.size() >= 1) {
             return elements.get(0).asNumber();
         } else {
-            return new JsonNumber();
+            return new JsonNumber(0);
         }
     }
 

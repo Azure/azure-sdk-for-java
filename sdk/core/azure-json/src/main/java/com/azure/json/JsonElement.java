@@ -347,7 +347,7 @@ public abstract class JsonElement {
      * @return
      */
     public JsonNumber asNumber() {
-        return new JsonNumber();
+        return new JsonNumber(0);
     }
 
     /**

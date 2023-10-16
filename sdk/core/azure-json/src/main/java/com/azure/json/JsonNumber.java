@@ -13,17 +13,12 @@ public class JsonNumber extends JsonElement {
     private Number numberValue;
 
     /**
-     * Default constructor.
-     * Default sets numberValue to "0" through the other constructor.
-     *
-     * TODO: may need to remove this due to design guidelines? May only want to
-     * have the public JsonNumber(Number value) constructor.
-     *
-     * TODO: may need to double check that 0 is correctly cast to a Number type
+     * Constructor used to explicitly set the number value of the JsonNumber object 
+     * via a String 
+     * 
+     * @param value specifies the String storing the number this JsonNumber 
+     * object represents
      */
-    JsonNumber() { }//this(0); }
-
-
     JsonNumber(String value) {
         try {
             this.numberValue = Integer.parseInt(value);
@@ -38,6 +33,7 @@ public class JsonNumber extends JsonElement {
 
     /**
      * Constructor used to explicitly set the number value of the JsonNumber object
+     * via a Number 
      *
      * @param value specifies the number this JsonNumber object represents
      *
