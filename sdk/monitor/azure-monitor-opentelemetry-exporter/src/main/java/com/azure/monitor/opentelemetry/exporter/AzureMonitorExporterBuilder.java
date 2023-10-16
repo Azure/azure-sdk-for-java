@@ -290,8 +290,8 @@ public final class AzureMonitorExporterBuilder {
      *
      * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporter.
      */
-    public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
-        internalBuildAndFreeze();
+    public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder, ConfigProperties configProperties) {
+        internalBuildAndFreeze(configProperties);
 
         sdkBuilder.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
@@ -302,23 +302,23 @@ public final class AzureMonitorExporterBuilder {
             return props;
         });
         sdkBuilder.addSpanExporterCustomizer(
-            (spanExporter, configProperties) -> {
+            (spanExporter, config) -> {
                 if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                    spanExporter = buildTraceExporter(configProperties);
+                    spanExporter = buildTraceExporter(config);
                 }
                 return spanExporter;
             });
         sdkBuilder.addMetricExporterCustomizer(
-            (metricExporter, configProperties) -> {
+            (metricExporter, config) -> {
                 if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                    metricExporter = buildMetricExporter(configProperties);
+                    metricExporter = buildMetricExporter(config);
                 }
                 return metricExporter;
             });
         sdkBuilder.addLogRecordExporterCustomizer(
-            (logRecordExporter, configProperties) -> {
+            (logRecordExporter, config) -> {
                 if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                    logRecordExporter = buildLogRecordExporter(configProperties);
+                    logRecordExporter = buildLogRecordExporter(config);
                 }
                 return logRecordExporter;
             });
@@ -328,7 +328,7 @@ public final class AzureMonitorExporterBuilder {
 //            return sdkTracerProviderBuilder.addSpanProcessor(
 //                new LiveMetricsSpanProcessor(quickPulse, createSpanDataMapper()));
 //        });
-        sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, configProperties) ->
+        sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, config) ->
             sdkMeterProviderBuilder.registerView(
                 InstrumentSelector.builder()
                     .setMeterName("io.opentelemetry.sdk.trace")
@@ -347,9 +347,17 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private void internalBuildAndFreeze() {
+        internalBuildAndFreeze(DefaultConfigProperties.create(Collections.emptyMap()));
+    }
+
+    private void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
             builtHttpPipeline = createHttpPipeline();
-            builtTelemetryItemExporter = createTelemetryItemExporter();
+            StatsbeatModule statsbeatModule = initStatsbeatModule(configProperties);
+            builtTelemetryItemExporter = createTelemetryItemExporter(statsbeatModule);
+            if (statsbeatModule != null) {
+                startStatsbeatModule(statsbeatModule, configProperties); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
+            }
             frozen = true;
         }
     }
@@ -361,7 +369,6 @@ public final class AzureMonitorExporterBuilder {
     private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), createDefaultsPopulator(configProperties), builtTelemetryItemExporter::send);
-        builtTelemetryItemExporter.getTelemetryPipeline().setStatsbeatModule(initStatsbeatModule(configProperties));
         return new AzureMonitorMetricExporter(
             new MetricDataMapper(createDefaultsPopulator(configProperties), true), builtTelemetryItemExporter);
     }
@@ -459,21 +466,25 @@ public final class AzureMonitorExporterBuilder {
         StatsbeatModule statsbeatModule = null;
         if (connectionString != null) {
             statsbeatModule = new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
-            statsbeatModule.start(
-                builtTelemetryItemExporter,
-                this::getStatsbeatConnectionString,
-                connectionString::getInstrumentationKey,
-                false,
-                configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)), // Statsbeat short interval
-                configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)), // Statsbeat long interval
-                false,
-                initStatsbeatFeatures());
+
         }
         return statsbeatModule;
     }
 
-    private TelemetryItemExporter createTelemetryItemExporter() {
-        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline);
+    private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties) {
+        statsbeatModule.start(
+            builtTelemetryItemExporter,
+            this::getStatsbeatConnectionString,
+            connectionString::getInstrumentationKey,
+            false,
+            configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)), // Statsbeat short interval
+            configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)), // Statsbeat long interval
+            false,
+            initStatsbeatFeatures());
+    }
+
+    private TelemetryItemExporter createTelemetryItemExporter(StatsbeatModule statsbeatModule) {
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule);
         File tempDir =
             TempDirs.getApplicationInsightsTempDir(
                 LOGGER,

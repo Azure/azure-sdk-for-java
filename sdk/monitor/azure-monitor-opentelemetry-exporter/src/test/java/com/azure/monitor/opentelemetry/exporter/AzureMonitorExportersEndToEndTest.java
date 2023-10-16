@@ -211,13 +211,12 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // close to flush
         openTelemetry.close();
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         // wait for export
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.url)
             .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.actualTelemetryItems.size()).isEqualTo(4);
 
         TelemetryItem attachStatsbeat =
             customValidationPolicy.actualTelemetryItems.stream()

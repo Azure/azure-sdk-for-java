@@ -14,10 +14,12 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
+import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -52,7 +54,7 @@ public class EventHubsAzureMonitorExporterSample {
 
         new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .build(sdkBuilder);
+            .build(sdkBuilder, DefaultConfigProperties.create(Collections.emptyMap()));
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 

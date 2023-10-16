@@ -41,14 +41,15 @@ public class TelemetryPipeline {
     private static final HttpHeaderName LOCATION =  HttpHeaderName.fromString("Location");
 
     private final HttpPipeline pipeline;
-    private StatsbeatModule statsbeatModule;
+    private final StatsbeatModule statsbeatModule;
 
     // key is connectionString, value is redirectUrl
     private final Map<String, URL> redirectCache =
         Collections.synchronizedMap(new BoundedHashMap<>(100));
 
-    public TelemetryPipeline(HttpPipeline pipeline) {
+    public TelemetryPipeline(HttpPipeline pipeline, StatsbeatModule statsbeatModule) {
         this.pipeline = pipeline;
+        this.statsbeatModule = statsbeatModule;
     }
 
     public CompletableResultCode send(
@@ -72,11 +73,6 @@ public class TelemetryPipeline {
             listener.onException(request, t.getMessage() + " (" + request.getUrl() + ")", t);
             return CompletableResultCode.ofFailure();
         }
-    }
-
-    // Statsbeat is enabled when metric exporter is used
-    public void setStatsbeatModule(StatsbeatModule statsbeatModule) {
-        this.statsbeatModule = statsbeatModule;
     }
 
     private static URL getFullIngestionUrl(String ingestionEndpoint) {

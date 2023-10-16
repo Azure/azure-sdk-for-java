@@ -11,6 +11,9 @@ import io.opentelemetry.api.metrics.LongCounter;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
+import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
+
+import java.util.Collections;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -28,7 +31,7 @@ public class AzureMonitorMetricExporterSample {
 
             new AzureMonitorExporterBuilder()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .build(sdkBuilder);
+                .build(sdkBuilder, DefaultConfigProperties.create(Collections.emptyMap()));
 
             OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo").build();
@@ -51,7 +54,7 @@ public class AzureMonitorMetricExporterSample {
 
             new AzureMonitorExporterBuilder()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .build(sdkBuilder);
+                .build(sdkBuilder, DefaultConfigProperties.create(Collections.emptyMap()));
 
             OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo").build();
@@ -77,7 +80,7 @@ public class AzureMonitorMetricExporterSample {
 
             new AzureMonitorExporterBuilder()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .build(sdkBuilder);
+                .build(sdkBuilder, DefaultConfigProperties.create(Collections.emptyMap()));
 
             OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.getMeter("OTEL.AzureMonitor.Demo");

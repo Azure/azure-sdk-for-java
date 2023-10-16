@@ -12,6 +12,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryI
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
+import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.resources.Resource;
 
 import java.util.ArrayList;
@@ -80,7 +82,7 @@ public final class TestUtils {
         new AzureMonitorExporterBuilder()
             .connectionString(connectionString)
             .httpPipeline(httpPipeline)
-            .build(sdkBuilder);
+            .build(sdkBuilder, DefaultConfigProperties.create(configuration));
 
         return sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
     }

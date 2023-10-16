@@ -134,10 +134,6 @@ public class TelemetryItemExporter {
         return listener.shutdown();
     }
 
-    public TelemetryPipeline getTelemetryPipeline() {
-        return telemetryPipeline;
-    }
-
     CompletableResultCode internalSendByBatch(TelemetryItemBatchKey telemetryItemBatchKey,
                                               List<TelemetryItem> telemetryItems) {
         List<ByteBuffer> byteBuffers;
