@@ -48,43 +48,88 @@ public class HttpUrlConnectionAsyncClientBuilder {
     }
 
     /**
-     * Sets the connection timeout.
+     * Sets the connection timeout for a request to be sent.
+     * <p>
+     * The connection timeout begins once the request attempts to connect to the remote host and finishes once the
+     * connection is resolved.
+     * <p>
+     * If {@code connectionTimeout} is null, a 10-second timeout will be used, if it is a {@link Duration} less than
+     * or equal to zero then no timeout will be applied. When applying the timeout the greatest of one millisecond
+     * and the value of {@code connectTimeout} will be used.
+     * <p>
+     * By default, the connection timeout is 10 seconds.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.core.http.httpurlconnection.HttpUrlConnectionAsyncClientBuilder.connectionTimeout#Duration -->
-     * <pre>
-     * HttpClient client = new HttpUrlConnectionAsyncClientBuilder&#40;&#41;
-     *         .connectionTimeout&#40;Duration.ofSeconds&#40;250&#41;&#41; &#47;&#47; connection timeout of 250 seconds
-     *         .build&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.core.http.httpurlconnection.HttpUrlConnectionAsyncClientBuilder.connectionTimeout#Duration -->
-     *
-     * The default connection timeout is 60 seconds.
-     *
-     * @param connectionTimeout the connection timeout
-     * @return the updated HttpUrlConnectionAsyncClientBuilder object
+     * @param connectionTimeout Connect timeout duration.
+     * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
     public HttpUrlConnectionAsyncClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
     }
 
+    /**
+     * Sets the read timeout duration used when reading the server response.
+     * <p>
+     * The read timeout begins once the first response read is triggered after the server response is received. This
+     * timeout triggers periodically but won't fire its operation if another read operation has completed between when
+     * the timeout is triggered and completes.
+     * <p>
+     * If {@code readTimeout} is null a 60-second timeout will be used, if it is a {@link Duration} less than or equal
+     * to zero then no timeout period will be applied to response read. When applying the timeout the greatest of one
+     * millisecond and the value of {@code readTimeout} will be used.
+     *
+     * @param readTimeout Read timeout duration.
+     * @return The updated HttpUrlConnectionAsyncClientBuilder object.
+     */
     public HttpUrlConnectionAsyncClientBuilder readTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
         return this;
     }
 
+    /**
+     * Sets the writing timeout for a request to be sent.
+     * <p>
+     * The writing timeout does not apply to the entire request but to the request being sent over the wire. For example
+     * a request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the last
+     * write tracker will update when each operation completes and the outbound buffer will be periodically checked to
+     * determine if it is still draining.
+     * <p>
+     * If {@code writeTimeout} is null a 60-second timeout will be used, if it is a {@link Duration} less than or equal
+     * to zero then no write timeout will be applied. When applying the timeout the greatest of one millisecond and the
+     * value of {@code writeTimeout} will be used.
+     *
+     * @param writeTimeout Write operation timeout duration.
+     * @return The updated HttpUrlConnectionAsyncClientBuilder object.
+     */
     public HttpUrlConnectionAsyncClientBuilder writeTimeout(Duration writeTimeout) {
         this.writeTimeout = writeTimeout;
         return this;
     }
 
+    /**
+     * Sets the response timeout duration used when waiting for a server to reply.
+     * <p>
+     * The response timeout begins once the request write completes and finishes once the first response read is
+     * triggered when the server response is received.
+     * <p>
+     * If {@code responseTimeout} is null a 60-second timeout will be used, if it is a {@link Duration} less than
+     * or equal to zero then no timeout will be applied to the response. When applying the timeout the greatest
+     * of one millisecond and the value of {@code responseTimeout} will be used.
+     *
+     * @param responseTimeout Response timeout duration.
+     * @return The updated HttpUrlConnectionAsyncClientBuilder object.
+     */
     public HttpUrlConnectionAsyncClientBuilder responseTimeout(Duration responseTimeout) {
         this.responseTimeout = responseTimeout;
         return this;
     }
 
+    /*
+     * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
+     *
+     * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
+     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
+     */
     static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
         if (configuredTimeout == null) {
             return defaultTimeout;
@@ -102,24 +147,10 @@ public class HttpUrlConnectionAsyncClientBuilder {
     }
 
     /**
-     * Sets the proxy.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.core.http.httpurlconnection.HttpUrlConnectionAsyncClientBuilder.proxy#ProxyOptions -->
-     * <pre>
-     * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
-     * final int proxyPort = 9999; &#47;&#47; Proxy port
-     * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
-     *         new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
-     * HttpClient client = new HttpUrlConnectionAsyncClientBuilder&#40;&#41;
-     *         .proxy&#40;proxyOptions&#41;
-     *         .build&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.core.http.httpurlconnection.HttpUrlConnectionAsyncClientBuilder.proxy#ProxyOptions -->
+     * Sets proxy configuration.
      *
      * @param proxyOptions The proxy configuration to use.
-     * @return the updated HttpUrlConnectionAsyncClientBuilder object
+     * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
     public HttpUrlConnectionAsyncClientBuilder proxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
