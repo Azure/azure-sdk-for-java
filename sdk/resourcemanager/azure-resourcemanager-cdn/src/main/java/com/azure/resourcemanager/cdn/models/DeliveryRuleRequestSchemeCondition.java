@@ -21,6 +21,10 @@ public final class DeliveryRuleRequestSchemeCondition extends DeliveryRuleCondit
     @JsonProperty(value = "parameters", required = true)
     private RequestSchemeMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleRequestSchemeCondition class. */
+    public DeliveryRuleRequestSchemeCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

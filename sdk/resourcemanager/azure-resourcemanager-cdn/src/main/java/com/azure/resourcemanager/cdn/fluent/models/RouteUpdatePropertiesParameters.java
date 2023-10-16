@@ -93,6 +93,10 @@ public class RouteUpdatePropertiesParameters {
     @JsonProperty(value = "enabledState")
     private EnabledState enabledState;
 
+    /** Creates an instance of RouteUpdatePropertiesParameters class. */
+    public RouteUpdatePropertiesParameters() {
+    }
+
     /**
      * Get the endpointName property: The name of the endpoint which holds the route.
      *

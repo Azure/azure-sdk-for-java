@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Secrets Delete. */
 public final class SecretsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Secrets_Delete.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Secrets_Delete.json
      */
     /**
      * Sample code: Secrets_Delete.
@@ -17,6 +15,11 @@ public final class SecretsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void secretsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getSecrets().delete("RG", "profile1", "secret1", Context.NONE);
+        azure
+            .cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getSecrets()
+            .delete("RG", "profile1", "secret1", com.azure.core.util.Context.NONE);
     }
 }

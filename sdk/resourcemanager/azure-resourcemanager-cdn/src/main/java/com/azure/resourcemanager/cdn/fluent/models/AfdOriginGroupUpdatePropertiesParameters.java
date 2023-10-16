@@ -44,6 +44,10 @@ public class AfdOriginGroupUpdatePropertiesParameters {
     @JsonProperty(value = "sessionAffinityState")
     private EnabledState sessionAffinityState;
 
+    /** Creates an instance of AfdOriginGroupUpdatePropertiesParameters class. */
+    public AfdOriginGroupUpdatePropertiesParameters() {
+    }
+
     /**
      * Get the profileName property: The name of the profile which holds the origin group.
      *

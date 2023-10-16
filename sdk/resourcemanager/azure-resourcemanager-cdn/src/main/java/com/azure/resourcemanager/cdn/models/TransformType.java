@@ -29,6 +29,15 @@ public final class TransformType extends ExpandableStringEnum<TransformType> {
     public static final TransformType REMOVE_NULLS = fromString("RemoveNulls");
 
     /**
+     * Creates a new instance of TransformType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TransformType() {
+    }
+
+    /**
      * Creates or finds a TransformType from its string representation.
      *
      * @param name a name to look for.

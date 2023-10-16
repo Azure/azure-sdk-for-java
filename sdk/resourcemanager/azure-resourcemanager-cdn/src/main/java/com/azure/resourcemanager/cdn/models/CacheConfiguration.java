@@ -43,6 +43,10 @@ public final class CacheConfiguration {
     @JsonProperty(value = "cacheDuration")
     private String cacheDuration;
 
+    /** Creates an instance of CacheConfiguration class. */
+    public CacheConfiguration() {
+    }
+
     /**
      * Get the queryStringCachingBehavior property: Defines how Frontdoor caches requests that include query strings.
      * You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.ValidateCustomDomainInput;
 
 /** Samples for Endpoints ValidateCustomDomain. */
 public final class EndpointsValidateCustomDomainSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Endpoints_ValidateCustomDomain.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Endpoints_ValidateCustomDomain.json
      */
     /**
      * Sample code: Endpoints_ValidateCustomDomain.
@@ -28,6 +27,6 @@ public final class EndpointsValidateCustomDomainSamples {
                 "profile1",
                 "endpoint1",
                 new ValidateCustomDomainInput().withHostname("www.someDomain.com"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
