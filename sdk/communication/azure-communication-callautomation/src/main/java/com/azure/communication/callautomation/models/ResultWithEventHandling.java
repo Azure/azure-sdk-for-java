@@ -11,8 +11,17 @@ import reactor.core.publisher.Mono;
  * Injects the event handling into the result
  */
 public abstract class ResultWithEventHandling<TEventResult> {
+    /**
+     * The event processor that handles events.
+     */
     protected CallAutomationEventProcessor eventProcessor;
+    /**
+     * The call's connection id.
+     */
     protected String callConnectionId;
+    /**
+     * Operation context from the api request.
+     */
     protected String operationContextFromRequest;
 
     /**
