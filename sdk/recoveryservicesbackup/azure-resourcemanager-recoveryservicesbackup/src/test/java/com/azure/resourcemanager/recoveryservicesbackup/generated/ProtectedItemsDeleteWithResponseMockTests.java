@@ -59,11 +59,6 @@ public final class ProtectedItemsDeleteWithResponseMockTests {
         manager
             .protectedItems()
             .deleteWithResponse(
-                "tuoqujlyegqavni",
-                "flqqbtnyjpylxd",
-                "fvabmvmsxba",
-                "vwjcnkottlwuh",
-                "ajmailfemjjza",
-                com.azure.core.util.Context.NONE);
+                "gqogjwpindedva", "bxbhmedeilbj", "wfcfxzirzz", "hvwyp", "suvjslcz", com.azure.core.util.Context.NONE);
     }
 }

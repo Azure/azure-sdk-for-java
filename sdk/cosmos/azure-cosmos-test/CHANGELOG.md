@@ -3,6 +3,7 @@
 ### 1.0.0-beta.6 (Unreleased)
 
 #### Features Added
+* Added support for `ReadFeed` operation type - See [PR 37108](https://github.com/Azure/azure-sdk-for-java/pull/37108)
 
 #### Breaking Changes
 

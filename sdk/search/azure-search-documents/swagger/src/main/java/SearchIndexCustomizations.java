@@ -58,7 +58,9 @@ public class SearchIndexCustomizations extends Customization {
         customizeAutocompleteOptions(packageCustomization.getClass("AutocompleteOptions"));
         customizeSuggestOptions(packageCustomization.getClass("SuggestOptions"));
         customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
-        customizeSearchQueryVector(packageCustomization.getClass("SearchQueryVector"));
+        customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
+        customizeRawVectorQuery(packageCustomization.getClass("RawVectorQuery"));
+        customizeVectorizableTextQuery(packageCustomization.getClass("VectorizableTextQuery"));
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
@@ -114,20 +116,31 @@ public class SearchIndexCustomizations extends Customization {
 //                "this.scoringParameters.stream().map(ScoringParameter::new).collect(java.util.stream.Collectors.toList())");
     }
 
-    private void customizeSearchQueryVector(ClassCustomization classCustomization) {
+
+private void customizeVectorQuery(ClassCustomization classCustomization) {
         String methodName = "setFields";
         String parameter = "String... fields";
-        String body = "this.fields = String.join(\",\", fields);\n" +
-            "        return this;\n";
+        String body = "this.fields = (fields == null) ? null : String.join(\",\", fields);\n" +
+            "        return this;";
         String javadoc = "/**\n" +
             "     * Sets the list of field names to which to scope the query.\n" +
             "     *\n" +
             "     * @param fields the list of field names to which to scope the query\n" +
             "     * @return the SearchQueryVector object itself.\n" +
             "     */";
-
         classCustomization.getMethod(methodName).replaceParameters(parameter).replaceBody(body);
+}
 
+    private void customizeRawVectorQuery(ClassCustomization classCustomization) {
+        String methodName = "setFields";
+        String parameter = "String... fields";
+        classCustomization.getMethod(methodName).replaceParameters(parameter);
+    }
+
+    private void customizeVectorizableTextQuery(ClassCustomization classCustomization) {
+        String methodName = "setFields";
+        String parameter = "String... fields";
+        classCustomization.getMethod(methodName).replaceParameters(parameter);
     }
 
     private void customizeIndexAction(ClassCustomization classCustomization) {

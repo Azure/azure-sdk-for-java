@@ -124,12 +124,34 @@ public class ThreadDumper implements BeforeAllCallback, BeforeEachCallback, Afte
 
     @Override
     public void beforeEach(ExtensionContext context) {
+        // If the test class is an instance of TestBase or is a subtype of TestBase, then we don't need to track
+        // anything here as TestBase handles this logic in it's Before and After test methods.
+        Class<?> clazz = context.getTestClass().orElse(null);
+        if (clazz != null && TestBase.class.isAssignableFrom(clazz)) {
+            return;
+        }
+        
         RUNNING_TEST_TIMES.put(getFullTestName(context), System.currentTimeMillis());
+    }
+
+    static void addRunningTest(String testName) {
+        RUNNING_TEST_TIMES.put(testName, System.currentTimeMillis());
     }
 
     @Override
     public void afterEach(ExtensionContext context) {
+        // If the test class is an instance of TestBase or is a subtype of TestBase, then we don't need to track
+        // anything here as TestBase handles this logic in it's Before and After test methods.
+        Class<?> clazz = context.getTestClass().orElse(null);
+        if (clazz != null && TestBase.class.isAssignableFrom(clazz)) {
+            return;
+        }
+
         RUNNING_TEST_TIMES.remove(getFullTestName(context));
+    }
+
+    static void removeRunningTest(String testName) {
+        RUNNING_TEST_TIMES.remove(testName);
     }
 
     private static String getFullTestName(ExtensionContext context) {

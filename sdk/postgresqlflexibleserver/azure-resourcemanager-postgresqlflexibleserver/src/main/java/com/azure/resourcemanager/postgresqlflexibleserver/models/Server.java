@@ -164,8 +164,8 @@ public interface Server {
 
     /**
      * Gets the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
-     * only for Replica server.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for Replica
+     * server.
      *
      * @return the sourceServerResourceId value.
      */
@@ -173,7 +173,7 @@ public interface Server {
 
     /**
      * Gets the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -242,11 +242,13 @@ public interface Server {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Server definition stages. */
     interface DefinitionStages {
         /** The first stage of the Server definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Server definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -265,6 +267,7 @@ public interface Server {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Server definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -275,6 +278,7 @@ public interface Server {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Server definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -312,6 +316,7 @@ public interface Server {
              */
             Server create(Context context);
         }
+
         /** The stage of the Server definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -322,6 +327,7 @@ public interface Server {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Server definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -332,6 +338,7 @@ public interface Server {
              */
             WithCreate withSku(Sku sku);
         }
+
         /** The stage of the Server definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -342,6 +349,7 @@ public interface Server {
              */
             WithCreate withIdentity(UserAssignedIdentity identity);
         }
+
         /** The stage of the Server definition allowing to specify administratorLogin. */
         interface WithAdministratorLogin {
             /**
@@ -354,6 +362,7 @@ public interface Server {
              */
             WithCreate withAdministratorLogin(String administratorLogin);
         }
+
         /** The stage of the Server definition allowing to specify administratorLoginPassword. */
         interface WithAdministratorLoginPassword {
             /**
@@ -365,6 +374,7 @@ public interface Server {
              */
             WithCreate withAdministratorLoginPassword(String administratorLoginPassword);
         }
+
         /** The stage of the Server definition allowing to specify version. */
         interface WithVersion {
             /**
@@ -375,6 +385,7 @@ public interface Server {
              */
             WithCreate withVersion(ServerVersion version);
         }
+
         /** The stage of the Server definition allowing to specify storage. */
         interface WithStorage {
             /**
@@ -385,6 +396,7 @@ public interface Server {
              */
             WithCreate withStorage(Storage storage);
         }
+
         /** The stage of the Server definition allowing to specify authConfig. */
         interface WithAuthConfig {
             /**
@@ -395,6 +407,7 @@ public interface Server {
              */
             WithCreate withAuthConfig(AuthConfig authConfig);
         }
+
         /** The stage of the Server definition allowing to specify dataEncryption. */
         interface WithDataEncryption {
             /**
@@ -405,6 +418,7 @@ public interface Server {
              */
             WithCreate withDataEncryption(DataEncryption dataEncryption);
         }
+
         /** The stage of the Server definition allowing to specify backup. */
         interface WithBackup {
             /**
@@ -415,6 +429,7 @@ public interface Server {
              */
             WithCreate withBackup(Backup backup);
         }
+
         /** The stage of the Server definition allowing to specify network. */
         interface WithNetwork {
             /**
@@ -427,6 +442,7 @@ public interface Server {
              */
             WithCreate withNetwork(Network network);
         }
+
         /** The stage of the Server definition allowing to specify highAvailability. */
         interface WithHighAvailability {
             /**
@@ -437,33 +453,35 @@ public interface Server {
              */
             WithCreate withHighAvailability(HighAvailability highAvailability);
         }
+
         /** The stage of the Server definition allowing to specify sourceServerResourceId. */
         interface WithSourceServerResourceId {
             /**
              * Specifies the sourceServerResourceId property: The source server resource ID to restore from. It's
-             * required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This
-             * property is returned only for Replica server.
+             * required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is
+             * returned only for Replica server.
              *
              * @param sourceServerResourceId The source server resource ID to restore from. It's required when
-             *     'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property
-             *     is returned only for Replica server.
+             *     'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for
+             *     Replica server.
              * @return the next definition stage.
              */
             WithCreate withSourceServerResourceId(String sourceServerResourceId);
         }
+
         /** The stage of the Server definition allowing to specify pointInTimeUtc. */
         interface WithPointInTimeUtc {
             /**
              * Specifies the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time
-             * to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or
-             * 'ReviveDropped'..
+             * to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'..
              *
              * @param pointInTimeUtc Restore point creation time (ISO8601 format), specifying the time to restore from.
-             *     It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+             *     It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
              * @return the next definition stage.
              */
             WithCreate withPointInTimeUtc(OffsetDateTime pointInTimeUtc);
         }
+
         /** The stage of the Server definition allowing to specify availabilityZone. */
         interface WithAvailabilityZone {
             /**
@@ -474,6 +492,7 @@ public interface Server {
              */
             WithCreate withAvailabilityZone(String availabilityZone);
         }
+
         /** The stage of the Server definition allowing to specify replicationRole. */
         interface WithReplicationRole {
             /**
@@ -484,6 +503,7 @@ public interface Server {
              */
             WithCreate withReplicationRole(ReplicationRole replicationRole);
         }
+
         /** The stage of the Server definition allowing to specify createMode. */
         interface WithCreateMode {
             /**
@@ -495,6 +515,7 @@ public interface Server {
             WithCreate withCreateMode(CreateMode createMode);
         }
     }
+
     /**
      * Begins update for the Server resource.
      *
@@ -533,6 +554,7 @@ public interface Server {
          */
         Server apply(Context context);
     }
+
     /** The Server update stages. */
     interface UpdateStages {
         /** The stage of the Server update allowing to specify tags. */
@@ -545,6 +567,7 @@ public interface Server {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Server update allowing to specify sku. */
         interface WithSku {
             /**
@@ -555,6 +578,7 @@ public interface Server {
              */
             Update withSku(Sku sku);
         }
+
         /** The stage of the Server update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -565,6 +589,7 @@ public interface Server {
              */
             Update withIdentity(UserAssignedIdentity identity);
         }
+
         /** The stage of the Server update allowing to specify administratorLoginPassword. */
         interface WithAdministratorLoginPassword {
             /**
@@ -575,6 +600,7 @@ public interface Server {
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
         }
+
         /** The stage of the Server update allowing to specify version. */
         interface WithVersion {
             /**
@@ -585,6 +611,7 @@ public interface Server {
              */
             Update withVersion(ServerVersion version);
         }
+
         /** The stage of the Server update allowing to specify storage. */
         interface WithStorage {
             /**
@@ -595,6 +622,7 @@ public interface Server {
              */
             Update withStorage(Storage storage);
         }
+
         /** The stage of the Server update allowing to specify backup. */
         interface WithBackup {
             /**
@@ -605,6 +633,7 @@ public interface Server {
              */
             Update withBackup(Backup backup);
         }
+
         /** The stage of the Server update allowing to specify highAvailability. */
         interface WithHighAvailability {
             /**
@@ -615,6 +644,7 @@ public interface Server {
              */
             Update withHighAvailability(HighAvailability highAvailability);
         }
+
         /** The stage of the Server update allowing to specify maintenanceWindow. */
         interface WithMaintenanceWindow {
             /**
@@ -625,6 +655,7 @@ public interface Server {
              */
             Update withMaintenanceWindow(MaintenanceWindow maintenanceWindow);
         }
+
         /** The stage of the Server update allowing to specify authConfig. */
         interface WithAuthConfig {
             /**
@@ -635,6 +666,7 @@ public interface Server {
              */
             Update withAuthConfig(AuthConfig authConfig);
         }
+
         /** The stage of the Server update allowing to specify dataEncryption. */
         interface WithDataEncryption {
             /**
@@ -645,6 +677,7 @@ public interface Server {
              */
             Update withDataEncryption(DataEncryption dataEncryption);
         }
+
         /** The stage of the Server update allowing to specify createMode. */
         interface WithCreateMode {
             /**
@@ -655,6 +688,7 @@ public interface Server {
              */
             Update withCreateMode(CreateModeForUpdate createMode);
         }
+
         /** The stage of the Server update allowing to specify replicationRole. */
         interface WithReplicationRole {
             /**
@@ -665,6 +699,7 @@ public interface Server {
              */
             Update withReplicationRole(ReplicationRole replicationRole);
         }
+
         /** The stage of the Server update allowing to specify network. */
         interface WithNetwork {
             /**
@@ -678,6 +713,7 @@ public interface Server {
             Update withNetwork(Network network);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

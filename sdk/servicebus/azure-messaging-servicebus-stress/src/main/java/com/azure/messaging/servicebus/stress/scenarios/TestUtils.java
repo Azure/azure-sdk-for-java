@@ -7,19 +7,18 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusMessageBatch;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.stress.util.EntityType;
 import com.azure.messaging.servicebus.stress.util.ScenarioOptions;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 final class TestUtils {
-    private static final Random RANDOM = new Random();
-    private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5));
+    private static final byte[] PAYLOAD = "this is a circular payload that is used to fill up the message".getBytes(StandardCharsets.UTF_8);
+
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
     static ServiceBusClientBuilder.ServiceBusSenderClientBuilder getSenderBuilder(ScenarioOptions options, boolean session) {
@@ -35,14 +34,14 @@ final class TestUtils {
         return builder;
     }
 
-    static ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getReceiverBuilder(ScenarioOptions options, boolean session) {
+    public static ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getReceiverBuilder(ScenarioOptions options, boolean session) {
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = getBuilder(options).receiver();
 
         if (options.getServiceBusEntityType() == EntityType.QUEUE) {
             builder.queueName(session ? options.getServiceBusSessionQueueName() : options.getServiceBusQueueName());
         } else if (options.getServiceBusEntityType() == EntityType.TOPIC) {
             builder.topicName(options.getServiceBusTopicName());
-            builder.subscriptionName(session ? options.getServicBusSessionSubscriptionName() : options.getServiceBusSubscriptionName());
+            builder.subscriptionName(session ? options.getServiceBusSessionSubscriptionName() : options.getServiceBusSubscriptionName());
         }
 
         return builder
@@ -80,30 +79,46 @@ final class TestUtils {
             .disableAutoComplete();
     }
 
-    static List<ServiceBusMessage> createBatch(byte[] messagePayload, int batchSize) {
-        return IntStream.range(0, batchSize)
-            .mapToObj(unused -> new ServiceBusMessage(messagePayload))
-            .collect(Collectors.toList());
+    static ServiceBusMessageBatch createBatchSync(ServiceBusSenderClient client, byte[] messagePayload, int batchSize) {
+        try {
+            ServiceBusMessageBatch batch = client.createMessageBatch();
+            for (int i = 0; i < batchSize; i++) {
+                batch.tryAddMessage(new ServiceBusMessage(messagePayload));
+            }
+
+            return batch;
+        } catch (Exception e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Error creating batch", e));
+        }
     }
 
     static byte[] createMessagePayload(int messageSize) {
         final byte[] messagePayload = new byte[messageSize];
-        RANDOM.nextBytes(messagePayload);
+        for (int i = 0; i < messageSize; i++) {
+            messagePayload[i] = PAYLOAD[i % PAYLOAD.length];
+        }
         return messagePayload;
     }
 
-    private static ServiceBusClientBuilder getBuilder(ScenarioOptions options) {
+    protected static ServiceBusClientBuilder getBuilder(ScenarioOptions options) {
         return new ServiceBusClientBuilder()
-            .retryOptions(RETRY_OPTIONS)
+            .retryOptions(new AmqpRetryOptions().setTryTimeout(options.getTryTimeout()))
             .connectionString(options.getServiceBusConnectionString());
     }
 
-    static void blockingWait(Duration duration) {
+    static boolean blockingWait(Duration duration) {
+        if (duration.toMillis() <= 0) {
+            return true;
+        }
+
         try {
             Thread.sleep(duration.toMillis());
         } catch (InterruptedException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            LOGGER.warning("wait interrupted");
+            return false;
         }
+
+        return true;
     }
 
     private TestUtils() {

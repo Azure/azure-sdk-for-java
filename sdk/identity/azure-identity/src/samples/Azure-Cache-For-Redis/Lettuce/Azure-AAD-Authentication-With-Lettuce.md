@@ -1,11 +1,11 @@
-## Azure Cache for Redis: Azure AD with Lettuce client library
+## Azure Cache for Redis: Microsoft Entra ID with Lettuce client library
 
 ### Table of contents
 
 - [Prerequisites](#prerequisites)
-- [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
-- [Authenticate with Azure AD - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication)
-- [Authenticate with Azure AD - Using Token Cache](#authenticate-with-azure-ad-using-token-cache)
+- [Authenticate with Microsoft Entra ID - Hello World](#authenticate-with-azure-ad-hello-world)
+- [Authenticate with Microsoft Entra ID - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication)
+- [Authenticate with Microsoft Entra ID - Using Token Cache](#authenticate-with-azure-ad-using-token-cache)
 - [Troubleshooting](#troubleshooting)
 
 
@@ -28,14 +28,14 @@
    ```
 
 #### Samples Guidance
-* [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world):
-This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
+* [Authenticate with Microsoft Entra ID - Hello World](#authenticate-with-azure-ad-hello-world):
+This sample is recommended for users getting started to use Microsoft Entra authentication with Azure Cache for Redis.
 
-* [Authenticate with Azure AD - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication):
-This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
+* [Authenticate with Microsoft Entra ID - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication):
+This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Microsoft Entra ID upon token expiry.
 
-* [Authenticate with Azure AD - Using Token Cache](#authenticate-with-azure-ad-using-token-cache):
-This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a token cache caching a non-expired Azure AD token.
+* [Authenticate with Microsoft Entra ID - Using Token Cache](#authenticate-with-azure-ad-using-token-cache):
+This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a token cache caching a non-expired Microsoft Entra token.
 
 ##### Challenges
 The Lettuce client handshake process is described below. The RESP 3 Protocol uses `HELLO` command, which currently isn't supported on the service side.
@@ -57,12 +57,12 @@ cache-name.redis.cache.windows.net:6379> HELLO 3 AUTH user eyJ0eXAiOiJKV1QiLCJhb
 (error) WRONGPASS invalid username-password pair
 ```
 
-##### Authenticate with Azure AD: Hello World
-This sample is intended to assist in authenticating with Azure AD via the Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce client instance.
+##### Authenticate with Microsoft Entra ID: Hello World
+This sample is intended to assist in authenticating with Microsoft Entra ID via the Lettuce client library. It focuses on displaying the logic required to fetch a Microsoft Entra access token and to use it as password when setting up the Lettuce client instance.
 
 ##### Migration Guidance
-When migrating your existing your application code, you need to replace the password input with the Azure AD token.
-Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
+When migrating your existing your application code, you need to replace the password input with the Microsoft Entra token.
+Integrate the logic in your application code to fetch a Microsoft Entra access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ##### Version 6.2.0.RELEASE or above
 ```xml
@@ -110,7 +110,7 @@ System.out.println(sync.get("Az:testKey"));
  * Redis Credential Implementation for Azure Redis for Cache
  */
 public static class AzureRedisCredentials implements RedisCredentials {
-    // Note: The Scopes value will change as the Azure AD Authentication support hits public preview and eventually GA's.
+    // Note: The Scopes value will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
         .addScopes("cca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
     private TokenCredential tokenCredential;
@@ -164,8 +164,8 @@ public static class AzureRedisCredentials implements RedisCredentials {
 //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Fetch an Azure AD token to be used for authentication. The Azure AD token will be used as password.
-// Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+// Fetch a Microsoft Entra token to be used for authentication. The Microsoft Entra token will be used as password.
+// Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 String token = defaultAzureCredential
     .getToken(new TokenRequestContext()
         .addScopes("cca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
@@ -198,8 +198,8 @@ sync.set("Az:testKey", "testVal");
 System.out.println(sync.get("Az:testKey"));
 ```
 
-##### Supported Token Credentials for Azure AD Authentication
-**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch an Azure AD access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://learn.microsoft.com/azure/developer/java/sdk/identity) are as follows:
+##### Supported Token Credentials for Microsoft Entra Authentication
+**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch a Microsoft Entra access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://learn.microsoft.com/azure/developer/java/sdk/identity) are as follows:
 * [Client Certificate Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
 * [Client Secret Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
 * [Managed Identity Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
@@ -208,12 +208,12 @@ System.out.println(sync.get("Az:testKey"));
 * [Interactive Browser Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-user-auth#interactive-browser-credential)
 * [Device Code Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-user-auth#device-code-credential)
 
-##### Authenticate with Azure AD: Handle Reauthentication
-This sample is intended to assist in authenticating with Azure AD via the Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce Redis client instance. It also shows how to recreate and authenticate the Lettuce client instance when its connection is broken in error/exception scenarios.
+##### Authenticate with Microsoft Entra ID: Handle Reauthentication
+This sample is intended to assist in authenticating with Microsoft Entra ID via the Lettuce client library. It focuses on displaying the logic required to fetch a Microsoft Entra access token and to use it as password when setting up the Lettuce Redis client instance. It also shows how to recreate and authenticate the Lettuce client instance when its connection is broken in error/exception scenarios.
 
 ##### Migration Guidance
-When migrating your existing your application code, you need to replace the password input with the Azure AD token.
-Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
+When migrating your existing your application code, you need to replace the password input with the Microsoft Entra token.
+Integrate the logic in your application code to fetch a Microsoft Entra access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ##### Version 6.2.0.RELEASE or above
 ```xml
@@ -229,7 +229,7 @@ Integrate the logic in your application code to fetch an Azure AD access token v
 //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Host Name, Port, Username and Azure AD Token are required here.
+// Host Name, Port, Username, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", defaultAzureCredential);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
@@ -289,7 +289,7 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, S
  * Redis Credential Implementation for Azure Redis for Cache
  */
 public static class AzureRedisCredentials implements RedisCredentials {
-    // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+    // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
         .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
     private TokenCredential tokenCredential;
@@ -344,12 +344,12 @@ public static class AzureRedisCredentials implements RedisCredentials {
 //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Fetch an AAD token to be used for authentication. This token will be used as the password.
-// Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+// Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
+// Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
-// Host Name, Port, Username and Azure AD Token are required here.
+// Host Name, Port, Username, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", accessToken);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
@@ -414,12 +414,12 @@ private static AccessToken getAccessToken(TokenCredential tokenCredential, Token
 
 ```
 
-#### Authenticate with Azure AD: Using Token Cache
-This sample is intended to assist in authenticating with Azure AD via the Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token using a token cache and to use it as password when setting up the Lettuce instance. It also shows how to recreate and authenticate the Lettuce instance using the cached access token when the client's connection is broken in error/exception scenarios. The token cache stores and proactively refreshes the Azure AD access token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
+#### Authenticate with Microsoft Entra ID: Using Token Cache
+This sample is intended to assist in authenticating with Microsoft Entra ID via the Lettuce client library. It focuses on displaying the logic required to fetch a Microsoft Entra access token using a token cache and to use it as password when setting up the Lettuce instance. It also shows how to recreate and authenticate the Lettuce instance using the cached access token when the client's connection is broken in error/exception scenarios. The token cache stores and proactively refreshes the Microsoft Entra access token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
 
 ##### Migration Guidance
-When migrating your existing your application code, you need to replace the password input with the Azure AD token.
-Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library. Store the token in a token cache, as shown below. Replace the token with the password configuring/retrieving logic in your application code.
+When migrating your existing your application code, you need to replace the password input with the Microsoft Entra token.
+Integrate the logic in your application code to fetch a Microsoft Entra access token via the Azure Identity library. Store the token in a token cache, as shown below. Replace the token with the password configuring/retrieving logic in your application code.
 
 ##### Version 6.2.0.RELEASE or above
 ```xml
@@ -434,7 +434,7 @@ Integrate the logic in your application code to fetch an Azure AD access token v
 //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Host Name, Port, Username and Azure AD Token are required here.
+// Host Name, Port, Username, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 String hostName = "<HOST_NAME>";
 String userName = "<USERNAME>";
@@ -651,15 +651,15 @@ public static class TokenRefreshCache {
 //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Fetch an AAD token to be used for authentication. This token will be used as the password.
-// Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+// Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
+// Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
 
 // Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 minutes before expiry.
 TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
 AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
-// Host Name, Port, Username and Azure AD Token are required here.
+// Host Name, Port, Username, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "USERNAME", accessToken);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
@@ -778,11 +778,10 @@ public static class TokenRefreshCache {
 In this error scenario, the username provided and the access token used as password are not compatible.
 To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
 * In **Data Access Configuration**, you've assigned the required role to your user/service principal identity.
-* In **Advanced settings**, the **AAD access authorization** box is selected. If not, select it and select the **Save** button.
+* In **Advanced settings**, the **Microsoft Entra Authentication** box is selected. If not, select it and select the **Save** button.
 
 ##### Permissions not granted / NOPERM Error
 In this error scenario, the authentication was successful, but your registered user/service principal is not granted the RBAC permission to perform the action.
 To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
 * In **Data Access Configuration**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
 * In the event you're using a custom role, ensure the permissions granted under your custom role include the one required for your target action.
-

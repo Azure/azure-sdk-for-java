@@ -31,7 +31,7 @@ public final class RecoveryPointsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"umepjpbibn\",\"location\":\"pphepifexl\",\"tags\":{\"czuod\":\"rccjclykcgxvrpjl\"},\"id\":\"cpunettepdjx\",\"name\":\"eskoy\",\"type\":\"uiylpc\"}";
+            "{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"twmykyut\",\"location\":\"ym\",\"tags\":{\"pycvjqdvdwkqpldr\":\"fj\",\"taoutnpdct\":\"efgnaavuagnt\",\"yeuyldph\":\"hspfefyihd\",\"thhllnmwyne\":\"tybkcgs\"},\"id\":\"x\",\"name\":\"x\",\"type\":\"fciatxtjrr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,17 +63,17 @@ public final class RecoveryPointsGetWithResponseMockTests {
             manager
                 .recoveryPoints()
                 .getWithResponse(
-                    "nxhhl",
-                    "xricctkwmuqq",
-                    "ajxeiygle",
-                    "rwvaexhdc",
-                    "rceqnkbrupob",
-                    "hdmljz",
+                    "qwtygevgwmseharx",
+                    "fv",
+                    "n",
+                    "x",
+                    "mbpjptnvwjh",
+                    "sidqpxlbtpakft",
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("pphepifexl", response.location());
-        Assertions.assertEquals("rccjclykcgxvrpjl", response.tags().get("czuod"));
-        Assertions.assertEquals("umepjpbibn", response.etag());
+        Assertions.assertEquals("ym", response.location());
+        Assertions.assertEquals("fj", response.tags().get("pycvjqdvdwkqpldr"));
+        Assertions.assertEquals("twmykyut", response.etag());
     }
 }

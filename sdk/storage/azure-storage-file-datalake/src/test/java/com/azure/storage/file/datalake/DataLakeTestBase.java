@@ -263,6 +263,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return getServiceClientBuilder(account.getCredential(), account.getDataLakeEndpoint()).buildAsyncClient();
     }
 
+    protected DataLakeServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint) {
+        return getServiceClientBuilder(credential, endpoint).buildAsyncClient();
+    }
+
     /**
      * Some tests require extra configuration for retries when writing.
      * <p>
@@ -553,6 +557,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseClient(fsc).acquireLease(-1) : leaseID;
     }
 
+    protected String setupFileSystemLeaseAsyncCondition(DataLakeFileSystemAsyncClient fsc, String leaseID) {
+        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1).block() : leaseID;
+    }
+
     /**
      * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
      * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
@@ -593,15 +601,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
     }
 
-    protected String setupPathLeaseCondition(DataLakePathAsyncClient pc, String leaseID) {
+    protected String setupPathLeaseCondition(DataLakePathAsyncClient pac, String leaseID) {
         String responseLeaseId = null;
 
         if (Objects.equals(RECEIVED_LEASE_ID, leaseID) || Objects.equals(GARBAGE_LEASE_ID, leaseID)) {
-            responseLeaseId = (pc instanceof DataLakeFileAsyncClient)
-                ? createLeaseAsyncClient((DataLakeFileAsyncClient) pc).acquireLease(-1).block()
-                : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pc).acquireLease(-1).block();
+            responseLeaseId = (pac instanceof DataLakeFileAsyncClient)
+                ? createLeaseAsyncClient((DataLakeFileAsyncClient) pac).acquireLease(-1).block()
+                : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1).block();
         }
-
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
     }
 
@@ -891,4 +898,42 @@ public class DataLakeTestBase extends TestProxyTestBase {
     public static boolean isLiveMode() {
         return ENVIRONMENT.getTestMode() == TestMode.LIVE;
     }
+
+    private static boolean olderThan20200210ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_02_10);
+    }
+
+    private static boolean olderThan20201206ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_12_06);
+    }
+
+    private static boolean olderThan20200612ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_06_12);
+    }
+
+    private static boolean olderThan20210608ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2021_06_08);
+    }
+
+    private static boolean olderThan20230803ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2023_08_03);
+    }
+
+    private static boolean olderThan20200804ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_08_04);
+    }
+
+    private static boolean olderThan20191212ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2019_12_12);
+    }
+
+    private static boolean olderThan20201002ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_10_02);
+    }
+
+    private static boolean olderThan20210410ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2021_04_10);
+    }
+
+
 }

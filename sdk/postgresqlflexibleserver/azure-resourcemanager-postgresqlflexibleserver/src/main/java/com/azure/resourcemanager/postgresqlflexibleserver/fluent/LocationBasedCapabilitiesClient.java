@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FlexibleServerCapabilityInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.CapabilityPropertiesInner;
 
 /** An instance of this class provides access to all the operations defined in LocationBasedCapabilitiesClient. */
 public interface LocationBasedCapabilitiesClient {
@@ -23,7 +23,7 @@ public interface LocationBasedCapabilitiesClient {
      * @return capabilities at specified location in a given subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<FlexibleServerCapabilityInner> executeAsync(String locationName);
+    PagedFlux<CapabilityPropertiesInner> executeAsync(String locationName);
 
     /**
      * Get capabilities at specified location in a given subscription.
@@ -36,7 +36,7 @@ public interface LocationBasedCapabilitiesClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FlexibleServerCapabilityInner> execute(String locationName);
+    PagedIterable<CapabilityPropertiesInner> execute(String locationName);
 
     /**
      * Get capabilities at specified location in a given subscription.
@@ -50,5 +50,5 @@ public interface LocationBasedCapabilitiesClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FlexibleServerCapabilityInner> execute(String locationName, Context context);
+    PagedIterable<CapabilityPropertiesInner> execute(String locationName, Context context);
 }

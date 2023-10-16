@@ -14,6 +14,15 @@ public final class HttpVersionOperator extends ExpandableStringEnum<HttpVersionO
     public static final HttpVersionOperator EQUAL = fromString("Equal");
 
     /**
+     * Creates a new instance of HttpVersionOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HttpVersionOperator() {
+    }
+
+    /**
      * Creates or finds a HttpVersionOperator from its string representation.
      *
      * @param name a name to look for.

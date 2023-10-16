@@ -51,9 +51,18 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_SENDER;
 
 /**
- * An <b>asynchronous</b> client to send messages to a Service Bus resource.
+ * <p>An <b>asynchronous</b> client to send messages to a Service Bus resource.</p>
  *
- * <p><strong>Create an instance of sender</strong></p>
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Create an instance of sender</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -65,12 +74,14 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
- * &#47;&#47; Use the sender and finally close it.
+ * &#47;&#47; When users are done with the sender, they should dispose of it.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
  * asyncSender.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation -->
  *
- * <p><strong>Send messages to a Service Bus resource</strong></p>
+ * <p><strong>Sample: Send messages to a Service Bus resource</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch -->
  * <pre>
  * &#47;&#47; `subscribe` is a non-blocking call. The program will move onto the next line of code when it starts the
@@ -88,7 +99,9 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch -->
  *
- * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch} to a Service Bus resource</strong></p>
+ * <p><strong>Sample: Send messages using a size-limited {@link ServiceBusMessageBatch} to a Service Bus resource
+ * </strong></p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize -->
  * <pre>
  * Flux&lt;ServiceBusMessage&gt; telemetryMessages = Flux.just&#40;firstMessage, secondMessage&#41;;
@@ -155,13 +168,53 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *     &#125;, &#40;&#41; -&gt; &#123;
  *         System.out.println&#40;&quot;Completed.&quot;&#41;;
  *
- *         &#47;&#47; Clean up sender when done using it.  Publishers should be long-lived objects.
+ *         &#47;&#47; Continue using the sender and finally, dispose of the sender.
+ *         &#47;&#47; Clients should be long-lived objects as they require resources
+ *         &#47;&#47; and time to establish a connection to the service.
  *         asyncSender.close&#40;&#41;;
  *     &#125;&#41;;
  *
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize -->
  *
+ * <p><strong>Sample: Sending a message to a session-enabled queue</strong></p>
+ *
+ * <p>The snippet below demonstrates sending a message to a
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a>
+ * enabled queue.  Setting {@link ServiceBusMessage#setMessageId(String)} property to "greetings" will send the message
+ * to a Service Bus session with an id of "greetings".</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebussenderasyncclient.sendMessage-session -->
+ * <pre>
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .sender&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; Setting sessionId publishes that message to a specific session, in this case, &quot;greeting&quot;.
+ * ServiceBusMessage message = new ServiceBusMessage&#40;&quot;Hello world&quot;&#41;
+ *     .setSessionId&#40;&quot;greetings&quot;&#41;;
+ *
+ * &#47;&#47; `subscribe` is a non-blocking call. The program will move onto the next line of code when it starts the
+ * &#47;&#47; operation.  Users should use the callbacks on `subscribe` to understand the status of the send operation.
+ * sender.sendMessage&#40;message&#41;.subscribe&#40;unused -&gt; &#123;
+ * &#125;, error -&gt; &#123;
+ *     System.err.println&#40;&quot;Error occurred publishing batch: &quot; + error&#41;;
+ * &#125;, &#40;&#41; -&gt; &#123;
+ *     System.out.println&#40;&quot;Send complete.&quot;&#41;;
+ * &#125;&#41;;
+ *
+ * &#47;&#47; Continue using the sender and finally, dispose of the sender.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
+ * sender.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebussenderasyncclient.sendMessage-session -->
+ *
+ * @see ServiceBusClientBuilder#sender()
+ * @see ServiceBusSenderClient To communicate with a Service Bus resource using a synchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSenderAsyncClient implements AutoCloseable {
