@@ -3,7 +3,7 @@
     {
       "name": "spring.cloud.azure.active-directory.enabled",
       "type": "java.lang.Boolean",
-      "description": "Whether to enable Azure Active Directory related auto-configuration.",
+      "description": "Whether to enable Microsoft Entra ID related auto-configuration.",
       "defaultValue": false
     },
     {
@@ -303,25 +303,25 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-endpoint",
       "type": "java.lang.String",
-      "description": "The Azure Active Directory endpoint to connect to.",
+      "description": "The Microsoft Entra endpoint to connect to.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-graph-api-version",
       "type": "java.lang.String",
-      "description": "The Azure Active Directory Graph API version.",
+      "description": "The Microsoft Entra Graph API version.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-graph-endpoint",
       "type": "java.lang.String",
-      "description": "The Azure Active Directory Graph endpoint.",
+      "description": "The Microsoft Entra Graph endpoint.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-resource-id",
       "type": "java.lang.String",
-      "description": "The Azure Active Directory resource ID.",
+      "description": "The Microsoft Entra resource ID.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
@@ -581,7 +581,7 @@
     {
       "name": "spring.datasource.azure.profile.environment.active-directory-endpoint",
       "type": "java.lang.String",
-      "description": "The Azure Active Directory endpoint to connect to.",
+      "description": "The Microsoft Entra endpoint to connect to.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureJdbcPasswordlessProperties"
     },
     {
@@ -599,7 +599,7 @@
     {
       "name": "spring.datasource.azure.passwordless-enabled",
       "type": "java.lang.Boolean",
-      "description": "Whether to enable passwordless connections to Azure databases by using OAuth2 Azure Active Directory token credentials.",
+      "description": "Whether to enable passwordless connections to Azure databases by using OAuth2 Microsoft Entra token credentials.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureJdbcPasswordlessProperties",
       "defaultValue": false
     },
