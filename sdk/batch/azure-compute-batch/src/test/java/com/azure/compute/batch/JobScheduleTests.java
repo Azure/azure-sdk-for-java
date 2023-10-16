@@ -10,7 +10,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import static java.time.OffsetDateTime.now;
 
@@ -43,13 +45,13 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
 
         Schedule schedule = new Schedule().setDoNotRunUntil(now()).setDoNotRunAfter(now().plusHours(5)).setStartWindow(Duration.ofDays(5));
         JobSpecification spec = new JobSpecification(poolInfo).setPriority(100);
-        jobScheduleClient.create(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateOptions(jobScheduleId, schedule, spec));
 
         try {
             // GET
-            Assertions.assertTrue(jobScheduleClient.exists(jobScheduleId));
+            Assertions.assertTrue(batchClient.jobScheduleExists(jobScheduleId));
 
-            BatchJobSchedule jobSchedule = jobScheduleClient.get(jobScheduleId);
+            BatchJobSchedule jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assertions.assertNotNull(jobSchedule);
             Assertions.assertEquals(jobScheduleId, jobSchedule.getId());
             Assertions.assertEquals((Integer) 100, jobSchedule.getJobSpecification().getPriority());
@@ -62,7 +64,7 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
             // LIST
             RequestOptions listOptions = new RequestOptions();
             listOptions.addQueryParam("$filter", String.format("id eq '%s'", jobScheduleId));
-            PagedIterable<BatchJobSchedule> jobSchedules = jobScheduleClient.list(listOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobSchedule.class));
+            PagedIterable<BatchJobSchedule> jobSchedules = batchClient.listJobSchedules(listOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobSchedule.class));
             Assert.assertNotNull(jobSchedules);
 
             boolean found = false;
@@ -73,22 +75,34 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
             }
             Assert.assertTrue(found);
 
+            // REPLACE
+            List<MetadataItem> metadataList = new ArrayList<>();
+            metadataList.add(new MetadataItem("name1", "value1"));
+            metadataList.add(new MetadataItem("name2", "value2"));
+
+            jobSchedule.setMetadata(metadataList);
+            batchClient.replaceJobSchedule(jobScheduleId, jobSchedule);
+
+            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
+            Assert.assertTrue(jobSchedule.getMetadata().size() == 2);
+            Assert.assertTrue(jobSchedule.getMetadata().get(1).getValue().equals("value2"));
+
             // UPDATE
             LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
             metadata.add((new MetadataItem("key1", "value1")));
-            BatchJobScheduleUpdateParameters jobScheduleUpdateParameters = new BatchJobScheduleUpdateParameters();
-            jobScheduleUpdateParameters.setMetadata(metadata);
-            jobScheduleClient.patch(jobScheduleId, jobScheduleUpdateParameters);
+            BatchJobScheduleUpdateOptions jobScheduleUpdateOptions = new BatchJobScheduleUpdateOptions();
+            jobScheduleUpdateOptions.setMetadata(metadata);
+            batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateOptions);
 
-            jobSchedule = jobScheduleClient.get(jobScheduleId);
+            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assert.assertTrue(jobSchedule.getMetadata().size() == 1);
             Assert.assertTrue(jobSchedule.getMetadata().get(0).getName().equals("key1"));
             Assert.assertEquals((Integer) 100, jobSchedule.getJobSpecification().getPriority());
 
             // DELETE
-            jobScheduleClient.delete(jobScheduleId);
+            batchClient.deleteJobSchedule(jobScheduleId);
             try {
-                jobSchedule = jobScheduleClient.get(jobScheduleId);
+                jobSchedule = batchClient.getJobSchedule(jobScheduleId);
                 Assert.assertTrue("Shouldn't be here, the jobschedule should be deleted", true);
             } catch (HttpResponseException err) {
                 if (err.getResponse().getStatusCode() != 404) {
@@ -99,7 +113,7 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
             Thread.sleep(1* 1000);
         } finally {
             try {
-                jobScheduleClient.delete(jobScheduleId);
+                batchClient.deleteJobSchedule(jobScheduleId);
             } catch (Exception e) {
                 // Ignore here
             }
@@ -116,32 +130,32 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
 
         JobSpecification spec = new JobSpecification(poolInfo).setPriority(100);
         Schedule schedule = new Schedule().setDoNotRunUntil(now()).setDoNotRunAfter(now().plusHours(5)).setStartWindow(Duration.ofDays(5));
-        jobScheduleClient.create(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateOptions(jobScheduleId, schedule, spec));
 
         try {
             // GET
-            BatchJobSchedule jobSchedule = jobScheduleClient.get(jobScheduleId);
+            BatchJobSchedule jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assert.assertEquals(JobScheduleState.ACTIVE, jobSchedule.getState());
 
-            jobScheduleClient.disable(jobScheduleId);
-            jobSchedule = jobScheduleClient.get(jobScheduleId);
+            batchClient.disableJobSchedule(jobScheduleId);
+            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assert.assertEquals(JobScheduleState.DISABLED, jobSchedule.getState());
 
-            jobScheduleClient.enable(jobScheduleId);
-            jobSchedule = jobScheduleClient.get(jobScheduleId);
+            batchClient.enableJobSchedule(jobScheduleId);
+            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assert.assertEquals(JobScheduleState.ACTIVE, jobSchedule.getState());
 
-            jobScheduleClient.terminate(jobScheduleId);
-            jobSchedule = jobScheduleClient.get(jobScheduleId);
+            batchClient.terminateJobSchedule(jobScheduleId);
+            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assert.assertTrue(jobSchedule.getState() == JobScheduleState.TERMINATING || jobSchedule.getState() == JobScheduleState.COMPLETED);
 
             Thread.sleep(2 * 1000);
-            jobSchedule = jobScheduleClient.get(jobScheduleId);
+            jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assert.assertEquals(JobScheduleState.COMPLETED, jobSchedule.getState());
 
-            jobScheduleClient.delete(jobScheduleId);
+            batchClient.deleteJobSchedule(jobScheduleId);
             try {
-                jobSchedule = jobScheduleClient.get(jobScheduleId);
+                jobSchedule = batchClient.getJobSchedule(jobScheduleId);
                 Assert.assertTrue("Shouldn't be here, the jobschedule should be deleted", true);
             } catch (HttpResponseException err) {
                 if (err.getResponse().getStatusCode() != 404) {
@@ -151,7 +165,7 @@ public class JobScheduleTests extends BatchServiceClientTestBase {
         }
         finally {
             try {
-                jobScheduleClient.delete(jobScheduleId);
+                batchClient.deleteJobSchedule(jobScheduleId);
             }
             catch (Exception e) {
                 // Ignore here

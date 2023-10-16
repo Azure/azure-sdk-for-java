@@ -6,15 +6,21 @@ using TypeSpec.Http;
 using TypeSpec.Versioning;
 
 @service({
-  title: "BatchClient",
+  title: "Azure Batch",
 })
-
-
-
+@versioned(Azure.Batch.Versions)
+@doc("Azure Batch provides Cloud-scale job scheduling and compute management.")
+@server(
+  "{endpoint}",
+  "Azure Batch provides Cloud-scale job scheduling and compute management.",
+  {
+    @doc("Batch account endpoint (for example: https://batchaccount.eastus2.batch.azure.com).")
+    endpoint: url,
+  }
+)
 @doc("A client for issuing REST requests to the Azure Batch service.")
 @useAuth(AADToken)
-@versioned(BatchService.Versions)
-namespace BatchService;
+namespace Azure.Batch;
 
 @doc("The Azure Batch service version.")
 enum Versions {
