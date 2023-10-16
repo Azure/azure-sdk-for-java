@@ -187,6 +187,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         for (PhoneNumberAreaCode areaCode : areaCodesResult) {
             assertTrue(Arrays.asList(expectedAreaCodes).contains(areaCode));
         }
+        assertNotNull(areaCodesResult);
     }
 
     @ParameterizedTest
@@ -254,6 +255,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         for (PhoneNumberAreaCode areaCode : areaCodesResult) {
             assertTrue(Arrays.asList(expectedAreaCodes).contains(areaCode));
         }
+        assertNotNull(areaCodesResult);
     }
 
     @ParameterizedTest
