@@ -241,11 +241,6 @@ public class RxGatewayStoreModel implements RxStoreModel {
                 httpHeaders,
                 contentAsByteArray);
 
-            // TODO: Clean this code up later
-            if (request.getResponseTimeout() == null) {
-                request.setResponseTimeout(HttpTimeoutPolicy.getTimeoutPolicy(request).
-                    getTimeoutAndDelaysList().get(0).getResponseTimeout());
-            }
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
 
             if (this.gatewayServerErrorInjector != null) {

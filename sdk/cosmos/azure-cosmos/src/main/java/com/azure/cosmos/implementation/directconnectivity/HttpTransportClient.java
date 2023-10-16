@@ -134,13 +134,6 @@ public class HttpTransportClient extends TransportClient {
             HttpRequest httpRequest = prepareHttpMessage(activityId, physicalAddressUri, resourceOperation, request);
 
             MutableVolatile<Instant> sendTimeUtc = new MutableVolatile<>();
-
-            // TODO: Clean this code up later
-            if (request.getResponseTimeout() == null) {
-                request.setResponseTimeout(HttpTimeoutPolicy.getTimeoutPolicy(request).
-                    getTimeoutAndDelaysList().get(0).getResponseTimeout());
-            }
-
             Mono<HttpResponse> httpResponseMono = this.httpClient
                     .send(httpRequest, request.getResponseTimeout())
                     .doOnSubscribe(subscription -> {
