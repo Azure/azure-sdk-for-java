@@ -18,15 +18,17 @@ public class JsonNumber extends JsonElement {
      * 
      * @param value specifies the String storing the number this JsonNumber 
      * object represents
+     * @throws IllegalArgumentException Thrown when the String value does not 
+     * represent a parseable int or float value. 
      */
-    JsonNumber(String value) {
+    JsonNumber(String value) throws IllegalArgumentException {
         try {
             this.numberValue = Integer.parseInt(value);
         } catch (Exception e) {
             try {
                 this.numberValue = Float.parseFloat(value);
             } catch (Exception x) {
-                x.printStackTrace();
+                throw new IllegalArgumentException("JsonNumber object must be constructed from a parseable int or float value."); 
             }
         }
     }
