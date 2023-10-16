@@ -11,8 +11,6 @@
 
 - Split `PurviewWorkflowClient` into multiple clients by model.
 
-### Bugs Fixed
-
 ### Other Changes
 
 - Update descriptions of some APIs.
