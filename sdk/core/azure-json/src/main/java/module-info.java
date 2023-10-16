@@ -3,6 +3,7 @@
 
 module com.azure.json  {
     exports com.azure.json;
+    exports com.azure.json.exception;
 
     uses com.azure.json.JsonProvider;
 }
