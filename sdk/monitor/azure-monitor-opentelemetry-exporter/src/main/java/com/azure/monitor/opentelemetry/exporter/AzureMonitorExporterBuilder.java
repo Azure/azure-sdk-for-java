@@ -79,8 +79,8 @@ public final class AzureMonitorExporterBuilder {
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
         "https://monitor.azure.com//.default";
 
-    private static final String STATSBEAT_LONG_INTERVAL_SECONDS = "STATSBEAT_LONG_INTERVAL_SECONDS";
-    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS = "STATSBEAT_SHORT_INTERVAL_SECONDS";
+    private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME  = "STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME ";
+    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME  = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME ";
 
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
@@ -366,20 +366,6 @@ public final class AzureMonitorExporterBuilder {
             new MetricDataMapper(createDefaultsPopulator(configProperties), true), builtTelemetryItemExporter);
     }
 
-    private long getStatsbeaLongInterval(Integer intervalFromConfig) {
-        if (intervalFromConfig == null) {
-            return DAYS.toSeconds(1); // default to every 24 hours
-        }
-        return SECONDS.toSeconds(intervalFromConfig);
-    }
-
-    private long getStatsbeatShortInterval(Integer intervalFromConfig) {
-        if (intervalFromConfig == null) {
-            return MINUTES.toSeconds(15); // default to every 15 mins
-        }
-        return SECONDS.toSeconds(intervalFromConfig);
-    }
-
     private Set<Feature> initStatsbeatFeatures() {
         // TODO (jean): start tracking native image usage based on a system property or env var to indicate it's from the native image path
         return Collections.emptySet();
@@ -478,8 +464,8 @@ public final class AzureMonitorExporterBuilder {
                 this::getStatsbeatConnectionString,
                 connectionString::getInstrumentationKey,
                 false,
-                getStatsbeaLongInterval(configProperties.getInt(STATSBEAT_LONG_INTERVAL_SECONDS)),
-                getStatsbeatShortInterval(configProperties.getInt(STATSBEAT_SHORT_INTERVAL_SECONDS)),
+                configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)), // Statsbeat short interval
+                configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)), // Statsbeat long interval
                 false,
                 initStatsbeatFeatures());
         }
