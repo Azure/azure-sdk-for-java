@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ContinuousModeProperties {
     /*
-     * Enum to indicate type of Continuous backup mode
+     * Enum to indicate type of Continuos backup mode
      */
     @JsonProperty(value = "tier")
     private ContinuousTier tier;
@@ -21,7 +21,7 @@ public final class ContinuousModeProperties {
     }
 
     /**
-     * Get the tier property: Enum to indicate type of Continuous backup mode.
+     * Get the tier property: Enum to indicate type of Continuos backup mode.
      *
      * @return the tier value.
      */
@@ -30,7 +30,7 @@ public final class ContinuousModeProperties {
     }
 
     /**
-     * Set the tier property: Enum to indicate type of Continuous backup mode.
+     * Set the tier property: Enum to indicate type of Continuos backup mode.
      *
      * @param tier the tier value to set.
      * @return the ContinuousModeProperties object itself.

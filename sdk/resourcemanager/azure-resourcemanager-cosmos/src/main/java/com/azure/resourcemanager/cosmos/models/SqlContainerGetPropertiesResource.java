@@ -117,6 +117,28 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetPropertiesResource withMaterializedViewDefinition(
+        MaterializedViewDefinition materializedViewDefinition) {
+        super.withMaterializedViewDefinition(materializedViewDefinition);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

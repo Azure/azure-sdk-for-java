@@ -19,6 +19,7 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParame
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseRestoreResource;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
@@ -41,7 +42,7 @@ import java.util.Map;
 /** Samples for DatabaseAccounts CreateOrUpdate. */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
@@ -85,10 +86,10 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                                 new ContinuousModeProperties().withTier(ContinuousTier.CONTINUOUS30DAYS)))
                     .withRestoreParameters(
                         new RestoreParameters()
-                            .withRestoreMode(RestoreMode.POINT_IN_TIME)
                             .withRestoreSource(
                                 "/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc")
                             .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-03-11T22:05:09Z"))
+                            .withRestoreMode(RestoreMode.POINT_IN_TIME)
                             .withDatabasesToRestore(
                                 Arrays
                                     .asList(
@@ -97,13 +98,15 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                                             .withCollectionNames(Arrays.asList("collection1", "collection2")),
                                         new DatabaseRestoreResource()
                                             .withDatabaseName("db2")
-                                            .withCollectionNames(Arrays.asList("collection3", "collection4")))))
+                                            .withCollectionNames(Arrays.asList("collection3", "collection4"))))
+                            .withSourceBackupLocation("westus"))
+                    .withEnableMaterializedViews(false)
                     .withMinimalTlsVersion(MinimalTlsVersion.TLS),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBDatabaseAccountCreateMax.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountCreateMax.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
@@ -122,7 +125,6 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                 new DatabaseAccountCreateUpdateParameters()
                     .withLocation("westus")
                     .withTags(mapOf())
-                    .withKind(DatabaseAccountKind.MONGO_DB)
                     .withIdentity(
                         new ManagedServiceIdentity()
                             .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
@@ -130,6 +132,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                                 mapOf(
                                     "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
                                     new ManagedServiceIdentityUserAssignedIdentities())))
+                    .withKind(DatabaseAccountKind.MONGO_DB)
                     .withConsistencyPolicy(
                         new ConsistencyPolicy()
                             .withDefaultConsistencyLevel(DefaultConsistencyLevel.BOUNDED_STALENESS)
@@ -182,12 +185,16 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                             .asList(
                                 "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
                     .withCapacity(new Capacity().withTotalThroughputLimit(2000))
-                    .withMinimalTlsVersion(MinimalTlsVersion.TLS12),
+                    .withEnableMaterializedViews(false)
+                    .withEnableBurstCapacity(true)
+                    .withMinimalTlsVersion(MinimalTlsVersion.TLS12)
+                    .withEnablePriorityBasedExecution(true)
+                    .withDefaultPriorityLevel(DefaultPriorityLevel.LOW),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBDatabaseAccountCreateMin.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountCreateMin.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.

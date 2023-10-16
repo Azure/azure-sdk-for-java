@@ -121,6 +121,20 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SqlDatabaseGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlDatabaseGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

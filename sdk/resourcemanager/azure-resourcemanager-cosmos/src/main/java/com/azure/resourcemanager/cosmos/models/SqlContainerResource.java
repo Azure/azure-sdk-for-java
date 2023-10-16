@@ -61,6 +61,25 @@ public class SqlContainerResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Long analyticalStorageTtl;
 
+    /*
+     * Parameters to indicate the information about the restore
+     */
+    @JsonProperty(value = "restoreParameters")
+    private ResourceRestoreParameters restoreParameters;
+
+    /*
+     * Enum to indicate the mode of resource creation.
+     */
+    @JsonProperty(value = "createMode")
+    private CreateMode createMode;
+
+    /*
+     * The configuration for defining Materialized Views. This must be specified only for creating a Materialized View
+     * container.
+     */
+    @JsonProperty(value = "materializedViewDefinition")
+    private MaterializedViewDefinition materializedViewDefinition;
+
     /** Creates an instance of SqlContainerResource class. */
     public SqlContainerResource() {
     }
@@ -232,6 +251,68 @@ public class SqlContainerResource {
     }
 
     /**
+     * Get the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @return the restoreParameters value.
+     */
+    public ResourceRestoreParameters restoreParameters() {
+        return this.restoreParameters;
+    }
+
+    /**
+     * Set the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @param restoreParameters the restoreParameters value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        this.restoreParameters = restoreParameters;
+        return this;
+    }
+
+    /**
+     * Get the createMode property: Enum to indicate the mode of resource creation.
+     *
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode property: Enum to indicate the mode of resource creation.
+     *
+     * @param createMode the createMode value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
+     * Get the materializedViewDefinition property: The configuration for defining Materialized Views. This must be
+     * specified only for creating a Materialized View container.
+     *
+     * @return the materializedViewDefinition value.
+     */
+    public MaterializedViewDefinition materializedViewDefinition() {
+        return this.materializedViewDefinition;
+    }
+
+    /**
+     * Set the materializedViewDefinition property: The configuration for defining Materialized Views. This must be
+     * specified only for creating a Materialized View container.
+     *
+     * @param materializedViewDefinition the materializedViewDefinition value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withMaterializedViewDefinition(MaterializedViewDefinition materializedViewDefinition) {
+        this.materializedViewDefinition = materializedViewDefinition;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -256,6 +337,12 @@ public class SqlContainerResource {
         }
         if (clientEncryptionPolicy() != null) {
             clientEncryptionPolicy().validate();
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
+        }
+        if (materializedViewDefinition() != null) {
+            materializedViewDefinition().validate();
         }
     }
 

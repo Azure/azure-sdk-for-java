@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,6 +32,13 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
      */
     private MongoDBCollectionGetProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBCollectionGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
     }
 
     /** {@inheritDoc} */

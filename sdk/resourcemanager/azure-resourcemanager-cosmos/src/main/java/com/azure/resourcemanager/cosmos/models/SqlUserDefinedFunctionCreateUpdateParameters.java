@@ -35,6 +35,13 @@ public final class SqlUserDefinedFunctionCreateUpdateParameters extends ArmResou
 
     /** {@inheritDoc} */
     @Override
+    public SqlUserDefinedFunctionCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SqlUserDefinedFunctionCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

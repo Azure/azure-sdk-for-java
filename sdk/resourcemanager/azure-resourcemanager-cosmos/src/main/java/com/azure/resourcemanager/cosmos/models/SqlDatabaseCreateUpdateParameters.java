@@ -34,6 +34,13 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
 
     /** {@inheritDoc} */
     @Override
+    public SqlDatabaseCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SqlDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

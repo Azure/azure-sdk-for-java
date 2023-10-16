@@ -132,10 +132,28 @@ public final class ClusterResourceProperties {
     private Boolean cassandraAuditLoggingEnabled;
 
     /*
+     * Type of the cluster. If set to Production, some operations might not be permitted on cluster.
+     */
+    @JsonProperty(value = "clusterType")
+    private ClusterType clusterType;
+
+    /*
      * Error related to resource provisioning.
      */
     @JsonProperty(value = "provisionError")
     private CassandraError provisionError;
+
+    /*
+     * Extensions to be added or updated on cluster.
+     */
+    @JsonProperty(value = "extensions")
+    private List<String> extensions;
+
+    /*
+     * List of backup schedules that define when you want to back up your data.
+     */
+    @JsonProperty(value = "backupSchedules")
+    private List<BackupSchedule> backupSchedules;
 
     /** Creates an instance of ClusterResourceProperties class. */
     public ClusterResourceProperties() {
@@ -503,6 +521,28 @@ public final class ClusterResourceProperties {
     }
 
     /**
+     * Get the clusterType property: Type of the cluster. If set to Production, some operations might not be permitted
+     * on cluster.
+     *
+     * @return the clusterType value.
+     */
+    public ClusterType clusterType() {
+        return this.clusterType;
+    }
+
+    /**
+     * Set the clusterType property: Type of the cluster. If set to Production, some operations might not be permitted
+     * on cluster.
+     *
+     * @param clusterType the clusterType value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withClusterType(ClusterType clusterType) {
+        this.clusterType = clusterType;
+        return this;
+    }
+
+    /**
      * Get the provisionError property: Error related to resource provisioning.
      *
      * @return the provisionError value.
@@ -519,6 +559,46 @@ public final class ClusterResourceProperties {
      */
     public ClusterResourceProperties withProvisionError(CassandraError provisionError) {
         this.provisionError = provisionError;
+        return this;
+    }
+
+    /**
+     * Get the extensions property: Extensions to be added or updated on cluster.
+     *
+     * @return the extensions value.
+     */
+    public List<String> extensions() {
+        return this.extensions;
+    }
+
+    /**
+     * Set the extensions property: Extensions to be added or updated on cluster.
+     *
+     * @param extensions the extensions value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withExtensions(List<String> extensions) {
+        this.extensions = extensions;
+        return this;
+    }
+
+    /**
+     * Get the backupSchedules property: List of backup schedules that define when you want to back up your data.
+     *
+     * @return the backupSchedules value.
+     */
+    public List<BackupSchedule> backupSchedules() {
+        return this.backupSchedules;
+    }
+
+    /**
+     * Set the backupSchedules property: List of backup schedules that define when you want to back up your data.
+     *
+     * @param backupSchedules the backupSchedules value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withBackupSchedules(List<BackupSchedule> backupSchedules) {
+        this.backupSchedules = backupSchedules;
         return this;
     }
 
@@ -548,6 +628,9 @@ public final class ClusterResourceProperties {
         }
         if (provisionError() != null) {
             provisionError().validate();
+        }
+        if (backupSchedules() != null) {
+            backupSchedules().forEach(e -> e.validate());
         }
     }
 }

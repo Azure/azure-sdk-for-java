@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for MongoDBResources CreateUpdateMongoRoleDefinition. */
 public final class MongoDBResourcesCreateUpdateMongoRoleDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBRoleDefinitionCreateUpdate.

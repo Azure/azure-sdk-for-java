@@ -67,6 +67,20 @@ public final class TableGetPropertiesResource extends TableResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public TableGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TableGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -116,6 +116,12 @@ public final class CassandraClusterPublicStatusDataCentersItemNode {
     @JsonProperty(value = "cpuUsage")
     private Double cpuUsage;
 
+    /*
+     * If node has been updated to latest model
+     */
+    @JsonProperty(value = "isLatestModel")
+    private Boolean isLatestModel;
+
     /** Creates an instance of CassandraClusterPublicStatusDataCentersItemNode class. */
     public CassandraClusterPublicStatusDataCentersItemNode() {
     }
@@ -463,6 +469,26 @@ public final class CassandraClusterPublicStatusDataCentersItemNode {
      */
     public CassandraClusterPublicStatusDataCentersItemNode withCpuUsage(Double cpuUsage) {
         this.cpuUsage = cpuUsage;
+        return this;
+    }
+
+    /**
+     * Get the isLatestModel property: If node has been updated to latest model.
+     *
+     * @return the isLatestModel value.
+     */
+    public Boolean isLatestModel() {
+        return this.isLatestModel;
+    }
+
+    /**
+     * Set the isLatestModel property: If node has been updated to latest model.
+     *
+     * @param isLatestModel the isLatestModel value to set.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
+     */
+    public CassandraClusterPublicStatusDataCentersItemNode withIsLatestModel(Boolean isLatestModel) {
+        this.isLatestModel = isLatestModel;
         return this;
     }
 

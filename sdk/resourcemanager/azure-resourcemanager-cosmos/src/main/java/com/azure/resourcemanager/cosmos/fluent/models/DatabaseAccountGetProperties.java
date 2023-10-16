@@ -14,8 +14,11 @@ import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.CreateMode;
+import com.azure.resourcemanager.cosmos.models.CustomerManagedKeyStatus;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
+import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
@@ -231,6 +234,12 @@ public final class DatabaseAccountGetProperties {
     private List<String> networkAclBypassResourceIds;
 
     /*
+     * The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+     */
+    @JsonProperty(value = "diagnosticLogSettings")
+    private DiagnosticLogSettings diagnosticLogSettings;
+
+    /*
      * Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
      */
     @JsonProperty(value = "disableLocalAuth")
@@ -241,6 +250,12 @@ public final class DatabaseAccountGetProperties {
      */
     @JsonProperty(value = "capacity")
     private Capacity capacity;
+
+    /*
+     * Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+     */
+    @JsonProperty(value = "enableMaterializedViews")
+    private Boolean enableMaterializedViews;
 
     /*
      * The object that represents the metadata for the Account Keys of the Cosmos DB account.
@@ -255,11 +270,36 @@ public final class DatabaseAccountGetProperties {
     private Boolean enablePartitionMerge;
 
     /*
+     * Flag to indicate enabling/disabling of Burst Capacity Preview feature on the account
+     */
+    @JsonProperty(value = "enableBurstCapacity")
+    private Boolean enableBurstCapacity;
+
+    /*
      * Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which
      * only work with Tls 1.2.
      */
     @JsonProperty(value = "minimalTlsVersion")
     private MinimalTlsVersion minimalTlsVersion;
+
+    /*
+     * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property
+     * provides troubleshooting guidance.
+     */
+    @JsonProperty(value = "customerManagedKeyStatus")
+    private CustomerManagedKeyStatus customerManagedKeyStatus;
+
+    /*
+     * Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+     */
+    @JsonProperty(value = "enablePriorityBasedExecution")
+    private Boolean enablePriorityBasedExecution;
+
+    /*
+     * Enum to indicate default Priority Level of request for Priority Based Execution.
+     */
+    @JsonProperty(value = "defaultPriorityLevel")
+    private DefaultPriorityLevel defaultPriorityLevel;
 
     /** Creates an instance of DatabaseAccountGetProperties class. */
     public DatabaseAccountGetProperties() {
@@ -830,6 +870,28 @@ public final class DatabaseAccountGetProperties {
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     *
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.diagnosticLogSettings;
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     *
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        this.diagnosticLogSettings = diagnosticLogSettings;
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      *
@@ -874,6 +936,28 @@ public final class DatabaseAccountGetProperties {
     }
 
     /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     *
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.enableMaterializedViews;
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     *
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        this.enableMaterializedViews = enableMaterializedViews;
+        return this;
+    }
+
+    /**
      * Get the keysMetadata property: The object that represents the metadata for the Account Keys of the Cosmos DB
      * account.
      *
@@ -906,6 +990,28 @@ public final class DatabaseAccountGetProperties {
     }
 
     /**
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
+     *
+     * @return the enableBurstCapacity value.
+     */
+    public Boolean enableBurstCapacity() {
+        return this.enableBurstCapacity;
+    }
+
+    /**
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
+     *
+     * @param enableBurstCapacity the enableBurstCapacity value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withEnableBurstCapacity(Boolean enableBurstCapacity) {
+        this.enableBurstCapacity = enableBurstCapacity;
+        return this;
+    }
+
+    /**
      * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
      * Cassandra and Mongo API's, which only work with Tls 1.2.
      *
@@ -924,6 +1030,73 @@ public final class DatabaseAccountGetProperties {
      */
     public DatabaseAccountGetProperties withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
         this.minimalTlsVersion = minimalTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
+     * account. In case there are errors, the property provides troubleshooting guidance.
+     *
+     * @return the customerManagedKeyStatus value.
+     */
+    public CustomerManagedKeyStatus customerManagedKeyStatus() {
+        return this.customerManagedKeyStatus;
+    }
+
+    /**
+     * Set the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
+     * account. In case there are errors, the property provides troubleshooting guidance.
+     *
+     * @param customerManagedKeyStatus the customerManagedKeyStatus value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withCustomerManagedKeyStatus(
+        CustomerManagedKeyStatus customerManagedKeyStatus) {
+        this.customerManagedKeyStatus = customerManagedKeyStatus;
+        return this;
+    }
+
+    /**
+     * Get the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     *
+     * @return the enablePriorityBasedExecution value.
+     */
+    public Boolean enablePriorityBasedExecution() {
+        return this.enablePriorityBasedExecution;
+    }
+
+    /**
+     * Set the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     *
+     * @param enablePriorityBasedExecution the enablePriorityBasedExecution value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withEnablePriorityBasedExecution(Boolean enablePriorityBasedExecution) {
+        this.enablePriorityBasedExecution = enablePriorityBasedExecution;
+        return this;
+    }
+
+    /**
+     * Get the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     *
+     * @return the defaultPriorityLevel value.
+     */
+    public DefaultPriorityLevel defaultPriorityLevel() {
+        return this.defaultPriorityLevel;
+    }
+
+    /**
+     * Set the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     *
+     * @param defaultPriorityLevel the defaultPriorityLevel value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withDefaultPriorityLevel(DefaultPriorityLevel defaultPriorityLevel) {
+        this.defaultPriorityLevel = defaultPriorityLevel;
         return this;
     }
 
@@ -974,6 +1147,9 @@ public final class DatabaseAccountGetProperties {
         }
         if (cors() != null) {
             cors().forEach(e -> e.validate());
+        }
+        if (diagnosticLogSettings() != null) {
+            diagnosticLogSettings().validate();
         }
         if (capacity() != null) {
             capacity().validate();
