@@ -4,8 +4,7 @@
 
 package com.azure.compute.batch;
 
-import com.azure.compute.batch.*;
-import com.azure.compute.batch.auth.BatchSharedKeyCredentials;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.compute.batch.models.*;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
@@ -49,23 +48,9 @@ import org.junit.Assert;
 
 
 class BatchServiceClientTestBase extends TestProxyTestBase {
-    protected BatchServiceClientBuilder batchClientBuilder;
+    protected BatchClientBuilder batchClientBuilder;
 
-    protected ApplicationsClient applicationsClient;
-
-    protected PoolClient poolClient;
-
-    protected AccountClient accountClient;
-
-    protected JobClient jobClient;
-
-    protected CertificatesClient certificatesClient;
-
-    protected JobScheduleClient jobScheduleClient;
-
-    protected TaskClient taskClient;
-
-    protected BatchNodesClient nodesClient;
+    protected BatchClient batchClient;
 
 	static final int MAX_LEN_ID = 64;
 
@@ -79,7 +64,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         super.beforeTest();
     	batchClientBuilder =
-                new BatchServiceClientBuilder()
+                new BatchClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -96,14 +81,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
         authenticateClient(AuthMode.AAD);
 
-        applicationsClient = batchClientBuilder.buildApplicationsClient();
-        poolClient = batchClientBuilder.buildPoolClient();
-        accountClient = batchClientBuilder.buildAccountClient();
-        jobClient = batchClientBuilder.buildJobClient();
-        certificatesClient = batchClientBuilder.buildCertificatesClient();
-        jobScheduleClient = batchClientBuilder.buildJobScheduleClient();
-        taskClient = batchClientBuilder.buildTaskClient();
-        nodesClient = batchClientBuilder.buildBatchNodesClient();
+        batchClient = batchClientBuilder.buildClient();
     }
 
     public void addTestRulesOnPlayback(InterceptorManager interceptorManager) {
@@ -126,18 +104,17 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
                 batchClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
             }
             else {
-                BatchSharedKeyCredentials keyCredentials = getSharedKeyCredentials();
+                AzureNamedKeyCredential keyCredentials = getSharedKeyCredentials();
                 batchClientBuilder.credential(keyCredentials);
             }
         }
     }
 
-    static BatchSharedKeyCredentials getSharedKeyCredentials() {
+    static AzureNamedKeyCredential getSharedKeyCredentials() {
         Configuration localConfig = Configuration.getGlobalConfiguration();
-        String baseUrl = localConfig.get("AZURE_BATCH_ENDPOINT");
         String accountName = localConfig.get("AZURE_BATCH_ACCOUNT");
         String accountKey = localConfig.get("AZURE_BATCH_ACCESS_KEY");
-        return new BatchSharedKeyCredentials(baseUrl, accountName, accountKey);
+        return new AzureNamedKeyCredential(accountName, accountKey);
     }
 
     static String getStringIdWithUserNamePrefix(String name) {
@@ -166,11 +143,9 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
         // 10 minutes
         long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
-        PoolClient poolClient = batchClientBuilder.buildPoolClient();
-
 
         // Check if pool exists
-        if (!poolExists(poolClient, poolId)) {
+        if (!poolExists(batchClient, poolId)) {
             // Use IaaS VM with Ubuntu
             ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
                     .setSku("18.04-LTS").setVersion("latest");
@@ -185,13 +160,13 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
          // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
 
-            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, poolVmSize);
-            poolCreateParameters.setTargetDedicatedNodes(poolVmCount)
+            BatchPoolCreateOptions poolCreateOptions = new BatchPoolCreateOptions(poolId, poolVmSize);
+            poolCreateOptions.setTargetDedicatedNodes(poolVmCount)
                     .setVirtualMachineConfiguration(configuration)
                     .setUserAccounts(userList)
                     .setNetworkConfiguration(networkConfiguration);
 
-            poolClient.create(poolCreateParameters);
+           batchClient.createPool(poolCreateOptions);
         }
         else {
         	System.out.println(String.format("The %s already exists.", poolId));
@@ -206,7 +181,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
         // Wait for the VM to be allocated
         while (elapsedTime < poolSteadyTimeoutInSeconds) {
-        	pool = poolClient.get(poolId);
+        	pool = batchClient.getPool(poolId);
             if (pool.getAllocationState() == AllocationState.STEADY) {
                 steady = true;
                 break;
@@ -273,8 +248,8 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         }
     }
 
-    static boolean poolExists(PoolClient poolClient, String poolId) {
-        return poolClient.exists(poolId);
+    static boolean poolExists(BatchClient batchClient, String poolId) {
+        return batchClient.poolExists(poolId);
     }
 
     static BlobContainerClient createBlobContainer(String storageAccountName, String storageAccountKey,
@@ -336,13 +311,13 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         return container.getBlobContainerUrl() + "?" + sas;
     }
 
-    static boolean waitForTasksToComplete(TaskClient taskClient, String jobId, int expiryTimeInSeconds)
+    static boolean waitForTasksToComplete(BatchClient batchClient, String jobId, int expiryTimeInSeconds)
             throws IOException, InterruptedException {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
 
         while (elapsedTime < expiryTimeInSeconds * 1000) {
-            PagedIterable<BatchTask> taskIterator = taskClient.list(jobId, null, null, null, null,  "id, state", null);
+            PagedIterable<BatchTask> taskIterator = batchClient.listTasks(jobId, null, null, null, null,   Arrays.asList("id", "state"), null);
 
             boolean allComplete = true;
             for (BatchTask task : taskIterator) {
@@ -374,7 +349,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
         // Wait for the VM to be allocated
         while (elapsedTime < poolAllocationTimeoutInMilliseconds) {
-            pool = poolClient.get(poolId);
+            pool = batchClient.getPool(poolId);
             Assert.assertNotNull(pool);
 
             if (pool.getAllocationState() == targetState) {
