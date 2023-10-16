@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class JsonCreationTests {
 
@@ -110,6 +114,45 @@ public class JsonCreationTests {
         assertFalse(test.isArray());
     }
 
+    // Cannot construct JsonNumber from null Number object  
+    @Test 
+    public void JsonNumberNotNull(){
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> { 
+                Number numberTest = null; 
+                JsonNumber test = new JsonNumber(numberTest); 
+            }
+        );
+    }
+
+    // Cannot construct JsonNumber from non-parseable int or float value 
+    // NOTE: Strings storing octal representations such as 010 (8 in decimal) 
+    // are parseable - they will just be interpreted as decimal with the 
+    // preceeding 0s removed and therefore parseable; however, binary (0b or 0B) 
+    // and hexadecimal (0x or 0X) representations will not be parseable. 
+    @ParameterizedTest
+    @ValueSource(strings = {"null", "true", "false", " 0 0 ", "0 1 2 3", "1. 2", "1 . 2", "1a1", "1-", "-1-", "abc", "-a", "0b01010101", "0B10101", "0x10", "0xFF", "0x1A", ".", "-."}) 
+    public void JsonNumberNotValidIntOrFloatStrings(String value){
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> { 
+                JsonNumber test = new JsonNumber(value); 
+            }
+        );
+    }
+
+    // Making sure JsonNumber does successfully construct with parseable int and 
+    // float String representations 
+    @ParameterizedTest
+    @ValueSource(strings = {" 123", "123 ", " -123", "-123 ", "00000", "0123", "123", "-1934234", "929.12342", "-1.2345", ".12345", "0.0", "-.12345", ".0", "-.0", " .0", ".0 ", "1000000000000000000000000000000", "-1000000000000000000000000000000"}) 
+    public void JsonNumberValidIntOrFloatStrings(String value){
+        assertDoesNotThrow(
+            () -> { 
+                JsonNumber test = new JsonNumber(value); 
+            }
+        );
+    }
 
     //2.3: Boolean
     @Test
