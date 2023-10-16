@@ -10,11 +10,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 public class FileTests extends BatchServiceClientTestBase {
@@ -47,13 +43,14 @@ public class FileTests extends BatchServiceClientTestBase {
             PoolInformation poolInfo = new PoolInformation();
             poolInfo.setPoolId(poolId);
 
-            jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+            batchClient.createJob(new BatchJobCreateOptions(jobId, poolInfo));
 
-            BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
-            taskClient.create(jobId, taskToAdd);
+            BatchTaskCreateOptions taskToAdd = new BatchTaskCreateOptions(taskId, "/bin/bash -c \"echo hello\"");
 
-            if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
-                PagedIterable<NodeFile> filesIterable = taskClient.listFilesFromTask(jobId, taskId);
+            batchClient.createTask(jobId, taskToAdd);
+
+            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+                PagedIterable<NodeFile> filesIterable = batchClient.listTaskFiles(jobId, taskId);
                 boolean found = false;
                 for (NodeFile f : filesIterable) {
                     if (f.getName().equals("stdout.txt")) {
@@ -63,14 +60,14 @@ public class FileTests extends BatchServiceClientTestBase {
                 }
                 Assertions.assertTrue(found);
 
-                BinaryData binaryData = taskClient.getFileFromTask(jobId, taskId, "stdout.txt");
+                BinaryData binaryData = batchClient.getTaskFile(jobId, taskId, "stdout.txt");
                 String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
                 Assertions.assertEquals("hello\n", fileContent);
 
-                binaryData = batchClientBuilder.buildTaskAsyncClient().getFileFromTaskWithResponse(jobId, taskId, "stdout.txt", null).block().getValue();
+                binaryData = batchClientBuilder.buildAsyncClient().getTaskFileWithResponse(jobId, taskId, "stdout.txt", null).block().getValue();
                 Assertions.assertEquals("hello\n", binaryData.toString());
 
-                Response<Void> getFilePropertiesResponse = taskClient.getFilePropertiesFromTaskWithResponse(jobId, taskId, "stdout.txt", null);
+                Response<Void> getFilePropertiesResponse = batchClient.getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null);
                 Assertions.assertEquals("6", getFilePropertiesResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
 
             } else {
@@ -78,7 +75,7 @@ public class FileTests extends BatchServiceClientTestBase {
             }
         } finally {
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
@@ -96,14 +93,14 @@ public class FileTests extends BatchServiceClientTestBase {
             PoolInformation poolInfo = new PoolInformation();
             poolInfo.setPoolId(poolId);
 
-            jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
-            BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
-            taskClient.create(jobId, taskToAdd);
+            batchClient.createJob(new BatchJobCreateOptions(jobId, poolInfo));
+            BatchTaskCreateOptions taskToAdd = new BatchTaskCreateOptions(taskId, "/bin/bash -c \"echo hello\"");
+            batchClient.createTask(jobId, taskToAdd);
 
-            if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
-                BatchTask task = taskClient.get(jobId, taskId);
+            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+                BatchTask task = batchClient.getTask(jobId, taskId);
                 String nodeId = task.getNodeInfo().getNodeId();
-                PagedIterable<NodeFile> files = nodesClient.listFilesFromBatchNode(poolId, nodeId, null, null, null, null, true);
+                PagedIterable<NodeFile> files = batchClient.listNodeFiles(poolId, nodeId, null, null, null, null, true);
                 String fileName = null;
                 for (NodeFile f : files) {
                     if (f.getName().endsWith("stdout.txt")) {
@@ -113,14 +110,14 @@ public class FileTests extends BatchServiceClientTestBase {
                 }
                 Assert.assertNotNull(fileName);
 
-                BinaryData binaryData = nodesClient.getFileFromBatchNode(poolId, nodeId, fileName);
+                BinaryData binaryData = batchClient.getNodeFileWithResponse(poolId, nodeId, fileName, null).getValue();
                 String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
                 Assert.assertEquals("hello\n", fileContent);
 
-                binaryData = batchClientBuilder.buildBatchNodesAsyncClient().getFileFromBatchNodeWithResponse(poolId, nodeId, fileName, null).block().getValue();
+                binaryData = batchClientBuilder.buildAsyncClient().getNodeFileWithResponse(poolId, nodeId, fileName, null).block().getValue();
                 Assertions.assertEquals("hello\n", binaryData.toString());
 
-                Response<Void> getFilePropertiesResponse = nodesClient.getFilePropertiesFromBatchNodeWithResponse(poolId, nodeId, fileName, null);
+                Response<Void> getFilePropertiesResponse = batchClient.getNodeFilePropertiesWithResponse(poolId, nodeId, fileName, null);
                 Assertions.assertEquals("6", getFilePropertiesResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
 
             } else {
@@ -129,7 +126,7 @@ public class FileTests extends BatchServiceClientTestBase {
         }
         finally {
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             }
             catch (Exception e) {
                 // Ignore here

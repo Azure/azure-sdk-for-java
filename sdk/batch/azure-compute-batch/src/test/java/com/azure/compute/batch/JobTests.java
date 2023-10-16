@@ -4,7 +4,6 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.*;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.azure.core.http.rest.PagedIterable;
@@ -39,14 +38,13 @@ public class JobTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(poolId);
-        JobClient jobClient = batchClientBuilder.buildJobClient();
-        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
+        BatchJobCreateOptions jobCreateOptions = new BatchJobCreateOptions(jobId, poolInfo);
 
-        jobClient.create(jobCreateParameters);
+        batchClient.createJob(jobCreateOptions);
 
         try {
             // GET
-            BatchJob job = jobClient.get(jobId);
+            BatchJob job = batchClient.getJob(jobId);
             Assertions.assertNotNull(job);
             Assertions.assertNotNull(job.isAllowTaskPreemption());
             Assertions.assertEquals(-1, (int) job.getMaxParallelTasks());
@@ -54,7 +52,7 @@ public class JobTests extends BatchServiceClientTestBase {
             Assertions.assertEquals((Integer) 0, job.getPriority());
 
             // LIST
-            PagedIterable<BatchJob> jobs = jobClient.list();
+            PagedIterable<BatchJob> jobs = batchClient.listJobs();
             Assertions.assertNotNull(jobs);
 
 
@@ -69,18 +67,18 @@ public class JobTests extends BatchServiceClientTestBase {
             Assertions.assertTrue(found);
 
 
-            // UPDATE
-            BatchJob updatedJob = job;
-            updatedJob.setPriority(1);
-            jobClient.update(jobId, updatedJob);
+            // REPLACE
+            BatchJob replacementJob = job;
+            replacementJob.setPriority(1);
+            batchClient.replaceJob(jobId, replacementJob);
 
-            job = jobClient.get(jobId);
+            job = batchClient.getJob(jobId);
             Assertions.assertEquals((Integer) 1, job.getPriority());
 
             // DELETE
-            jobClient.delete(jobId);
+            batchClient.deleteJob(jobId);
             try {
-            	jobClient.get(jobId);
+                batchClient.getJob(jobId);
                 Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             } catch (Exception e) {
             	if (!e.getMessage().contains("Status code 404")) {
@@ -92,7 +90,7 @@ public class JobTests extends BatchServiceClientTestBase {
         }
         finally {
             try {
-            	jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             }
             catch (Exception e) {
                 // Ignore here
@@ -107,58 +105,58 @@ public class JobTests extends BatchServiceClientTestBase {
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(poolId);
 
-        BatchJobCreateParameters jobtoCreate = new BatchJobCreateParameters(jobId, poolInfo);
-        jobClient.create(jobtoCreate);
+        BatchJobCreateOptions jobtoCreate = new BatchJobCreateOptions(jobId, poolInfo);
+        batchClient.createJob(jobtoCreate);
 
         try {
             // GET
-            BatchJob job = jobClient.get(jobId);
+            BatchJob job = batchClient.getJob(jobId);
             Assertions.assertEquals(JobState.ACTIVE, job.getState());
 
-            // UPDATE
+            // REPLACE
             Integer maxTaskRetryCount = 3;
             Integer priority = 500;
             job.setPriority(priority);
             job.setConstraints(new JobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
             job.setPoolInfo(new PoolInformation().setPoolId(poolId));
-            jobClient.update(jobId, job);
+            batchClient.replaceJob(jobId, job);
 
-            job = jobClient.get(jobId);
+            job = batchClient.getJob(jobId);
             Assertions.assertEquals(priority, job.getPriority());
             Assertions.assertEquals(maxTaskRetryCount, job.getConstraints().getMaxTaskRetryCount());
 
-            jobClient.disable(jobId, new BatchJobDisableParameters(DisableJobOption.REQUEUE));
-            job = jobClient.get(jobId);
+            batchClient.disableJob(jobId, new BatchJobDisableOptions(DisableJobOption.REQUEUE));
+            job = batchClient.getJob(jobId);
             Assertions.assertEquals(JobState.DISABLING, job.getState());
 
             Thread.sleep(5 * 1000);
 
-            job = jobClient.get(jobId);
+            job = batchClient.getJob(jobId);
             Assertions.assertTrue(job.getState() == JobState.DISABLED || job.getState() == JobState.DISABLING);
             Assertions.assertEquals(OnAllTasksComplete.NO_ACTION, job.getOnAllTasksComplete());
 
-            //PATCH
-            BatchJobUpdateParameters jobUpdateParameters = new BatchJobUpdateParameters();
-            jobUpdateParameters.setOnAllTasksComplete(OnAllTasksComplete.TERMINATE_JOB);
-            jobClient.patch(jobId, jobUpdateParameters);
-            job = jobClient.get(jobId);
+            // UPDATE
+            BatchJobUpdateOptions jobUpdateOptions = new BatchJobUpdateOptions();
+            jobUpdateOptions.setOnAllTasksComplete(OnAllTasksComplete.TERMINATE_JOB);
+            batchClient.updateJob(jobId, jobUpdateOptions);
+            job = batchClient.getJob(jobId);
             Assertions.assertEquals(OnAllTasksComplete.TERMINATE_JOB, job.getOnAllTasksComplete());
 
-            jobClient.enable(jobId);
-            job = jobClient.get(jobId);
+            batchClient.enableJob(jobId);
+            job = batchClient.getJob(jobId);
             Assertions.assertEquals(JobState.ACTIVE, job.getState());
 
-            jobClient.terminate(jobId, null, null, new BatchJobTerminateParameters().setTerminateReason("myreason"), null);
-            job = jobClient.get(jobId);
+            batchClient.terminateJob(jobId, null, null, new BatchJobTerminateOptions().setTerminateReason("myreason"), null);
+            job = batchClient.getJob(jobId);
             Assertions.assertEquals(JobState.TERMINATING, job.getState());
 
             Thread.sleep(2 * 1000);
-            job = jobClient.get(jobId);
+            job = batchClient.getJob(jobId);
             Assertions.assertEquals(JobState.COMPLETED, job.getState());
         }
         finally {
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             }
             catch (Exception e) {
                 // Ignore here
@@ -184,21 +182,21 @@ public class JobTests extends BatchServiceClientTestBase {
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setAutoPoolSpecification(new AutoPoolSpecification(PoolLifetimeOption.JOB).setPool(poolSpec));
 
-        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
-        jobClient.create(jobCreateParameters);
+        BatchJobCreateOptions jobCreateOptions = new BatchJobCreateOptions(jobId, poolInfo);
+        batchClient.createJob(jobCreateOptions);
 
         try {
             // GET
-            BatchJob job = jobClient.get(jobId);
+            BatchJob job = batchClient.getJob(jobId);
             Assertions.assertNotNull(job);
             Assertions.assertEquals(jobId, job.getId());
             Assertions.assertEquals(targetMode, job.getPoolInfo().getAutoPoolSpecification().getPool().getTargetNodeCommunicationMode());
 
             // DELETE
-            jobClient.delete(jobId);
+            batchClient.deleteJob(jobId);
 
             try {
-            	jobClient.get(jobId);
+                batchClient.getJob(jobId);
                 Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             } catch (Exception err) {
             	if (!err.getMessage().contains("Status code 404")) {
@@ -210,7 +208,7 @@ public class JobTests extends BatchServiceClientTestBase {
         }
         finally {
             try {
-            	jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             }
             catch (Exception e) {
                 // Ignore here

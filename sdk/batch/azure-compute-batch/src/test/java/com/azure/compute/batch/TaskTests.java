@@ -1,6 +1,6 @@
 package com.azure.compute.batch;
 
-import com.azure.compute.batch.auth.BatchSharedKeyCredentials;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.compute.batch.models.*;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.core.exception.HttpResponseException;
@@ -57,31 +57,30 @@ public class TaskTests extends BatchServiceClientTestBase {
         //CREATE JOB
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(livePoolId);
-        JobClient jobClient = batchClientBuilder.buildJobClient();
-        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
-        jobClient.create(jobCreateParameters);
+        BatchJobCreateOptions jobCreateOptions = new BatchJobCreateOptions(jobId, poolInfo);
+        batchClient.createJob(jobCreateOptions);
 
         //CREATE TASK
-        BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, "echo hello world");
-        taskClient.create(jobId, taskCreateParameters);
+        BatchTaskCreateOptions taskCreateOptions = new BatchTaskCreateOptions(taskId, "echo hello world");
+        batchClient.createTask(jobId, taskCreateOptions);
 
         // GET
-        BatchTask task = taskClient.get(jobId, taskId);
+        BatchTask task = batchClient.getTask(jobId, taskId);
 
         //UPDATE
         Integer maxRetrycount = 5;
         Duration retentionPeriod = Duration.ofDays(5);
         task.setConstraints(new TaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
-        taskClient.update(jobId, taskId, task);
+        batchClient.replaceTask(jobId, taskId, task);
 
         //GET After UPDATE
-        task = taskClient.get(jobId, taskId);
+        task = batchClient.getTask(jobId, taskId);
         Assertions.assertEquals(maxRetrycount, task.getConstraints().getMaxTaskRetryCount());
         Assertions.assertEquals(retentionPeriod, task.getConstraints().getRetentionTime());
         }
         finally {
-            taskClient.delete(jobId, taskId);
-            jobClient.delete(jobId);
+            batchClient.deleteTask(jobId, taskId);
+            batchClient.deleteJob(jobId);
         }
     }
 
@@ -92,22 +91,22 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(livePoolId);
-        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
+        BatchJobCreateOptions jobCreateOptions = new BatchJobCreateOptions(jobId, poolInfo);
 
-        jobClient.create(jobCreateParameters);
+        batchClient.createJob(jobCreateOptions);
 
         try {
             // CREATE
             List<ApplicationPackageReference> apps = new ArrayList<>();
             apps.add(new ApplicationPackageReference("MSMPI"));
-            BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, "cmd /c echo hello\"")
+            BatchTaskCreateOptions taskCreateOptions = new BatchTaskCreateOptions(taskId, "cmd /c echo hello\"")
                      .setUserIdentity(new UserIdentity().setUsername("test-user"))
             		 .setApplicationPackageReferences(apps);
 
-            taskClient.create(jobId, taskCreateParameters);
+            batchClient.createTask(jobId, taskCreateOptions);
 
             // GET
-            BatchTask task = taskClient.get(jobId, taskId);
+            BatchTask task = batchClient.getTask(jobId, taskId);
             Assertions.assertNotNull(task);
             Assertions.assertEquals(taskId, task.getId());
             Assertions.assertEquals("test-user", task.getUserIdentity().getUsername());
@@ -120,7 +119,7 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         } finally {
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
@@ -142,7 +141,7 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(liveIaasPoolId);
-        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+        batchClient.createJob(new BatchJobCreateOptions(jobId, poolInfo));
 
         String storageAccountName = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_KEY");
@@ -170,11 +169,11 @@ public class TaskTests extends BatchServiceClientTestBase {
             files.add(file);
 
             // CREATE
-            BatchTaskCreateParameters taskCreateParameters = new BatchTaskCreateParameters(taskId, String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", BLOB_FILE_NAME)).setResourceFiles(files);
-            taskClient.create(jobId, taskCreateParameters);
+            BatchTaskCreateOptions taskCreateOptions = new BatchTaskCreateOptions(taskId, String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", BLOB_FILE_NAME)).setResourceFiles(files);
+            batchClient.createTask(jobId, taskCreateOptions);
 
             // GET
-            BatchTask task = taskClient.get(jobId, taskId);
+            BatchTask task = batchClient.getTask(jobId, taskId);
             Assertions.assertNotNull(task);
             Assertions.assertEquals(taskId, task.getId());
 
@@ -183,13 +182,13 @@ public class TaskTests extends BatchServiceClientTestBase {
 
             // TODO UPDATE - modifying taskToAdd vs creating new BatchTask instance
             task.setConstraints(new TaskConstraints().setMaxTaskRetryCount(5));
-            taskClient.update(jobId, taskId, task);
+            batchClient.replaceTask(jobId, taskId, task);
 
-            task = taskClient.get(jobId, taskId);
+            task = batchClient.getTask(jobId, taskId);
             Assertions.assertEquals((Integer) 5, task.getConstraints().getMaxTaskRetryCount());
 
             // LIST
-            PagedIterable<BatchTask> tasks = taskClient.list(jobId);
+            PagedIterable<BatchTask> tasks = batchClient.listTasks(jobId);
             Assertions.assertNotNull(tasks);
 
             boolean found = false;
@@ -202,11 +201,11 @@ public class TaskTests extends BatchServiceClientTestBase {
 
             Assertions.assertTrue(found);
 
-            if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 // Get the task command output file
-                task = taskClient.get(jobId, taskId);
+                task = batchClient.getTask(jobId, taskId);
 
-                BinaryData binaryData = taskClient.getFileFromTask(jobId, taskId, STANDARD_CONSOLE_OUTPUT_FILENAME);
+                BinaryData binaryData = batchClient.getTaskFile(jobId, taskId, STANDARD_CONSOLE_OUTPUT_FILENAME);
 
                 String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
                 Assertions.assertEquals("This is an example", fileContent);
@@ -222,8 +221,8 @@ public class TaskTests extends BatchServiceClientTestBase {
                     outputSas = REDACTED;
                 }
                 // UPLOAD LOG
-                UploadBatchServiceLogsConfiguration logsConfiguration = new UploadBatchServiceLogsConfiguration(outputSas, OffsetDateTime.now().minusMinutes(-10));
-                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClientBuilder.buildBatchNodesClient().uploadBatchServiceLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsConfiguration);
+                UploadBatchServiceLogsOptions logsOptions = new UploadBatchServiceLogsOptions(outputSas, OffsetDateTime.now().minusMinutes(-10));
+                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.uploadNodeLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsOptions);
 
                 Assertions.assertNotNull(uploadBatchServiceLogsResult);
                 Assertions.assertTrue(uploadBatchServiceLogsResult.getNumberOfFilesUploaded() > 0);
@@ -231,9 +230,9 @@ public class TaskTests extends BatchServiceClientTestBase {
             }
 
             // DELETE
-            taskClient.delete(jobId, taskId);
+            batchClient.deleteTask(jobId, taskId);
             try {
-                taskClient.get(jobId, taskId);
+                batchClient.getTask(jobId, taskId);
                 Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             }   //TODO Integrate BatchErrorException
             catch (Exception e) {
@@ -247,9 +246,9 @@ public class TaskTests extends BatchServiceClientTestBase {
         }
         finally {
                 try {
-                    jobClient.delete(jobId);
+                    batchClient.deleteJob(jobId);
                     container.deleteIfExists();
-                    poolClient.delete(liveIaasPoolId);
+                    batchClient.deletePool(liveIaasPoolId);
                 } catch (Exception e) {
                     // Ignore here
                 }
@@ -262,23 +261,23 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(livePoolId);
-        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+        batchClient.createJob(new BatchJobCreateOptions(jobId, poolInfo));
 
         int TASK_COUNT=1000;
 
         try {
             // CREATE
-            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
+            List<BatchTaskCreateOptions> tasksToAdd = new ArrayList<>();
             for (int i=0; i<TASK_COUNT; i++)
             {
-                BatchTaskCreateParameters addParameter = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("cmd /c echo hello %d",i));
-                tasksToAdd.add(addParameter);
+                BatchTaskCreateOptions addOption = new BatchTaskCreateOptions(String.format("mytask%d", i), String.format("cmd /c echo hello %d",i));
+                tasksToAdd.add(addOption);
             }
-            BatchClientParallelOptions parallelOptions = new BatchClientParallelOptions(10);
-            taskClient.createTasks(jobId, tasksToAdd, parallelOptions);
+            BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+            batchClient.createTasks(jobId, tasksToAdd, option);
 
             // LIST
-            PagedIterable<BatchTask> tasks = taskClient.list(jobId);
+            PagedIterable<BatchTask> tasks = batchClient.listTasks(jobId);
             Assert.assertNotNull(tasks);
             int taskListCount = 0;
             for (BatchTask task: tasks) {
@@ -287,7 +286,7 @@ public class TaskTests extends BatchServiceClientTestBase {
             Assert.assertTrue(taskListCount == TASK_COUNT);
         } finally {
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
@@ -299,8 +298,7 @@ public class TaskTests extends BatchServiceClientTestBase {
         String accessKey = Configuration.getGlobalConfiguration().get("AZURE_BATCH_ACCESS_KEY");
         accessKey = (accessKey == null || accessKey.length() == 0) ? "RANDOM_KEY" : accessKey;
 
-        BatchSharedKeyCredentials noExistCredentials1 = new BatchSharedKeyCredentials(
-                "https://noexistaccount.westus.batch.azure.com",
+        AzureNamedKeyCredential noExistCredentials1 = new AzureNamedKeyCredential(
                 "noexistaccount", accessKey
         );
         batchClientBuilder.credential(noExistCredentials1);
@@ -310,14 +308,15 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         try {
             // CREATE
-            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
+            List<BatchTaskCreateOptions> tasksToAdd = new ArrayList<>();
             for (int i=0; i<TASK_COUNT; i++)
             {
-                BatchTaskCreateParameters addParameter = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("cmd /c echo hello %d",i));
-                tasksToAdd.add(addParameter);
+                BatchTaskCreateOptions addOption = new BatchTaskCreateOptions(String.format("mytask%d", i), String.format("cmd /c echo hello %d",i));
+                tasksToAdd.add(addOption);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions(10);
-            batchClientBuilder.buildTaskClient().createTasks(jobId, tasksToAdd, option);
+            batchClient.createTasks(jobId, tasksToAdd, option);
+            // batchClient.createTaskCollection(jobId, new BatchTaskCollection(tasksToAdd));
             Assert.assertTrue("Should not here", true);
         } catch (RuntimeException ex) {
             System.out.printf("Expect exception %s", ex.toString());
@@ -335,10 +334,10 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(liveIaasPoolId);
-        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+        batchClient.createJob(new BatchJobCreateOptions(jobId, poolInfo));
 
-        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
-        BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "sleep 1");
+        List<BatchTaskCreateOptions> tasksToAdd = new ArrayList<BatchTaskCreateOptions>();
+        BatchTaskCreateOptions taskToAdd = new BatchTaskCreateOptions(taskId, "sleep 1");
         List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
         ResourceFile resourceFile;
 
@@ -352,9 +351,9 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         try
         {
-            taskClient.createTasks(jobId, tasksToAdd);
+            batchClient.createTasks(jobId, tasksToAdd);
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
@@ -362,7 +361,7 @@ public class TaskTests extends BatchServiceClientTestBase {
         }
         catch (HttpResponseException err) {
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
@@ -370,7 +369,7 @@ public class TaskTests extends BatchServiceClientTestBase {
         }
         catch (Exception err) {
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
@@ -390,10 +389,10 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(liveIaasPoolId);
-        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+        batchClient.createJob(new BatchJobCreateOptions(jobId, poolInfo));
 
-        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
-        BatchTaskCreateParameters taskToAdd;
+        List<BatchTaskCreateOptions> tasksToAdd = new ArrayList<BatchTaskCreateOptions>();
+        BatchTaskCreateOptions taskToAdd;
         List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
         ResourceFile resourceFile;
 
@@ -406,23 +405,23 @@ public class TaskTests extends BatchServiceClientTestBase {
         }
         // Num tasks to add
         for(int i = 0; i < 1500; i++) {
-            taskToAdd = new BatchTaskCreateParameters(taskId + i, "sleep 1");
+            taskToAdd = new BatchTaskCreateOptions(taskId + i, "sleep 1");
             taskToAdd.setResourceFiles(resourceFiles);
             tasksToAdd.add(taskToAdd);
         }
 
         try
         {
-            taskClient.createTasks(jobId, tasksToAdd, option);
+            batchClient.createTasks(jobId, tasksToAdd, option);
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
         }
         catch (Exception err) {
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
@@ -436,13 +435,13 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(livePoolId);
-        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+        batchClient.createJob(new BatchJobCreateOptions(jobId, poolInfo));
 
         int TASK_COUNT=1000;
 
         try {
             // Test Job count
-            TaskCountsResult countResult = jobClient.getTaskCounts(jobId);
+            TaskCountsResult countResult = batchClient.getJobTaskCounts(jobId);
 
             TaskCounts counts = countResult.getTaskCounts();
             int all = counts.getActive() + counts.getCompleted() + counts.getRunning();
@@ -453,20 +452,20 @@ public class TaskTests extends BatchServiceClientTestBase {
             Assert.assertEquals(0, allSlots);
 
             // CREATE
-            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
+            List<BatchTaskCreateOptions> tasksToAdd = new ArrayList<>();
             for (int i=0; i<TASK_COUNT; i++)
             {
-                BatchTaskCreateParameters addParameter = new BatchTaskCreateParameters(String.format("mytask%d", i), String.format("cmd /c echo hello %d",i));
-                tasksToAdd.add(addParameter);
+                BatchTaskCreateOptions addOption = new BatchTaskCreateOptions(String.format("mytask%d", i), String.format("cmd /c echo hello %d",i));
+                tasksToAdd.add(addOption);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions(10);
-            taskClient.createTasks(jobId, tasksToAdd, option);
+            batchClient.createTasks(jobId, tasksToAdd, option);
 
             //The Waiting period is only needed in record mode.
             threadSleepInRecordMode(30 * 1000);
 
             // Test Job count
-            countResult = jobClient.getTaskCounts(jobId);
+            countResult = batchClient.getJobTaskCounts(jobId);
             counts = countResult.getTaskCounts();
             all = counts.getActive() + counts.getCompleted() + counts.getRunning();
             Assert.assertEquals(TASK_COUNT, all);
@@ -477,7 +476,7 @@ public class TaskTests extends BatchServiceClientTestBase {
             Assert.assertEquals(TASK_COUNT, allSlots);
         } finally {
             try {
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
@@ -495,7 +494,7 @@ public class TaskTests extends BatchServiceClientTestBase {
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(liveIaasPoolId);
-        jobClient.create(new BatchJobCreateParameters(jobId, poolInfo));
+        batchClient.createJob(new BatchJobCreateOptions(jobId, poolInfo));
         BlobContainerClient containerClient = null;
         String containerUrl = "";
 
@@ -522,13 +521,13 @@ public class TaskTests extends BatchServiceClientTestBase {
 
             outputs.add(new OutputFile("../stderr.txt", new OutputFileDestination().setContainer(fileBlobErrContainerDestination), new OutputFileUploadOptions(OutputFileUploadCondition.TASK_FAILURE)));
 
-            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "bash -c \"echo hello\"");
+            BatchTaskCreateOptions taskToCreate = new BatchTaskCreateOptions(taskId, "bash -c \"echo hello\"");
             taskToCreate.setOutputFiles(outputs);
 
-            taskClient.create(jobId, taskToCreate);
+            batchClient.createTask(jobId, taskToCreate);
 
-            if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
-                BatchTask task = taskClient.get(jobId, taskId);
+            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+                BatchTask task = batchClient.getTask(jobId, taskId);
                 Assert.assertNotNull(task);
                 Assert.assertEquals(TaskExecutionResult.SUCCESS, task.getExecutionInfo().getResult());
                 Assert.assertNull(task.getExecutionInfo().getFailureInfo());
@@ -540,13 +539,13 @@ public class TaskTests extends BatchServiceClientTestBase {
                 }
             }
 
-            taskToCreate = new BatchTaskCreateParameters(badTaskId, "bash -c \"bad command\"")
+            taskToCreate = new BatchTaskCreateOptions(badTaskId, "bash -c \"bad command\"")
                     .setOutputFiles(outputs);
 
-            taskClient.create(jobId, taskToCreate);
+            batchClient.createTask(jobId, taskToCreate);
 
-            if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
-                BatchTask task = taskClient.get(jobId, badTaskId);
+            if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
+                BatchTask task = batchClient.getTask(jobId, badTaskId);
                 Assert.assertNotNull(task);
                 Assert.assertEquals(TaskExecutionResult.FAILURE, task.getExecutionInfo().getResult());
                 Assert.assertNotNull(task.getExecutionInfo().getFailureInfo());
@@ -567,7 +566,7 @@ public class TaskTests extends BatchServiceClientTestBase {
                 if (getTestMode() == TestMode.RECORD) {
                     containerClient.delete();
                 }
-                jobClient.delete(jobId);
+                batchClient.deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
             }
