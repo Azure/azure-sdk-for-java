@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.AfdPurgeParameters;
 import java.util.Arrays;
 
 /** Samples for AfdEndpoints PurgeContent. */
 public final class AfdEndpointsPurgeContentSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDEndpoints_PurgeContent.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDEndpoints_PurgeContent.json
      */
     /**
      * Sample code: AFDEndpoints_PurgeContent.
@@ -31,6 +30,6 @@ public final class AfdEndpointsPurgeContentSamples {
                 new AfdPurgeParameters()
                     .withContentPaths(Arrays.asList("/folder1"))
                     .withDomains(Arrays.asList("endpoint1-abcdefghijklmnop.z01.azurefd.net")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -46,6 +46,15 @@ public final class CustomHttpsProvisioningSubstate extends ExpandableStringEnum<
     public static final CustomHttpsProvisioningSubstate CERTIFICATE_DELETED = fromString("CertificateDeleted");
 
     /**
+     * Creates a new instance of CustomHttpsProvisioningSubstate value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomHttpsProvisioningSubstate() {
+    }
+
+    /**
      * Creates or finds a CustomHttpsProvisioningSubstate from its string representation.
      *
      * @param name a name to look for.

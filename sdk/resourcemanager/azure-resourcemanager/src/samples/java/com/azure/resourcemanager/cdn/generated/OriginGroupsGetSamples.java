@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OriginGroups Get. */
 public final class OriginGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/OriginGroups_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/OriginGroups_Get.json
      */
     /**
      * Sample code: OriginGroups_Get.
@@ -22,6 +20,6 @@ public final class OriginGroupsGetSamples {
             .manager()
             .serviceClient()
             .getOriginGroups()
-            .getWithResponse("RG", "profile1", "endpoint1", "originGroup1", Context.NONE);
+            .getWithResponse("RG", "profile1", "endpoint1", "originGroup1", com.azure.core.util.Context.NONE);
     }
 }

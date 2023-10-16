@@ -41,6 +41,15 @@ public final class RequestHeaderOperator extends ExpandableStringEnum<RequestHea
     public static final RequestHeaderOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of RequestHeaderOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestHeaderOperator() {
+    }
+
+    /**
      * Creates or finds a RequestHeaderOperator from its string representation.
      *
      * @param name a name to look for.

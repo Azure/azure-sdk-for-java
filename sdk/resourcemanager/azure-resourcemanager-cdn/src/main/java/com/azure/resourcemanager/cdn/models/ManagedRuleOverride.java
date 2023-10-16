@@ -29,6 +29,10 @@ public final class ManagedRuleOverride {
     @JsonProperty(value = "action")
     private ActionType action;
 
+    /** Creates an instance of ManagedRuleOverride class. */
+    public ManagedRuleOverride() {
+    }
+
     /**
      * Get the ruleId property: Identifier for the managed rule.
      *
