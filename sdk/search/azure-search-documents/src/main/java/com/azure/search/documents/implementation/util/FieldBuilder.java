@@ -55,6 +55,8 @@ public final class FieldBuilder {
 
     private static final SearchFieldDataType COLLECTION_STRING
         = SearchFieldDataType.collection(SearchFieldDataType.STRING);
+    private static final SearchFieldDataType COLLECTION_SINGLE
+        = SearchFieldDataType.collection(SearchFieldDataType.SINGLE);
 
     static {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Integer.class, SearchFieldDataType.INT32);
@@ -273,6 +275,8 @@ public final class FieldBuilder {
         String searchAnalyzerName = null;
         String indexAnalyzerName = null;
         String[] synonymMapNames = null;
+        Integer vectorSearchDimensions = null;
+        String vectorSearchProfile = null;
 
         if (simpleField != null) {
             key = simpleField.isKey();
@@ -290,18 +294,27 @@ public final class FieldBuilder {
             searchAnalyzerName = searchableField.searchAnalyzerName();
             indexAnalyzerName = searchableField.indexAnalyzerName();
             synonymMapNames = searchableField.synonymMapNames();
+            vectorSearchDimensions = searchableField.vectorSearchDimensions() > 0
+                ? searchableField.vectorSearchDimensions() : null;
+            vectorSearchProfile = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfile())
+                ? null : searchableField.vectorSearchProfile();
         }
 
         StringBuilder errorMessage = new StringBuilder();
-        boolean isStringOrCollectionString = searchField.getType() == SearchFieldDataType.STRING
-            || searchField.getType() == COLLECTION_STRING;
+        boolean isSearchableType = searchField.getType() == SearchFieldDataType.STRING
+            || searchField.getType() == COLLECTION_STRING
+            || searchField.getType() == COLLECTION_SINGLE;
         boolean hasAnalyzerName = !CoreUtils.isNullOrEmpty(analyzerName);
         boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
         boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
         if (searchable) {
-            if (!isStringOrCollectionString) {
-                errorMessage.append("SearchField can only be used on string properties. Property '")
-                    .append(member.getName()).append("' returns a '").append(searchField.getType()).append("' value. ");
+            if (!isSearchableType) {
+                errorMessage.append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', or "
+                                    + "'Collection(Edm.Single)' types. Property '")
+                    .append(member.getName())
+                    .append("' returns a '")
+                    .append(searchField.getType())
+                    .append("' value. ");
             }
 
             // Searchable fields are allowed to have either no analyzer names configure or one of the following
@@ -313,6 +326,12 @@ public final class FieldBuilder {
             }
         }
 
+        if (searchField.getType() == COLLECTION_SINGLE
+            && (vectorSearchDimensions == null || vectorSearchProfile == null)) {
+            errorMessage.append(
+                "Please specify both vectorSearchDimensions and vectorSearchProfile for Collection(Edm.Single) type. ");
+        }
+
         if (errorMessage.length() > 0) {
             throw LOGGER.logExceptionAsError(new RuntimeException(errorMessage.toString()));
         }
@@ -322,7 +341,9 @@ public final class FieldBuilder {
             .setSearchable(searchable)
             .setFilterable(filterable)
             .setSortable(sortable)
-            .setFacetable(facetable);
+            .setFacetable(facetable)
+            .setVectorSearchDimensions(vectorSearchDimensions)
+            .setVectorSearchProfile(vectorSearchProfile);
 
         if (hasAnalyzerName) {
             searchField.setAnalyzerName(LexicalAnalyzerName.fromString(analyzerName));
