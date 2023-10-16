@@ -19,6 +19,9 @@ public final class OperationType extends ExpandableStringEnum<OperationType> {
     /** Static value Delete for OperationType. */
     public static final OperationType DELETE = fromString("Delete");
 
+    /** Static value Recreate for OperationType. */
+    public static final OperationType RECREATE = fromString("Recreate");
+
     /** Static value SystemOperation for OperationType. */
     public static final OperationType SYSTEM_OPERATION = fromString("SystemOperation");
 

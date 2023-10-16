@@ -9,7 +9,7 @@ import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
 /** Samples for NotebookWorkspaces Get. */
 public final class NotebookWorkspacesGetSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBNotebookWorkspaceGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBNotebookWorkspaceGet.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceGet.

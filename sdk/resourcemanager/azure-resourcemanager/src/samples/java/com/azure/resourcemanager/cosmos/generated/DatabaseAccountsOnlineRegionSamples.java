@@ -9,7 +9,7 @@ import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
 /** Samples for DatabaseAccounts OnlineRegion. */
 public final class DatabaseAccountsOnlineRegionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBDatabaseAccountOnlineRegion.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBDatabaseAccountOnlineRegion.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountOnlineRegion.
@@ -22,6 +22,10 @@ public final class DatabaseAccountsOnlineRegionSamples {
             .manager()
             .serviceClient()
             .getDatabaseAccounts()
-            .onlineRegion("rg1", "ddb1", new RegionForOnlineOffline(), com.azure.core.util.Context.NONE);
+            .onlineRegion(
+                "rg1",
+                "ddb1",
+                new RegionForOnlineOffline().withRegion("North Europe"),
+                com.azure.core.util.Context.NONE);
     }
 }

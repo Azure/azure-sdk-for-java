@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 /** Samples for CassandraClusters GetByResourceGroup. */
 public final class CassandraClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBManagedCassandraClusterGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBManagedCassandraClusterGet.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterGet.

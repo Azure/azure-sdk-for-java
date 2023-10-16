@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -30,6 +31,13 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
      */
     private ThroughputSettingsGetProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ThroughputSettingsGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
     }
 
     /** {@inheritDoc} */

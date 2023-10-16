@@ -34,10 +34,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.CassandraClustersClient;
+import com.azure.resourcemanager.cosmos.fluent.models.BackupResourceInner;
 import com.azure.resourcemanager.cosmos.fluent.models.CassandraClusterPublicStatusInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ClusterResourceInner;
 import com.azure.resourcemanager.cosmos.fluent.models.CommandOutputInner;
 import com.azure.resourcemanager.cosmos.models.CommandPostBody;
+import com.azure.resourcemanager.cosmos.models.ListBackups;
 import com.azure.resourcemanager.cosmos.models.ListClusters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -174,6 +176,35 @@ public final class CassandraClustersClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/backups")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListBackups>> listBackups(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/backups/{backupId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BackupResourceInner>> getBackup(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("clusterName") String clusterName,
+            @PathParam("backupId") String backupId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/deallocate")
         @ExpectedResponses({202})
@@ -184,6 +215,7 @@ public final class CassandraClustersClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("clusterName") String clusterName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-force-deallocate") Boolean xMsForceDeallocate,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1678,19 +1710,349 @@ public final class CassandraClustersClientImpl
     }
 
     /**
-     * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
-     * virtual machine of this cluster, and reserved the data disk. This won't do anything on an already deallocated
-     * cluster. Use Start to restart the cluster.
+     * List the backups of this cluster that are available to restore.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of restorable backups for a Cassandra cluster along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BackupResourceInner>> listBackupsSinglePageAsync(
+        String resourceGroupName, String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listBackups(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            clusterName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<BackupResourceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List the backups of this cluster that are available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of restorable backups for a Cassandra cluster along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BackupResourceInner>> listBackupsSinglePageAsync(
+        String resourceGroupName, String clusterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listBackups(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                clusterName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * List the backups of this cluster that are available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of restorable backups for a Cassandra cluster as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BackupResourceInner> listBackupsAsync(String resourceGroupName, String clusterName) {
+        return new PagedFlux<>(() -> listBackupsSinglePageAsync(resourceGroupName, clusterName));
+    }
+
+    /**
+     * List the backups of this cluster that are available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of restorable backups for a Cassandra cluster as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<BackupResourceInner> listBackupsAsync(
+        String resourceGroupName, String clusterName, Context context) {
+        return new PagedFlux<>(() -> listBackupsSinglePageAsync(resourceGroupName, clusterName, context));
+    }
+
+    /**
+     * List the backups of this cluster that are available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of restorable backups for a Cassandra cluster as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BackupResourceInner> listBackups(String resourceGroupName, String clusterName) {
+        return new PagedIterable<>(listBackupsAsync(resourceGroupName, clusterName));
+    }
+
+    /**
+     * List the backups of this cluster that are available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of restorable backups for a Cassandra cluster as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BackupResourceInner> listBackups(
+        String resourceGroupName, String clusterName, Context context) {
+        return new PagedIterable<>(listBackupsAsync(resourceGroupName, clusterName, context));
+    }
+
+    /**
+     * Get the properties of an individual backup of this cluster that is available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param backupId Id of a restorable backup of a Cassandra cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an individual backup of this cluster that is available to restore along with {@link
+     *     Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BackupResourceInner>> getBackupWithResponseAsync(
+        String resourceGroupName, String clusterName, String backupId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (backupId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getBackup(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            clusterName,
+                            backupId,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the properties of an individual backup of this cluster that is available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param backupId Id of a restorable backup of a Cassandra cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an individual backup of this cluster that is available to restore along with {@link
+     *     Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BackupResourceInner>> getBackupWithResponseAsync(
+        String resourceGroupName, String clusterName, String backupId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (backupId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getBackup(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                clusterName,
+                backupId,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Get the properties of an individual backup of this cluster that is available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param backupId Id of a restorable backup of a Cassandra cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an individual backup of this cluster that is available to restore on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BackupResourceInner> getBackupAsync(String resourceGroupName, String clusterName, String backupId) {
+        return getBackupWithResponseAsync(resourceGroupName, clusterName, backupId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the properties of an individual backup of this cluster that is available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param backupId Id of a restorable backup of a Cassandra cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an individual backup of this cluster that is available to restore along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BackupResourceInner> getBackupWithResponse(
+        String resourceGroupName, String clusterName, String backupId, Context context) {
+        return getBackupWithResponseAsync(resourceGroupName, clusterName, backupId, context).block();
+    }
+
+    /**
+     * Get the properties of an individual backup of this cluster that is available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param backupId Id of a restorable backup of a Cassandra cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an individual backup of this cluster that is available to restore.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupResourceInner getBackup(String resourceGroupName, String clusterName, String backupId) {
+        return getBackupWithResponse(resourceGroupName, clusterName, backupId, Context.NONE).getValue();
+    }
+
+    /**
+     * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
+     * virtual machine of this cluster, and reserved the data disk. This won't do anything on an already deallocated
+     * cluster. Use Start to restart the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String clusterName) {
+    public Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(
+        String resourceGroupName, String clusterName, Boolean xMsForceDeallocate) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1721,6 +2083,7 @@ public final class CassandraClustersClientImpl
                             resourceGroupName,
                             clusterName,
                             this.client.getApiVersion(),
+                            xMsForceDeallocate,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1733,6 +2096,8 @@ public final class CassandraClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1741,7 +2106,7 @@ public final class CassandraClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(
-        String resourceGroupName, String clusterName, Context context) {
+        String resourceGroupName, String clusterName, Boolean xMsForceDeallocate, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1770,8 +2135,34 @@ public final class CassandraClustersClientImpl
                 resourceGroupName,
                 clusterName,
                 this.client.getApiVersion(),
+                xMsForceDeallocate,
                 accept,
                 context);
+    }
+
+    /**
+     * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
+     * virtual machine of this cluster, and reserved the data disk. This won't do anything on an already deallocated
+     * cluster. Use Start to restart the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
+        String resourceGroupName, String clusterName, Boolean xMsForceDeallocate) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deallocateWithResponseAsync(resourceGroupName, clusterName, xMsForceDeallocate);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1788,7 +2179,9 @@ public final class CassandraClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String clusterName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deallocateWithResponseAsync(resourceGroupName, clusterName);
+        final Boolean xMsForceDeallocate = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deallocateWithResponseAsync(resourceGroupName, clusterName, xMsForceDeallocate);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -1802,6 +2195,8 @@ public final class CassandraClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1810,9 +2205,10 @@ public final class CassandraClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
-        String resourceGroupName, String clusterName, Context context) {
+        String resourceGroupName, String clusterName, Boolean xMsForceDeallocate, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deallocateWithResponseAsync(resourceGroupName, clusterName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deallocateWithResponseAsync(resourceGroupName, clusterName, xMsForceDeallocate, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -1832,7 +2228,8 @@ public final class CassandraClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String clusterName) {
-        return this.beginDeallocateAsync(resourceGroupName, clusterName).getSyncPoller();
+        final Boolean xMsForceDeallocate = null;
+        return this.beginDeallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate).getSyncPoller();
     }
 
     /**
@@ -1842,6 +2239,8 @@ public final class CassandraClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1850,8 +2249,29 @@ public final class CassandraClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(
-        String resourceGroupName, String clusterName, Context context) {
-        return this.beginDeallocateAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        String resourceGroupName, String clusterName, Boolean xMsForceDeallocate, Context context) {
+        return this.beginDeallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate, context).getSyncPoller();
+    }
+
+    /**
+     * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
+     * virtual machine of this cluster, and reserved the data disk. This won't do anything on an already deallocated
+     * cluster. Use Start to restart the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deallocateAsync(String resourceGroupName, String clusterName, Boolean xMsForceDeallocate) {
+        return beginDeallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1868,7 +2288,8 @@ public final class CassandraClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deallocateAsync(String resourceGroupName, String clusterName) {
-        return beginDeallocateAsync(resourceGroupName, clusterName)
+        final Boolean xMsForceDeallocate = null;
+        return beginDeallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1880,6 +2301,8 @@ public final class CassandraClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1887,8 +2310,9 @@ public final class CassandraClustersClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deallocateAsync(String resourceGroupName, String clusterName, Context context) {
-        return beginDeallocateAsync(resourceGroupName, clusterName, context)
+    private Mono<Void> deallocateAsync(
+        String resourceGroupName, String clusterName, Boolean xMsForceDeallocate, Context context) {
+        return beginDeallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1906,7 +2330,8 @@ public final class CassandraClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deallocate(String resourceGroupName, String clusterName) {
-        deallocateAsync(resourceGroupName, clusterName).block();
+        final Boolean xMsForceDeallocate = null;
+        deallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate).block();
     }
 
     /**
@@ -1916,14 +2341,16 @@ public final class CassandraClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deallocate(String resourceGroupName, String clusterName, Context context) {
-        deallocateAsync(resourceGroupName, clusterName, context).block();
+    public void deallocate(String resourceGroupName, String clusterName, Boolean xMsForceDeallocate, Context context) {
+        deallocateAsync(resourceGroupName, clusterName, xMsForceDeallocate, context).block();
     }
 
     /**

@@ -20,7 +20,7 @@ public final class CreateUpdateOptions {
     private Integer throughput;
 
     /*
-     * Specifies the Autoscale settings.
+     * Specifies the Autoscale settings. Note: Either throughput or autoscaleSettings is required, but not both.
      */
     @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettings autoscaleSettings;
@@ -50,7 +50,8 @@ public final class CreateUpdateOptions {
     }
 
     /**
-     * Get the autoscaleSettings property: Specifies the Autoscale settings.
+     * Get the autoscaleSettings property: Specifies the Autoscale settings. Note: Either throughput or
+     * autoscaleSettings is required, but not both.
      *
      * @return the autoscaleSettings value.
      */
@@ -59,7 +60,8 @@ public final class CreateUpdateOptions {
     }
 
     /**
-     * Set the autoscaleSettings property: Specifies the Autoscale settings.
+     * Set the autoscaleSettings property: Specifies the Autoscale settings. Note: Either throughput or
+     * autoscaleSettings is required, but not both.
      *
      * @param autoscaleSettings the autoscaleSettings value to set.
      * @return the CreateUpdateOptions object itself.

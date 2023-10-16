@@ -34,6 +34,13 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /** {@inheritDoc} */
     @Override
+    public GremlinDatabaseCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public GremlinDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

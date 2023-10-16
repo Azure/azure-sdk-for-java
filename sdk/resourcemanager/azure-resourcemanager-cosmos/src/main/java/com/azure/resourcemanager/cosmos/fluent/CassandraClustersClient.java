@@ -13,6 +13,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.cosmos.fluent.models.BackupResourceInner;
 import com.azure.resourcemanager.cosmos.fluent.models.CassandraClusterPublicStatusInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ClusterResourceInner;
 import com.azure.resourcemanager.cosmos.fluent.models.CommandOutputInner;
@@ -571,19 +572,142 @@ public interface CassandraClustersClient
         String resourceGroupName, String clusterName, CommandPostBody body, Context context);
 
     /**
-     * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
-     * virtual machine of this cluster, and reserved the data disk. This won't do anything on an already deallocated
-     * cluster. Use Start to restart the cluster.
+     * List the backups of this cluster that are available to restore.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of restorable backups for a Cassandra cluster as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BackupResourceInner> listBackupsAsync(String resourceGroupName, String clusterName);
+
+    /**
+     * List the backups of this cluster that are available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of restorable backups for a Cassandra cluster as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BackupResourceInner> listBackups(String resourceGroupName, String clusterName);
+
+    /**
+     * List the backups of this cluster that are available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of restorable backups for a Cassandra cluster as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BackupResourceInner> listBackups(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Get the properties of an individual backup of this cluster that is available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param backupId Id of a restorable backup of a Cassandra cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an individual backup of this cluster that is available to restore along with {@link
+     *     Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BackupResourceInner>> getBackupWithResponseAsync(
+        String resourceGroupName, String clusterName, String backupId);
+
+    /**
+     * Get the properties of an individual backup of this cluster that is available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param backupId Id of a restorable backup of a Cassandra cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an individual backup of this cluster that is available to restore on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BackupResourceInner> getBackupAsync(String resourceGroupName, String clusterName, String backupId);
+
+    /**
+     * Get the properties of an individual backup of this cluster that is available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param backupId Id of a restorable backup of a Cassandra cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an individual backup of this cluster that is available to restore along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BackupResourceInner> getBackupWithResponse(
+        String resourceGroupName, String clusterName, String backupId, Context context);
+
+    /**
+     * Get the properties of an individual backup of this cluster that is available to restore.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param backupId Id of a restorable backup of a Cassandra cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an individual backup of this cluster that is available to restore.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackupResourceInner getBackup(String resourceGroupName, String clusterName, String backupId);
+
+    /**
+     * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
+     * virtual machine of this cluster, and reserved the data disk. This won't do anything on an already deallocated
+     * cluster. Use Start to restart the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String clusterName);
+    Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(
+        String resourceGroupName, String clusterName, Boolean xMsForceDeallocate);
+
+    /**
+     * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
+     * virtual machine of this cluster, and reserved the data disk. This won't do anything on an already deallocated
+     * cluster. Use Start to restart the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
+        String resourceGroupName, String clusterName, Boolean xMsForceDeallocate);
 
     /**
      * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
@@ -622,6 +746,8 @@ public interface CassandraClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -629,7 +755,25 @@ public interface CassandraClustersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String clusterName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeallocate(
+        String resourceGroupName, String clusterName, Boolean xMsForceDeallocate, Context context);
+
+    /**
+     * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
+     * virtual machine of this cluster, and reserved the data disk. This won't do anything on an already deallocated
+     * cluster. Use Start to restart the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deallocateAsync(String resourceGroupName, String clusterName, Boolean xMsForceDeallocate);
 
     /**
      * Deallocate the Managed Cassandra Cluster and Associated Data Centers. Deallocation will deallocate the host
@@ -667,13 +811,15 @@ public interface CassandraClustersClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
+     * @param xMsForceDeallocate Force to deallocate a cluster of Cluster Type Production. Force to deallocate a cluster
+     *     of Cluster Type Production might cause data loss.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deallocate(String resourceGroupName, String clusterName, Context context);
+    void deallocate(String resourceGroupName, String clusterName, Boolean xMsForceDeallocate, Context context);
 
     /**
      * Start the Managed Cassandra Cluster and Associated Data Centers. Start will start the host virtual machine of

@@ -649,6 +649,31 @@ public final class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     *
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticLogSettings();
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     *
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withDiagnosticLogSettings(diagnosticLogSettings);
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      *
@@ -699,6 +724,31 @@ public final class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     *
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableMaterializedViews();
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     *
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableMaterializedViews(enableMaterializedViews);
+        return this;
+    }
+
+    /**
      * Get the keysMetadata property: This property is ignored during the update operation, as the metadata is
      * read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
      *
@@ -734,6 +784,31 @@ public final class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
+     *
+     * @return the enableBurstCapacity value.
+     */
+    public Boolean enableBurstCapacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableBurstCapacity();
+    }
+
+    /**
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
+     *
+     * @param enableBurstCapacity the enableBurstCapacity value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withEnableBurstCapacity(Boolean enableBurstCapacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableBurstCapacity(enableBurstCapacity);
+        return this;
+    }
+
+    /**
      * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
      * Cassandra and Mongo API's, which only work with Tls 1.2.
      *
@@ -755,6 +830,82 @@ public final class DatabaseAccountUpdateParameters {
             this.innerProperties = new DatabaseAccountUpdateProperties();
         }
         this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
+        return this;
+    }
+
+    /**
+     * Get the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
+     * account. In case there are errors, the property provides troubleshooting guidance.
+     *
+     * @return the customerManagedKeyStatus value.
+     */
+    public CustomerManagedKeyStatus customerManagedKeyStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().customerManagedKeyStatus();
+    }
+
+    /**
+     * Set the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
+     * account. In case there are errors, the property provides troubleshooting guidance.
+     *
+     * @param customerManagedKeyStatus the customerManagedKeyStatus value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withCustomerManagedKeyStatus(
+        CustomerManagedKeyStatus customerManagedKeyStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withCustomerManagedKeyStatus(customerManagedKeyStatus);
+        return this;
+    }
+
+    /**
+     * Get the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     *
+     * @return the enablePriorityBasedExecution value.
+     */
+    public Boolean enablePriorityBasedExecution() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePriorityBasedExecution();
+    }
+
+    /**
+     * Set the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     *
+     * @param enablePriorityBasedExecution the enablePriorityBasedExecution value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withEnablePriorityBasedExecution(Boolean enablePriorityBasedExecution) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnablePriorityBasedExecution(enablePriorityBasedExecution);
+        return this;
+    }
+
+    /**
+     * Get the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     *
+     * @return the defaultPriorityLevel value.
+     */
+    public DefaultPriorityLevel defaultPriorityLevel() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultPriorityLevel();
+    }
+
+    /**
+     * Set the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     *
+     * @param defaultPriorityLevel the defaultPriorityLevel value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withDefaultPriorityLevel(DefaultPriorityLevel defaultPriorityLevel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withDefaultPriorityLevel(defaultPriorityLevel);
         return this;
     }
 

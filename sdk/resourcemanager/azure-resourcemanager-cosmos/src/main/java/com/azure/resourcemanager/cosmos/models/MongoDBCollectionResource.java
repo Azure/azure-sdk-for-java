@@ -39,6 +39,18 @@ public class MongoDBCollectionResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Integer analyticalStorageTtl;
 
+    /*
+     * Parameters to indicate the information about the restore
+     */
+    @JsonProperty(value = "restoreParameters")
+    private ResourceRestoreParameters restoreParameters;
+
+    /*
+     * Enum to indicate the mode of resource creation.
+     */
+    @JsonProperty(value = "createMode")
+    private CreateMode createMode;
+
     /** Creates an instance of MongoDBCollectionResource class. */
     public MongoDBCollectionResource() {
     }
@@ -124,6 +136,46 @@ public class MongoDBCollectionResource {
     }
 
     /**
+     * Get the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @return the restoreParameters value.
+     */
+    public ResourceRestoreParameters restoreParameters() {
+        return this.restoreParameters;
+    }
+
+    /**
+     * Set the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @param restoreParameters the restoreParameters value to set.
+     * @return the MongoDBCollectionResource object itself.
+     */
+    public MongoDBCollectionResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        this.restoreParameters = restoreParameters;
+        return this;
+    }
+
+    /**
+     * Get the createMode property: Enum to indicate the mode of resource creation.
+     *
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode property: Enum to indicate the mode of resource creation.
+     *
+     * @param createMode the createMode value to set.
+     * @return the MongoDBCollectionResource object itself.
+     */
+    public MongoDBCollectionResource withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -136,6 +188,9 @@ public class MongoDBCollectionResource {
         }
         if (indexes() != null) {
             indexes().forEach(e -> e.validate());
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
         }
     }
 

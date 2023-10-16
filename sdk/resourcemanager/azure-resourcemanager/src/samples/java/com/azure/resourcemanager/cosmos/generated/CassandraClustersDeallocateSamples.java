@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 /** Samples for CassandraClusters Deallocate. */
 public final class CassandraClustersDeallocateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBManagedCassandraClusterDeallocate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-09-15-preview/examples/CosmosDBManagedCassandraClusterDeallocate.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterDeallocate.
@@ -20,6 +20,6 @@ public final class CassandraClustersDeallocateSamples {
             .manager()
             .serviceClient()
             .getCassandraClusters()
-            .deallocate("cassandra-prod-rg", "cassandra-prod", com.azure.core.util.Context.NONE);
+            .deallocate("cassandra-prod-rg", "cassandra-prod", null, com.azure.core.util.Context.NONE);
     }
 }

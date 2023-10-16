@@ -110,6 +110,20 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GremlinGraphGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GremlinGraphGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

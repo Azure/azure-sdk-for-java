@@ -67,6 +67,20 @@ public final class GremlinDatabaseGetPropertiesResource extends GremlinDatabaseR
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GremlinDatabaseGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GremlinDatabaseGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
