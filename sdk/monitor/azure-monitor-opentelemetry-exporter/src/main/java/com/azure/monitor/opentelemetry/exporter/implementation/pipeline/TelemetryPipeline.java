@@ -8,29 +8,20 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.StatusCode;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Nullable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.Collections.list;
-import static java.util.Collections.singleton;
 
 public class TelemetryPipeline {
 
@@ -156,7 +147,7 @@ public class TelemetryPipeline {
         } else {
             if (responseCode == 400
                 && statsbeatModule != null
-                && telemetryPipelineResponse.invalidInstrumentationKey()) {
+                && telemetryPipelineResponse.isInvalidInstrumentationKey()) {
                 LOGGER.warning("400 status code is returned for an invalid customer's instrumentation key. Shutting down Statsbeat and its listeners.");
                 statsbeatModule.shutdown();
                 if (listener instanceof LocalStorageTelemetryPipelineListener) {

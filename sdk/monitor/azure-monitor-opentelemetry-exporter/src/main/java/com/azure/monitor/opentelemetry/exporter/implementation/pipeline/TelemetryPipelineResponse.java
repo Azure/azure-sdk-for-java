@@ -37,7 +37,7 @@ public class TelemetryPipelineResponse {
         return parseErrors(body); // parseErrors on demand
     }
 
-    public boolean invalidInstrumentationKey() {
+    public boolean isInvalidInstrumentationKey() {
         Set<String> errors = parseErrors(body);
         return errors != null && errors.contains(INVALID_INSTRUMENTATION_KEY);
     }
