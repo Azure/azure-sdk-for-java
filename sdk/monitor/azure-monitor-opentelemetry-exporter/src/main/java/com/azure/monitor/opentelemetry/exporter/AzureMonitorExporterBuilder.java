@@ -61,7 +61,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
 import static java.util.concurrent.TimeUnit.DAYS;
@@ -134,9 +133,9 @@ public final class AzureMonitorExporterBuilder {
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     public AzureMonitorExporterBuilder httpClient(HttpClient httpClient) {
-        if (frozen) {throw LOGGER.logExceptionAsError(new IllegalStateException(
-            "httpClient cannot be changed after any of the build methods have been called"));
-
+        if (frozen) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "httpClient cannot be changed after any of the build methods have been called"));
         }
         this.httpClient = httpClient;
         return this;
