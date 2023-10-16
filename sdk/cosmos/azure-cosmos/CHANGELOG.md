@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed an issue where `emptyPageDiagnosticsEnabled` is being override which cause empty page diagnostics being logged out - See [PR 37199](https://github.com/Azure/azure-sdk-for-java/pull/37199)
+* Fixed an issue where `emptyPageDiagnosticsEnabled` is being overriden with different meaning - this causes empty page diagnostics being logged (with INFO level) when they shouldn't - See [PR 37199](https://github.com/Azure/azure-sdk-for-java/pull/37199)
 
 #### Other Changes
 
