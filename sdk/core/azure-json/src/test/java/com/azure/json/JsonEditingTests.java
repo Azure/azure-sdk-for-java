@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 public class JsonEditingTests {
 
     JsonObject object = new JsonObject()
@@ -68,6 +71,38 @@ public class JsonEditingTests {
     public void editObjectPropertyVariableNewType() throws IOException {
         object.setProperty("EntryVariable", new JsonNumber(6512));
         assertEquals("6512", object.getProperty("EntryVariable").toString());
+    }
+
+    @Test
+    public void editObjectPropertyVariableNullJsonNumber(){
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> { 
+                Number numberTest = null; 
+                object.setProperty("EntryVariable", new JsonNumber(numberTest));
+            }
+        );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"null", "true", "false", " 0 0 ", "0 1 2 3", "1. 2", "1 . 2", "1a1", "1-", "-1-", "abc", "-a", "0b01010101", "0B10101", "0x10", "0xFF", "0x1A", ".", "-."}) 
+    public void editObjectPropertyVariableInvalidJsonNumberString(String value){
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> { 
+                object.setProperty("EntryVariable", new JsonNumber(value));
+            }
+        );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {" 123", "123 ", " -123", "-123 ", "00000", "0123", "123", "-1934234", "929.12342", "-1.2345", ".12345", "0.0", "-.12345", ".0", "-.0", " .0", ".0 ", "1000000000000000000000000000000", "-1000000000000000000000000000000"}) 
+    public void editObjectPropertyVariableValidJsonNumberString(String value){
+        assertDoesNotThrow(
+            () -> { 
+                object.setProperty("EntryVariable", new JsonNumber(value));
+            }
+        );
     }
 
     @Test
