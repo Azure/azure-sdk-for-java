@@ -2,6 +2,10 @@
 
 ## 2.32.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Fixed incorrect class names `MetricsResponseGranularity`, `MetricsResponseSeriesItemUnit`, `WafMetricsResponseGranularity`, `WafMetricsResponseSeriesItemUnit`.
+
 ### Other Changes
 
 #### Dependency Updates
