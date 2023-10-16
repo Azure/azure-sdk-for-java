@@ -25,8 +25,6 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
     /*
      * Identifies the concrete type of the analyzer.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.CustomAnalyzer";
-
     /*
      * The name of the tokenizer to use to divide continuous text into a sequence of tokens, such as breaking a
      * sentence into words.
@@ -118,7 +116,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.CustomAnalyzer");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("tokenizer", Objects.toString(this.tokenizer, null));
         jsonWriter.writeArrayField(
@@ -157,11 +155,9 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.CustomAnalyzer".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CustomAnalyzer'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

@@ -21,8 +21,6 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.KeywordTokenizer";
-
     /*
      * The read buffer size in bytes. Default is 256.
      */
@@ -60,7 +58,7 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.KeywordTokenizer");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeNumberField("bufferSize", this.bufferSize);
         return jsonWriter.writeEndObject();
@@ -88,11 +86,9 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.KeywordTokenizer".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.KeywordTokenizer'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

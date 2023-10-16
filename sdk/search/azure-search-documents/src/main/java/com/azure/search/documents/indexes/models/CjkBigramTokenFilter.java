@@ -24,8 +24,6 @@ public final class CjkBigramTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.CjkBigramTokenFilter";
-
     /*
      * The scripts to ignore.
      */
@@ -91,7 +89,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.CjkBigramTokenFilter");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeArrayField(
                 "ignoreScripts",
@@ -124,11 +122,9 @@ public final class CjkBigramTokenFilter extends TokenFilter {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.CjkBigramTokenFilter".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CjkBigramTokenFilter'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

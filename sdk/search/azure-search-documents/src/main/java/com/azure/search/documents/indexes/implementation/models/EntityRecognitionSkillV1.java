@@ -26,8 +26,6 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Skills.Text.EntityRecognitionSkill";
-
     /*
      * A list of entity categories that should be extracted.
      */
@@ -173,7 +171,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Text.EntityRecognitionSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
@@ -219,11 +217,9 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Skills.Text.EntityRecognitionSkill".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.EntityRecognitionSkill'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

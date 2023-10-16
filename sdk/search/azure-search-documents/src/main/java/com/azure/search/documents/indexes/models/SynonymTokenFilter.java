@@ -20,8 +20,6 @@ public final class SynonymTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.SynonymTokenFilter";
-
     /*
      * A list of synonyms in following one of two formats: 1. incredible, unbelievable, fabulous => amazing - all terms
      * on the left side of => symbol will be replaced with all terms on its right side; 2. incredible, unbelievable,
@@ -121,7 +119,7 @@ public final class SynonymTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.SynonymTokenFilter");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeArrayField("synonyms", this.synonyms, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored);
@@ -154,11 +152,9 @@ public final class SynonymTokenFilter extends TokenFilter {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.SynonymTokenFilter".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SynonymTokenFilter'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

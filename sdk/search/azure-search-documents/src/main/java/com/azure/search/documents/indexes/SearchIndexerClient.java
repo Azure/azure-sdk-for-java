@@ -15,11 +15,9 @@ import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
-import com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
-import com.azure.search.documents.indexes.implementation.models.SkillNames;
 import com.azure.search.documents.indexes.models.CreateOrUpdateDataSourceConnectionOptions;
 import com.azure.search.documents.indexes.models.CreateOrUpdateIndexerOptions;
 import com.azure.search.documents.indexes.models.CreateOrUpdateSkillsetOptions;
@@ -28,7 +26,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 
-import java.util.List;
 import java.util.Objects;
 
 /**

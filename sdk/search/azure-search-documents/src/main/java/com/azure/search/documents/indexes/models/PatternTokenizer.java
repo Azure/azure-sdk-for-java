@@ -25,8 +25,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.PatternTokenizer";
-
     /*
      * A regular expression pattern to match token separators. Default is an expression that matches one or more
      * non-word characters.
@@ -134,7 +132,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.PatternTokenizer");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("pattern", this.pattern);
         jsonWriter.writeStringField("flags", Objects.toString(this.flags, null));
@@ -166,11 +164,9 @@ public final class PatternTokenizer extends LexicalTokenizer {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.PatternTokenizer".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternTokenizer'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

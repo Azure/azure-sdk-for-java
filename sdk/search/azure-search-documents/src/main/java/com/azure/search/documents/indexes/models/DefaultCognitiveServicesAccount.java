@@ -18,8 +18,6 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     /*
      * Identifies the concrete type of the cognitive service resource attached to a skillset.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.DefaultCognitiveServices";
-
     /** Creates an instance of DefaultCognitiveServicesAccount class. */
     public DefaultCognitiveServicesAccount() {}
 
@@ -33,7 +31,7 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.DefaultCognitiveServices");
         jsonWriter.writeStringField("description", getDescription());
         return jsonWriter.writeEndObject();
     }
@@ -58,11 +56,9 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.DefaultCognitiveServices".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.DefaultCognitiveServices'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }
