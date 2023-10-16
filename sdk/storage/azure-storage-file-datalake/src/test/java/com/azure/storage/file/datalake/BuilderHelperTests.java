@@ -22,7 +22,10 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
@@ -31,11 +34,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -47,8 +52,11 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BuilderHelperTests extends DataLakeTestBase{
     private static final StorageSharedKeyCredential CREDENTIALS = new StorageSharedKeyCredential("accountName",
@@ -448,93 +456,69 @@ public class BuilderHelperTests extends DataLakeTestBase{
             null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new FreshDateTestClient(),
             new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTests.class));
 
-
         //testing pipeline
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
+        DataLakeFileSystemClient client = new DataLakeFileSystemClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .pipeline(pipeline)
-            .buildClient());
-
-        //testing previously configured pipeline
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .pipeline(pipeline)
-            .pipeline(null)
-            .buildClient());
+            .buildClient();
+        assertEquals(pipeline, client.getHttpPipeline());
 
         //testing anonymous access
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
+        DataLakeFileSystemClient client2 = new DataLakeFileSystemClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .setAnonymousAccess()
-            .buildClient());
+            .buildClient();
+        //would be 10 if credentials were included in the policy
+        assertEquals(client2.getHttpPipeline().getPolicyCount(), 9);
 
         //testing malformed endpoint
-        //todo isbr: cant throw MalformedURLException. potentially add first 2 lines into try and catch both malformed and illegal
-        //assertThrows(MalformedURLException.class, () -> new DataLakeFileSystemClientBuilder()
-            //.endpoint("account.blob.core.windows.net/")
-            //.buildClient());
+        assertThrows(IllegalArgumentException.class, () -> new DataLakeFileSystemClientBuilder()
+            .endpoint("account.blob.core.windows.net/")
+            .buildClient());
 
         //testing service version
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
+        DataLakeFileSystemClient client3 = new DataLakeFileSystemClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .serviceVersion(DataLakeServiceVersion.getLatest())
-            .buildClient());
+            .buildClient();
+        assertEquals(client3.getServiceVersion(), DataLakeServiceVersion.getLatest());
 
-        //testing configuration
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
+        //testing null version
+        DataLakeFileSystemClient client4 = new DataLakeFileSystemClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
-            .configuration(Configuration.getGlobalConfiguration())
-            .buildClient());
+            .serviceVersion(null)
+            .buildClient();
+        assertEquals(client4.getServiceVersion(), DataLakeServiceVersion.getLatest());
 
         //testing azure named key credential
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
+        DataLakeFileSystemClient client5 = new DataLakeFileSystemClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureNamedKeyCredential("name", "key"))
-            .buildClient());
+            .buildClient();
+        assertEquals(client5.getHttpPipeline().getPolicyCount(), 10);
 
         //testing null customer provided key
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
+        DataLakeFileSystemClient client6 = new DataLakeFileSystemClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .customerProvidedKey(null)
-            .buildClient());
-
-        //testing not null customer provided key
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .customerProvidedKey(new CustomerProvidedKey(getRandomByteArray(32)))
-            .buildClient());
-
-        //testing per call policy
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .addPolicy(getPerCallVersionPolicy())
-            .buildClient());
+            .buildClient();
+        assertNull(client6.blobContainerClient.getCustomerProvidedKey());
 
         //testing per return policy
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
+        DataLakeFileSystemClient client7 = new DataLakeFileSystemClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .addPolicy((context, next) -> {
                 context.getHttpRequest().setHeader(X_MS_VERSION, "2019-02-02");
                 return next.process();
             })
-            .buildClient());
-
-        //testing previously configured httpClient
-        assertDoesNotThrow(() -> new DataLakeFileSystemClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .httpClient(HttpClient.createDefault())
-            .httpClient(null)
-            .buildClient());
+            .buildClient();
+        assertEquals(client7.getHttpPipeline().getPolicyCount(), 11);
     }
 
     @Test
@@ -543,93 +527,60 @@ public class BuilderHelperTests extends DataLakeTestBase{
             null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new FreshDateTestClient(),
             new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTests.class));
 
-//        //testing pipeline
-//        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-//            .endpoint(ENDPOINT)
-//            .credential(CREDENTIALS)
-//            .pipeline(pipeline)
-//            .buildClient());
-//
-//        //testing previously configured pipeline
-//        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-//            .endpoint(ENDPOINT)
-//            .credential(CREDENTIALS)
-//            .pipeline(pipeline)
-//            .pipeline(null)
-//            .buildClient());
-//
-//        //testing malformed endpoint
-//        //todo isbr: cant throw MalformedURLException. potentially add first 2 lines into try and catch both malformed and illegal
-//        //assertThrows(MalformedURLException.class, () -> new DataLakeServiceClientBuilder()
-//        //.endpoint("http://account.blob.core.windows.net/")
-//        //.buildClient());
-//
-//        //testing service version
-//        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-//            .endpoint(ENDPOINT)
-//            .credential(CREDENTIALS)
-//            .serviceVersion(DataLakeServiceVersion.getLatest())
-//            .buildClient());
-//
-//        //testing configuration
-//        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-//            .endpoint(ENDPOINT)
-//            .credential(CREDENTIALS)
-//            .configuration(Configuration.getGlobalConfiguration())
-//            .buildClient());
-//
-//        //testing azure named key credential
-//        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-//            .endpoint(ENDPOINT)
-//            .credential(new AzureNamedKeyCredential("name", "key"))
-//            .buildClient());
-//
-//        //testing null customer provided key
-//        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-//            .endpoint(ENDPOINT)
-//            .credential(CREDENTIALS)
-//            .customerProvidedKey(null)
-//            .buildClient());
-//
-//        //testing not null customer provided key
-//        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-//            .endpoint(ENDPOINT)
-//            .credential(CREDENTIALS)
-//            .customerProvidedKey(new CustomerProvidedKey(getRandomByteArray(32)))
-//            .buildClient());
-//
-//        //testing per call policy
-//        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-//            .endpoint(ENDPOINT)
-//            .credential(CREDENTIALS)
-//            .addPolicy(getPerCallVersionPolicy())
-//            .buildClient());
-//
-//        //testing per return policy
-//        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-//            .endpoint(ENDPOINT)
-//            .credential(CREDENTIALS)
-//            .addPolicy((context, next) -> {
-//                context.getHttpRequest().setHeader(X_MS_VERSION, "2019-02-02");
-//                return next.process();
-//            })
-//            .buildClient());
-//
-//        //testing previously configured httpClient
-//        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
-//            .endpoint(ENDPOINT)
-//            .credential(CREDENTIALS)
-//            .httpClient(HttpClient.createDefault())
-//            .httpClient(null)
-//            .buildClient());
-
-        //todo isbr: get connection string endpoint to be null
-        //testing bad connection string
-        assertDoesNotThrow(() -> new DataLakeServiceClientBuilder()
+        //testing pipeline
+        DataLakeServiceClient client = new DataLakeServiceClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
-            .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
+            .pipeline(pipeline)
+            .buildClient();
+        assertEquals(pipeline, client.getHttpPipeline());
+
+        //testing malformed endpoint
+        assertThrows(IllegalArgumentException.class, () -> new DataLakeServiceClientBuilder()
+            .endpoint("account.blob.core.windows.net/")
             .buildClient());
+
+        //testing service version
+        DataLakeServiceClient client2 = new DataLakeServiceClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIALS)
+            .serviceVersion(DataLakeServiceVersion.getLatest())
+            .buildClient();
+        assertEquals(client2.getServiceVersion(), DataLakeServiceVersion.getLatest());
+
+        //testing null version
+        DataLakeServiceClient client3 = new DataLakeServiceClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIALS)
+            .serviceVersion(null)
+            .buildClient();
+        assertEquals(client3.getServiceVersion(), DataLakeServiceVersion.getLatest());
+
+        //testing azure named key credential
+        DataLakeServiceClient client4 = new DataLakeServiceClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(new AzureNamedKeyCredential("name", "key"))
+            .buildClient();
+        assertEquals(client4.getHttpPipeline().getPolicyCount(), 10);
+
+        //testing per call policy
+        DataLakeServiceClient client5 = new DataLakeServiceClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIALS)
+            .addPolicy(getPerCallVersionPolicy())
+            .buildClient();
+        assertEquals(client5.getHttpPipeline().getPolicyCount(), 11);
+
+        //testing per return policy
+        DataLakeServiceClient client6 = new DataLakeServiceClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(CREDENTIALS)
+            .addPolicy((context, next) -> {
+                context.getHttpRequest().setHeader(X_MS_VERSION, "2019-02-02");
+                return next.process();
+            })
+            .buildClient();
+        assertEquals(client6.getHttpPipeline().getPolicyCount(), 11);
     }
 
     @Test
@@ -639,74 +590,81 @@ public class BuilderHelperTests extends DataLakeTestBase{
             new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTests.class));
 
         //testing pipeline
-        assertDoesNotThrow(() -> new DataLakePathClientBuilder()
+        DataLakePathClient client = new DataLakePathClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
+            .fileSystemName("fileSystem")
+            .pathName("path")
             .pipeline(pipeline)
-            .buildFileClient());
-
-        //testing previously configured pipeline
-        assertDoesNotThrow(() -> new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .pipeline(pipeline)
-            .pipeline(null)
-            .buildFileClient());
+            .buildFileClient();
+        assertEquals(pipeline, client.getHttpPipeline());
 
         //testing anonymous access
-        assertDoesNotThrow(() -> new DataLakePathClientBuilder()
+        DataLakePathClient client2 = new DataLakePathClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
+            .fileSystemName("fileSystem")
+            .pathName("path")
             .setAnonymousAccess()
-            .buildFileClient());
+            .buildFileClient();
+        //would be 10 if credentials were included in the policy
+        assertEquals(client2.getHttpPipeline().getPolicyCount(), 9);
 
         //testing malformed endpoint
-        //todo isbr: cant throw MalformedURLException. potentially add first 2 lines into try and catch both malformed and illegal
-        //assertThrows(MalformedURLException.class, () -> new DataLakeFileSystemClientBuilder()
-        //.endpoint("http://account.blob.core.windows.net/")
-        //.buildClient());
+        assertThrows(IllegalArgumentException.class, () -> new DataLakePathClientBuilder()
+            .endpoint("account.blob.core.windows.net/")
+            .buildFileClient());
 
         //testing service version
-        assertDoesNotThrow(() -> new DataLakePathClientBuilder()
+        DataLakePathClient client3 = new DataLakePathClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
+            .fileSystemName("fileSystem")
+            .pathName("path")
             .serviceVersion(DataLakeServiceVersion.getLatest())
-            .buildFileClient());
+            .buildFileClient();
+        assertEquals(client3.getServiceVersion(), DataLakeServiceVersion.getLatest());
 
-        //testing configuration
-        assertDoesNotThrow(() -> new DataLakePathClientBuilder()
+        //testing null version
+        DataLakePathClient client4 = new DataLakePathClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
-            .configuration(Configuration.getGlobalConfiguration())
-            .buildFileClient());
+            .serviceVersion(null)
+            .fileSystemName("fileSystem")
+            .pathName("path")
+            .buildFileClient();
+        assertEquals(client4.getServiceVersion(), DataLakeServiceVersion.getLatest());
 
         //testing azure named key credential
-        assertDoesNotThrow(() -> new DataLakePathClientBuilder()
+        DataLakePathClient client5 = new DataLakePathClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureNamedKeyCredential("name", "key"))
-            .buildFileClient());
+            .fileSystemName("fileSystem")
+            .pathName("path")
+            .buildFileClient();
+        assertEquals(client5.getHttpPipeline().getPolicyCount(), 10);
 
         //testing null customer provided key
-        assertDoesNotThrow(() -> new DataLakePathClientBuilder()
+        DataLakePathClient client6 = new DataLakePathClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
+            .fileSystemName("fileSystem")
+            .pathName("path")
             .customerProvidedKey(null)
-            .buildFileClient());
+            .buildFileClient();
+        assertNull(client6.blockBlobClient.getCustomerProvidedKey());
 
         //testing not null customer provided key
-        assertDoesNotThrow(() -> new DataLakePathClientBuilder()
+        CustomerProvidedKey key = new CustomerProvidedKey(getRandomByteArray(32));
+        DataLakePathClient client7 = new DataLakePathClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
-            .customerProvidedKey(new CustomerProvidedKey(getRandomByteArray(32)))
-            .buildFileClient());
+            .fileSystemName("fileSystem")
+            .pathName("path")
+            .customerProvidedKey(key)
+            .buildFileClient();
+        assertEquals(client7.getCustomerProvidedKey().getKey(), key.getKey());
 
-        //testing previously configured httpClient
-        assertDoesNotThrow(() -> new DataLakePathClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .httpClient(HttpClient.createDefault())
-            .httpClient(null)
-            .buildFileClient());
     }
 
     private static final class FreshDateTestClient implements HttpClient {

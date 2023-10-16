@@ -168,10 +168,11 @@ public class DataLakeFileSystemClientBuilder implements
      */
     @Override
     public DataLakeFileSystemClientBuilder endpoint(String endpoint) {
-        // Ensure endpoint provided is dfs endpoint
-        endpoint = DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "dfs", "blob");
-        blobContainerClientBuilder.endpoint(DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
         try {
+            // Ensure endpoint provided is dfs endpoint
+            endpoint = DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "dfs", "blob");
+            blobContainerClientBuilder.endpoint(DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
+
             URL url = new URL(endpoint);
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
@@ -184,8 +185,7 @@ public class DataLakeFileSystemClientBuilder implements
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
-        //}  catch (MalformedURLException | IllegalArgumentException e) {
-        } catch (MalformedURLException ex) {
+        } catch (MalformedURLException | IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The Azure Storage Datalake endpoint url is malformed.", ex));
         }

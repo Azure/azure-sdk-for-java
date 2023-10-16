@@ -16,13 +16,13 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -693,16 +693,6 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .setIfUnmodifiedSince(unmodified);
 
         assertThrows(DataLakeStorageException.class, () -> dc.deleteWithResponse(false, drc, null, null));
-    }
-
-    @Test
-    public void deleteIfExistsPathClient() {
-        assertTrue(((DataLakePathClient) dc).deleteIfExists());
-    }
-
-    @Test
-    public void deleteIfExistsMinPathClient() {
-        assertEquals(200, ((DataLakePathClient) dc).deleteIfExistsWithResponse(null, null, null).getStatusCode());
     }
 
     @Test
@@ -3422,11 +3412,20 @@ public class DirectoryApiTests extends DataLakeTestBase {
         fail("Expected a request to time out.");
     }
 
+    private static DataLakePathClient getPathClient() {
+        return new DataLakePathClientBuilder()
+            .endpoint("https://account.blob.core.windows.net")
+            .credential(new StorageSharedKeyCredential("accountName",
+                "accountKey"))
+            .fileSystemName("fileSystem")
+            .pathName("path")
+            .buildFileClient();
+    }
+
     @Test
-    public void getAccountUrlMin() {
-        TestAccount account = ENVIRONMENT.getDataLakeAccount();
-        String accUrl = dc.getAccountUrl();
-        assertEquals(accUrl, account.getDataLakeEndpoint());
+    public void getAccountUrlMinPathClient() {
+        String accUrl = getPathClient().getAccountUrl();
+        assertEquals(accUrl, "https://account.dfs.core.windows.net");
     }
 
 }

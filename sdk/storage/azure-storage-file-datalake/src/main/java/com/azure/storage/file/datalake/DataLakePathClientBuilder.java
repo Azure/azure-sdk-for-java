@@ -358,10 +358,11 @@ public final class DataLakePathClientBuilder implements
      */
     @Override
     public DataLakePathClientBuilder endpoint(String endpoint) {
-        // Ensure endpoint provided is dfs endpoint
-        endpoint = DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "dfs", "blob");
-        blobClientBuilder.endpoint(DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
         try {
+            // Ensure endpoint provided is dfs endpoint
+            endpoint = DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "dfs", "blob");
+            blobClientBuilder.endpoint(DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
+
             URL url = new URL(endpoint);
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
@@ -375,7 +376,7 @@ public final class DataLakePathClientBuilder implements
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
-        } catch (MalformedURLException ex) {
+        } catch (MalformedURLException | IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The Azure Storage DataLake endpoint url is malformed.", ex));
         }

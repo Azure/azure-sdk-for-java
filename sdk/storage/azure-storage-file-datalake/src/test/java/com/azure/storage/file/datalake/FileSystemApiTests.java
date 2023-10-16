@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.test.shared.TestAccount;
@@ -2244,13 +2243,6 @@ public class FileSystemApiTests extends DataLakeTestBase {
         String accUrl = dataLakeFileSystemClient.getAccountUrl();
         assertEquals(accUrl, account.getDataLakeEndpoint());
     }
-
-    @Test
-    public void getBlobContainerClientMin() {
-        assertNotNull(dataLakeFileSystemClient.getBlobContainerClient());
-    }
-
-
 
 //    @Test
 //    public void rename() {

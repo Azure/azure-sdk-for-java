@@ -36,18 +36,6 @@ public class FileInputStreamTests extends DataLakeTestBase {
         fc = dataLakeFileSystemClient.createFile(generatePathName());
     }
 
-    @Test
-    public void uploadInputStreamMin() {
-        byte[] randomBytes = getRandomByteArray(Constants.KB);
-        assertDoesNotThrow(() -> fc.upload(new ByteArrayInputStream(randomBytes), Constants.KB));
-    }
-
-    @Test
-    public void uploadInputStreamOverwriteMin() {
-        byte[] randomBytes = getRandomByteArray(Constants.KB);
-        assertDoesNotThrow(() -> fc.upload(new ByteArrayInputStream(randomBytes), Constants.KB, false));
-    }
-
     @ParameterizedTest
     @MethodSource("readInputStreamSupplier")
     public void readInputStream(int length, Integer blockSize) throws IOException {

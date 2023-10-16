@@ -5,9 +5,12 @@ package com.azure.storage.file.datalake;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
@@ -49,6 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -1184,6 +1188,19 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void deleteFile() {
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dataLakeFileSystemAsyncClient.createFile(pathName).block();
+        dataLakeFileSystemAsyncClient.deleteFile(pathName).block();
+
+        StepVerifier.create(client.getProperties())
+            .verifyErrorSatisfies(p -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, p);
+                assertEquals(404, e.getStatusCode());
+            });
+    }
+
+    @Test
     public void deleteFileMin() {
         String pathName = generatePathName();
         dataLakeFileSystemAsyncClient.createFile(pathName).block();
@@ -1812,6 +1829,19 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void deleteDir() {
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.createDirectory(pathName).block();
+        dataLakeFileSystemAsyncClient.deleteDirectory(pathName).block();
+
+        StepVerifier.create(client.getProperties())
+            .verifyErrorSatisfies(p -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, p);
+                assertEquals(404, e.getStatusCode());
+            });
+    }
+
+    @Test
     public void deleteDirMin() {
         String pathName = generatePathName();
         dataLakeFileSystemAsyncClient.createDirectory(pathName).block();
@@ -2347,5 +2377,26 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(dataLakeFileSystemAsyncClient.getAccessPolicyWithResponse(null))
             .assertNext(r -> assertEquals("2019-02-02", r.getHeaders().getValue(X_MS_VERSION)))
             .verifyComplete();
+    }
+
+    @Test
+    public void getAccountUrlMin() {
+        dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.createFileSystem(generateFileSystemName()).block();
+        TestAccount account = ENVIRONMENT.getDataLakeAccount();
+        String accUrl = dataLakeFileSystemAsyncClient.getAccountUrl();
+        assertEquals(accUrl, account.getDataLakeEndpoint());
+    }
+
+    @Test
+    public void prepareBuilderReplacePath() { //todo isbr: get right
+        String fileSystem = generateFileSystemName();
+        dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.createFileSystem(fileSystem).block();
+        String accUrl = primaryDataLakeServiceAsyncClient.getAccountUrl();
+
+        BlobContainerClient client = dataLakeFileSystemAsyncClient.prepareBuilderReplacePath(fileSystem).buildClient();
+        String url2 = client.getAccountUrl();
+        assertNotEquals(accUrl, client.getAccountUrl());
+
+
     }
 }

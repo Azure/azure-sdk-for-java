@@ -7,6 +7,7 @@ import com.azure.core.test.TestMode;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
@@ -50,6 +51,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -501,6 +503,33 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
+    @Test
+    public void deleteFileSystem() {
+        String fileSystemName = generateFileSystemName();
+        DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName);
+        cc1.create().block();
+
+        primaryDataLakeServiceAsyncClient.deleteFileSystem(fileSystemName).block();
+
+        StepVerifier.create(cc1.getProperties())
+            .verifyErrorSatisfies(p -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, p);
+                assertEquals(404, e.getStatusCode());
+            });
+    }
+
+
+    @Test
+    public void deleteFileSystemWithResponse() {
+        String fileSystemName = generateFileSystemName();
+        DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName);
+        cc1.create().block();
+
+        StepVerifier.create(primaryDataLakeServiceAsyncClient.deleteFileSystemWithResponse(fileSystemName, null))
+            .assertNext(r -> assertEquals(202, r.getStatusCode()))
+            .verifyComplete();
+    }
+
     @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystem() {
@@ -613,6 +642,16 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
         serviceClientBuilder.connectionString(connectionString);
 
         assertDoesNotThrow(serviceClientBuilder::buildAsyncClient);
+    }
+
+    @Test
+    public void nullFileSystemName() {
+        DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(null);
+        cc1.create().block();
+
+        StepVerifier.create(cc1.exists())
+            .expectNext(true)
+            .verifyComplete();
     }
 
     private static <T> Mono<T> waitUntilFileSystemIsDeletedAsync(Mono<T> waitUntilOperation) {

@@ -1152,7 +1152,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     public OutputStream getOutputStream() {
         return getOutputStream(null);
     }
-    //todo isbr: why is this not marked as covered?
+
     /**
      * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
      * will be overwritten.

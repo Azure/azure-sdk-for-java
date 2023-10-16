@@ -621,10 +621,21 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void deleteMin() { //replace
-        StepVerifier.create(dc.deleteWithResponse(false, null))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
+    public void delete() {
+        DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
+        client.create().block();
+        client.delete().block();
+
+        StepVerifier.create(client.getProperties())
+            .verifyErrorSatisfies(p -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, p);
+                assertEquals(404, e.getStatusCode());
+            });
+    }
+
+    @Test
+    public void deleteMin() {
+        assertAsyncResponseStatusCode(dc.deleteWithResponse(false, null), 200);
     }
 
     @Test
@@ -2807,6 +2818,19 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void deleteFile() {
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient client = dc.createFile(pathName).block();
+        dc.deleteFile(pathName).block();
+
+        StepVerifier.create(client.getProperties())
+            .verifyErrorSatisfies(p -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, p);
+                assertEquals(404, e.getStatusCode());
+            });
+    }
+
+    @Test
     public void deleteFileMin() {
         String pathName = generatePathName();
         dc.createFile(pathName).block();
@@ -3166,6 +3190,19 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
         assertAsyncResponseStatusCode(client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options),
             201);
+    }
+
+    @Test
+    public void deleteSubDir() {
+        String pathName = generatePathName();
+        DataLakeDirectoryAsyncClient client = dc.createSubdirectory(pathName).block();
+        dc.deleteSubdirectory(pathName).block();
+
+        StepVerifier.create(client.getProperties())
+            .verifyErrorSatisfies(p -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, p);
+                assertEquals(404, e.getStatusCode());
+            });
     }
 
     @Test

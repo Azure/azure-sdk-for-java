@@ -3,6 +3,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
@@ -131,7 +132,14 @@ public class CpkTests extends DataLakeTestBase {
 
         assertNotEquals(cpkDirectory.getCustomerProvidedKey(), newCpkDirectoryClient.getCustomerProvidedKey());
 
-        DataLakePathClient newCpkPathClient = ((DataLakePathClient) cpkFile).getCustomerProvidedKeyClient(newCpk);
+        DataLakePathClient newCpkPathClient = new DataLakePathClientBuilder()
+            .endpoint("https://account.blob.core.windows.net/")
+            .credential(new StorageSharedKeyCredential("accountName",
+                "accountKey"))
+            .fileSystemName("fileSystem")
+            .pathName("path")
+            .customerProvidedKey(newCpk)
+            .buildFileClient();
 
         assertNotEquals(cpkFile.getCustomerProvidedKey(), newCpkPathClient.getCustomerProvidedKey());
     }

@@ -16,7 +16,6 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
 import com.azure.storage.file.datalake.models.DataLakeMetrics;
@@ -163,40 +162,6 @@ public class ServiceApiTests extends DataLakeTestBase {
                 retry++;
             }
         }
-    }
-
-    @ResourceLock("ServiceProperties")
-    @Test
-    public void setProps() {
-        DataLakeRetentionPolicy retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true);
-        DataLakeAnalyticsLogging logging = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy);
-        List<DataLakeCorsRule> corsRules = Collections.singletonList(new DataLakeCorsRule()
-            .setAllowedMethods("GET,PUT,HEAD")
-            .setAllowedOrigins("*")
-            .setAllowedHeaders("x-ms-version")
-            .setExposedHeaders("x-ms-client-request-id")
-            .setMaxAgeInSeconds(10));
-        DataLakeMetrics hourMetrics = new DataLakeMetrics().setEnabled(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy).setIncludeApis(true);
-        DataLakeMetrics minuteMetrics = new DataLakeMetrics().setEnabled(true).setVersion("1.0")
-            .setRetentionPolicy(retentionPolicy).setIncludeApis(true);
-        DataLakeStaticWebsite website = new DataLakeStaticWebsite().setEnabled(true)
-            .setIndexDocument("myIndex.html")
-            .setErrorDocument404Path("custom/error/path.html");
-
-        DataLakeServiceProperties sentProperties = new DataLakeServiceProperties()
-            .setLogging(logging).setCors(corsRules).setDefaultServiceVersion("2016-05-31")
-            .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
-            .setDeleteRetentionPolicy(retentionPolicy)
-            .setStaticWebsite(website);
-
-        primaryDataLakeServiceClient.setProperties(sentProperties);
-
-        DataLakeServiceProperties receivedProperties = primaryDataLakeServiceClient.getProperties();
-
-        validatePropsSet(sentProperties, receivedProperties);
-
     }
 
     // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
@@ -559,11 +524,6 @@ public class ServiceApiTests extends DataLakeTestBase {
 
         Response<Void> response = primaryDataLakeServiceClient.deleteFileSystemWithResponse(fileSystemName, null, null);
         assertEquals(202, response.getStatusCode());
-    }
-
-    @Test
-    public void getServiceVersion() {
-        assertNotNull(primaryDataLakeServiceClient.getServiceVersion());
     }
 
     @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")

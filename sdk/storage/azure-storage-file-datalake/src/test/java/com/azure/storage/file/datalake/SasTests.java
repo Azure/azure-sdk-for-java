@@ -299,6 +299,36 @@ public class SasTests extends DataLakeTestBase {
         assertDoesNotThrow(() -> client.listPaths().iterator().hasNext());
     }
 
+    @Test
+    public void fileSystemUserDelegationWithName() {
+        FileSystemSasPermission permissions = new FileSystemSasPermission()
+                .setReadPermission(true)
+                .setWritePermission(true)
+                .setDeletePermission(true)
+                .setCreatePermission(true)
+                .setAddPermission(true)
+                .setListPermission(true);
+
+        if (Constants.SAS_SERVICE_VERSION.compareTo(DataLakeServiceVersion.V2020_02_10.getVersion()) >= 0) {
+            permissions.setMovePermission(true)
+                    .setExecutePermission(true)
+                    .setManageOwnershipPermission(true)
+                    .setManageAccessControlPermission(true);
+        }
+
+        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+        UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime);
+        key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
+        key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+
+        String sasWithPermissions = dataLakeFileSystemClient.generateUserDelegationSas(
+                new DataLakeServiceSasSignatureValues(expiryTime, permissions), key, dataLakeFileSystemClient.getAccountName(), null);
+
+        DataLakeFileSystemClient client = getFileSystemClient(sasWithPermissions, getFileSystemUrl());
+
+        assertDoesNotThrow(() -> client.listPaths().iterator().hasNext());
+    }
+
     @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void fileUserDelegationSAOID() {

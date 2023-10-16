@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -23,7 +24,6 @@ import static com.azure.storage.file.datalake.DataLakeTestBase.compareACL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -80,6 +80,27 @@ public class ModelTests {
         assertEquals(write, permissions.getOther().hasWritePermission());
         assertEquals(stickyBit, permissions.isStickyBitSet());
         assertEquals(extendedInfoInAcl, permissions.isExtendedInfoInAcl());
+    }
+
+    @ParameterizedTest
+    @MethodSource("pathPermissionsParseOctalSupplier")
+    public void pathPermissionsParseOctal(String octal, RolePermissions owner, RolePermissions group,
+        RolePermissions other, boolean stickyBit) {
+        PathPermissions permissions = PathPermissions.parseOctal(octal);
+
+        if (owner != null) {
+            assertEquals(owner, permissions.getOwner());
+        }
+
+        if (group != null) {
+            assertEquals(group, permissions.getGroup());
+        }
+
+        if (other != null) {
+            assertEquals(other, permissions.getOther());
+        }
+
+        assertEquals(stickyBit, permissions.isStickyBitSet());
     }
 
     private static Stream<Arguments> pathPermissionsParseOctalSupplier() {
@@ -162,41 +183,6 @@ public class ModelTests {
     }
 
     @Test
-    public void getFileReadHeaders() {
-        FileReadHeaders headers = new FileReadHeaders();
-        assertNull(headers.getLastModified());
-        assertNull(headers.getCopyCompletionTime());
-        assertNull(headers.getDateProperty());
-        assertNull(headers.getContentMd5());
-        assertNull(headers.getFileContentMd5());
-        assertNull(headers.getContentCrc64());
-        assertNull(headers.getMetadata());
-        assertNull(headers.getContentLength());
-        assertNull(headers.getContentType());
-        assertNull(headers.getContentRange());
-        assertNull(headers.getETag());
-        assertNull(headers.getContentEncoding());
-        assertNull(headers.getCacheControl());
-        assertNull(headers.getContentDisposition());
-        assertNull(headers.getContentLanguage());
-        assertNull(headers.getCopyStatusDescription());
-        assertNull(headers.getCopyId());
-        assertNull(headers.getCopyProgress());
-        assertNull(headers.getCopySource());
-        assertNull(headers.getCopyStatus());
-        assertNull(headers.getLeaseDuration());
-        assertNull(headers.getLeaseState());
-        assertNull(headers.getLeaseStatus());
-        assertNull(headers.getClientRequestId());
-        assertNull(headers.getRequestId());
-        assertNull(headers.getVersion());
-        assertNull(headers.getAcceptRanges());
-        assertNull(headers.isServerEncrypted());
-        assertNull(headers.getEncryptionKeySha256());
-        assertNull(headers.getErrorCode());
-    }
-
-    @Test
     public void setFileQueryHeadersNull() {
         FileQueryHeaders headers = new FileQueryHeaders();
         headers.setCopyCompletionTime(null);
@@ -206,41 +192,6 @@ public class ModelTests {
         assertNull(headers.getCopyCompletionTime());
         assertNull(headers.getLastModified());
         assertNull(headers.getDateProperty());
-    }
-
-    @Test
-    public void getFileQueryHeaders() {
-        FileQueryHeaders headers = new FileQueryHeaders();
-        assertNull(headers.getLastModified());
-        assertNull(headers.getCopyCompletionTime());
-        assertNull(headers.getDateProperty());
-        assertNull(headers.getContentMd5());
-        assertNull(headers.getFileContentMd5());
-        assertNull(headers.getContentCrc64());
-        assertNull(headers.getMetadata());
-        assertNull(headers.getContentLength());
-        assertNull(headers.getContentType());
-        assertNull(headers.getContentRange());
-        assertNull(headers.getETag());
-        assertNull(headers.getContentEncoding());
-        assertNull(headers.getCacheControl());
-        assertNull(headers.getContentDisposition());
-        assertNull(headers.getContentLanguage());
-        assertNull(headers.getCopyStatusDescription());
-        assertNull(headers.getCopyId());
-        assertNull(headers.getCopyProgress());
-        assertNull(headers.getCopySource());
-        assertNull(headers.getCopyStatus());
-        assertNull(headers.getLeaseDuration());
-        assertNull(headers.getLeaseState());
-        assertNull(headers.getLeaseStatus());
-        assertNull(headers.getClientRequestId());
-        assertNull(headers.getRequestId());
-        assertNull(headers.getVersion());
-        assertNull(headers.getAcceptRanges());
-        assertNull(headers.isServerEncrypted());
-        assertNull(headers.getEncryptionKeySha256());
-        assertNull(headers.getErrorCode());
     }
 
     @Test
