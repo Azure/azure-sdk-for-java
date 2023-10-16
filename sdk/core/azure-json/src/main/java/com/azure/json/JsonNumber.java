@@ -13,8 +13,8 @@ public class JsonNumber extends JsonElement {
     private Number numberValue;
 
     /**
-     * Constructor used to explicitly set the number value of the JsonNumber object 
-     * via a String 
+     * Constructor used to explicitly set the number value of the JsonNumber 
+     * object via a String 
      * 
      * @param value specifies the String storing the number this JsonNumber 
      * object represents
@@ -32,14 +32,16 @@ public class JsonNumber extends JsonElement {
     }
 
     /**
-     * Constructor used to explicitly set the number value of the JsonNumber object
-     * via a Number 
+     * Constructor used to explicitly set the number value of the JsonNumber 
+     * object via a Number 
      *
-     * @param value specifies the number this JsonNumber object represents
-     *
-     * TODO: check for invalid number values or types
+     * @param value Specifies the number this JsonNumber object represents
+     * @throws IllegalArgumentException Thrown when the value is null. 
      */
-    public JsonNumber(Number value) {
+    public JsonNumber(Number value) throws IllegalArgumentException {
+        if (value == null) { 
+            throw new IllegalArgumentException("JsonNumber object cannot be constructed with a null value."); 
+        }
         this.numberValue = value;
     }
 
@@ -51,11 +53,7 @@ public class JsonNumber extends JsonElement {
      */
     @Override
     public String toString() {
-        try {
-            return this.numberValue.toString();
-        } catch (NullPointerException e) {
-            return null;
-        }
+        return this.numberValue.toString();
     }
 
     /**
