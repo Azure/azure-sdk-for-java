@@ -31,6 +31,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -183,9 +184,9 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        String[] expectedAreaCodes = { "888", "877", "866", "855", "844", "800", "833", "88" };
+        List<String> expectedAreaCodes = Arrays.asList("888", "877", "866", "855", "844", "800", "833", "88");
         for (PhoneNumberAreaCode areaCode : areaCodesResult) {
-            assertTrue(Arrays.asList(expectedAreaCodes).contains(areaCode));
+            assertTrue(expectedAreaCodes.contains(areaCode.getAreaCode()));
         }
         assertNotNull(areaCodesResult);
     }
@@ -251,9 +252,9 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        String[] expectedAreaCodes = { "888", "877", "866", "855", "844", "800", "833", "88" };
+        List<String> expectedAreaCodes = Arrays.asList("888", "877", "866", "855", "844", "800", "833", "88");
         for (PhoneNumberAreaCode areaCode : areaCodesResult) {
-            assertTrue(Arrays.asList(expectedAreaCodes).contains(areaCode));
+            assertTrue(expectedAreaCodes.contains(areaCode.getAreaCode()));
         }
         assertNotNull(areaCodesResult);
     }
