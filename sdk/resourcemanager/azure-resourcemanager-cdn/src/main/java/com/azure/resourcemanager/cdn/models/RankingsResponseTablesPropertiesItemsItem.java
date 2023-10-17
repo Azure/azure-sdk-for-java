@@ -23,6 +23,10 @@ public final class RankingsResponseTablesPropertiesItemsItem {
     @JsonProperty(value = "metrics")
     private List<RankingsResponseTablesPropertiesItemsMetricsItem> metrics;
 
+    /** Creates an instance of RankingsResponseTablesPropertiesItemsItem class. */
+    public RankingsResponseTablesPropertiesItemsItem() {
+    }
+
     /**
      * Get the name property: The name property.
      *

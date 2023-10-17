@@ -22,6 +22,10 @@ public final class OriginGroupOverride {
     @JsonProperty(value = "forwardingProtocol")
     private ForwardingProtocol forwardingProtocol;
 
+    /** Creates an instance of OriginGroupOverride class. */
+    public OriginGroupOverride() {
+    }
+
     /**
      * Get the originGroup property: defines the OriginGroup that would override the DefaultOriginGroup on route.
      *

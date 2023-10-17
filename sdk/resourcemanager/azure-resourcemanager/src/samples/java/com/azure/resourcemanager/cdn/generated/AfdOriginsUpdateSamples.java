@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.AfdOriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 
 /** Samples for AfdOrigins Update. */
 public final class AfdOriginsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOrigins_Update.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDOrigins_Update.json
      */
     /**
      * Sample code: AFDOrigins_Update.
@@ -34,6 +33,6 @@ public final class AfdOriginsUpdateSamples {
                     .withHttpPort(80)
                     .withHttpsPort(443)
                     .withEnabledState(EnabledState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

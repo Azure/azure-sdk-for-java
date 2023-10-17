@@ -34,7 +34,7 @@ public final class DesktopsUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectId\":\"bpmzzn\",\"description\":\"ff\",\"friendlyName\":\"qitmhheioqaqhv\",\"iconHash\":\"ufuqyrx\"},\"id\":\"lcgqlsismj\",\"name\":\"frddgamquhiosrsj\",\"type\":\"ivfcdisyirnx\"}";
+            "{\"properties\":{\"objectId\":\"xihspnxwq\",\"description\":\"nepzwakls\",\"friendlyName\":\"bqqqagwwrxa\",\"iconHash\":\"zisglrrczezkhh\"},\"id\":\"njad\",\"name\":\"qoawjqoy\",\"type\":\"eayfbpcmspl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,21 +66,21 @@ public final class DesktopsUpdateWithResponseMockTests {
             manager
                 .desktops()
                 .updateWithResponse(
-                    "zaum",
-                    "eoohguufuzboyj",
-                    "thwtzol",
+                    "czzydmxzjij",
+                    "vuaurk",
+                    "hci",
                     new DesktopPatch()
-                        .withTags(
-                            mapOf("lxveabfqx", "mwmdxmebwjscjpa", "ijddtvqc", "mwmqtibx", "jaeukmrsieekpn", "tad"))
-                        .withDescription("apm")
-                        .withFriendlyName("qmeqwigpibudqwyx"),
+                        .withTags(mapOf("ja", "efxrdcoxnbk", "qltgrd", "urnnqbnqbpiz"))
+                        .withDescription("pxrxvbfihwu")
+                        .withFriendlyName("ctafsrbxrblm"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ff", response.description());
-        Assertions.assertEquals("qitmhheioqaqhv", response.friendlyName());
+        Assertions.assertEquals("nepzwakls", response.description());
+        Assertions.assertEquals("bqqqagwwrxa", response.friendlyName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

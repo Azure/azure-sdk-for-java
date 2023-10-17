@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `emptyPageDiagnosticsEnabled` in `CosmosQueryRequestOptions` was being overridden. This caused empty page diagnostics to be logged (with INFO level) even when the flag was set to false - See [PR 37199](https://github.com/Azure/azure-sdk-for-java/pull/37199)
 
 #### Other Changes
 
@@ -21,6 +22,7 @@
 * Fixed an issue where `sampleDiagnostics` is not being honored for `query. See [PR 37015](https://github.com/Azure/azure-sdk-for-java/pull/37015)
 * Fixed the issue of `excludeRegions` not being honored for `CosmosBulkExecutionOptions`. - See[PR 36616](https://github.com/Azure/azure-sdk-for-java/pull/36616)
 * Fixed an issue with missing diagnostics (metrics, logging) for `Cosmos(Async)Container.readMany` calls - See [PR 37009](https://github.com/Azure/azure-sdk-for-java/pull/37009)
+* Fixed an issue where SDK mark region unavailable on http timeout - See [PR 37163](https://github.com/Azure/azure-sdk-for-java/pull/37163)
 
 ### 4.50.0 (2023-09-25)
 

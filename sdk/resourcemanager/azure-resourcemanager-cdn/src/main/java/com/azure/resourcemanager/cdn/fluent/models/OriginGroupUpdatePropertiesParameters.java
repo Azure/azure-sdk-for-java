@@ -40,6 +40,10 @@ public class OriginGroupUpdatePropertiesParameters {
     @JsonProperty(value = "responseBasedOriginErrorDetectionSettings")
     private ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings;
 
+    /** Creates an instance of OriginGroupUpdatePropertiesParameters class. */
+    public OriginGroupUpdatePropertiesParameters() {
+    }
+
     /**
      * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
      * the origin.

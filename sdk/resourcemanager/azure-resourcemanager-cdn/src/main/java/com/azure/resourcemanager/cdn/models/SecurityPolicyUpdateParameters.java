@@ -17,6 +17,10 @@ public final class SecurityPolicyUpdateParameters {
     @JsonProperty(value = "properties")
     private SecurityPolicyUpdateProperties innerProperties;
 
+    /** Creates an instance of SecurityPolicyUpdateParameters class. */
+    public SecurityPolicyUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The json object that contains properties required to update a security policy.
      *

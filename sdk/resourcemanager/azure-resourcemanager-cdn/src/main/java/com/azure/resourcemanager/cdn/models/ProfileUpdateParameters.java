@@ -21,10 +21,20 @@ public final class ProfileUpdateParameters {
     private Map<String, String> tags;
 
     /*
+     * Managed service identity (system assigned and/or user assigned identities).
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /*
      * The JSON object containing profile update parameters.
      */
     @JsonProperty(value = "properties")
     private ProfilePropertiesUpdateParameters innerProperties;
+
+    /** Creates an instance of ProfileUpdateParameters class. */
+    public ProfileUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Profile tags.
@@ -43,6 +53,26 @@ public final class ProfileUpdateParameters {
      */
     public ProfileUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the ProfileUpdateParameters object itself.
+     */
+    public ProfileUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -86,6 +116,9 @@ public final class ProfileUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
