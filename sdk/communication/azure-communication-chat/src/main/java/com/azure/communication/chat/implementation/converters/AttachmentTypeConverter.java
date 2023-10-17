@@ -10,7 +10,8 @@ public final class AttachmentTypeConverter {
             return null;
         }
 
-        AttachmentType attachmentType = new AttachmentType().fromString(obj.toString());
+        new AttachmentType();
+        AttachmentType attachmentType = AttachmentType.fromString(obj.toString());
         return attachmentType;
     }
 }
