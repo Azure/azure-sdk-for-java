@@ -916,7 +916,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // No availability strategy exists - expected outcome is a successful response from the cross-regional
             // retry issued in the client retry policy
             new Object[] {
-                "Create_503_FirstRegionOnly_NoAvailabilityStrategy_WithWriteRetries",
+                "Create_503_FirstRegionOnly_NoAvailabilityStrategy_WriteRetriesEnabled_WithWriteRetries",
                 Duration.ofSeconds(3),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
@@ -930,11 +930,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             },
 
             // This test injects 503 (Service Unavailable) into the local region only.
-            // No availability strategy exists - expected outcome is a 503 because non-idempotent write retries
-            // are disabled - and no cross regional retry is happening
+            // No availability strategy exists - expected outcome is a successful response from the cross-regional
+            // issued in the client retry policy
             new Object[] {
-                "Create_503_FirstRegionOnly_NoAvailabilityStrategy_NoWriteRetries",
-                Duration.ofSeconds(1),
+                "Create_503_FirstRegionOnly_NoAvailabilityStrategy_WriteRetriesDisabled_withWriteRetries",
+                Duration.ofSeconds(2),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -942,8 +942,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoFirstRegionOnly,
-                validateStatusCodeIsServiceUnavailable,
-                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+                validateStatusCodeIs201Created,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
 
             // This test injects 503 (Service Unavailable) into the local region only.
@@ -951,8 +951,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // regional retry in client retry policy of operations against first region - or the hedging
             // against the second region
             new Object[] {
-                "Create_503_FirstRegionOnly_WithWriteRetries",
-                Duration.ofSeconds(1),
+                "Create_503_FirstRegionOnly_WriteRetriesEnabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -965,11 +965,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             },
 
             // This test injects 503 (Service Unavailable) into the local region only.
-            // Default availability strategy exists - expected outcome is a 503 because non-idempotent write retries
-            // are disabled - which means no hedging for write operations nor cross regional retry
+            // Default availability strategy exists - expected outcome is successful response from the cross
+            // regional retry in client retry policy, but not from the hedging against the second region
             new Object[] {
-                "Create_503_FirstRegionOnly_NoWriteRetries",
-                Duration.ofSeconds(1),
+                "Create_503_FirstRegionOnly_WriteRetriesDisabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -977,16 +977,16 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoFirstRegionOnly,
-                validateStatusCodeIsServiceUnavailable,
-                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+                validateStatusCodeIs201Created,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
 
             // This test injects 503 (Service Unavailable) into all regions.
             // Eager availability strategy exists - expected outcome is a 503 - diagnostics should reflect the
             // hedging against second region
             new Object[] {
-                "Create_503_AllRegions_WithWriteRetries",
-                Duration.ofSeconds(1),
+                "Create_503_AllRegions_WriteRetriesEnabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1000,11 +1000,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             // This test injects 503 (Service Unavailable) into all regions.
             // Default availability strategy exists - expected outcome is a 503 because non-idempotent write retries
-            // are disabled - which means no hedging for write operations nor cross regional retry
+            // are disabled - which means no hedging for write operations, but there will be cross regional retry from clientRetryPolicy
             // Same expectation for all write operation types
             new Object[] {
-                "Create_503_AllRegions_NoWriteRetries",
-                Duration.ofSeconds(1),
+                "Create_503_AllRegions_WriteRetriesDisabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1013,11 +1013,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoAllRegions,
                 validateStatusCodeIsServiceUnavailable,
-                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
             new Object[] {
-                "Replace_503_AllRegions_NoWriteRetries",
-                Duration.ofSeconds(1),
+                "Replace_503_AllRegions_WriteRetriesDisabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1026,11 +1026,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 replaceItemCallback,
                 injectServiceUnavailableIntoAllRegions,
                 validateStatusCodeIsServiceUnavailable,
-                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
             new Object[] {
-                "Patch_503_AllRegions_NoWriteRetries",
-                Duration.ofSeconds(1),
+                "Patch_503_AllRegions_WriteRetriesDisabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1039,11 +1039,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 patchItemCallback,
                 injectServiceUnavailableIntoAllRegions,
                 validateStatusCodeIsServiceUnavailable,
-                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
             new Object[] {
-                "Delete_503_AllRegions_NoWriteRetries",
-                Duration.ofSeconds(1),
+                "Delete_503_AllRegions_WriteRetriesDisabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1052,11 +1052,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 deleteItemCallback,
                 injectServiceUnavailableIntoAllRegions,
                 validateStatusCodeIsServiceUnavailable,
-                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
             new Object[] {
-                "UpsertExisting_503_AllRegions_NoWriteRetries",
-                Duration.ofSeconds(1),
+                "UpsertExisting_503_AllRegions_WriteRetriesDisabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1065,11 +1065,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 upsertExistingItemCallback,
                 injectServiceUnavailableIntoAllRegions,
                 validateStatusCodeIsServiceUnavailable,
-                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
             new Object[] {
-                "UpsertNew_503_AllRegions_NoWriteRetries",
-                Duration.ofSeconds(1),
+                "UpsertNew_503_AllRegions_WriteRetriesDisabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1078,11 +1078,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 upsertAnotherItemCallback,
                 injectServiceUnavailableIntoAllRegions,
                 validateStatusCodeIsServiceUnavailable,
-                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
             new Object[] {
-                "Patch_503_FirstRegionOnly_WithWriteRetries",
-                Duration.ofSeconds(1),
+                "Patch_503_FirstRegionOnly_WriteRetriesEnabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1099,8 +1099,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // write retries are enabled which would allow hedging (or cross regional fail-over) to succeed
             // Same expectation for all write operation types
             new Object[] {
-                "Delete_503_FirstRegionOnly_WithWriteRetries",
-                Duration.ofSeconds(1),
+                "Delete_503_FirstRegionOnly_WriteRetriesEnabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1112,8 +1112,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButAlwaysContactedSecondRegion
             },
             new Object[] {
-                "Replace_503_FirstRegionOnly_WithWriteRetries",
-                Duration.ofSeconds(1),
+                "Replace_503_FirstRegionOnly_WriteRetriesEnabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1125,8 +1125,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButAlwaysContactedSecondRegion
             },
             new Object[] {
-                "UpsertNew_503_FirstRegionOnly_WithWriteRetries",
-                Duration.ofSeconds(1),
+                "UpsertNew_503_FirstRegionOnly_WriteRetriesEnabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1138,8 +1138,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButAlwaysContactedSecondRegion
             },
             new Object[] {
-                "UpsertExisting_503_FirstRegionOnly_WithWriteRetries",
-                Duration.ofSeconds(1),
+                "UpsertExisting_503_FirstRegionOnly_WriteRetriesEnabled_WithWriteRetries",
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1258,7 +1258,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // data for initial region
             new Object[] {
                 "Replace_408_AllRegions_DefaultAvailabilityStrategy_NoRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1276,7 +1276,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // Diagnostics should contain data for original and hedging operation
             new Object[] {
                 "Replace_408_AllRegions_DefaultAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1292,7 +1292,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // Diagnostics only in first region due to no hedging
             new Object[] {
                 "Replace_408_AllRegions_NoAvailabilityStrategy_NoRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1309,7 +1309,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // Diagnostics only in first region due to no hedging or cross regional fail-over being started yet
             new Object[] {
                 "Replace_408_AllRegions_NoAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1326,7 +1326,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // Diagnostics only in first region due to no hedging or cross regional fail-over being started yet
             new Object[] {
                 "UpsertExisting_408_FirstRegionOnly_DefaultAvailabilityStrategy_NoRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1344,7 +1344,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // Diagnostics should have data for both operations.
             new Object[] {
                 "UpsertExisting_408_FirstRegionOnly_DefaultAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1361,7 +1361,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // Diagnostics only in first region
             new Object[] {
                 "UpsertNew_408_FirstRegionOnly_NoAvailabilityStrategy_NoRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1396,7 +1396,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // execution via availability strategy was happening (but also failed)
             new Object[] {
                 "Create_404-1002_AllRegions_LocalPreferred_DefaultAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1416,7 +1416,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // execution via availability strategy was happening (but also failed)
             new Object[] {
                 "Replace_404-1002_AllRegions_LocalPreferred_DefaultAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 defaultAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1436,7 +1436,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // execution via availability strategy was happening (but also failed)
             new Object[] {
                 "Replace_404-1002_AllRegions_RemotePreferred_EagerAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1454,7 +1454,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // cross regional retry)
             new Object[] {
                 "Replace_404-1002_AllRegions_LocalPreferred_EagerAvailabilityStrategy_NoRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1471,7 +1471,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // Regional fail-over seen, because preferred region switch is remote
             new Object[] {
                 "Replace_404-1002_AllRegions_RemotePreferred_EagerAvailabilityStrategy_NoRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1490,7 +1490,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // cross regional retry)
             new Object[] {
                 "Replace_404-1002_FirstRegionOnly_RemotePreferred_EagerAvailabilityStrategy_NoRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1509,7 +1509,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // client retry policy within the e2e timeout.
             new Object[] {
                 "Replace_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_NoRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1527,7 +1527,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // result in successful response.
             new Object[] {
                 "Replace_404-1002_FirstRegionOnly_RemotePreferred_EagerAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1545,7 +1545,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // preference results in too many local retries). Should result in successful response form hedging.
             new Object[] {
                 "Replace_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1564,7 +1564,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // cross regional retry to finish within e2e timeout.
             new Object[] {
                 "Create_404-1002_FirstRegionOnly_RemotePreferred_ReluctantAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 reluctantThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1583,7 +1583,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // Successful response expected from hedging. Diagnostics should have data for both operations.
             new Object[] {
                 "Create_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1603,7 +1603,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // terminating the composite Mono. Diagnostics should have data for both operations.
             new Object[] {
                 "DeleteNonExistingItem_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(2),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
