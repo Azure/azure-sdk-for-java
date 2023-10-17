@@ -46,6 +46,8 @@ public class HelloWorldKeyvaultCertificates {
                 .vaultUrl(endpoint)
                 .credential(clientSecretCredential)
                 .buildClient();
+        String certificateName = "certificateName" + System.currentTimeMillis();
+        String myCertificate = "myCertificate" + System.currentTimeMillis();
 
         // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
         // then a new version of the certificate is created.
@@ -59,13 +61,13 @@ public class HelloWorldKeyvaultCertificates {
         tags.put("foo", "bar");
 
         SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
-            certificateClient.beginCreateCertificate("certificateName", policy, true, tags);
+            certificateClient.beginCreateCertificate(certificateName, policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
 
         // Let's get the latest version of the certificate from the key vault.
-        KeyVaultCertificate certificate = certificateClient.getCertificate("certificateName");
+        KeyVaultCertificate certificate = certificateClient.getCertificate(certificateName);
 
         System.out.printf("Certificate is returned with name %s and secret id %s \n",
             certificate.getProperties().getName(), certificate.getSecretId());
@@ -90,19 +92,19 @@ public class HelloWorldKeyvaultCertificates {
         System.out.printf("Issuer retrieved with name %s and provider %s", myIssuer.getName(), myIssuer.getProvider());
 
         // Let's create a certificate signed by our issuer.
-        certificateClient.beginCreateCertificate("myCertificate",
+        certificateClient.beginCreateCertificate(myCertificate,
                 new CertificatePolicy("myIssuer", "CN=SelfSignedJavaPkcs12"), true, tags)
             .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         // Let's get the latest version of our certificate from the key vault.
-        KeyVaultCertificate myCert = certificateClient.getCertificate("myCertificate");
+        KeyVaultCertificate myCert = certificateClient.getCertificate(myCertificate);
 
         System.out.printf("Certificate is returned with name %s and secret id %s \n", myCert.getProperties().getName(),
             myCert.getSecretId());
 
         // The certificates and issuers are no longer needed, need to delete it from the key vault.
         SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
-            certificateClient.beginDeleteCertificate("certificateName");
+            certificateClient.beginDeleteCertificate(certificateName);
         // Deleted certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
 
@@ -112,7 +114,7 @@ public class HelloWorldKeyvaultCertificates {
         deletedCertificatePoller.waitForCompletion();
 
         SyncPoller<DeletedCertificate, Void> deletedCertPoller =
-            certificateClient.beginDeleteCertificate("myCertificate");
+            certificateClient.beginDeleteCertificate(myCertificate);
         // Deleted certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> deletePollResponse = deletedCertPoller.poll();
 
@@ -130,7 +132,7 @@ public class HelloWorldKeyvaultCertificates {
         Thread.sleep(30000);
 
         // If the key vault is soft-delete enabled, then deleted certificates need to be purged for permanent deletion.
-        certificateClient.purgeDeletedCertificate("certificateName");
-        certificateClient.purgeDeletedCertificate("myCertificate");
+        certificateClient.purgeDeletedCertificate(certificateName);
+        certificateClient.purgeDeletedCertificate(myCertificate);
     }
 }

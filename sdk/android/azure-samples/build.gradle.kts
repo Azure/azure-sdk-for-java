@@ -73,6 +73,7 @@ dependencies {
     // azure_messaging_eventhubs
     implementation("com.azure:azure-messaging-eventhubs")
 
+
     //azure_resourcemanager
     implementation("com.azure:azure-core-management")
     implementation("com.azure.resourcemanager:azure-resourcemanager-compute:2.31.0")
@@ -88,8 +89,8 @@ dependencies {
     //For testing issue 35756, https://github.com/Azure/azure-sdk-for-java/issues/35756
     implementation("com.azure:azure-ai-translation-text:1.0.0-beta.1")
 
-    //For testing issue 35719, https://github.com/Azure/azure-sdk-for-java/issues/35719
-    implementation("com.azure:azure-ai-openai:1.0.0-beta.2")
+    //For testing OpenAI and issue 35719, https://github.com/Azure/azure-sdk-for-java/issues/35719
+    implementation("com.azure:azure-ai-openai:1.0.0-beta.5")
 
     // SL4J provides more verbose logging
     /*

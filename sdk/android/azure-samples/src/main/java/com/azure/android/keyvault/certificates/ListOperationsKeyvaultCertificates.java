@@ -44,6 +44,9 @@ public class ListOperationsKeyvaultCertificates {
                 .credential(clientSecretCredential)
                 .buildClient();
 
+        String certName = "certName" + System.currentTimeMillis();
+        String myCertificate = "myCertificate" + System.currentTimeMillis();
+      
         // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
         // then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
@@ -51,7 +54,7 @@ public class ListOperationsKeyvaultCertificates {
         tags.put("foo", "bar");
 
         SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
-            certificateClient.beginCreateCertificate("certName", policy, true, tags);
+            certificateClient.beginCreateCertificate(certName, policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
@@ -63,7 +66,7 @@ public class ListOperationsKeyvaultCertificates {
         System.out.printf("Issuer created with name %s and provider %s", myIssuer.getName(), myIssuer.getProvider());
 
         // Let's create a certificate signed by our issuer.
-        certificateClient.beginCreateCertificate("myCertificate",
+        certificateClient.beginCreateCertificate(myCertificate,
             new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), true, tags)
             .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
@@ -78,7 +81,7 @@ public class ListOperationsKeyvaultCertificates {
         }
 
         // Let's list all certificate versions of the certificate.
-        for (CertificateProperties certificate : certificateClient.listPropertiesOfCertificateVersions("myCertificate")) {
+        for (CertificateProperties certificate : certificateClient.listPropertiesOfCertificateVersions(myCertificate)) {
             KeyVaultCertificate certificateWithAllProperties =
                 certificateClient.getCertificateVersion(certificate.getName(), certificate.getVersion());
 
