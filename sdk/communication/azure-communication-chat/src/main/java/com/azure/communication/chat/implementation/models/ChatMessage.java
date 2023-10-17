@@ -60,8 +60,8 @@ public final class ChatMessage {
     /*
      * Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This
-     * model must be interpreted as a union: Apart from rawId, at most one
-     * further property may be set.
+     * model is polymorphic: Apart from kind and rawId, at most one further
+     * property may be set which must match the kind enum value.
      */
     @JsonProperty(value = "senderCommunicationIdentifier")
     private CommunicationIdentifierModel senderCommunicationIdentifier;
@@ -232,8 +232,8 @@ public final class ChatMessage {
 
     /**
      * Get the senderCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
-     * union: Apart from rawId, at most one further property may be set.
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
+     * kind and rawId, at most one further property may be set which must match the kind enum value.
      *
      * @return the senderCommunicationIdentifier value.
      */
@@ -243,8 +243,8 @@ public final class ChatMessage {
 
     /**
      * Set the senderCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
-     * union: Apart from rawId, at most one further property may be set.
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
+     * kind and rawId, at most one further property may be set which must match the kind enum value.
      *
      * @param senderCommunicationIdentifier the senderCommunicationIdentifier value to set.
      * @return the ChatMessage object itself.
