@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.serializer.models;
+package com.generic.core.implementation.serializer;
 
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.core.util.serializer.TypeReference;
@@ -14,28 +14,31 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A {@link BinaryDataContent} implementation which is backed by a {@link ByteBuffer}.
+ * A {@link BinaryDataContent} implementation which is backed by a serializable object.
  */
-public final class ByteBufferContent extends BinaryDataContent {
-    private final ByteBuffer content;
+public final class SerializableContent extends BinaryDataContent {
+
+    private final Object content;
+    private final ObjectSerializer serializer;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<ByteBufferContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(ByteBufferContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<SerializableContent, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(SerializableContent.class, byte[].class, "bytes");
 
     /**
-     * Creates a new instance of {@link BinaryDataContent}.
-     *
-     * @param content The {@link ByteBuffer} content.
-     * @throws NullPointerException If {@code content} is null.
+     * Creates a new instance of {@link SerializableContent}.
+     * @param content The serializable object that forms the content of this instance.
+     * @param serializer The serializer that serializes the {@code content}.
+     * @throws NullPointerException if {@code serializer} is null.
      */
-    public ByteBufferContent(ByteBuffer content) {
-        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+    public SerializableContent(Object content, ObjectSerializer serializer) {
+        this.content = content;
+        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
     }
 
     @Override
     public Long getLength() {
-        return (long) content.remaining();
+        return this.content == null ? null : (long) toBytes().length;
     }
 
     @Override
@@ -55,12 +58,12 @@ public final class ByteBufferContent extends BinaryDataContent {
 
     @Override
     public InputStream toStream() {
-        return new ByteArrayInputStream(toBytes());
+        return new ByteArrayInputStream(getBytes());
     }
 
     @Override
     public ByteBuffer toByteBuffer() {
-        return content.asReadOnlyBuffer();
+        return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
     }
 
     @Override
@@ -75,16 +78,10 @@ public final class ByteBufferContent extends BinaryDataContent {
 
     @Override
     public BinaryDataContentType getContentType() {
-        return BinaryDataContentType.BINARY;
+        return BinaryDataContentType.OBJECT;
     }
 
     private byte[] getBytes() {
-        byte[] bytes = new byte[content.remaining()];
-
-        content.mark();
-        content.get(bytes);
-        content.flip();
-
-        return bytes;
+        return serializer.serializeToBytes(content);
     }
 }

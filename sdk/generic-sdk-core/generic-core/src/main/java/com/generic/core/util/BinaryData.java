@@ -3,15 +3,15 @@
 
 package com.generic.core.util;
 
-import com.generic.core.implementation.serializer.models.BinaryDataContent;
-import com.generic.core.implementation.serializer.models.BinaryDataHelper;
-import com.generic.core.implementation.serializer.models.ByteArrayContent;
-import com.generic.core.implementation.serializer.models.ByteBufferContent;
-import com.generic.core.implementation.serializer.models.FileContent;
-import com.generic.core.implementation.serializer.models.InputStreamContent;
-import com.generic.core.implementation.serializer.models.ListByteBufferContent;
-import com.generic.core.implementation.serializer.models.SerializableContent;
-import com.generic.core.implementation.serializer.models.StringContent;
+import com.generic.core.implementation.serializer.BinaryDataContent;
+import com.generic.core.implementation.serializer.BinaryDataHelper;
+import com.generic.core.implementation.serializer.ByteArrayContent;
+import com.generic.core.implementation.serializer.ByteBufferContent;
+import com.generic.core.implementation.serializer.FileContent;
+import com.generic.core.implementation.serializer.InputStreamContent;
+import com.generic.core.implementation.serializer.ListByteBufferContent;
+import com.generic.core.implementation.serializer.SerializableContent;
+import com.generic.core.implementation.serializer.StringContent;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.JsonSerializer;
 import com.generic.core.util.serializer.JsonSerializerProvider;
@@ -29,7 +29,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
-import static com.generic.core.implementation.serializer.models.BinaryDataContent.STREAM_READ_SIZE;
+import static com.generic.core.implementation.serializer.BinaryDataContent.STREAM_READ_SIZE;
 
 /**
  * BinaryData is a convenient data interchange class for use throughout the Azure SDK for Java. Put simply, BinaryData
