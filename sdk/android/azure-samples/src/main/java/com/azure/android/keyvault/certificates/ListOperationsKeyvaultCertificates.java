@@ -46,7 +46,7 @@ public class ListOperationsKeyvaultCertificates {
 
         String certName = "certName" + System.currentTimeMillis();
         String myCertificate = "myCertificate" + System.currentTimeMillis();
-
+      
         // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
         // then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");

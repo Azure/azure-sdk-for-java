@@ -22,11 +22,14 @@ The following libraries have known issues with Android:
 - `azure-core`'s `ReflectionSerializable` class also requires an external StAX dependency.
 
 ## Dependency management
+
 - Dependency version management should use the azure BOM
 - Must use OkHttp instead of Netty for http
+
 - Recommend `azure-core` version `1.44.0` or greater.  This adds behaviour to ReflectionUtils that improves Android compatibility.
 - Recommend `com.fasterxml.jackson:jackson-core`, `com.fasterxml.jackson:jackson-databind`, `com.fasterxml.jackson:jackson-dataformat-xml`, `com.fasterxml.jackson:jackson-datatype-jsr310` version `2.15.0` or greater for transitive dependencies.  An example of how to do this is found in the build.gradle.kts file in the android-samples app.
 - The use of Jackson also requires an external StAX dependency.
+
 
 ### Overriding dependencies
 An example [build.gradle.kts](sdk/android/azure-samples/build.gradle.kts) is included.

@@ -33,6 +33,7 @@ public class BackupAndRestoreOperationsKeyvaultSecrets {
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      * @throws IOException when writing backup to file is unsuccessful.
      */
+
     private static final String TAG = "BackupRestoreSecret";
 
     public static void main(String endpoint, ClientSecretCredential clientSecretCredential) throws IOException, InterruptedException, IllegalArgumentException {
@@ -50,7 +51,6 @@ public class BackupAndRestoreOperationsKeyvaultSecrets {
                 .vaultUrl(endpoint)
                 .credential(clientSecretCredential)
                 .buildClient();
-
         String storageAccountPassword = "StorageAccountPassword" + System.currentTimeMillis();
 
         // Let's create secrets holding storage account credentials valid for 1 year. If the secret already exists in

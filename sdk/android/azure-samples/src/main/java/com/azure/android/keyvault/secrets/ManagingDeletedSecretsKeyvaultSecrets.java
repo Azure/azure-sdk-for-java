@@ -4,7 +4,6 @@
 package com.azure.android.keyvault.secrets;
 
 import android.util.Log;
-
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.ClientSecretCredential;

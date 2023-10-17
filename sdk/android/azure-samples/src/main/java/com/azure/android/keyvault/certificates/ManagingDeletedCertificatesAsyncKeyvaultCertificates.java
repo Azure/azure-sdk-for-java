@@ -55,7 +55,7 @@ public class ManagingDeletedCertificatesAsyncKeyvaultCertificates {
             .setKeyType(CertificateKeyType.EC);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
-
+      
         certificateAsyncClient.beginCreateCertificate(certificateName, policy, true, tags)
             .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");

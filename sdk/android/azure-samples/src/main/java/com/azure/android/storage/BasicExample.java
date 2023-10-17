@@ -49,6 +49,7 @@ public class BasicExample {
          */
         BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient();
         Log.i(TAG, String.format("credentials created for %s", storageClient.getAccountName()));
+
         /*
          * This example shows several common operations just to get you started.
          */
@@ -66,6 +67,7 @@ public class BasicExample {
          */
         blobContainerClient.create();
         Log.i(TAG, "blobContainerClient Created");
+
 
         /*
          * Create a client that references a to-be-created blob in your Azure Storage account's container.

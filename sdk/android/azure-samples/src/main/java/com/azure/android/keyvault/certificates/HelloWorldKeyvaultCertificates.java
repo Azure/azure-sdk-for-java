@@ -46,7 +46,6 @@ public class HelloWorldKeyvaultCertificates {
                 .vaultUrl(endpoint)
                 .credential(clientSecretCredential)
                 .buildClient();
-
         String certificateName = "certificateName" + System.currentTimeMillis();
         String myCertificate = "myCertificate" + System.currentTimeMillis();
 
