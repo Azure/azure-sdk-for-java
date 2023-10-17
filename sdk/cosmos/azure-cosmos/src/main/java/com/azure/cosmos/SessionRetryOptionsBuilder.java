@@ -47,7 +47,7 @@ public final class SessionRetryOptionsBuilder {
      * @param minRetryTime the min retry time to be used with-in each region
      * @return This instance of {@link SessionRetryOptionsBuilder}
      */
-    public SessionRetryOptionsBuilder minRetryTimeInLocalRegion(Duration minRetryTime) {
+    public SessionRetryOptionsBuilder minInRegionRetryTime(Duration minRetryTime) {
         this.minInRegionRetryTime = minRetryTime;
         return this;
     }
@@ -55,7 +55,7 @@ public final class SessionRetryOptionsBuilder {
     /**
      * Sets the maximum number of retries within each region for read and write operations. The minimum
      *  value is 1 - the backoff time for the last in-region retry will ensure that the total retry time within the
-     *  region is at least {@link this.minRetryTimeInLocalRegion}
+     *  region is at least {@link this.minInRegionRetryTime}
      * @param maxInRegionRetryCount the max. number of retries with-in each region
      * @return This instance of {@link SessionRetryOptionsBuilder}
      */
