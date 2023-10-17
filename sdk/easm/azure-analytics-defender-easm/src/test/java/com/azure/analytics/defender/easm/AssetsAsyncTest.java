@@ -1,0 +1,79 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.analytics.defender.easm;
+
+import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
+import com.azure.analytics.defender.easm.models.*;
+import com.azure.core.http.rest.PagedFlux;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
+public class AssetsAsyncTest extends EasmClientTestBase {
+    private String assetName = "kumed.com";
+    private String assetKind = "domain";
+    private String filter = "name = " + assetName + " and type = " + assetKind;
+    private String assetId = assetKind + "$$" + "kumc.edu";
+
+    private Class<?> getAssetResourceClass(String kind) {
+        switch (kind) {
+            case "as":
+                return AsAssetResource.class;
+            case "contact":
+                return ContactAssetResource.class;
+            case "domain":
+                return DomainAssetResource.class;
+            case "host":
+                return HostAssetResource.class;
+            case "ipAddress":
+                return IpAddressAssetResource.class;
+            case "ipBlock":
+                return IpBlockAssetResource.class;
+            case "page":
+                return PageAssetResource.class;
+            case "sslCert":
+                return SslCertAssetResource.class;
+            default:
+                return null;
+
+        }
+    }
+
+    @Test
+    public void testAssetsListAsync() {
+        PagedFlux<AssetResource> assetPageResponse = easmAsyncClient.listAssetResource(filter, "lastSeen", 0,  null);
+        AssetResource assetResponse = assetPageResponse.blockFirst();
+        assertEquals(assetName, assetResponse.getName());
+        assertInstanceOf(getAssetResourceClass(assetKind), assetResponse);
+    }
+
+    @Test
+    public void testAssetsUpdateAsync() {
+        AssetUpdateData assetUpdateData = new AssetUpdateData().setExternalId("new_external_id");
+        Mono<Task> taskMono = easmAsyncClient.updateAssets(filter, assetUpdateData);
+        taskMono.subscribe(
+            value -> {
+                assertEquals(TaskState.COMPLETE, value.getState());
+                assertEquals(TaskPhase.COMPLETE, value.getPhase());
+            },
+            error -> {
+                System.err.println("Failed update task async " + error);
+            }
+        );
+    }
+
+    @Test
+    public void testAssetsGetAsync() {
+        Mono<AssetResource> assetMono = easmAsyncClient.getAssetResource(assetId);
+        assetMono.subscribe(
+            value -> {
+                assertInstanceOf(getAssetResourceClass(assetKind), value);
+            },
+            error -> {
+                System.err.println("Failed to get asset " + error);
+            }
+        );
+    }
+}

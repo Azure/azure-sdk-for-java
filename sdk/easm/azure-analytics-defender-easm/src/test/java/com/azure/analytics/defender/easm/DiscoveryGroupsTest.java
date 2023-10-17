@@ -86,12 +86,6 @@ public class DiscoveryGroupsTest extends EasmClientTestBase {
     @Test
     public void testdiscoveryGroupsListRunsWithResponse() {
         CountPagedIterable<DiscoRunResult> discoRunPageResponse = easmClient.listRuns(knownGroupName, null, 0, 5);
-//        DiscoRunResult discoRunResponse = discoRunPageResponse.s().get(0);
-//        assertNotNull(discoRunResponse.getState());
-//        assertNotNull(discoRunResponse.getTier());
-        discoRunPageResponse.forEach(discoRunResult -> {
-            System.out.println(discoRunResult.getState());
-        });
-        System.out.println(discoRunPageResponse.getTotalElements());
+        assertTrue(discoRunPageResponse.getTotalElements() > 2);
     }
 }

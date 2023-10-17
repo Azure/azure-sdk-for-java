@@ -1392,7 +1392,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return updateAssetsWithResponse(filter, BinaryData.fromObject(assetUpdateData), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
     }
 
     /**
@@ -1414,7 +1414,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getAssetResourceWithResponse(assetId, requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AssetResource.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(AssetResource.class));
     }
 
     /**
@@ -1454,7 +1454,7 @@ public final class EasmAsyncClient {
                                                     pagedResponse.getValue().stream()
                                                             .map(
                                                                     protocolMethodData ->
-                                                                            protocolMethodData.toObject(
+                                                                            cleanUp(protocolMethodData).toObject(
                                                                                     DataConnection.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
@@ -1494,7 +1494,7 @@ public final class EasmAsyncClient {
                                                     pagedResponse.getValue().stream()
                                                             .map(
                                                                     protocolMethodData ->
-                                                                            protocolMethodData.toObject(
+                                                                            cleanUp(protocolMethodData).toObject(
                                                                                     DataConnection.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
@@ -1521,7 +1521,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return validateDataConnectionWithResponse(BinaryData.fromObject(dataConnectionData), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ValidateResult.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ValidateResult.class));
     }
 
     /**
@@ -1543,7 +1543,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getDataConnectionWithResponse(dataConnectionName, requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(DataConnection.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
     }
 
     /**
@@ -1568,7 +1568,7 @@ public final class EasmAsyncClient {
         return createOrReplaceDataConnectionWithResponse(
                         dataConnectionName, BinaryData.fromObject(dataConnectionData), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(DataConnection.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
     }
 
     /**
@@ -1699,7 +1699,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return validateDiscoGroupWithResponse(BinaryData.fromObject(discoGroupData), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ValidateResult.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ValidateResult.class));
     }
 
     /**
@@ -1721,7 +1721,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getDiscoGroupWithResponse(groupName, requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoGroup.class));
     }
 
     /**
@@ -1744,7 +1744,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(discoGroupData), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoGroup.class));
     }
 
     /**
@@ -1798,7 +1798,7 @@ public final class EasmAsyncClient {
         }
         return listRunsWithResponse(groupName, requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(DiscoRunPageResult.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoRunPageResult.class));
     }
 
     /**
@@ -1820,7 +1820,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return listRunsWithResponse(groupName, requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(DiscoRunPageResult.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoRunPageResult.class));
     }
 
     /**
@@ -1931,7 +1931,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getDiscoTemplateWithResponse(templateId, requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(DiscoTemplate.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoTemplate.class));
     }
 
     /**
@@ -1951,7 +1951,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getBillableWithResponse(requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ReportBillableAssetSummaryResult.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportBillableAssetSummaryResult.class));
     }
 
     /**
@@ -1974,7 +1974,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getSnapshotWithResponse(BinaryData.fromObject(reportAssetSnapshotRequest), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ReportAssetSnapshotResult.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportAssetSnapshotResult.class));
     }
 
     /**
@@ -1997,7 +1997,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getSummaryWithResponse(BinaryData.fromObject(reportAssetSummaryRequest), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ReportAssetSummaryResult.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportAssetSummaryResult.class));
     }
 
     /**
@@ -2108,7 +2108,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getSavedFilterWithResponse(filterName, requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(SavedFilter.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
     }
 
     /**
@@ -2132,7 +2132,7 @@ public final class EasmAsyncClient {
         return createOrReplaceSavedFilterWithResponse(
                         filterName, BinaryData.fromObject(savedFilterData), requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(SavedFilter.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
     }
 
     /**
@@ -2265,7 +2265,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getTaskWithResponse(taskId, requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
     }
 
     /**
@@ -2287,6 +2287,10 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return cancelTaskWithResponse(taskId, requestOptions)
                 .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
+                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
+    }
+
+    private BinaryData cleanUp(BinaryData input) {
+        return BinaryData.fromString(input.toString().replaceAll("\\+0000", "+00:00"));
     }
 }

@@ -8,6 +8,7 @@ package com.azure.analytics.defender.easm.generated;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
+import com.azure.analytics.defender.easm.EasmAsyncClient;
 import com.azure.analytics.defender.easm.EasmClient;
 import com.azure.analytics.defender.easm.EasmClientBuilder;
 import com.azure.core.credential.AccessToken;
@@ -32,6 +33,7 @@ public class EasmClientTestBase extends TestProxyTestBase {
     protected final String uuidRegex = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
     private final String sanitizedUuid = "00000000-0000-0000-0000-000000000000";
     protected EasmClient easmClient;
+    protected EasmAsyncClient easmAsyncClient;
 
 
     @Override
@@ -63,5 +65,6 @@ public class EasmClientTestBase extends TestProxyTestBase {
             interceptorManager.addSanitizers(customSanitizers);
         }
         easmClient = easmClientbuilder.buildClient();
+        easmAsyncClient = easmClientbuilder.buildAsyncClient();
     }
 }

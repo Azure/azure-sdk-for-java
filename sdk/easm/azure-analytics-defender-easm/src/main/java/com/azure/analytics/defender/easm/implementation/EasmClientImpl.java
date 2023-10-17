@@ -1791,7 +1791,7 @@ public final class EasmClientImpl {
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        getValues(res.getValue(), "value"),
+                        getValues(res.getValue(), "value").stream().map(x -> cleanUp(x)).collect(Collectors.toList()),
                         getNextLink(res.getValue(), "nextLink"),
                         null));
     }
@@ -2986,7 +2986,7 @@ public final class EasmClientImpl {
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        getValues(res.getValue(), "value"),
+                        getValues(res.getValue(), "value").stream().map(x -> cleanUp(x)).collect(Collectors.toList()),
                         getNextLink(res.getValue(), "nextLink"),
                         null));
     }
@@ -3998,7 +3998,7 @@ public final class EasmClientImpl {
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        getValues(res.getValue(), "value"),
+                        getValues(res.getValue(), "value").stream().map(x -> cleanUp(x)).collect(Collectors.toList()),
                         getNextLink(res.getValue(), "nextLink"),
                         null));
     }
@@ -4745,7 +4745,7 @@ public final class EasmClientImpl {
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        getValues(res.getValue(), "value"),
+                        getValues(res.getValue(), "value").stream().map(x -> cleanUp(x)).collect(Collectors.toList()),
                         getNextLink(res.getValue(), "nextLink"),
                         null));
     }
@@ -5193,7 +5193,7 @@ public final class EasmClientImpl {
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        getValues(res.getValue(), "value"),
+                        getValues(res.getValue(), "value").stream().map(x -> cleanUp(x)).collect(Collectors.toList()),
                         getNextLink(res.getValue(), "nextLink"),
                         null));
     }
@@ -5604,7 +5604,7 @@ public final class EasmClientImpl {
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        getValues(res.getValue(), "value"),
+                        getValues(res.getValue(), "value").stream().map(x -> cleanUp(x)).collect(Collectors.toList()),
                         getNextLink(res.getValue(), "nextLink"),
                         null));
     }
@@ -5860,7 +5860,7 @@ public final class EasmClientImpl {
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        getValues(res.getValue(), "value"),
+                        getValues(res.getValue(), "value").stream().map(x -> cleanUp(x)).collect(Collectors.toList()),
                         getNextLink(res.getValue(), "nextLink"),
                         null));
     }
@@ -6009,7 +6009,7 @@ public final class EasmClientImpl {
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        getValues(res.getValue(), "value"),
+                        getValues(res.getValue(), "value").stream().map(x -> cleanUp(x)).collect(Collectors.toList()),
                         getNextLink(res.getValue(), "nextLink"),
                         null));
     }
@@ -6118,7 +6118,7 @@ public final class EasmClientImpl {
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        getValues(res.getValue(), "value"),
+                        getValues(res.getValue(), "value").stream().map(x -> cleanUp(x)).collect(Collectors.toList()),
                         getNextLink(res.getValue(), "nextLink"),
                         null));
     }
@@ -6219,7 +6219,7 @@ public final class EasmClientImpl {
                         res.getRequest(),
                         res.getStatusCode(),
                         res.getHeaders(),
-                        getValues(res.getValue(), "value"),
+                        getValues(res.getValue(), "value").stream().map(x -> cleanUp(x)).collect(Collectors.toList()),
                         getNextLink(res.getValue(), "nextLink"),
                         null));
     }
