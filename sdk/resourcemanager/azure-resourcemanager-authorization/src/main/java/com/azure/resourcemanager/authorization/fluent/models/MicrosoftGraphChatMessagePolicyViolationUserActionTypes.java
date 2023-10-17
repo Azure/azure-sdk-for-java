@@ -22,6 +22,15 @@ public final class MicrosoftGraphChatMessagePolicyViolationUserActionTypes
         fromString("reportFalsePositive");
 
     /**
+     * Creates a new instance of MicrosoftGraphChatMessagePolicyViolationUserActionTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphChatMessagePolicyViolationUserActionTypes() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphChatMessagePolicyViolationUserActionTypes from its string representation.
      *
      * @param name a name to look for.
