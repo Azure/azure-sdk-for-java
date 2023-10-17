@@ -39,7 +39,7 @@ public class ShareAudience extends ExpandableStringEnum<ShareAudience> {
      * @return the audience with the file service endpoint.
      */
     public static ShareAudience getShareServiceAccountAudience(String storageAccountName) {
-       return fromString(String.format("https://%s.file.core.windows.net/", storageAccountName));
+        return fromString(String.format("https://%s.file.core.windows.net/", storageAccountName));
     }
 
     /**
