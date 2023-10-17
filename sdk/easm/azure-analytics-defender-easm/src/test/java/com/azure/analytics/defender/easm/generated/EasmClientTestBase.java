@@ -21,6 +21,8 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public class EasmClientTestBase extends TestProxyTestBase {
     private final String sanitizedUuid = "00000000-0000-0000-0000-000000000000";
     protected EasmClient easmClient;
     protected EasmAsyncClient easmAsyncClient;
-
+    protected static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
 
     @Override
     protected void beforeTest() {

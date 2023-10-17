@@ -7,6 +7,7 @@ import com.azure.analytics.defender.easm.models.*;
 import com.azure.core.http.rest.PagedFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -44,36 +45,38 @@ public class AssetsAsyncTest extends EasmClientTestBase {
     @Test
     public void testAssetsListAsync() {
         PagedFlux<AssetResource> assetPageResponse = easmAsyncClient.listAssetResource(filter, "lastSeen", 0,  null);
-        AssetResource assetResponse = assetPageResponse.blockFirst();
-        assertEquals(assetName, assetResponse.getName());
-        assertInstanceOf(getAssetResourceClass(assetKind), assetResponse);
+
+        StepVerifier.create(assetPageResponse)
+            .assertNext(assetResource -> {
+                assertEquals(assetName, assetResource.getName());
+                assertInstanceOf(getAssetResourceClass(assetKind), assetResource);
+            })
+            .expectComplete()
+            .verify();
     }
 
     @Test
     public void testAssetsUpdateAsync() {
         AssetUpdateData assetUpdateData = new AssetUpdateData().setExternalId("new_external_id");
         Mono<Task> taskMono = easmAsyncClient.updateAssets(filter, assetUpdateData);
-        taskMono.subscribe(
-            value -> {
-                assertEquals(TaskState.COMPLETE, value.getState());
-                assertEquals(TaskPhase.COMPLETE, value.getPhase());
-            },
-            error -> {
-                System.err.println("Failed update task async " + error);
-            }
-        );
+        StepVerifier.create(taskMono)
+            .assertNext(task -> {
+                assertEquals(TaskState.COMPLETE, task.getState());
+                assertEquals(TaskPhase.COMPLETE, task.getPhase());
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testAssetsGetAsync() {
         Mono<AssetResource> assetMono = easmAsyncClient.getAssetResource(assetId);
-        assetMono.subscribe(
-            value -> {
-                assertInstanceOf(getAssetResourceClass(assetKind), value);
-            },
-            error -> {
-                System.err.println("Failed to get asset " + error);
-            }
-        );
+        StepVerifier.create(assetMono)
+            .assertNext(assetResource -> {
+                System.out.println("Asset name is: " + assetResource.getName());
+                assertInstanceOf(getAssetResourceClass(assetKind), assetResource);
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 }

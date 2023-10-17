@@ -7,6 +7,10 @@ import com.azure.analytics.defender.easm.models.*;
 import com.azure.core.http.rest.PagedFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,18 +23,16 @@ public class DataConnectionAsyncTest extends EasmClientTestBase {
     @Test
     public void testDataConnectionListAsync() {
         PagedFlux<DataConnection> dataConnectionPagedFlux = easmAsyncClient.listDataConnection(0);
-        Mono<DataConnection> dataConnectionMono = dataConnectionPagedFlux.next();
-        dataConnectionMono.subscribe(
-            value -> {
-                assertNotNull(value);
-                assertNotNull(value.getName());
-                assertNotNull(value.getDisplayName());
-                System.out.println("Display Name is: " + value.getDisplayName());
-            },
-            error -> {
-                System.err.println("Failed data connection list " + error);
-            }
-        );
+        List<DataConnection> dataConnectionList = new ArrayList<>();
+        StepVerifier.create(dataConnectionPagedFlux)
+            .thenConsumeWhile(dataConnectionList::add)
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+        for (DataConnection dataConnection : dataConnectionList) {
+            assertNotNull(dataConnection);
+            assertNotNull(dataConnection.getName());
+            assertNotNull(dataConnection.getDisplayName());
+        }
     }
 
     @Test
@@ -41,16 +43,15 @@ public class DataConnectionAsyncTest extends EasmClientTestBase {
         LogAnalyticsDataConnectionData request = new LogAnalyticsDataConnectionData(properties)
             .setName(newDataConnectionName)
             .setContent(DataConnectionContent.ATTACK_SURFACE_INSIGHTS)
-            .setFrequency(DataConnectionFrequency.WEEKLY);
+            .setFrequency(DataConnectionFrequency.WEEKLY)
+            .setFrequencyOffset(1);
         Mono<ValidateResult> validateResultMono = easmAsyncClient.validateDataConnection(request);
-        validateResultMono.subscribe(
-            validateResult -> {
-                assertNull(validateResult);
-            },
-            error -> {
-                System.out.println("Failed validate data connection " + error);
-            }
-        );
+        StepVerifier.create(validateResultMono)
+            .assertNext(validateResult -> {
+                assertNull(validateResult.getError());
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -61,22 +62,23 @@ public class DataConnectionAsyncTest extends EasmClientTestBase {
         LogAnalyticsDataConnectionData request = new LogAnalyticsDataConnectionData(properties)
             .setName(newDataConnectionName)
             .setContent(DataConnectionContent.ATTACK_SURFACE_INSIGHTS)
-            .setFrequency(DataConnectionFrequency.WEEKLY);
+            .setFrequency(DataConnectionFrequency.WEEKLY)
+            .setFrequencyOffset(1);
         Mono<DataConnection> dataConnectionMono = easmAsyncClient.createOrReplaceDataConnection(newDataConnectionName, request);
-        dataConnectionMono.subscribe(
-            dataConnection -> {
+        StepVerifier.create(dataConnectionMono)
+            .assertNext(dataConnection -> {
                 assertNotNull(dataConnection);
                 assertEquals(newDataConnectionName, dataConnection.getName());
                 assertEquals(newDataConnectionName, dataConnection.getDisplayName());
-            },
-            error -> {
-                System.err.println("Failed create or replace data connection " + error);
-            }
-        );
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testDataConnectionDeleteAsync() {
-        easmAsyncClient.deleteDataConnection(dataConnectionName);
+        Mono<Void> deleteMono = easmAsyncClient.deleteDataConnection(dataConnectionName);
+        StepVerifier.create(deleteMono)
+            .expectComplete();
     }
 }

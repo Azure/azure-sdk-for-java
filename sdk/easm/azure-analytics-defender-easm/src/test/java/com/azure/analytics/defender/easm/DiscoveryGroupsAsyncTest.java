@@ -7,7 +7,9 @@ import com.azure.analytics.defender.easm.models.*;
 import com.azure.core.http.rest.PagedFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class DiscoveryGroupsAsyncTest extends EasmClientTestBase {
     String newGroupName = "Async Test";
     String newGroupDescription = "Group created for async test";
     String seedKind = "domain";
-    String seedName = "sampleSeed.org";
+    String seedName = "sampleseed.org";
 
     private boolean doSeedsMatch(DiscoSource seedA, DiscoSource seedB) {
         return seedA.getKind() == seedB.getKind() && seedA.getName().equals(seedB.getName());
@@ -26,13 +28,19 @@ public class DiscoveryGroupsAsyncTest extends EasmClientTestBase {
 
     @Test
     public void testDiscoveryGroupsListAsync() {
+        List<DiscoGroup> discoGroupList = new ArrayList<>();
         PagedFlux<DiscoGroup> discoGroupPagedFlux = easmAsyncClient.listDiscoGroup(null, 0);
+        StepVerifier.create(discoGroupPagedFlux)
+            .thenConsumeWhile(discoGroupList::add)
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
-        DiscoGroup discoGroup = discoGroupPagedFlux.blockFirst();
-        assertNotNull(discoGroup.getName());
-        assertNotNull(discoGroup.getDescription());
-        assertNotNull(discoGroup.getTier());
-        assertNotNull(discoGroup.getId());
+        for (DiscoGroup discoGroup : discoGroupList) {
+            assertNotNull(discoGroup.getName());
+            assertNotNull(discoGroup.getDescription());
+            assertNotNull(discoGroup.getTier());
+            assertNotNull(discoGroup.getId());
+        }
     }
 
     @Test
@@ -41,47 +49,54 @@ public class DiscoveryGroupsAsyncTest extends EasmClientTestBase {
             .setKind(DiscoSourceKind.fromString(seedKind))
             .setName(seedName));
         DiscoGroupData discoGroupData = new DiscoGroupData()
-            .setName("validate group name")
+            .setName(newGroupName)
             .setDescription(newGroupDescription)
             .setSeeds(seeds)
             .setFrequencyMilliseconds(604800000L)
             .setTier("advanced");
+
         Mono<ValidateResult> validateResultMono = easmAsyncClient.validateDiscoGroup(discoGroupData);
-        validateResultMono.subscribe(
-            validateResult -> {
+        StepVerifier.create(validateResultMono)
+            .assertNext(validateResult -> {
                 assertNull(validateResult.getError());
-            }
-        );
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testDiscoveryGroupGetAsync() {
         Mono<DiscoGroup> discoGroupMono = easmAsyncClient.getDiscoGroup(knownGroupName);
-        discoGroupMono.subscribe(
-          discoGroup -> {
-              assertEquals(knownGroupName, discoGroup.getId());
-              assertEquals(knownGroupName, discoGroup.getName());
-              assertEquals(knownGroupName, discoGroup.getDisplayName());
-              assertNotNull(discoGroup.getDescription());
-              assertNotNull(discoGroup.getTier());
-          }
-        );
+        StepVerifier.create(discoGroupMono)
+            .assertNext(discoGroup -> {
+                assertEquals(knownGroupName, discoGroup.getId());
+                assertEquals(knownGroupName, discoGroup.getName());
+                assertEquals(knownGroupName, discoGroup.getDisplayName());
+                assertNotNull(discoGroup.getDescription());
+                assertNotNull(discoGroup.getTier());
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testDiscoveryGroupRunAsync() {
-        assertDoesNotThrow(() -> easmAsyncClient.runDiscoGroup(knownGroupName));
+        Mono<Void> runDiscoGroupMono = easmAsyncClient.runDiscoGroup(knownGroupName);
+        StepVerifier.create(runDiscoGroupMono)
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testDiscoveryGroupListRunsAsync() {
         Mono<DiscoRunPageResult> discoRunPageResultMono = easmAsyncClient.listRuns(knownGroupName, null, 0, 5);
-        discoRunPageResultMono.subscribe(
-            discoRunPageResult -> {
+        StepVerifier.create(discoRunPageResultMono)
+            .assertNext(discoRunPageResult -> {
                 List<DiscoRunResult> discoRunResults = discoRunPageResult.getValue();
                 assertNotNull(discoRunResults);
                 assertTrue(discoRunResults.size() > 2);
-            }
-        );
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 }

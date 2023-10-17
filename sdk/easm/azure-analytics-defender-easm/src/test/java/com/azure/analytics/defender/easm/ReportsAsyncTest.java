@@ -8,6 +8,7 @@ import com.azure.analytics.defender.easm.models.ReportAssetSnapshotResult;
 import com.azure.analytics.defender.easm.models.ReportBillableAssetSummaryResult;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,11 +18,12 @@ public class ReportsAsyncTest extends EasmClientTestBase {
     @Test
     public void testReportsBillableAsync() {
         Mono<ReportBillableAssetSummaryResult> reportBillableAssetSummaryResultMono = easmAsyncClient.getBillable();
-        reportBillableAssetSummaryResultMono.subscribe(
-          reportBillableAssetSummaryResult -> {
-              assertTrue(reportBillableAssetSummaryResult.getAssetSummaries().size() > 0);
-          }
-        );
+        StepVerifier.create(reportBillableAssetSummaryResultMono)
+            .assertNext(reportBillableAssetSummaryResult -> {
+                assertTrue(reportBillableAssetSummaryResult.getAssetSummaries().size() > 0);
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -31,13 +33,14 @@ public class ReportsAsyncTest extends EasmClientTestBase {
             .setPage(0)
             .setSize(25);
         Mono<ReportAssetSnapshotResult> reportAssetSnapshotResultMono = easmAsyncClient.getSnapshot(reportAssetSnapshotRequest);
-        reportAssetSnapshotResultMono.subscribe(
-          reportAssetSnapshotResult -> {
-              assertNotNull(reportAssetSnapshotResult.getDisplayName());
-              assertEquals(metric, reportAssetSnapshotResult.getMetric());
-              assertNotNull(reportAssetSnapshotResult.getDescription());
-              assertNotNull(reportAssetSnapshotResult.getAssets());
-          }
-        );
+        StepVerifier.create(reportAssetSnapshotResultMono)
+            .assertNext(reportAssetSnapshotResult -> {
+                assertNotNull(reportAssetSnapshotResult.getDisplayName());
+                assertEquals(metric, reportAssetSnapshotResult.getMetric());
+                assertNotNull(reportAssetSnapshotResult.getDescription());
+                assertNotNull(reportAssetSnapshotResult.getAssets());
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 }
