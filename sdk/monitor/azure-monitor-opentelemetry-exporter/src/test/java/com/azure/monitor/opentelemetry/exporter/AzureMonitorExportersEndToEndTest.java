@@ -277,8 +277,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
     private static Map<String, String> getStatsbeatConfiguration() {
         Map<String, String> map = new HashMap<>(3);
         map.put("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV);
-        map.put("STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME ", "1");
-        map.put("STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME ", "1");
+        map.put("STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME", "1");
+        map.put("STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME", "1");
         return map;
     }
 

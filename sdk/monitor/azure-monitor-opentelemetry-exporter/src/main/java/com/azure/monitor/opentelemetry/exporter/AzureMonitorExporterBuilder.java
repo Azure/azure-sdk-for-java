@@ -78,8 +78,8 @@ public final class AzureMonitorExporterBuilder {
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
         "https://monitor.azure.com//.default";
 
-    private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME  = "STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME ";
-    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME  = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME ";
+    private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME = "STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME";
+    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME";
 
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
@@ -248,7 +248,7 @@ public final class AzureMonitorExporterBuilder {
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     public SpanExporter buildTraceExporter() {
-        ConfigProperties defaultConfig = DefaultConfigProperties.createForTest(Collections.emptyMap());
+        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
         internalBuildAndFreeze(defaultConfig);
         // TODO (trask) how to pass along configuration properties?
         return buildTraceExporter(defaultConfig);
@@ -302,26 +302,26 @@ public final class AzureMonitorExporterBuilder {
             return props;
         });
         sdkBuilder.addSpanExporterCustomizer(
-            (spanExporter, config) -> {
+            (spanExporter, configProperties) -> {
                 if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                    internalBuildAndFreeze(config);
-                    spanExporter = buildTraceExporter(config);
+                    internalBuildAndFreeze(configProperties);
+                    spanExporter = buildTraceExporter(configProperties);
                 }
                 return spanExporter;
             });
         sdkBuilder.addMetricExporterCustomizer(
-            (metricExporter, config) -> {
+            (metricExporter, configProperties) -> {
                 if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                    internalBuildAndFreeze(config);
-                    metricExporter = buildMetricExporter(config);
+                    internalBuildAndFreeze(configProperties);
+                    metricExporter = buildMetricExporter(configProperties);
                 }
                 return metricExporter;
             });
         sdkBuilder.addLogRecordExporterCustomizer(
-            (logRecordExporter, config) -> {
+            (logRecordExporter, configProperties) -> {
                 if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                    internalBuildAndFreeze(config);
-                    logRecordExporter = buildLogRecordExporter(config);
+                    internalBuildAndFreeze(configProperties);
+                    logRecordExporter = buildLogRecordExporter(configProperties);
                 }
                 return logRecordExporter;
             });
@@ -351,8 +351,8 @@ public final class AzureMonitorExporterBuilder {
 
     // One caveat: ConfigProperties will get used only once when initializing/starting StatsbeatModule.
     // When a customer call build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) multiple times with a diff ConfigProperties each time,
-    // the new ConfigProperties will not get applied to StatsbeatModule because of "frozen" guard. Luckily, we're using it for testing only.
-    // We might need to revisit this approach later.
+    // the new ConfigProperties will not get applied to StatsbeatModule because of "frozen" guard. Luckily, we're using the config properties
+    // in StatsbeatModule for testing only. We might need to revisit this approach later.
     private void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
             builtHttpPipeline = createHttpPipeline();
@@ -467,7 +467,7 @@ public final class AzureMonitorExporterBuilder {
     @Nullable
     private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
         StatsbeatModule statsbeatModule = null;
-        if (connectionString != null) {
+        if (getConnectionString(configProperties) != null) {
             statsbeatModule = new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
 
         }
@@ -478,7 +478,7 @@ public final class AzureMonitorExporterBuilder {
         statsbeatModule.start(
             builtTelemetryItemExporter,
             this::getStatsbeatConnectionString,
-            connectionString::getInstrumentationKey,
+            getConnectionString(configProperties)::getInstrumentationKey,
             false,
             configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)), // Statsbeat short interval
             configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)), // Statsbeat long interval
