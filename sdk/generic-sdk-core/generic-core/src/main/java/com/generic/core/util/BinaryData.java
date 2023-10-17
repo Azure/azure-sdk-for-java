@@ -3,16 +3,15 @@
 
 package com.generic.core.util;
 
-import com.generic.core.implementation.serializer.BinaryDataContent;
-import com.generic.core.implementation.serializer.BinaryDataHelper;
-import com.generic.core.implementation.serializer.ByteArrayContent;
-import com.generic.core.implementation.serializer.ByteBufferContent;
-import com.generic.core.implementation.serializer.FileContent;
-import com.generic.core.implementation.serializer.InputStreamContent;
-import com.generic.core.implementation.serializer.ListByteBufferContent;
-import com.generic.core.implementation.serializer.SerializableContent;
-import com.generic.core.implementation.serializer.StringContent;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.implementation.util.BinaryDataContent;
+import com.generic.core.implementation.util.BinaryDataHelper;
+import com.generic.core.implementation.util.ByteArrayContent;
+import com.generic.core.implementation.util.ByteBufferContent;
+import com.generic.core.implementation.util.FileContent;
+import com.generic.core.implementation.util.InputStreamContent;
+import com.generic.core.implementation.util.ListByteBufferContent;
+import com.generic.core.implementation.util.SerializableContent;
+import com.generic.core.implementation.util.StringContent;
 import com.generic.core.util.serializer.JsonSerializer;
 import com.generic.core.util.serializer.JsonSerializerProvider;
 import com.generic.core.util.serializer.JsonSerializerProviders;
@@ -29,7 +28,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
-import static com.generic.core.implementation.serializer.BinaryDataContent.STREAM_READ_SIZE;
+import static com.generic.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 
 /**
  * BinaryData is a convenient data interchange class for use throughout the Azure SDK for Java. Put simply, BinaryData
@@ -98,9 +97,7 @@ import static com.generic.core.implementation.serializer.BinaryDataContent.STREA
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
 public final class BinaryData {
-    private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
-    static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private final BinaryDataContent content;
 
     BinaryData(BinaryDataContent content) {

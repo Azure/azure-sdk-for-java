@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.serializer;
+package com.generic.core.implementation.util;
 
 import java.io.IOException;
 import java.io.InputStream;

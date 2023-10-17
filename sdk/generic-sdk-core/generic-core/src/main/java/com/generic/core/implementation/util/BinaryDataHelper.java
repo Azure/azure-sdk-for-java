@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.serializer;
+package com.generic.core.implementation.util;
 
-import com.generic.core.implementation.serializer.BinaryDataContent;
 import com.generic.core.util.BinaryData;
 
 /**
