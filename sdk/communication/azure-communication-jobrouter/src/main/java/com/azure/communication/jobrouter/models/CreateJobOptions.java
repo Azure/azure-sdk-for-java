@@ -66,14 +66,14 @@ public final class CreateJobOptions {
     /*
      * The matchingMode property.
      */
-    private RouterJobMatchingMode matchingMode;
+    private JobMatchingMode matchingMode;
 
     /**
      * Get the matchingMode property: The matchingMode property.
      *
      * @return the matchingMode value.
      */
-    public RouterJobMatchingMode getMatchingMode() {
+    public JobMatchingMode getMatchingMode() {
         return this.matchingMode;
     }
 
@@ -83,7 +83,7 @@ public final class CreateJobOptions {
      * @param matchingMode the matchingMode value to set.
      * @return the RouterJobInternal object itself.
      */
-    public CreateJobOptions setMatchingMode(RouterJobMatchingMode matchingMode) {
+    public CreateJobOptions setMatchingMode(JobMatchingMode matchingMode) {
         this.matchingMode = matchingMode;
         return this;
     }

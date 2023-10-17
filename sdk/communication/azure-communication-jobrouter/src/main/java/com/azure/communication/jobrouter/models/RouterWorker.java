@@ -4,132 +4,104 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.accesshelpers.LabelValueConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
-import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
-import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /** An entity for jobs to be routed to. */
 @Fluent
 public final class RouterWorker {
-    /**
-     * Public constructor.
-     *
-     * @param id The id
-     */
-    public RouterWorker(String id) {
-        this.id = id;
-    }
-
-    /**
-     * Package-private constructor of the class, used internally.
-     *
-     * @param internal The internal RouterWorker
-     */
-    RouterWorker(RouterWorkerInternal internal) {
-        id = internal.getId();
-        state = RouterWorkerState.fromString(internal.getState().toString());
-        offers = WorkerAdapter.convertOffersToPublic(internal.getOffers());
-        assignedJobs = WorkerAdapter.convertAssignmentsToPublic(internal.getAssignedJobs());
-        loadRatio = internal.getLoadRatio();
-
-        setLabels(internal.getLabels().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> LabelValueConstructorProxy.create(entry.getValue()))));
-        setTags(internal.getTags().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> LabelValueConstructorProxy.create(entry.getValue()))));
-        setQueueAssignments(internal.getQueueAssignments().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> new RouterQueueAssignment())));
-        setAvailableForOffers(internal.isAvailableForOffers());
-        setChannelConfigurations(WorkerAdapter.convertChannelConfigurationsToPublic(internal.getChannelConfigurations()));
-        setTotalCapacity(internal.getTotalCapacity());
-    }
-
-    static {
-        RouterWorkerConstructorProxy.setAccessor(internal -> new RouterWorker(internal));
-    }
-
     /*
-     * The id property.
+     * Id of the worker.
      */
+    @Generated
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The current state of the worker.
      */
+    @Generated
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private RouterWorkerState state;
 
     /*
      * The queue(s) that this worker can receive work from.
      */
+    @Generated
     @JsonProperty(value = "queueAssignments")
     private Map<String, RouterQueueAssignment> queueAssignments;
 
     /*
-     * The total capacity score this worker has to manage multiple concurrent
-     * jobs.
+     * The total capacity score this worker has to manage multiple concurrent jobs.
      */
+    @Generated
     @JsonProperty(value = "totalCapacity")
     private Integer totalCapacity;
 
     /*
-     * A set of key/value pairs that are identifying attributes used by the
-     * rules engines to make decisions.
+     * A set of key/value pairs that are identifying attributes used by the rules
+     * engines to make decisions.
      */
+    @Generated
     @JsonProperty(value = "labels")
-    private Map<String, LabelValue> labels;
+    private Map<String, Object> labels;
 
     /*
      * A set of non-identifying attributes attached to this worker.
      */
+    @Generated
     @JsonProperty(value = "tags")
-    private Map<String, LabelValue> tags;
+    private Map<String, Object> tags;
 
     /*
-     * The channel(s) this worker can handle and their impact on the workers
-     * capacity.
+     * The channel(s) this worker can handle and their impact on the workers capacity.
      */
+    @Generated
     @JsonProperty(value = "channelConfigurations")
     private Map<String, ChannelConfiguration> channelConfigurations;
 
     /*
      * A list of active offers issued to this worker.
      */
+    @Generated
     @JsonProperty(value = "offers", access = JsonProperty.Access.WRITE_ONLY)
     private List<RouterJobOffer> offers;
 
     /*
      * A list of assigned jobs attached to this worker.
      */
+    @Generated
     @JsonProperty(value = "assignedJobs", access = JsonProperty.Access.WRITE_ONLY)
     private List<RouterWorkerAssignment> assignedJobs;
 
     /*
-     * A value indicating the workers capacity. A value of '1' means all
-     * capacity is consumed. A value of '0' means no capacity is currently
-     * consumed.
+     * A value indicating the workers capacity. A value of '1' means all capacity is
+     * consumed. A value of '0' means no capacity is currently consumed.
      */
+    @Generated
     @JsonProperty(value = "loadRatio", access = JsonProperty.Access.WRITE_ONLY)
     private Double loadRatio;
 
     /*
      * A flag indicating this worker is open to receive offers or not.
      */
+    @Generated
     @JsonProperty(value = "availableForOffers")
     private Boolean availableForOffers;
 
+    /** Creates an instance of RouterWorker class. */
+    @Generated
+    public RouterWorker() {}
+
     /**
-     * Get the id property: The id property.
+     * Get the id property: Id of the worker.
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -139,6 +111,7 @@ public final class RouterWorker {
      *
      * @return the state value.
      */
+    @Generated
     public RouterWorkerState getState() {
         return this.state;
     }
@@ -148,6 +121,7 @@ public final class RouterWorker {
      *
      * @return the queueAssignments value.
      */
+    @Generated
     public Map<String, RouterQueueAssignment> getQueueAssignments() {
         return this.queueAssignments;
     }
@@ -158,6 +132,7 @@ public final class RouterWorker {
      * @param queueAssignments the queueAssignments value to set.
      * @return the RouterWorker object itself.
      */
+    @Generated
     public RouterWorker setQueueAssignments(Map<String, RouterQueueAssignment> queueAssignments) {
         this.queueAssignments = queueAssignments;
         return this;
@@ -168,6 +143,7 @@ public final class RouterWorker {
      *
      * @return the totalCapacity value.
      */
+    @Generated
     public Integer getTotalCapacity() {
         return this.totalCapacity;
     }
@@ -178,6 +154,7 @@ public final class RouterWorker {
      * @param totalCapacity the totalCapacity value to set.
      * @return the RouterWorker object itself.
      */
+    @Generated
     public RouterWorker setTotalCapacity(Integer totalCapacity) {
         this.totalCapacity = totalCapacity;
         return this;
@@ -189,7 +166,8 @@ public final class RouterWorker {
      *
      * @return the labels value.
      */
-    public Map<String, LabelValue> getLabels() {
+    @Generated
+    public Map<String, Object> getLabels() {
         return this.labels;
     }
 
@@ -200,7 +178,8 @@ public final class RouterWorker {
      * @param labels the labels value to set.
      * @return the RouterWorker object itself.
      */
-    public RouterWorker setLabels(Map<String, LabelValue> labels) {
+    @Generated
+    public RouterWorker setLabels(Map<String, Object> labels) {
         this.labels = labels;
         return this;
     }
@@ -210,7 +189,8 @@ public final class RouterWorker {
      *
      * @return the tags value.
      */
-    public Map<String, LabelValue> getTags() {
+    @Generated
+    public Map<String, Object> getTags() {
         return this.tags;
     }
 
@@ -220,7 +200,8 @@ public final class RouterWorker {
      * @param tags the tags value to set.
      * @return the RouterWorker object itself.
      */
-    public RouterWorker setTags(Map<String, LabelValue> tags) {
+    @Generated
+    public RouterWorker setTags(Map<String, Object> tags) {
         this.tags = tags;
         return this;
     }
@@ -231,6 +212,7 @@ public final class RouterWorker {
      *
      * @return the channelConfigurations value.
      */
+    @Generated
     public Map<String, ChannelConfiguration> getChannelConfigurations() {
         return this.channelConfigurations;
     }
@@ -242,6 +224,7 @@ public final class RouterWorker {
      * @param channelConfigurations the channelConfigurations value to set.
      * @return the RouterWorker object itself.
      */
+    @Generated
     public RouterWorker setChannelConfigurations(Map<String, ChannelConfiguration> channelConfigurations) {
         this.channelConfigurations = channelConfigurations;
         return this;
@@ -252,6 +235,7 @@ public final class RouterWorker {
      *
      * @return the offers value.
      */
+    @Generated
     public List<RouterJobOffer> getOffers() {
         return this.offers;
     }
@@ -261,6 +245,7 @@ public final class RouterWorker {
      *
      * @return the assignedJobs value.
      */
+    @Generated
     public List<RouterWorkerAssignment> getAssignedJobs() {
         return this.assignedJobs;
     }
@@ -271,6 +256,7 @@ public final class RouterWorker {
      *
      * @return the loadRatio value.
      */
+    @Generated
     public Double getLoadRatio() {
         return this.loadRatio;
     }
@@ -280,6 +266,7 @@ public final class RouterWorker {
      *
      * @return the availableForOffers value.
      */
+    @Generated
     public Boolean isAvailableForOffers() {
         return this.availableForOffers;
     }
@@ -290,6 +277,7 @@ public final class RouterWorker {
      * @param availableForOffers the availableForOffers value to set.
      * @return the RouterWorker object itself.
      */
+    @Generated
     public RouterWorker setAvailableForOffers(Boolean availableForOffers) {
         this.availableForOffers = availableForOffers;
         return this;
