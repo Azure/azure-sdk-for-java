@@ -3,10 +3,9 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.HttpPipelineNextPolicy;
-import com.generic.core.models.ContentType;
-import com.generic.core.models.Headers;
 import com.generic.core.http.HttpHeaderName;
+import com.generic.core.http.HttpPipelineNextPolicy;
+import com.generic.core.models.Headers;
 import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -34,6 +33,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     // private static final ObjectMapperShim PRETTY_PRINTER = ObjectMapperShim.createPrettyPrintMapper();
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
+    private static final String APPLICATION_JSON = "application/json";
+    private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
 
     // Use a cache to retain the caller method ClientLogger.
     //
@@ -318,7 +319,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         String body) {
         String result = body;
         if (prettyPrintBody && contentType != null
-            && (contentType.startsWith(ContentType.APPLICATION_JSON) || contentType.startsWith("text/json"))) {
+            && (contentType.startsWith(APPLICATION_JSON) || contentType.startsWith("text/json"))) {
             try {
                 // final Object deserialized = PRETTY_PRINTER.readTree(body);
                 // result = PRETTY_PRINTER.writeValueAsString(deserialized);
@@ -364,7 +365,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A flag indicating if the request or response body should be logged.
      */
     private static boolean shouldBodyBeLogged(String contentTypeHeader, long contentLength) {
-        return !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
+        return !APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
             && contentLength != 0
             && contentLength < MAX_BODY_LOG_SIZE;
     }
