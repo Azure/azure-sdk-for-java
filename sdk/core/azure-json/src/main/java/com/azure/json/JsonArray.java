@@ -144,7 +144,12 @@ public class JsonArray extends JsonElement {
         return this.elements.remove(index);
     }
 
-    public int getSize() {
+    /**
+     * Size of the JsonElement array.
+     * 
+     * @return The size of the array.
+     */
+    public int size() {
         return elements.size();
     }
 
