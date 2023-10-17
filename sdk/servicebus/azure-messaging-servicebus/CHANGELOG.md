@@ -1,14 +1,13 @@
 # Release History
 
-## 7.15.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 7.14.5 (2023-10-16)
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.43.0` to `1.44.0`.
+- Upgraded `azure-core-amqp` from `2.8.9` to `2.8.10`.
+- Upgraded `azure-identity` from `1.10.1` to `1.10.3`.
 
 ## 7.14.4 (2023-09-18)
 

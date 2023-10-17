@@ -28,6 +28,10 @@ public final class DeepCreatedOriginGroup {
     @JsonProperty(value = "properties")
     private DeepCreatedOriginGroupProperties innerProperties;
 
+    /** Creates an instance of DeepCreatedOriginGroup class. */
+    public DeepCreatedOriginGroup() {
+    }
+
     /**
      * Get the name property: Origin group name which must be unique within the endpoint.
      *

@@ -20,6 +20,15 @@ public final class MatchProcessingBehavior extends ExpandableStringEnum<MatchPro
     public static final MatchProcessingBehavior STOP = fromString("Stop");
 
     /**
+     * Creates a new instance of MatchProcessingBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MatchProcessingBehavior() {
+    }
+
+    /**
      * Creates or finds a MatchProcessingBehavior from its string representation.
      *
      * @param name a name to look for.

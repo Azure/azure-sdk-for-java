@@ -41,6 +41,15 @@ public final class ClientPortOperator extends ExpandableStringEnum<ClientPortOpe
     public static final ClientPortOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of ClientPortOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClientPortOperator() {
+    }
+
+    /**
      * Creates or finds a ClientPortOperator from its string representation.
      *
      * @param name a name to look for.

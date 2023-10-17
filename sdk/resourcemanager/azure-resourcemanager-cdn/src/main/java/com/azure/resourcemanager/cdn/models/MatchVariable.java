@@ -68,6 +68,15 @@ public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
     public static final MatchVariable SSL_PROTOCOL = fromString("SslProtocol");
 
     /**
+     * Creates a new instance of MatchVariable value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MatchVariable() {
+    }
+
+    /**
      * Creates or finds a MatchVariable from its string representation.
      *
      * @param name a name to look for.

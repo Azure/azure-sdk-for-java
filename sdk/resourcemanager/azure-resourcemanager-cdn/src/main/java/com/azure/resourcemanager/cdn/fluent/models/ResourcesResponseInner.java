@@ -25,6 +25,10 @@ public final class ResourcesResponseInner {
     @JsonProperty(value = "customDomains")
     private List<ResourcesResponseCustomDomainsItem> customDomains;
 
+    /** Creates an instance of ResourcesResponseInner class. */
+    public ResourcesResponseInner() {
+    }
+
     /**
      * Get the endpoints property: The endpoints property.
      *
