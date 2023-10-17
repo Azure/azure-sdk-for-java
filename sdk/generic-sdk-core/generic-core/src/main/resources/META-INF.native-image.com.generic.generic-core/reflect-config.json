@@ -11,7 +11,7 @@
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
     "allPublicMethods": true
-  }
+  },
   {
     "name":"com.generic.core.util.ExpandableStringEnum",
     "allDeclaredConstructors": true,
