@@ -200,7 +200,8 @@ public class Configuration implements Cloneable {
     /*
      * Gets the global configuration shared by all client libraries.
      */
-    private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
+    private static final Configuration GLOBAL_CONFIGURATION =
+        new Configuration(Collections.emptyMap(), EnvironmentConfiguration.getGlobalConfiguration(), null, null);
 
     private static final ClientLogger LOGGER = new ClientLogger(Configuration.class);
 
@@ -209,16 +210,6 @@ public class Configuration implements Cloneable {
     private final String path;
     private final Configuration sharedConfiguration;
     private final boolean isEmpty;
-
-    /**
-     * Constructs a configuration containing the known Azure properties constants.
-     *
-     * before creating configuration and keep it immutable.
-     */
-    @Deprecated
-    public Configuration() {
-        this(Collections.emptyMap(), EnvironmentConfiguration.getGlobalConfiguration(), null, null);
-    }
 
     /**
      * Constructs a configuration containing the known Azure properties constants. Use to
@@ -315,38 +306,6 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * Adds a configuration with the given value.
-     * <p>
-     * This will overwrite the previous configuration value if it existed.
-     *
-     * @param name Name of the configuration.
-     * @param value Value of the configuration.
-     * @return The updated Configuration object.
-     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} to provide all properties before
-     * creating configuration.
-     */
-    @Deprecated
-    public Configuration put(String name, String value) {
-        environmentConfiguration.put(name, value);
-        return this;
-    }
-
-    /**
-     * Removes the configuration.
-     * <p>
-     * This returns the value of the configuration if it previously existed.
-     *
-     * @param name Name of the configuration.
-     * @return The configuration if it previously existed, otherwise null.
-     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} to provide all properties before
-     * creating configuration.
-     */
-    @Deprecated
-    public String remove(String name) {
-        return environmentConfiguration.remove(name);
-    }
-
-    /**
      * Determines if the system property or environment variable is defined.
      * <p>
      * Use {@link Configuration#contains(ConfigurationProperty)} overload to get explicit configuration or environment
@@ -361,19 +320,6 @@ public class Configuration implements Cloneable {
      */
     public boolean contains(String name) {
         return get(name) != null;
-    }
-
-    /**
-     * Clones this Configuration object.
-     *
-     * @return A clone of the Configuration object.
-     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} to create configuration.
-     */
-    @SuppressWarnings("CloneDoesntCallSuperClone")
-    @Deprecated
-    public Configuration clone() {
-        return new Configuration(configurations, new EnvironmentConfiguration(environmentConfiguration), path,
-            sharedConfiguration);
     }
 
     /**
