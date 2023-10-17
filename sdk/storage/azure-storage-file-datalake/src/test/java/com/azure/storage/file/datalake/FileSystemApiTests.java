@@ -2219,7 +2219,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     @Test
     public void defaultAudience() {
         DataLakeFileSystemClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
+            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
                 .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
                 .audience(null) // should default to "https://storage.azure.com/"
                 .buildClient();
@@ -2241,7 +2241,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     @Test
     public void audienceError() {
         DataLakeFileSystemClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint())
+            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
                 .audience(DataLakeAudience.getDataLakeServiceAccountAudience("badAudience"))
                 .buildClient();
 
