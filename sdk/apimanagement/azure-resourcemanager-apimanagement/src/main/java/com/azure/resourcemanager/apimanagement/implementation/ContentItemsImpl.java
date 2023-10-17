@@ -13,7 +13,6 @@ import com.azure.resourcemanager.apimanagement.fluent.ContentItemsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.ContentItemContractInner;
 import com.azure.resourcemanager.apimanagement.models.ContentItemContract;
 import com.azure.resourcemanager.apimanagement.models.ContentItems;
-import com.azure.resourcemanager.apimanagement.models.ContentItemsCreateOrUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.ContentItemsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.ContentItemsGetResponse;
 
@@ -44,10 +43,6 @@ public final class ContentItemsImpl implements ContentItems {
         return Utils.mapPage(inner, inner1 -> new ContentItemContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String contentTypeId, String contentItemId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, contentTypeId, contentItemId);
-    }
-
     public ContentItemsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context) {
         return this
@@ -55,15 +50,8 @@ public final class ContentItemsImpl implements ContentItems {
             .getEntityTagWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, context);
     }
 
-    public ContentItemContract get(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId) {
-        ContentItemContractInner inner =
-            this.serviceClient().get(resourceGroupName, serviceName, contentTypeId, contentItemId);
-        if (inner != null) {
-            return new ContentItemContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String contentTypeId, String contentItemId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, contentTypeId, contentItemId);
     }
 
     public Response<ContentItemContract> getWithResponse(
@@ -81,43 +69,15 @@ public final class ContentItemsImpl implements ContentItems {
         }
     }
 
-    public ContentItemContract createOrUpdate(
+    public ContentItemContract get(
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId) {
         ContentItemContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, contentTypeId, contentItemId);
+            this.serviceClient().get(resourceGroupName, serviceName, contentTypeId, contentItemId);
         if (inner != null) {
             return new ContentItemContractImpl(inner, this.manager());
         } else {
             return null;
         }
-    }
-
-    public Response<ContentItemContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String contentTypeId,
-        String contentItemId,
-        String ifMatch,
-        Context context) {
-        ContentItemsCreateOrUpdateResponse inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, contentTypeId, contentItemId, ifMatch, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ContentItemContractImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public void delete(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, contentTypeId, contentItemId, ifMatch);
     }
 
     public Response<Void> deleteWithResponse(
@@ -132,11 +92,157 @@ public final class ContentItemsImpl implements ContentItems {
             .deleteWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, ifMatch, context);
     }
 
+    public void delete(
+        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, contentTypeId, contentItemId, ifMatch);
+    }
+
+    public ContentItemContract getById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String serviceName = Utils.getValueFromIdByName(id, "service");
+        if (serviceName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+        }
+        String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
+        if (contentTypeId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
+        }
+        String contentItemId = Utils.getValueFromIdByName(id, "contentItems");
+        if (contentItemId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentItems'.", id)));
+        }
+        return this
+            .getWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, Context.NONE)
+            .getValue();
+    }
+
+    public Response<ContentItemContract> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String serviceName = Utils.getValueFromIdByName(id, "service");
+        if (serviceName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+        }
+        String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
+        if (contentTypeId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
+        }
+        String contentItemId = Utils.getValueFromIdByName(id, "contentItems");
+        if (contentItemId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentItems'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String serviceName = Utils.getValueFromIdByName(id, "service");
+        if (serviceName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+        }
+        String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
+        if (contentTypeId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
+        }
+        String contentItemId = Utils.getValueFromIdByName(id, "contentItems");
+        if (contentItemId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentItems'.", id)));
+        }
+        String localIfMatch = null;
+        this
+            .deleteWithResponse(
+                resourceGroupName, serviceName, contentTypeId, contentItemId, localIfMatch, Context.NONE);
+    }
+
+    public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String serviceName = Utils.getValueFromIdByName(id, "service");
+        if (serviceName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+        }
+        String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
+        if (contentTypeId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
+        }
+        String contentItemId = Utils.getValueFromIdByName(id, "contentItems");
+        if (contentItemId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentItems'.", id)));
+        }
+        return this.deleteWithResponse(resourceGroupName, serviceName, contentTypeId, contentItemId, ifMatch, context);
+    }
+
     private ContentItemsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.apimanagement.ApiManagementManager manager() {
         return this.serviceManager;
+    }
+
+    public ContentItemContractImpl define(String name) {
+        return new ContentItemContractImpl(name, this.manager());
     }
 }

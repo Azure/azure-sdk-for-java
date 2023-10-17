@@ -73,6 +73,14 @@ public class RedisCommonProperties {
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
+    /*
+     * Optional: Specifies the update channel for the monthly Redis updates your Redis Cache will receive. Caches using
+     * 'Preview' update channel get latest Redis updates at least 4 weeks ahead of 'Stable' channel caches. Default
+     * value is 'Stable'.
+     */
+    @JsonProperty(value = "updateChannel")
+    private UpdateChannel updateChannel;
+
     /** Creates an instance of RedisCommonProperties class. */
     public RedisCommonProperties() {
     }
@@ -268,6 +276,30 @@ public class RedisCommonProperties {
      */
     public RedisCommonProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the updateChannel property: Optional: Specifies the update channel for the monthly Redis updates your Redis
+     * Cache will receive. Caches using 'Preview' update channel get latest Redis updates at least 4 weeks ahead of
+     * 'Stable' channel caches. Default value is 'Stable'.
+     *
+     * @return the updateChannel value.
+     */
+    public UpdateChannel updateChannel() {
+        return this.updateChannel;
+    }
+
+    /**
+     * Set the updateChannel property: Optional: Specifies the update channel for the monthly Redis updates your Redis
+     * Cache will receive. Caches using 'Preview' update channel get latest Redis updates at least 4 weeks ahead of
+     * 'Stable' channel caches. Default value is 'Stable'.
+     *
+     * @param updateChannel the updateChannel value to set.
+     * @return the RedisCommonProperties object itself.
+     */
+    public RedisCommonProperties withUpdateChannel(UpdateChannel updateChannel) {
+        this.updateChannel = updateChannel;
         return this;
     }
 

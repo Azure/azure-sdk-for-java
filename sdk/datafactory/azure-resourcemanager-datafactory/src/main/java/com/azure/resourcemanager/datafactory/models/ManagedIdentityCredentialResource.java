@@ -65,11 +65,13 @@ public interface ManagedIdentityCredentialResource {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The ManagedIdentityCredentialResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ManagedIdentityCredentialResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ManagedIdentityCredentialResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -81,6 +83,7 @@ public interface ManagedIdentityCredentialResource {
              */
             WithProperties withExistingFactory(String resourceGroupName, String factoryName);
         }
+
         /** The stage of the ManagedIdentityCredentialResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -91,6 +94,7 @@ public interface ManagedIdentityCredentialResource {
              */
             WithCreate withProperties(ManagedIdentityCredential properties);
         }
+
         /**
          * The stage of the ManagedIdentityCredentialResource definition which contains all the minimum required
          * properties for the resource to be created, but also allows for any other optional properties to be specified.
@@ -111,6 +115,7 @@ public interface ManagedIdentityCredentialResource {
              */
             ManagedIdentityCredentialResource create(Context context);
         }
+
         /** The stage of the ManagedIdentityCredentialResource definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -124,6 +129,7 @@ public interface ManagedIdentityCredentialResource {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the ManagedIdentityCredentialResource resource.
      *
@@ -148,6 +154,7 @@ public interface ManagedIdentityCredentialResource {
          */
         ManagedIdentityCredentialResource apply(Context context);
     }
+
     /** The ManagedIdentityCredentialResource update stages. */
     interface UpdateStages {
         /** The stage of the ManagedIdentityCredentialResource update allowing to specify properties. */
@@ -160,6 +167,7 @@ public interface ManagedIdentityCredentialResource {
              */
             Update withProperties(ManagedIdentityCredential properties);
         }
+
         /** The stage of the ManagedIdentityCredentialResource update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -173,6 +181,7 @@ public interface ManagedIdentityCredentialResource {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

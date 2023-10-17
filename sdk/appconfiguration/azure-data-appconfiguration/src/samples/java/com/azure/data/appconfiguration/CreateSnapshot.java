@@ -3,12 +3,12 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.experimental.models.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
-import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
-import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -43,32 +43,32 @@ public class CreateSnapshot {
         ConfigurationSetting setting2 = client.setConfigurationSetting("TestKey2", null, "value2");
         System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue());
         // Prepare the snapshot filters
-        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("Test*"));
+        filters.add(new ConfigurationSettingsFilter("Test*"));
 
         // Create a snapshot
         String snapshotName = "{snapshotName}";
-        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
-            client.beginCreateSnapshot(snapshotName, new ConfigurationSettingSnapshot(filters), Context.NONE);
+        SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            client.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();
-        ConfigurationSettingSnapshot snapshot = poller.getFinalResult();
+        ConfigurationSnapshot snapshot = poller.getFinalResult();
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 
         // Get the snapshot status
-        ConfigurationSettingSnapshot getSnapshot = client.getSnapshot(snapshotName);
+        ConfigurationSnapshot getSnapshot = client.getSnapshot(snapshotName);
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
 
         // Archive a READY snapshot
-        ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot(snapshotName);
+        ConfigurationSnapshot archivedSnapshot = client.archiveSnapshot(snapshotName);
         System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
             archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
 
         // Recover the Archived snapshot
-        ConfigurationSettingSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotName);
+        ConfigurationSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotName);
         System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
             recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
 

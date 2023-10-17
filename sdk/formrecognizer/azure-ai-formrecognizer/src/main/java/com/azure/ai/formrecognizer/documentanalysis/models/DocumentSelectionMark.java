@@ -13,6 +13,12 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentSelectionMark {
+    /**
+     * Creates a DocumentSelectionMark object.
+     */
+    public DocumentSelectionMark() {
+    }
+
     /*
      * State of the selection mark.
      */
@@ -47,7 +53,6 @@ public final class DocumentSelectionMark {
      * Set the state property: State of the selection mark.
      *
      * @param documentSelectionMarkState the state value to set.
-     * @return the DocumentSelectionMark object itself.
      */
     private void setSelectionMarkState(DocumentSelectionMarkState documentSelectionMarkState) {
         this.documentSelectionMarkState = documentSelectionMarkState;
@@ -70,7 +75,6 @@ public final class DocumentSelectionMark {
      * relative to the element orientation.
      *
      * @param boundingPolygon the boundingPolygon value to set.
-     * @return the DocumentSelectionMark object itself.
      */
     private void setBoundingPolygon(List<Point> boundingPolygon) {
         this.boundingPolygon = boundingPolygon;
@@ -89,7 +93,6 @@ public final class DocumentSelectionMark {
      * Set the span property: Location of the selection mark in the reading order concatenated content.
      *
      * @param span the span value to set.
-     * @return the DocumentSelectionMark object itself.
      */
     private void setSpan(DocumentSpan span) {
         this.span = span;
@@ -108,7 +111,6 @@ public final class DocumentSelectionMark {
      * Set the confidence property: Confidence of correctly extracting the selection mark.
      *
      * @param confidence the confidence value to set.
-     * @return the DocumentSelectionMark object itself.
      */
     private void setConfidence(float confidence) {
         this.confidence = confidence;

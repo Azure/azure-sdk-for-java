@@ -30,7 +30,7 @@ public final class RackSkusGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"computeMachines\":[],\"controllerMachines\":[],\"description\":\"lfihcj\",\"maxClusterSlots\":2110046772829254579,\"provisioningState\":\"Succeeded\",\"rackType\":\"Aggregator\",\"storageAppliances\":[],\"supportedRackSkuIds\":[\"cwg\",\"xf\",\"vaknokzwjj\",\"r\"]},\"id\":\"ixldzyyfy\",\"name\":\"pqsixymmp\",\"type\":\"jivyqlkjuv\"}";
+            "{\"properties\":{\"computeMachines\":[{\"properties\":{\"bootstrapProtocol\":\"PXE\",\"cpuCores\":740525382887173409,\"cpuSockets\":5500340265923019624,\"disks\":[{}],\"generation\":\"bvcpxtzhi\",\"hardwareVersion\":\"qbtimpk\",\"memoryCapacityGB\":1044102882013391726,\"model\":\"nsihqhudsm\",\"networkInterfaces\":[{},{}],\"totalThreads\":4060730487232753668,\"vendor\":\"akx\"},\"rackSlot\":6306579526133194151},{\"properties\":{\"bootstrapProtocol\":\"PXE\",\"cpuCores\":2595914989199311759,\"cpuSockets\":8083612341819769387,\"disks\":[{},{}],\"generation\":\"ba\",\"hardwareVersion\":\"sjtgirnbgmgmddo\",\"memoryCapacityGB\":8665774540406405469,\"model\":\"ltwmpftmf\",\"networkInterfaces\":[{}],\"totalThreads\":1965043221912539556,\"vendor\":\"yxwe\"},\"rackSlot\":2455970206380865852},{\"properties\":{\"bootstrapProtocol\":\"PXE\",\"cpuCores\":6507470422163849582,\"cpuSockets\":277162185175840671,\"disks\":[{},{}],\"generation\":\"recchdidrmu\",\"hardwareVersion\":\"ahmjedbiu\",\"memoryCapacityGB\":6239695269940490916,\"model\":\"wmjpjbweunxcqrr\",\"networkInterfaces\":[{},{},{}],\"totalThreads\":5847341110356575377,\"vendor\":\"ppiybxv\"},\"rackSlot\":2199635918669239119}],\"controllerMachines\":[{\"properties\":{\"bootstrapProtocol\":\"PXE\",\"cpuCores\":4542334182366032884,\"cpuSockets\":6282274110728740658,\"disks\":[{},{}],\"generation\":\"kunhdimjuk\",\"hardwareVersion\":\"r\",\"memoryCapacityGB\":184726325025481896,\"model\":\"pucdocf\",\"networkInterfaces\":[{},{}],\"totalThreads\":2825605898464765817,\"vendor\":\"m\"},\"rackSlot\":8576357507637884293}],\"description\":\"lvzkl\",\"maxClusterSlots\":6499757878767405026,\"provisioningState\":\"Succeeded\",\"rackType\":\"Aggregator\",\"storageAppliances\":[{\"properties\":{\"capacityGB\":4991304555138648039,\"model\":\"ishj\"},\"rackSlot\":8933790957352791226},{\"properties\":{\"capacityGB\":5289013246694502921,\"model\":\"kaoizjixw\"},\"rackSlot\":7700160116018729328},{\"properties\":{\"capacityGB\":7188469565987722721,\"model\":\"xwnujvqyn\"},\"rackSlot\":5295005918015200070},{\"properties\":{\"capacityGB\":8275230829067853990,\"model\":\"qohhihra\"},\"rackSlot\":7250011366444098060}],\"supportedRackSkuIds\":[\"wjc\"]},\"id\":\"brhlhpvzadb\",\"name\":\"enninafhxrzfrm\",\"type\":\"ztiucwviql\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -58,7 +58,6 @@ public final class RackSkusGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RackSku response =
-            manager.rackSkus().getWithResponse("bqbnaomhjrmkuh", com.azure.core.util.Context.NONE).getValue();
+        RackSku response = manager.rackSkus().getWithResponse("njhx", com.azure.core.util.Context.NONE).getValue();
     }
 }

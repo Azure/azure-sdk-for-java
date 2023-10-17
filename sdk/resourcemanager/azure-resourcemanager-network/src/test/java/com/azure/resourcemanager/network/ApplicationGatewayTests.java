@@ -682,6 +682,46 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         });
     }
 
+    @Test
+    public void canCreateApplicationGatewayWithDefaultSku() {
+        String appGatewayName = generateRandomResourceName("agw", 15);
+
+        String appPublicIp = generateRandomResourceName("pip", 15);
+
+        PublicIpAddress pip =
+            networkManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+
+        ApplicationGateway appGateway =
+            networkManager
+                .applicationGateways()
+                .define(appGatewayName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                // Request routing rules
+                .defineRequestRoutingRule("rule1")
+                // BASIC still needs a public frontend. With private only, it'll report error:
+                // "Application Gateway does not support Application Gateway without Public IP for the selected SKU tier Basic.
+                // Supported SKU tiers are Standard,WAF."
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .attach()
+                .withExistingPublicIpAddress(pip)
+                .create();
+
+        Assertions.assertEquals(ApplicationGatewayTier.BASIC, appGateway.tier());
+        // BASIC still supports request routing rule priority.
+        Assertions.assertNotNull(appGateway.requestRoutingRules().get("rule1").priority());
+    }
+
     private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {
         String vaultName = generateRandomResourceName("vlt", 10);
         String secretName = generateRandomResourceName("srt", 10);

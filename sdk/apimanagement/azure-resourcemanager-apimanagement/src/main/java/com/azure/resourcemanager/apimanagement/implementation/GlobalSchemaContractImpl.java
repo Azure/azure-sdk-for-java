@@ -43,6 +43,10 @@ public final class GlobalSchemaContractImpl
         return this.innerModel().document();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public GlobalSchemaContractInner innerModel() {
         return this.innerObject;
     }

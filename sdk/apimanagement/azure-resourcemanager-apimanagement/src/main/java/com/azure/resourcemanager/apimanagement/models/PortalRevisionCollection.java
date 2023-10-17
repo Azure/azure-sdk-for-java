@@ -24,6 +24,10 @@ public final class PortalRevisionCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of PortalRevisionCollection class. */
+    public PortalRevisionCollection() {
+    }
+
     /**
      * Get the value property: Collection of portal revisions.
      *

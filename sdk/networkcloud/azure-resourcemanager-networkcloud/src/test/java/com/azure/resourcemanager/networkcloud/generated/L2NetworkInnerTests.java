@@ -18,37 +18,47 @@ public final class L2NetworkInnerTests {
         L2NetworkInner model =
             BinaryData
                 .fromString(
-                    "{\"extendedLocation\":{\"name\":\"fn\",\"type\":\"ckw\"},\"properties\":{\"associatedResourceIds\":[\"qwhxxbuyqaxzfeqz\",\"ppriol\",\"or\",\"altol\"],\"clusterId\":\"cwsobqwcs\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"dcfhucqdpf\",\"hybridAksClustersAssociatedIds\":[\"lsbjjcanvxbv\",\"vudutncor\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"qtvcofudflvkgj\",\"l2IsolationDomainId\":\"bgdknnqv\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"n\",\"orudsgsa\",\"mkycgra\",\"wjue\"]},\"location\":\"eburu\",\"tags\":{\"l\":\"ovsm\",\"oefki\":\"wabm\",\"qujmqlgkf\":\"rvtp\",\"tujitcjedft\":\"tndoaongbjc\"},\"id\":\"waezkojvd\",\"name\":\"pzfoqoui\",\"type\":\"ybxarzgszu\"}")
+                    "{\"extendedLocation\":{\"name\":\"zikhl\",\"type\":\"fjhdg\"},\"properties\":{\"associatedResourceIds\":[\"ebdunyg\",\"eqidbqfatpx\",\"lr\"],\"clusterId\":\"yjmoadsu\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ywdmjsjqbjh\",\"hybridAksClustersAssociatedIds\":[\"xrwlyc\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"p\",\"l2IsolationDomainId\":\"xkgymareqnajxqu\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"cubeddgssofw\",\"mzqa\",\"krmnjijpxacqqud\"]},\"location\":\"byxbaaabjy\",\"tags\":{\"evfdnwnwm\":\"ffimrzrtuzqogsex\",\"i\":\"wzsyyceuzs\",\"thzvaytdwkqbrqu\":\"judpfrxt\",\"xiilivpdtiirqt\":\"paxh\"},\"id\":\"qoaxoruzfgs\",\"name\":\"uyfxrxxleptramxj\",\"type\":\"zwl\"}")
                 .toObject(L2NetworkInner.class);
-        Assertions.assertEquals("eburu", model.location());
-        Assertions.assertEquals("ovsm", model.tags().get("l"));
-        Assertions.assertEquals("fn", model.extendedLocation().name());
-        Assertions.assertEquals("ckw", model.extendedLocation().type());
+        Assertions.assertEquals("byxbaaabjy", model.location());
+        Assertions.assertEquals("ffimrzrtuzqogsex", model.tags().get("evfdnwnwm"));
+        Assertions.assertEquals("zikhl", model.extendedLocation().name());
+        Assertions.assertEquals("fjhdg", model.extendedLocation().type());
         Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
-        Assertions.assertEquals("qtvcofudflvkgj", model.interfaceName());
-        Assertions.assertEquals("bgdknnqv", model.l2IsolationDomainId());
+        Assertions.assertEquals("p", model.interfaceName());
+        Assertions.assertEquals("xkgymareqnajxqu", model.l2IsolationDomainId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L2NetworkInner model =
             new L2NetworkInner()
-                .withLocation("eburu")
-                .withTags(mapOf("l", "ovsm", "oefki", "wabm", "qujmqlgkf", "rvtp", "tujitcjedft", "tndoaongbjc"))
-                .withExtendedLocation(new ExtendedLocation().withName("fn").withType("ckw"))
+                .withLocation("byxbaaabjy")
+                .withTags(
+                    mapOf(
+                        "evfdnwnwm",
+                        "ffimrzrtuzqogsex",
+                        "i",
+                        "wzsyyceuzs",
+                        "thzvaytdwkqbrqu",
+                        "judpfrxt",
+                        "xiilivpdtiirqt",
+                        "paxh"))
+                .withExtendedLocation(new ExtendedLocation().withName("zikhl").withType("fjhdg"))
                 .withHybridAksPluginType(HybridAksPluginType.DPDK)
-                .withInterfaceName("qtvcofudflvkgj")
-                .withL2IsolationDomainId("bgdknnqv");
+                .withInterfaceName("p")
+                .withL2IsolationDomainId("xkgymareqnajxqu");
         model = BinaryData.fromObject(model).toObject(L2NetworkInner.class);
-        Assertions.assertEquals("eburu", model.location());
-        Assertions.assertEquals("ovsm", model.tags().get("l"));
-        Assertions.assertEquals("fn", model.extendedLocation().name());
-        Assertions.assertEquals("ckw", model.extendedLocation().type());
+        Assertions.assertEquals("byxbaaabjy", model.location());
+        Assertions.assertEquals("ffimrzrtuzqogsex", model.tags().get("evfdnwnwm"));
+        Assertions.assertEquals("zikhl", model.extendedLocation().name());
+        Assertions.assertEquals("fjhdg", model.extendedLocation().type());
         Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
-        Assertions.assertEquals("qtvcofudflvkgj", model.interfaceName());
-        Assertions.assertEquals("bgdknnqv", model.l2IsolationDomainId());
+        Assertions.assertEquals("p", model.interfaceName());
+        Assertions.assertEquals("xkgymareqnajxqu", model.l2IsolationDomainId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

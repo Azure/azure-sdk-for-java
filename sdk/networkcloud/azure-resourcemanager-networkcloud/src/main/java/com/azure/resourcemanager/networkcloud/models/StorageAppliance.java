@@ -208,11 +208,13 @@ public interface StorageAppliance {
             DefinitionStages.WithStorageApplianceSkuId,
             DefinitionStages.WithCreate {
     }
+
     /** The StorageAppliance definition stages. */
     interface DefinitionStages {
         /** The first stage of the StorageAppliance definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the StorageAppliance definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -231,6 +233,7 @@ public interface StorageAppliance {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the StorageAppliance definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -241,6 +244,7 @@ public interface StorageAppliance {
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the StorageAppliance definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -256,6 +260,7 @@ public interface StorageAppliance {
              */
             WithAdministratorCredentials withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the StorageAppliance definition allowing to specify administratorCredentials. */
         interface WithAdministratorCredentials {
             /**
@@ -271,6 +276,7 @@ public interface StorageAppliance {
              */
             WithRackId withAdministratorCredentials(AdministrativeCredentials administratorCredentials);
         }
+
         /** The stage of the StorageAppliance definition allowing to specify rackId. */
         interface WithRackId {
             /**
@@ -281,6 +287,7 @@ public interface StorageAppliance {
              */
             WithRackSlot withRackId(String rackId);
         }
+
         /** The stage of the StorageAppliance definition allowing to specify rackSlot. */
         interface WithRackSlot {
             /**
@@ -292,6 +299,7 @@ public interface StorageAppliance {
              */
             WithSerialNumber withRackSlot(long rackSlot);
         }
+
         /** The stage of the StorageAppliance definition allowing to specify serialNumber. */
         interface WithSerialNumber {
             /**
@@ -302,6 +310,7 @@ public interface StorageAppliance {
              */
             WithStorageApplianceSkuId withSerialNumber(String serialNumber);
         }
+
         /** The stage of the StorageAppliance definition allowing to specify storageApplianceSkuId. */
         interface WithStorageApplianceSkuId {
             /**
@@ -312,6 +321,7 @@ public interface StorageAppliance {
              */
             WithCreate withStorageApplianceSkuId(String storageApplianceSkuId);
         }
+
         /**
          * The stage of the StorageAppliance definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -332,6 +342,7 @@ public interface StorageAppliance {
              */
             StorageAppliance create(Context context);
         }
+
         /** The stage of the StorageAppliance definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -343,6 +354,7 @@ public interface StorageAppliance {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the StorageAppliance resource.
      *
@@ -367,6 +379,7 @@ public interface StorageAppliance {
          */
         StorageAppliance apply(Context context);
     }
+
     /** The StorageAppliance update stages. */
     interface UpdateStages {
         /** The stage of the StorageAppliance update allowing to specify tags. */
@@ -379,6 +392,7 @@ public interface StorageAppliance {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the StorageAppliance update allowing to specify serialNumber. */
         interface WithSerialNumber {
             /**
@@ -390,6 +404,7 @@ public interface StorageAppliance {
             Update withSerialNumber(String serialNumber);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -412,8 +427,9 @@ public interface StorageAppliance {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void disableRemoteVendorManagement();
+    OperationStatusResult disableRemoteVendorManagement();
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
@@ -424,8 +440,9 @@ public interface StorageAppliance {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void disableRemoteVendorManagement(Context context);
+    OperationStatusResult disableRemoteVendorManagement(Context context);
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
@@ -434,8 +451,9 @@ public interface StorageAppliance {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void enableRemoteVendorManagement();
+    OperationStatusResult enableRemoteVendorManagement();
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
@@ -447,34 +465,9 @@ public interface StorageAppliance {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void enableRemoteVendorManagement(
+    OperationStatusResult enableRemoteVendorManagement(
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context);
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void runReadCommands(StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters);
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void runReadCommands(
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context);
 }

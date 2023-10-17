@@ -13,6 +13,13 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentTable {
+
+    /**
+     * Creates a DocumentTable object.
+     */
+    public DocumentTable() {
+    }
+
     /*
      * Number of rows in the table.
      */
@@ -51,7 +58,6 @@ public final class DocumentTable {
      * Set the rowCount property: Number of rows in the table.
      *
      * @param rowCount the rowCount value to set.
-     * @return the DocumentTable object itself.
      */
     private void setRowCount(int rowCount) {
         this.rowCount = rowCount;
@@ -70,7 +76,6 @@ public final class DocumentTable {
      * Set the columnCount property: Number of columns in the table.
      *
      * @param columnCount the columnCount value to set.
-     * @return the DocumentTable object itself.
      */
     private void setColumnCount(int columnCount) {
         this.columnCount = columnCount;
@@ -89,7 +94,6 @@ public final class DocumentTable {
      * Set the cells property: Cells contained within the table.
      *
      * @param cells the cells value to set.
-     * @return the DocumentTable object itself.
      */
     private void setCells(List<DocumentTableCell> cells) {
         this.cells = cells;
@@ -108,7 +112,6 @@ public final class DocumentTable {
      * Set the boundingRegions property: Bounding regions covering the table.
      *
      * @param boundingRegions the boundingRegions value to set.
-     * @return the DocumentTable object itself.
      */
     private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
@@ -127,7 +130,6 @@ public final class DocumentTable {
      * Set the spans property: Location of the table in the reading order concatenated content.
      *
      * @param spans the spans value to set.
-     * @return the DocumentTable object itself.
      */
     private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;

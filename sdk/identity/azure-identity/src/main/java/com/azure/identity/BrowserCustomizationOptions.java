@@ -7,31 +7,32 @@ package com.azure.identity;
  * Represent Options to customize browser view.
  */
 public class BrowserCustomizationOptions {
-    private String htmlMessageSuccess;
-    private String htmlMessageError;
+    private String successMessage;
+    private String errorMessage;
 
     /**
-     * Configures the property to set HtmlMessageSuccess which the browser will show to the user when the user
-     * finishes authenticating successfully.
+     * Configures the property to set the success message which the browser will show to the user upon successful
+     * authentication.
      *
-     * @param htmlMessageSuccess the message to display when user finishes authenticating.
+     * @param successMessage the message to display when user finishes authenticating.
      * @return the updated options.
      */
-    public BrowserCustomizationOptions setHtmlMessageSuccess(String htmlMessageSuccess) {
-        this.htmlMessageSuccess = htmlMessageSuccess;
+    public BrowserCustomizationOptions setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
         return this;
     }
 
     /**
-     * Configure the property to set HtmlMessageError which the browser will show to the user when the user
-     * finishes authenticating, but an error occurred. You can use a string format e.g.
+     * Configure the property to set error message which the browser will show to the user upon failed to acquire an
+     * access token.
+     * You can use a string format e.g.
      * "An error has occurred: {0} details: {1}.", the details will be populated by the library.
      *
-     * @param htmlMessageError the message to display when user finishes authenticating, but an error occurred.
+     * @param errorMessage the message to display when user finishes authenticating, but an error occurred.
      * @return the updated options.
      */
-    public BrowserCustomizationOptions setHtmlMessageError(String htmlMessageError) {
-        this.htmlMessageError = htmlMessageError;
+    public BrowserCustomizationOptions setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
         return this;
     }
 
@@ -41,8 +42,8 @@ public class BrowserCustomizationOptions {
      *
      * @return the string message.
      */
-    public String getHtmlMessageSuccess() {
-        return this.htmlMessageSuccess;
+    public String getSuccessMessage() {
+        return this.successMessage;
     }
 
     /**
@@ -51,7 +52,7 @@ public class BrowserCustomizationOptions {
      *
      * @return the string message.
      */
-    public String getHtmlMessageError() {
-        return this.htmlMessageError;
+    public String getErrorMessage() {
+        return this.errorMessage;
     }
 }

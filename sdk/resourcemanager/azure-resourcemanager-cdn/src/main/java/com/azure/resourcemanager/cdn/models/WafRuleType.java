@@ -20,6 +20,15 @@ public final class WafRuleType extends ExpandableStringEnum<WafRuleType> {
     public static final WafRuleType BOT = fromString("bot");
 
     /**
+     * Creates a new instance of WafRuleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WafRuleType() {
+    }
+
+    /**
      * Creates or finds a WafRuleType from its string representation.
      *
      * @param name a name to look for.

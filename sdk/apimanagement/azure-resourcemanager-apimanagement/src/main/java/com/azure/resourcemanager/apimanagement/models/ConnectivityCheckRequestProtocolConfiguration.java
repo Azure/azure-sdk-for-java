@@ -16,6 +16,10 @@ public final class ConnectivityCheckRequestProtocolConfiguration {
     @JsonProperty(value = "HTTPConfiguration")
     private ConnectivityCheckRequestProtocolConfigurationHttpConfiguration httpConfiguration;
 
+    /** Creates an instance of ConnectivityCheckRequestProtocolConfiguration class. */
+    public ConnectivityCheckRequestProtocolConfiguration() {
+    }
+
     /**
      * Get the httpConfiguration property: Configuration for HTTP or HTTPS requests.
      *

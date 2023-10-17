@@ -67,6 +67,20 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public SynapseNotebookActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseNotebookActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SynapseNotebookActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
@@ -229,26 +243,96 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
 
     /**
      * Get the numExecutors property: Number of executors to launch for this session, which will override the
-     * 'numExecutors' of the notebook you provide.
+     * 'numExecutors' of the notebook you provide. Type: integer (or Expression with resultType integer).
      *
      * @return the numExecutors value.
      */
-    public Integer numExecutors() {
+    public Object numExecutors() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().numExecutors();
     }
 
     /**
      * Set the numExecutors property: Number of executors to launch for this session, which will override the
-     * 'numExecutors' of the notebook you provide.
+     * 'numExecutors' of the notebook you provide. Type: integer (or Expression with resultType integer).
      *
      * @param numExecutors the numExecutors value to set.
      * @return the SynapseNotebookActivity object itself.
      */
-    public SynapseNotebookActivity withNumExecutors(Integer numExecutors) {
+    public SynapseNotebookActivity withNumExecutors(Object numExecutors) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SynapseNotebookActivityTypeProperties();
         }
         this.innerTypeProperties().withNumExecutors(numExecutors);
+        return this;
+    }
+
+    /**
+     * Get the configurationType property: The type of the spark config.
+     *
+     * @return the configurationType value.
+     */
+    public ConfigurationType configurationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().configurationType();
+    }
+
+    /**
+     * Set the configurationType property: The type of the spark config.
+     *
+     * @param configurationType the configurationType value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity withConfigurationType(ConfigurationType configurationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseNotebookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withConfigurationType(configurationType);
+        return this;
+    }
+
+    /**
+     * Get the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @return the targetSparkConfiguration value.
+     */
+    public SparkConfigurationParametrizationReference targetSparkConfiguration() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().targetSparkConfiguration();
+    }
+
+    /**
+     * Set the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @param targetSparkConfiguration the targetSparkConfiguration value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity withTargetSparkConfiguration(
+        SparkConfigurationParametrizationReference targetSparkConfiguration) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseNotebookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withTargetSparkConfiguration(targetSparkConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the sparkConfig property: Spark configuration property.
+     *
+     * @return the sparkConfig value.
+     */
+    public Map<String, Object> sparkConfig() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sparkConfig();
+    }
+
+    /**
+     * Set the sparkConfig property: Spark configuration property.
+     *
+     * @param sparkConfig the sparkConfig value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity withSparkConfig(Map<String, Object> sparkConfig) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SynapseNotebookActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSparkConfig(sparkConfig);
         return this;
     }
 

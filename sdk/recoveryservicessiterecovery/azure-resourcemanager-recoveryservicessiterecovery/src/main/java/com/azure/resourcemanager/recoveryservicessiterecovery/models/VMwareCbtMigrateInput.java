@@ -21,6 +21,12 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
     @JsonProperty(value = "performShutdown", required = true)
     private String performShutdown;
 
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "osUpgradeVersion")
+    private String osUpgradeVersion;
+
     /** Creates an instance of VMwareCbtMigrateInput class. */
     public VMwareCbtMigrateInput() {
     }
@@ -42,6 +48,26 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
      */
     public VMwareCbtMigrateInput withPerformShutdown(String performShutdown) {
         this.performShutdown = performShutdown;
+        return this;
+    }
+
+    /**
+     * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     *
+     * @return the osUpgradeVersion value.
+     */
+    public String osUpgradeVersion() {
+        return this.osUpgradeVersion;
+    }
+
+    /**
+     * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     *
+     * @param osUpgradeVersion the osUpgradeVersion value to set.
+     * @return the VMwareCbtMigrateInput object itself.
+     */
+    public VMwareCbtMigrateInput withOsUpgradeVersion(String osUpgradeVersion) {
+        this.osUpgradeVersion = osUpgradeVersion;
         return this;
     }
 

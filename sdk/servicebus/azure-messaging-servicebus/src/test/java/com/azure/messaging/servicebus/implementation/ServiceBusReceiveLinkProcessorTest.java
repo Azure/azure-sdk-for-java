@@ -9,10 +9,8 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -79,16 +77,6 @@ class ServiceBusReceiveLinkProcessorTest {
     private ServiceBusReceiveLinkProcessor linkProcessor;
     private ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch;
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(0));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
@@ -130,9 +118,7 @@ class ServiceBusReceiveLinkProcessorTest {
 
         // Act & Assert
         StepVerifier.create(processor)
-            .then(() -> {
-                messagePublisher.next(message1, message2);
-            })
+            .then(() -> messagePublisher.next(message1, message2))
             .expectNext(message1)
             .expectNext(message2)
             .thenCancel()
@@ -297,9 +283,8 @@ class ServiceBusReceiveLinkProcessorTest {
 
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
 
-        when(link2.getEndpointStates()).thenReturn(Flux.defer(() -> Flux.create(e -> {
-            e.next(AmqpEndpointState.ACTIVE);
-        })));
+        when(link2.getEndpointStates()).thenReturn(Flux.defer(() ->
+            Flux.create(e -> e.next(AmqpEndpointState.ACTIVE))));
         when(link2.receive()).thenReturn(Flux.just(message2));
         when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
@@ -315,9 +300,7 @@ class ServiceBusReceiveLinkProcessorTest {
                 messagePublisher.next(message1);
             })
             .expectNext(message1)
-            .then(() -> {
-                endpointProcessor.error(amqpException);
-            })
+            .then(() -> endpointProcessor.error(amqpException))
             .expectNext(message2)
             .thenCancel()
             .verify();

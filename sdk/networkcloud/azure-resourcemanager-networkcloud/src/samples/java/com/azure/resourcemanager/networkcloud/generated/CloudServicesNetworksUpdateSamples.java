@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for CloudServicesNetworks Update. */
 public final class CloudServicesNetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/CloudServicesNetworks_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/CloudServicesNetworks_Patch.json
      */
     /**
      * Sample code: Patch cloud services network.
@@ -31,7 +31,7 @@ public final class CloudServicesNetworksUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withAdditionalEgressEndpoints(
                 Arrays
                     .asList(
@@ -47,6 +47,7 @@ public final class CloudServicesNetworksUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

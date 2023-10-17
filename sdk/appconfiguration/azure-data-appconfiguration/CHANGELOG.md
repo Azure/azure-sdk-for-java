@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.5.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,59 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0-beta.2 (2023-10-11)
+
+### Features Added
+
+- Added `SnapshotFields` enum to support fields selection for snapshot.
+- Added a property `List<SnapshotFields> fields` in class `SnapshotSelector` to support fields selection for snapshot.
+
+### Breaking Changes
+Note: Below breaking changes only affect the version `1.5.0-beta.1`.
+
+- Changed `listConfigurationSettingsForSnapshot` method's `SettingFields[] fields` parameter type to `List<SettingFields> fields`.
+- Renamed `ConfigurationSettingSnapshot` to `ConfigurationSnapshot`.
+- Renamed `ConfigurationSettingSnapshot`'s properties name,
+  - `size` to `sizeInBytes`,
+  - `compositionType` to `snapshotComposition`.
+- Renamed `SnapshotSettingFilter` to `ConfigurationSettingsFilter`.
+- Added `azure-core-experimental` as a dependency and replaced usage of `CreateSnapshotOperationDetail` by `PollResult` 
+  and removed `CreateSnapshotOperationDetail` class.
+- Replaced
+   - `archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)` by `archiveSnapshotWithResponse(String, MatchConditions)`
+   - `recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)` by `recoverSnapshotWithResponse(String, MatchConditions)`
+   - `archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)` by `archiveSnapshotWithResponse(String, MatchConditions, Context)`
+   - `recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)` by `recoverSnapshotWithResponse(String, MatchConditions, Context)`
+
+### Bugs Fixed
+- `FeatureFlagConfigurationSetting` and `SecretReferenceConfigurationSetting` will now retain custom attributes in the setting value.
+  Previously, only attributes that were defined in the associated JSON schema were allowed and unknown attributes were discarded. ([#36725](https://github.com/Azure/azure-sdk-for-java/pull/36725))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
+
+## 1.4.9 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 1.4.8 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
 
 ## 1.4.7 (2023-07-25)
 

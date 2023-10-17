@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Rules Delete. */
 public final class RulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Rules_Delete.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Rules_Delete.json
      */
     /**
      * Sample code: Rules_Delete.
@@ -22,6 +20,6 @@ public final class RulesDeleteSamples {
             .manager()
             .serviceClient()
             .getRules()
-            .delete("RG", "profile1", "ruleSet1", "rule1", Context.NONE);
+            .delete("RG", "profile1", "ruleSet1", "rule1", com.azure.core.util.Context.NONE);
     }
 }

@@ -10,9 +10,11 @@ import com.azure.core.util.Context;
 /** Resource collection API of ApiManagementServiceSkus. */
 public interface ApiManagementServiceSkus {
     /**
-     * Gets all available SKU for a given API Management service.
+     * Gets available SKUs for API Management service
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Gets all available SKU for a given API Management service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -22,9 +24,11 @@ public interface ApiManagementServiceSkus {
     PagedIterable<ResourceSkuResult> listAvailableServiceSkus(String resourceGroupName, String serviceName);
 
     /**
-     * Gets all available SKU for a given API Management service.
+     * Gets available SKUs for API Management service
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Gets all available SKU for a given API Management service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

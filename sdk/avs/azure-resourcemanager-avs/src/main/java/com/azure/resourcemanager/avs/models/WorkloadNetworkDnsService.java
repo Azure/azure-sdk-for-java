@@ -105,11 +105,13 @@ public interface WorkloadNetworkDnsService {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The WorkloadNetworkDnsService definition stages. */
     interface DefinitionStages {
         /** The first stage of the WorkloadNetworkDnsService definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the WorkloadNetworkDnsService definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -121,6 +123,7 @@ public interface WorkloadNetworkDnsService {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the WorkloadNetworkDnsService definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -147,6 +150,7 @@ public interface WorkloadNetworkDnsService {
              */
             WorkloadNetworkDnsService create(Context context);
         }
+
         /** The stage of the WorkloadNetworkDnsService definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -157,6 +161,7 @@ public interface WorkloadNetworkDnsService {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the WorkloadNetworkDnsService definition allowing to specify dnsServiceIp. */
         interface WithDnsServiceIp {
             /**
@@ -167,6 +172,7 @@ public interface WorkloadNetworkDnsService {
              */
             WithCreate withDnsServiceIp(String dnsServiceIp);
         }
+
         /** The stage of the WorkloadNetworkDnsService definition allowing to specify defaultDnsZone. */
         interface WithDefaultDnsZone {
             /**
@@ -177,6 +183,7 @@ public interface WorkloadNetworkDnsService {
              */
             WithCreate withDefaultDnsZone(String defaultDnsZone);
         }
+
         /** The stage of the WorkloadNetworkDnsService definition allowing to specify fqdnZones. */
         interface WithFqdnZones {
             /**
@@ -187,6 +194,7 @@ public interface WorkloadNetworkDnsService {
              */
             WithCreate withFqdnZones(List<String> fqdnZones);
         }
+
         /** The stage of the WorkloadNetworkDnsService definition allowing to specify logLevel. */
         interface WithLogLevel {
             /**
@@ -197,6 +205,7 @@ public interface WorkloadNetworkDnsService {
              */
             WithCreate withLogLevel(DnsServiceLogLevelEnum logLevel);
         }
+
         /** The stage of the WorkloadNetworkDnsService definition allowing to specify revision. */
         interface WithRevision {
             /**
@@ -208,6 +217,7 @@ public interface WorkloadNetworkDnsService {
             WithCreate withRevision(Long revision);
         }
     }
+
     /**
      * Begins update for the WorkloadNetworkDnsService resource.
      *
@@ -238,6 +248,7 @@ public interface WorkloadNetworkDnsService {
          */
         WorkloadNetworkDnsService apply(Context context);
     }
+
     /** The WorkloadNetworkDnsService update stages. */
     interface UpdateStages {
         /** The stage of the WorkloadNetworkDnsService update allowing to specify displayName. */
@@ -250,6 +261,7 @@ public interface WorkloadNetworkDnsService {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the WorkloadNetworkDnsService update allowing to specify dnsServiceIp. */
         interface WithDnsServiceIp {
             /**
@@ -260,6 +272,7 @@ public interface WorkloadNetworkDnsService {
              */
             Update withDnsServiceIp(String dnsServiceIp);
         }
+
         /** The stage of the WorkloadNetworkDnsService update allowing to specify defaultDnsZone. */
         interface WithDefaultDnsZone {
             /**
@@ -270,6 +283,7 @@ public interface WorkloadNetworkDnsService {
              */
             Update withDefaultDnsZone(String defaultDnsZone);
         }
+
         /** The stage of the WorkloadNetworkDnsService update allowing to specify fqdnZones. */
         interface WithFqdnZones {
             /**
@@ -280,6 +294,7 @@ public interface WorkloadNetworkDnsService {
              */
             Update withFqdnZones(List<String> fqdnZones);
         }
+
         /** The stage of the WorkloadNetworkDnsService update allowing to specify logLevel. */
         interface WithLogLevel {
             /**
@@ -290,6 +305,7 @@ public interface WorkloadNetworkDnsService {
              */
             Update withLogLevel(DnsServiceLogLevelEnum logLevel);
         }
+
         /** The stage of the WorkloadNetworkDnsService update allowing to specify revision. */
         interface WithRevision {
             /**
@@ -301,6 +317,7 @@ public interface WorkloadNetworkDnsService {
             Update withRevision(Long revision);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -13,7 +13,7 @@ public final class HardwareInventoryNetworkInterfaceTests {
         HardwareInventoryNetworkInterface model =
             BinaryData
                 .fromString(
-                    "{\"linkStatus\":\"algbquxigjyjg\",\"macAddress\":\"aoyfhrtxilnerkuj\",\"name\":\"vlejuvfqa\",\"networkInterfaceId\":\"lyxwjkcprbnwbx\"}")
+                    "{\"linkStatus\":\"gxsabkyq\",\"macAddress\":\"ujitcjcz\",\"name\":\"evndh\",\"networkInterfaceId\":\"wpdappdsbdkv\"}")
                 .toObject(HardwareInventoryNetworkInterface.class);
     }
 

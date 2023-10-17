@@ -10,6 +10,29 @@
 
 ### Other Changes
 
+## 1.11.14 (2023-10-06)
+
+### Bugs Fixed
+
+- Fixed a bug where the network connection wasn't being explicitly closed after the response body was consumed.
+
+### Other Changes
+
+- Changed buffer read size from `4096` to `8192` when returning `Flux<ByteBuffer>` in `HttpResponse` to reduce number
+  of reads and elements emitted by the `Flux`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to `1.44.0`.
+
+## 1.11.13 (2023-09-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+
 ## 1.11.12 (2023-08-04)
 
 ### Other Changes

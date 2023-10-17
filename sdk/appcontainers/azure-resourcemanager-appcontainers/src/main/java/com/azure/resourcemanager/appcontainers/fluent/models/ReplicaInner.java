@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppReplicaRunningState;
 import com.azure.resourcemanager.appcontainers.models.ReplicaContainer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -20,12 +20,6 @@ public final class ReplicaInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private ReplicaProperties innerProperties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /** Creates an instance of ReplicaInner class. */
     public ReplicaInner() {
@@ -41,21 +35,30 @@ public final class ReplicaInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the createdTime property: Timestamp describing when the pod was created by controller.
      *
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
         return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the runningState property: Current running state of the replica.
+     *
+     * @return the runningState value.
+     */
+    public ContainerAppReplicaRunningState runningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().runningState();
+    }
+
+    /**
+     * Get the runningStateDetails property: The details of replica current running state.
+     *
+     * @return the runningStateDetails value.
+     */
+    public String runningStateDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().runningStateDetails();
     }
 
     /**
@@ -78,6 +81,29 @@ public final class ReplicaInner extends ProxyResource {
             this.innerProperties = new ReplicaProperties();
         }
         this.innerProperties().withContainers(containers);
+        return this;
+    }
+
+    /**
+     * Get the initContainers property: The init containers collection under a replica.
+     *
+     * @return the initContainers value.
+     */
+    public List<ReplicaContainer> initContainers() {
+        return this.innerProperties() == null ? null : this.innerProperties().initContainers();
+    }
+
+    /**
+     * Set the initContainers property: The init containers collection under a replica.
+     *
+     * @param initContainers the initContainers value to set.
+     * @return the ReplicaInner object itself.
+     */
+    public ReplicaInner withInitContainers(List<ReplicaContainer> initContainers) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReplicaProperties();
+        }
+        this.innerProperties().withInitContainers(initContainers);
         return this;
     }
 

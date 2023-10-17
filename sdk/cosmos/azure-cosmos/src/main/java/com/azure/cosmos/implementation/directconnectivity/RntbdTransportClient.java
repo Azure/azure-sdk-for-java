@@ -717,8 +717,8 @@ public class RntbdTransportClient extends TransportClient {
             this.timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
             this.preferTcpNative = true;
             this.minConnectionPoolSizePerEndpoint = connectionPolicy.getMinConnectionPoolSizePerEndpoint();
-            this.cancellationCountSinceLastReadThreshold = 5;
-            this.nonRespondingChannelReadDelayTimeLimit = Duration.ofSeconds(60);
+            this.cancellationCountSinceLastReadThreshold = 3;
+            this.nonRespondingChannelReadDelayTimeLimit = Duration.ofSeconds(10);
         }
 
         // endregion

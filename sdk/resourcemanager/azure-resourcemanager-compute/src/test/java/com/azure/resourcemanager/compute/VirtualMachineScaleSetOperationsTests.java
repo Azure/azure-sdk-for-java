@@ -18,6 +18,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.PowerState;
+import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.Sku;
@@ -1943,5 +1944,39 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // flex vmss can have a mixed set of VMs with ephemeral and non-ephemeral os disk
         // which contradicts the FAQ: https://docs.microsoft.com/en-us/azure/virtual-machines/ephemeral-os-disks#frequently-asked-questions
         Assertions.assertFalse(vm.isOSDiskEphemeral());
+    }
+
+    @Test
+    public void canCreateVMSSWithProximityPlacementGroup() throws Exception {
+        final String vmssName = generateRandomResourceName("vmss", 10);
+
+        Network network = this.networkManager
+            .networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            // create ProximityPlacementGroup with the VMSS
+            .withNewProximityPlacementGroup("ppg", ProximityPlacementGroupType.STANDARD)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withVirtualMachinePublicIp()
+            .create();
+
+        Assertions.assertNotNull(vmss.proximityPlacementGroup());
+        Assertions.assertEquals(ProximityPlacementGroupType.STANDARD, vmss.proximityPlacementGroup().proximityPlacementGroupType());
     }
 }

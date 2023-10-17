@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 /** Samples for Registries GenerateCredentials. */
 public final class RegistriesGenerateCredentialsSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/RegistryGenerateCredentials.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/RegistryGenerateCredentials.json
      */
     /**
      * Sample code: RegistryGenerateCredentials.

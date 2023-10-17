@@ -16,6 +16,12 @@ public final class RecognizeEntitiesAction {
     private boolean disableServiceLogs;
 
     /**
+     * Constructs a {@code RecognizeEntitiesAction} model.
+     */
+    public RecognizeEntitiesAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.
@@ -29,7 +35,7 @@ public final class RecognizeEntitiesAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link RecognizeEntitiesAction} object itself.
+     * @return The {@code RecognizeEntitiesAction} object itself.
      */
     public RecognizeEntitiesAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -51,7 +57,7 @@ public final class RecognizeEntitiesAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link RecognizeEntitiesAction} object itself.
+     * @return The {@code RecognizeEntitiesAction} object itself.
      */
     public RecognizeEntitiesAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -76,7 +82,7 @@ public final class RecognizeEntitiesAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link RecognizeEntitiesAction} object itself.
+     * @return The {@code RecognizeEntitiesAction} object itself.
      */
     public RecognizeEntitiesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;

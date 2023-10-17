@@ -129,7 +129,7 @@ public class ProtectedItem {
     /*
      * Soft delete retention period in days
      */
-    @JsonProperty(value = "softDeleteRetentionPeriod")
+    @JsonProperty(value = "softDeleteRetentionPeriodInDays")
     private Integer softDeleteRetentionPeriod;
 
     /** Creates an instance of ProtectedItem class. */

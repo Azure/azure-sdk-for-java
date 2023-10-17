@@ -30,6 +30,10 @@ public final class OpenIdConnectProviderCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of OpenIdConnectProviderCollection class. */
+    public OpenIdConnectProviderCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

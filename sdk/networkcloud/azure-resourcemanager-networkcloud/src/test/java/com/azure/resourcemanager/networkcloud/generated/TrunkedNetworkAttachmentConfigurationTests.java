@@ -14,9 +14,9 @@ public final class TrunkedNetworkAttachmentConfigurationTests {
     public void testDeserialize() throws Exception {
         TrunkedNetworkAttachmentConfiguration model =
             BinaryData
-                .fromString("{\"networkId\":\"wakbogqxndl\",\"pluginType\":\"IPVLAN\"}")
+                .fromString("{\"networkId\":\"nalaulppg\",\"pluginType\":\"IPVLAN\"}")
                 .toObject(TrunkedNetworkAttachmentConfiguration.class);
-        Assertions.assertEquals("wakbogqxndl", model.networkId());
+        Assertions.assertEquals("nalaulppg", model.networkId());
         Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.pluginType());
     }
 
@@ -24,10 +24,10 @@ public final class TrunkedNetworkAttachmentConfigurationTests {
     public void testSerialize() throws Exception {
         TrunkedNetworkAttachmentConfiguration model =
             new TrunkedNetworkAttachmentConfiguration()
-                .withNetworkId("wakbogqxndl")
+                .withNetworkId("nalaulppg")
                 .withPluginType(KubernetesPluginType.IPVLAN);
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkAttachmentConfiguration.class);
-        Assertions.assertEquals("wakbogqxndl", model.networkId());
+        Assertions.assertEquals("nalaulppg", model.networkId());
         Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.pluginType());
     }
 }

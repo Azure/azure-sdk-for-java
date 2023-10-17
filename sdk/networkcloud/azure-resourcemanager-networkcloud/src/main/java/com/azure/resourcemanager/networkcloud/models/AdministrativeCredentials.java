@@ -16,7 +16,7 @@ public final class AdministrativeCredentials {
     /*
      * The password of the administrator of the device used during initialization.
      */
-    @JsonProperty(value = "password", required = true)
+    @JsonProperty(value = "password")
     private String password;
 
     /*

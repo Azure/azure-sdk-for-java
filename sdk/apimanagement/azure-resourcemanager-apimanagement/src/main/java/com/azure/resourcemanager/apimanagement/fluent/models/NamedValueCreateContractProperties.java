@@ -15,16 +15,14 @@ import java.util.List;
 @Fluent
 public final class NamedValueCreateContractProperties extends NamedValueEntityBaseParameters {
     /*
-     * Unique name of NamedValue. It may contain only letters, digits, period,
-     * dash, and underscore characters.
+     * Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
      */
     @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
-     * Value of the NamedValue. Can contain policy expressions. It may not be
-     * empty or consist only of whitespace. This property will not be filled on
-     * 'GET' operations! Use '/listSecrets' POST request to get the value.
+     * Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This
+     * property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
      */
     @JsonProperty(value = "value")
     private String value;
@@ -34,6 +32,10 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
      */
     @JsonProperty(value = "keyVault")
     private KeyVaultContractCreateProperties keyVault;
+
+    /** Creates an instance of NamedValueCreateContractProperties class. */
+    public NamedValueCreateContractProperties() {
+    }
 
     /**
      * Get the displayName property: Unique name of NamedValue. It may contain only letters, digits, period, dash, and

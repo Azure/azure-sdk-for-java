@@ -19,8 +19,7 @@ public final class ApiExportResultInner {
     private String id;
 
     /*
-     * Format in which the API Details are exported to the Storage Blob with
-     * Sas Key valid for 5 minutes.
+     * Format in which the API Details are exported to the Storage Blob with Sas Key valid for 5 minutes.
      */
     @JsonProperty(value = "format")
     private ExportResultFormat exportResultFormat;
@@ -30,6 +29,10 @@ public final class ApiExportResultInner {
      */
     @JsonProperty(value = "value")
     private ApiExportResultValue value;
+
+    /** Creates an instance of ApiExportResultInner class. */
+    public ApiExportResultInner() {
+    }
 
     /**
      * Get the id property: ResourceId of the API which was exported.

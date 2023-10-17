@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- [Don't drop known attributes on custom metrics](https://github.com/Azure/azure-sdk-for-java/pull/37175)
 
 ## 1.0.0-beta.11 (2023-07-27)
 

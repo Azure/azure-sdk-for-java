@@ -24,6 +24,15 @@ public final class SecretType extends ExpandableStringEnum<SecretType> {
         fromString("AzureFirstPartyManagedCertificate");
 
     /**
+     * Creates a new instance of SecretType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecretType() {
+    }
+
+    /**
      * Creates or finds a SecretType from its string representation.
      *
      * @param name a name to look for.

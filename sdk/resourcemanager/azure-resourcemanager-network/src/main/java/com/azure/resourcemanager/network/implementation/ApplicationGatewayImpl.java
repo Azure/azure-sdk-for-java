@@ -784,7 +784,7 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withInstanceCount(int capacity) {
         if (this.innerModel().sku() == null) {
-            this.withSize(ApplicationGatewaySkuName.STANDARD_SMALL);
+            this.withSize(ApplicationGatewaySkuName.BASIC);
         }
 
         this.innerModel().sku().withCapacity(capacity);
@@ -1849,12 +1849,13 @@ class ApplicationGatewayImpl
     }
 
     /*
-     * Only V2 Gateway supports priority.
+     * Legacy Gateways don't support priority.
      */
     private boolean supportsRulePriority() {
         ApplicationGatewayTier tier = tier();
         ApplicationGatewaySkuName sku = size();
         return tier != ApplicationGatewayTier.STANDARD
+            && tier != ApplicationGatewayTier.WAF
             && sku != ApplicationGatewaySkuName.STANDARD_SMALL && sku != ApplicationGatewaySkuName.STANDARD_MEDIUM
             && sku != ApplicationGatewaySkuName.STANDARD_LARGE && sku != ApplicationGatewaySkuName.WAF_MEDIUM
             && sku != ApplicationGatewaySkuName.WAF_LARGE;

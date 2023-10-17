@@ -7,7 +7,7 @@ import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
+import com.azure.core.credential.KeyCredential;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class ClientCreationWithNonAzureOpenAIKeyCredentialSample {
         String apiKey = "{non-azure-open-ai-api-key}";
 
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-            .credential(new NonAzureOpenAIKeyCredential(apiKey));
+            .credential(new KeyCredential(apiKey));
 
         OpenAIClient client = builder.buildClient();
 

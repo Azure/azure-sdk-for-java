@@ -96,7 +96,7 @@ public class RequestResponseChannel implements AsyncCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     // Tracks all subscriptions listening for events from various endpoints (sender, receiver & connection),
     // those subscriptions should be disposed when the request-response-channel terminates.
-    private final Disposable.Composite subscriptions;
+    private final Disposable.Composite subscriptions = Disposables.composite();
 
     private final AmqpRetryOptions retryOptions;
     private final String replyTo;
@@ -179,46 +179,46 @@ public class RequestResponseChannel implements AsyncCloseable {
 
         // Subscribe to the events from endpoints (Sender, Receiver & Connection) and track the subscriptions.
         //
-        //@formatter:off
-        this.subscriptions = Disposables.composite(
-            receiveLinkHandler.getDeliveredMessages()
-                .map(this::decodeDelivery)
-                .subscribe(message -> {
-                    logger.atVerbose()
-                        .addKeyValue("messageId", message.getCorrelationId())
-                        .log("Settling message.");
+        final Disposable receiveMessagesDisposable = receiveLinkHandler.getDeliveredMessages()
+            .map(this::decodeDelivery)
+            .subscribe(message -> {
+                logger.atVerbose()
+                    .addKeyValue("messageId", message.getCorrelationId())
+                    .log("Settling message.");
 
-                    settleMessage(message);
-                }),
+                settleMessage(message);
+            });
+        this.subscriptions.add(receiveMessagesDisposable);
 
-            receiveLinkHandler.getEndpointStates().subscribe(state -> {
-                updateEndpointState(null, AmqpEndpointStateUtil.getConnectionState(state));
-            }, error -> {
-                handleError(error, "Error in ReceiveLinkHandler.");
-                onTerminalState("ReceiveLinkHandler");
-            }, () -> {
-                closeAsync().subscribe();
-                onTerminalState("ReceiveLinkHandler");
-            }),
+        final Disposable receiveEndpointDisposable = receiveLinkHandler.getEndpointStates().subscribe(state -> {
+            updateEndpointState(null, AmqpEndpointStateUtil.getConnectionState(state));
+        }, error -> {
+            handleError(error, "Error in ReceiveLinkHandler.");
+            onTerminalState("ReceiveLinkHandler");
+        }, () -> {
+            closeAsync().subscribe();
+            onTerminalState("ReceiveLinkHandler");
+        });
+        this.subscriptions.add(receiveEndpointDisposable);
 
-            sendLinkHandler.getEndpointStates().subscribe(state -> {
-                updateEndpointState(AmqpEndpointStateUtil.getConnectionState(state), null);
-            }, error -> {
-                handleError(error, "Error in SendLinkHandler.");
-                onTerminalState("SendLinkHandler");
-            }, () -> {
-                closeAsync().subscribe();
-                onTerminalState("SendLinkHandler");
-            }),
+        final Disposable sendEndpointDisposable = sendLinkHandler.getEndpointStates().subscribe(state -> {
+            updateEndpointState(AmqpEndpointStateUtil.getConnectionState(state), null);
+        }, error -> {
+            handleError(error, "Error in SendLinkHandler.");
+            onTerminalState("SendLinkHandler");
+        }, () -> {
+            closeAsync().subscribe();
+            onTerminalState("SendLinkHandler");
+        });
+        this.subscriptions.add(sendEndpointDisposable);
 
-            // To ensure graceful closure of request-response-channel instance that won the race between
-            // its creation and its parent connection close.
-            amqpConnection.getShutdownSignals().next().flatMap(signal -> {
-                logger.verbose("Shutdown signal received.");
-                return closeAsync();
-            }).subscribe()
-        );
-        //@formatter:on
+        // To ensure graceful closure of request-response-channel instance that won the race between
+        // its creation and its parent connection close.
+        final Disposable shutdownDisposable = amqpConnection.getShutdownSignals().next().flatMap(signal -> {
+            logger.verbose("Shutdown signal received.");
+            return closeAsync();
+        }).subscribe();
+        this.subscriptions.add(shutdownDisposable);
 
         // Open send and receive links.
         //
@@ -396,13 +396,18 @@ public class RequestResponseChannel implements AsyncCloseable {
     }
 
     private void settleMessage(Message message) {
-        final String id = String.valueOf(message.getCorrelationId());
-        final UnsignedLong correlationId = UnsignedLong.valueOf(id);
+        UnsignedLong correlationId;
+        if (message.getCorrelationId() instanceof UnsignedLong) {
+            correlationId = (UnsignedLong) message.getCorrelationId();
+        } else {
+            String id = String.valueOf(message.getCorrelationId());
+            correlationId = UnsignedLong.valueOf(id);
+        }
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
         if (sink == null) {
             logger.atWarning()
-                .addKeyValue("messageId", id)
+                .addKeyValue("messageId", message.getCorrelationId())
                 .log("Received delivery without pending message.");
             return;
         }

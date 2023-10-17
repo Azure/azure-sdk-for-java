@@ -118,18 +118,18 @@ public final class DocumentClassifierDetails {
     }
 
     /**
-     * Get the apiVersion property: API version used to create this document classifier.
+     * Get the Service version used to create this document classifier.
      *
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
     public String getServiceVersion() {
         return this.serviceVersion;
     }
 
     /**
-     * Set the apiVersion property: API version used to create this document classifier.
+     * Set the service version used to create this document classifier.
      *
-     * @param serviceVersion the apiVersion value to set.
+     * @param serviceVersion the service version value to set.
      */
     void setServiceVersion(String serviceVersion) {
         this.serviceVersion = serviceVersion;
@@ -161,7 +161,7 @@ public final class DocumentClassifierDetails {
             }
 
             @Override
-            public void setApiVersion(DocumentClassifierDetails documentClassifierDetails, String description) {
+            public void setServiceVersion(DocumentClassifierDetails documentClassifierDetails, String description) {
                 documentClassifierDetails.setServiceVersion(description);
             }
 

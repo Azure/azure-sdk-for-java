@@ -23,6 +23,11 @@ public final class AddParticipantResult {
      */
     private final String operationContext;
 
+    /*
+     * The invitation ID used to send out add participant request.
+     */
+    private final String invitationId;
+
     static {
         AddParticipantResponseConstructorProxy.setAccessor(
             new AddParticipantResponseConstructorProxy.AddParticipantResponseConstructorAccessor() {
@@ -40,6 +45,7 @@ public final class AddParticipantResult {
     public AddParticipantResult() {
         this.participant = null;
         this.operationContext = null;
+        this.invitationId = null;
     }
 
     /**
@@ -52,6 +58,7 @@ public final class AddParticipantResult {
 
         this.participant = CallParticipantConverter.convert(addParticipantResponseInternal.getParticipant());
         this.operationContext = addParticipantResponseInternal.getOperationContext();
+        this.invitationId = addParticipantResponseInternal.getInvitationId();
     }
 
     /**
@@ -70,5 +77,15 @@ public final class AddParticipantResult {
      */
     public String getOperationContext() {
         return this.operationContext;
+    }
+
+    /**
+     * Get the invitationId property: The invitation ID used to send out add
+     * participant request.
+     * 
+     * @return the invitationId value.
+     */
+    public String getInvitationId() {
+        return invitationId;
     }
 }

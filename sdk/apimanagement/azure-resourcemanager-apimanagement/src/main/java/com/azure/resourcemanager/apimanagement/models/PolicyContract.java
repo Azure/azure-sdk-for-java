@@ -45,6 +45,13 @@ public interface PolicyContract {
     PolicyContentFormat format();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner object.
      *
      * @return the inner object.
@@ -55,17 +62,19 @@ public interface PolicyContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The PolicyContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the PolicyContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the PolicyContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId, operationId.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API revision identifier. Must be unique in the current API Management service instance.
              *     Non-current revision has ;rev=n as a suffix where n is the revision number.
@@ -76,6 +85,7 @@ public interface PolicyContract {
             WithCreate withExistingOperation(
                 String resourceGroupName, String serviceName, String apiId, String operationId);
         }
+
         /**
          * The stage of the PolicyContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -97,6 +107,7 @@ public interface PolicyContract {
              */
             PolicyContract create(Context context);
         }
+
         /** The stage of the PolicyContract definition allowing to specify value. */
         interface WithValue {
             /**
@@ -107,6 +118,7 @@ public interface PolicyContract {
              */
             WithCreate withValue(String value);
         }
+
         /** The stage of the PolicyContract definition allowing to specify format. */
         interface WithFormat {
             /**
@@ -117,6 +129,7 @@ public interface PolicyContract {
              */
             WithCreate withFormat(PolicyContentFormat format);
         }
+
         /** The stage of the PolicyContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -130,6 +143,7 @@ public interface PolicyContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the PolicyContract resource.
      *
@@ -154,6 +168,7 @@ public interface PolicyContract {
          */
         PolicyContract apply(Context context);
     }
+
     /** The PolicyContract update stages. */
     interface UpdateStages {
         /** The stage of the PolicyContract update allowing to specify value. */
@@ -166,6 +181,7 @@ public interface PolicyContract {
              */
             Update withValue(String value);
         }
+
         /** The stage of the PolicyContract update allowing to specify format. */
         interface WithFormat {
             /**
@@ -176,6 +192,7 @@ public interface PolicyContract {
              */
             Update withFormat(PolicyContentFormat format);
         }
+
         /** The stage of the PolicyContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -189,6 +206,7 @@ public interface PolicyContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

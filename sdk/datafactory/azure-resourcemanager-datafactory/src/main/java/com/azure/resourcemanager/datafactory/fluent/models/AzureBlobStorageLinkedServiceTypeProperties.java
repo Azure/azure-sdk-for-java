@@ -45,7 +45,7 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
      * property.
      */
     @JsonProperty(value = "serviceEndpoint")
-    private String serviceEndpoint;
+    private Object serviceEndpoint;
 
     /*
      * The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or
@@ -80,11 +80,11 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
      * purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "accountKind")
-    private String accountKind;
+    private Object accountKind;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -202,7 +202,7 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
      *
      * @return the serviceEndpoint value.
      */
-    public String serviceEndpoint() {
+    public Object serviceEndpoint() {
         return this.serviceEndpoint;
     }
 
@@ -213,7 +213,7 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the AzureBlobStorageLinkedServiceTypeProperties object itself.
      */
-    public AzureBlobStorageLinkedServiceTypeProperties withServiceEndpoint(String serviceEndpoint) {
+    public AzureBlobStorageLinkedServiceTypeProperties withServiceEndpoint(Object serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -315,7 +315,7 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
      *
      * @return the accountKind value.
      */
-    public String accountKind() {
+    public Object accountKind() {
         return this.accountKind;
     }
 
@@ -327,14 +327,14 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
      * @param accountKind the accountKind value to set.
      * @return the AzureBlobStorageLinkedServiceTypeProperties object itself.
      */
-    public AzureBlobStorageLinkedServiceTypeProperties withAccountKind(String accountKind) {
+    public AzureBlobStorageLinkedServiceTypeProperties withAccountKind(Object accountKind) {
         this.accountKind = accountKind;
         return this;
     }
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
@@ -344,7 +344,7 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobStorageLinkedServiceTypeProperties object itself.

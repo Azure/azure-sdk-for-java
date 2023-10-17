@@ -18,6 +18,10 @@ public final class AssociationContract extends ProxyResource {
     @JsonProperty(value = "properties")
     private AssociationContractProperties innerProperties;
 
+    /** Creates an instance of AssociationContract class. */
+    public AssociationContract() {
+    }
+
     /**
      * Get the innerProperties property: Association entity contract properties.
      *

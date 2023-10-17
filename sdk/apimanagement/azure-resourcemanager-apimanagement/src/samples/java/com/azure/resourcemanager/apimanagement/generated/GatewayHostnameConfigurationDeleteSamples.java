@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GatewayHostnameConfiguration Delete. */
 public final class GatewayHostnameConfigurationDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteGatewayHostnameConfiguration.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteGatewayHostnameConfiguration.json
      */
     /**
      * Sample code: ApiManagementDeleteGatewayHostnameConfiguration.
@@ -20,6 +18,6 @@ public final class GatewayHostnameConfigurationDeleteSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .gatewayHostnameConfigurations()
-            .deleteWithResponse("rg1", "apimService1", "gw1", "default", "*", Context.NONE);
+            .deleteWithResponse("rg1", "apimService1", "gw1", "default", "*", com.azure.core.util.Context.NONE);
     }
 }

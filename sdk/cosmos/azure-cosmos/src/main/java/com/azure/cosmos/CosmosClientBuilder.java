@@ -31,9 +31,12 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
@@ -139,6 +142,7 @@ public class CosmosClientBuilder implements
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptions;
+    private Supplier<CosmosExcludedRegions> cosmosExcludedRegionsSupplier;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -877,6 +881,34 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    /**
+     * Sets a {@link Supplier<CosmosExcludedRegions>} which returns a {@link CosmosExcludedRegions} instance when {@link Supplier#get()} is invoked.
+     * The request will not be routed to regions present in {@link CosmosExcludedRegions#getExcludedRegions()}
+     * for hedging scenarios and retry scenarios for the workload executed through this instance
+     * of {@link CosmosClient} / {@link CosmosAsyncClient}.
+     *
+     * @param excludedRegionsSupplier the supplier which returns a {@code CosmosExcludedRegions} instance.
+     * @return current CosmosClientBuilder.
+     * */
+    public CosmosClientBuilder excludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
+        this.cosmosExcludedRegionsSupplier = excludedRegionsSupplier;
+        return this;
+    }
+
+    /**
+     * Gets the regions to exclude from the list of preferred regions. A request will not be
+     * routed to these excluded regions for non-retry and retry scenarios
+     * for the workload executed through this instance of {@link CosmosClient} / {@link CosmosAsyncClient}.
+     *
+     * @return the list of regions to exclude.
+     * */
+    Set<String> getExcludedRegions() {
+        if (this.cosmosExcludedRegionsSupplier != null && this.cosmosExcludedRegionsSupplier.get() != null) {
+            return this.cosmosExcludedRegionsSupplier.get().getExcludedRegions();
+        }
+        return new HashSet<>();
+    }
+
     SessionRetryOptions getSessionRetryOptions() {
         return this.sessionRetryOptions;
     }
@@ -1051,7 +1083,6 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
         if (proactiveContainerInitConfig != null) {
-
             cosmosAsyncClient.recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
 
             Duration aggressiveWarmupDuration = proactiveContainerInitConfig
@@ -1085,6 +1116,9 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
         if (proactiveContainerInitConfig != null) {
+
+            cosmosClient.recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
+
             Duration aggressiveWarmupDuration = proactiveContainerInitConfig
                     .getAggressiveWarmupDuration();
             if (aggressiveWarmupDuration != null) {
@@ -1092,6 +1126,8 @@ public class CosmosClientBuilder implements
             } else {
                 cosmosClient.openConnectionsAndInitCaches();
             }
+
+            cosmosClient.recordOpenConnectionsAndInitCachesCompleted(proactiveContainerInitConfig.getCosmosContainerIdentities());
         }
         logStartupInfo(stopwatch, cosmosClient.asyncClient());
         return cosmosClient;
@@ -1110,6 +1146,7 @@ public class CosmosClientBuilder implements
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         }
         this.connectionPolicy.setPreferredRegions(this.preferredRegions);
+        this.connectionPolicy.setExcludedRegionsSupplier(this.cosmosExcludedRegionsSupplier);
         this.connectionPolicy.setUserAgentSuffix(this.userAgentSuffix);
         this.connectionPolicy.setThrottlingRetryOptions(this.throttlingRetryOptions);
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
@@ -1191,15 +1228,15 @@ public class CosmosClientBuilder implements
 
             DiagnosticsProvider provider = client.getDiagnosticsProvider();
             if (provider != null) {
-                tracingCfg = provider.isEnabled() + ", " + provider.isRealTracer();
+                tracingCfg = provider.getTraceConfigLog();
             }
 
             // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
             logger.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
-                    "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], " +
+                    "configuration: serviceEndpoint [{}], preferredRegions [{}], excludedRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
                     "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], diagnostics [{}], tracing [{}]",
-                client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(),
+                client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(), getExcludedRegions(),
                 getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
                 isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
                 isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg, tracingCfg);

@@ -5,6 +5,7 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
@@ -32,6 +33,7 @@ import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
+import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
@@ -62,6 +64,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -1606,6 +1609,208 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertFalse(vm.isVTpmEnabled());
 
         computeManager.virtualMachines().deleteById(vm.id());
+    }
+
+    @Test
+    public void canUpdateDeleteOptions() {
+        String networkName = generateRandomResourceName("network", 15);
+        String nicName = generateRandomResourceName("nic", 15);
+        String nicName2 = generateRandomResourceName("nic", 15);
+
+        Network network = this
+            .networkManager
+            .networks()
+            .define(networkName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.1.0/24")
+            .withSubnet("subnet1", "10.0.1.0/28")
+            .withSubnet("subnet2", "10.0.1.16/28")
+            .create();
+
+        // OS disk, primary and secondary nics, data disk delete options all set to DELETE
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("subnet1")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10, 1, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DELETE))
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+            .withNewSecondaryNetworkInterface(this
+                .networkManager
+                .networkInterfaces()
+                .define(nicName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("subnet1")
+                .withPrimaryPrivateIPAddressDynamic(), DeleteOptions.DELETE)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.osDiskDeleteOptions());
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
+
+        // update delete options all to DETACH, except for secondary nic
+        vm.update()
+            .withOsDiskDeleteOptions(DeleteOptions.DETACH)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DETACH)
+            .withDataDisksDeleteOptions(DeleteOptions.DETACH, 1)
+            .apply();
+
+        Assertions.assertEquals(DeleteOptions.DETACH, vm.osDiskDeleteOptions());
+        Assertions.assertEquals(DeleteOptions.DETACH, vm.primaryNetworkInterfaceDeleteOptions());
+        // secondary nic delete options remains unchanged
+        Assertions.assertTrue(vm.networkInterfaceIds().stream()
+            .filter(nicId -> !nicId.equals(vm.primaryNetworkInterfaceId())).allMatch(nicId -> DeleteOptions.DELETE.equals(vm.networkInterfaceDeleteOptions(nicId))));
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DETACH.equals(disk.deleteOptions())));
+
+        NetworkInterface secondaryNic2 =
+            this
+                .networkManager
+                .networkInterfaces()
+                .define(nicName2)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("subnet2")
+                .withPrimaryPrivateIPAddressDynamic()
+                .create();
+
+        vm.powerOff();
+        vm.deallocate();
+
+        // attach a new network interface and a new data disk, with delete options "DETACH"
+        vm.update()
+            .withNewDataDisk(1, 2, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DETACH))
+            .withExistingSecondaryNetworkInterface(secondaryNic2)
+            .apply();
+
+        // update all back to DELETE, including the newly added data disk and the secondary nic
+        vm.update()
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withDataDisksDeleteOptions(DeleteOptions.DELETE, new ArrayList<>(vm.dataDisks().keySet()).toArray(new Integer[0]))
+            .withNetworkInterfacesDeleteOptions(
+                DeleteOptions.DELETE,
+                vm.networkInterfaceIds().stream().filter(nic -> !nic.equals(vm.primaryNetworkInterfaceId())).toArray(String[]::new))
+            .apply();
+
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
+        Assertions.assertTrue(vm.networkInterfaceIds().stream().allMatch(nicId -> DeleteOptions.DELETE.equals(vm.networkInterfaceDeleteOptions(nicId))));
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
+    }
+
+    @Test
+    public void testListVmByVmssId() {
+        String vmssName = generateRandomResourceName("vmss", 15);
+        String vmName = generateRandomResourceName("vm", 15);
+        String vmName2 = generateRandomResourceName("vm", 15);
+
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .create();
+
+        Assertions.assertEquals(0, computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id()).stream().count());
+
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withExistingVirtualMachineScaleSet(vmss)
+            .create();
+
+        Assertions.assertNotNull(vm.virtualMachineScaleSetId());
+
+        VirtualMachine vm2 = computeManager.virtualMachines()
+            .define(vmName2)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.16/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .create();
+
+        Assertions.assertNull(vm2.virtualMachineScaleSetId());
+
+        Assertions.assertEquals(1, computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id()).stream().count());
+        Assertions.assertTrue(vm.id().equalsIgnoreCase(computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id()).stream().iterator().next().id()));
+        Assertions.assertEquals(2, computeManager.virtualMachines().listByResourceGroup(rgName).stream().count());
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    @Disabled("This test is for listByVirtualMachineScaleSetId nextLink encoding. Backend pageSize may change, so we don't want to assert that.")
+    public void testListByVmssIdNextLink() throws Exception {
+        String vmssName = generateRandomResourceName("vmss", 15);
+        String vnetName = generateRandomResourceName("vnet", 15);
+        String vmName = generateRandomResourceName("vm", 15);
+        int vmssCapacity = 70;
+
+        // vm that's not in VMSS
+        computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.1.0/24")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .create();
+
+        Network network = networkManager.networks().define(vnetName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .withSubnet("subnet1", "10.0.0.0/24")
+            .create();
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, this.resourceManager.resourceGroups().getByName(rgName), "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withCapacity(vmssCapacity)
+            .create();
+
+        PagedIterable<VirtualMachine> vmPaged = computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id());
+        Iterable<PagedResponse<VirtualMachine>> vmIterable = vmPaged.iterableByPage();
+        int pageCount = 0;
+        for (PagedResponse<VirtualMachine> response : vmIterable) {
+            pageCount++;
+            Assertions.assertEquals(200, response.getStatusCode());
+        }
+
+        Assertions.assertEquals(vmssCapacity, vmPaged.stream().count());
+        Assertions.assertEquals(2, pageCount);
     }
 
     // *********************************** helper methods ***********************************

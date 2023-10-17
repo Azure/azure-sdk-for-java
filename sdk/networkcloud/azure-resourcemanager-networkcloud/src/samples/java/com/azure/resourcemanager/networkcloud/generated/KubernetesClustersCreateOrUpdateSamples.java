@@ -38,7 +38,7 @@ import java.util.Map;
 /** Samples for KubernetesClusters CreateOrUpdate. */
 public final class KubernetesClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/KubernetesClusters_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/KubernetesClusters_Create.json
      */
     /**
      * Sample code: Create or update Kubernetes cluster.
@@ -177,7 +177,7 @@ public final class KubernetesClustersCreateOrUpdateSamples {
                     .withDnsServiceIp("198.51.101.2")
                     .withPodCidrs(Arrays.asList("198.51.100.0/24"))
                     .withServiceCidrs(Arrays.asList("198.51.101.0/24")))
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withAadConfiguration(
                 new AadConfiguration().withAdminGroupObjectIds(Arrays.asList("ffffffff-ffff-ffff-ffff-ffffffffffff")))
             .withAdministratorConfiguration(
@@ -189,6 +189,7 @@ public final class KubernetesClustersCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
