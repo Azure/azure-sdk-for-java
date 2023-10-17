@@ -209,6 +209,7 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
                 Duration durationInMillis = event.getDuration();
                 if (durationInMillis != null) {
                     assertThat(durationInMillis.getSeconds()).isLessThanOrEqualTo(62);
+                    assertThat(durationInMillis.getSeconds()).isGreaterThanOrEqualTo(60);
                 }
             }
         }
