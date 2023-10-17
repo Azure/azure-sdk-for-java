@@ -263,9 +263,7 @@ public class HttpUrlConnectionClient implements HttpClient {
      * @param connection The HttpURLConnection that is being sent to
      * @return This method does not return any value
      */
-    private Void sendBodySync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
-        Void requestSendMono = null;
-
+    private void sendBodySync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
         switch (httpRequest.getHttpMethod()) {
             case POST:
             case PUT:
@@ -298,7 +296,6 @@ public class HttpUrlConnectionClient implements HttpClient {
                     + httpRequest.getHttpMethod()));
             }
         }
-        return requestSendMono;
     }
 
     /**
