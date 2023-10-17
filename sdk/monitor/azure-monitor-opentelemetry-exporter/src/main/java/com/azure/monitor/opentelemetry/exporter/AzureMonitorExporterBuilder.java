@@ -250,7 +250,7 @@ public final class AzureMonitorExporterBuilder {
     public SpanExporter buildTraceExporter() {
         internalBuildAndFreeze();
         // TODO (trask) how to pass along configuration properties?
-        return buildTraceExporter(DefaultConfigProperties.createForTest(Collections.emptyMap()));
+        return buildTraceExporter(DefaultConfigProperties.create(Collections.emptyMap()));
     }
 
     /**

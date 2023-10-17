@@ -3,11 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.*;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 
 import java.util.Date;
@@ -35,12 +31,12 @@ final class QuickPulseNetworkHelper {
         String instanceName) {
 
         HttpRequest request = buildRequest(currentDate, address);
-        request.setHeader(QPS_ROLE_NAME_HEADER, roleName);
-        request.setHeader(QPS_MACHINE_NAME_HEADER, machineName);
-        request.setHeader(QPS_STREAM_ID_HEADER, quickPulseId);
-        request.setHeader(QPS_INSTANCE_NAME_HEADER, instanceName);
+        request.setHeader(HttpHeaderName.fromString(QPS_ROLE_NAME_HEADER), roleName);
+        request.setHeader(HttpHeaderName.fromString(QPS_MACHINE_NAME_HEADER), machineName);
+        request.setHeader(HttpHeaderName.fromString(QPS_STREAM_ID_HEADER), quickPulseId);
+        request.setHeader(HttpHeaderName.fromString(QPS_INSTANCE_NAME_HEADER), instanceName);
         request.setHeader(
-            QPS_INVARIANT_VERSION_HEADER, Integer.toString(QuickPulse.QP_INVARIANT_VERSION));
+            HttpHeaderName.fromString(QPS_INVARIANT_VERSION_HEADER), Integer.toString(QuickPulse.QP_INVARIANT_VERSION));
         return request;
     }
 
@@ -48,7 +44,7 @@ final class QuickPulseNetworkHelper {
         long ticks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, address);
-        request.setHeader(HEADER_TRANSMISSION_TIME, String.valueOf(ticks));
+        request.setHeader(HttpHeaderName.fromString(HEADER_TRANSMISSION_TIME), String.valueOf(ticks));
         return request;
     }
 
