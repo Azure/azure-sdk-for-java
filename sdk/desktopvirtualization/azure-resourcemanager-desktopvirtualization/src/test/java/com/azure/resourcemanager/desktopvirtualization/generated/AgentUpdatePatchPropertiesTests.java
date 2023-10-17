@@ -18,12 +18,12 @@ public final class AgentUpdatePatchPropertiesTests {
         AgentUpdatePatchProperties model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"Default\",\"useSessionHostLocalTime\":false,\"maintenanceWindowTimeZone\":\"ocmbqfqvmkcxoza\",\"maintenanceWindows\":[{\"hour\":2066979028,\"dayOfWeek\":\"Thursday\"},{\"hour\":1663002651,\"dayOfWeek\":\"Friday\"},{\"hour\":1689859600,\"dayOfWeek\":\"Tuesday\"}]}")
+                    "{\"type\":\"Scheduled\",\"useSessionHostLocalTime\":false,\"maintenanceWindowTimeZone\":\"lzywemhzrncsdtc\",\"maintenanceWindows\":[{\"hour\":2121256273,\"dayOfWeek\":\"Thursday\"},{\"hour\":1674447280,\"dayOfWeek\":\"Thursday\"}]}")
                 .toObject(AgentUpdatePatchProperties.class);
-        Assertions.assertEquals(SessionHostComponentUpdateType.DEFAULT, model.type());
+        Assertions.assertEquals(SessionHostComponentUpdateType.SCHEDULED, model.type());
         Assertions.assertEquals(false, model.useSessionHostLocalTime());
-        Assertions.assertEquals("ocmbqfqvmkcxoza", model.maintenanceWindowTimeZone());
-        Assertions.assertEquals(2066979028, model.maintenanceWindows().get(0).hour());
+        Assertions.assertEquals("lzywemhzrncsdtc", model.maintenanceWindowTimeZone());
+        Assertions.assertEquals(2121256273, model.maintenanceWindows().get(0).hour());
         Assertions.assertEquals(DayOfWeek.THURSDAY, model.maintenanceWindows().get(0).dayOfWeek());
     }
 
@@ -31,24 +31,23 @@ public final class AgentUpdatePatchPropertiesTests {
     public void testSerialize() throws Exception {
         AgentUpdatePatchProperties model =
             new AgentUpdatePatchProperties()
-                .withType(SessionHostComponentUpdateType.DEFAULT)
+                .withType(SessionHostComponentUpdateType.SCHEDULED)
                 .withUseSessionHostLocalTime(false)
-                .withMaintenanceWindowTimeZone("ocmbqfqvmkcxoza")
+                .withMaintenanceWindowTimeZone("lzywemhzrncsdtc")
                 .withMaintenanceWindows(
                     Arrays
                         .asList(
                             new MaintenanceWindowPatchProperties()
-                                .withHour(2066979028)
+                                .withHour(2121256273)
                                 .withDayOfWeek(DayOfWeek.THURSDAY),
-                            new MaintenanceWindowPatchProperties().withHour(1663002651).withDayOfWeek(DayOfWeek.FRIDAY),
                             new MaintenanceWindowPatchProperties()
-                                .withHour(1689859600)
-                                .withDayOfWeek(DayOfWeek.TUESDAY)));
+                                .withHour(1674447280)
+                                .withDayOfWeek(DayOfWeek.THURSDAY)));
         model = BinaryData.fromObject(model).toObject(AgentUpdatePatchProperties.class);
-        Assertions.assertEquals(SessionHostComponentUpdateType.DEFAULT, model.type());
+        Assertions.assertEquals(SessionHostComponentUpdateType.SCHEDULED, model.type());
         Assertions.assertEquals(false, model.useSessionHostLocalTime());
-        Assertions.assertEquals("ocmbqfqvmkcxoza", model.maintenanceWindowTimeZone());
-        Assertions.assertEquals(2066979028, model.maintenanceWindows().get(0).hour());
+        Assertions.assertEquals("lzywemhzrncsdtc", model.maintenanceWindowTimeZone());
+        Assertions.assertEquals(2121256273, model.maintenanceWindows().get(0).hour());
         Assertions.assertEquals(DayOfWeek.THURSDAY, model.maintenanceWindows().get(0).dayOfWeek());
     }
 }
