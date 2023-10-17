@@ -21,4 +21,5 @@ module com.generic.core {
 
     // Service Provider Interfaces
     uses com.generic.core.http.HttpClientProvider;
+    uses com.generic.core.util.serializer.JsonSerializerProvider;
 }
