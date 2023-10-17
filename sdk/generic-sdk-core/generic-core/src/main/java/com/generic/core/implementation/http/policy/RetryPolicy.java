@@ -33,9 +33,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.generic.core.http.HttpHeaderName.RETRY_AFTER_MS_HEADER;
-import static com.generic.core.http.HttpHeaderName.X_MS_RETRY_AFTER_MS_HEADER;
-
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
@@ -90,7 +87,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      */
     public RetryPolicy(RetryStrategy retryStrategy, String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
-        this.retryAfterHeader = HttpHeaderName.RETRY_AFTER_MS_HEADER;
+        this.retryAfterHeader = HttpHeaderName.RETRY_AFTER;
         // change
         this.retryAfterTimeUnit = retryAfterTimeUnit;
         if (!CoreUtils.isNullOrEmpty(retryAfterHeader)) {
@@ -255,25 +252,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     public static Duration getRetryAfterFromHeaders(Headers headers, Supplier<OffsetDateTime> nowSupplier) {
-        // Found 'x-ms-retry-after-ms' header, use a Duration of milliseconds based on the value.
-        Duration retryDelay = tryGetRetryDelay(headers, X_MS_RETRY_AFTER_MS_HEADER, RetryPolicy::tryGetDelayMillis);
-        if (retryDelay != null) {
-            return retryDelay;
-        }
-
-        // Found 'retry-after-ms' header, use a Duration of milliseconds based on the value.
-        retryDelay = tryGetRetryDelay(headers, RETRY_AFTER_MS_HEADER, RetryPolicy::tryGetDelayMillis);
-        if (retryDelay != null) {
-            return retryDelay;
-        }
-
-        // Found 'Retry-After' header. First, attempt to resolve it as a Duration of seconds. If that fails, then
-        // attempt to resolve it as an HTTP date (RFC1123).
-        retryDelay = tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER,
+        // Seek for the 'Retry-After' header. First, attempt to resolve it as a Duration of seconds. If that fails, then
+        // attempt to resolve it as an HTTP date (RFC1123). Either the retry delay will have been found or it'll be
+        // null, null indicates no retry after.
+        return tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER,
             headerValue -> tryParseLongOrDateTime(headerValue, nowSupplier));
-
-        // Either the retry delay will have been found or it'll be null, null indicates no retry after.
-        return retryDelay;
     }
 
     private static Duration tryGetRetryDelay(Headers headers, HttpHeaderName headerName,

@@ -349,11 +349,6 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     public static final HttpHeaderName RETRY_AFTER = fromString("Retry-After");
 
     /**
-     * {@code retry-after-ms}
-     */
-    public static final HttpHeaderName RETRY_AFTER_MS_HEADER = fromString("retry-after-ms");
-
-    /**
      * {@code Server}/{@code server}
      */
     public static final HttpHeaderName SERVER = fromString("Server");
@@ -412,14 +407,4 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
      * {@code WWW-Authenticate}/{@code www-authenticate}
      */
     public static final HttpHeaderName WWW_AUTHENTICATE = fromString("WWW-Authenticate");
-
-    /**
-     * {@code x-ms-client-request-id}
-     */
-    public static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = fromString("x-ms-client-request-id");
-
-    /**
-     * {@code x-ms-retry-after-ms}
-     */
-    public static final HttpHeaderName X_MS_RETRY_AFTER_MS_HEADER = fromString("x-ms-retry-after-ms");
 }
