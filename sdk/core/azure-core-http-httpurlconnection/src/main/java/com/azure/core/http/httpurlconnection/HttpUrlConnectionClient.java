@@ -21,11 +21,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
@@ -129,7 +125,7 @@ public class HttpUrlConnectionClient implements HttpClient {
         try {
             return SocketClient.sendPatchRequest(httpRequest);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -210,8 +206,6 @@ public class HttpUrlConnectionClient implements HttpClient {
      * @return A Mono that represents the completion of the request sending process
      */
     private Mono<Void> sendBodyAsync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
-        Mono<Void> requestSendMono = Mono.empty();
-
         switch (httpRequest.getHttpMethod()) {
             case POST:
             case PUT:
@@ -254,11 +248,11 @@ public class HttpUrlConnectionClient implements HttpClient {
                 break;
             }
             default: {
-                requestSendMono = FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:"
+                return FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:"
                     + httpRequest.getHttpMethod()));
             }
         }
-        return requestSendMono;
+        return Mono.empty();
     }
 
     /**
