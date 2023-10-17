@@ -392,10 +392,10 @@
                 version: 5.5.0
         - artifactId: azure-security-keyvault-jca
           groupId: com.azure
-          versionGA: 2.7.1
+          versionGA: 2.8.0
           type: client
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/2.7.1/index.html
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/2.8.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca
             msdocs: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca/README.md
             repopath: https://central.sonatype.com/artifact/com.azure/azure-security-keyvault-jca

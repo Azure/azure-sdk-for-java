@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VmmToAzureU
 /** Samples for ReplicationNetworkMappings Update. */
 public final class ReplicationNetworkMappingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationNetworkMappings_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationNetworkMappings_Update.json
      */
     /**
      * Sample code: Updates network mapping.

@@ -4,9 +4,11 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
+import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
+import com.azure.communication.callautomation.implementation.accesshelpers.CancelAddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.MuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TransferCallResponseConstructorProxy;
@@ -15,6 +17,7 @@ import com.azure.communication.callautomation.implementation.converters.CallPart
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.AddParticipantRequestInternal;
+import com.azure.communication.callautomation.implementation.models.CancelAddParticipantRequest;
 import com.azure.communication.callautomation.implementation.models.CustomContext;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
@@ -22,6 +25,8 @@ import com.azure.communication.callautomation.implementation.models.TransferToPa
 import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallParticipant;
+import com.azure.communication.callautomation.models.CancelAddParticipantOptions;
+import com.azure.communication.callautomation.models.CancelAddParticipantResult;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
@@ -64,15 +69,19 @@ public final class CallConnectionAsync {
     private final String callConnectionId;
     private final CallConnectionsImpl callConnectionInternal;
     private final CallMediasImpl callMediasInternal;
+
+    private final CallDialogsImpl callDialogsInternal;
     private final ClientLogger logger;
 
     CallConnectionAsync(
         String callConnectionId,
         CallConnectionsImpl callConnectionInternal,
-        CallMediasImpl contentsInternal) {
+        CallMediasImpl contentsInternal,
+        CallDialogsImpl dialogsInternal) {
         this.callConnectionId = callConnectionId;
         this.callConnectionInternal = callConnectionInternal;
         this.callMediasInternal = contentsInternal;
+        this.callDialogsInternal = dialogsInternal;
         this.logger = new ClientLogger(CallConnectionAsync.class);
     }
 
@@ -488,6 +497,52 @@ public final class CallConnectionAsync {
         }
     }
 
+    /**
+     * Cancel add participant request.
+     *
+     * @param invitationId invitation ID used to add participant.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of cancelling add participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CancelAddParticipantResult> cancelAddParticipant(String invitationId) {
+        return cancelAddParticipantWithResponse(new CancelAddParticipantOptions(invitationId)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Cancel add participant request.
+     *
+     * @param cancelAddParticipantOptions Options bag for cancelAddParticipant.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of cancelling add participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CancelAddParticipantResult>> cancelAddParticipantWithResponse(CancelAddParticipantOptions cancelAddParticipantOptions) {
+        return withContext(context -> cancelAddParticipantWithResponseInternal(cancelAddParticipantOptions, context));
+    }
+
+    Mono<Response<CancelAddParticipantResult>> cancelAddParticipantWithResponseInternal(CancelAddParticipantOptions cancelAddParticipantOptions, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            CancelAddParticipantRequest request = new CancelAddParticipantRequest()
+                .setInvitationId((cancelAddParticipantOptions.getInvitationId()))
+                .setOperationContext(cancelAddParticipantOptions.getOperationContext())
+                .setCallbackUri(cancelAddParticipantOptions.getCallbackUrl());
+
+            return callConnectionInternal.cancelAddParticipantWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
+                    context).map(response -> new SimpleResponse<>(response, CancelAddParticipantResponseConstructorProxy.create(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     //region Content management Actions
     /***
      * Returns an object of CallContentAsync
@@ -497,6 +552,16 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMediaAsync getCallMediaAsync() {
         return new CallMediaAsync(callConnectionId, callMediasInternal);
+    }
+
+    /***
+     * Returns an object of CallDialogAsync
+     *
+     * @return a CallDialogAsync.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallDialogAsync getCallDialogAsync() {
+        return new CallDialogAsync(callConnectionId, callDialogsInternal);
     }
     //endregion
 }

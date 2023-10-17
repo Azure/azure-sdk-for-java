@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
+import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,17 +61,14 @@ public class TelemetryItemExporterTest {
     File tempFolder;
 
     private TelemetryItemExporter getExporter() {
-        return getExporter(Resource.empty());
-    }
-
-    private TelemetryItemExporter getExporter(Resource environmentResource) {
-        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder().httpClient(recordingHttpClient);
+        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder()
+            .httpClient(recordingHttpClient)
+            .tracer(new NoopTracer());
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
 
         return new TelemetryItemExporter(
             telemetryPipeline,
-            new LocalStorageTelemetryPipelineListener(50, tempFolder, telemetryPipeline, null, false),
-                environmentResource);
+            new LocalStorageTelemetryPipelineListener(50, tempFolder, telemetryPipeline, null, false));
     }
 
     private static String getRequestBodyString(Flux<ByteBuffer> requestBody) {
@@ -244,8 +243,8 @@ public class TelemetryItemExporterTest {
     @Test
     public void initOtelResourceAttributesTest() {
         ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
-                "otel.resource.attributes",
-                "key1=value%201,key2=value2,key3=value%203"));
+            "otel.resource.attributes",
+            "key1=value%201,key2=value2,key3=value%203"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
 
         assertThat(resource.getAttributes().size()).isEqualTo(3);
@@ -257,8 +256,8 @@ public class TelemetryItemExporterTest {
     @Test
     public void otelResourceAttributeTest() {
         ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
-                "otel.resource.attributes",
-                "key1=value1,key2=value2,key3=value3"));
+            "otel.resource.attributes",
+            "key1=value1,key2=value2,key3=value3"));
         Resource environmentResource = ResourceConfiguration.createEnvironmentResource(config);
 
         // given
@@ -279,7 +278,7 @@ public class TelemetryItemExporterTest {
             TestUtils.createMetricTelemetry("metric" + 4, 4, REDIRECT_CONNECTION_STRING);
         telemetryItem4.getTags().put(ContextTagKeys.AI_CLOUD_ROLE.toString(), "rolename4");
         telemetryItems.add(telemetryItem4);
-        TelemetryItemExporter exporter = getExporter(environmentResource);
+        TelemetryItemExporter exporter = getExporter();
 
         // when
         CompletableResultCode completableResultCode = exporter.send(telemetryItems);
@@ -310,9 +309,10 @@ public class TelemetryItemExporterTest {
         telemetryItems.add(telemetryItem4);
 
         TelemetryItemExporter exporter = getExporter();
-        List<List<TelemetryItem>> result =
-            exporter.groupTelemetryItemsByConnectionStringAndRoleName(telemetryItems);
+        List<List<TelemetryItem>> result = new ArrayList<>(exporter.splitIntoBatches(telemetryItems).values());
         assertThat(result.size()).isEqualTo(3);
+
+        result.sort(Comparator.comparing(items -> items.get(0).getTags().get(ContextTagKeys.AI_CLOUD_ROLE.toString())));
 
         List<TelemetryItem> group1 = result.get(0);
         assertThat(group1.size()).isEqualTo(1);

@@ -25,8 +25,8 @@ public interface AfdCustomDomainsClient {
      * Lists existing AzureFrontDoor domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which
-     *     is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -39,8 +39,8 @@ public interface AfdCustomDomainsClient {
      * Lists existing AzureFrontDoor domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which
-     *     is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -53,8 +53,8 @@ public interface AfdCustomDomainsClient {
      * Lists existing AzureFrontDoor domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile or CDN profile which
-     *     is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,23 +107,6 @@ public interface AfdCustomDomainsClient {
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      *     within the resource group.
      * @param customDomainName Name of the domain under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing AzureFrontDoor domain with the specified domain name under the specified subscription,
-     *     resource group and profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AfdDomainInner get(String resourceGroupName, String profileName, String customDomainName);
-
-    /**
-     * Gets an existing AzureFrontDoor domain with the specified domain name under the specified subscription, resource
-     * group and profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param customDomainName Name of the domain under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,6 +117,23 @@ public interface AfdCustomDomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AfdDomainInner> getWithResponse(
         String resourceGroupName, String profileName, String customDomainName, Context context);
+
+    /**
+     * Gets an existing AzureFrontDoor domain with the specified domain name under the specified subscription, resource
+     * group and profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param customDomainName Name of the domain under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing AzureFrontDoor domain with the specified domain name under the specified subscription,
+     *     resource group and profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AfdDomainInner get(String resourceGroupName, String profileName, String customDomainName);
 
     /**
      * Creates a new domain within the specified profile.

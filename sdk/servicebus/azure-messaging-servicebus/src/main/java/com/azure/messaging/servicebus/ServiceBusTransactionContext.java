@@ -21,20 +21,26 @@ import java.nio.ByteBuffer;
  * &#47;&#47; This mono creates a transaction and caches the output value, so we can associate operations with the
  * &#47;&#47; transaction. It does not cache the value if it is an error or completes with no items, effectively retrying
  * &#47;&#47; the operation.
- * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = receiver.createTransaction&#40;&#41;
+ * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = asyncReceiver.createTransaction&#40;&#41;
  *     .cache&#40;value -&gt; Duration.ofMillis&#40;Long.MAX_VALUE&#41;,
  *         error -&gt; Duration.ZERO,
  *         &#40;&#41; -&gt; Duration.ZERO&#41;;
  *
- * transactionContext.flatMap&#40;transaction -&gt; &#123;
+ * &#47;&#47; Dispose of the disposable to cancel the operation.
+ * Disposable disposable = transactionContext.flatMap&#40;transaction -&gt; &#123;
  *     &#47;&#47; Process messages and associate operations with the transaction.
  *     Mono&lt;Void&gt; operations = Mono.when&#40;
- *         receiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
- *             receiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
- *         receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
+ *         asyncReceiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
+ *             asyncReceiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
+ *         asyncReceiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
  *
  *     &#47;&#47; Finally, either commit or rollback the transaction once all the operations are associated with it.
- *     return operations.flatMap&#40;transactionOperations -&gt; receiver.commitTransaction&#40;transaction&#41;&#41;;
+ *     return operations.then&#40;asyncReceiver.commitTransaction&#40;transaction&#41;&#41;;
+ * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+ * &#125;, error -&gt; &#123;
+ *     System.err.println&#40;&quot;Error occurred processing transaction: &quot; + error&#41;;
+ * &#125;, &#40;&#41; -&gt; &#123;
+ *     System.out.println&#40;&quot;Completed transaction&quot;&#41;;
  * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext -->

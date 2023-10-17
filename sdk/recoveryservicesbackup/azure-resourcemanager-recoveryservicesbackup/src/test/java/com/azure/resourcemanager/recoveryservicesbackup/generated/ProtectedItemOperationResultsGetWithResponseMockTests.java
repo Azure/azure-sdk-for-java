@@ -32,7 +32,7 @@ public final class ProtectedItemOperationResultsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"DefaultBackup\",\"workloadType\":\"SQLDataBase\",\"containerName\":\"cbgydlqi\",\"sourceResourceId\":\"wmhmptyrilkfbnr\",\"policyId\":\"xvztpbnfnqtxj\",\"lastRecoveryPoint\":\"2021-07-24T21:24:44Z\",\"backupSetName\":\"lswbnf\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-04-15T08:17:41Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"jnsfzygleexahvmy\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"ryc\",\"jjzyvoaqajuve\",\"zptdmkrrbh\",\"pfulube\"],\"isArchiveEnabled\":false,\"policyName\":\"pmfbfununmpzkr\",\"softDeleteRetentionPeriod\":988456755},\"eTag\":\"fkd\",\"location\":\"chlzvfi\",\"tags\":{\"hbkgfyrt\":\"kjjwgcwn\",\"mjpjscdfpdqwty\":\"gm\",\"wmseharxifvqn\":\"ev\",\"mbpjptnvwjh\":\"x\"},\"id\":\"sidqpxlbtpakft\",\"name\":\"gatwmykyu\",\"type\":\"rymdwmf\"}";
+            "{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureSql\",\"workloadType\":\"SQLDB\",\"containerName\":\"qfhefkwabsol\",\"sourceResourceId\":\"nqqlmgnl\",\"policyId\":\"sjxtel\",\"lastRecoveryPoint\":\"2021-08-30T10:48:05Z\",\"backupSetName\":\"uqbo\",\"createMode\":\"Recover\",\"deferredDeleteTimeInUTC\":\"2021-11-18T16:01:37Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"arkuzl\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"nx\",\"wqy\"],\"isArchiveEnabled\":true,\"policyName\":\"dyz\",\"softDeleteRetentionPeriodInDays\":1026321813},\"eTag\":\"zexnxakcky\",\"location\":\"ymx\",\"tags\":{\"ogzvk\":\"bjkdtfohf\",\"raueekcsueh\":\"wrsiwdyjqurykc\",\"bcbgydlqidywmhm\":\"gdda\"},\"id\":\"tyrilkfbnrqqxvz\",\"name\":\"pbnfnqtx\",\"type\":\"to\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,29 +63,36 @@ public final class ProtectedItemOperationResultsGetWithResponseMockTests {
         ProtectedItemResource response =
             manager
                 .protectedItemOperationResults()
-                .getWithResponse("zvkiwrsiwdy", "quryk", "rra", "eek", "s", "eh", com.azure.core.util.Context.NONE)
+                .getWithResponse(
+                    "yibuyvpirfqjpnqn",
+                    "owsbedenrexkxbh",
+                    "vucnulgmnh",
+                    "evdyz",
+                    "fajs",
+                    "kskmqozzkivyhjrl",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("chlzvfi", response.location());
-        Assertions.assertEquals("kjjwgcwn", response.tags().get("hbkgfyrt"));
-        Assertions.assertEquals("cbgydlqi", response.properties().containerName());
-        Assertions.assertEquals("wmhmptyrilkfbnr", response.properties().sourceResourceId());
-        Assertions.assertEquals("xvztpbnfnqtxj", response.properties().policyId());
+        Assertions.assertEquals("ymx", response.location());
+        Assertions.assertEquals("bjkdtfohf", response.tags().get("ogzvk"));
+        Assertions.assertEquals("qfhefkwabsol", response.properties().containerName());
+        Assertions.assertEquals("nqqlmgnl", response.properties().sourceResourceId());
+        Assertions.assertEquals("sjxtel", response.properties().policyId());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-07-24T21:24:44Z"), response.properties().lastRecoveryPoint());
-        Assertions.assertEquals("lswbnf", response.properties().backupSetName());
-        Assertions.assertEquals(CreateMode.DEFAULT, response.properties().createMode());
+            .assertEquals(OffsetDateTime.parse("2021-08-30T10:48:05Z"), response.properties().lastRecoveryPoint());
+        Assertions.assertEquals("uqbo", response.properties().backupSetName());
+        Assertions.assertEquals(CreateMode.RECOVER, response.properties().createMode());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-04-15T08:17:41Z"), response.properties().deferredDeleteTimeInUtc());
+                OffsetDateTime.parse("2021-11-18T16:01:37Z"), response.properties().deferredDeleteTimeInUtc());
         Assertions.assertEquals(true, response.properties().isScheduledForDeferredDelete());
-        Assertions.assertEquals("jnsfzygleexahvmy", response.properties().deferredDeleteTimeRemaining());
+        Assertions.assertEquals("arkuzl", response.properties().deferredDeleteTimeRemaining());
         Assertions.assertEquals(false, response.properties().isDeferredDeleteScheduleUpcoming());
         Assertions.assertEquals(true, response.properties().isRehydrate());
-        Assertions.assertEquals("ryc", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(false, response.properties().isArchiveEnabled());
-        Assertions.assertEquals("pmfbfununmpzkr", response.properties().policyName());
-        Assertions.assertEquals(988456755, response.properties().softDeleteRetentionPeriod());
-        Assertions.assertEquals("fkd", response.etag());
+        Assertions.assertEquals("nx", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(true, response.properties().isArchiveEnabled());
+        Assertions.assertEquals("dyz", response.properties().policyName());
+        Assertions.assertEquals(1026321813, response.properties().softDeleteRetentionPeriod());
+        Assertions.assertEquals("zexnxakcky", response.etag());
     }
 }

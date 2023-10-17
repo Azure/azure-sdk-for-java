@@ -532,6 +532,8 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
+            // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
+            builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {
@@ -621,6 +623,8 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azdCommand.toString());
+            // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
+            builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {

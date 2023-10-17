@@ -55,7 +55,7 @@ public final class IdentityClientBuilder {
 
     /**
      * Sets the client secret for the client.
-     * @param clientSecret the secret value of the AAD application.
+     * @param clientSecret the secret value of the Microsoft Entra application.
      * @return the IdentityClientBuilder itself
      */
     public IdentityClientBuilder clientSecret(String clientSecret) {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2023-09-22)
+
+### Features Added
+
+- Added support for `Whisper` endpoints.
+- Translation and Transcription of audio files is available.
+- The above features are available both in Azure and non-Azure OpenAI.
+- Added more convenience methods, which are wrappers around the existing`get{ChatCompletions|Completions|Embeddings}WithResponse` 
+  methods with concrete data types instead of using `BinaryData` as the return data type. For example, a new method 
+  introduced is
+  - Async: `Mono<Response<ChatCompletions>> getChatCompletionsWithResponse(String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions)`
+  - Sync: `Response<ChatCompletions> getChatCompletionsWithResponse(String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions)`
+  
+  Same methods are added for `Completions` and `Embeddings` endpoints as well.
+
+### Breaking Changes
+
+- Replaced usage of class `AzureKeyCredential` by `KeyCredential`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 
 ## 1.0.0-beta.4 (2023-08-28)
 

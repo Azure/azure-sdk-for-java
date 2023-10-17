@@ -63,28 +63,20 @@ public final class BackupsTriggerWithResponseMockTests {
         manager
             .backups()
             .triggerWithResponse(
-                "lregpq",
-                "moj",
-                "vr",
-                "tnvgyshqrdgrt",
-                "mewjzlpyk",
+                "tzeyowmndcovd",
+                "zqauxzan",
+                "mk",
+                "fruwkud",
+                "bcpftxudqyemebun",
                 new BackupRequestResource()
-                    .withLocation("ybylpol")
-                    .withTags(
-                        mapOf(
-                            "jwvuag",
-                            "ghsrleinkfscjfn",
-                            "klzmijajw",
-                            "qwtltngvmreupt",
-                            "fsvagh",
-                            "l",
-                            "xqlaps",
-                            "pynwlslrcigtzjcv"))
+                    .withLocation("auwcg")
+                    .withTags(mapOf("itranizerwguda", "noh", "hpriylfm", "mxubvfbngfcoce", "vhl", "ztraud"))
                     .withProperties(new BackupRequest())
-                    .withEtag("zzwjcayerzrran"),
+                    .withEtag("mcirtneemm"),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

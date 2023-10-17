@@ -11,7 +11,7 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 /**
  * Resource manager for Storage account.
  */
-public class StorageAccountCrud extends AbstractResourceCrud<StorageAccount, String> {
+public class StorageAccountCrud extends AbstractResourceCrud<StorageAccount, String, Object> {
 
     /**
      * Creates a new instance of {@link StorageAccountCrud}.

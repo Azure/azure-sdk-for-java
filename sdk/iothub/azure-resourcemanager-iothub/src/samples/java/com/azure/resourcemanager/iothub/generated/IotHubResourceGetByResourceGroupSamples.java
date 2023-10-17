@@ -7,7 +7,7 @@ package com.azure.resourcemanager.iothub.generated;
 /** Samples for IotHubResource GetByResourceGroup. */
 public final class IotHubResourceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_get.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_get.json
      */
     /**
      * Sample code: IotHubResource_Get.

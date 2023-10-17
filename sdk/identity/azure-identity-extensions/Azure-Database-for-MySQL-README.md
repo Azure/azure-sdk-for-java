@@ -7,9 +7,9 @@
       - [Prepare the working environment](#prepare-the-working-environment)
       - [Create an Azure Database for MySQL server](#create-an-azure-database-for-mysql-server)
       - [Configure a firewall rule for your MySQL server](#configure-a-firewall-rule-for-your-mysql-server)
-      - [Enable Azure AD-based authentication](#enable-azure-ad-based-authentication)
+      - [Enable Microsoft Entra-based authentication](#enable-azure-ad-based-authentication)
   - [Key concepts](#key-concepts)
-    - [Azure AD authentication with MySQL](#azure-ad-authentication-with-mysql)
+    - [Microsoft Entra authentication with MySQL](#azure-ad-authentication-with-mysql)
     - [Architecture](#architecture)
     - [Token as password](#token-as-password)
   - [Examples](#examples)
@@ -27,7 +27,7 @@
 
 # Azure identity JDBC MySQL plugin library for Java
 
-This package contains the jdbc authentication plugin to authenticate with Azure Active Directory (Azure AD) for Azure hosted MySQL services.
+This package contains the JDBC authentication plugin to authenticate with Microsoft Entra ID for Azure-hosted MySQL databases.
 
 [Source code][mysql_source] | [API reference documentation][docs] | [Product documentation][mysql_product_docs]
 | [Quickstart][quick_start_mysql]
@@ -112,10 +112,10 @@ az mysql server firewall-rule create \
    
 ```
 
-#### Enable Azure AD-based authentication
+#### Enable Microsoft Entra-based authentication
 
-To use Azure Active Directory access with Azure Database for MySQL, you should set the Azure Active Directory (Azure AD) admin user first. Only
-an Azure Active Directory (Azure AD) Admin user can create/enable users for Azure Active Directory (Azure AD)-based authentication.
+To use Microsoft Entra access with Azure Database for MySQL, you should set the Microsoft Entra admin user first. Only
+an Microsoft Entra admin user can create/enable users for Microsoft Entra-based authentication.
 
 ```Azure CLI
 az mysql server ad-admin create \
@@ -127,19 +127,15 @@ az mysql server ad-admin create \
 
 ## Key concepts
 
-### Azure AD authentication with MySQL
+### Microsoft Entra authentication with MySQL
 
-Microsoft Azure Active Directory (Azure Active Directory (Azure AD)) authentication is a mechanism of connecting to Azure Database for MySQL
-using identities defined in Azure Active Directory (Azure AD). With Azure Active Directory (Azure AD) authentication, you can manage database user identities and other
-Microsoft services in a central location, which simplifies permission management.
+Microsoft Entra authentication is a mechanism of connecting to Azure Database for MySQL using identities defined in Microsoft Entra ID. With Microsoft Entra authentication, you can manage database user identities and other Microsoft services in a central location, which simplifies permission management.
 
-The following high-level diagram summarizes how authentication works using Azure Active Directory (Azure AD) authentication with Azure Database
-for MySQL. The arrows indicate communication pathways.
+The following high-level diagram summarizes how authentication works using Microsoft Entra authentication with Azure Database for MySQL. The arrows indicate communication pathways.
 
 ![mysql-architecture.png](img/mysql-architecture.png)
 
-To learn more about using Azure Active Directory (Azure AD) with MySQL, see Use (Azure Active Directory for authenticating with
-MySQL)[Azure Active Directory for authenticating with MySQL]
+To learn more about using Microsoft Entra ID with MySQL, see Use (Microsoft Entra ID for authenticating with MySQL)[Microsoft Entra ID for authenticating with MySQL]
 
 ### Architecture
 
@@ -147,7 +143,7 @@ This picture shows how the jdbc authentication plugin for MySQL authenticating w
 
 ![mysql_design.png](img/mysql_design.png)
 
-1. The JDBC auth plugin will get an access token from Azure AD.
+1. The JDBC auth plugin will get an access token from Microsoft Entra ID.
 2. The JDBC driver will take the token obtained from step 1 as the password ( `token as password`) to connect with the MySQL server.
 3. The MySQL server will check the access token and authenticate internally.
 
@@ -203,10 +199,7 @@ Connection connection=DriverManager.getConnection(url,properties);
 
 ### Cloud Configuration
 
-Credentials default to authenticating to the Azure Active Directory endpoint for Azure Public Cloud. To access resources
-in other clouds, such as Azure Government or a private cloud, configure credentials with the `azure.authorityHost`
-argument. [AzureAuthorityHosts](https://docs.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable)
-defines authorities for well-known clouds:
+Credentials default to authenticating to the Microsoft Entra endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure Government or a private cloud, configure credentials with the `azure.authorityHost` argument. [AzureAuthorityHosts](https://learn.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable) defines authorities for well-known clouds:
 
 ```java
 Properties properties=new Properties();
@@ -300,11 +293,11 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 
 <!-- LINKS -->
 
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [mysql_source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-extensions
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[mysql_product_docs]: https://docs.microsoft.com/azure/mysql/single-server/overview
+[mysql_product_docs]: https://learn.microsoft.com/azure/mysql/single-server/overview
 [quick_start_mysql]: https://aka.ms/passwordless/quickstart/mysql
-[Azure Active Directory for authenticating with MySQL]:https://docs.microsoft.com/azure/mysql/single-server/concepts-azure-ad-authentication
+[Microsoft Entra ID for authenticating with MySQL]:https://learn.microsoft.com/azure/mysql/single-server/concepts-azure-ad-authentication
 [whatismyip.akamai.com]: https://whatismyip.akamai.com/

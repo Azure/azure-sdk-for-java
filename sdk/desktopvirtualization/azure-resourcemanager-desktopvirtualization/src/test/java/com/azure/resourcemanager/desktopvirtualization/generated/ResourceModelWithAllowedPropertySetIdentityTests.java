@@ -14,7 +14,8 @@ public final class ResourceModelWithAllowedPropertySetIdentityTests {
     public void testDeserialize() throws Exception {
         ResourceModelWithAllowedPropertySetIdentity model =
             BinaryData
-                .fromString("{\"principalId\":\"rokft\",\"tenantId\":\"olniwpwcukjf\",\"type\":\"SystemAssigned\"}")
+                .fromString(
+                    "{\"principalId\":\"uvfqawrlyxwj\",\"tenantId\":\"prbnwbxgjvtbv\",\"type\":\"SystemAssigned\"}")
                 .toObject(ResourceModelWithAllowedPropertySetIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }

@@ -14,6 +14,15 @@ public final class Algorithm extends ExpandableStringEnum<Algorithm> {
     public static final Algorithm SHA256 = fromString("SHA256");
 
     /**
+     * Creates a new instance of Algorithm value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Algorithm() {
+    }
+
+    /**
      * Creates or finds a Algorithm from its string representation.
      *
      * @param name a name to look for.

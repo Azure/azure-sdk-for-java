@@ -225,7 +225,7 @@ public final class SourceControlConfigurationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.kubernetesconfiguration")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -357,8 +357,10 @@ public final class SourceControlConfigurationManager {
     }
 
     /**
-     * @return Wrapped service client SourceControlConfigurationClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client SourceControlConfigurationClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client SourceControlConfigurationClient.
      */
     public SourceControlConfigurationClient serviceClient() {
         return this.clientObject;

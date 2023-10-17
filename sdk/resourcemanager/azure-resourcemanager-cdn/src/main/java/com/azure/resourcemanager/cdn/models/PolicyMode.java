@@ -17,6 +17,15 @@ public final class PolicyMode extends ExpandableStringEnum<PolicyMode> {
     public static final PolicyMode DETECTION = fromString("Detection");
 
     /**
+     * Creates a new instance of PolicyMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyMode() {
+    }
+
+    /**
      * Creates or finds a PolicyMode from its string representation.
      *
      * @param name a name to look for.

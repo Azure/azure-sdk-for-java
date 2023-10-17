@@ -14,6 +14,15 @@ public final class RequestMethodOperator extends ExpandableStringEnum<RequestMet
     public static final RequestMethodOperator EQUAL = fromString("Equal");
 
     /**
+     * Creates a new instance of RequestMethodOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestMethodOperator() {
+    }
+
+    /**
      * Creates or finds a RequestMethodOperator from its string representation.
      *
      * @param name a name to look for.

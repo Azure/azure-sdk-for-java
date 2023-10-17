@@ -47,6 +47,15 @@ public final class Operator extends ExpandableStringEnum<Operator> {
     public static final Operator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of Operator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Operator() {
+    }
+
+    /**
      * Creates or finds a Operator from its string representation.
      *
      * @param name a name to look for.
