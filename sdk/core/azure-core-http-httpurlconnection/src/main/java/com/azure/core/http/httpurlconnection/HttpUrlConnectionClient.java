@@ -174,7 +174,6 @@ public class HttpUrlConnectionClient implements HttpClient {
             } else {
                 connection = (HttpURLConnection) url.openConnection();
             }
-            assert connection != null;
             if (connectionTimeout != -1) {
                 connection.setConnectTimeout((int) connectionTimeout);
             }
