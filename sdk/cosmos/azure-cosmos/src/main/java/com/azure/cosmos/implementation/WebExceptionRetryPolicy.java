@@ -55,6 +55,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
         if (WebExceptionUtility.isNetworkFailure(e)) {
             if (this.isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
                 int delayInSeconds = this.timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount).getDelayForNextRequestInSeconds();
+                this.request.setResponseTimeout(this.timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount).getResponseTimeout());
                 // Increase the retry count after calculating the delay
                 retryCount++;
                 if (logger.isDebugEnabled()) {
@@ -68,7 +69,6 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
                             this.request.forceCollectionRoutingMapRefresh);
                 }
 
-                this.request.setResponseTimeout(this.timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount).getResponseTimeout());
                 return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(delayInSeconds)));
             }
         }

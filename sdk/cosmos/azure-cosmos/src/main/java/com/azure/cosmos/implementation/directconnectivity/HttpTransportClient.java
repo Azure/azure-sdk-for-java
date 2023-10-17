@@ -133,9 +133,16 @@ public class HttpTransportClient extends TransportClient {
 
             HttpRequest httpRequest = prepareHttpMessage(activityId, physicalAddressUri, resourceOperation, request);
 
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            if (OperationType.QueryPlan.equals(request.getOperationType())) {
+                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
+            } else if (request.isAddressRefresh()) {
+                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+            }
+
             MutableVolatile<Instant> sendTimeUtc = new MutableVolatile<>();
             Mono<HttpResponse> httpResponseMono = this.httpClient
-                    .send(httpRequest, request.getResponseTimeout())
+                    .send(httpRequest, responseTimeout)
                     .doOnSubscribe(subscription -> {
                         sendTimeUtc.v = Instant.now();
                         this.beforeRequest(

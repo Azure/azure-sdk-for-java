@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.rx;
 
 
@@ -30,6 +33,8 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.SkipException;
 
 import org.testng.annotations.AfterClass;
@@ -44,11 +49,8 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
@@ -58,6 +60,7 @@ import static org.testng.Assert.fail;
 
 public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
 
+    private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicyE2ETests.class);
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
@@ -86,7 +89,8 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
     public static Object[][] operationTypeProvider() {
         return new Object[][]{
             // FaultInjectionOperationType, OperationType
-            {FaultInjectionOperationType.READ_ITEM, OperationType.Read}
+            {FaultInjectionOperationType.READ_ITEM, OperationType.Read},
+            {FaultInjectionOperationType.QUERY_ITEM, OperationType.Query}
         };
     }
 
@@ -140,7 +144,7 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
                 .block();
             fail("addressRefreshHttpTimeout() should fail due to addressRefresh timeout");
         } catch (CosmosException e) {
-            System.out.println("dataPlaneRequestHttpTimeout() Diagnostics " + " " + e.getDiagnostics());
+            logger.info("dataPlaneRequestHttpTimeout() Diagnostics " + " " + e.getDiagnostics());
             assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
             assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
             validateAddressRefreshRetryPolicyResponseTimeouts(e.getDiagnostics());
@@ -184,7 +188,7 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
         try {
             CosmosDiagnostics cosmosDiagnostics =
                 this.performDocumentOperation(cosmosAsyncContainer, operationType, newItem).block();
-            System.out.println("dataPlaneRequestHttpTimeout() Diagnostics " + " " + cosmosDiagnostics);
+            logger.info("dataPlaneRequestHttpTimeout() Diagnostics " + " " + cosmosDiagnostics);
             validateDataPlaneRetryPolicyResponseTimeouts(cosmosDiagnostics);
         } catch (Exception e) {
             fail("dataPlaneRequestHttpTimeout() should succeed for operationType " + operationType, e);
@@ -229,22 +233,16 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
         TestItem createdItem) {
-        if (operationType == OperationType.Query) {
-            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-            String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
-            FeedResponse<TestItem> itemFeedResponse =
-                cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
-            return Mono.just(itemFeedResponse.getCosmosDiagnostics());
-        }
 
-        if (operationType == OperationType.Read
-            || operationType == OperationType.Delete
-            || operationType == OperationType.Replace
-            || operationType == OperationType.Create
-            || operationType == OperationType.Patch
-            || operationType == OperationType.Upsert) {
+        switch(operationType) {
+            case Query:
+                CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+                String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
+                FeedResponse<TestItem> itemFeedResponse =
+                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
+                return Mono.just(itemFeedResponse.getCosmosDiagnostics());
 
-            if (operationType == OperationType.Read) {
+            case Read:
                 return cosmosAsyncContainer
                     .readItem(
                         createdItem.getId(),
@@ -252,30 +250,22 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
                         TestItem.class
                     )
                     .map(itemResponse -> itemResponse.getDiagnostics());
-            }
 
-            if (operationType == OperationType.Replace) {
+            case Replace:
                 return cosmosAsyncContainer
                     .replaceItem(
                         createdItem,
                         createdItem.getId(),
                         new PartitionKey(createdItem.getId()))
                     .map(itemResponse -> itemResponse.getDiagnostics());
-            }
 
-            if (operationType == OperationType.Delete) {
+            case Delete:
                 return cosmosAsyncContainer.deleteItem(createdItem, null).map(itemResponse -> itemResponse.getDiagnostics());
-            }
-
-            if (operationType == OperationType.Create) {
+            case Create:
                 return cosmosAsyncContainer.createItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics());
-            }
-
-            if (operationType == OperationType.Upsert) {
+            case Upsert:
                 return cosmosAsyncContainer.upsertItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics());
-            }
-
-            if (operationType == OperationType.Patch) {
+            case Patch:
                 CosmosPatchOperations patchOperations =
                     CosmosPatchOperations
                         .create()
@@ -283,21 +273,17 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
                 return cosmosAsyncContainer
                     .patchItem(createdItem.getId(), new PartitionKey(createdItem.getId()), patchOperations, TestItem.class)
                     .map(itemResponse -> itemResponse.getDiagnostics());
-            }
+            case ReadFeed:
+                List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+                CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+                    CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
+
+                FeedResponse<TestItem> firstPage = cosmosAsyncContainer
+                    .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+                    .byPage()
+                    .blockFirst();
+                return Mono.just(firstPage.getCosmosDiagnostics());
         }
-
-        if (operationType == OperationType.ReadFeed) {
-            List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
-            CosmosChangeFeedRequestOptions changeFeedRequestOptions =
-                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
-
-            FeedResponse<TestItem> firstPage = cosmosAsyncContainer
-                .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
-                .byPage()
-                .blockFirst();
-            return Mono.just(firstPage.getCosmosDiagnostics());
-        }
-
         throw new IllegalArgumentException("The operation type is not supported");
     }
 }

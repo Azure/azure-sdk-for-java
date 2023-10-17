@@ -423,12 +423,6 @@ public class GatewayAddressCache implements IAddressCache {
         Instant addressCallStartTime = Instant.now();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
-        // TODO: Clean this code up later
-        if (request.getResponseTimeout() == null) {
-            request.setResponseTimeout(HttpTimeoutPolicy.getTimeoutPolicy(request).
-                getTimeoutAndDelaysList().get(0).getResponseTimeout());
-        }
-
         Mono<HttpResponse> httpResponseMono;
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
             httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
@@ -805,12 +799,6 @@ public class GatewayAddressCache implements IAddressCache {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
         Instant addressCallStartTime = Instant.now();
         Mono<HttpResponse> httpResponseMono;
-
-        // TODO: Clean this code up later
-        if (request.getResponseTimeout() == null) {
-            request.setResponseTimeout(HttpTimeoutPolicy.getTimeoutPolicy(request).
-                getTimeoutAndDelaysList().get(0).getResponseTimeout());
-        }
 
         if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
             httpResponseMono = this.httpClient.send(httpRequest,

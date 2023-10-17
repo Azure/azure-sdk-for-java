@@ -286,7 +286,6 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
             .build());
 
         // 2nd Attempt
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
         assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
@@ -298,7 +297,6 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
 
         // 3rd Attempt
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
         assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
@@ -309,7 +307,6 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
             .build());
 
         // 4th Attempt
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
