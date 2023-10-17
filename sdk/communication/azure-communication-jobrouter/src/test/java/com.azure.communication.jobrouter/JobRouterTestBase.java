@@ -53,7 +53,6 @@ class JobRouterTestBase extends TestProxyTestBase {
     protected JobRouterAdministrationClient getRouterAdministrationClient(HttpClient client) {
         HttpPipeline httpPipeline = buildHttpPipeline(client);
         JobRouterAdministrationClient jobRouterAdministrationClient = new JobRouterAdministrationClientBuilder()
-            .connectionString(getConnectionString())
             .pipeline(httpPipeline)
             .buildClient();
         return jobRouterAdministrationClient;
@@ -62,7 +61,6 @@ class JobRouterTestBase extends TestProxyTestBase {
     protected JobRouterClient getRouterClient(HttpClient client) {
         HttpPipeline httpPipeline = buildHttpPipeline(client);
         JobRouterClient jobRouterClient = new JobRouterClientBuilder()
-            .connectionString(getConnectionString())
             .pipeline(httpPipeline)
             .buildClient();
         return jobRouterClient;
@@ -144,7 +142,8 @@ class JobRouterTestBase extends TestProxyTestBase {
             .setRequestedWorkerSelectors(
                 new ArrayList<RouterWorkerSelector>() {
                     {
-                        new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN, new LabelValue(10));
+                        new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN)
+                            .setValue(10);
                     }
                 }
             );

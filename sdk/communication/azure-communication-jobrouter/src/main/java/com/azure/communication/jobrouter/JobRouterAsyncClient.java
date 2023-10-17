@@ -6,11 +6,13 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
+import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CancelJobRequest;
 import com.azure.communication.jobrouter.models.CloseJobRequest;
 import com.azure.communication.jobrouter.models.CompleteJobRequest;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DeclineJobOfferRequest;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
@@ -325,17 +327,33 @@ public final class JobRouterAsyncClient {
      * Create a job.
      *
      * @param createJobOptions Options to create RouterJob.
-     * @return a unit of work to be routed.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return resource The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> createJob(CreateJobOptions createJobOptions) {
+    public Mono<Response<BinaryData>> createJobWithResponse(CreateJobOptions createJobOptions, RequestOptions requestOptions) {
         RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+        return upsertJobWithResponse(createJobOptions.getId(), BinaryData.fromObject(routerJob), requestOptions);
+    }
+
+    /**
+     * Convenience method to create a job.
+     *
+     * @param createJobOptions Options to create RouterJob.
+     * @return resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RouterJob> createJob(CreateJobOptions createJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return upsertJobWithResponse(createJobOptions.getId(), BinaryData.fromObject(routerJob), requestOptions)
-            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(RouterJob.class)));
+        return this.createJobWithResponse(createJobOptions, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class));
     }
 
     /**
@@ -1010,6 +1028,40 @@ public final class JobRouterAsyncClient {
     public Mono<Response<BinaryData>> updateWorkerWithResponse(
         String workerId, BinaryData resource, RequestOptions requestOptions) {
         return this.serviceClient.upsertWorkerWithResponseAsync(workerId, resource, requestOptions);
+    }
+
+    /**
+     * Create a worker.
+     *
+     * @param createWorkerOptions Container for inputs to create a worker.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return an entity for jobs to be routed to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions, RequestOptions requestOptions) {
+        RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+        return upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker), requestOptions);
+    }
+
+    /**
+     * Convenience method to create a worker.
+     *
+     * @param createWorkerOptions Container for inputs to create a worker.
+     * @return an entity for jobs to be routed to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RouterWorker> createWorker(CreateWorkerOptions createWorkerOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        return createWorkerWithResponse(createWorkerOptions, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class));
+
     }
 
     /**
