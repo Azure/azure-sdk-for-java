@@ -14,11 +14,11 @@
 
   <groupId>com.generic</groupId>
   <artifactId>generic-core</artifactId>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
   <version>1.0.0</version> <!-- {x-version-update;com.generic:generic-core;current} -->
 
   <name>Java Core Library</name>
-  <description>This package contains core types for Java clients.</description>
+  <description>This library contains core types for Java client libraries that access web services.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
