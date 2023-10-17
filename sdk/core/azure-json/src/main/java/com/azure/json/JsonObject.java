@@ -271,7 +271,14 @@ public class JsonObject extends JsonElement {
 //        return "{" + jsonOutput + "}";
 //    }
 
-    public JsonObject setProperty(String key, JsonElement element) throws IllegalArgumentException {
+    /**
+     * Sets a property to a JsonObject by key and JsonElement value. 
+     * <p>
+     * If {@code key} or {@code element} is null a {@link NullPointerException} will be thrown. 
+     * 
+     * @return The jsonObject with the added property. 
+     */
+    public JsonObject setProperty(String key, JsonElement element) {
         properties.put(key, element);
         return this;
     }
