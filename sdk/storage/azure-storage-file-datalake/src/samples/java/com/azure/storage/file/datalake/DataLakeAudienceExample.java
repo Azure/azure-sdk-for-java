@@ -52,32 +52,32 @@ public class DataLakeAudienceExample {
         /*
         Now create a DataLakeFileSystemClient that takes a specific audience. When storage account is specified, the
         appropriate service endpoint will be appended to the audience. For example, if storage account name is
-        "myaccount", the audience will look like: "https://myaccount.blob.core.windows.net"
+        "myAccount", the audience will look like: "https://myaccount.blob.core.windows.net"
          */
         DataLakeFileSystemClient fileSystemClient = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .credential(tokenCredential)
             .audience(audience)
-            .fileSystemName("myfilesystem")
+            .fileSystemName("myFileSystem")
             .buildClient();
 
         /*
         Any calls to the service should successfully work with the specified audience.
          */
         fileSystemClient.create();
-        fileSystemClient.createDirectory("mydirectory");
+        fileSystemClient.createDirectory("myDirectory");
 
 
         /*
         The storage account name must be a valid name. If an incorrect storage account name is specified, authentication
         will fail.
          */
-        DataLakeAudience badAudience = DataLakeAudience.getDataLakeServiceAccountAudience("invalidaccount");
+        DataLakeAudience badAudience = DataLakeAudience.getDataLakeServiceAccountAudience("invalidAccount");
         DataLakeFileSystemClient badFileSystemClient = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .credential(tokenCredential)
             .audience(badAudience) // audience will look like: "https://invalidaccount.blob.core.windows.net"
-            .fileSystemName("mybadfilesystem")
+            .fileSystemName("myBadFileSystem")
             .buildClient();
 
         try {

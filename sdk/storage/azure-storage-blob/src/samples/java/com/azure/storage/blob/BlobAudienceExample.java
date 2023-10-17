@@ -57,25 +57,25 @@ public class BlobAudienceExample {
             .endpoint(endpoint)
             .credential(tokenCredential)
             .audience(audience)
-            .containerName("mycontainer")
+            .containerName("myContainer")
             .buildClient();
 
         /*
         Any calls to the service should successfully work with the specified audience.
          */
         containerClient.create();
-        containerClient.getBlobClient("myblob").uploadFromFile("path/to/file");
+        containerClient.getBlobClient("myBlob").uploadFromFile("path/to/file");
 
         /*
         The storage account name must be a valid name. If an incorrect storage account name is specified, authentication
         will fail.
          */
-        BlobAudience badAudience = BlobAudience.getBlobServiceAccountAudience("invalidaccount");
+        BlobAudience badAudience = BlobAudience.getBlobServiceAccountAudience("invalidAccount");
         BlobContainerClient badContainerClient = new BlobContainerClientBuilder()
             .endpoint(endpoint)
             .credential(tokenCredential)
             .audience(badAudience) // audience will look like: "https://invalidaccount.blob.core.windows.net"
-            .containerName("mybadcontainer")
+            .containerName("myBadContainer")
             .buildClient();
 
         try {
