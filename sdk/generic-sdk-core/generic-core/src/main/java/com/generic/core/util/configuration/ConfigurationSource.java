@@ -22,17 +22,17 @@ public interface ConfigurationSource {
      * <p>
      * With following configuration properties:
      * <ul>
-     *   <li>azure.sdk.foo = 1</li>
-     *   <li>azure.sdk.bar.baz = 2</li>
+     *   <li>sdk.foo = 1</li>
+     *   <li>sdk.bar.baz = 2</li>
      * </ul>
      *
      * <p>
      * {@link ConfigurationSource} implementation must the following behavior:
      * <ul>
      *       <li>{@code getProperties(null} must return both properties</li>
-     *       <li>{@code getProperties("azure.sdk")} must return both properties</li>
-     *       <li>{@code getProperties("azure.sdk.foo")} must return {"azure.sdk.foo", "1"}</li>
-     *       <li>{@code getProperties("azure.sdk.ba")} must return empty map</li>
+     *       <li>{@code getProperties("sdk")} must return both properties</li>
+     *       <li>{@code getProperties("sdk.foo")} must return {"sdk.foo", "1"}</li>
+     *       <li>{@code getProperties("sdk.ba")} must return empty map</li>
      * </ul>
      *
      * @param source property name prefix

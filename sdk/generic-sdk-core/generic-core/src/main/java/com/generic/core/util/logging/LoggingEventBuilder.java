@@ -10,6 +10,7 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -303,22 +304,22 @@ public final class LoggingEventBuilder {
     private void performLogging(LogLevel logLevel, String format, Object... args) {
 
         Throwable throwable = null;
-//        if (LoggingUtils.doesArgsHaveThrowable(args)) {
-//            Object throwableObj = args[args.length - 1];
-//
-//            // This is true from before but is needed to appease SpotBugs.
-//            if (throwableObj instanceof Throwable) {
-//                throwable = (Throwable) throwableObj;
-//            }
-//
-//            /*
-//             * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
-//             * stack trace which is only expected when logging at a verbose level.
-//             */
-//            if (!logger.isDebugEnabled()) {
-//                args = LoggingUtils.removeThrowable(args);
-//            }
-//        }
+        if (doesArgsHaveThrowable(args)) {
+            Object throwableObj = args[args.length - 1];
+
+            // This is true from before but is needed to appease SpotBugs.
+            if (throwableObj instanceof Throwable) {
+                throwable = (Throwable) throwableObj;
+            }
+
+            /*
+             * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
+             * stack trace which is only expected when logging at a verbose level.
+             */
+            if (!logger.isDebugEnabled()) {
+                args = removeThrowable(args);
+            }
+        }
 
         FormattingTuple tuple = MessageFormatter.arrayFormat(format, args);
         String message = getMessageWithContext(tuple.getMessage(), throwable);
@@ -430,5 +431,30 @@ public final class LoggingEventBuilder {
 
             return writeKeyAndValue(key, valueSupplier.get(), formatter);
         }
+    }
+
+    /**
+     * Determines if the arguments contains a throwable that would be logged, SLF4J logs a throwable if it is the last
+     * element in the argument list.
+     *
+     * @param args The arguments passed to format the log message.
+     * @return True if the last element is a throwable, false otherwise.
+     */
+    private static boolean doesArgsHaveThrowable(Object... args) {
+        if (args.length == 0) {
+            return false;
+        }
+
+        return args[args.length - 1] instanceof Throwable;
+    }
+
+    /**
+     * Removes the last element from the arguments as it is a throwable.
+     *
+     * @param args The arguments passed to format the log message.
+     * @return The arguments with the last element removed.
+     */
+    private static Object[] removeThrowable(Object... args) {
+        return Arrays.copyOf(args, args.length - 1);
     }
 }

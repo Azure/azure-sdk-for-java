@@ -2,11 +2,11 @@
 
 [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java)
 
-Azure Core provides shared primitives, abstractions, and helpers for modern Java Azure SDK client libraries.
+Azure Core provides shared primitives, abstractions, and helpers for modern Java Core SDK client libraries.
 These libraries follow
-the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html)
-and can be easily identified by package names starting with `com.azure` and module names starting with `azure-`,
-e.g. `com.azure.storage.blobs` would be found within the `/sdk/storage/azure-storage-blob` directory. A more complete
+the [SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html)
+and can be easily identified by package names starting with `com.generic` and module names starting with `generic-`,
+e.g. `com.generic.core` would be found within the `/sdk/generic-sdk-core/generic-core` directory. A more complete
 list of client libraries using Azure Core can be
 found [here](https://azure.github.io/azure-sdk/releases/latest/#java-packages).
 
@@ -49,8 +49,8 @@ tool when you depend on client libraries using it.
 ```xml
 <dependencies>
     <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core</artifactId>
+        <groupId>com.generic</groupId>
+        <artifactId>generic-core</artifactId>
     </dependency>
 </dependencies>
 ```
@@ -60,12 +60,12 @@ tool when you depend on client libraries using it.
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.azure:azure-core;current})
+[//]: # ({x-version-update-start;com.generic:generic-core;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core</artifactId>
-    <version>1.44.0</version>
+    <groupId>com.generic</groupId>
+    <artifactId>generic-core</artifactId>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -79,7 +79,7 @@ The key concepts of Azure Core (and therefore all Azure client libraries using A
 - Calling long-running operations (`PollerFlux<T>`).
 - Paging and asynchronous streams (`ContinuablePagedFlux<T>`).
 - Exceptions for reporting errors from service requests consistently.
-- Abstractions for representing Azure SDK credentials.
+- Abstractions for representing SDK credentials.
 - Operation timeouts
 
 These will be introduced by way of the examples presented below.
@@ -118,7 +118,7 @@ polling is cancelled or reaches a terminal state.
 Builders are used to create service clients and some `TokenCredential` implementations. They can be configured with a 
 variety of options, including `HttpPipeline` and `HttpClient` for HTTP-based clients and more general options such as 
 `Configuration` and`endpoint`. To allow for simpler integration into frameworks such as Spring and to allow generic 
-methods to be used for all builders `azure-core` provides a set of interfaces that can be implemented to provide
+methods to be used for all builders `generic-core` provides a set of interfaces that can be implemented to provide
 the necessary functionality.
 
 #### HttpTrait<T>

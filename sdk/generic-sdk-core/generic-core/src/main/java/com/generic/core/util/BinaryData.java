@@ -31,22 +31,22 @@ import java.util.Objects;
 import static com.generic.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 
 /**
- * BinaryData is a convenient data interchange class for use throughout the Azure SDK for Java. Put simply, BinaryData
- * enables developers to bring data in from external sources, and read it back from Azure services, in formats that
- * appeal to them. This leaves BinaryData, and the Azure SDK for Java, the task of converting this data into appropriate
- * formats to be transferred to and from these external services. This enables developers to focus on their business
- * logic, and enables the Azure SDK for Java to optimize operations for best performance.
+ * BinaryData is a convenient data interchange class for use throughout the Core SDK for Java. Put simply, BinaryData
+ * enables developers to bring data in from external sources, and read it back from services, in formats that appeal to
+ * them. This leaves BinaryData, and the Core SDK for Java, the task of converting this data into appropriate formats
+ * to be transferred to and from these external services. This enables developers to focus on their business logic, and
+ * enables the Core SDK for Java to optimize operations for best performance.
  * <p>
  * BinaryData in its simplest form can be thought of as a container for content. Often this content is already in-memory
  * as a String, byte array, or an Object that can be serialized into a String or byte[]. When the BinaryData is about to
- * be sent to an Azure Service, this in-memory content is copied into the network request and sent to the service.
+ * be sent to a service, this in-memory content is copied into the network request and sent to the service.
  * </p>
  * <p>
  * In more performance critical scenarios, where copying data into memory results in increased memory pressure, it is
  * possible to create a BinaryData instance from a stream of data. From this, BinaryData can be connected directly to
  * the outgoing network connection so that the stream is read directly to the network, without needing to first be read
- * into memory on the system. Similarly, it is possible to read a stream of data from a BinaryData returned from an
- * Azure Service without it first being read into memory. In many situations, these streaming operations can drastically
+ * into memory on the system. Similarly, it is possible to read a stream of data from a BinaryData returned from a
+ * service without it first being read into memory. In many situations, these streaming operations can drastically
  * reduce the memory pressure in applications, and so it is encouraged that all developers very carefully consider their
  * ability to use the most appropriate API in BinaryData whenever they encounter an client library that makes use of
  * BinaryData.
@@ -93,8 +93,7 @@ import static com.generic.core.implementation.util.BinaryDataContent.STREAM_READ
  *
  * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
  * <!-- end com.azure.core.util.BinaryData.fromFile -->
- *
- * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+ * <!-- @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a> -->
  */
 public final class BinaryData {
     static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
@@ -277,15 +276,15 @@ public final class BinaryData {
      * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the passed
      * {@link ObjectSerializer}.
      * <p>
-     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
-     * own implementation.
+     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the SDKs or your own
+     * implementation.
      * </p>
      *
-     * <p><strong>Azure SDK implementations</strong></p>
-     * <ul>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
-     * </ul>
+     * <!-- <p><strong>Core SDK implementations</strong></p> -->
+     * <!-- <ul> -->
+     * <!-- <li><a href="https://mvnrepository.com/artifact/com.generic/generic-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li> -->
+     * <!-- <li><a href="https://mvnrepository.com/artifact/com.generic/generic-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li> -->
+     * <!-- </ul>-->
      *
      * <p><strong>Create an instance from an Object</strong></p>
      *
@@ -299,7 +298,7 @@ public final class BinaryData {
      * @throws NullPointerException If {@code serializer} is null.
      * @see ObjectSerializer
      * @see JsonSerializer
-     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+     * <!-- @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a> -->
      */
     public static BinaryData fromObject(Object data, ObjectSerializer serializer) {
         return new BinaryData(new SerializableContent(data, serializer));
@@ -499,14 +498,14 @@ public final class BinaryData {
      * The type, represented by {@link Class}, should be a non-generic class, for generic classes use
      * {@link #toObject(TypeReference, ObjectSerializer)}.
      * <p>
-     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
-     * own implementation.
+     * The passed {@link ObjectSerializer} can either be one of the implementations offered by this SDK or your own
+     * implementation.
      *
-     * <p><strong>Azure SDK implementations</strong></p>
-     * <ul>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
-     * </ul>
+     * <!-- <p><strong>Core SDK implementations</strong></p> -->
+     * <!-- <ul> -->
+     * <!-- <li><a href="https://mvnrepository.com/artifact/com.generic/generic-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li> -->
+     * <!-- <li><a href="https://mvnrepository.com/artifact/com.generic/generic-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li> -->
+     * <!-- </ul> -->
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -520,7 +519,7 @@ public final class BinaryData {
      * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
      * @see ObjectSerializer
      * @see JsonSerializer
-     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+     * <!-- @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a> -->
      */
     public <T> T toObject(Class<T> clazz, ObjectSerializer serializer) {
         return toObject(TypeReference.createInstance(clazz), serializer);
@@ -536,14 +535,14 @@ public final class BinaryData {
      * generic create a sub-type of {@link TypeReference}, if the type is non-generic use
      * {@link TypeReference#createInstance(Class)}.
      * <p>
-     * The passed {@link ObjectSerializer} can either be one of the implementations offered by the Azure SDKs or your
-     * own implementation.
+     * The passed {@link ObjectSerializer} can either be one of the implementations offered by this SDK or your own
+     * implementation.
      *
-     * <p><strong>Azure SDK implementations</strong></p>
-     * <ul>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
-     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
-     * </ul>
+     * <!-- <p><strong>Core SDK implementations</strong></p> -->
+     * <!-- <ul> -->
+     * <!-- <li><a href="https://mvnrepository.com/artifact/com.generic/generic-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li> -->
+     * <!-- <li><a href="https://mvnrepository.com/artifact/com.generic/generic-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li> -->
+     * <!-- </ul> -->
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
@@ -562,7 +561,7 @@ public final class BinaryData {
      * @throws NullPointerException If {@code typeReference} or {@code serializer} is null.
      * @see ObjectSerializer
      * @see JsonSerializer
-     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+     * <!-- @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a> -->
      */
     public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
         Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");

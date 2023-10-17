@@ -98,16 +98,16 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
     }
 
     @Override
-    public ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToAzureCore) throws Exception {
-        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToAzureCore);
+    public ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToCore) throws Exception {
+        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToCore);
 
         return new MethodHandleReflectiveInvoker(lookup.unreflect(method));
     }
 
     @Override
-    public ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToAzureCore)
+    public ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToCore)
         throws Exception {
-        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToAzureCore);
+        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToCore);
 
         return new MethodHandleReflectiveInvoker(lookup.unreflectConstructor(constructor));
     }
@@ -125,21 +125,21 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
      * <p>
      * If Java 9 or above is being used this will return a {@link MethodHandles.Lookup} based on whether the module
      * containing the {@code targetClass} exports the package containing the class. Otherwise, the
-     * {@link MethodHandles.Lookup} associated to {@code com.azure.core} will attempt to read the module containing
+     * {@link MethodHandles.Lookup} associated to {@code com.generic.core} will attempt to read the module containing
      * {@code targetClass}.
      *
      * @param targetClass The {@link Class} that will need to be reflectively accessed.
-     * @param scopeToAzureCore Whether to scope the {@link MethodHandles.Lookup} to {@code com.azure.core} if Java 9+
+     * @param scopeToCore Whether to scope the {@link MethodHandles.Lookup} to {@code com.generic.core} if Java 9+
      * modules is being used.
-     * @return The {@link MethodHandles.Lookup} that will allow {@code com.azure.core} to access the {@code targetClass}
-     * reflectively.
+     * @return The {@link MethodHandles.Lookup} that will allow {@code com.generic.core} to access the
+     * {@code targetClass} reflectively.
      * @throws Exception If the underlying reflective calls throw an exception.
      */
-    private static MethodHandles.Lookup getLookupToUse(Class<?> targetClass, boolean scopeToAzureCore)
+    private static MethodHandles.Lookup getLookupToUse(Class<?> targetClass, boolean scopeToCore)
         throws Exception {
         try {
             if (MODULE_BASED) {
-                if (!scopeToAzureCore) {
+                if (!scopeToCore) {
                     return MethodHandles.publicLookup();
                 }
 

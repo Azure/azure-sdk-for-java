@@ -58,9 +58,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * and uses {@code retryAfterHeader} to look up the wait period in the returned {@link HttpResponse} to calculate
      * the retry delay when a recoverable HTTP error is returned.
      *
-     * @param retryAfterHeader The HTTP header, such as {@code Retry-After} or {@code x-ms-retry-after-ms}, to lookup
-     * for the retry delay. If the value is null, {@link RetryStrategy#calculateRetryDelay(int)} will compute the delay
-     * and ignore the delay provided in response header.
+     * @param retryAfterHeader The HTTP header, such as {@code Retry-After}, to lookup for the retry delay. If the
+     * value is null, {@link RetryStrategy#calculateRetryDelay(int)} will compute the delay and ignore the delay
+     * provided in response header.
      * @param retryAfterTimeUnit The time unit to use when applying the retry delay. Null is valid if, and only if,
      * {@code retryAfterHeader} is null.
      *
@@ -76,9 +76,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * calculating retry delay.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
-     * @param retryAfterHeader The HTTP header, such as 'Retry-After' or 'x-ms-retry-after-ms', to lookup for the retry
-     * delay. If the value is null, {@link RetryPolicy} will use the retry strategy to compute the delay and ignore the
-     * delay provided in response header.
+     * @param retryAfterHeader The HTTP header, such as 'Retry-After', to lookup for the retry delay. If the value is
+     * null, {@link RetryPolicy} will use the retry strategy to compute the delay and ignore the delay provided in
+     * response header.
      * @param retryAfterTimeUnit The time unit to use when applying the retry delay. null is valid if, and only if,
      * {@code retryAfterHeader} is null.
      *

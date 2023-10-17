@@ -4,7 +4,7 @@
 package com.generic.core.util.serializer;
 
 /**
- * Interface to be implemented by an azure-core plugin that wishes to provide a {@link JsonSerializer} implementation.
+ * Interface to be implemented by an generic-core plugin that wishes to provide a {@link JsonSerializer} implementation.
  */
 public interface JsonSerializerProvider {
 

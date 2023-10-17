@@ -44,8 +44,8 @@ public class ClientOptions {
     //  * <p>
     //  * The {@code applicationId} is used to configure {@link UserAgentPolicy} for telemetry/monitoring purposes.
     //  * <p>
-    //  * See <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry
-    //  * policy</a> for additional information.
+    //  * <!-- See <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Generic Core: Telemetry -->
+    //  * <!-- policy</a> for additional information. -->
     //  *
     //  * <p><strong>Code Samples</strong></p>
     //  *

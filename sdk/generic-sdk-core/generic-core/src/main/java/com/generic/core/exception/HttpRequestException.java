@@ -31,7 +31,7 @@ public class HttpRequestException extends RuntimeException {
      * Initializes a new instance of the HttpRequestException class.
      *
      * @param message The exception message.
-     * @param request the HTTP request sends to the Azure service
+     * @param request the HTTP request sends to the service.
      */
     public HttpRequestException(final String message, final HttpRequest request) {
         super(message);

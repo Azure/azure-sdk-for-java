@@ -76,7 +76,7 @@
 
   <build>
     <plugins>
-      <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
+      <!-- RestProxyTests is inherited by tests in generic-core-http-netty -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

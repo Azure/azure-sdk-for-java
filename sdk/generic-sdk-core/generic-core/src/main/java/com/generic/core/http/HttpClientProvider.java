@@ -6,7 +6,7 @@ package com.generic.core.http;
 import com.generic.core.http.models.HttpClientOptions;
 
 /**
- * An interface to be implemented by any azure-core plugin that wishes to provide an alternate {@link HttpClient}
+ * An interface to be implemented by any generic-core plugin that wishes to provide an alternate {@link HttpClient}
  * implementation.
  */
 @FunctionalInterface

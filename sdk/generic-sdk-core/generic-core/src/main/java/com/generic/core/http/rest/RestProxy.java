@@ -19,9 +19,9 @@ public final class RestProxy implements InvocationHandler {
         return null;
     }
 //
-//     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLED = "com.azure.core.http.restproxy.syncproxy.enable";
+//     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLED = "com.generic.core.http.restproxy.syncproxy.enable";
 //     private static final boolean GLOBAL_SYNC_PROXY_ENABLED = Configuration.getGlobalConfiguration()
-//         .get("AZURE_HTTP_REST_PROXY_SYNC_PROXY_ENABLED", true);
+//         .get("HTTP_REST_PROXY_SYNC_PROXY_ENABLED", true);
 //
 //     // private final SwaggerInterfaceParser interfaceParser;
 //     private final HttpPipeline httpPipeline;

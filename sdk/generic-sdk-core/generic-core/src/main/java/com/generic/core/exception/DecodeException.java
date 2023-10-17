@@ -13,7 +13,7 @@ public class DecodeException extends HttpResponseException {
      * Initializes a new instance of the DecodeException class.
      *
      * @param message The exception message or the response content if a message is not available.
-     * @param response The HTTP response received from Azure service.
+     * @param response The HTTP response received from the service.
      */
     public DecodeException(final String message, final HttpResponse response) {
         super(message, response);
@@ -23,7 +23,7 @@ public class DecodeException extends HttpResponseException {
      * Initializes a new instance of the DecodeException class.
      *
      * @param message The exception message.
-     * @param response The HTTP response received from Azure service.
+     * @param response The HTTP response received from the service.
      * @param value The deserialized response value.
      */
     public DecodeException(final String message, final HttpResponse response, final Object value) {
@@ -34,7 +34,7 @@ public class DecodeException extends HttpResponseException {
      * Initializes a new instance of the DecodeException class.
      *
      * @param message The exception message or the response content if a message is not available.
-     * @param response The HTTP response received from Azure service.
+     * @param response The HTTP response received from the service.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
     public DecodeException(final String message, final HttpResponse response, final Throwable cause) {

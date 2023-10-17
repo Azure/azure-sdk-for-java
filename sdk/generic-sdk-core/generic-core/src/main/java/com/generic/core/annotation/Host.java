@@ -12,9 +12,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Annotation for parameterized host name targeting a REST service.
  *
- * <p>This is the 'host' field or 'x-ms-parameterized-host.hostTemplate' field in a Swagger document. parameters are
- * enclosed in {}s, e.g. {accountName}. An HTTP client must accept the parameterized host as the base URL for the
- * request, replacing the parameters during runtime with the actual values users provide.</p>
+ * <p>This is the 'host' field in a Swagger document. parameters are enclosed in {}s, e.g. {accountName}. An HTTP
+ * client must accept the parameterized host as the base URL for the request, replacing the parameters during runtime
+ * with the actual values users provide.</p>
  *
  * <p>For parameterized hosts, parameters annotated with {@link HostParam} must be provided. See Java docs in
  * {@link HostParam} for directions for host parameters.</p>

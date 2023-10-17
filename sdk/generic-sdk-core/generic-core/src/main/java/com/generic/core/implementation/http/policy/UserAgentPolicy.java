@@ -16,8 +16,8 @@ import com.generic.core.util.configuration.Configuration;
 /**
  * Pipeline policy that adds "User-Agent" header to a request.
  * <p>
- * The format for the "User-Agent" string is outlined in
- * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>.
+ * <!-- The format for the "User-Agent" string is outlined in -->
+ * <!-- <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>. -->
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
@@ -86,10 +86,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Creates a UserAgentPolicy with the {@code sdkName} and {@code sdkVersion} in the User-Agent header value.
      *
-     * <p>If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be
-     * included in the user agent.</p>
+     * <p>If the passed configuration contains true for TELEMETRY_DISABLED the platform information won't be included in
+     * the user agent.</p>
      *
-     * @param applicationId User specified application Id.
+     * @param applicationId User specified application id.
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
      * @param configuration Configuration store that will be checked for

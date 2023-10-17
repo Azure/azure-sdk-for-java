@@ -7,8 +7,8 @@ import com.generic.core.util.CoreUtils;
 import com.generic.core.util.configuration.Configuration;
 
 /**
- * Utility for building user agent string for Azure client libraries as specified in the
- * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">design guidelines</a>.
+ * Utility for building a user agent string for client libraries. <!-- as specified in the -->
+ * <!-- <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">design guidelines</a>. -->
  */
 public final class UserAgentUtil {
     private static final int MAX_APPLICATION_ID_LENGTH = 24;

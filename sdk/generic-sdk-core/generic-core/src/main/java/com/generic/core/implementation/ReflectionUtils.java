@@ -35,7 +35,7 @@ public abstract class ReflectionUtils {
     /**
      * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
      * <p>
-     * Calls {@link #getMethodInvoker(Class, Method, boolean)} with {@code scopeToAzureCore} set to true.
+     * Calls {@link #getMethodInvoker(Class, Method, boolean)} with {@code scopeToCore} set to true.
      *
      * @param targetClass The class that contains the method.
      * @param method The method to invoke.
@@ -55,36 +55,35 @@ public abstract class ReflectionUtils {
      * to alleviate this issue, if {@code targetClass} is null {@link Method#getDeclaringClass()} will be used to infer
      * the class.
      * <p>
-     * {@code scopeToAzure} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
-     * will determine whether to use a MethodHandles.Lookup scoped to {@code azure-core} or to use a public
-     * MethodHandles.Lookup. Scoping a MethodHandles.Lookup to {@code azure-core} requires to module containing the
-     * class to open or export to {@code azure-core} which generally only holds true for other Azure SDKs, for example
-     * there are cases where a reflective invocation is needed to Jackson which won't open or export to
-     * {@code azure-core} and the only APIs invoked reflectively are public APIs so the public MethodHandles.Lookup will
-     * be used.
+     * {@code scopeToCore} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
+     * will determine whether to use a MethodHandles.Lookup scoped to {@code generic-core} or to use a public
+     * MethodHandles.Lookup. Scoping a MethodHandles.Lookup to {@code generic-core} requires to module containing the
+     * class to open or export to {@code generic-core} which generally only holds true for other SDKs, for example there
+     * are cases where a reflective invocation is needed to Jackson which won't open or export to {@code generic-core}
+     * and the only APIs invoked reflectively are public APIs so the public MethodHandles. Lookup will be used.
      *
      * @param targetClass The class that contains the method.
      * @param method The method to invoke.
-     * @param scopeToAzureCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
-     * {@code azure-core} as the scoped module, otherwise this is ignored.
+     * @param scopeToCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
+     * {@code generic-core} as the scoped module, otherwise this is ignored.
      * @return An {@link ReflectiveInvoker} instance that will invoke the method.
      * @throws NullPointerException If {@code method} is null.
      * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    public static ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToAzureCore)
+    public static ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToCore)
         throws Exception {
         if (method == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'method' cannot be null."));
         }
 
         targetClass = (targetClass == null) ? method.getDeclaringClass() : targetClass;
-        return INSTANCE.getMethodInvoker(targetClass, method, scopeToAzureCore);
+        return INSTANCE.getMethodInvoker(targetClass, method, scopeToCore);
     }
 
     /**
      * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Constructor}.
      * <p>
-     * Calls {@link #getConstructorInvoker(Class, Constructor, boolean)} with {@code scopeToAzureCore} set to true.
+     * Calls {@link #getConstructorInvoker(Class, Constructor, boolean)} with {@code scopeToCore} set to true.
      *
      * @param targetClass The class that contains the constructor.
      * @param constructor The constructor to invoke.
@@ -105,30 +104,29 @@ public abstract class ReflectionUtils {
      * to alleviate this issue, if {@code targetClass} is null {@link Constructor#getDeclaringClass()} will be used to
      * infer the class.
      * <p>
-     * {@code scopeToAzure} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
-     * will determine whether to use a MethodHandles.Lookup scoped to {@code azure-core} or to use a public
-     * MethodHandles.Lookup. Scoping a MethodHandles.Lookup to {@code azure-core} requires to module containing the
-     * class to open or export to {@code azure-core} which generally only holds true for other Azure SDKs, for example
-     * there are cases where a reflective invocation is needed to Jackson which won't open or export to
-     * {@code azure-core} and the only APIs invoked reflectively are public APIs so the public MethodHandles.Lookup will
-     * be used.
+     * {@code scopeToCore} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
+     * will determine whether to use a MethodHandles.Lookup scoped to {@code generic-core} or to use a public
+     * MethodHandles.Lookup. Scoping a MethodHandles.Lookup to {@code generic-core} requires to module containing the
+     * class to open or export to {@code generic-core} which generally only holds true for other SDKs, for example there
+     * are cases where a reflective invocation is needed to Jackson which won't open or export to {@code generic-core}
+     * and the only APIs invoked reflectively are public APIs so the public MethodHandles. Lookup will be used.
      *
      * @param targetClass The class that contains the constructor.
      * @param constructor The constructor to invoke.
-     * @param scopeToAzureCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
-     * {@code azure-core} as the scoped module, otherwise this is ignored.
+     * @param scopeToCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
+     * {@code generic-core} as the scoped module, otherwise this is ignored.
      * @return An {@link ReflectiveInvoker} instance that will invoke the constructor.
      * @throws NullPointerException If {@code constructor} is null.
      * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
     public static ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
-        boolean scopeToAzureCore) throws Exception {
+        boolean scopeToCore) throws Exception {
         if (constructor == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'constructor' cannot be null."));
         }
 
         targetClass = (targetClass == null) ? constructor.getDeclaringClass() : targetClass;
-        return INSTANCE.getConstructorInvoker(targetClass, constructor, scopeToAzureCore);
+        return INSTANCE.getConstructorInvoker(targetClass, constructor, scopeToCore);
     }
 
     /**
@@ -141,8 +139,8 @@ public abstract class ReflectionUtils {
     }
 
     /**
-     * Creates a dummy {@link ReflectiveInvoker} that will always return null. Used for scenarios where an {@link ReflectiveInvoker} is
-     * needed as an identifier but will never be used.
+     * Creates a dummy {@link ReflectiveInvoker} that will always return null. Used for scenarios where a
+     * {@link ReflectiveInvoker} is needed as an identifier but will never be used.
      *
      * @return A dummy {@link ReflectiveInvoker} that will always return null.
      */

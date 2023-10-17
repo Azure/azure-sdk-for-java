@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 /**
- * Enum which represent logging levels used in Azure SDKs.
+ * Enum which represent logging levels used in Core SDKs.
  */
 public enum LogLevel {
     /**
