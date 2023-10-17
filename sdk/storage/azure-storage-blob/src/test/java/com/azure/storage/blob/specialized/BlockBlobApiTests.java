@@ -2588,4 +2588,16 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());
         assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
     }
+
+    @Test
+    public void audienceFromString(){
+        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        BlobAudience audience = BlobAudience.fromString(url);
+
+        BlockBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobClient.getBlobUrl())
+            .audience(audience)
+            .buildBlockBlobClient();
+
+        assertTrue(aadBlob.exists());
+    }
 }

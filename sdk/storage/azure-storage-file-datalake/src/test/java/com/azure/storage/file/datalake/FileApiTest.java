@@ -3352,11 +3352,11 @@ public class FileApiTest extends DataLakeTestBase {
         assertTrue(aadFileClient.exists());
     }
 
-    //todo isbr: fix
+
     @Test
     public void storageAccountAudience() {
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint(), fc.getFilePath())
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .audience(DataLakeAudience.getDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
             .buildFileClient();
@@ -3367,12 +3367,26 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void audienceError() {
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getPrimaryAccount().getDataLakeEndpoint(), fc.getFilePath())
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
             .audience(DataLakeAudience.getDataLakeServiceAccountAudience("badAudience"))
             .buildFileClient();
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadFileClient::exists);
         assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+    }
+
+    @Test
+    public void audienceFromString(){
+        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemClient.getAccountName());
+        DataLakeAudience audience = DataLakeAudience.fromString(url);
+
+        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
+            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+            .audience(audience)
+            .buildFileClient();
+
+        assertTrue(aadFileClient.exists());
     }
 }

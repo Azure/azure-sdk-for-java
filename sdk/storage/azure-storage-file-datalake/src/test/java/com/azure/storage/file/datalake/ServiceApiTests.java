@@ -726,6 +726,18 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
     }
 
+    @Test
+    public void audienceFromString(){
+        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemClient.getAccountName());
+        DataLakeAudience audience = DataLakeAudience.fromString(url);
+
+        DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
+            .audience(audience)
+            .buildClient();
+
+        assertNotNull(aadServiceClient.getProperties());
+    }
+
 //    @Test
 //    public void renameFileSystem() {
 //        String oldName = generateFileSystemName();

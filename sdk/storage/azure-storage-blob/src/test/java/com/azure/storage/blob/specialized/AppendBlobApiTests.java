@@ -9,6 +9,7 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
@@ -843,5 +844,17 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());
         assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+    }
+
+    @Test
+    public void audienceFromString(){
+        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        BlobAudience audience = BlobAudience.fromString(url);
+
+        AppendBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(audience)
+            .buildAppendBlobClient();
+
+        assertTrue(aadBlob.exists());
     }
 }

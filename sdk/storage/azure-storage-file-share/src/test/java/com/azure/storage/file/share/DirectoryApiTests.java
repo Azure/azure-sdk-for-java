@@ -1679,4 +1679,21 @@ public class DirectoryApiTests extends FileShareTestBase {
         ShareStorageException e = assertThrows(ShareStorageException.class, aadDirClient::exists);
         assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
     }
+
+    @Test
+    public void audienceFromString(){
+        String url = String.format("https://%s.file.core.windows.net/", primaryDirectoryClient.getAccountName());
+        ShareAudience audience = ShareAudience.fromString(url);
+
+        String dirName = generatePathName();
+        ShareDirectoryClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryClient();
+        dirClient.create();
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(audience));
+
+        ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
+        assertTrue(aadDirClient.exists());
+    }
 }

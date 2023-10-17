@@ -878,4 +878,18 @@ public class QueueApiTests extends QueueTestBase {
         QueueStorageException e = assertThrows(QueueStorageException.class, aadQueue::getProperties);
         assertEquals(QueueErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
     }
+
+    @Test
+    public void audienceFromString(){
+        String url = String.format("https://%s.queue.core.windows.net/", queueClient.getAccountName());
+        QueueAudience audience = QueueAudience.fromString(url);
+
+        queueClient.createIfNotExists();
+        QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+            .audience(audience)
+            .queueName(queueClient.getQueueName())
+            .buildClient();
+
+        assertNotNull(aadQueue.getProperties());
+    }
 }

@@ -1254,6 +1254,18 @@ public class ServiceApiTests extends BlobTestBase {
         assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
     }
 
+    @Test
+    public void audienceFromString(){
+        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        BlobAudience audience = BlobAudience.fromString(url);
+
+        BlobServiceClient aadService = getServiceClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .audience(audience)
+            .buildClient();
+
+        assertNotNull(aadService.getProperties() != null);
+    }
+
 //    public void renameBlob() container() {
 //        setup:
 //        def oldName = generateContainerName()

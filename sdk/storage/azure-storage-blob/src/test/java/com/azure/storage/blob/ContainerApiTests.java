@@ -2024,6 +2024,18 @@ public class ContainerApiTests extends BlobTestBase {
         assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
     }
 
+    @Test
+    public void audienceFromString(){
+        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        BlobAudience audience = BlobAudience.fromString(url);
+
+        BlobContainerClient aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .audience(audience)
+            .buildClient();
+
+        assertTrue(aadContainer.exists());
+    }
+
 // TODO: Reintroduce these tests once service starts supporting it.
 
 //    public void Rename() {

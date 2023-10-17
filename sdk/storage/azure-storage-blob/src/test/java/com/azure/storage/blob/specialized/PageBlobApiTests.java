@@ -7,12 +7,14 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
@@ -1639,5 +1641,47 @@ public class PageBlobApiTests extends BlobTestBase {
         Response<BlobProperties> response = specialBlob.getPropertiesWithResponse(null, null, null);
 
         assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
+    }
+
+    @Test
+    public void defaultAudience() {
+        PageBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(null)
+            .buildPageBlobClient();
+
+        assertTrue(aadBlob.exists());
+    }
+
+    @Test
+    public void storageAccountAudience(){
+        PageBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .buildPageBlobClient();
+
+        assertTrue(aadBlob.exists());
+    }
+
+    @Test
+    public void audienceError(){
+        PageBlobClient aadBlob = new SpecializedBlobClientBuilder()
+            .endpoint(bc.getBlobUrl())
+            .credential(new MockTokenCredential())
+            .audience(BlobAudience.getBlobServiceAccountAudience("badAudience"))
+            .buildPageBlobClient();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());
+        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+    }
+
+    @Test
+    public void audienceFromString(){
+        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        BlobAudience audience = BlobAudience.fromString(url);
+
+        PageBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(audience)
+            .buildPageBlobClient();
+
+        assertTrue(aadBlob.exists());
     }
 }

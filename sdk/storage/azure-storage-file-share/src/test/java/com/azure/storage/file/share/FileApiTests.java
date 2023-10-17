@@ -2697,4 +2697,21 @@ class FileApiTests extends FileShareTestBase {
         ShareStorageException e = assertThrows(ShareStorageException.class, aadFileClient::exists);
         assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
     }
+
+    @Test
+    public void audienceFromString(){
+        String url = String.format("https://%s.file.core.windows.net/", shareClient.getAccountName());
+        ShareAudience audience = ShareAudience.fromString(url);
+
+        String fileName = generatePathName();
+        ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
+        fileClient.create(Constants.KB);
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(audience));
+
+        ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
+        assertTrue(aadFileClient.exists());
+    }
 }
