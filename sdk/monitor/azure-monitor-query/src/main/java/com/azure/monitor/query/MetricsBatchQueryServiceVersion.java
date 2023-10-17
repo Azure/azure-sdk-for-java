@@ -12,7 +12,7 @@ public enum MetricsBatchQueryServiceVersion implements ServiceVersion {
     /**
      * The preview version of the Metrics Batch Query service.
      */
-    V2023_05_01_PREVIEW("2023-05-01-preview");
+    V2023_10_01("2023-10-01");
 
     private final String version;
 
