@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * HttpClient implementation for the HttpUrlConnectionAsyncClient.
+ * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
 public class HttpUrlConnectionAsyncClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionAsyncClient.class);
