@@ -2712,4 +2712,11 @@
     <Method name="serializeRequest"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
+
+  <!-- This is a value type field so it can't be null. It's initialized through setter/getters. -->
+  <Match>
+    <Class name="com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerSelector"/>
+    <Field name="ttlSeconds"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
 </FindBugsFilter>
