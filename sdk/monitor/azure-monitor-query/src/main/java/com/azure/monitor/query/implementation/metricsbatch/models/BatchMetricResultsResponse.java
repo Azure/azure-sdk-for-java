@@ -10,22 +10,22 @@ import java.util.List;
 
 /** The metrics result for a resource. */
 @Fluent
-public final class MetricResultsResponse {
+public final class BatchMetricResultsResponse {
     /*
      * The collection of metric data responses per resource, per metric.
      */
     @JsonProperty(value = "values")
-    private List<MetricResultsResponseValuesItem> values;
+    private List<BatchMetricResultsResponseValuesItem> values;
 
-    /** Creates an instance of MetricResultsResponse class. */
-    public MetricResultsResponse() {}
+    /** Creates an instance of BatchMetricResultsResponse class. */
+    public BatchMetricResultsResponse() {}
 
     /**
      * Get the values property: The collection of metric data responses per resource, per metric.
      *
      * @return the values value.
      */
-    public List<MetricResultsResponseValuesItem> getValues() {
+    public List<BatchMetricResultsResponseValuesItem> getValues() {
         return this.values;
     }
 
@@ -33,9 +33,9 @@ public final class MetricResultsResponse {
      * Set the values property: The collection of metric data responses per resource, per metric.
      *
      * @param values the values value to set.
-     * @return the MetricResultsResponse object itself.
+     * @return the BatchMetricResultsResponse object itself.
      */
-    public MetricResultsResponse setValues(List<MetricResultsResponseValuesItem> values) {
+    public BatchMetricResultsResponse setValues(List<BatchMetricResultsResponseValuesItem> values) {
         this.values = values;
         return this;
     }

@@ -10,9 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** The MetricResultsResponseValuesItem model. */
+/** The BatchMetricResultsResponseValuesItem model. */
 @Fluent
-public final class MetricResultsResponseValuesItem {
+public final class BatchMetricResultsResponseValuesItem {
     /*
      * The start time, in datetime format, for which the data was retrieved.
      */
@@ -55,20 +55,20 @@ public final class MetricResultsResponseValuesItem {
      * The value of the collection.
      */
     @JsonProperty(value = "value", required = true)
-    private List<Metric> value;
+    private List<SubscriptionScopeMetric> value;
 
     /**
-     * Creates an instance of MetricResultsResponseValuesItem class.
+     * Creates an instance of BatchMetricResultsResponseValuesItem class.
      *
      * @param starttime the starttime value to set.
      * @param endtime the endtime value to set.
      * @param value the value value to set.
      */
     @JsonCreator
-    public MetricResultsResponseValuesItem(
+    public BatchMetricResultsResponseValuesItem(
             @JsonProperty(value = "starttime", required = true) String starttime,
             @JsonProperty(value = "endtime", required = true) String endtime,
-            @JsonProperty(value = "value", required = true) List<Metric> value) {
+            @JsonProperty(value = "value", required = true) List<SubscriptionScopeMetric> value) {
         this.starttime = starttime;
         this.endtime = endtime;
         this.value = value;
@@ -109,9 +109,9 @@ public final class MetricResultsResponseValuesItem {
      * what was originally requested. This is not present if a metadata request was made.
      *
      * @param interval the interval value to set.
-     * @return the MetricResultsResponseValuesItem object itself.
+     * @return the BatchMetricResultsResponseValuesItem object itself.
      */
-    public MetricResultsResponseValuesItem setInterval(Duration interval) {
+    public BatchMetricResultsResponseValuesItem setInterval(Duration interval) {
         this.interval = interval;
         return this;
     }
@@ -129,9 +129,9 @@ public final class MetricResultsResponseValuesItem {
      * Set the namespace property: The namespace of the metrics been queried.
      *
      * @param namespace the namespace value to set.
-     * @return the MetricResultsResponseValuesItem object itself.
+     * @return the BatchMetricResultsResponseValuesItem object itself.
      */
-    public MetricResultsResponseValuesItem setNamespace(String namespace) {
+    public BatchMetricResultsResponseValuesItem setNamespace(String namespace) {
         this.namespace = namespace;
         return this;
     }
@@ -149,9 +149,9 @@ public final class MetricResultsResponseValuesItem {
      * Set the resourceregion property: The region of the resource been queried for metrics.
      *
      * @param resourceregion the resourceregion value to set.
-     * @return the MetricResultsResponseValuesItem object itself.
+     * @return the BatchMetricResultsResponseValuesItem object itself.
      */
-    public MetricResultsResponseValuesItem setResourceregion(String resourceregion) {
+    public BatchMetricResultsResponseValuesItem setResourceregion(String resourceregion) {
         this.resourceregion = resourceregion;
         return this;
     }
@@ -169,9 +169,9 @@ public final class MetricResultsResponseValuesItem {
      * Set the resourceid property: The resource that has been queried for metrics.
      *
      * @param resourceid the resourceid value to set.
-     * @return the MetricResultsResponseValuesItem object itself.
+     * @return the BatchMetricResultsResponseValuesItem object itself.
      */
-    public MetricResultsResponseValuesItem setResourceid(String resourceid) {
+    public BatchMetricResultsResponseValuesItem setResourceid(String resourceid) {
         this.resourceid = resourceid;
         return this;
     }
@@ -181,7 +181,7 @@ public final class MetricResultsResponseValuesItem {
      *
      * @return the value value.
      */
-    public List<Metric> getValue() {
+    public List<SubscriptionScopeMetric> getValue() {
         return this.value;
     }
 }

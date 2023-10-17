@@ -10,15 +10,15 @@ import java.util.List;
 
 /** The comma separated list of resource IDs to query metrics for. */
 @Fluent
-public final class ResourceIdList {
+public final class MetricBatchResourceIdList {
     /*
      * The list of resource IDs to query metrics for.
      */
     @JsonProperty(value = "resourceids")
     private List<String> resourceids;
 
-    /** Creates an instance of ResourceIdList class. */
-    public ResourceIdList() {}
+    /** Creates an instance of MetricBatchResourceIdList class. */
+    public MetricBatchResourceIdList() {}
 
     /**
      * Get the resourceids property: The list of resource IDs to query metrics for.
@@ -33,9 +33,9 @@ public final class ResourceIdList {
      * Set the resourceids property: The list of resource IDs to query metrics for.
      *
      * @param resourceids the resourceids value to set.
-     * @return the ResourceIdList object itself.
+     * @return the MetricBatchResourceIdList object itself.
      */
-    public ResourceIdList setResourceids(List<String> resourceids) {
+    public MetricBatchResourceIdList setResourceids(List<String> resourceids) {
         this.resourceids = resourceids;
         return this;
     }
