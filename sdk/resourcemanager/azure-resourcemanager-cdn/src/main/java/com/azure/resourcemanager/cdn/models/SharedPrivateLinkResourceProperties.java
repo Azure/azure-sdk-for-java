@@ -40,6 +40,10 @@ public final class SharedPrivateLinkResourceProperties {
     @JsonProperty(value = "status")
     private SharedPrivateLinkResourceStatus status;
 
+    /** Creates an instance of SharedPrivateLinkResourceProperties class. */
+    public SharedPrivateLinkResourceProperties() {
+    }
+
     /**
      * Get the privateLink property: The resource id of the resource the shared private link resource is for.
      *

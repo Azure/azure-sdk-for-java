@@ -19,6 +19,12 @@ public class ReceiveOptions {
     private boolean trackLastEnqueuedEventProperties;
 
     /**
+     * Creates a new instance.
+     */
+    public ReceiveOptions() {
+    }
+
+    /**
      * Gets the owner level for this consumer. If the value is {@code null}, then this is not an exclusive consumer.
      * Otherwise, it is an exclusive consumer, and there can only be one active consumer for each partition and consumer
      * group combination. The exclusive consumer is be based on which one has the higher owner level value.

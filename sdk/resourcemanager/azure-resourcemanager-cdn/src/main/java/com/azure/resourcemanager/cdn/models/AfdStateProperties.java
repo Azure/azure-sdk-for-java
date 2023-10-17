@@ -22,6 +22,10 @@ public class AfdStateProperties {
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
+    /** Creates an instance of AfdStateProperties class. */
+    public AfdStateProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning status.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RuleSets Create. */
 public final class RuleSetsCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/RuleSets_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/RuleSets_Create.json
      */
     /**
      * Sample code: RuleSets_Create.
@@ -22,6 +20,6 @@ public final class RuleSetsCreateSamples {
             .manager()
             .serviceClient()
             .getRuleSets()
-            .createWithResponse("RG", "profile1", "ruleSet1", Context.NONE);
+            .createWithResponse("RG", "profile1", "ruleSet1", com.azure.core.util.Context.NONE);
     }
 }

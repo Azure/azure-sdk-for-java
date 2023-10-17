@@ -89,7 +89,7 @@ public class AzureAuthenticationTemplate {
     }
 
     /**
-     * Return a password which is an Azure AD token that can be used to authenticate.
+     * Return a password which is a Microsoft Entra token that can be used to authenticate.
      *
      * Always return a valid value, and the value won't expire in a threshold.
      *

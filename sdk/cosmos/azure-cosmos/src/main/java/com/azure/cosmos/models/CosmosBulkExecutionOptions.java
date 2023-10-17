@@ -23,6 +23,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class CosmosBulkExecutionOptions {
     private int initialMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
+
+    private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
     private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
 
@@ -120,6 +122,15 @@ public final class CosmosBulkExecutionOptions {
      */
     CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(int maxMicroBatchPayloadSizeInBytes) {
         this.maxMicroBatchPayloadSizeInBytes = maxMicroBatchPayloadSizeInBytes;
+        return this;
+    }
+
+    int getMaxMicroBatchSize() {
+        return maxMicroBatchSize;
+    }
+
+    CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
+        this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
     }
 
@@ -410,6 +421,20 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
                     return cosmosBulkExecutionOptions.excludeRegions;
+                }
+
+                @Override
+                public int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    if (cosmosBulkExecutionOptions == null) {
+                        return BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+                    }
+
+                    return cosmosBulkExecutionOptions.getMaxMicroBatchSize();
+                }
+
+                @Override
+                public void setMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, int maxMicroBatchSize) {
+                    cosmosBulkExecutionOptions.setMaxMicroBatchSize(maxMicroBatchSize);
                 }
 
             });

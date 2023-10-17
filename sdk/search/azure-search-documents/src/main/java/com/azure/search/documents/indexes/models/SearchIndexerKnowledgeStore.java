@@ -36,6 +36,12 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      */
     private SearchIndexerDataIdentity identity;
 
+    /*
+     * A dictionary of knowledge store-specific configuration properties. Each name is the name of a specific property.
+     * Each value must be of a primitive type.
+     */
+    private SearchIndexerKnowledgeStoreParameters parameters;
+
     /**
      * Creates an instance of SearchIndexerKnowledgeStore class.
      *
@@ -93,12 +99,35 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
         return this;
     }
 
+    /**
+     * Get the parameters property: A dictionary of knowledge store-specific configuration properties. Each name is the
+     * name of a specific property. Each value must be of a primitive type.
+     *
+     * @return the parameters value.
+     */
+    public SearchIndexerKnowledgeStoreParameters getParameters() {
+        return this.parameters;
+    }
+
+    /**
+     * Set the parameters property: A dictionary of knowledge store-specific configuration properties. Each name is the
+     * name of a specific property. Each value must be of a primitive type.
+     *
+     * @param parameters the parameters value to set.
+     * @return the SearchIndexerKnowledgeStore object itself.
+     */
+    public SearchIndexerKnowledgeStore setParameters(SearchIndexerKnowledgeStoreParameters parameters) {
+        this.parameters = parameters;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("storageConnectionString", this.storageConnectionString);
         jsonWriter.writeArrayField("projections", this.projections, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -119,6 +148,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
                     boolean projectionsFound = false;
                     List<SearchIndexerKnowledgeStoreProjection> projections = null;
                     SearchIndexerDataIdentity identity = null;
+                    SearchIndexerKnowledgeStoreParameters parameters = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -133,6 +163,8 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
                             projectionsFound = true;
                         } else if ("identity".equals(fieldName)) {
                             identity = SearchIndexerDataIdentity.fromJson(reader);
+                        } else if ("parameters".equals(fieldName)) {
+                            parameters = SearchIndexerKnowledgeStoreParameters.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
@@ -141,6 +173,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
                         SearchIndexerKnowledgeStore deserializedSearchIndexerKnowledgeStore =
                                 new SearchIndexerKnowledgeStore(storageConnectionString, projections);
                         deserializedSearchIndexerKnowledgeStore.identity = identity;
+                        deserializedSearchIndexerKnowledgeStore.parameters = parameters;
 
                         return deserializedSearchIndexerKnowledgeStore;
                     }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.AfdEndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for AfdEndpoints Update. */
 public final class AfdEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDEndpoints_Update.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDEndpoints_Update.json
      */
     /**
      * Sample code: AFDEndpoints_Update.
@@ -31,7 +30,7 @@ public final class AfdEndpointsUpdateSamples {
                 "profile1",
                 "endpoint1",
                 new AfdEndpointUpdateParameters().withTags(mapOf()).withEnabledState(EnabledState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

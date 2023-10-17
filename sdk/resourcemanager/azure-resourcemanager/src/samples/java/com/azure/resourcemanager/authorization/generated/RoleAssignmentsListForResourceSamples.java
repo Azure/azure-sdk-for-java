@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleAssignments ListForResource. */
 public final class RoleAssignmentsListForResourceSamples {
     /*
@@ -24,6 +22,12 @@ public final class RoleAssignmentsListForResourceSamples {
             .roleServiceClient()
             .getRoleAssignments()
             .listForResource(
-                "testrg", "Microsoft.DocumentDb", "databaseAccounts", "test-db-account", null, null, Context.NONE);
+                "testrg",
+                "Microsoft.DocumentDb",
+                "databaseAccounts",
+                "test-db-account",
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

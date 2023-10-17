@@ -3,12 +3,10 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
+import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
@@ -34,11 +32,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.zip.GZIPInputStream;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -51,6 +49,11 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;"
             + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
             + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
+
+    private static final String STATSBEAT_CONNECTION_STRING =
+        "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
+        + "IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/;"
+        + "LiveEndpoint=https://westus.livediagnostics.monitor.azure.com/";
     private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-000000000000";
 
     @Test
@@ -192,9 +195,93 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // TODO (trask) also export and validate logs in this test
     }
 
-    private static Map<String, String> getConfiguration() {
-        return Collections.singletonMap("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV);
+    @Test
+    public void testStatsbeat() throws Exception {
+        // create the OpenTelemetry SDK
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
+        OpenTelemetrySdk openTelemetry =
+            TestUtils.createOpenTelemetrySdk(
+                getHttpPipeline(customValidationPolicy), getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
+
+        // generate a metric
+        generateMetric(openTelemetry);
+
+        // close to flush
+        openTelemetry.close();
+
+        Thread.sleep(2000);
+
+        // wait for export
+        countDownLatch.await(10, SECONDS);
+        assertThat(customValidationPolicy.url)
+            .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
+
+        TelemetryItem attachStatsbeat =
+            customValidationPolicy.actualTelemetryItems.stream()
+                .filter(item -> item.getName().equals("Statsbeat"))
+                .filter(item -> {
+                    MetricsData metricsData = (MetricsData) item.getData().getBaseData();
+                    return metricsData.getMetrics().stream().allMatch(metricDataPoint -> metricDataPoint.getName().equals("Attach"));
+                })
+                .findFirst()
+                .get();
+        validateAttachStatsbeat(attachStatsbeat);
+
+        TelemetryItem featureStatsbeat =
+            customValidationPolicy.actualTelemetryItems.stream()
+                .filter(item -> item.getName().equals("Statsbeat"))
+                .filter(item -> {
+                    MetricsData metricsData = (MetricsData) item.getData().getBaseData();
+                    return metricsData.getMetrics().stream().allMatch(metricDataPoint -> metricDataPoint.getName().equals("Feature"));
+                })
+                .findFirst()
+                .get();
+        validateFeatureStatsbeat(featureStatsbeat);
     }
+
+    @Test
+    public void testStatsbeatShutdownWhen400InvalidIKeyReturned() throws Exception {
+        String fakeBody = "{\"itemsReceived\":1,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"}]}";
+        MockedHttpClient mockedHttpClient =
+            new MockedHttpClient(
+                request -> {
+                    return Mono.just(new MockHttpResponse(request, 400, new HttpHeaders(), fakeBody.getBytes()));
+                });
+
+        // create OpenTelemetrySdk
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        AzureMonitorExportersEndToEndTest.CustomValidationPolicy customValidationPolicy = new AzureMonitorExportersEndToEndTest.CustomValidationPolicy(countDownLatch);
+        OpenTelemetrySdk openTelemetrySdk =
+            TestUtils.createOpenTelemetrySdk(
+                getHttpPipeline(customValidationPolicy, mockedHttpClient), getConfiguration(), STATSBEAT_CONNECTION_STRING);
+
+        generateMetric(openTelemetrySdk);
+
+        // close to flush
+        openTelemetrySdk.close();
+
+        Thread.sleep(1000);
+
+        // wait for export
+        countDownLatch.await(10, SECONDS);
+        assertThat(customValidationPolicy.url)
+            .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
+        assertThat(customValidationPolicy.actualTelemetryItems.stream().filter(item -> item.getName().equals("Statsbeat")).count()).isEqualTo(0);
+    }
+
+    private static Map<String, String> getConfiguration() {
+        return Collections.singletonMap("APPLICATIONINSIGHTS_CONNECTION_STRING", STATSBEAT_CONNECTION_STRING);
+    }
+
+    private static Map<String, String> getStatsbeatConfiguration() {
+        Map<String, String> map = new HashMap<>(3);
+        map.put("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV);
+        map.put("STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME", "1");
+        map.put("STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME", "1");
+        return map;
+    }
+
 
     @SuppressWarnings("try")
     private static void generateSpan(OpenTelemetry openTelemetry) {
@@ -240,8 +327,23 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             .containsExactly(entry("color", "red"), entry("name", "apple"));
     }
 
+    private static void validateAttachStatsbeat(TelemetryItem telemetryItem) {
+        assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
+        MetricsData actualMetricsData = (MetricsData) telemetryItem.getData().getBaseData();
+        assertThat(actualMetricsData.getMetrics().get(0).getName()).isEqualTo("Attach");
+        assertThat(actualMetricsData.getProperties()).contains(entry("rp", "unknown"), entry("attach", "Manual"), entry("language", "java"));
+        assertThat(actualMetricsData.getProperties()).containsKeys("attach", "cikey", "language", "os", "rp", "runtimeVersion", "version");
+    }
+
+    private static void validateFeatureStatsbeat(TelemetryItem telemetryItem) {
+        assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
+        MetricsData actualMetricsData = (MetricsData) telemetryItem.getData().getBaseData();
+        assertThat(actualMetricsData.getMetrics().get(0).getName()).isEqualTo("Feature");
+        assertThat(actualMetricsData.getProperties()).contains(entry("type", "0"), entry("language", "java"));
+        assertThat(actualMetricsData.getProperties()).containsKeys("feature", "cikey", "language", "os", "rp", "runtimeVersion", "version");
+    }
+
     private static void validateMetric(TelemetryItem telemetryItem) {
-        assertThat(telemetryItem.getName()).isEqualTo("Metric");
         assertThat(telemetryItem.getInstrumentationKey()).isEqualTo(INSTRUMENTATION_KEY);
         assertThat(telemetryItem.getTags()).containsEntry("ai.cloud.role", "unknown_service:java");
         assertThat(telemetryItem.getTags())
@@ -328,6 +430,26 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             // dependency and not (de)serialize Instant as timestamps that it does by default
             objectMapper.findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             return objectMapper;
+        }
+    }
+
+    private static class MockedHttpClient implements HttpClient {
+
+        private final AtomicInteger count = new AtomicInteger();
+        private final Function<HttpRequest, Mono<HttpResponse>> handler;
+
+        MockedHttpClient(Function<HttpRequest, Mono<HttpResponse>> handler) {
+            this.handler = handler;
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest httpRequest) {
+            count.getAndIncrement();
+            return handler.apply(httpRequest);
+        }
+
+        int getCount() {
+            return count.get();
         }
     }
 }

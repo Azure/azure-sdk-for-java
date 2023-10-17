@@ -23,6 +23,10 @@ public final class CheckNameAvailabilityInput {
     @JsonProperty(value = "type", required = true)
     private ResourceType type;
 
+    /** Creates an instance of CheckNameAvailabilityInput class. */
+    public CheckNameAvailabilityInput() {
+    }
+
     /**
      * Get the name property: The resource name to validate.
      *
