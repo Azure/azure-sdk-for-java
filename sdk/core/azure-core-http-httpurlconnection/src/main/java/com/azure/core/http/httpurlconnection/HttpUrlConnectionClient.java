@@ -84,7 +84,7 @@ public class HttpUrlConnectionClient implements HttpClient {
         return Mono.defer(() -> {
             HttpURLConnection connection = connect(httpRequest);
             return sendBodyAsync(httpRequest, progressReporter, connection)
-                .then(Mono.defer(() -> Mono.fromCallable(() -> receiveResponse(httpRequest, connection))))
+                .then(Mono.fromCallable(() -> receiveResponse(httpRequest, connection)))
                 .timeout(responseTimeout)
                 .publishOn(Schedulers.boundedElastic());
         });
