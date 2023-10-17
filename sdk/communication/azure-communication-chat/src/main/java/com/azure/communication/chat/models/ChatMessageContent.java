@@ -3,8 +3,6 @@
 
 package com.azure.communication.chat.models;
 
-import java.util.List;
-
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
