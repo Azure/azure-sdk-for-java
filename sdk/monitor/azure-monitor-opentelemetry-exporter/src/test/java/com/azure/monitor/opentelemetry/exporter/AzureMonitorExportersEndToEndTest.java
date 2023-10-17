@@ -210,7 +210,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // close to flush
         openTelemetry.close();
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         // wait for export
         countDownLatch.await(10, SECONDS);
