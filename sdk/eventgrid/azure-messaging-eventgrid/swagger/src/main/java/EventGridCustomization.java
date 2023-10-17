@@ -5,6 +5,7 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.PropertyCustomization;
 import com.github.javaparser.ast.Modifier.Keyword;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
@@ -12,6 +13,7 @@ import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -228,6 +230,7 @@ public class EventGridCustomization extends Customization {
         customizeMediaLiveEventIngestHeartbeatEventData(customization);
         customizeResourceEvents(customization, logger);
         customizeEventGridClientImplImports(customization);
+        customizeAcsRouterEvents(customization);
     }
 
     public void customizeResourceEvents(LibraryCustomization customization, Logger logger) {
@@ -439,6 +442,40 @@ public class EventGridCustomization extends Customization {
             comp.addImport("com.azure.core.models.CloudEvent");
         });
 
+    }
+
+    public void customizeAcsRouterEvents(LibraryCustomization customization) {
+PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("AcsRouterWorkerSelector");
+
+        classCustomization.customizeAst(comp -> {
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterWorkerSelector").get();
+            clazz.getMethodsByName("getTtlSeconds").forEach(m -> {
+                m.setType(Duration.class);
+                m.setBody(parseBlock("{ return Duration.ofSeconds(ttlSeconds.longValue()); }"));
+            });
+
+            clazz.getMethodsByName("setTtlSeconds").forEach(m -> {
+                m.setType("AcsRouterWorkerSelector");
+                m.getParameter(0).setType(Duration.class);
+                m.setBody(parseBlock("{ this.ttlSeconds = (float) ttlSeconds.getSeconds(); return this; }"));
+            });
+        });
+
+        classCustomization = packageModels.getClass("AcsRouterJobClassificationFailedEventData");
+        classCustomization.addImports("com.azure.core.models.ResponseError");
+        classCustomization.customizeAst(comp -> {
+           ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterJobClassificationFailedEventData").get();
+           clazz.getMethodsByName("getErrors").forEach(m -> {
+               m.setType("List<ResponseError>");
+               m.setBody(parseBlock("{ return this.errors.stream().map(e -> new ResponseError(e.getCode(), e.getMessage())).toList(); }"));
+           });
+
+           clazz.getMethodsByName("setErrors").forEach(m -> {
+               m.setParameter(0, new Parameter().setType("List<ResponseError>").setName("errors"));
+              m.setBody(parseBlock("{ this.errors = errors.stream().map(e -> new AcsRouterCommunicationError().setCode(e.getCode()).setMessage(e.getMessage())).toList(); return this; }"));
+           });
+        });
     }
 
     private static final Map<String, String> replacementNames = new HashMap<String,String>() {
