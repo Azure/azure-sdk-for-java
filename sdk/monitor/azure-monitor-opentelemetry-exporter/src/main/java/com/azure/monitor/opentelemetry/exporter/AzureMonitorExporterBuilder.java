@@ -52,7 +52,6 @@ import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
