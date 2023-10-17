@@ -1221,7 +1221,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
     }
     @Test
-    public void audienceFromString(){
+    public void audienceFromString() {
         String url = String.format("https://%s.file.core.windows.net/", primaryShareClient.getAccountName());
         ShareAudience audience = ShareAudience.fromString(url);
 

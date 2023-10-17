@@ -218,7 +218,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return builder.credential(getTokenCredential());
     }
 
-    protected TokenCredential getTokenCredential(){
+    protected TokenCredential getTokenCredential() {
         Configuration configuration = Configuration.getGlobalConfiguration();
         if (!interceptorManager.isPlaybackMode()) {
             // Determine whether to use the environment credential based on the shared configurations or to use the
@@ -236,8 +236,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
                     .clientSecret(configuration.get("STORAGE_CLIENT_SECRET"))
                     .build();
             }
-        }
-        else{
+        } else {
             // Running in playback, use the mock credential.
             return new MockTokenCredential();
         }

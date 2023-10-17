@@ -2569,7 +2569,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void storageAccountAudience(){
+    public void storageAccountAudience() {
         BlockBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(blockBlobClient.getBlobUrl())
             .audience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
             .buildBlockBlobClient();
@@ -2578,7 +2578,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void audienceError(){
+    public void audienceError() {
         BlockBlobClient aadBlob = new SpecializedBlobClientBuilder()
             .endpoint(blockBlobClient.getBlobUrl())
             .credential(new MockTokenCredential())
@@ -2590,7 +2590,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void audienceFromString(){
+    public void audienceFromString() {
         String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
         BlobAudience audience = BlobAudience.fromString(url);
 

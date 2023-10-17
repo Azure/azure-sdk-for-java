@@ -1681,7 +1681,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void audienceFromString(){
+    public void audienceFromString() {
         String url = String.format("https://%s.file.core.windows.net/", primaryDirectoryClient.getAccountName());
         ShareAudience audience = ShareAudience.fromString(url);
 

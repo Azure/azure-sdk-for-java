@@ -2250,7 +2250,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void audienceFromString(){
+    public void audienceFromString() {
         String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemClient.getAccountName());
         DataLakeAudience audience = DataLakeAudience.fromString(url);
 

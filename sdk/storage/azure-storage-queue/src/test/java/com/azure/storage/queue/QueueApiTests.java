@@ -880,7 +880,7 @@ public class QueueApiTests extends QueueTestBase {
     }
 
     @Test
-    public void audienceFromString(){
+    public void audienceFromString() {
         String url = String.format("https://%s.queue.core.windows.net/", queueClient.getAccountName());
         QueueAudience audience = QueueAudience.fromString(url);
 

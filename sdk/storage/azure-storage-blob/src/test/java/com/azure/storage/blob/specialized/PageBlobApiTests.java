@@ -1653,7 +1653,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void storageAccountAudience(){
+    public void storageAccountAudience() {
         PageBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
             .audience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
             .buildPageBlobClient();
@@ -1662,7 +1662,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void audienceError(){
+    public void audienceError() {
         PageBlobClient aadBlob = new SpecializedBlobClientBuilder()
             .endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())
@@ -1674,7 +1674,7 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void audienceFromString(){
+    public void audienceFromString() {
         String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
         BlobAudience audience = BlobAudience.fromString(url);
 

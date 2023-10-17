@@ -2996,7 +2996,7 @@ public class BlobApiTests extends BlobTestBase {
     }
 
     @Test
-    public void audienceFromString(){
+    public void audienceFromString() {
         String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
         BlobAudience audience = BlobAudience.fromString(url);
 

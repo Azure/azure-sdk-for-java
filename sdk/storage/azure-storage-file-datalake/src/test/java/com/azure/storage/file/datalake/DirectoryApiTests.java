@@ -14,7 +14,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.Utility;
@@ -3428,7 +3427,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void audienceFromString(){
+    public void audienceFromString() {
         String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemClient.getAccountName());
         DataLakeAudience audience = DataLakeAudience.fromString(url);
 

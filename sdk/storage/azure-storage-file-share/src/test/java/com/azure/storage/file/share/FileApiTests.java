@@ -2644,7 +2644,7 @@ class FileApiTests extends FileShareTestBase {
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
-   @Test
+    @Test
     public void perCallPolicy() {
         primaryFileClient.create(512);
 
@@ -2699,7 +2699,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void audienceFromString(){
+    public void audienceFromString() {
         String url = String.format("https://%s.file.core.windows.net/", shareClient.getAccountName());
         ShareAudience audience = ShareAudience.fromString(url);
 
