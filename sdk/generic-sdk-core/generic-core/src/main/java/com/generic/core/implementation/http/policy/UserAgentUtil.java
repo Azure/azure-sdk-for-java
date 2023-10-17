@@ -95,8 +95,8 @@ public final class UserAgentUtil {
      */
     private static boolean isTelemetryDisabled(Configuration configuration) {
         return (configuration == null)
-            ? Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false)
-            : configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
+            ? Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_TELEMETRY_DISABLED, false)
+            : configuration.get(Configuration.PROPERTY_TELEMETRY_DISABLED, false);
     }
 
 }

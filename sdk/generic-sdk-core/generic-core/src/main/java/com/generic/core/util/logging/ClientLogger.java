@@ -21,7 +21,7 @@ import java.util.function.Supplier;
  * Object...) verbose}, the stack trace for the throwable is logged.</p>
  *
  * <p>A minimum logging level threshold is determined by the
- * {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
+ * {@link Configuration#PROPERTY_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
  * <b>disabled</b>.</p>
  *
  * <p><strong>Log level hierarchy</strong></p>

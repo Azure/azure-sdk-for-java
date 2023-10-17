@@ -92,9 +92,9 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * @param applicationId User specified application Id.
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
-     * @param configuration Configuration store that will be checked for {@link
-     * Configuration#PROPERTY_AZURE_TELEMETRY_DISABLED}. If {@code null} is passed the {@link
-     * Configuration#getGlobalConfiguration() global configuration} will be checked.
+     * @param configuration Configuration store that will be checked for
+     * {@link Configuration#PROPERTY_TELEMETRY_DISABLED}. If {@code null} is passed the
+     * {@link Configuration#getGlobalConfiguration() global configuration} will be checked.
      */
     public UserAgentPolicy(String applicationId, String sdkName, String sdkVersion, Configuration configuration) {
         this.userAgent = UserAgentUtil.toUserAgentString(applicationId, sdkName, sdkVersion, configuration);

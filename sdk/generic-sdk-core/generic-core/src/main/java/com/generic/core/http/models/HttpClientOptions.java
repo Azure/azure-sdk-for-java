@@ -86,7 +86,7 @@ public final class HttpClientOptions extends ClientOptions {
      * The connection timeout begins once the request attempts to connect to the remote host and finishes when the
      * connection is resolved.
      * <p>
-     * If {@code connectTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT} or a
+     * If {@code connectTimeout} is null either {@link Configuration#PROPERTY_REQUEST_CONNECT_TIMEOUT} or a
      * 10-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
      * applied. When applying the timeout the greatest of one millisecond and the value of {@code connectTimeout} will
      * be used.
@@ -119,7 +119,7 @@ public final class HttpClientOptions extends ClientOptions {
      * example a request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the
      * outbound buffer will be periodically checked to determine if it is still draining.
      * <p>
-     * If {@code writeTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT} or a 60-second
+     * If {@code writeTimeout} is null either {@link Configuration#PROPERTY_REQUEST_WRITE_TIMEOUT} or a 60-second
      * timeout will be used, if it is a {@link Duration} less than or equal to zero then no write timeout will be
      * applied. When applying the timeout the greatest of one millisecond and the value of {@code writeTimeout} will be
      * used.
@@ -151,7 +151,7 @@ public final class HttpClientOptions extends ClientOptions {
      * The response timeout begins once the request write completes and finishes once the first response read is
      * triggered when the server response is received.
      * <p>
-     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
+     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_REQUEST_RESPONSE_TIMEOUT} or a
      * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
      * applied to the response. When applying the timeout the greatest of one millisecond and the value of
      * {@code responseTimeout} will be used.
@@ -172,7 +172,7 @@ public final class HttpClientOptions extends ClientOptions {
      * The response timeout begins once the request write completes and finishes once the first response read is
      * triggered when the server response is received.
      * <p>
-     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
+     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_REQUEST_RESPONSE_TIMEOUT} or a
      * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
      * applied to the response. When applying the timeout the greatest of one millisecond and the value of
      * {@code responseTimeout} will be used.
@@ -205,7 +205,7 @@ public final class HttpClientOptions extends ClientOptions {
      * timeout triggers periodically but won't fire its operation if another read operation has completed between when
      * the timeout is triggered and completes.
      * <p>
-     * If {@code readTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_READ_TIMEOUT} or a 60-second
+     * If {@code readTimeout} is null either {@link Configuration#PROPERTY_REQUEST_READ_TIMEOUT} or a 60-second
      * timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout period will be
      * applied to response read. When applying the timeout the greatest of one millisecond and the value of
      * {@code readTimeout} will be used.
@@ -227,7 +227,7 @@ public final class HttpClientOptions extends ClientOptions {
      * timeout triggers periodically but won't fire its operation if another read operation has completed between when
      * the timeout is triggered and completes.
      * <p>
-     * If {@code readTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_READ_TIMEOUT} or a 60-second
+     * If {@code readTimeout} is null either {@link Configuration#PROPERTY_REQUEST_READ_TIMEOUT} or a 60-second
      * timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout period will be
      * applied to response read. When applying the timeout the greatest of one millisecond and the value of
      * {@code readTimeout} will be used.

@@ -30,7 +30,7 @@ import java.util.function.Supplier;
 @Fluent
 public final class LoggingEventBuilder {
     private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
-    private static final String AZURE_SDK_LOG_MESSAGE_KEY = "az.sdk.message";
+    private static final String SDK_LOG_MESSAGE_KEY = "sdk.message";
 
     private final Logger logger;
     private final LogLevel level;
@@ -255,8 +255,8 @@ public final class LoggingEventBuilder {
             + globalContextCached.length());
         sb.append("{\"")
             // message must be first for log parsing tooling to work, key also works as a
-            // marker for Azure SDK logs so we'll write it even if there is no message
-            .append(AZURE_SDK_LOG_MESSAGE_KEY)
+            // marker for SDK logs, so we'll write it even if there is no message
+            .append(SDK_LOG_MESSAGE_KEY)
             .append("\":\"");
 //        JSON_STRING_ENCODER.quoteAsString(message, sb);
         sb.append("\"");

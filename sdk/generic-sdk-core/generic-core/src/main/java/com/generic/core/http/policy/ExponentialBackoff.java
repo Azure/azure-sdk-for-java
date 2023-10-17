@@ -24,7 +24,7 @@ public class ExponentialBackoff implements RetryStrategy {
     private static final ClientLogger LOGGER = new ClientLogger(ExponentialBackoff.class);
 
     static {
-        String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_REQUEST_RETRY_COUNT);
+        String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_REQUEST_RETRY_COUNT);
 
         int defaultMaxRetries = 3;
         if (!CoreUtils.isNullOrEmpty(envDefaultMaxRetries)) {
@@ -35,7 +35,7 @@ public class ExponentialBackoff implements RetryStrategy {
                 }
             } catch (NumberFormatException ignored) {
                 LOGGER.verbose("{} was loaded but is an invalid number. Using 3 retries as the maximum.",
-                    Configuration.PROPERTY_AZURE_REQUEST_RETRY_COUNT);
+                    Configuration.PROPERTY_REQUEST_RETRY_COUNT);
             }
         }
 
@@ -48,7 +48,7 @@ public class ExponentialBackoff implements RetryStrategy {
 
     /**
      * Creates an instance of {@link ExponentialBackoff} with a maximum number of retry attempts configured by the
-     * environment property {@link Configuration#PROPERTY_AZURE_REQUEST_RETRY_COUNT}, or three if it isn't configured or
+     * environment property {@link Configuration#PROPERTY_REQUEST_RETRY_COUNT}, or three if it isn't configured or
      * is less than or equal to 0. This strategy starts with a delay of 800 milliseconds and exponentially increases
      * with each additional retry attempt to a maximum of 8 seconds.
      */
