@@ -107,6 +107,8 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
                     this.maximumBackoff);
         }
 
+        // For remote region preference ensure that the last retry is long enough (even when exceeding max backoff time)
+        // to consume the entire minRetryTimeInLocalRegion
         if (sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptions) ==
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
             && attempt >= (this.maxRetryAttemptsInCurrentRegion.get() - 1)) {
