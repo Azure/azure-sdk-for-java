@@ -140,6 +140,7 @@ public class HttpTransportClient extends TransportClient {
             } else if (request.isAddressRefresh()) {
                 responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
             }
+
             Mono<HttpResponse> httpResponseMono = this.httpClient
                     .send(httpRequest, responseTimeout)
                     .doOnSubscribe(subscription -> {
