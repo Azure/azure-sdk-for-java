@@ -23,6 +23,15 @@ public final class MicrosoftGraphTeamVisibilityType extends ExpandableStringEnum
     public static final MicrosoftGraphTeamVisibilityType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphTeamVisibilityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphTeamVisibilityType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphTeamVisibilityType from its string representation.
      *
      * @param name a name to look for.

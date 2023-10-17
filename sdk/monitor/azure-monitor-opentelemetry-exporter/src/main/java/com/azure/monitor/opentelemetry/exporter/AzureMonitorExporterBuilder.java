@@ -64,7 +64,6 @@ import java.util.function.BiConsumer;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * This class provides a fluent builder API to configure the OpenTelemetry SDK with Azure Monitor Exporters.
@@ -78,8 +77,8 @@ public final class AzureMonitorExporterBuilder {
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
         "https://monitor.azure.com//.default";
 
-    private static final String STATSBEAT_LONG_INTERVAL_SECONDS = "STATSBEAT_LONG_INTERVAL_SECONDS";
-    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS = "STATSBEAT_SHORT_INTERVAL_SECONDS";
+    private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME = "STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME";
+    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME";
 
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
@@ -248,9 +247,10 @@ public final class AzureMonitorExporterBuilder {
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     public SpanExporter buildTraceExporter() {
-        internalBuildAndFreeze();
+        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
+        internalBuildAndFreeze(defaultConfig);
         // TODO (trask) how to pass along configuration properties?
-        return buildTraceExporter(DefaultConfigProperties.create(Collections.emptyMap()));
+        return buildTraceExporter(defaultConfig);
     }
 
     /**
@@ -265,9 +265,10 @@ public final class AzureMonitorExporterBuilder {
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     public MetricExporter buildMetricExporter() {
-        internalBuildAndFreeze();
+        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
+        internalBuildAndFreeze(defaultConfig);
         // TODO (trask) how to pass along configuration properties?
-        return buildMetricExporter(DefaultConfigProperties.create(Collections.emptyMap()));
+        return buildMetricExporter(defaultConfig);
     }
 
     /**
@@ -279,9 +280,10 @@ public final class AzureMonitorExporterBuilder {
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     public LogRecordExporter buildLogRecordExporter() {
-        internalBuildAndFreeze();
+        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
+        internalBuildAndFreeze(defaultConfig);
         // TODO (trask) how to pass along configuration properties?
-        return buildLogRecordExporter(DefaultConfigProperties.create(Collections.emptyMap()));
+        return buildLogRecordExporter(defaultConfig);
     }
 
     /**
@@ -290,8 +292,6 @@ public final class AzureMonitorExporterBuilder {
      * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporter.
      */
     public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
-        internalBuildAndFreeze();
-
         sdkBuilder.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
@@ -303,6 +303,7 @@ public final class AzureMonitorExporterBuilder {
         sdkBuilder.addSpanExporterCustomizer(
             (spanExporter, configProperties) -> {
                 if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
+                    internalBuildAndFreeze(configProperties);
                     spanExporter = buildTraceExporter(configProperties);
                 }
                 return spanExporter;
@@ -310,6 +311,7 @@ public final class AzureMonitorExporterBuilder {
         sdkBuilder.addMetricExporterCustomizer(
             (metricExporter, configProperties) -> {
                 if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
+                    internalBuildAndFreeze(configProperties);
                     metricExporter = buildMetricExporter(configProperties);
                 }
                 return metricExporter;
@@ -317,6 +319,7 @@ public final class AzureMonitorExporterBuilder {
         sdkBuilder.addLogRecordExporterCustomizer(
             (logRecordExporter, configProperties) -> {
                 if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
+                    internalBuildAndFreeze(configProperties);
                     logRecordExporter = buildLogRecordExporter(configProperties);
                 }
                 return logRecordExporter;
@@ -327,7 +330,7 @@ public final class AzureMonitorExporterBuilder {
 //            return sdkTracerProviderBuilder.addSpanProcessor(
 //                new LiveMetricsSpanProcessor(quickPulse, createSpanDataMapper()));
 //        });
-        sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, configProperties) ->
+        sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, config) ->
             sdkMeterProviderBuilder.registerView(
                 InstrumentSelector.builder()
                     .setMeterName("io.opentelemetry.sdk.trace")
@@ -345,50 +348,29 @@ public final class AzureMonitorExporterBuilder {
             ));
     }
 
-    private void internalBuildAndFreeze() {
+    // One caveat: ConfigProperties will get used only once when initializing/starting StatsbeatModule.
+    // When a customer call build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) multiple times with a diff ConfigProperties each time,
+    // the new ConfigProperties will not get applied to StatsbeatModule because of "frozen" guard. Luckily, we're using the config properties
+    // in StatsbeatModule for testing only. We might need to revisit this approach later.
+    private void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
             builtHttpPipeline = createHttpPipeline();
-            builtTelemetryItemExporter = createTelemetryItemExporter();
+            StatsbeatModule statsbeatModule = initStatsbeatModule(configProperties);
+            builtTelemetryItemExporter = createTelemetryItemExporter(statsbeatModule);
+            startStatsbeatModule(statsbeatModule, configProperties); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
             frozen = true;
         }
     }
 
     private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
-
         return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter);
     }
 
     private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), createDefaultsPopulator(configProperties), builtTelemetryItemExporter::send);
-        if (connectionString != null) {
-            StatsbeatModule statsbeatModule = new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
-            statsbeatModule.start(
-                builtTelemetryItemExporter,
-                this::getStatsbeatConnectionString,
-                connectionString::getInstrumentationKey,
-                false,
-                getStatsbeaLongInterval(configProperties.getInt(STATSBEAT_LONG_INTERVAL_SECONDS)),
-                getStatsbeatShortInterval(configProperties.getInt(STATSBEAT_SHORT_INTERVAL_SECONDS)),
-                false,
-                initStatsbeatFeatures());
-        }
         return new AzureMonitorMetricExporter(
             new MetricDataMapper(createDefaultsPopulator(configProperties), true), builtTelemetryItemExporter);
-    }
-
-    private long getStatsbeaLongInterval(Integer intervalFromConfig) {
-        if (intervalFromConfig == null) {
-            return DAYS.toSeconds(1); // default to every 24 hours
-        }
-        return SECONDS.toSeconds(intervalFromConfig);
-    }
-
-    private long getStatsbeatShortInterval(Integer intervalFromConfig) {
-        if (intervalFromConfig == null) {
-            return MINUTES.toSeconds(15); // default to every 15 mins
-        }
-        return SECONDS.toSeconds(intervalFromConfig);
     }
 
     private Set<Feature> initStatsbeatFeatures() {
@@ -479,9 +461,24 @@ public final class AzureMonitorExporterBuilder {
             .build();
     }
 
-    private TelemetryItemExporter createTelemetryItemExporter() {
-        TelemetryPipeline pipeline = new TelemetryPipeline(builtHttpPipeline);
+    private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
+        return new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
+    }
 
+    private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties) {
+        statsbeatModule.start(
+            builtTelemetryItemExporter,
+            this::getStatsbeatConnectionString,
+            getConnectionString(configProperties)::getInstrumentationKey,
+            false,
+            configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)), // Statsbeat short interval
+            configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)), // Statsbeat long interval
+            false,
+            initStatsbeatFeatures());
+    }
+
+    private TelemetryItemExporter createTelemetryItemExporter(StatsbeatModule statsbeatModule) {
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule);
         File tempDir =
             TempDirs.getApplicationInsightsTempDir(
                 LOGGER,
@@ -491,16 +488,16 @@ public final class AzureMonitorExporterBuilder {
         if (tempDir != null) {
             telemetryItemExporter =
                 new TelemetryItemExporter(
-                    pipeline,
+                    telemetryPipeline,
                     new LocalStorageTelemetryPipelineListener(
                         50, // default to 50MB
                         TempDirs.getSubDir(tempDir, "telemetry"),
-                        pipeline,
+                        telemetryPipeline,
                         LocalStorageStats.noop(),
                         false));
         } else {
             telemetryItemExporter = new TelemetryItemExporter(
-                pipeline,
+                telemetryPipeline,
                 TelemetryPipelineListener.noop());
         }
         return telemetryItemExporter;

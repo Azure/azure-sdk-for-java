@@ -3,12 +3,10 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
+import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
@@ -37,6 +35,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.zip.GZIPInputStream;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -240,15 +240,45 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         validateFeatureStatsbeat(featureStatsbeat);
     }
 
+    @Test
+    public void testStatsbeatShutdownWhen400InvalidIKeyReturned() throws Exception {
+        String fakeBody = "{\"itemsReceived\":1,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"}]}";
+        MockedHttpClient mockedHttpClient =
+            new MockedHttpClient(
+                request -> {
+                    return Mono.just(new MockHttpResponse(request, 400, new HttpHeaders(), fakeBody.getBytes()));
+                });
+
+        // create OpenTelemetrySdk
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        AzureMonitorExportersEndToEndTest.CustomValidationPolicy customValidationPolicy = new AzureMonitorExportersEndToEndTest.CustomValidationPolicy(countDownLatch);
+        OpenTelemetrySdk openTelemetrySdk =
+            TestUtils.createOpenTelemetrySdk(
+                getHttpPipeline(customValidationPolicy, mockedHttpClient), getConfiguration(), STATSBEAT_CONNECTION_STRING);
+
+        generateMetric(openTelemetrySdk);
+
+        // close to flush
+        openTelemetrySdk.close();
+
+        Thread.sleep(1000);
+
+        // wait for export
+        countDownLatch.await(10, SECONDS);
+        assertThat(customValidationPolicy.url)
+            .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
+        assertThat(customValidationPolicy.actualTelemetryItems.stream().filter(item -> item.getName().equals("Statsbeat")).count()).isEqualTo(0);
+    }
+
     private static Map<String, String> getConfiguration() {
-        return Collections.singletonMap("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV);
+        return Collections.singletonMap("APPLICATIONINSIGHTS_CONNECTION_STRING", STATSBEAT_CONNECTION_STRING);
     }
 
     private static Map<String, String> getStatsbeatConfiguration() {
         Map<String, String> map = new HashMap<>(3);
         map.put("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV);
-        map.put("STATSBEAT_LONG_INTERVAL_SECONDS", "1");
-        map.put("STATSBEAT_SHORT_INTERVAL_SECONDS", "1");
+        map.put("STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME", "1");
+        map.put("STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME", "1");
         return map;
     }
 
@@ -400,6 +430,26 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             // dependency and not (de)serialize Instant as timestamps that it does by default
             objectMapper.findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             return objectMapper;
+        }
+    }
+
+    private static class MockedHttpClient implements HttpClient {
+
+        private final AtomicInteger count = new AtomicInteger();
+        private final Function<HttpRequest, Mono<HttpResponse>> handler;
+
+        MockedHttpClient(Function<HttpRequest, Mono<HttpResponse>> handler) {
+            this.handler = handler;
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest httpRequest) {
+            count.getAndIncrement();
+            return handler.apply(httpRequest);
+        }
+
+        int getCount() {
+            return count.get();
         }
     }
 }

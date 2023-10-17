@@ -77,9 +77,9 @@ javax.annotation:javax.annotation-api;1.3.2
 javax.json:javax.json-api;1.1.4
 javax.servlet:javax.servlet-api;4.0.1
 javax.websocket:javax.websocket-api;1.1
-org.apache.avro:avro;1.11.0
-org.apache.avro:avro-maven-plugin;1.11.0
-org.apache.commons:commons-compress;1.22
+org.apache.commons:commons-compress;1.24.0
+org.apache.avro:avro;1.11.3
+org.apache.avro:avro-maven-plugin;1.11.3
 org.apache.commons:commons-lang3;3.12.0
 org.apache.httpcomponents:httpclient;4.5.14
 org.apache.kafka:kafka-clients;3.1.2
@@ -183,7 +183,7 @@ org.springframework.cloud:spring-cloud-stream;3.2.9
 org.objenesis:objenesis;3.1
 cglib:cglib-nodep;3.2.7
 com.github.docker-java:docker-java;3.2.1
-com.github.tomakehurst:wiremock-jre8-standalone;2.35.0
+com.github.tomakehurst:wiremock-jre8-standalone;2.35.1
 com.jcraft:jsch;0.1.55
 com.microsoft.azure:adal4j;1.6.5
 com.microsoft.azure:azure;1.24.1
@@ -220,9 +220,9 @@ org.assertj:assertj-core;3.22.0
 org.bouncycastle:bcprov-jdk15to18;1.76
 org.bouncycastle:bcprov-jdk18on;1.76
 org.bouncycastle:bcpkix-lts8on;2.73.3
-org.eclipse.jetty:jetty-http;9.4.52.v20230823
-org.eclipse.jetty:jetty-server;9.4.52.v20230823
-org.eclipse.jetty:jetty-servlet;9.4.52.v20230823
+org.eclipse.jetty:jetty-http;9.4.53.v20231009
+org.eclipse.jetty:jetty-server;9.4.53.v20231009
+org.eclipse.jetty:jetty-servlet;9.4.53.v20231009
 org.eclipse.jgit:org.eclipse.jgit;4.5.7.201904151645-r
 org.glassfish:javax.json;1.1.4
 org.glassfish:jakarta.el;3.0.4

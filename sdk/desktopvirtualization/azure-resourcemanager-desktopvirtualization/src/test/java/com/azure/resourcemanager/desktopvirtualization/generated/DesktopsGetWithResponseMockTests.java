@@ -31,7 +31,7 @@ public final class DesktopsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectId\":\"iqtgdqoh\",\"description\":\"wsldrizetpwbr\",\"friendlyName\":\"llibphbqzmizak\",\"iconHash\":\"ankjpdnjzh\"},\"id\":\"oylhjlmuoyxprimr\",\"name\":\"opteecj\",\"type\":\"eislstvasylwx\"}";
+            "{\"properties\":{\"objectId\":\"hdrwjjkh\",\"description\":\"omacluzvxnqmhr\",\"friendlyName\":\"pd\",\"iconHash\":\"mkoisqcssf\"},\"id\":\"uifmc\",\"name\":\"ypobkdqzr\",\"type\":\"zsylollgt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class DesktopsGetWithResponseMockTests {
         Desktop response =
             manager
                 .desktops()
-                .getWithResponse("eafidltugsresm", "ssjhoiftxfkf", "egprhptil", com.azure.core.util.Context.NONE)
+                .getWithResponse("bta", "ypnyghshxc", "lhkgmnsghp", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("wsldrizetpwbr", response.description());
-        Assertions.assertEquals("llibphbqzmizak", response.friendlyName());
+        Assertions.assertEquals("omacluzvxnqmhr", response.description());
+        Assertions.assertEquals("pd", response.friendlyName());
     }
 }
