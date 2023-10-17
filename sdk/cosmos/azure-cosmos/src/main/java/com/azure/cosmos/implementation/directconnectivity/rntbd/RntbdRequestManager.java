@@ -1120,7 +1120,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             partitionKeyRangeId,
                             responseHeaders,
                             SubStatusCodes.SERVER_GENERATED_503);
-                    serviceUnavailableException.setIsBasedOn503ResponseFromService();
                     cause = serviceUnavailableException;
                     break;
 

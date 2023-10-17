@@ -141,7 +141,6 @@ public class FaultInjectionServerErrorResultInternal {
                     Integer.toString(HttpConstants.SubStatusCodes.SERVER_GENERATED_503));
                 ServiceUnavailableException serviceUnavailableException =
                     new ServiceUnavailableException(null, lsn, null, responseHeaders, HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
-                serviceUnavailableException.setIsBasedOn503ResponseFromService();
                 cosmosException = serviceUnavailableException;
                 break;
 

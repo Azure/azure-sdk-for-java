@@ -122,7 +122,13 @@ public class MaxRetryCountTests extends TestSuiteBase {
     private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerTimeoutGenerated410ForWrite =
         (statusCode, subStatusCode) -> {
             assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.GONE);
-            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_408);
+        };
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerTimeoutGenerated503ForWrite =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_408);
         };
 
     private final static BiConsumer<Integer, Integer> validateStatusCodeIsTimeout =
@@ -1033,7 +1039,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
                 sameDocumentIdJustCreated,
                 injectServerTimeoutErrorIntoAllRegions,
-                validateStatusCodeIsServerTimeoutGenerated410ForWrite, // when idempotent write is disabled, SDK will not retry for write operation, 408 will be bubbled up
+                validateStatusCodeIsServerTimeoutGenerated410ForWrite, // when idempotent write is disabled, SDK will not retry for write operation, 410 will be bubbled up
                 (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
                     assertThat(requestCount).isLessThanOrEqualTo(
                         expectedMaxNumberOfRetriesForTransientTimeout(
@@ -1056,7 +1062,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 true, // IdempotentWriteRetries is enabled
                 sameDocumentIdJustCreated,
                 injectServerTimeoutErrorIntoAllRegions,
-                validateStatusCodeIsTransitTimeoutGenerated503ForWrite, // when idempotent write is enabled, write will retry in reach region and bubble as 503/20001
+                validateStatusCodeIsServerTimeoutGenerated503ForWrite, // when idempotent write is enabled, write will retry in reach region and bubble as 503/21010
                 (TriConsumer<Integer, ConsistencyLevel, OperationType>)(requestCount, consistencyLevel, operationType) ->
                     assertThat(requestCount).isLessThanOrEqualTo(
                         expectedMaxNumberOfRetriesForTransientTimeout(

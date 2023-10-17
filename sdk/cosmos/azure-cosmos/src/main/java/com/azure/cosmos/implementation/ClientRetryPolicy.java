@@ -331,7 +331,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // 1. For any connection related errors, it will be covered under isWebExceptionRetriable -> which SDK will retry
         // 2. For any server returned 503s, SDK will retry
         // 3. For SDK generated 503, SDK will only retry if the subStatusCode is SERVER_GENERATED_410
-        if (!isReadRequest && !shouldRetryWriteOnServiceUnavailable(nonIdempotentWriteRetriesEnabled, isWebExceptionRetriable, cosmosException)) {
+        if (!isReadRequest
+            && !shouldRetryWriteOnServiceUnavailable(
+                nonIdempotentWriteRetriesEnabled,
+                isWebExceptionRetriable,
+                cosmosException)) {
             logger.warn(
                 "shouldRetryOnBackendServiceUnavailableAsync() Not retrying" +
                     " on write with non retriable exception and non server returned service unavailable. Retry count = {}",
@@ -416,7 +420,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         if (cosmosException instanceof ServiceUnavailableException) {
             ServiceUnavailableException serviceUnavailableException = (ServiceUnavailableException) cosmosException;
-            return serviceUnavailableException.isBasedOn503ResponseFromService()
+            return serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_503
                 || serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_410;
         }
 

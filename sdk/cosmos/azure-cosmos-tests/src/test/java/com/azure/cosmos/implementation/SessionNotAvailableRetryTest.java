@@ -90,25 +90,29 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
     @DataProvider(name = "preferredRegions")
     private Object[][] preferredRegions() {
         List<String> preferredLocations1 = new ArrayList<>();
+        List<String> regionalSuffix1 = new ArrayList<>();
         List<String> preferredLocations2 = new ArrayList<>();
+        List<String> regionalSuffix2 = new ArrayList<>();
         Iterator<DatabaseAccountLocation> locationIterator = this.databaseAccount.getReadableLocations().iterator();
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             preferredLocations1.add(accountLocation.getName());
+            regionalSuffix1.add(getRegionalSuffix(accountLocation.getEndpoint(), TestConfigurations.HOST));
         }
 
         //putting preferences in opposite direction than what came from database account api
         for (int i = preferredLocations1.size() - 1; i >= 0; i--) {
             preferredLocations2.add(preferredLocations1.get(i));
+            regionalSuffix2.add(regionalSuffix1.get(i));
         }
 
         return new Object[][]{
-            new Object[]{preferredLocations1, OperationType.Read},
-            new Object[]{preferredLocations2, OperationType.Read},
-            new Object[]{preferredLocations1, OperationType.Query},
-            new Object[]{preferredLocations2, OperationType.Query},
-            new Object[]{preferredLocations1, OperationType.Create},
-            new Object[]{preferredLocations2, OperationType.Create},
+            new Object[]{preferredLocations1, regionalSuffix1, OperationType.Read},
+            new Object[]{preferredLocations2, regionalSuffix2, OperationType.Read},
+            new Object[]{preferredLocations1, regionalSuffix1, OperationType.Query},
+            new Object[]{preferredLocations2, regionalSuffix2, OperationType.Query},
+            new Object[]{preferredLocations1, regionalSuffix1, OperationType.Create},
+            new Object[]{preferredLocations2, regionalSuffix2, OperationType.Create},
         };
     }
 
@@ -124,13 +128,14 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
     @Test(groups = {"multi-master"}, dataProvider = "preferredRegions", timeOut = TIMEOUT)
     public void sessionNotAvailableRetryMultiMaster(
         List<String> preferredLocations,
+        List<String> regionalSuffix,
         OperationType operationType) {
 
         List<String> preferredLocationsWithLowerCase =
             preferredLocations.stream().map(location -> location.toLowerCase(Locale.ROOT)).collect(Collectors.toList());
         CosmosAsyncClient preferredListClient = null;
         // inject 404/1002 into all regions
-        FaultInjectionRule sessionNotAvailableRule = new FaultInjectionRuleBuilder("sessionNotAvailableRule-" + UUID.randomUUID())
+        FaultInjectionRule sessionNotAvailableRule = new FaultInjectionRuleBuilder("sessionNotAvailableRuleMultiMaster-" + UUID.randomUUID())
             .condition(new FaultInjectionConditionBuilder().build())
             .result(
                 FaultInjectionResultBuilders

@@ -15,7 +15,6 @@ import java.util.Map;
  * The type Service unavailable exception.
  */
 public class ServiceUnavailableException extends CosmosException {
-    private boolean basedOn503ResponseFromService = false;
 
     ServiceUnavailableException() {
         this(RMResources.ServiceUnavailable, HttpConstants.SubStatusCodes.UNKNOWN);
@@ -89,14 +88,6 @@ public class ServiceUnavailableException extends CosmosException {
             HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
             requestUriString);
         setSubStatus(subStatusCode);
-    }
-
-    public void setIsBasedOn503ResponseFromService() {
-        this.basedOn503ResponseFromService = true;
-    }
-
-    public boolean isBasedOn503ResponseFromService() {
-        return this.basedOn503ResponseFromService;
     }
 
     private void setSubStatus(int subStatusCode) {
