@@ -53,6 +53,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,29 +91,25 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
     @DataProvider(name = "preferredRegions")
     private Object[][] preferredRegions() {
         List<String> preferredLocations1 = new ArrayList<>();
-        List<String> regionalSuffix1 = new ArrayList<>();
         List<String> preferredLocations2 = new ArrayList<>();
-        List<String> regionalSuffix2 = new ArrayList<>();
         Iterator<DatabaseAccountLocation> locationIterator = this.databaseAccount.getReadableLocations().iterator();
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             preferredLocations1.add(accountLocation.getName());
-            regionalSuffix1.add(getRegionalSuffix(accountLocation.getEndpoint(), TestConfigurations.HOST));
         }
 
         //putting preferences in opposite direction than what came from database account api
         for (int i = preferredLocations1.size() - 1; i >= 0; i--) {
             preferredLocations2.add(preferredLocations1.get(i));
-            regionalSuffix2.add(regionalSuffix1.get(i));
         }
 
         return new Object[][]{
-            new Object[]{preferredLocations1, regionalSuffix1, OperationType.Read},
-            new Object[]{preferredLocations2, regionalSuffix2, OperationType.Read},
-            new Object[]{preferredLocations1, regionalSuffix1, OperationType.Query},
-            new Object[]{preferredLocations2, regionalSuffix2, OperationType.Query},
-            new Object[]{preferredLocations1, regionalSuffix1, OperationType.Create},
-            new Object[]{preferredLocations2, regionalSuffix2, OperationType.Create},
+            new Object[]{preferredLocations1, OperationType.Read},
+            new Object[]{preferredLocations2, OperationType.Read},
+            new Object[]{preferredLocations1, OperationType.Query},
+            new Object[]{preferredLocations2, OperationType.Query},
+            new Object[]{preferredLocations1, OperationType.Create},
+            new Object[]{preferredLocations2, OperationType.Create},
         };
     }
 
@@ -128,7 +125,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
     @Test(groups = {"multi-master"}, dataProvider = "preferredRegions", timeOut = TIMEOUT)
     public void sessionNotAvailableRetryMultiMaster(
         List<String> preferredLocations,
-        List<String> regionalSuffix,
         OperationType operationType) {
 
         List<String> preferredLocationsWithLowerCase =
@@ -202,9 +198,23 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "preferredRegions", timeOut = TIMEOUT)
-    public void sessionNotAvailableRetrySingleMaster(List<String> preferredLocations, List<String> regionalSuffix,
-                                                     OperationType operationType) throws Exception {
+    public void sessionNotAvailableRetrySingleMaster(
+        List<String> preferredLocations,
+        OperationType operationType) {
+
         CosmosAsyncClient preferredListClient = null;
+
+        List<String> preferredLocationsWithLowerCase =
+            preferredLocations.stream().map(location -> location.toLowerCase(Locale.ROOT)).collect(Collectors.toList());
+        // inject 404/1002 into all regions
+        FaultInjectionRule sessionNotAvailableRule = new FaultInjectionRuleBuilder("sessionNotAvailableRuleSingleMaster-" + UUID.randomUUID())
+            .condition(new FaultInjectionConditionBuilder().build())
+            .result(
+                FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .build())
+            .build();
+
         try {
             preferredListClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -214,42 +224,10 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 .preferredRegions(preferredLocations)
                 .buildAsyncClient();
 
-            AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(preferredListClient);
-            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
-            ReplicatedResourceClient replicatedResourceClient =
-                ReflectionUtils.getReplicatedResourceClient(storeClient);
-            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
-            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
-            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
-
-            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-
-            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest(globalEndpointManager);
-            RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
-            ReflectionUtils.setTransportClient(storeReader, spyRntbdTransportClient);
-            ReflectionUtils.setTransportClient(consistencyWriter, spyRntbdTransportClient);
-
             cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(sessionNotAvailableRule)).block();
 
             PartitionKey partitionKey = new PartitionKey("Test");
-            List<String> uris = new ArrayList<>();
-            String masterOrHubRegionSuffix =
-                getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
-                    TestConfigurations.HOST);
-            doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
-                RxDocumentServiceRequest serviceRequest = invocationOnMock.getArgument(1,
-                    RxDocumentServiceRequest.class);
-                uris.add(serviceRequest.requestContext.locationEndpointToRoute.toString());
-                CosmosException cosmosException = BridgeInternal.createCosmosException(404);
-                @SuppressWarnings("unchecked")
-                Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
-                    "responseHeaders", true);
-                responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
-                FieldUtils.writeField(cosmosException, "responseHeaders", responseHeaders, true);
-                return Mono.error(cosmosException);
-            }).when(spyRntbdTransportClient).invokeStoreAsync(Mockito.any(Uri.class),
-                Mockito.any(RxDocumentServiceRequest.class));
             try {
                 if (operationType.equals(OperationType.Read)) {
                     cosmosAsyncContainer.readItem("TestId", partitionKey, TestItem.class).block();
@@ -268,69 +246,48 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-                Iterator<String> regionContactedIterator = ex.getDiagnostics().getContactedRegionNames().iterator();
-                if (operationType.isWriteOperation() || regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
+                assertThat(ex.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+
+                Map<String, String> writeRegionMap = this.getRegionMap(databaseAccount, true);
+                assertThat(writeRegionMap.size()).isEqualTo(1);
+
+                List<String> writeRegionList =
+                    writeRegionMap
+                        .keySet()
+                        .stream()
+                        .map(regionName -> regionName.toLowerCase(Locale.ROOT))
+                        .collect(Collectors.toList());
+
+                // for single master, when retrying 404/1002, it will retry on the write region
+                // so for write operation or if the first preferred region is the same as write region, the contracted region count should 1
+                if (operationType.isWriteOperation()
+                    || preferredLocationsWithLowerCase.get(0).equalsIgnoreCase(writeRegionList.get(0))) {
                     assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
-                    for (String regionName :
-                        getAvailableRegionNames(rxDocumentClient, true)) {
-                        assertThat(regionName.toLowerCase()).isEqualTo(regionContactedIterator.next());
-                    }
                 } else {
-                    assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(preferredLocations.size());
-                    for (String regionName :
-                        getAvailableRegionNames(rxDocumentClient, false)) {
-                        assertThat(regionName).isEqualTo(regionContactedIterator.next());
+                    assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(2);
+
+                    // validate the contacted region sequence
+                    List<String> contactedRegions = new ArrayList<>();
+                    String previousContactedRegion = StringUtils.EMPTY;
+                    ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(ex.getDiagnostics());
+                    for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : clientSideRequestStatistics.getResponseStatisticsList()) {
+                        if (!storeResponseStatistics.getRegionName().equalsIgnoreCase(previousContactedRegion)) {
+                            contactedRegions.add(storeResponseStatistics.getRegionName().toLowerCase(Locale.ROOT));
+                            previousContactedRegion = storeResponseStatistics.getRegionName().toLowerCase(Locale.ROOT);
+                        }
                     }
+
+                    List<String> expectedContactedRegions = new ArrayList<>();
+                    expectedContactedRegions.add(preferredLocationsWithLowerCase.get(0));
+                    expectedContactedRegions.addAll(writeRegionList);
+                    // SDK will do one more round retry in first preferred region due to RenameCollectionAwareClientRetryPolicy
+                    expectedContactedRegions.add(preferredLocationsWithLowerCase.get(0));
+                    assertThat(contactedRegions.size()).isEqualTo(expectedContactedRegions.size());
+                    assertThat(contactedRegions.containsAll(expectedContactedRegions)).isTrue();
                 }
-            }
-
-            HashSet<String> uniqueHost = new HashSet<>();
-            for (String uri : uris) {
-                uniqueHost.add(uri);
-            }
-
-            // First regional retries in originating region, then retrying in master/hub region and 1 retry at the
-            // last from
-            // RenameCollectionAwareClientRetryPolicy after clearing session token
-            int numberOfRegionRetried = 3;
-
-            // Calculating approx avg number of retries in each region
-            int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
-
-            int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
-
-            if (operationType.equals(OperationType.Create)) {
-                assertThat(uniqueHost.size()).isEqualTo(1); // always goes to master region
-
-                //First region retries should be in masterOrHubRegionSuffix
-                assertThat(uris.get(totalRetries / 2)).contains(masterOrHubRegionSuffix);
-
-                // Second region retries should be in masterOrHubRegionSuffix
-                assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
-                totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
-
-                //Last region retries should be in masterOrHubRegionSuffix
-                assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
-            } else {
-                if (regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
-                    //Verify we are retrying only in master region
-                    assertThat(uniqueHost.size()).isEqualTo(1);
-                } else {
-                    //Verify we are retrying in first preferred region and master region
-                    assertThat(uniqueHost.size()).isEqualTo(2);
-                }
-
-                //First region retries should be in first preferred region
-                assertThat(uris.get(totalRetries / 2)).contains(regionalSuffix.get(0));
-
-                // Second region retries should be in masterOrHubRegion
-                assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
-                totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
-
-                //Last region retries should be in first preferred region
-                assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
             }
         } finally {
+            sessionNotAvailableRule.disable();
             safeClose(preferredListClient);
         }
     }
@@ -439,28 +396,17 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         }
     }
 
-    private String getRegionalSuffix(String str1, String str2) {
-        int initialIndex = findInitialIndex(str1, str2);
-        int indexFromLast = findIndexFromLast(str1, str2);
-        return str1.substring(initialIndex + 1, str1.length() - indexFromLast);
-    }
+    private Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
+        Iterator<DatabaseAccountLocation> locationIterator =
+            writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+        Map<String, String> regionMap = new ConcurrentHashMap<>();
 
-    private int findInitialIndex(String str1, String str2) {
-        int counter = 0;
-        while (str1.charAt(counter) == str2.charAt(counter)) {
-            counter++;
+        while (locationIterator.hasNext()) {
+            DatabaseAccountLocation accountLocation = locationIterator.next();
+            regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
         }
-        return counter;
-    }
 
-    private int findIndexFromLast(String str1, String str2) {
-        int length1 = str1.length();
-        int length2 = str2.length();
-        int counter = 0;
-        while (str1.charAt(length1 - 1 - counter) == str2.charAt(length2 - 1 - counter)) {
-            counter++;
-        }
-        return counter;
+        return regionMap;
     }
 
     private Set<String> getAvailableRegionNames(RxDocumentClientImpl rxDocumentClient, boolean isWriteRegion) throws Exception {
