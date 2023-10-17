@@ -121,8 +121,7 @@ public class ConsistencyWriter {
                 () -> this.writePrivateAsync(entity, timeout, forceRefresh),
                 new SessionTokenMismatchRetryPolicy(
                     BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics),
-                    sessionRetryOptions,
-                    true))
+                    sessionRetryOptions))
             .doOnEach(
             arg -> {
                 try {

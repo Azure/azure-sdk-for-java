@@ -1571,7 +1571,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     assertThat(
                         firstRequestStartInSecondRegion
                             .minus(
-                                Configs.DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES.minus(Duration.ofMillis(5)))
+                                Configs.getMinRetryTimeInLocalRegionWhenRemoteRegionPreferred().minus(Duration.ofMillis(5)))
                             .isAfter(firstRequestStart)).isEqualTo(true);
 
                     validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover.accept(ctx);
@@ -1668,7 +1668,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     ClientSideRequestStatistics.StoreResponseStatistics[] storeResponses =
                         clientStats[0].getResponseStatisticsList().toArray(
                             new ClientSideRequestStatistics.StoreResponseStatistics[0]);
-                    assertThat(storeResponses.length).isGreaterThanOrEqualTo(2);
+
+                    // retry should not have been issued yet. With just single retry
+                    // the back-off time will be expanded to the minInRegionRetryWaitTime
+                    assertThat(storeResponses.length).isEqualTo(1);
 
                     validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion.accept(ctx);
                 })
@@ -1721,7 +1724,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Duration endToEndTimeout,
         ThresholdBasedAvailabilityStrategy availabilityStrategy,
         CosmosRegionSwitchHint regionSwitchHint,
-        Duration customMinRetryTimeInLocalRegionForWrites,
+        Duration customMinRetryTimeInLocalRegion,
         Boolean nonIdempotentWriteRetriesEnabled,
         FaultInjectionOperationType faultInjectionOperationType,
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> actionAfterInitialCreation,
@@ -1734,7 +1737,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             endToEndTimeout,
             availabilityStrategy,
             regionSwitchHint,
-            customMinRetryTimeInLocalRegionForWrites,
+            customMinRetryTimeInLocalRegion,
             nonIdempotentWriteRetriesEnabled,
             ArrayUtils.toArray(faultInjectionOperationType),
             actionAfterInitialCreation,
@@ -4178,7 +4181,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             .regionSwitchHint(effectiveRegionSwitchHint);
 
         if (customMinRetryTimeInLocalRegionForWrites != null) {
-            retryOptionsBuilder.minRetryTimeInLocalRegionForWriteOperations(customMinRetryTimeInLocalRegionForWrites);
+            retryOptionsBuilder.minRetryTimeInLocalRegion(customMinRetryTimeInLocalRegionForWrites);
         }
 
         CosmosClientBuilder builder = new CosmosClientBuilder()

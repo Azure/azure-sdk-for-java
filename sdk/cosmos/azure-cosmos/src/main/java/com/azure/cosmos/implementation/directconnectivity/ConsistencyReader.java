@@ -237,8 +237,7 @@ public class ConsistencyReader {
                         () -> this.readSessionAsync(entity, desiredReadMode),
                         new SessionTokenMismatchRetryPolicy(
                             BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics),
-                            sessionRetryOptions,
-                            false));
+                            sessionRetryOptions));
                 } else {
                     return this.readAnyAsync(entity, desiredReadMode);
                 }

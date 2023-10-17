@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
 import java.time.Duration;
@@ -15,14 +16,19 @@ import java.time.Duration;
 public final class SessionRetryOptions {
 
     private final CosmosRegionSwitchHint regionSwitchHint;
-    private final Duration minInRegionRetryTimeForWriteOperations;
+    private final Duration minInRegionRetryTime;
+
+    private final int maxInRegionRetryCount;
 
     /**
      * Instantiates {@link SessionRetryOptions}
      * */
-    SessionRetryOptions(CosmosRegionSwitchHint regionSwitchHint, Duration minInRegionRetryTimeForWriteOperations) {
+    SessionRetryOptions(CosmosRegionSwitchHint regionSwitchHint,
+                        Duration minInRegionRetryTime,
+                        int maxInRegionRetryCount) {
         this.regionSwitchHint = regionSwitchHint;
-        this.minInRegionRetryTimeForWriteOperations = minInRegionRetryTimeForWriteOperations;
+        this.minInRegionRetryTime = minInRegionRetryTime ;
+        this.maxInRegionRetryCount = maxInRegionRetryCount;
     }
 
     static void initialize() {
@@ -35,8 +41,13 @@ public final class SessionRetryOptions {
                 }
 
                 @Override
-                public Duration getMinInRegionRetryTimeForWriteOperations(SessionRetryOptions sessionRetryOptions) {
-                    return sessionRetryOptions.minInRegionRetryTimeForWriteOperations;
+                public Duration getMinInRegionRetryTime(SessionRetryOptions sessionRetryOptions) {
+                    return sessionRetryOptions.minInRegionRetryTime;
+                }
+
+                @Override
+                public int getMaxInRegionRetryCount(SessionRetryOptions sessionRetryOptions) {
+                    return sessionRetryOptions.maxInRegionRetryCount;
                 }
             });
     }

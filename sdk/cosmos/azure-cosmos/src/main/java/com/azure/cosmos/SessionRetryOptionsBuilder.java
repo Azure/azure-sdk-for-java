@@ -17,7 +17,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public final class SessionRetryOptionsBuilder {
 
     private CosmosRegionSwitchHint regionSwitchHint;
-    private Duration minInRegionRetryTimeForWriteOperations = Configs.DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES;
+    private Duration minInRegionRetryTime = Configs.getMinRetryTimeInLocalRegionWhenRemoteRegionPreferred();
+
+    private int maxInRegionRetryCount = Configs.getMaxRetriesInLocalRegionWhenRemoteRegionPreferred();
 
     /**
      * Sets the {@link CosmosRegionSwitchHint} which specifies for
@@ -38,13 +40,27 @@ public final class SessionRetryOptionsBuilder {
     }
 
     /**
-     * Sets the minimum retry time for 404/1002 retries within each region for write operations. The minimum value
-     * is 100ms - this minimum is enforced to provide a way for the local region to catch-up on replication lag.
-     * @param minRetryTime the min retry time to be used with-in each region for write operations
+     * Sets the minimum retry time for 404/1002 retries within each region for read and write operations. The minimum
+     *  value is 100ms - this minimum is enforced to provide a way for the local region to catch-up on replication lag.
+     *  The default value is 500ms - as a recommendation ensure that this value is higher than the steady-state
+     *  replication latency between the regions you chose.
+     * @param minRetryTime the min retry time to be used with-in each region
      * @return This instance of {@link SessionRetryOptionsBuilder}
      */
-    public SessionRetryOptionsBuilder minRetryTimeInLocalRegionForWriteOperations(Duration minRetryTime) {
-        this.minInRegionRetryTimeForWriteOperations = minRetryTime;
+    public SessionRetryOptionsBuilder minRetryTimeInLocalRegion(Duration minRetryTime) {
+        this.minInRegionRetryTime = minRetryTime;
+        return this;
+    }
+
+    /**
+     * Sets the maximum number of retries within each region for read and write operations. The minimum
+     *  value is 1 - the backoff time for the last in-region retry will ensure that the total retry time within the
+     *  region is at least {@link this.minRetryTimeInLocalRegion}
+     * @param maxInRegionRetryCount the max. number of retries with-in each region
+     * @return This instance of {@link SessionRetryOptionsBuilder}
+     */
+    public SessionRetryOptionsBuilder maxInRegionRetryCount(int maxInRegionRetryCount) {
+        this.maxInRegionRetryCount = maxInRegionRetryCount;
         return this;
     }
 
@@ -58,18 +74,24 @@ public final class SessionRetryOptionsBuilder {
 
         if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
             checkArgument(
-                minInRegionRetryTimeForWriteOperations != null,
+                minInRegionRetryTime != null,
                 "Argument 'minInRegionRetryTimeForWriteOperations' must not be null when 'regionSwitchHint' "
                     + "is 'REMOTE_REGION_PREFERRED'.");
 
             checkArgument(
-                minInRegionRetryTimeForWriteOperations
-                    .compareTo(Configs.MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES) >= 0,
-                "Argument 'minInRegionRetryTimeForWriteOperations' must have at least a value of '"
-                    + Configs.MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES.toString()
+                minInRegionRetryTime
+                    .compareTo(Duration.ofMillis(Configs.MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS)) >= 0,
+                "Argument 'minInRegionRetryTime' must have at least a value of '"
+                    + Duration.ofMillis(Configs.MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS)
+                    + "' when 'regionSwitchHint' is 'REMOTE_REGION_PREFERRED'.");
+
+            checkArgument(
+                maxInRegionRetryCount >= Configs.MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED,
+                "Argument 'maxInRegionRetryCount' must have at least a value of '"
+                    + Configs.MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED
                     + "' when 'regionSwitchHint' is 'REMOTE_REGION_PREFERRED'.");
         }
 
-        return new SessionRetryOptions(regionSwitchHint, minInRegionRetryTimeForWriteOperations);
+        return new SessionRetryOptions(regionSwitchHint, minInRegionRetryTime, maxInRegionRetryCount);
     }
 }

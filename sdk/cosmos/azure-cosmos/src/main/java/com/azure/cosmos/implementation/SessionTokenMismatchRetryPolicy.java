@@ -21,7 +21,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             .CosmosSessionRetryOptionsHelper
             .getCosmosSessionRetryOptionsAccessor();
     private final static Logger LOGGER = LoggerFactory.getLogger(SessionTokenMismatchRetryPolicy.class);
-    private static final int BACKOFF_MULTIPLIER = 2;
+    private static final int BACKOFF_MULTIPLIER = 5;
     private final Duration maximumBackoff;
     private final TimeoutHelper waitTimeTimeoutHelper;
     private final AtomicInteger retryCount;
@@ -29,22 +29,20 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private RetryContext retryContext;
     private final AtomicInteger maxRetryAttemptsInCurrentRegion;
     private final SessionRetryOptions sessionRetryOptions;
-    private final boolean isWriteOperation;
 
     public SessionTokenMismatchRetryPolicy(
         RetryContext retryContext,
-        SessionRetryOptions sessionRetryOptions,
-        boolean isWriteOperation) {
+        SessionRetryOptions sessionRetryOptions) {
 
         this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs()));
         this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
-        this.maxRetryAttemptsInCurrentRegion = new AtomicInteger(Configs.getMaxRetriesInLocalRegionWhenRemoteRegionPreferred());
+        this.maxRetryAttemptsInCurrentRegion =
+            new AtomicInteger(sessionRetryOptionsAccessor.getMaxInRegionRetryCount(sessionRetryOptions));
         this.retryContext = retryContext;
         this.sessionRetryOptions = sessionRetryOptions;
-        this.isWriteOperation = isWriteOperation;
     }
 
     @Override
@@ -94,7 +92,8 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         Duration effectiveBackoff = Duration.ZERO;
 
         // Don't penalize first retry with delay
-        if (this.retryCount.getAndIncrement() > 0) {
+        int attempt = this.retryCount.getAndIncrement();
+        if (attempt > 0) {
 
             // Get the backoff time by selecting the smallest value between the remaining time and
             // the current back off time
@@ -108,10 +107,24 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
                     this.maximumBackoff);
         }
 
+        if (sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptions) ==
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
+            && attempt >= (this.maxRetryAttemptsInCurrentRegion.get() - 1)) {
+
+            Duration remainingMinRetryTimeInLocalRegion = this.waitTimeTimeoutHelper.getRemainingTime(
+                sessionRetryOptionsAccessor.getMinInRegionRetryTime(this.sessionRetryOptions)
+            );
+
+            if (remainingMinRetryTimeInLocalRegion.compareTo(effectiveBackoff) > 0) {
+                effectiveBackoff = remainingMinRetryTimeInLocalRegion;
+            }
+        }
+
         LOGGER.debug(
             "SessionTokenMismatchRetryPolicy will retry. Retry count = {}.  Backoff time = {} ms",
             this.retryCount,
             effectiveBackoff.toMillis());
+
 
         return Mono.just(ShouldRetryResult.retryAfter(effectiveBackoff));
     }
@@ -142,19 +155,11 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             return true;
         }
 
-        // For write operations we need to retry at least MinInRegionRetryTimeForWriteOperations
-        // to allow the region to catch up on replication
-        if (this.isWriteOperation  && !this.waitTimeTimeoutHelper.isElapsed(
-            sessionRetryOptionsAccessor.getMinInRegionRetryTimeForWriteOperations(sessionRetryOptions))) {
-
-            return true;
-        }
-
         // SessionTokenMismatchRetryPolicy is invoked after 1 attempt on a region
         // sessionTokenMismatchRetryAttempts increments only after shouldRetry triggers
         // another attempt on the same region
         // hence to curb the retry attempts on a region,
         // compare sessionTokenMismatchRetryAttempts with max retry attempts allowed on the region - 1
-        return sessionTokenMismatchRetryAttempts < (this.maxRetryAttemptsInCurrentRegion.get() - 1);
+        return sessionTokenMismatchRetryAttempts <= (this.maxRetryAttemptsInCurrentRegion.get() - 1);
     }
 }
