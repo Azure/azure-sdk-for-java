@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.serializer.http;
+package com.generic.core.implementation.http;
 
 import com.generic.core.http.HttpPipeline;
 import com.generic.core.http.models.HttpPipelineCallContext;
