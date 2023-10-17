@@ -52,7 +52,7 @@ public class FeatureManager {
     private final TargetingContextAccessor contextAccessor;
 
     private final TargetingEvaluationOptions evaluationOptions;
-    
+
     private final ObjectProvider<VariantProperties> propertiesProvider;
 
     /**
@@ -167,18 +167,10 @@ public class FeatureManager {
             return Mono.just(false);
         }
 
-        // All Filters must be true
-        if (featureItem.getRequirementType().equals("All")) {
-            return Flux.merge(results).reduce((a, b) -> a && b).single();
-        }
-
-        // Any Filter must be true
-        return Flux.merge(results).reduce((a, b) -> a || b).single();
+        return evaulateFeatureFlagResults(featureItem, results);
     }
 
     private Mono<Variant> generateVariant(String featureName, Object featureContext) {
-
-        VariantAssignment variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions, propertiesProvider);
 
         if (!StringUtils.hasText(featureName)) {
             throw new IllegalArgumentException("Feature Variant name can not be empty or null.");
@@ -190,12 +182,16 @@ public class FeatureManager {
             throw new FeatureManagementException("The Feature " + featureName + " can not be found.");
         }
 
-        validateVariant(feature, featureName);
+        validateVariant(feature);
+
+        VariantAssignment variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions,
+            propertiesProvider);
+
+        String defaultDisabledVariant = feature.getAllocation().getDefaultWhenDisabled();
 
         // Disabled?
-        if (!feature.getEvaluate() && StringUtils.hasText(feature.getAllocation().getDefautlWhenDisabled())) {
-            return variantAssignment.getVariant(feature.getVariants().values(),
-                feature.getAllocation().getDefautlWhenDisabled()).single();
+        if (!feature.getEvaluate() && StringUtils.hasText(defaultDisabledVariant)) {
+            return variantAssignment.getVariant(feature.getVariants().values(), defaultDisabledVariant).single();
         } else if (!feature.getEvaluate()) {
             return Mono.justOrEmpty(null);
         } else if (feature.getEnabledFor().size() == 0) {
@@ -210,30 +206,28 @@ public class FeatureManager {
             }
         }
 
-        Mono<Boolean> isEnabled;
-
-        // All Filters must be true
-        if (ALL_REQUIREMENT_TYPE.equals(feature.getRequirementType())) {
-            isEnabled = Flux.merge(results).reduce((a, b) -> a && b).single();
-        } else {
-            // Any Filter must be true
-            isEnabled = Flux.merge(results).reduce((a, b) -> a || b).single();
-        }
-
-        return isEnabled.flatMap(enabled -> {
-            if (!enabled && StringUtils.hasText(feature.getAllocation().getDefautlWhenDisabled())) {
-                return variantAssignment.getVariant(feature.getVariants().values(),
-                    feature.getAllocation().getDefautlWhenDisabled()).single();
+        return evaulateFeatureFlagResults(feature, results).flatMap(enabled -> {
+            if (!enabled && StringUtils.hasText(defaultDisabledVariant)) {
+                return variantAssignment.getVariant(feature.getVariants().values(), defaultDisabledVariant).single();
             } else if (!enabled) {
                 return Mono.justOrEmpty(null);
             }
 
             return variantAssignment.assignVariant(feature.getAllocation(), feature.getVariants().values());
         });
-
+    }
+    
+    private Mono<Boolean> evaulateFeatureFlagResults(Feature feature, List<Mono<Boolean>> results) {
+        // All Filters must be true
+        if (ALL_REQUIREMENT_TYPE.equals(feature.getRequirementType())) {
+            return Flux.merge(results).reduce((a, b) -> a && b).single();
+        }
+        // Any Filter must be true
+        return Flux.merge(results).reduce((a, b) -> a || b).single();
+        
     }
 
-    private void validateVariant(Feature feature, String featureName) {
+    private void validateVariant(Feature feature) {
         if (feature.getVariants() == null || feature.getVariants().size() == 0) {
             throw new FeatureManagementException("The feature " + feature.getKey() + " has no assigned Variants.");
         }
@@ -245,7 +239,7 @@ public class FeatureManager {
 
             if (variant.getConfigurationValue() == null && variant.getConfigurationReference() == null) {
                 throw new FeatureManagementException(
-                    "The feature " + feature.getKey() + " neededs a Configuration Value or Configuration Reference.");
+                    "The feature " + feature.getKey() + " needs a Configuration Value or Configuration Reference.");
             }
         }
     }

@@ -15,7 +15,7 @@ public class Allocation {
     private String defaultWhenEnabled;
 
     @JsonProperty("default-when-disabled")
-    private String defautlWhenDisabled;
+    private String defaultWhenDisabled;
 
     private Map<String, UserAllocation> users = new HashMap<>();
 
@@ -40,17 +40,17 @@ public class Allocation {
     }
 
     /**
-     * @return the defautlWhenDisabled
+     * @return the defaultWhenDisabled
      */
-    public String getDefautlWhenDisabled() {
-        return defautlWhenDisabled;
+    public String getDefaultWhenDisabled() {
+        return defaultWhenDisabled;
     }
 
     /**
-     * @param defautlWhenDisabled the defautlWhenDisabled to set
+     * @param defaultWhenDisabled the defaultWhenDisabled to set
      */
-    public void setDefaultWhenDisabled(String defautlWhenDisabled) {
-        this.defautlWhenDisabled = defautlWhenDisabled;
+    public void setDefaultWhenDisabled(String defaultWhenDisabled) {
+        this.defaultWhenDisabled = defaultWhenDisabled;
     }
 
     /**

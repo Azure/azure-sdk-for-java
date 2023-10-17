@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,9 +20,8 @@ import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOp
  */
 @Configuration
 @EnableConfigurationProperties({ FeatureManagementConfigProperties.class, FeatureManagementProperties.class })
-class FeatureManagementConfiguration {
+class FeatureManagementConfiguration implements ApplicationContextAware {
 
-    @Autowired
     private transient ApplicationContext appContext;
 
     /**
@@ -33,20 +33,23 @@ class FeatureManagementConfiguration {
      * @return FeatureManager
      */
     @Bean
-    FeatureManager featureManager(ApplicationContext context,
-        FeatureManagementProperties featureManagementConfigurations, FeatureManagementConfigProperties properties,
-        ObjectProvider<VariantProperties> propertiesProvider) {
+    FeatureManager featureManager(FeatureManagementProperties featureManagementConfigurations,
+        FeatureManagementConfigProperties properties,
+        ObjectProvider<VariantProperties> propertiesProvider,
+        ObjectProvider<TargetingContextAccessor> contextAccessorProvider,
+        ObjectProvider<TargetingEvaluationOptions> evaluationOptionsProvider) {
+        
+        
 
-        TargetingContextAccessor contextAccessor = appContext.getBeanProvider(TargetingContextAccessor.class)
-            .getIfAvailable();
-        TargetingEvaluationOptions evaluationOptions = appContext.getBeanProvider(TargetingEvaluationOptions.class)
-            .getIfAvailable();
+        TargetingContextAccessor contextAccessor = contextAccessorProvider.getIfAvailable();
+        TargetingEvaluationOptions evaluationOptions = evaluationOptionsProvider.getIfAvailable(() -> new TargetingEvaluationOptions());
 
-        if (evaluationOptions == null) {
-            evaluationOptions = new TargetingEvaluationOptions();
-        }
-
-        return new FeatureManager(context, featureManagementConfigurations, properties, contextAccessor,
+        return new FeatureManager(appContext, featureManagementConfigurations, properties, contextAccessor,
             evaluationOptions, propertiesProvider);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.appContext = applicationContext;
     }
 }
