@@ -13,17 +13,17 @@ public final class SendMessageTests {
     public void testDeserialize() throws Exception {
         SendMessage model =
             BinaryData
-                .fromString("{\"messageTitle\":\"iakp\",\"messageBody\":\"qqmtedltmmji\"}")
+                .fromString("{\"messageTitle\":\"srdvetn\",\"messageBody\":\"dtutnwldu\"}")
                 .toObject(SendMessage.class);
-        Assertions.assertEquals("iakp", model.messageTitle());
-        Assertions.assertEquals("qqmtedltmmji", model.messageBody());
+        Assertions.assertEquals("srdvetn", model.messageTitle());
+        Assertions.assertEquals("dtutnwldu", model.messageBody());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SendMessage model = new SendMessage().withMessageTitle("iakp").withMessageBody("qqmtedltmmji");
+        SendMessage model = new SendMessage().withMessageTitle("srdvetn").withMessageBody("dtutnwldu");
         model = BinaryData.fromObject(model).toObject(SendMessage.class);
-        Assertions.assertEquals("iakp", model.messageTitle());
-        Assertions.assertEquals("qqmtedltmmji", model.messageBody());
+        Assertions.assertEquals("srdvetn", model.messageTitle());
+        Assertions.assertEquals("dtutnwldu", model.messageBody());
     }
 }

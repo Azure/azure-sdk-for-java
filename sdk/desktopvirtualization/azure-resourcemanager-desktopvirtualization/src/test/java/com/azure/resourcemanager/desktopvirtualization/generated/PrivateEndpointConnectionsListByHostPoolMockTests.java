@@ -9,12 +9,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager;
-import com.azure.resourcemanager.desktopvirtualization.models.SessionHost;
-import com.azure.resourcemanager.desktopvirtualization.models.Status;
-import com.azure.resourcemanager.desktopvirtualization.models.UpdateState;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnectionWithSystemData;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointServiceConnectionStatus;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,15 +25,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class SessionHostsGetWithResponseMockTests {
+public final class PrivateEndpointConnectionsListByHostPoolMockTests {
     @Test
-    public void testGetWithResponse() throws Exception {
+    public void testListByHostPool() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectId\":\"k\",\"lastHeartBeat\":\"2021-03-23T11:52:12Z\",\"sessions\":1942149440,\"agentVersion\":\"hlb\",\"allowNewSession\":true,\"virtualMachineId\":\"pcpil\",\"resourceId\":\"a\",\"assignedUser\":\"vechndbnwiehole\",\"friendlyName\":\"wiuub\",\"status\":\"Upgrading\",\"statusTimestamp\":\"2021-11-19T16:29:04Z\",\"osVersion\":\"ap\",\"sxSStackVersion\":\"tf\",\"updateState\":\"Started\",\"lastUpdateTime\":\"2021-03-29T04:36:42Z\",\"updateErrorMessage\":\"x\",\"sessionHostHealthCheckResults\":[]},\"id\":\"fxapjwogqqnobpu\",\"name\":\"cdabtqwpwya\",\"type\":\"bzasqbucljgkyexa\"}";
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"prot\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ndm\",\"actionsRequired\":\"hu\"},\"provisioningState\":\"Failed\"},\"id\":\"jkavl\",\"name\":\"or\",\"type\":\"mftpmdtz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,22 +61,17 @@ public final class SessionHostsGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SessionHost response =
+        PagedIterable<PrivateEndpointConnectionWithSystemData> response =
             manager
-                .sessionHosts()
-                .getWithResponse("hrbbpneqvcwwyy", "r", "ochpprpr", com.azure.core.util.Context.NONE)
-                .getValue();
+                .privateEndpointConnections()
+                .listByHostPool(
+                    "nustgnljh", "mgixhcmavmqfou", 308634203, false, 1053565042, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T11:52:12Z"), response.lastHeartBeat());
-        Assertions.assertEquals(1942149440, response.sessions());
-        Assertions.assertEquals("hlb", response.agentVersion());
-        Assertions.assertEquals(true, response.allowNewSession());
-        Assertions.assertEquals("vechndbnwiehole", response.assignedUser());
-        Assertions.assertEquals("wiuub", response.friendlyName());
-        Assertions.assertEquals(Status.UPGRADING, response.status());
-        Assertions.assertEquals("ap", response.osVersion());
-        Assertions.assertEquals("tf", response.sxSStackVersion());
-        Assertions.assertEquals(UpdateState.STARTED, response.updateState());
-        Assertions.assertEquals("x", response.updateErrorMessage());
+        Assertions
+            .assertEquals(
+                PrivateEndpointServiceConnectionStatus.PENDING,
+                response.iterator().next().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("ndm", response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("hu", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }
