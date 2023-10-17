@@ -3,9 +3,9 @@
 
 package com.generic.core.http;
 
+import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.policy.HttpPipelinePolicy;
 import com.generic.core.implementation.serializer.http.HttpPipelineCallState;
 import com.generic.core.models.Context;

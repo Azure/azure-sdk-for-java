@@ -4,11 +4,9 @@
 package com.generic.core.util.serializer;
 
 import com.generic.core.http.HttpHeaderName;
-import com.generic.core.models.Headers;
-import com.generic.core.models.Header;
-// import com.generic.core.annotation.HeaderCollection;
 import com.generic.core.http.rest.ResponseBase;
-import com.generic.core.util.serializer.CollectionFormat;
+import com.generic.core.models.Header;
+import com.generic.core.models.Headers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -203,6 +201,6 @@ public interface SerializerAdapter {
      */
     @SuppressWarnings("deprecation")
     default <T> T deserializeHeader(Header header, Type type) throws IOException {
-        return deserialize(new Headers().add(HttpHeaderName.valueOf(header.getName()), header.getValue()), type);
+        return deserialize(new Headers().add(HttpHeaderName.fromString(header.getName()), header.getValue()), type);
     }
 }

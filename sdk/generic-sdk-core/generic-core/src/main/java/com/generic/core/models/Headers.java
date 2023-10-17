@@ -36,7 +36,7 @@ public class Headers implements Iterable<Header> {
      */
     public Headers(Map<String, String> headers) {
         this.headers = new HashMap<>(headers.size());
-        headers.forEach((name, value) -> this.set(HttpHeaderName.valueOf(name), value));
+        headers.forEach((name, value) -> this.set(HttpHeaderName.fromString(name), value));
     }
 
     /**
@@ -47,7 +47,7 @@ public class Headers implements Iterable<Header> {
     public Headers(Iterable<Header> headers) {
         this.headers = new HashMap<>();
         for (final Header header : headers) {
-            this.set(HttpHeaderName.valueOf(header.getName()), header.getValuesList());
+            this.set(HttpHeaderName.fromString(header.getName()), header.getValuesList());
         }
     }
 
@@ -84,7 +84,7 @@ public class Headers implements Iterable<Header> {
      * @return The updated Headers object.
      */
     public Headers add(HttpHeaderName name, String value) {
-        return addInternal(name.toString(), name.toString(), value);
+        return addInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), value);
     }
 
     private Headers addInternal(String formattedName, String name, String value) {
@@ -114,7 +114,7 @@ public class Headers implements Iterable<Header> {
      * @return The updated Headers object
      */
     public Headers set(HttpHeaderName name, String value) {
-        return setInternal(name.name().toLowerCase(Locale.ROOT), name.name(), value);
+        return setInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), value);
     }
 
     private Headers setInternal(String formattedName, String name, String value) {
@@ -140,7 +140,7 @@ public class Headers implements Iterable<Header> {
      * @return The updated Headers object
      */
     public Headers set(HttpHeaderName name, List<String> values) {
-        return setInternal(name.name().toLowerCase(Locale.ROOT), name.name(), values);
+        return setInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), values);
     }
 
     private Headers setInternal(String formattedName, String name, List<String> values) {
@@ -171,7 +171,7 @@ public class Headers implements Iterable<Header> {
      * @throws NullPointerException If {@code headers} is null.
      */
     public Headers setAll(Map<String, List<String>> headers) {
-        headers.forEach((name, value) -> this.set(HttpHeaderName.valueOf(name), value));
+        headers.forEach((name, value) -> setInternal(formatKey(name), name, value));
         return this;
     }
 
@@ -203,7 +203,7 @@ public class Headers implements Iterable<Header> {
      * @return the header if found, null otherwise.
      */
     public Header get(HttpHeaderName name) {
-        return null;
+        return getInternal(name.getCaseInsensitiveName());
     }
 
     private Header getInternal(String formattedName) {
@@ -218,7 +218,7 @@ public class Headers implements Iterable<Header> {
      * @return the header if removed, null otherwise.
      */
     public Header remove(HttpHeaderName name) {
-        return null;
+        return removeInternal(name.getCaseInsensitiveName());
     }
 
     private Header removeInternal(String formattedName) {
@@ -232,8 +232,7 @@ public class Headers implements Iterable<Header> {
      * @return the value of the header, or null if the header isn't found
      */
     public String getValue(HttpHeaderName name) {
-//        return getValueInternal(name.getCaseInsensitiveName());
-        return null;
+        return getValueInternal(name.getCaseInsensitiveName());
     }
 
     private String getValueInternal(String formattedName) {
@@ -250,7 +249,7 @@ public class Headers implements Iterable<Header> {
      * @return the values of the header, or null if the header isn't found
      */
     public String[] getValues(HttpHeaderName name) {
-        return getValuesInternal(name.name().toLowerCase(Locale.ROOT));
+        return getValuesInternal(name.getCaseInsensitiveName());
     }
 
     private String[] getValuesInternal(String formattedName) {
