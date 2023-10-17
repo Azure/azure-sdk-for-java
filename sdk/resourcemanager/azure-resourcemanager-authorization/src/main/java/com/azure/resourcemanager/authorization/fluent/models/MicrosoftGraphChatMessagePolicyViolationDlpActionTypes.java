@@ -26,6 +26,15 @@ public final class MicrosoftGraphChatMessagePolicyViolationDlpActionTypes
         fromString("blockAccessExternal");
 
     /**
+     * Creates a new instance of MicrosoftGraphChatMessagePolicyViolationDlpActionTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphChatMessagePolicyViolationDlpActionTypes() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphChatMessagePolicyViolationDlpActionTypes from its string representation.
      *
      * @param name a name to look for.
