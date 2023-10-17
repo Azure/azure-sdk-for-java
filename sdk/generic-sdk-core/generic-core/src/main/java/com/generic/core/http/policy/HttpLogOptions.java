@@ -33,12 +33,7 @@ public class HttpLogOptions {
         + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
     private static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList(
-        "x-ms-request-id",
-        "x-ms-client-request-id",
-        "x-ms-return-client-request-id",
         "traceparent",
-        "MS-CV",
-
         "Accept",
         "Cache-Control",
         "Connection",
