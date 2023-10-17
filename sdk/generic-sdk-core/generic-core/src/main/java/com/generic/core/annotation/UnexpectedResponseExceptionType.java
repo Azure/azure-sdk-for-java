@@ -5,7 +5,6 @@ package com.generic.core.annotation;
 
 import com.generic.core.exception.HttpResponseException;
 
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 

@@ -3,9 +3,9 @@
 
 package com.generic.core.http;
 
+import com.generic.core.http.models.HttpClientOptions;
 import com.generic.core.http.policy.HttpPipelinePolicy;
 import com.generic.core.models.ClientOptions;
-import com.generic.core.http.models.HttpClientOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;

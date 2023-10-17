@@ -3,13 +3,8 @@
 
 package com.generic.core.http.rest;
 
-import com.generic.core.http.HttpPipeline;
-import com.generic.core.util.configuration.Configuration;
-import com.generic.core.util.serializer.SerializerAdapter;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 
 /**

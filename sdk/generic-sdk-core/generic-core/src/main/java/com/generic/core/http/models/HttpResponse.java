@@ -3,8 +3,8 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.models.Headers;
 import com.generic.core.http.HttpHeaderName;
+import com.generic.core.models.Headers;
 import com.generic.core.util.BinaryData;
 
 import java.io.Closeable;

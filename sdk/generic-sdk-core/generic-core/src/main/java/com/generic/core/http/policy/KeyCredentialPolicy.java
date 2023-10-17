@@ -5,9 +5,9 @@ package com.generic.core.http.policy;
 
 import com.generic.core.credential.KeyCredential;
 import com.generic.core.http.HttpPipelineNextPolicy;
-import com.generic.core.models.Headers;
 import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.models.Headers;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.Objects;

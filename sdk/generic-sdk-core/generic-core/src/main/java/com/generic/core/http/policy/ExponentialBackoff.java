@@ -3,8 +3,8 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.CoreUtils;
+import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.time.Duration;

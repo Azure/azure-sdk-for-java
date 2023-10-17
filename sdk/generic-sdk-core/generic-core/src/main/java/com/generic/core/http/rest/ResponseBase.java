@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.generic.core.http.rest;
 
-import com.generic.core.models.Headers;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.models.Headers;
 
 /**
  * The response of a REST request.
