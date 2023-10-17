@@ -30,7 +30,7 @@ public class Feature {
     private Map<Integer, FeatureFilterEvaluationContext> enabledFor = new HashMap<>();
 
     @JsonProperty("allocation")
-    private Allocation allocation;
+    private Allocation allocation = new Allocation();
 
     @JsonProperty("variants")
     private Map<String, VariantReference> variants;

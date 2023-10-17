@@ -84,23 +84,25 @@ public final class VariantAssignment {
             }
         }
 
-        for (String targetedGroup : targetingContext.getGroups()) {
-            if (targetedGroup != null) {
-                for (GroupAllocation groups : allocation.getGroups().values()) {
-                    for (String group : groups.getGroups().values()) {
-                        if (evaluationOptions.isIgnoreCase()) {
-                            group = group.toLowerCase(Locale.getDefault());
-                        }
+        if (targetingContext.getGroups() != null) {
+            for (String targetedGroup : targetingContext.getGroups()) {
+                if (targetedGroup != null) {
+                    for (GroupAllocation groups : allocation.getGroups().values()) {
+                        for (String group : groups.getGroups().values()) {
+                            if (evaluationOptions.isIgnoreCase()) {
+                                group = group.toLowerCase(Locale.getDefault());
+                            }
 
-                        if (evaluationOptions.isIgnoreCase()) {
-                            targetedGroup = targetedGroup.toLowerCase(Locale.getDefault());
-                        }
-                        if (targetedGroup.equals(group)) {
-                            return getVariant(variants, groups.getVariant());
+                            if (evaluationOptions.isIgnoreCase()) {
+                                targetedGroup = targetedGroup.toLowerCase(Locale.getDefault());
+                            }
+                            if (targetedGroup.equals(group)) {
+                                return getVariant(variants, groups.getVariant());
+                            }
                         }
                     }
-                }
 
+                }
             }
         }
 
@@ -114,7 +116,8 @@ public final class VariantAssignment {
         double value = TargetingUtils.isTargetedPercentage(contextId);
 
         for (PercentileAllocation percentile : allocation.getPercentile().values()) {
-            if (percentile.getFrom().doubleValue() <= value && (percentile.getTo().doubleValue() > value || 100 == percentile.getTo().doubleValue())) {
+            if (percentile.getFrom().doubleValue() <= value
+                && (percentile.getTo().doubleValue() > value || 100 == percentile.getTo().doubleValue())) {
                 return getVariant(variants, percentile.getVariant());
             }
         }
