@@ -328,7 +328,6 @@ public class HttpUrlConnectionClient implements HttpClient {
                     outputStream.write(buffer, 0, length);
                 }
             }
-            connection.disconnect();
 
             return new HttpUrlConnectionResponse(
                 httpRequest,
@@ -338,6 +337,8 @@ public class HttpUrlConnectionClient implements HttpClient {
             );
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        } finally {
+            connection.disconnect();
         }
     }
 }
