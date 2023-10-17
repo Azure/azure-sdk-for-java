@@ -18,7 +18,7 @@ import java.util.TreeSet;
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpURLConnection,
  * first introduced in JDK 1.1.
  */
-public class HttpUrlConnectionAsyncClientBuilder {
+public class HttpUrlConnectionClientBuilder {
 
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
@@ -44,7 +44,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
     /**
      * HttpUrlConnectionAsyncClientBuilder.
      */
-    public HttpUrlConnectionAsyncClientBuilder() {
+    public HttpUrlConnectionClientBuilder() {
     }
 
     /**
@@ -62,7 +62,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
      * @param connectionTimeout Connect timeout duration.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public HttpUrlConnectionAsyncClientBuilder connectionTimeout(Duration connectionTimeout) {
+    public HttpUrlConnectionClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
     }
@@ -81,7 +81,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
      * @param readTimeout Read timeout duration.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public HttpUrlConnectionAsyncClientBuilder readTimeout(Duration readTimeout) {
+    public HttpUrlConnectionClientBuilder readTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
         return this;
     }
@@ -101,7 +101,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
      * @param writeTimeout Write operation timeout duration.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public HttpUrlConnectionAsyncClientBuilder writeTimeout(Duration writeTimeout) {
+    public HttpUrlConnectionClientBuilder writeTimeout(Duration writeTimeout) {
         this.writeTimeout = writeTimeout;
         return this;
     }
@@ -119,7 +119,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
      * @param responseTimeout Response timeout duration.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public HttpUrlConnectionAsyncClientBuilder responseTimeout(Duration responseTimeout) {
+    public HttpUrlConnectionClientBuilder responseTimeout(Duration responseTimeout) {
         this.responseTimeout = responseTimeout;
         return this;
     }
@@ -152,7 +152,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
      * @param proxyOptions The proxy configuration to use.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public HttpUrlConnectionAsyncClientBuilder proxy(ProxyOptions proxyOptions) {
+    public HttpUrlConnectionClientBuilder proxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }
@@ -166,7 +166,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
      * @param configuration The configuration store used to
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public HttpUrlConnectionAsyncClientBuilder configuration(Configuration configuration) {
+    public HttpUrlConnectionClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -195,7 +195,7 @@ public class HttpUrlConnectionAsyncClientBuilder {
             throw new IllegalArgumentException("Invalid proxy");
         }
 
-        return new HttpUrlConnectionAsyncClient(
+        return new HttpUrlConnectionClient(
             getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT),
             getTimeout(readTimeout, DEFAULT_READ_TIMEOUT),
             getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT),

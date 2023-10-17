@@ -44,16 +44,16 @@ import java.util.Map;
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
-public class HttpUrlConnectionAsyncClient implements HttpClient {
-    private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionAsyncClient.class);
+public class HttpUrlConnectionClient implements HttpClient {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionClient.class);
     private final long connectionTimeout;
     private final long readTimeout;
     private final Duration writeTimeout;
     private final Duration responseTimeout;
     private final ProxyOptions proxyOptions;
 
-    HttpUrlConnectionAsyncClient(Duration connectionTimeout, Duration readTimeout, Duration writeTimeout,
-                                 Duration responseTimeout, ProxyOptions proxyOptions) {
+    HttpUrlConnectionClient(Duration connectionTimeout, Duration readTimeout, Duration writeTimeout,
+                            Duration responseTimeout, ProxyOptions proxyOptions) {
         this.connectionTimeout = connectionTimeout == null ? -1 : connectionTimeout.toMillis();
         this.readTimeout = readTimeout == null ? -1 : readTimeout.toMillis();
         this.writeTimeout = writeTimeout;

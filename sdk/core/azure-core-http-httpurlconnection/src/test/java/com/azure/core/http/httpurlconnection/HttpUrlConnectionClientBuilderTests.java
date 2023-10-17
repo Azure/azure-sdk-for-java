@@ -27,10 +27,10 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests {@link HttpUrlConnectionAsyncClientBuilder}.
+ * Tests {@link HttpUrlConnectionClientBuilder}.
  */
 @Execution(ExecutionMode.SAME_THREAD)
-public class HttpUrlConnectionAsyncClientBuilderTests {
+public class HttpUrlConnectionClientBuilderTests {
     private static final String PROXY_USERNAME = "foo";
     private static final String PROXY_PASSWORD = "bar";
     private static final String PROXY_USER_INFO = PROXY_USERNAME + ":" + PROXY_PASSWORD + "@";
@@ -61,7 +61,7 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
 
     @Test
     public void buildWithConfigurationNone() {
-        HttpClient httpClient = new HttpUrlConnectionAsyncClientBuilder()
+        HttpClient httpClient = new HttpUrlConnectionClientBuilder()
             .configuration(Configuration.NONE)
             .build();
 
@@ -84,7 +84,7 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
                 new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()))
                 .setCredentials(PROXY_USERNAME, PROXY_PASSWORD);
 
-            HttpClient httpClient = new HttpUrlConnectionAsyncClientBuilder()
+            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
                 .proxy(clientProxyOptions)
                 .build();
 
@@ -111,7 +111,7 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
                     .put("java.net.useSystemProxies", "true"))
                 .build();
 
-            HttpClient httpClient = new HttpUrlConnectionAsyncClientBuilder()
+            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
                 .configuration(configuration)
                 .build();
 
@@ -137,7 +137,7 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
                 .putProperty("http.proxy.port", String.valueOf(proxyEndpoint.getPort()))
                 .build();
 
-            HttpClient httpClient = new HttpUrlConnectionAsyncClientBuilder()
+            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
                 .configuration(configuration)
                 .build();
 
@@ -162,7 +162,7 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
             Mockito.when(mockPoxyOptions.getType()).thenReturn(ProxyOptions.Type.HTTP);
             Mockito.when(mockPoxyOptions.getAddress()).thenReturn(null);
 
-            HttpClient httpClient = new HttpUrlConnectionAsyncClientBuilder()
+            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
                 .proxy(mockPoxyOptions)
                 .build();
 
@@ -183,7 +183,7 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
             new InetSocketAddress("test.com", 8080));
 
         assertThrows(IllegalArgumentException.class, () -> {
-            new HttpUrlConnectionAsyncClientBuilder()
+            new HttpUrlConnectionClientBuilder()
                 .proxy(clientProxyOptions)
                 .build();
         });
@@ -201,7 +201,7 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
             Mockito.when(mockPoxyOptions.getType()).thenReturn(null);
             Mockito.when(mockPoxyOptions.getAddress()).thenReturn(new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
 
-            HttpClient httpClient = new HttpUrlConnectionAsyncClientBuilder()
+            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
                 .proxy(mockPoxyOptions)
                 .build();
 
@@ -225,7 +225,7 @@ public class HttpUrlConnectionAsyncClientBuilderTests {
             ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
                 new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
 
-            HttpClient httpClient = new HttpUrlConnectionAsyncClientBuilder()
+            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
                 .proxy(clientProxyOptions)
                 .build();
 
