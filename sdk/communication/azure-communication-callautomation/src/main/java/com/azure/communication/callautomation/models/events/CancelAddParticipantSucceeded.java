@@ -16,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/** The AddParticipantCancelled model. */
+/** The CancelAddParticipantSucceeded model. */
 @Immutable
-public final class AddParticipantCancelled extends CallAutomationEventBase {
+public final class CancelAddParticipantSucceeded extends CallAutomationEventBase {
     /*
      * The invitation ID used to cancel the add participant request.
      */
@@ -32,7 +32,7 @@ public final class AddParticipantCancelled extends CallAutomationEventBase {
     private final CommunicationIdentifier participant;
 
     @JsonCreator
-    private AddParticipantCancelled(@JsonProperty("participant") Map<String, Object> participant) {
+    private CancelAddParticipantSucceeded(@JsonProperty("participant") Map<String, Object> participant) {
         invitationId = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

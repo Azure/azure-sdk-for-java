@@ -136,30 +136,14 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, ContinuousDtmfRecognitionToneFailed.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.ContinuousDtmfRecognitionStopped")) {
                 ret = mapper.convertValue(eventData, ContinuousDtmfRecognitionStopped.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.SendDtmfCompleted")) {
-                ret = mapper.convertValue(eventData, SendDtmfCompleted.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.SendDtmfFailed")) {
-                ret = mapper.convertValue(eventData, SendDtmfFailed.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantCancelled")) {
-                ret = mapper.convertValue(eventData, AddParticipantCancelled.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.SendDtmfTonesCompleted")) {
+                ret = mapper.convertValue(eventData, SendDtmfTonesCompleted.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.SendDtmfTonesFailed")) {
+                ret = mapper.convertValue(eventData, SendDtmfTonesFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.CancelAddParticipantSucceeded")) {
+                ret = mapper.convertValue(eventData, CancelAddParticipantSucceeded.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CancelAddParticipantFailed")) {
                 ret = mapper.convertValue(eventData, CancelAddParticipantFailed.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogStarted")) {
-                ret = mapper.convertValue(eventData, DialogStarted.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogCompleted")) {
-                ret = mapper.convertValue(eventData, DialogCompleted.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogFailed")) {
-                ret = mapper.convertValue(eventData, DialogFailed.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogConsent")) {
-                ret = mapper.convertValue(eventData, DialogConsent.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogHangup")) {
-                ret = mapper.convertValue(eventData, DialogHangup.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogLanguageChange")) {
-                ret = mapper.convertValue(eventData, DialogLanguageChange.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogTransfer")) {
-                ret = mapper.convertValue(eventData, DialogTransfer.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.DialogSensitivityUpdate")) {
-                ret = mapper.convertValue(eventData, DialogSensitivityUpdate.class);
             }
             return ret;
         } catch (RuntimeException e) {

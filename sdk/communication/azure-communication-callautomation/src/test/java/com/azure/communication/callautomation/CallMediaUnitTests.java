@@ -3,7 +3,19 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.*;
+import com.azure.communication.callautomation.implementation.models.SendDtmfTonesResultInternal;
+import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
+import com.azure.communication.callautomation.models.DtmfTone;
+import com.azure.communication.callautomation.models.FileSource;
+import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
+import com.azure.communication.callautomation.models.VoiceKind;
+import com.azure.communication.callautomation.models.PlayOptions;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
+import com.azure.communication.callautomation.models.RecognitionChoice;
+import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -18,6 +30,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.communication.callautomation.CallAutomationUnitTestBase.CALL_OPERATION_CONTEXT;
+import static com.azure.communication.callautomation.CallAutomationUnitTestBase.OVERRIDE_CALL_CALLBACK_URL;
+import static com.azure.communication.callautomation.CallAutomationUnitTestBase.serializeObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CallMediaUnitTests {
@@ -37,22 +52,21 @@ public class CallMediaUnitTests {
         callMedia = callConnection.getCallMedia();
 
         playFileSource = new FileSource();
-        playFileSource.setPlaySourceId("playTextSourceId");
+        playFileSource.setPlaySourceCacheId("playTextSourceCacheId");
         playFileSource.setUrl("filePath");
 
         playTextSource = new TextSource();
-        playTextSource.setPlaySourceId("playTextSourceId");
-        playTextSource.setVoiceGender(GenderType.MALE);
+        playTextSource.setPlaySourceCacheId("playTextSourceCacheId");
+        playTextSource.setVoiceKind(VoiceKind.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
-        playTextSource.setCustomVoiceEndpointId("customVoiceEndpointId");
     }
 
     @Test
     public void playFileWithResponseTest() {
         playOptions = new PlayOptions(playFileSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
-            .setOperationContext("operationContext");
+            .setOperationContext(CALL_OPERATION_CONTEXT);
         Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
@@ -61,7 +75,7 @@ public class CallMediaUnitTests {
     public void playFileToAllWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playFileSource)
             .setLoop(false)
-            .setOperationContext("operationContext");
+            .setOperationContext(CALL_OPERATION_CONTEXT);
         Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
@@ -70,7 +84,7 @@ public class CallMediaUnitTests {
     public void playTextWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
-            .setOperationContext("operationContext");
+            .setOperationContext(CALL_OPERATION_CONTEXT);
         Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
@@ -79,7 +93,7 @@ public class CallMediaUnitTests {
     public void playTextToAllWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playTextSource)
             .setLoop(false)
-            .setOperationContext("operationContext");
+            .setOperationContext(CALL_OPERATION_CONTEXT);
         Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
@@ -99,14 +113,25 @@ public class CallMediaUnitTests {
 
     @Test
     public void recognizeWithChoiceResponseTest() {
-        RecognizeChoice recognizeChoice1 = new RecognizeChoice();
-        RecognizeChoice recognizeChoice2 = new RecognizeChoice();
-        List<RecognizeChoice> recognizeChoices = new ArrayList<>(
-            Arrays.asList(recognizeChoice1, recognizeChoice2)
+        RecognitionChoice recognitionChoice1 = new RecognitionChoice();
+        RecognitionChoice recognitionChoice2 = new RecognitionChoice();
+        List<RecognitionChoice> recognitionChoices = new ArrayList<>(
+            Arrays.asList(recognitionChoice1, recognitionChoice2)
         );
-        CallMediaRecognizeChoiceOptions callMediaRecognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
+        CallMediaRecognizeChoiceOptions callMediaRecognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognitionChoices);
         Response<Void> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void startContinuousDtmfRecognitionTest() {
+        // override callMedia to mock 200 response code
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
+            );
+        //expect no exception
+        callConnection.getCallMedia().startContinuousDtmfRecognition(new CommunicationUserIdentifier("id"));
     }
 
     @Test
@@ -117,11 +142,22 @@ public class CallMediaUnitTests {
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
             );
         callMedia = callConnection.getCallMedia();
-        Response<Void> response = callMedia.startContinuousDtmfRecognitionWithResponse(
-            new CommunicationUserIdentifier("id"),
-            "operationContext", Context.NONE
-        );
+        ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
+        options.setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<Void> response = callMedia.startContinuousDtmfRecognitionWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 200);
+    }
+
+
+    @Test
+    public void stopContinuousDtmfRecognitionTest() {
+        // override callMedia to mock 200 response code
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
+            );
+        //expect no exception
+        callConnection.getCallMedia().stopContinuousDtmfRecognition(new CommunicationUserIdentifier("id"));
     }
 
     @Test
@@ -132,46 +168,41 @@ public class CallMediaUnitTests {
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
             );
         callMedia = callConnection.getCallMedia();
-        Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(
-            new CommunicationUserIdentifier("id"),
-            "operationContext", null, Context.NONE
-        );
+        ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
+        options.setOperationContext(CALL_OPERATION_CONTEXT);
+        options.setOverrideCallbackUrl(OVERRIDE_CALL_CALLBACK_URL);
+        Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 200);
     }
 
     @Test
-    public void sendDtmfWithResponseTest() {
-        Response<Void> response = callMedia.sendDtmfWithResponse(
-            Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
-            "ctx", null, Context.NONE
+    public void sendDtmfTonesTest() {
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>(
+                    serializeObject(new SendDtmfTonesResultInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202)))
+            );
+        //expect no exception
+        callConnection.getCallMedia().sendDtmfTones(
+                Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()),
+                new CommunicationUserIdentifier("id")
         );
+    }
+
+    @Test
+    public void sendDtmfTonesWithResponseTest() {
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>(
+                    serializeObject(new SendDtmfTonesResultInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202)))
+            );
+        callMedia = callConnection.getCallMedia();
+        List<DtmfTone> tones = Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList());
+        SendDtmfTonesOptions options = new SendDtmfTonesOptions(tones, new CommunicationUserIdentifier("id"));
+        options.setOperationContext("ctx");
+        options.setOverrideCallbackUrl(OVERRIDE_CALL_CALLBACK_URL);
+        Response<SendDtmfTonesResult> response = callMedia.sendDtmfTonesWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
-    @Test
-    public void startHoldMusicWithResponseTest() {
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMedia();
-        StartHoldMusicOptions options = new StartHoldMusicOptions(
-            new CommunicationUserIdentifier("id"),
-            new TextSource().setText("audio to play"));
-        Response<Void> response = callMedia.startHoldMusicWithResponse(options, null);
-        assertEquals(response.getStatusCode(), 200);
-    }
-
-    @Test
-    public void stopHoldMusicWithResponseTest() {
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMedia();
-
-        Response<Void> response = callMedia.stopHoldMusicWithResponse(new CommunicationUserIdentifier("id"),
-            "operationalContext", Context.NONE);
-        assertEquals(response.getStatusCode(), 200);
-    }
 }

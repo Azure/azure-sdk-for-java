@@ -6,16 +6,16 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /** The PlayOptions model. */
 @Fluent
 public final class PlayOptions {
     /*
-     * A {@link PlaySource} representing the source to play.
+     * A List of {@link PlaySource} representing the sources to play.
      */
-    private final PlaySource playSource;
+    private final List<PlaySource> playSources;
 
     /*
      * The targets to play to
@@ -33,9 +33,10 @@ public final class PlayOptions {
     private String operationContext;
 
     /**
-     * The call back URI override.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    private String callbackUrl;
+    private String overrideCallbackUrl;
 
     /**
      * Constructor
@@ -43,7 +44,8 @@ public final class PlayOptions {
      * @param playTo The targets to play to.
      */
     public PlayOptions(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
-        this(playSources.get(0), playTo);
+        this.playSources = playSources;
+        this.playTo = playTo;
     }
 
     /**
@@ -52,17 +54,9 @@ public final class PlayOptions {
      * @param playTo The targets to play to.
      */
     public PlayOptions(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        this.playSource = playSource;
+        this.playSources = new ArrayList<>();
+        this.playSources.add(playSource);
         this.playTo = playTo;
-    }
-
-    /**
-     * Get the play source.
-     *
-     * @return the playSource value.
-     */
-    public PlaySource getPlaySource() {
-        return this.playSource;
     }
 
     /**
@@ -71,7 +65,7 @@ public final class PlayOptions {
      * @return the playSources value.
      */
     public List<PlaySource> getPlaySources() {
-        return Collections.singletonList(playSource);
+        return this.playSources;
     }
 
     /**
@@ -102,15 +96,6 @@ public final class PlayOptions {
     }
 
     /**
-     * Get the call back URI override.
-     *
-     * @return the callbackUriOverride
-     */
-    public String getCallbackUrl() {
-        return callbackUrl;
-    }
-
-    /**
      * Set the loop property: The option to play the provided audio source in loop when set to true.
      *
      * @param loop the loop value to set.
@@ -133,13 +118,22 @@ public final class PlayOptions {
     }
 
     /**
+     * Get the call back URI override.
+     *
+     * @return the overrideCallbackUrl
+     */
+    public String getOverrideCallbackUrl() {
+        return overrideCallbackUrl;
+    }
+
+    /**
      * Set the call back URI override.
      *
-     * @param callbackUrl The call back URI override to set
+     * @param overrideCallbackUrl The call back URI override to set
      * @return the PlayOptions object itself.
      */
-    public PlayOptions setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
+    public PlayOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 }

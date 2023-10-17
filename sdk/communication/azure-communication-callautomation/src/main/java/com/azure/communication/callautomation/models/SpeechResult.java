@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The continuous speech recognition result. */
 @Fluent

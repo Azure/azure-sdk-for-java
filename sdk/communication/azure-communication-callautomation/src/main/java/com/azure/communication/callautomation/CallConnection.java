@@ -223,48 +223,30 @@ public final class CallConnection {
     }
 
     /**
-     * Mutes participants in the call.
+     * Mutes a participant in the call.
      *
      * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
-     * @return A MuteParticipantsResult object.
+     * @return A MuteParticipantResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MuteParticipantsResult muteParticipants(CommunicationIdentifier targetParticipant) {
-        return callConnectionAsync.muteParticipantsAsync(targetParticipant).block();
+    public MuteParticipantResult muteParticipant(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.muteParticipant(targetParticipant).block();
     }
 
     /**
-     * Mute participants in the call.
-     * @param muteParticipantsOptions - Options for the request.
-     * @param context A {@link Context} representing the request context.
-     * @return a Response containing the MuteParticipantsResult object.
+     * Mutes a participant in the call.
+     *
+     * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
+     * @param operationContext operationContext (pass null if not applicable)
+     * @param context Context
+     * @return Response with result of muting a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantsResult> muteParticipantsWithResponse(MuteParticipantsOptions muteParticipantsOptions, Context context) {
-        return callConnectionAsync.muteParticipantWithResponseInternal(muteParticipantsOptions, context).block();
+    public Response<MuteParticipantResult> muteParticipantWithResponse(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
+        return callConnectionAsync.muteParticipantWithResponseInternal(targetParticipant, operationContext, context).block();
     }
-
-    /**
-     * Unmutes participants in the call.
-     * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
-     * @return An UnmuteParticipantsResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnmuteParticipantsResult unmuteParticipants(CommunicationIdentifier targetParticipant) {
-        return callConnectionAsync.unmuteParticipantsAsync(targetParticipant).block();
-    }
-
-    /**
-     * Unmutes participants in the call.
-     * @param unmuteParticipantsOptions - Options for the request.
-     * @param context A {@link Context} representing the request context.
-     * @return a Response containing the UnmuteParticipantsResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantsResult> unmuteParticipantsWithResponse(UnmuteParticipantsOptions unmuteParticipantsOptions, Context context) {
-        return callConnectionAsync.unmuteParticipantWithResponseInternal(unmuteParticipantsOptions, context).block();
-    }
-
+    
+    
     /**
      * Cancel add participant request.
      *
@@ -301,16 +283,6 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMedia getCallMedia() {
         return new CallMedia(callConnectionAsync.getCallMediaAsync());
-    }
-
-    /***
-     * Returns an object of CallDialog
-     *
-     * @return a CallDialogAsync.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallDialog getCallDialog() {
-        return new CallDialog(callConnectionAsync.getCallDialogAsync());
     }
 
     //endregion

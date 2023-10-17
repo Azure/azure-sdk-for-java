@@ -21,9 +21,10 @@ public final class CancelAddParticipantOptions {
     private String operationContext;
 
     /**
-     * Callback URI override
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    private String callbackUrl;
+    private String overrideCallbackUrl;
 
     /**
      * Constructor
@@ -55,10 +56,10 @@ public final class CancelAddParticipantOptions {
     /**
      * Get the callback URI override.
      *
-     * @return the callbackUriOverride
+     * @return the overrideCallbackUrl
      */
-    public String getCallbackUrl() {
-        return callbackUrl;
+    public String getOverrideCallbackUrl() {
+        return overrideCallbackUrl;
     }
 
     /**
@@ -73,13 +74,13 @@ public final class CancelAddParticipantOptions {
     }
 
     /**
-     * Set the callbackUriOverride.
+     * Set the overrideCallbackUrl.
      *
-     * @param callbackUrl the callbackUriOverride to set
+     * @param overrideCallbackUrl the overrideCallbackUrl to set
      * @return the CancelAddParticipantOptions object itself.
      */
-    public CancelAddParticipantOptions setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
+    public CancelAddParticipantOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
+        this.overrideCallbackUrl = overrideCallbackUrl;
         return this;
     }
 }
