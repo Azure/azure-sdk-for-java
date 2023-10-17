@@ -70,6 +70,7 @@ public final class CallAutomationClientBuilder implements
     private final ClientLogger logger = new ClientLogger(CallAutomationClientBuilder.class);
     private String connectionString;
     private String endpoint;
+    private String pmaEnpoint;
     private String hostName;
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
@@ -100,6 +101,11 @@ public final class CallAutomationClientBuilder implements
     @Override
     public CallAutomationClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        return this;
+    }
+
+    public CallAutomationClientBuilder pmaEndpoint(String endpoint) {
+        this.pmaEnpoint= Objects.requireNonNull(endpoint, "'pmaEndpoint' cannot be null.");
         return this;
     }
 
@@ -387,8 +393,13 @@ public final class CallAutomationClientBuilder implements
         }
 
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
-        clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
-            
+
+        if(pmaEnpoint != null) {
+            clientBuilder.endpoint(pmaEnpoint).pipeline(builderPipeline);
+        } else {
+            clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
+        }
+
         return clientBuilder.buildClient();
     }
 
@@ -413,11 +424,15 @@ public final class CallAutomationClientBuilder implements
 
         List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
         if (tokenCredential != null) {
-            pipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                "https://communication.azure.com//.default"));
-            Map<String, String> httpHeaders = new HashMap<>();
-            httpHeaders.put("x-ms-host", hostName);
-            pipelinePolicies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaders)));
+            if(pmaEnpoint != null) {
+                pipelinePolicies.add(new CustomBearerTokenAuthenticationPolicy(tokenCredential, endpoint,  "https://communication.azure.com//.default"));
+            } else {
+                pipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
+                    "https://communication.azure.com//.default"));
+                Map<String, String> httpHeaders = new HashMap<>();
+                httpHeaders.put("x-ms-host", hostName);
+                pipelinePolicies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaders)));
+            }
         } else if (azureKeyCredential != null) {
             if (isCustomEndpointUsed) {
                 String acsEndpoint = (new CommunicationConnectionString(connectionString)).getEndpoint();
