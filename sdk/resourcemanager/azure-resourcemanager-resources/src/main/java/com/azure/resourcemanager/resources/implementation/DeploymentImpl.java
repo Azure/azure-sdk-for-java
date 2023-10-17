@@ -69,6 +69,9 @@ public final class DeploymentImpl extends
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final SerializerAdapter SERIALIZER_ADAPTER =
         SerializerFactory.createDefaultManagementSerializerAdapter();
+    private static final TypeReference<Map<String, DeploymentParameter>> TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER =
+        new TypeReference<Map<String, DeploymentParameter>>() {
+        };
 
     private final ResourceManager resourceManager;
     private String resourceGroupName;
@@ -602,17 +605,19 @@ public final class DeploymentImpl extends
 
     private Map<String, DeploymentParameter> getParametersFromObject(Object parameters) {
         try {
-            String parametersJson = SERIALIZER_ADAPTER.serialize(parameters, SerializerEncoding.JSON);
+            String parametersJson = SERIALIZER_ADAPTER.serialize(
+                parameters,
+                SerializerEncoding.JSON);
             return getParametersFromJsonString(parametersJson);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
-    private Map<String, DeploymentParameter> getParametersFromJsonString(String parametersJson)
-        throws IOException {
-
-        return SERIALIZER_ADAPTER.deserialize(parametersJson, new TypeReference<Map<String, DeploymentParameter>>() {
-        }.getType(), SerializerEncoding.JSON);
+    private Map<String, DeploymentParameter> getParametersFromJsonString(String parametersJson) throws IOException {
+        return SERIALIZER_ADAPTER.deserialize(
+            parametersJson,
+            TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER.getType(),
+            SerializerEncoding.JSON);
     }
 }

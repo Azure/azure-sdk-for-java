@@ -30,6 +30,9 @@ public class TypeSerializationTests {
 
     private static final SerializerAdapter SERIALIZER_ADAPTER =
         SerializerFactory.createDefaultManagementSerializerAdapter();
+    private static final TypeReference<Map<String, DeploymentParameter>> TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER =
+        new TypeReference<Map<String, DeploymentParameter>>() {
+        };
 
     public static final class Map1<K, V> extends AbstractMap<K, V> {
         private final K k0;
@@ -118,9 +121,13 @@ public class TypeSerializationTests {
     }
 
     private static DeploymentInner createRequestFromInner(DeploymentImpl deployment) throws NoSuchFieldException, IllegalAccessException, IOException {
-        String parametersJson = SERIALIZER_ADAPTER.serialize(deployment.parameters(), SerializerEncoding.JSON);
-        Map<String, DeploymentParameter> parameters = SERIALIZER_ADAPTER.deserialize(parametersJson, new TypeReference<Map<String, DeploymentParameter>>() {
-        }.getType(), SerializerEncoding.JSON);
+        String parametersJson = SERIALIZER_ADAPTER.serialize(
+            deployment.parameters(),
+            SerializerEncoding.JSON);
+        Map<String, DeploymentParameter> parameters = SERIALIZER_ADAPTER.deserialize(
+            parametersJson,
+            TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER.getType(),
+            SerializerEncoding.JSON);
 
         Field field = DeploymentImpl.class.getDeclaredField("deploymentCreateUpdateParameters");
         field.setAccessible(true);
