@@ -73,7 +73,8 @@ public class HttpFaultInjectingTests {
 
     @BeforeEach
     public void setup() {
-        String testName = "httpFaultInjectingTests" + CoreUtils.randomUuid().toString().replace("-", "");
+        String testName = ("httpFaultInjectingTests" + CoreUtils.randomUuid().toString().replace("-", ""))
+            .toLowerCase();
         containerClient = new BlobServiceClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
