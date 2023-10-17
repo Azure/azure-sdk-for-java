@@ -191,8 +191,7 @@ public class CustomBearerTokenAuthenticationPolicy implements HttpPipelinePolicy
         headers.set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
     }
 
-    private void addHeaders(HttpHeaders headers)
-    {
+    private void addHeaders(HttpHeaders headers) {
         if (acsEndpoint != null) {
             headers.set(HttpHeaderName.fromString("X-FORWARDED-HOST"), acsEndpoint);
         }
