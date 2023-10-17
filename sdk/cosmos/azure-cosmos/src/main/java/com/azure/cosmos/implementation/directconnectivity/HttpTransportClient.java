@@ -50,7 +50,6 @@ import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
@@ -141,7 +140,6 @@ public class HttpTransportClient extends TransportClient {
             } else if (request.isAddressRefresh()) {
                 responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
             }
-            
             Mono<HttpResponse> httpResponseMono = this.httpClient
                     .send(httpRequest, responseTimeout)
                     .doOnSubscribe(subscription -> {
