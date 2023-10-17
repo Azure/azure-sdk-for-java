@@ -9,20 +9,25 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
 import reactor.core.publisher.Mono;
 
@@ -31,23 +36,32 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
+import static com.azure.storage.blob.BlobTestBase.ENVIRONMENT;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Set of tests that use <a href="">HTTP fault injecting</a> to simulate scenarios where the network has random errors.
  */
-@EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
-// macOS has known issues running HTTP fault injector, change this once
-// https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
-@DisabledIf("com.azure.storage.blob.BlobTestBase#isOperatingSystemMac")
-public class HttpFaultInjectingTests extends BlobTestBase {
+@EnabledIf("shouldRun")
+public class HttpFaultInjectingTests {
     private static final ClientLogger LOGGER = new ClientLogger(HttpFaultInjectingTests.class);
     private static final HttpHeaderName UPSTREAM_URI_HEADER = HttpHeaderName.fromString("X-Upstream-Base-Uri");
     private static final HttpHeaderName HTTP_FAULT_INJECTOR_RESPONSE_HEADER
@@ -63,17 +77,27 @@ public class HttpFaultInjectingTests extends BlobTestBase {
      * hiding a true issue.
      */
     @Test
-    public void downloadToFileWithFaultInjection() throws IOException {
+    public void downloadToFileWithFaultInjection() throws IOException, InterruptedException {
         byte[] realFileBytes = new byte[9 * Constants.MB - 1];
         ThreadLocalRandom.current().nextBytes(realFileBytes);
 
-        String blobName = generateBlobName();
-        cc.getBlobClient(blobName).upload(BinaryData.fromBytes(realFileBytes), true);
+        String testName = "httpFaultInjectingTests" + CoreUtils.randomUuid();
+        BlobContainerClient cc = new BlobContainerClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .containerName(testName)
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .httpClient(BlobTestBase.getHttpClient(() -> {
+                throw new RuntimeException("Test should not run during playback.");
+            }))
+            .buildClient();
+
+        cc.getBlobClient(testName).upload(BinaryData.fromBytes(realFileBytes), true);
 
         BlobClient downloadClient = new BlobClientBuilder()
-            .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
             .containerName(cc.getBlobContainerName())
-            .blobName(blobName)
+            .blobName(testName)
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
             .httpClient(new HttpFaultInjectingHttpClient(getFaultInjectingWrappedHttpClient()))
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 4, null, 10L, 10L, null))
             .buildClient();
@@ -86,9 +110,17 @@ public class HttpFaultInjectingTests extends BlobTestBase {
         }
         AtomicInteger successCount = new AtomicInteger();
 
-        files.stream().parallel().forEach(it -> {
+        Set<OpenOption> overwriteOptions = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE,
+            StandardOpenOption.TRUNCATE_EXISTING, // If the file already exists and it is opened for WRITE access, then its length is truncated to 0.
+            StandardOpenOption.READ, StandardOpenOption.WRITE));
+
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        executorService.invokeAll(files.stream().map(it -> (Callable<Void>) () -> {
             try {
-                downloadClient.downloadToFile(it.getAbsolutePath(), true);
+                downloadClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(it.getAbsolutePath())
+                        .setOpenOptions(overwriteOptions)
+                        .setParallelTransferOptions(new ParallelTransferOptions().setMaxConcurrency(2)),
+                    null, Context.NONE);
                 byte[] actualFileBytes = Files.readAllBytes(it.toPath());
                 TestUtils.assertArraysEqual(realFileBytes, actualFileBytes);
                 successCount.incrementAndGet();
@@ -96,9 +128,14 @@ public class HttpFaultInjectingTests extends BlobTestBase {
             } catch (Exception ex) {
                 // Don't let network exceptions fail the download
                 LOGGER.atWarning().log(() -> "Failed to complete download, target download file: "
-                    + it.getAbsolutePath(), ex);
+                                             + it.getAbsolutePath(), ex);
             }
-        });
+
+            return null;
+        }).collect(Collectors.toList()));
+
+        executorService.shutdown();
+        executorService.awaitTermination(10, TimeUnit.MINUTES);
 
         assertTrue(successCount.get() >= 450);
         // cleanup
@@ -221,5 +258,15 @@ public class HttpFaultInjectingTests extends BlobTestBase {
                 }
             }
         }
+    }
+
+    private static boolean shouldRun() {
+        String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+
+        // macOS has known issues running HTTP fault injector, change this once
+        // https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
+        return ENVIRONMENT.getTestMode() == TestMode.LIVE
+            && !osName.contains("mac os")
+            && !osName.contains("darwin");
     }
 }
