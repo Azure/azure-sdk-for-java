@@ -104,8 +104,14 @@ public final class CallAutomationClientBuilder implements
         return this;
     }
 
-    public CallAutomationClientBuilder pmaEndpoint(String endpoint) {
-        this.pmaEnpoint= Objects.requireNonNull(endpoint, "'pmaEndpoint' cannot be null.");
+    /**
+     * Set pma endpoint override of the service.
+     *
+     * @param pmaEndpoint url of the service.
+     * @return CallAutomationClientBuilder object.
+     */
+    public CallAutomationClientBuilder pmaEndpoint(String pmaEndpoint) {
+        this.pmaEnpoint = Objects.requireNonNull(pmaEndpoint, "'pmaEndpoint' cannot be null.");
         return this;
     }
 
@@ -394,7 +400,7 @@ public final class CallAutomationClientBuilder implements
 
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
 
-        if(pmaEnpoint != null) {
+        if (pmaEnpoint != null) {
             clientBuilder.endpoint(pmaEnpoint).pipeline(builderPipeline);
         } else {
             clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
@@ -424,7 +430,7 @@ public final class CallAutomationClientBuilder implements
 
         List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
         if (tokenCredential != null) {
-            if(pmaEnpoint != null) {
+            if (pmaEnpoint != null) {
                 pipelinePolicies.add(new CustomBearerTokenAuthenticationPolicy(tokenCredential, endpoint,  "https://communication.azure.com//.default"));
             } else {
                 pipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,

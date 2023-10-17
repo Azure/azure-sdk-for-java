@@ -1,8 +1,8 @@
-package com.azure.communication.callautomation;
-
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
+package com.azure.communication.callautomation;
+
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -13,13 +13,8 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-
-//import com.azure.core.implementation.AccessTokenCache;
 import com.azure.core.util.logging.ClientLogger;
-
-//import io.netty.handler.codec.http.HttpMessage;
 import reactor.core.publisher.Mono;
-
 import java.util.Objects;
 
 /**
@@ -37,6 +32,7 @@ public class CustomBearerTokenAuthenticationPolicy implements HttpPipelinePolicy
      * Creates BearerTokenAuthenticationPolicy.
      *
      * @param credential the token credential to authenticate the request
+     * @param acsEndpoint endpoint of the ACS resource
      * @param scopes the scopes of authentication the credential should get token for
      */
     public CustomBearerTokenAuthenticationPolicy(TokenCredential credential, String acsEndpoint, String... scopes) {
