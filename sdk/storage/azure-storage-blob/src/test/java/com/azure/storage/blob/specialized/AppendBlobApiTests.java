@@ -5,11 +5,14 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
@@ -810,5 +813,35 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         Response<BlobProperties> response = specialBlob.getPropertiesWithResponse(null, null, null);
         assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
+    }
+
+    @Test
+    public void defaultAudience() {
+        AppendBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(null)
+            .buildAppendBlobClient();
+
+        assertTrue(aadBlob.exists());
+    }
+
+    @Test
+    public void storageAccountAudience(){
+        AppendBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .buildAppendBlobClient();
+
+        assertTrue(aadBlob.exists());
+    }
+
+    @Test
+    public void audienceError(){
+        AppendBlobClient aadBlob = new SpecializedBlobClientBuilder()
+            .endpoint(bc.getBlobUrl())
+            .credential(new MockTokenCredential())
+            .audience(BlobAudience.getBlobServiceAccountAudience("badAudience"))
+            .buildAppendBlobClient();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());
+        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
     }
 }
