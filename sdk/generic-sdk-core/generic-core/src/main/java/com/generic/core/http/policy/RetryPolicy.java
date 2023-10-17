@@ -3,32 +3,16 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.HttpHeaderName;
-import com.generic.core.http.HttpHeaders;
-import com.generic.core.http.HttpPipelineCallContext;
-import com.generic.core.http.HttpPipelineNextSyncPolicy;
-import com.generic.core.http.HttpRequest;
-import com.generic.core.http.HttpResponse;
-import com.generic.core.util.logging.ClientLogger;
-import com.generic.core.util.logging.LoggingEventBuilder;
-import com.generic.core.util.CoreUtils;
-
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Supplier;
-
-import static com.generic.core.util.CoreUtils.isNullOrEmpty;
+import com.generic.core.http.HttpPipelineNextPolicy;
+import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.models.HttpResponse;
 
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
 public class RetryPolicy implements HttpPipelinePolicy {
     @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+    public HttpResponse process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return null;
     }
     //
@@ -227,7 +211,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     // /*
     //  * Determines the delay duration that should be waited before retrying using the well-known retry headers.
     //  */
-    // static Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, RetryStrategy retryStrategy,
+    // static Duration getWellKnownRetryDelay(Headers responseHeaders, int tryCount, RetryStrategy retryStrategy,
     //     Supplier<OffsetDateTime> nowSupplier) {
     //     Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
     //     if (retryDelay != null) {

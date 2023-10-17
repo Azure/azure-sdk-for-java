@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http;
+package com.generic.core.http.models;
 
+import com.generic.core.models.Headers;
+import com.generic.core.http.HttpHeaderName;
 import com.generic.core.util.BinaryData;
 
 import java.io.Closeable;
@@ -30,16 +32,6 @@ public abstract class HttpResponse implements Closeable {
     public abstract int getStatusCode();
 
     /**
-     * Lookup a response header with the provided name.
-     *
-     * @param name the name of the header to lookup.
-     * @return the value of the header, or null if the header doesn't exist in the response.
-     * @deprecated Use {@link #getHeaderValue(HttpHeaderName)} as it provides better performance.
-     */
-    @Deprecated
-    public abstract String getHeaderValue(String name);
-
-    /**
      * Lookup a response header with the provider {@link HttpHeaderName}.
      *
      * @param headerName the name of the header to lookup.
@@ -54,7 +46,7 @@ public abstract class HttpResponse implements Closeable {
      *
      * @return the response headers
      */
-    public abstract HttpHeaders getHeaders();
+    public abstract Headers getHeaders();
 
     /**
      * Gets the {@link BinaryData} that represents the body of the response.

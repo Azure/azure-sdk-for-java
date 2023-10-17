@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http;
+package com.generic.core.http.models;
 
-import com.generic.core.util.Context;
+import com.generic.core.models.Context;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -38,7 +38,7 @@ public final class HttpPipelineCallContext {
      *
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
-    HttpPipelineCallContext(HttpRequest httpRequest, Context data) {
+    public HttpPipelineCallContext(HttpRequest httpRequest, Context data) {
         Objects.requireNonNull(httpRequest, "'httpRequest' cannot be null.");
         Objects.requireNonNull(data, "'data' cannot be null.");
         //

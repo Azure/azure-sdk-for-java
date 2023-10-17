@@ -3,8 +3,9 @@
 
 package com.generic.core.util.serializer;
 
-import com.generic.core.http.HttpHeaders;
-import com.generic.core.util.Header;
+import com.generic.core.http.HttpHeaderName;
+import com.generic.core.models.Headers;
+import com.generic.core.models.Header;
 // import com.generic.core.annotation.HeaderCollection;
 import com.generic.core.http.rest.ResponseBase;
 import com.generic.core.util.serializer.CollectionFormat;
@@ -188,7 +189,7 @@ public interface SerializerAdapter {
      * not exist then return null
      * @throws IOException If an I/O error occurs
      */
-    <T> T deserialize(HttpHeaders headers, Type type) throws IOException;
+    <T> T deserialize(Headers headers, Type type) throws IOException;
 
     /**
      * Deserializes the provided header returned from a REST API to en entity instance declared as the model of the
@@ -202,6 +203,6 @@ public interface SerializerAdapter {
      */
     @SuppressWarnings("deprecation")
     default <T> T deserializeHeader(Header header, Type type) throws IOException {
-        return deserialize(new HttpHeaders().add(header.getName(), header.getValue()), type);
+        return deserialize(new Headers().add(HttpHeaderName.valueOf(header.getName()), header.getValue()), type);
     }
 }

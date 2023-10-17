@@ -4,9 +4,9 @@
 package com.generic.core.http.policy;
 
 import com.generic.core.http.HttpPipeline;
-import com.generic.core.http.HttpPipelineCallContext;
-import com.generic.core.http.HttpPipelineNextSyncPolicy;
-import com.generic.core.http.HttpResponse;
+import com.generic.core.http.HttpPipelineNextPolicy;
+import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.models.HttpResponse;
 
 /**
  * A policy within the {@link HttpPipeline}.
@@ -23,5 +23,5 @@ public interface HttpPipelinePolicy {
      * @param next The next policy to invoke.
      * @return A publisher that initiates the request upon subscription and emits a response on completion.
      */
-    HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next);
+    HttpResponse process(HttpPipelineCallContext context, HttpPipelineNextPolicy next);
 }

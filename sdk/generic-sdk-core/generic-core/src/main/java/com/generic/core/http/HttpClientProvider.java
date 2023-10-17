@@ -3,7 +3,7 @@
 
 package com.generic.core.http;
 
-import com.generic.core.util.HttpClientOptions;
+import com.generic.core.http.models.HttpClientOptions;
 
 /**
  * An interface to be implemented by any azure-core plugin that wishes to provide an alternate {@link HttpClient}

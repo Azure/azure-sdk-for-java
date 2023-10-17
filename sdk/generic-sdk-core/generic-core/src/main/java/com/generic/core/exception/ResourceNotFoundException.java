@@ -3,7 +3,7 @@
 
 package com.generic.core.exception;
 
-import com.generic.core.http.HttpResponse;
+import com.generic.core.http.models.HttpResponse;
 
 /**
  * An error response, typically triggered by a 412 response (for update) or 404 (for get/post)

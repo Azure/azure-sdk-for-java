@@ -3,7 +3,7 @@
 
 package com.generic.core.exception;
 
-import com.generic.core.http.HttpRequest;
+import com.generic.core.http.models.HttpRequest;
 
 /**
  * The exception when an HTTP request fails.

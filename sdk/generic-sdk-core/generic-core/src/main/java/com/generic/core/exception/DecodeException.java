@@ -3,7 +3,7 @@
 
 package com.generic.core.exception;
 
-import com.generic.core.http.HttpResponse;
+import com.generic.core.http.models.HttpResponse;
 
 /**
  * Error raised during response deserialization. The HTTP response could not be decoded.

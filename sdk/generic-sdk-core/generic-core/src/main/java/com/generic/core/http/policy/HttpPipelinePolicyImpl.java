@@ -3,27 +3,27 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.HttpPipelineCallContext;
-import com.generic.core.http.HttpPipelineNextSyncPolicy;
-import com.generic.core.http.HttpResponse;
+import com.generic.core.http.HttpPipelineNextPolicy;
+import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.models.HttpResponse;
 
 /**
  * Represents a {@link HttpPipelinePolicy} that doesn't do any asynchronous or synchronously blocking operations.
  */
-public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
+public class HttpPipelinePolicyImpl implements HttpPipelinePolicy {
     /**
-     * Creates a new instance of {@link HttpPipelineSyncPolicy}.
+     * Creates a new instance of {@link HttpPipelinePolicyImpl}.
      */
-    public HttpPipelineSyncPolicy() {
+    public HttpPipelinePolicyImpl() {
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+    public final HttpResponse process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         beforeSendingRequest(context);
-        HttpResponse response = next.processSync();
+        HttpResponse response = next.process();
         return afterReceivedResponse(context, response);
     }
 

@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.generic.core.http.rest;
 
-import com.generic.core.http.HttpHeaders;
-import com.generic.core.http.HttpRequest;
+import com.generic.core.models.Headers;
+import com.generic.core.http.models.HttpRequest;
 
 /**
  * REST response with a strongly-typed content specified.
@@ -25,7 +25,7 @@ public interface Response<T> {
      *
      * @return The HTTP response headers.
      */
-    HttpHeaders getHeaders();
+    Headers getHeaders();
 
     /**
      * Gets the HTTP request which resulted in this response.

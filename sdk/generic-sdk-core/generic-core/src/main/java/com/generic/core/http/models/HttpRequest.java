@@ -1,16 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http;
+package com.generic.core.http.models;
 
+import com.generic.core.models.Headers;
+import com.generic.core.http.HttpHeaderName;
+import com.generic.core.http.HttpMethod;
 import com.generic.core.util.BinaryData;
+import com.generic.core.models.Header;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.net.URL;
 
 /**
  * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
- * {@link HttpHeader} and request body.
+ * {@link Header} and request body.
  */
 public class HttpRequest {
     // HttpRequest is a highly used, short-lived class, use a static logger.
@@ -18,7 +22,7 @@ public class HttpRequest {
 
     private HttpMethod httpMethod;
     private URL url;
-    private HttpHeaders headers;
+    private Headers headers;
     private BinaryData body;
 
     /**
@@ -28,7 +32,7 @@ public class HttpRequest {
      * @param url the target address to send the request to
      */
     public HttpRequest(HttpMethod httpMethod, URL url) {
-        this(httpMethod, url, new HttpHeaders(), (BinaryData) null);
+        this(httpMethod, url, new Headers(), (BinaryData) null);
     }
 
     /**
@@ -41,7 +45,7 @@ public class HttpRequest {
     public HttpRequest(HttpMethod httpMethod, String url) {
         this.httpMethod = httpMethod;
         setUrl(url);
-        this.headers = new HttpHeaders();
+        this.headers = new Headers();
     }
 
     /**
@@ -51,7 +55,7 @@ public class HttpRequest {
      * @param url the target address to send the request to
      * @param headers the HTTP headers to use with this request
      */
-    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers) {
+    public HttpRequest(HttpMethod httpMethod, URL url, Headers headers) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
@@ -65,7 +69,7 @@ public class HttpRequest {
      * @param headers the HTTP headers to use with this request
      * @param body the request content
      */
-    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, BinaryData body) {
+    public HttpRequest(HttpMethod httpMethod, URL url, Headers headers, BinaryData body) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
@@ -133,7 +137,7 @@ public class HttpRequest {
      *
      * @return headers to be sent
      */
-    public HttpHeaders getHeaders() {
+    public Headers getHeaders() {
         return headers;
     }
 
@@ -143,23 +147,8 @@ public class HttpRequest {
      * @param headers the set of headers
      * @return this HttpRequest
      */
-    public HttpRequest setHeaders(HttpHeaders headers) {
+    public HttpRequest setHeaders(Headers headers) {
         this.headers = headers;
-        return this;
-    }
-
-    /**
-     * Set a request header, replacing any existing value. A null for {@code value} will remove the header if one with
-     * matching name exists.
-     *
-     * @param name the header name
-     * @param value the header value
-     * @return this HttpRequest
-     * @deprecated Use {@link #setHeader(HttpHeaderName, String)} instead as is offers better performance.
-     */
-    @Deprecated
-    public HttpRequest setHeader(String name, String value) {
-        headers.set(name, value);
         return this;
     }
 
@@ -237,13 +226,13 @@ public class HttpRequest {
      * Creates a copy of the request.
      * <p>
      * The main purpose of this is so that this HttpRequest can be changed and the resulting HttpRequest can be a
-     * backup. This means that the cloned HttpHeaders and body must not be able to change from side effects of this
+     * backup. This means that the cloned Headers and body must not be able to change from side effects of this
      * HttpRequest.
      *
      * @return a new HTTP request instance with cloned instances of all mutable properties.
      */
     public HttpRequest copy() {
-        final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
+        final Headers bufferedHeaders = new Headers(headers);
         return new HttpRequest(httpMethod, url, bufferedHeaders, body);
     }
 }

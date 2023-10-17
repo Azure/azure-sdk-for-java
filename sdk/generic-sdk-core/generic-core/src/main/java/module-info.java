@@ -16,6 +16,8 @@ module com.generic.core {
     exports com.generic.core.util;
     exports com.generic.core.util.logging;
     exports com.generic.core.util.serializer;
+    exports com.generic.core.http.models;
+    exports com.generic.core.models;
 
     // Service Provider Interfaces
     uses com.generic.core.http.HttpClientProvider;

@@ -3,8 +3,8 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.HttpRequest;
-import com.generic.core.util.Context;
+import com.generic.core.http.models.HttpRequest;
+import com.generic.core.models.Context;
 
 /**
  * Options class containing information available during HTTP request logging.

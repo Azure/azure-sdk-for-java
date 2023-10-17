@@ -4,10 +4,10 @@
 package com.generic.core.http.policy;
 
 import com.generic.core.http.HttpHeaderName;
-import com.generic.core.http.HttpPipelineCallContext;
-import com.generic.core.http.HttpPipelineNextSyncPolicy;
-import com.generic.core.http.HttpRequest;
-import com.generic.core.http.HttpResponse;
+import com.generic.core.http.HttpPipelineNextPolicy;
+import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -40,7 +40,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+    public HttpResponse process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUrls for each individual request.
         return attemptRedirectSync(context, next, context.getHttpRequest(), 1, new HashSet<>());
     }
@@ -50,14 +50,14 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * and redirect sending the request with new redirect url.
      */
     private HttpResponse attemptRedirectSync(final HttpPipelineCallContext context,
-                                             final HttpPipelineNextSyncPolicy next,
+                                             final HttpPipelineNextPolicy next,
                                              final HttpRequest originalHttpRequest,
                                              final int redirectAttempt,
                                              Set<String> attemptedRedirectUrls) {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
 
-        HttpResponse httpResponse = next.clone().processSync();
+        HttpResponse httpResponse = next.clone().process();
 
         if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
             attemptedRedirectUrls)) {

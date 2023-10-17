@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.util;
+package com.generic.core.http.models;
 
 import com.generic.core.annotation.Fluent;
 import com.generic.core.http.HttpClient;
 import com.generic.core.http.HttpClientProvider;
+import com.generic.core.models.ClientOptions;
+import com.generic.core.models.Header;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.logging.ClientLogger;
 

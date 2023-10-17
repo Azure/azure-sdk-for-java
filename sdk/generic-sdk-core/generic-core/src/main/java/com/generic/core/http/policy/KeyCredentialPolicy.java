@@ -4,10 +4,10 @@
 package com.generic.core.http.policy;
 
 import com.generic.core.credential.KeyCredential;
-import com.generic.core.http.HttpHeaders;
-import com.generic.core.http.HttpPipelineCallContext;
-import com.generic.core.http.HttpPipelineNextSyncPolicy;
-import com.generic.core.http.HttpResponse;
+import com.generic.core.http.HttpPipelineNextPolicy;
+import com.generic.core.models.Headers;
+import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.Objects;
@@ -64,17 +64,17 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
 //    }
 
     @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+    public HttpResponse process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
         }
 
         setCredential(context.getHttpRequest().getHeaders());
-        return next.processSync();
+        return next.process();
     }
 
-    void setCredential(HttpHeaders headers) {
+    void setCredential(Headers headers) {
         String credential = this.credential.getKey();
 //        headers.set(name, (prefix == null) ? credential : prefix + " " + credential);
     }

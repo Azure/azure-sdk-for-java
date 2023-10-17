@@ -3,23 +3,22 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.ContentType;
-import com.generic.core.http.HttpHeader;
+import com.generic.core.http.HttpPipelineNextPolicy;
+import com.generic.core.models.ContentType;
+import com.generic.core.models.Headers;
 import com.generic.core.http.HttpHeaderName;
-import com.generic.core.http.HttpHeaders;
-import com.generic.core.http.HttpPipelineCallContext;
-import com.generic.core.http.HttpPipelineNextSyncPolicy;
-import com.generic.core.http.HttpRequest;
-import com.generic.core.http.HttpResponse;
+import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.util.BinaryData;
-import com.generic.core.util.Context;
+import com.generic.core.models.Context;
 import com.generic.core.util.CoreUtils;
+import com.generic.core.models.Header;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.logging.LogLevel;
 import com.generic.core.util.logging.LoggingEventBuilder;
 
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Locale;
@@ -99,10 +98,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+    public HttpResponse process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         // No logging will be performed, trigger a no-op.
         if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
-            return next.processSync();
+            return next.process();
         }
 
         final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
@@ -110,7 +109,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         requestLogger.logRequestSync(logger, getRequestLoggingOptions(context));
         try {
-            HttpResponse response = next.processSync();
+            HttpResponse response = next.process();
             if (response != null) {
                 response = responseLogger.logResponseSync(
                     logger, getResponseLoggingOptions(response, startNs, context));
@@ -296,9 +295,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
      */
-    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers,
+    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, Headers headers,
         LoggingEventBuilder logBuilder) {
-        for (HttpHeader header : headers) {
+        for (Header header : headers) {
             String headerName = header.getName();
             logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))
                 ? header.getValue() : REDACTED_PLACEHOLDER);
@@ -337,7 +336,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param headers HTTP headers that are checked for containing Content-Length.
      * @return
      */
-    private static long getContentLength(ClientLogger logger, HttpHeaders headers) {
+    private static long getContentLength(ClientLogger logger, Headers headers) {
         long contentLength = 0;
 
         String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
@@ -441,18 +440,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        @Deprecated
-        public String getHeaderValue(String name) {
-            return actualResponse.getHeaderValue(name);
-        }
-
-        @Override
         public String getHeaderValue(HttpHeaderName headerName) {
             return actualResponse.getHeaderValue(headerName);
         }
 
         @Override
-        public HttpHeaders getHeaders() {
+        public Headers getHeaders() {
             return actualResponse.getHeaders();
         }
 

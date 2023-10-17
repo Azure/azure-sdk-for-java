@@ -3,8 +3,8 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.HttpResponse;
-import com.generic.core.util.Context;
+import com.generic.core.http.models.HttpResponse;
+import com.generic.core.models.Context;
 
 import java.time.Duration;
 

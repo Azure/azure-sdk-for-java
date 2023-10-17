@@ -3,7 +3,7 @@
 
 package com.generic.core.exception;
 
-import com.generic.core.http.HttpResponse;
+import com.generic.core.http.models.HttpResponse;
 
 /**
  * The exception thrown when HTTP request tried to create an already existing resource with status code of 4XX,

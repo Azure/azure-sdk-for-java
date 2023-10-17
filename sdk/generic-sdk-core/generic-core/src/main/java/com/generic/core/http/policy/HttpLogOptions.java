@@ -3,8 +3,6 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.util.ClientOptions;
-import com.generic.core.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.Arrays;
@@ -171,44 +169,6 @@ public class HttpLogOptions {
         this.getClass().getName();
         return this;
 
-    }
-
-    /**
-     * Gets the application specific id.
-     *
-     * @return The application specific id.
-     * @deprecated Use {@link ClientOptions} to configure {@code applicationId}.
-     */
-    @Deprecated
-    public String getApplicationId() {
-        return applicationId;
-    }
-
-    /**
-     * Sets the custom application specific id supplied by the user of the client library.
-     *
-     * @param applicationId The user specified application id.
-     *
-     * @return The updated HttpLogOptions object.
-     *
-     * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
-     * length.
-     *
-     * @deprecated Use {@link ClientOptions} to configure {@code applicationId}.
-     */
-    @Deprecated
-    public HttpLogOptions setApplicationId(final String applicationId) {
-        if (!CoreUtils.isNullOrEmpty(applicationId)) {
-            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
-            } else if (applicationId.contains(" ")) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
-            }
-        }
-
-        this.applicationId = applicationId;
-
-        return this;
     }
 
     /**

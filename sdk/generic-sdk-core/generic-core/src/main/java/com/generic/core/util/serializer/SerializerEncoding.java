@@ -4,7 +4,7 @@
 package com.generic.core.util.serializer;
 
 import com.generic.core.http.HttpHeaderName;
-import com.generic.core.http.HttpHeaders;
+import com.generic.core.models.Headers;
 import com.generic.core.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 
@@ -56,7 +56,7 @@ public enum SerializerEncoding {
      * @return the serializer encoding to use for the body. {@link #JSON} if there is no Content-Type header or an
      * unrecognized Content-Type encoding is returned.
      */
-    public static SerializerEncoding fromHeaders(HttpHeaders headers) {
+    public static SerializerEncoding fromHeaders(Headers headers) {
         final String mimeContentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
         if (CoreUtils.isNullOrEmpty(mimeContentType)) {
             LOGGER.warning("'{}' not found. Returning default encoding: {}", CONTENT_TYPE, DEFAULT_ENCODING);

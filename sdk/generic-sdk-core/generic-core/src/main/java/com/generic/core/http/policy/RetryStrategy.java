@@ -3,7 +3,7 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.HttpResponse;
+import com.generic.core.http.models.HttpResponse;
 
 import java.net.HttpURLConnection;
 import java.time.Duration;

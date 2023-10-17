@@ -5,9 +5,9 @@ package com.generic.core.http.policy;
 
 import com.generic.core.http.HttpHeaderName;
 import com.generic.core.http.HttpMethod;
-import com.generic.core.http.HttpPipelineCallContext;
-import com.generic.core.http.HttpRequest;
-import com.generic.core.http.HttpResponse;
+import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 

@@ -3,8 +3,12 @@
 
 package com.generic.core.http;
 
+import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.policy.HttpPipelinePolicy;
-import com.generic.core.util.Context;
+import com.generic.core.implementation.serializer.http.HttpPipelineCallState;
+import com.generic.core.models.Context;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +27,7 @@ public final class HttpPipeline {
 
     /**
      * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through {@link
-     * HttpPipeline#sendSync(HttpRequest, Context)} and it's response.
+     * HttpPipeline#send(HttpRequest, Context)} and it's response.
      *
      * @param httpClient       the http client to write request to wire and receive response from wire.
      * @param pipelinePolicies pipeline policies in the order they need to be applied, a copy of this array will be made
@@ -72,8 +76,9 @@ public final class HttpPipeline {
      * @return A publisher upon subscription flows the context through policies, sends the request, and emits response
      * upon completion.
      */
-    public HttpResponse sendSync(HttpRequest request, Context data) {
-        HttpPipelineNextSyncPolicy next = new HttpPipelineNextSyncPolicy();
-        return next.processSync();
+    public HttpResponse send(HttpRequest request, Context data) {
+        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(
+            new HttpPipelineCallState(this, new HttpPipelineCallContext(request, data)));
+        return next.process();
     }
 }

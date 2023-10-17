@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.generic.core.http.rest;
 
-import com.generic.core.http.HttpHeaders;
-import com.generic.core.http.HttpRequest;
+import com.generic.core.models.Headers;
+import com.generic.core.http.models.HttpRequest;
 
 /**
  * The response of a REST request.
@@ -15,7 +15,7 @@ public class ResponseBase<H, T> implements Response<T> {
     private final HttpRequest request;
     private final int statusCode;
     private final H deserializedHeaders;
-    private final HttpHeaders headers;
+    private final Headers headers;
     private final T value;
 
     /**
@@ -27,7 +27,7 @@ public class ResponseBase<H, T> implements Response<T> {
      * @param deserializedHeaders The deserialized headers of the HTTP response.
      * @param value The deserialized value of the HTTP response.
      */
-    public ResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, T value, H deserializedHeaders) {
+    public ResponseBase(HttpRequest request, int statusCode, Headers headers, T value, H deserializedHeaders) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
@@ -57,7 +57,7 @@ public class ResponseBase<H, T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
-    public HttpHeaders getHeaders() {
+    public Headers getHeaders() {
         return headers;
     }
 
