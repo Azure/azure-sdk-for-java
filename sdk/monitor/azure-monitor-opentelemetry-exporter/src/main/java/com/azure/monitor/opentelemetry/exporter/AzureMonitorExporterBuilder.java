@@ -283,7 +283,7 @@ public final class AzureMonitorExporterBuilder {
         ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
         internalBuildAndFreeze(defaultConfig);
         // TODO (trask) how to pass along configuration properties?
-        return buildLogRecordExporter(DefaultConfigProperties.create(Collections.emptyMap()));
+        return buildLogRecordExporter(defaultConfig);
     }
 
     /**
