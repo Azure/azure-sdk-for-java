@@ -358,9 +358,7 @@ public final class AzureMonitorExporterBuilder {
             builtHttpPipeline = createHttpPipeline();
             StatsbeatModule statsbeatModule = initStatsbeatModule(configProperties);
             builtTelemetryItemExporter = createTelemetryItemExporter(statsbeatModule);
-            if (statsbeatModule != null) {
-                startStatsbeatModule(statsbeatModule, configProperties); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
-            }
+            startStatsbeatModule(statsbeatModule, configProperties); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
             frozen = true;
         }
     }
@@ -464,14 +462,8 @@ public final class AzureMonitorExporterBuilder {
             .build();
     }
 
-    @Nullable
     private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
-        StatsbeatModule statsbeatModule = null;
-        if (getConnectionString(configProperties) != null) {
-            statsbeatModule = new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
-
-        }
-        return statsbeatModule;
+        return new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
     }
 
     private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties) {
