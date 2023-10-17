@@ -20,13 +20,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
 import reactor.core.publisher.Mono;
@@ -67,9 +69,31 @@ public class HttpFaultInjectingTests {
     private static final HttpHeaderName HTTP_FAULT_INJECTOR_RESPONSE_HEADER
         = HttpHeaderName.fromString("x-ms-faultinjector-response-option");
 
+    private BlobContainerClient containerClient;
+
+    @BeforeEach
+    public void setup() {
+        String testName = "httpFaultInjectingTests" + CoreUtils.randomUuid().toString().replace("-", "");
+        containerClient = new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .httpClient(BlobTestBase.getHttpClient(() -> {
+                throw new RuntimeException("Test should not run during playback.");
+            }))
+            .buildClient()
+            .createBlobContainer(testName);
+    }
+
+    @AfterEach
+    public void teardown() {
+        if (containerClient != null) {
+            containerClient.delete();
+        }
+    }
+
     /**
      * Tests downloading to file with fault injection.
-     *
+     * <p>
      * This test will upload a single blob of about 9MB and then download it in parallel 500 times. Each download will
      * have its file contents compared to the original blob data. The test only cares about files that were properly
      * downloaded, if a download fails with a network error it will be ignored. A requirement of 90% of files being
@@ -81,22 +105,13 @@ public class HttpFaultInjectingTests {
         byte[] realFileBytes = new byte[9 * Constants.MB - 1];
         ThreadLocalRandom.current().nextBytes(realFileBytes);
 
-        String testName = "httpFaultInjectingTests" + CoreUtils.randomUuid();
-        BlobContainerClient cc = new BlobContainerClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .containerName(testName)
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .httpClient(BlobTestBase.getHttpClient(() -> {
-                throw new RuntimeException("Test should not run during playback.");
-            }))
-            .buildClient();
-
-        cc.getBlobClient(testName).upload(BinaryData.fromBytes(realFileBytes), true);
+        containerClient.getBlobClient(containerClient.getBlobContainerName())
+            .upload(BinaryData.fromBytes(realFileBytes), true);
 
         BlobClient downloadClient = new BlobClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .containerName(cc.getBlobContainerName())
-            .blobName(testName)
+            .containerName(containerClient.getBlobContainerName())
+            .blobName(containerClient.getBlobContainerName())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
             .httpClient(new HttpFaultInjectingHttpClient(getFaultInjectingWrappedHttpClient()))
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 4, null, 10L, 10L, null))
@@ -127,8 +142,8 @@ public class HttpFaultInjectingTests {
                 Files.deleteIfExists(it.toPath());
             } catch (Exception ex) {
                 // Don't let network exceptions fail the download
-                LOGGER.atWarning().log(() -> "Failed to complete download, target download file: "
-                                             + it.getAbsolutePath(), ex);
+                LOGGER.atWarning()
+                    .log(() -> "Failed to complete download, target download file: " + it.getAbsolutePath(), ex);
             }
 
             return null;
