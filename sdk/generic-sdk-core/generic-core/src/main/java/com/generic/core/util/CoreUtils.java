@@ -4,6 +4,7 @@
 package com.generic.core.util;
 
 import com.generic.core.http.policy.HttpLogOptions;
+import com.generic.core.models.ClientOptions;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.io.IOException;
@@ -216,15 +217,12 @@ public final class CoreUtils {
      * {@code clientOptions} is checked first as {@code logOptions} application ID is deprecated.
      *
      * @param clientOptions The {@link ClientOptions}.
-     * @param logOptions The {@link HttpLogOptions}.
      * @return The application ID from either {@code clientOptions} or {@code logOptions}, if neither are set null.
      */
     @SuppressWarnings("deprecation")
-    public static String getApplicationId(ClientOptions clientOptions, HttpLogOptions logOptions) {
+    public static String getApplicationId(ClientOptions clientOptions) {
         if (clientOptions != null && !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())) {
             return clientOptions.getApplicationId();
-        } else if (logOptions != null && !CoreUtils.isNullOrEmpty(logOptions.getApplicationId())) {
-            return logOptions.getApplicationId();
         } else {
             return null;
         }
