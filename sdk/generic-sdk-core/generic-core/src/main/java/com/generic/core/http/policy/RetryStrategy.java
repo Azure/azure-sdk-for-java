@@ -9,7 +9,7 @@ import java.net.HttpURLConnection;
 import java.time.Duration;
 
 /**
- * The interface for determining the retry strategy used in {@link RetryPolicy}.
+ * The interface for determining the retry strategy of clients.
  */
 public interface RetryStrategy {
 
