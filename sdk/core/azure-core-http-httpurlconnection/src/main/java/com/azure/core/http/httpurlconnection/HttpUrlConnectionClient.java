@@ -319,8 +319,8 @@ public class HttpUrlConnectionClient implements HttpClient {
                 }
             }
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            try (InputStream errorStream = connection.getErrorStream()) {
-                InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream;
+            try (InputStream errorStream = connection.getErrorStream();
+                 InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream) {
                 byte[] buffer = new byte[1024];
                 int length;
                 while ((length = inputStream.read(buffer)) != -1) {
