@@ -14,21 +14,6 @@ import static com.azure.json.JsonToken.END_DOCUMENT;
  * but it may also make it harder to use.
  */
 public class JsonBuilder {
-    /**
-     *
-     * @return
-     */
-    public JsonArray createArray() {
-        return new JsonArray();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public JsonObject createObject() {
-        return new JsonObject();
-    }
 
     /**
      * Deserialize a JSON string into a JsonElement. There are overloads for byte[] arrays, InputStreams, and Readers
@@ -38,7 +23,7 @@ public class JsonBuilder {
      * ready to interact with
      * @throws IOException if the JSON string is invalid
      */
-    public JsonElement deserialize(String json) throws IOException {
+    public JsonElement build(String json) throws IOException {
         return this.buildOutput(JsonProviders.createReader(json));
     }
 
@@ -48,7 +33,7 @@ public class JsonBuilder {
      * @return
      * @throws IOException
      */
-    public JsonElement deserialize(byte[] json) throws IOException {
+    public JsonElement build(byte[] json) throws IOException {
         return this.buildOutput(JsonProviders.createReader(json));
     }
 
@@ -58,7 +43,7 @@ public class JsonBuilder {
      * @return
      * @throws IOException
      */
-    public JsonElement deserialize(InputStream json) throws IOException {
+    public JsonElement build(InputStream json) throws IOException {
         return this.buildOutput(JsonProviders.createReader(json));
     }
 
@@ -68,7 +53,7 @@ public class JsonBuilder {
      * @return
      * @throws IOException
      */
-    public JsonElement deserialize(Reader json) throws IOException {
+    public JsonElement build(Reader json) throws IOException {
         return this.buildOutput(JsonProviders.createReader(json));
     }
 
