@@ -49,6 +49,12 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .getPurchasedPhoneNumber(phoneNumber);
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
+        assertNotNull(number.getAssignmentType());
+        assertNotNull(number.getCapabilities());
+        assertNotNull(number.getCost());
+        assertNotNull(number.getId());
+        assertNotNull(number.getPhoneNumberType());
+        assertNotNull(number.getPurchaseDate());
     }
 
     @ParameterizedTest
@@ -60,6 +66,12 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .getPurchasedPhoneNumber(phoneNumber);
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
+        assertNotNull(number.getAssignmentType());
+        assertNotNull(number.getCapabilities());
+        assertNotNull(number.getCost());
+        assertNotNull(number.getId());
+        assertNotNull(number.getPhoneNumberType());
+        assertNotNull(number.getPurchaseDate());
     }
 
     @ParameterizedTest
@@ -73,6 +85,12 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertEquals(200, response.getStatusCode());
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
+        assertNotNull(number.getAssignmentType());
+        assertNotNull(number.getCapabilities());
+        assertNotNull(number.getCost());
+        assertNotNull(number.getId());
+        assertNotNull(number.getPhoneNumberType());
+        assertNotNull(number.getPurchaseDate());
     }
 
     @ParameterizedTest
@@ -84,6 +102,12 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PurchasedPhoneNumber number = numbers.iterator().next();
         assertNotNull(number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
+        assertNotNull(number.getAssignmentType());
+        assertNotNull(number.getCapabilities());
+        assertNotNull(number.getCost());
+        assertNotNull(number.getId());
+        assertNotNull(number.getPhoneNumberType());
+        assertNotNull(number.getPurchaseDate());
     }
 
     @ParameterizedTest
@@ -94,6 +118,12 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PurchasedPhoneNumber number = numbers.iterator().next();
         assertNotNull(number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
+        assertNotNull(number.getAssignmentType());
+        assertNotNull(number.getCapabilities());
+        assertNotNull(number.getCost());
+        assertNotNull(number.getId());
+        assertNotNull(number.getPhoneNumberType());
+        assertNotNull(number.getPurchaseDate());
     }
 
     @ParameterizedTest
@@ -212,6 +242,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .getClientWithConnectionString(httpClient, "listAvailableCountries").listAvailableCountries();
         PhoneNumberCountry country = countriesResult.iterator().next();
         assertNotNull(country);
+        assertNotNull(country.getCountryCode());
+        assertNotNull(country.getLocalizedName());
     }
 
     @ParameterizedTest
@@ -246,6 +278,10 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .listAvailableOfferings("US", null, null);
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
+        assertNotNull(offering.getAssignmentType());
+        assertNotNull(offering.getAvailableCapabilities());
+        assertNotNull(offering.getCost());
+        assertNotNull(offering.getPhoneNumberType());
     }
 
     @ParameterizedTest
@@ -281,6 +317,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .getClientWithManagedIdentity(httpClient, "listAvailableCountries").listAvailableCountries();
         PhoneNumberCountry country = countriesResult.iterator().next();
         assertNotNull(country);
+        assertNotNull(country.getCountryCode());
+        assertNotNull(country.getLocalizedName());
     }
 
     @ParameterizedTest
@@ -318,6 +356,10 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .listAvailableOfferings("US", null, null);
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
+        assertNotNull(offering.getAssignmentType());
+        assertNotNull(offering.getAvailableCapabilities());
+        assertNotNull(offering.getCost());
+        assertNotNull(offering.getPhoneNumberType());
     }
 
     private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(
