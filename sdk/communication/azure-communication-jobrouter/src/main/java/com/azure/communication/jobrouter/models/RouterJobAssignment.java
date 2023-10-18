@@ -4,61 +4,73 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Assignment details of a job to a worker. */
-@Fluent
+@Immutable
 public final class RouterJobAssignment {
     /*
      * The Id of the job assignment.
      */
-    @JsonProperty(value = "assignmentId", required = true)
+    @Generated
+    @JsonProperty(value = "assignmentId")
     private String assignmentId;
 
     /*
      * The Id of the Worker assigned to the job.
      */
+    @Generated
     @JsonProperty(value = "workerId")
     private String workerId;
 
     /*
      * The assignment time of the job in UTC.
      */
-    @JsonProperty(value = "assignedAt", required = true)
+    @Generated
+    @JsonProperty(value = "assignedAt")
     private OffsetDateTime assignedAt;
 
     /*
      * The time the job was marked as completed after being assigned in UTC.
      */
+    @Generated
     @JsonProperty(value = "completedAt")
     private OffsetDateTime completedAt;
 
     /*
      * The time the job was marked as closed after being completed in UTC.
      */
+    @Generated
     @JsonProperty(value = "closedAt")
     private OffsetDateTime closedAt;
+
+    /**
+     * Creates an instance of RouterJobAssignment class.
+     *
+     * @param assignmentId the assignmentId value to set.
+     * @param assignedAt the assignedAt value to set.
+     */
+    @Generated
+    @JsonCreator
+    private RouterJobAssignment(
+            @JsonProperty(value = "assignmentId") String assignmentId,
+            @JsonProperty(value = "assignedAt") OffsetDateTime assignedAt) {
+        this.assignmentId = assignmentId;
+        this.assignedAt = assignedAt;
+    }
 
     /**
      * Get the assignmentId property: The Id of the job assignment.
      *
      * @return the assignmentId value.
      */
+    @Generated
     public String getAssignmentId() {
         return this.assignmentId;
-    }
-
-    /**
-     * Set the assignmentId property: The Id of the job assignment.
-     *
-     * @param assignmentId the assignmentId value to set.
-     * @return the RouterJobAssignment object itself.
-     */
-    public RouterJobAssignment setAssignmentId(String assignmentId) {
-        this.assignmentId = assignmentId;
-        return this;
     }
 
     /**
@@ -66,19 +78,9 @@ public final class RouterJobAssignment {
      *
      * @return the workerId value.
      */
+    @Generated
     public String getWorkerId() {
         return this.workerId;
-    }
-
-    /**
-     * Set the workerId property: The Id of the Worker assigned to the job.
-     *
-     * @param workerId the workerId value to set.
-     * @return the RouterJobAssignment object itself.
-     */
-    public RouterJobAssignment setWorkerId(String workerId) {
-        this.workerId = workerId;
-        return this;
     }
 
     /**
@@ -86,19 +88,9 @@ public final class RouterJobAssignment {
      *
      * @return the assignedAt value.
      */
+    @Generated
     public OffsetDateTime getAssignedAt() {
         return this.assignedAt;
-    }
-
-    /**
-     * Set the assignedAt property: The assignment time of the job in UTC.
-     *
-     * @param assignedAt the assignedAt value to set.
-     * @return the RouterJobAssignment object itself.
-     */
-    public RouterJobAssignment setAssignedAt(OffsetDateTime assignedAt) {
-        this.assignedAt = assignedAt;
-        return this;
     }
 
     /**
@@ -106,19 +98,9 @@ public final class RouterJobAssignment {
      *
      * @return the completedAt value.
      */
+    @Generated
     public OffsetDateTime getCompletedAt() {
         return this.completedAt;
-    }
-
-    /**
-     * Set the completedAt property: The time the job was marked as completed after being assigned in UTC.
-     *
-     * @param completedAt the completedAt value to set.
-     * @return the RouterJobAssignment object itself.
-     */
-    public RouterJobAssignment setCompletedAt(OffsetDateTime completedAt) {
-        this.completedAt = completedAt;
-        return this;
     }
 
     /**
@@ -126,18 +108,8 @@ public final class RouterJobAssignment {
      *
      * @return the closedAt value.
      */
+    @Generated
     public OffsetDateTime getClosedAt() {
         return this.closedAt;
-    }
-
-    /**
-     * Set the closedAt property: The time the job was marked as closed after being completed in UTC.
-     *
-     * @param closedAt the closedAt value to set.
-     * @return the RouterJobAssignment object itself.
-     */
-    public RouterJobAssignment setClosedAt(OffsetDateTime closedAt) {
-        this.closedAt = closedAt;
-        return this;
     }
 }

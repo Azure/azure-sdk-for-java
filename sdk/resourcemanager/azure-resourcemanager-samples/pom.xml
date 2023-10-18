@@ -157,7 +157,7 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+      <version>4.8.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -209,7 +209,7 @@
                 <include>com.microsoft.sqlserver:mssql-jdbc:[10.2.3.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>org.eclipse.jgit:org.eclipse.jgit:[4.5.7.201904151645-r]</include> <!-- {x-include-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
                 <include>commons-net:commons-net:[3.9.0]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
-                <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+                <include>com.github.spotbugs:spotbugs-annotations:[4.8.0]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

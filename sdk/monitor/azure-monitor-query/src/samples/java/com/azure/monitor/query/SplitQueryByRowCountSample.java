@@ -116,7 +116,7 @@ public class SplitQueryByRowCountSample {
         List<LogsTableRow> logsTablesRows = new ArrayList<>();
         List<LogsTableColumn> logsTablesColumns = new ArrayList<>();
         for (LogsBatchQueryResult batchQueryResult : batchQueryResults) {
-            for(LogsTable logsTable: batchQueryResult.getAllTables()) {
+            for (LogsTable logsTable: batchQueryResult.getAllTables()) {
                 logsTablesCells.addAll(logsTable.getAllTableCells());
                 logsTablesRows.addAll(logsTable.getRows());
                 logsTablesColumns.addAll(logsTable.getColumns());

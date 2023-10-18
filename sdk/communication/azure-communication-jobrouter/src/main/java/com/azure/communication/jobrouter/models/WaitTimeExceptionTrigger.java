@@ -4,7 +4,9 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -12,28 +14,32 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Trigger for an exception action on exceeding wait time. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("wait-time")
-@Fluent
+@Immutable
 public final class WaitTimeExceptionTrigger extends ExceptionTrigger {
-    /**
-     * Creates an instance of WaitTimeExceptionTrigger class.
-     *
-     * @param thresholdSeconds Threshold for wait time for this trigger.
-     */
-    public WaitTimeExceptionTrigger(double thresholdSeconds) {
-        this.thresholdSeconds = thresholdSeconds;
-    }
-
     /*
      * Threshold for wait time for this trigger.
      */
-    @JsonProperty(value = "thresholdSeconds", required = true)
-    private final double thresholdSeconds;
+    @Generated
+    @JsonProperty(value = "thresholdSeconds")
+    private double thresholdSeconds;
+
+    /**
+     * Creates an instance of WaitTimeExceptionTrigger class.
+     *
+     * @param thresholdSeconds the thresholdSeconds value to set.
+     */
+    @Generated
+    @JsonCreator
+    public WaitTimeExceptionTrigger(@JsonProperty(value = "thresholdSeconds") double thresholdSeconds) {
+        this.thresholdSeconds = thresholdSeconds;
+    }
 
     /**
      * Get the thresholdSeconds property: Threshold for wait time for this trigger.
      *
      * @return the thresholdSeconds value.
      */
+    @Generated
     public double getThresholdSeconds() {
         return this.thresholdSeconds;
     }
