@@ -2232,7 +2232,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         DataLakeFileSystemClient aadFsClient =
             getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
                 .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-                .audience(DataLakeAudience.getDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
+                .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
                 .buildClient();
 
         assertTrue(aadFsClient.exists());
@@ -2242,7 +2242,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     public void audienceError() {
         DataLakeFileSystemClient aadFsClient =
             getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
-                .audience(DataLakeAudience.getDataLakeServiceAccountAudience("badAudience"))
+                .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
                 .buildClient();
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadFsClient::exists);

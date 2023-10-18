@@ -3358,7 +3358,7 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(DataLakeAudience.getDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
             .buildFileClient();
 
         assertTrue(aadFileClient.exists());
@@ -3369,7 +3369,7 @@ public class FileApiTest extends DataLakeTestBase {
         DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(DataLakeAudience.getDataLakeServiceAccountAudience("badAudience"))
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
             .buildFileClient();
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadFileClient::exists);

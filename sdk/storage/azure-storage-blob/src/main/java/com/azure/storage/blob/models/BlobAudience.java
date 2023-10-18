@@ -17,7 +17,7 @@ public class BlobAudience extends ExpandableStringEnum<BlobAudience> {
      * Gets default Audience used to acquire a token for authorizing requests to any Azure Storage account.
      * If no audience is specified, this resource ID is the default value: "https://storage.azure.com/".
      */
-    public static final BlobAudience PUBLIC_AUDIENCE = fromString("https://storage.azure.com/");
+    public static final BlobAudience AZURE_PUBLIC_CLOUD = fromString("https://storage.azure.com/");
 
     /**
      * Creates a new instance of {@link BlobAudience} without a {@link #toString()} value.
@@ -37,7 +37,7 @@ public class BlobAudience extends ExpandableStringEnum<BlobAudience> {
      * @param storageAccountName The storage account name used to populate the service endpoint.
      * @return the audience with the blob service endpoint.
      */
-    public static BlobAudience getBlobServiceAccountAudience(String storageAccountName) {
+    public static BlobAudience createBlobServiceAccountAudience(String storageAccountName) {
         return fromString(String.format("https://%s.blob.core.windows.net/", storageAccountName));
     }
 

@@ -17,7 +17,7 @@ public class ShareAudience extends ExpandableStringEnum<ShareAudience> {
      * Gets default Audience used to acquire a token for authorizing requests to any Azure Storage account.
      * If no audience is specified, this resource ID is the default value: "https://storage.azure.com/".
      */
-    public static final ShareAudience PUBLIC_AUDIENCE = fromString("https://storage.azure.com/");
+    public static final ShareAudience AZURE_PUBLIC_CLOUD = fromString("https://storage.azure.com/");
 
     /**
      * Creates a new instance of {@link ShareAudience} without a {@link #toString()} value.
@@ -38,7 +38,7 @@ public class ShareAudience extends ExpandableStringEnum<ShareAudience> {
      * @param storageAccountName The storage account name used to populate the service endpoint.
      * @return the audience with the file service endpoint.
      */
-    public static ShareAudience getShareServiceAccountAudience(String storageAccountName) {
+    public static ShareAudience createShareServiceAccountAudience(String storageAccountName) {
         return fromString(String.format("https://%s.file.core.windows.net/", storageAccountName));
     }
 

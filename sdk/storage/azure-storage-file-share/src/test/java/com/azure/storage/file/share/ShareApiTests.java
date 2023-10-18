@@ -1192,7 +1192,7 @@ public class ShareApiTests extends FileShareTestBase {
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
             .shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
-            .audience(ShareAudience.getShareServiceAccountAudience(primaryShareClient.getAccountName()))
+            .audience(ShareAudience.createShareServiceAccountAudience(primaryShareClient.getAccountName()))
             .buildClient();
 
         String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
@@ -1209,7 +1209,7 @@ public class ShareApiTests extends FileShareTestBase {
         ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
             .shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
-            .audience(ShareAudience.getShareServiceAccountAudience("badaudience"))
+            .audience(ShareAudience.createShareServiceAccountAudience("badaudience"))
             .buildClient();
 
         String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"

@@ -18,7 +18,7 @@ public class QueueAudience extends ExpandableStringEnum<QueueAudience> {
      * Gets default Audience used to acquire a token for authorizing requests to any Azure Storage account.
      * If no audience is specified, this resource ID is the default value: "https://storage.azure.com/".
      */
-    public static final QueueAudience PUBLIC_AUDIENCE = fromString("https://storage.azure.com/");
+    public static final QueueAudience AZURE_PUBLIC_CLOUD = fromString("https://storage.azure.com/");
 
     /**
      * Creates a new instance of {@link QueueAudience} without a {@link #toString()} value.
@@ -39,7 +39,7 @@ public class QueueAudience extends ExpandableStringEnum<QueueAudience> {
      * @param storageAccountName The storage account name used to populate the service endpoint.
      * @return the audience with the queue service endpoint.
      */
-    public static QueueAudience getShareServiceAccountAudience(String storageAccountName) {
+    public static QueueAudience createQueueServiceAccountAudience(String storageAccountName) {
         return fromString(String.format("https://%s.queue.core.windows.net/", storageAccountName));
     }
 

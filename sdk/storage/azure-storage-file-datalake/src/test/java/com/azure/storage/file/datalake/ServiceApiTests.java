@@ -710,7 +710,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     @Test
     public void storageAccountAudience() {
         DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .audience(DataLakeAudience.getDataLakeServiceAccountAudience(primaryDataLakeServiceClient.getAccountName()))
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(primaryDataLakeServiceClient.getAccountName()))
             .buildClient();
 
         assertNotNull(aadServiceClient.getProperties());
@@ -719,7 +719,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     @Test
     public void audienceError() {
         DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .audience(DataLakeAudience.getDataLakeServiceAccountAudience("badAudience"))
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
             .buildClient();
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadServiceClient::getProperties);

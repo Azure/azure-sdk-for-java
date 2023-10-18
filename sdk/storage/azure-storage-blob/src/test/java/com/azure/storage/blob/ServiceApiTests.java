@@ -1236,7 +1236,7 @@ public class ServiceApiTests extends BlobTestBase {
     @Test
     public void storageAccountAudience() {
         BlobServiceClient aadService = getServiceClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .audience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
             .buildClient();
 
         assertNotNull(aadService.getProperties() != null);
@@ -1247,7 +1247,7 @@ public class ServiceApiTests extends BlobTestBase {
         BlobServiceClient aadService = new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .credential(new MockTokenCredential())
-            .audience(BlobAudience.getBlobServiceAccountAudience("badAudience"))
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildClient();
 
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadService.getProperties());

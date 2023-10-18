@@ -2007,7 +2007,7 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void storageAccountAudience() {
         BlobContainerClient aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .audience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
             .buildClient();
 
         assertTrue(aadContainer.exists());
@@ -2017,7 +2017,7 @@ public class ContainerApiTests extends BlobTestBase {
     public void audienceError() {
         BlobContainerClient aadContainer = getContainerClientBuilder(cc.getBlobContainerUrl())
             .credential(new MockTokenCredential())
-            .audience(BlobAudience.getBlobServiceAccountAudience("badAudience"))
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildClient();
 
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadContainer.exists());

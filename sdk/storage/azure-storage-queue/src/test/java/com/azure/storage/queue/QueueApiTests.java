@@ -860,7 +860,7 @@ public class QueueApiTests extends QueueTestBase {
     public void storageAccountAudience() {
         queueClient.createIfNotExists();
         QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
-            .audience(QueueAudience.getShareServiceAccountAudience(queueClient.getAccountName()))
+            .audience(QueueAudience.createQueueServiceAccountAudience(queueClient.getAccountName()))
             .queueName(queueClient.getQueueName())
             .buildClient();
 
@@ -872,7 +872,7 @@ public class QueueApiTests extends QueueTestBase {
         queueClient.createIfNotExists();
         QueueClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
             .queueName(queueClient.getQueueName())
-            .audience(QueueAudience.getShareServiceAccountAudience("badaudience"))
+            .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildClient();
 
         QueueStorageException e = assertThrows(QueueStorageException.class, aadQueue::getProperties);

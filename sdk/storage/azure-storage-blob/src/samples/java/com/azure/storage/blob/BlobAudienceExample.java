@@ -22,7 +22,7 @@ public class BlobAudienceExample {
         /*
          * audience will look like: "https://<your storage account>.blob.core.windows.net"
          */
-        BlobAudience audience = BlobAudience.getBlobServiceAccountAudience(accountName);
+        BlobAudience audience = BlobAudience.createBlobServiceAccountAudience(accountName);
 
         /* The credential used is DefaultAzureCredential because it combines commonly used credentials
          * in deployment and development and chooses the credential to used based on its running environment.
@@ -70,7 +70,7 @@ public class BlobAudienceExample {
         The storage account name must be a valid name. If an incorrect storage account name is specified, authentication
         will fail.
          */
-        BlobAudience badAudience = BlobAudience.getBlobServiceAccountAudience("invalidAccount");
+        BlobAudience badAudience = BlobAudience.createBlobServiceAccountAudience("invalidAccount");
         BlobContainerClient badContainerClient = new BlobContainerClientBuilder()
             .endpoint(endpoint)
             .credential(tokenCredential)

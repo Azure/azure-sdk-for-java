@@ -18,7 +18,7 @@ public class DataLakeAudience extends ExpandableStringEnum<DataLakeAudience> {
      * Gets default Audience used to acquire a token for authorizing requests to any Azure Storage account.
      * If no audience is specified, this resource ID is the default value: "https://storage.azure.com/".
      */
-    public static final DataLakeAudience PUBLIC_AUDIENCE = fromString("https://storage.azure.com/");
+    public static final DataLakeAudience AZURE_PUBLIC_CLOUD = fromString("https://storage.azure.com/");
 
     /**
      * Creates a new instance of {@link DataLakeAudience} without a {@link #toString()} value.
@@ -39,7 +39,7 @@ public class DataLakeAudience extends ExpandableStringEnum<DataLakeAudience> {
      * @param storageAccountName The storage account name used to populate the service endpoint.
      * @return the audience with the datalake service endpoint.
      */
-    public static DataLakeAudience getDataLakeServiceAccountAudience(String storageAccountName) {
+    public static DataLakeAudience createDataLakeServiceAccountAudience(String storageAccountName) {
         return fromString(String.format("https://%s.blob.core.windows.net/", storageAccountName));
     }
 

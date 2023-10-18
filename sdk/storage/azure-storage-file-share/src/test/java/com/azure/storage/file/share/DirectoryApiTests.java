@@ -1659,7 +1659,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(ShareAudience.getShareServiceAccountAudience(primaryDirectoryClient.getAccountName())));
+                .audience(ShareAudience.createShareServiceAccountAudience(primaryDirectoryClient.getAccountName())));
 
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         assertTrue(aadDirClient.exists());
@@ -1673,7 +1673,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(ShareAudience.getShareServiceAccountAudience("badAudience")));
+                .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
 
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         ShareStorageException e = assertThrows(ShareStorageException.class, aadDirClient::exists);

@@ -1655,7 +1655,7 @@ public class PageBlobApiTests extends BlobTestBase {
     @Test
     public void storageAccountAudience() {
         PageBlobClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
-            .audience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
             .buildPageBlobClient();
 
         assertTrue(aadBlob.exists());
@@ -1666,7 +1666,7 @@ public class PageBlobApiTests extends BlobTestBase {
         PageBlobClient aadBlob = new SpecializedBlobClientBuilder()
             .endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())
-            .audience(BlobAudience.getBlobServiceAccountAudience("badAudience"))
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildPageBlobClient();
 
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());

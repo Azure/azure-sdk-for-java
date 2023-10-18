@@ -3408,7 +3408,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(DataLakeAudience.getDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
             .buildDirectoryClient();
 
         assertTrue(aadDirClient.exists());
@@ -3419,7 +3419,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
             .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(DataLakeAudience.getDataLakeServiceAccountAudience("badAudience"))
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
             .buildDirectoryClient();
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadDirClient::exists);

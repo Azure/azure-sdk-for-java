@@ -2676,7 +2676,7 @@ class FileApiTests extends FileShareTestBase {
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(ShareAudience.getShareServiceAccountAudience(shareClient.getAccountName())));
+                .audience(ShareAudience.createShareServiceAccountAudience(shareClient.getAccountName())));
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         assertTrue(aadFileClient.exists());
@@ -2690,7 +2690,7 @@ class FileApiTests extends FileShareTestBase {
         ShareServiceClient oAuthServiceClient =
             getOAuthServiceClient(new ShareServiceClientBuilder()
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(ShareAudience.getShareServiceAccountAudience("badAudience")));
+                .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         ShareStorageException e = assertThrows(ShareStorageException.class, aadFileClient::exists);

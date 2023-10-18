@@ -2,7 +2,6 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
 
 import java.util.Locale;
@@ -22,7 +21,7 @@ public class DataLakeAudienceExample {
         /*
          * audience will look like: "https://<your storage account>.blob.core.windows.net"
          */
-        DataLakeAudience audience = DataLakeAudience.getDataLakeServiceAccountAudience(accountName);
+        DataLakeAudience audience = DataLakeAudience.createDataLakeServiceAccountAudience(accountName);
 
         /* The credential used is DefaultAzureCredential because it combines commonly used credentials
          * in deployment and development and chooses the credential to used based on its running environment.
@@ -72,7 +71,7 @@ public class DataLakeAudienceExample {
         The storage account name must be a valid name. If an incorrect storage account name is specified, authentication
         will fail.
          */
-        DataLakeAudience badAudience = DataLakeAudience.getDataLakeServiceAccountAudience("invalidAccount");
+        DataLakeAudience badAudience = DataLakeAudience.createDataLakeServiceAccountAudience("invalidAccount");
         DataLakeFileSystemClient badFileSystemClient = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .credential(tokenCredential)

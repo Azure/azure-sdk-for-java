@@ -2978,7 +2978,7 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void storageAccountAudience() {
         BlobClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
-            .audience(BlobAudience.getBlobServiceAccountAudience(cc.getAccountName()))
+            .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
             .buildClient();
 
         assertTrue(aadBlob.exists());
@@ -2988,7 +2988,7 @@ public class BlobApiTests extends BlobTestBase {
     public void audienceError() {
         BlobClient aadBlob = new BlobClientBuilder().endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())
-            .audience(BlobAudience.getBlobServiceAccountAudience("badAudience"))
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildClient();
 
         BlobStorageException e = assertThrows(BlobStorageException.class, aadBlob::exists);
