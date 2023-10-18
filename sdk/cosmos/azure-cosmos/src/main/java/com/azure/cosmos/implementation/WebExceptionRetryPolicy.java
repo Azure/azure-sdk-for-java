@@ -58,31 +58,30 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
                 this.request.setResponseTimeout(this.timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount).getResponseTimeout());
                 // Increase the retry count after calculating the delay
                 retryCount++;
-                if (logger.isDebugEnabled()) {
-                    logger
-                        .warn("WebExceptionRetryPolicy() Retrying on endpoint {}, operationType = {}, count = {}, " +
-                                "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
-                                "shouldForceCollectionRoutingMapRefresh = {}",
-                            this.locationEndpoint, this.request.getOperationType(), this.retryCount,
-                            this.request.isAddressRefresh(),
-                            this.request.shouldForceAddressRefresh(),
-                            this.request.forceCollectionRoutingMapRefresh);
-                }
+                logger
+                    .warn("WebExceptionRetryPolicy() Retrying on endpoint {}, operationType = {}, count = {}, " +
+                            "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
+                            "shouldForceCollectionRoutingMapRefresh = {}",
+                        this.locationEndpoint, this.request.getOperationType(), this.retryCount,
+                        this.request.isAddressRefresh(),
+                        this.request.shouldForceAddressRefresh(),
+                        this.request.forceCollectionRoutingMapRefresh);
+
 
                 return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(delayInSeconds)));
             }
         }
 
-        if (logger.isDebugEnabled()) {
-            logger
-                .warn(
-                    "WebExceptionRetryPolicy() No retrying on un-retryable exceptions on endpoint {}, operationType = {}, count = {}, " +
-                        "isAddressRefresh = {}",
-                    this.locationEndpoint,
-                    this.request.getOperationType(),
-                    this.retryCount,
-                    this.request.isAddressRefresh());
-        }
+
+        logger
+            .warn(
+                "WebExceptionRetryPolicy() No retrying on un-retryable exceptions on endpoint {}, operationType = {}, count = {}, " +
+                    "isAddressRefresh = {}",
+                this.locationEndpoint,
+                this.request.getOperationType(),
+                this.retryCount,
+                this.request.isAddressRefresh());
+
 
         this.durationTimer.stop();
         return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
