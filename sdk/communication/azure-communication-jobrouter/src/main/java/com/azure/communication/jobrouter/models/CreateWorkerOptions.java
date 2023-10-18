@@ -30,12 +30,12 @@ public final class CreateWorkerOptions {
      * A set of key/value pairs that are identifying attributes used by the
      * rules engines to make decisions.
      */
-    private Map<String, LabelValue> labels;
+    private Map<String, Object> labels;
 
     /**
      * A set of non-identifying attributes attached to this worker.
      */
-    private Map<String, LabelValue> tags;
+    private Map<String, Object> tags;
 
     /**
      * The channel(s) this worker can handle and their impact on the workers
@@ -76,7 +76,7 @@ public final class CreateWorkerOptions {
      * @param labels the labels value to set.
      * @return this
      */
-    public CreateWorkerOptions setLabels(Map<String, LabelValue> labels) {
+    public CreateWorkerOptions setLabels(Map<String, Object> labels) {
         this.labels = labels;
         return this;
     }
@@ -87,7 +87,7 @@ public final class CreateWorkerOptions {
      * @param tags the tags value to set.
      * @return this
      */
-    public CreateWorkerOptions setTags(Map<String, LabelValue> tags) {
+    public CreateWorkerOptions setTags(Map<String, Object> tags) {
         this.tags = tags;
         return this;
     }
@@ -143,7 +143,7 @@ public final class CreateWorkerOptions {
      * Returns labels.
      * @return labels
      */
-    public Map<String, LabelValue> getLabels() {
+    public Map<String, Object> getLabels() {
         return this.labels;
     }
 
@@ -151,7 +151,7 @@ public final class CreateWorkerOptions {
      * Returns tags.
      * @return tags
      */
-    public Map<String, LabelValue> getTags() {
+    public Map<String, Object> getTags() {
         return this.tags;
     }
 

@@ -80,7 +80,7 @@ public final class CallMediasImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/calling/callConnections/{callConnectionId}:StopTranscripition")
+        @Post("/calling/callConnections/{callConnectionId}:StopTranscription")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopTranscription(

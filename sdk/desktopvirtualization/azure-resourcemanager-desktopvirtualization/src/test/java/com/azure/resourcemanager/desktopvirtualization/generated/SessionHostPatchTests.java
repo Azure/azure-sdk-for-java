@@ -14,20 +14,20 @@ public final class SessionHostPatchTests {
         SessionHostPatch model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"allowNewSession\":true,\"assignedUser\":\"lr\",\"friendlyName\":\"yjmoadsu\"},\"id\":\"arm\",\"name\":\"wdmjsjqbjhhyx\",\"type\":\"rw\"}")
+                    "{\"properties\":{\"allowNewSession\":false,\"assignedUser\":\"zywkb\",\"friendlyName\":\"ryuzh\"},\"id\":\"hkjoqr\",\"name\":\"qqaatjinrvgou\",\"type\":\"mfiibfggj\"}")
                 .toObject(SessionHostPatch.class);
-        Assertions.assertEquals(true, model.allowNewSession());
-        Assertions.assertEquals("lr", model.assignedUser());
-        Assertions.assertEquals("yjmoadsu", model.friendlyName());
+        Assertions.assertEquals(false, model.allowNewSession());
+        Assertions.assertEquals("zywkb", model.assignedUser());
+        Assertions.assertEquals("ryuzh", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SessionHostPatch model =
-            new SessionHostPatch().withAllowNewSession(true).withAssignedUser("lr").withFriendlyName("yjmoadsu");
+            new SessionHostPatch().withAllowNewSession(false).withAssignedUser("zywkb").withFriendlyName("ryuzh");
         model = BinaryData.fromObject(model).toObject(SessionHostPatch.class);
-        Assertions.assertEquals(true, model.allowNewSession());
-        Assertions.assertEquals("lr", model.assignedUser());
-        Assertions.assertEquals("yjmoadsu", model.friendlyName());
+        Assertions.assertEquals(false, model.allowNewSession());
+        Assertions.assertEquals("zywkb", model.assignedUser());
+        Assertions.assertEquals("ryuzh", model.friendlyName());
     }
 }

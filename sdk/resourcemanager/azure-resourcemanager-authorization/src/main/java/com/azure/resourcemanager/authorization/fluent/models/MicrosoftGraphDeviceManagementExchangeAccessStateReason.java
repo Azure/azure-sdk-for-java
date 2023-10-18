@@ -72,6 +72,15 @@ public final class MicrosoftGraphDeviceManagementExchangeAccessStateReason
         fromString("deviceNotKnownWithManagedApp");
 
     /**
+     * Creates a new instance of MicrosoftGraphDeviceManagementExchangeAccessStateReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphDeviceManagementExchangeAccessStateReason() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphDeviceManagementExchangeAccessStateReason from its string representation.
      *
      * @param name a name to look for.

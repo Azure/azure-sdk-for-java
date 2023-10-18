@@ -18,6 +18,15 @@ public final class MicrosoftGraphSelectionLikelihoodInfo
     public static final MicrosoftGraphSelectionLikelihoodInfo HIGH = fromString("high");
 
     /**
+     * Creates a new instance of MicrosoftGraphSelectionLikelihoodInfo value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphSelectionLikelihoodInfo() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphSelectionLikelihoodInfo from its string representation.
      *
      * @param name a name to look for.

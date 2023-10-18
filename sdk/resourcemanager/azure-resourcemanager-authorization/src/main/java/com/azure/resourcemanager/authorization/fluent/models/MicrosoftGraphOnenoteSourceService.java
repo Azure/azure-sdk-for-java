@@ -24,6 +24,15 @@ public final class MicrosoftGraphOnenoteSourceService extends ExpandableStringEn
         fromString("OnPremOneDriveForBusiness");
 
     /**
+     * Creates a new instance of MicrosoftGraphOnenoteSourceService value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphOnenoteSourceService() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphOnenoteSourceService from its string representation.
      *
      * @param name a name to look for.
