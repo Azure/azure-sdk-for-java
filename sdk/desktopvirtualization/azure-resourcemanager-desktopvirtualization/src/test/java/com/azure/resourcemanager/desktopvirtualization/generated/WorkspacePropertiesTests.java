@@ -6,6 +6,7 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.WorkspaceProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,23 +16,26 @@ public final class WorkspacePropertiesTests {
         WorkspaceProperties model =
             BinaryData
                 .fromString(
-                    "{\"objectId\":\"jofxqe\",\"description\":\"jaeq\",\"friendlyName\":\"qjbasvms\",\"applicationGroupReferences\":[\"ulngsntn\",\"ybkzgcwr\",\"clxxwrljdo\",\"skcqvkocrcjd\"],\"cloudPcResource\":false}")
+                    "{\"objectId\":\"xzxtheo\",\"description\":\"si\",\"friendlyName\":\"evcciqihnhun\",\"applicationGroupReferences\":[\"jzrnf\",\"gxg\",\"spemvtzfk\",\"fublj\"],\"cloudPcResource\":true,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"qjhqjbas\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"jqul\",\"actionsRequired\":\"sntnbybkzgcw\"},\"provisioningState\":\"Deleting\"},\"id\":\"lxxwrljdouskc\",\"name\":\"vkocrcjdkwtn\",\"type\":\"xbnjbiksq\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"sainqpjwnzl\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ppeebvmgxsab\",\"actionsRequired\":\"qduujitcjczdz\"},\"provisioningState\":\"Creating\"},\"id\":\"dhkrwpdappdsbdk\",\"name\":\"wrwjfeu\",\"type\":\"nhutjeltmrldhugj\"}]}")
                 .toObject(WorkspaceProperties.class);
-        Assertions.assertEquals("jaeq", model.description());
-        Assertions.assertEquals("qjbasvms", model.friendlyName());
-        Assertions.assertEquals("ulngsntn", model.applicationGroupReferences().get(0));
+        Assertions.assertEquals("si", model.description());
+        Assertions.assertEquals("evcciqihnhun", model.friendlyName());
+        Assertions.assertEquals("jzrnf", model.applicationGroupReferences().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkspaceProperties model =
             new WorkspaceProperties()
-                .withDescription("jaeq")
-                .withFriendlyName("qjbasvms")
-                .withApplicationGroupReferences(Arrays.asList("ulngsntn", "ybkzgcwr", "clxxwrljdo", "skcqvkocrcjd"));
+                .withDescription("si")
+                .withFriendlyName("evcciqihnhun")
+                .withApplicationGroupReferences(Arrays.asList("jzrnf", "gxg", "spemvtzfk", "fublj"))
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(WorkspaceProperties.class);
-        Assertions.assertEquals("jaeq", model.description());
-        Assertions.assertEquals("qjbasvms", model.friendlyName());
-        Assertions.assertEquals("ulngsntn", model.applicationGroupReferences().get(0));
+        Assertions.assertEquals("si", model.description());
+        Assertions.assertEquals("evcciqihnhun", model.friendlyName());
+        Assertions.assertEquals("jzrnf", model.applicationGroupReferences().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 }

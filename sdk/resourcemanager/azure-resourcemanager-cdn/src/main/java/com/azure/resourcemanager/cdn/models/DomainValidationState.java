@@ -41,6 +41,15 @@ public final class DomainValidationState extends ExpandableStringEnum<DomainVali
     public static final DomainValidationState INTERNAL_ERROR = fromString("InternalError");
 
     /**
+     * Creates a new instance of DomainValidationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DomainValidationState() {
+    }
+
+    /**
      * Creates or finds a DomainValidationState from its string representation.
      *
      * @param name a name to look for.

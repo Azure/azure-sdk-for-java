@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * <p>Enables authentication to Azure Active Directory as the user signed in to Visual Studio Code via
+ * <p>Enables authentication to Microsoft Entra ID as the user signed in to Visual Studio Code via
  * the 'Azure Account' extension.</p>
  *
  * <p>It's a <a href="https://github.com/Azure/azure-sdk-for-java/issues/27364">known issue</a> that this credential

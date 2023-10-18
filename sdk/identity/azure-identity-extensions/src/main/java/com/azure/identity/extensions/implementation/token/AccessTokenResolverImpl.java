@@ -28,7 +28,7 @@ public class AccessTokenResolverImpl implements AccessTokenResolver {
 
     /**
      * Get a Publisher that emits a single access token.
-     * @param tokenCredential An AAD credential that acquires a token.
+     * @param tokenCredential A Microsoft Entra credential that acquires a token.
      * @return A Publisher that emits a single access token.
      */
     @Override

@@ -30,6 +30,15 @@ public final class MicrosoftGraphTeamsAsyncOperationType
     public static final MicrosoftGraphTeamsAsyncOperationType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphTeamsAsyncOperationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphTeamsAsyncOperationType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphTeamsAsyncOperationType from its string representation.
      *
      * @param name a name to look for.

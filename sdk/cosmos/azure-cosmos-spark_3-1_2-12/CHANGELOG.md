@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.24.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.23.0 (2023-10-09)
 
 #### Features Added
@@ -7,6 +17,7 @@
 
 #### Bugs Fixed
 * Fixed an issue with backpressure when using WriteStrategy `ItemBulkUpdate` - with this write strategy a Reactor operator `bufferTimeout` was used, which has issues when backpressure happens and can result in an error `verflowException: Could not emit buffer due to lack of requests`. See [PR 37072](https://github.com/Azure/azure-sdk-for-java/pull/37072)
+* Fixed misspelled authType from `ServicePrinciple` to `ServicePrincipal`. For back compatibility support, `ServicePrinciple` will still be supported in the config - See [PR 37121](https://github.com/Azure/azure-sdk-for-java/pull/37121)
 
 ### 4.22.0 (2023-09-19)
 
@@ -72,7 +83,7 @@
 ### 4.17.0 (2023-02-17)
 
 #### Features Added
-* Added Service Principle based AAD Auth - See [PR 32393](https://github.com/Azure/azure-sdk-for-java/pull/32393) and [PR 33449](https://github.com/Azure/azure-sdk-for-java/pull/33449)
+* Added Service Principal based AAD Auth - See [PR 32393](https://github.com/Azure/azure-sdk-for-java/pull/32393) and [PR 33449](https://github.com/Azure/azure-sdk-for-java/pull/33449)
 * Added capability to allow modification of throughput in Spark via `ALTER TABLE` or `ALTER DATABASE` command. - See [PR 33369](https://github.com/Azure/azure-sdk-for-java/pull/33369)
 
 #### Bugs Fixed

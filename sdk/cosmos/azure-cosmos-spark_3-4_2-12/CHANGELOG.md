@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.24.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.23.0 (2023-10-09)
 
 #### Features Added
@@ -7,6 +17,7 @@
 
 #### Bugs Fixed
 * Fixed an issue with backpressure when using WriteStrategy `ItemBulkUpdate` - with this write strategy a Reactor operator `bufferTimeout` was used, which has issues when backpressure happens and can result in an error `verflowException: Could not emit buffer due to lack of requests`. See [PR 37072](https://github.com/Azure/azure-sdk-for-java/pull/37072)
+* Fixed misspelled authType from `ServicePrinciple` to `ServicePrincipal`. For back compatibility support, `ServicePrinciple` will still be supported in the config - See [PR 37121](https://github.com/Azure/azure-sdk-for-java/pull/37121)
 
 ### 4.22.0 (2023-09-19)
 

@@ -23,6 +23,15 @@ public final class MicrosoftGraphOperationStatus extends ExpandableStringEnum<Mi
     public static final MicrosoftGraphOperationStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of MicrosoftGraphOperationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphOperationStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphOperationStatus from its string representation.
      *
      * @param name a name to look for.

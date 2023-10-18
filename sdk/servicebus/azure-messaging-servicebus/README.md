@@ -69,7 +69,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.14.4</version>
+    <version>7.14.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -89,7 +89,7 @@ First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.1</version>
+    <version>1.10.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

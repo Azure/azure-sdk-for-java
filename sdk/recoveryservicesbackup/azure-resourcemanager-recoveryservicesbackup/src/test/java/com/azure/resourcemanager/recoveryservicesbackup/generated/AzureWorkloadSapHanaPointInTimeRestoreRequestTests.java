@@ -64,6 +64,7 @@ public final class AzureWorkloadSapHanaPointInTimeRestoreRequestTests {
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-24T03:49:03Z"), model.pointInTime());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 /** Samples for ApplicationGroups Delete. */
 public final class ApplicationGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/ApplicationGroup_Delete.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ApplicationGroup_Delete.json
      */
     /**
      * Sample code: ApplicationGroup_Delete.

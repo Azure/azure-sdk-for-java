@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** Azure FirstParty Managed Certificate provided by other first party resource providers to enable HTTPS. */
 @Fluent
 public final class AzureFirstPartyManagedCertificate extends Certificate {
+    /** Creates an instance of AzureFirstPartyManagedCertificate class. */
+    public AzureFirstPartyManagedCertificate() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureFirstPartyManagedCertificate withType(SecretType type) {

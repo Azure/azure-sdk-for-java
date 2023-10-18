@@ -33,6 +33,10 @@ public final class ManagedRuleSetDefinitionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of ManagedRuleSetDefinitionInner class. */
+    public ManagedRuleSetDefinitionInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes managed rule set definition properties.
      *
