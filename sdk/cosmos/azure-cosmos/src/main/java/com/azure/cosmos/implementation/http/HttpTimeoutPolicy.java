@@ -24,7 +24,7 @@ public abstract class HttpTimeoutPolicy {
     }
 
     public int totalRetryCount() {
-        return timeoutAndDelaysList.size();
+        return timeoutAndDelaysList.size()-1;
     }
 
     public List<ResponseTimeoutAndDelays> getTimeoutAndDelaysList() {

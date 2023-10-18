@@ -177,7 +177,7 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
             .result(
                 FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
                     .delay(Duration.ofSeconds(66))
-                    .times(4) // make sure it will exhaust the local region retry
+                    .times(3) // make sure it will exhaust the local region retry
                     .build()
             )
             .build();
@@ -197,6 +197,89 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"multi-master"}, timeOut = 8 * TIMEOUT)
+    public void writeOperationRequestHttpTimeout() {
+
+        if (BridgeInternal
+            .getContextClient(this.cosmosAsyncClient)
+            .getConnectionPolicy()
+            .getConnectionMode() != ConnectionMode.GATEWAY) {
+            throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for GATEWAY mode");
+        }
+
+        TestItem newItem = TestItem.createNewItem();
+        this.cosmosAsyncContainer.createItem(newItem).block();
+        FaultInjectionRule requestHttpTimeoutRule = new FaultInjectionRuleBuilder("requestHttpTimeoutRule" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                    .delay(Duration.ofSeconds(66))
+                    .times(2) // make sure it will exhaust the local region retry
+                    .build()
+            )
+            .build();
+
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(requestHttpTimeoutRule)).block();
+
+
+        try {
+            CosmosDiagnostics cosmosDiagnostics =
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Create, newItem).block();
+            fail("writeOperationRequestHttpTimeout() should fail for operationType " + OperationType.Create);
+        } catch (CosmosException e) {
+            logger.info("writeOperationRequestHttpTimeout() Diagnostics " + " " + e.getDiagnostics());
+            assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+        } finally {
+            requestHttpTimeoutRule.disable();
+        }
+    }
+
+    @Test(groups = {"multi-master"}, timeOut = 8 * TIMEOUT)
+    public void writeOperationConnectionTimeout() {
+
+        if (BridgeInternal
+            .getContextClient(this.cosmosAsyncClient)
+            .getConnectionPolicy()
+            .getConnectionMode() != ConnectionMode.GATEWAY) {
+            throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for GATEWAY mode");
+        }
+
+        TestItem newItem = TestItem.createNewItem();
+        this.cosmosAsyncContainer.createItem(newItem).block();
+        FaultInjectionRule requestHttpTimeoutRule = new FaultInjectionRuleBuilder("requestHttpTimeoutRule" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                    .delay(Duration.ofSeconds(66))
+                    .times(3) // make sure it will exhaust the local region retry
+                    .build()
+            )
+            .build();
+
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(requestHttpTimeoutRule)).block();
+
+
+        try {
+            CosmosDiagnostics cosmosDiagnostics =
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Create, newItem).block();
+            logger.info("writeOperationConnectionTimeout() Diagnostics " + " " + cosmosDiagnostics);
+
+        } catch (CosmosException e) {
+            fail("writeOperationConnectionTimeout() should pass for operationType " + OperationType.Create);
+            assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+        } finally {
+            requestHttpTimeoutRule.disable();
+        }
+    }
+
     private void validateDataPlaneRetryPolicyResponseTimeouts(CosmosDiagnostics cosmosDiagnostics) {
         List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList = diagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics)
             .stream()
@@ -205,11 +288,13 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
             .collect(Collectors.toList());
 
         for (ClientSideRequestStatistics.GatewayStatistics gs : gatewayStatisticsList) {
-            for (RequestTimeline.Event event : gs.getRequestTimeline()) {
-                Duration durationInMillis = event.getDuration();
-                if (durationInMillis != null) {
-                    assertThat(durationInMillis.getSeconds()).isLessThanOrEqualTo(62);
-                    assertThat(durationInMillis.getSeconds()).isGreaterThanOrEqualTo(60);
+            if (gs.getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT) {
+                for (RequestTimeline.Event event : gs.getRequestTimeline()) {
+                    Duration durationInMillis = event.getDuration();
+                    if (durationInMillis != null) {
+                        assertThat(durationInMillis.getSeconds()).isLessThanOrEqualTo(62);
+                        assertThat(durationInMillis.getSeconds()).isGreaterThanOrEqualTo(60);
+                    }
                 }
             }
         }
@@ -225,9 +310,8 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
             .collect(Collectors.toList());
 
         assertThat(MILLIS.between(addressResolutionStatisticsList.get(0).getStartTimeUTC(), addressResolutionStatisticsList.get(0).getEndTimeUTC())).isLessThanOrEqualTo(600);
-        assertThat(MILLIS.between(addressResolutionStatisticsList.get(1).getStartTimeUTC(), addressResolutionStatisticsList.get(1).getEndTimeUTC())).isLessThanOrEqualTo(600);
-        assertThat(SECONDS.between(addressResolutionStatisticsList.get(2).getStartTimeUTC(), addressResolutionStatisticsList.get(2).getEndTimeUTC())).isLessThanOrEqualTo(6);
-        assertThat(SECONDS.between(addressResolutionStatisticsList.get(3).getStartTimeUTC(), addressResolutionStatisticsList.get(3).getEndTimeUTC())).isLessThanOrEqualTo(11);
+        assertThat(SECONDS.between(addressResolutionStatisticsList.get(1).getStartTimeUTC(), addressResolutionStatisticsList.get(1).getEndTimeUTC())).isLessThanOrEqualTo(6);
+        assertThat(SECONDS.between(addressResolutionStatisticsList.get(2).getStartTimeUTC(), addressResolutionStatisticsList.get(2).getEndTimeUTC())).isLessThanOrEqualTo(11);
     }
 
     private Mono<CosmosDiagnostics> performDocumentOperation(

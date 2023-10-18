@@ -41,9 +41,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
@@ -52,10 +52,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 2nd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
@@ -64,19 +63,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 3rd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
-        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
-
         assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
-        validateSuccess(shouldRetry, ShouldRetryValidator.builder().
-            nullException().
-            shouldRetry(true).
-            backOffTime(Duration.ofSeconds(0)).
-            build());
-
-        // 4th Attempt - retry is set to false, as we only make 3 retry attempts for now.
-        retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
@@ -106,9 +93,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
@@ -117,10 +104,10 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 2nd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
+
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
@@ -129,20 +116,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         //3rd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
-        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
-
         assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(20));
-        validateSuccess(shouldRetry, ShouldRetryValidator.builder().
-            nullException().
-            shouldRetry(true).
-            backOffTime(Duration.ofSeconds(0)).
-            build());
-
-        // 4th Attempt - retry is set to false, as we only make 3 retry attempts for now.
-        retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
+
 
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
@@ -171,9 +147,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofMillis(500));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofMillis(500));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
@@ -182,31 +158,20 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 2nd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+//        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
             backOffTime(Duration.ofSeconds(1)).
             build());
 
-        //3rd Attempt
+        //3rd Attempt - retry is set to false, as we only make 2 retry attempts for now.
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
-        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
-
+//        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
-        validateSuccess(shouldRetry, ShouldRetryValidator.builder().
-            nullException().
-            shouldRetry(true).
-            backOffTime(Duration.ofSeconds(0)).
-            build());
-
-        // 4th Attempt - retry is set to false, as we only make 3 retry attempts for now.
-        retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
@@ -276,9 +241,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofMillis(500));
         Mono<ShouldRetryResult> shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofMillis(500));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
@@ -286,9 +251,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
             .build());
 
         // 2nd Attempt
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
@@ -297,17 +262,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
 
         // 3rd Attempt
-        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
-
         assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
-        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-            .nullException()
-            .shouldRetry(true)
-            .backOffTime(Duration.ofSeconds(0))
-            .build());
-
-        // 4th Attempt
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
+
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(false)

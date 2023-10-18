@@ -340,6 +340,7 @@ public class GatewayAddressCache implements IAddressCache {
         List<String> partitionKeyRangeIds,
         boolean forceRefresh) {
 
+        request.setAddressRefresh(true, forceRefresh);
         MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(globalEndpointManager);
         metadataRequestRetryPolicy.onBeforeSendRequest(request);
 
@@ -359,7 +360,6 @@ public class GatewayAddressCache implements IAddressCache {
         // track address refresh has happened, this is only meant to be used for fault injection validation
         request.faultInjectionRequestContext.recordAddressForceRefreshed(forceRefresh);
 
-        request.setAddressRefresh(true, forceRefresh);
         String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true);
         HashMap<String, String> addressQuery = new HashMap<>();
 
