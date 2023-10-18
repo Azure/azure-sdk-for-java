@@ -231,7 +231,7 @@ public interface CosmosOperations {
      *
      * @param <T> type class of domain type
      * @param containerName the container name
-     * @param cosmosItemOperations the Flux of the CosmosItemOperation's to delete
+     * @param cosmosItemOperations the Iterable of the CosmosItemOperation's to delete
      */
     <T> void deleteEntities(String containerName, Iterable<CosmosItemOperation> cosmosItemOperations);
 

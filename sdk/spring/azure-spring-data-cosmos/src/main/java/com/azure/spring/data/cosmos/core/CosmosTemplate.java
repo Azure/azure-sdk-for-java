@@ -728,7 +728,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      *
      * @param <T> type class of domain type
      * @param containerName the container name
-     * @param cosmosItemOperations the Flux of the CosmosItemOperation's to delete
+     * @param cosmosItemOperations the Iterable of the CosmosItemOperation's to delete
      */
     @Override
     public <T> void deleteEntities(String containerName, Iterable<CosmosItemOperation> cosmosItemOperations) {

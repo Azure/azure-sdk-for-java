@@ -672,7 +672,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * Delete all items with bulk.
      *
      * @param containerName the container name
-     * @param cosmosItemOperations the Flux of the CosmosItemOperation's to delete
+     * @param cosmosItemOperations the Iterable of the CosmosItemOperation's to delete
      * @return void Mono
      */
     public Mono<Void> deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations) {
