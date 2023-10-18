@@ -35,19 +35,19 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.developer.devcenter.implementation.DevBoxesClientImpl;
+import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the DevBoxesClient type. */
-@ServiceClientBuilder(serviceClients = {DevBoxesClient.class, DevBoxesAsyncClient.class})
-public final class DevBoxesClientBuilder
-        implements HttpTrait<DevBoxesClientBuilder>,
-                ConfigurationTrait<DevBoxesClientBuilder>,
-                TokenCredentialTrait<DevBoxesClientBuilder>,
-                EndpointTrait<DevBoxesClientBuilder> {
+/** A builder for creating a new instance of the DeploymentEnvironmentsClient type. */
+@ServiceClientBuilder(serviceClients = {DeploymentEnvironmentsClient.class, DeploymentEnvironmentsAsyncClient.class})
+public final class DeploymentEnvironmentsClientBuilder
+        implements HttpTrait<DeploymentEnvironmentsClientBuilder>,
+                ConfigurationTrait<DeploymentEnvironmentsClientBuilder>,
+                TokenCredentialTrait<DeploymentEnvironmentsClientBuilder>,
+                EndpointTrait<DeploymentEnvironmentsClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -60,9 +60,9 @@ public final class DevBoxesClientBuilder
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the DevBoxesClientBuilder. */
+    /** Create an instance of the DeploymentEnvironmentsClientBuilder. */
     @Generated
-    public DevBoxesClientBuilder() {
+    public DeploymentEnvironmentsClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -74,7 +74,7 @@ public final class DevBoxesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public DevBoxesClientBuilder pipeline(HttpPipeline pipeline) {
+    public DeploymentEnvironmentsClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -90,7 +90,7 @@ public final class DevBoxesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public DevBoxesClientBuilder httpClient(HttpClient httpClient) {
+    public DeploymentEnvironmentsClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -103,7 +103,7 @@ public final class DevBoxesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public DevBoxesClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public DeploymentEnvironmentsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -116,7 +116,7 @@ public final class DevBoxesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public DevBoxesClientBuilder clientOptions(ClientOptions clientOptions) {
+    public DeploymentEnvironmentsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -129,7 +129,7 @@ public final class DevBoxesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public DevBoxesClientBuilder retryOptions(RetryOptions retryOptions) {
+    public DeploymentEnvironmentsClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -137,7 +137,7 @@ public final class DevBoxesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public DevBoxesClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public DeploymentEnvironmentsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -151,7 +151,7 @@ public final class DevBoxesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public DevBoxesClientBuilder configuration(Configuration configuration) {
+    public DeploymentEnvironmentsClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -164,7 +164,7 @@ public final class DevBoxesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public DevBoxesClientBuilder credential(TokenCredential tokenCredential) {
+    public DeploymentEnvironmentsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -177,7 +177,7 @@ public final class DevBoxesClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public DevBoxesClientBuilder endpoint(String endpoint) {
+    public DeploymentEnvironmentsClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -191,10 +191,10 @@ public final class DevBoxesClientBuilder
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the DevBoxesClientBuilder.
+     * @return the DeploymentEnvironmentsClientBuilder.
      */
     @Generated
-    public DevBoxesClientBuilder serviceVersion(DevCenterServiceVersion serviceVersion) {
+    public DeploymentEnvironmentsClientBuilder serviceVersion(DevCenterServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -208,26 +208,26 @@ public final class DevBoxesClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the DevBoxesClientBuilder.
+     * @return the DeploymentEnvironmentsClientBuilder.
      */
     @Generated
-    public DevBoxesClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public DeploymentEnvironmentsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of DevBoxesClientImpl with the provided parameters.
+     * Builds an instance of DeploymentEnvironmentsClientImpl with the provided parameters.
      *
-     * @return an instance of DevBoxesClientImpl.
+     * @return an instance of DeploymentEnvironmentsClientImpl.
      */
     @Generated
-    private DevBoxesClientImpl buildInnerClient() {
+    private DeploymentEnvironmentsClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         DevCenterServiceVersion localServiceVersion =
                 (serviceVersion != null) ? serviceVersion : DevCenterServiceVersion.getLatest();
-        DevBoxesClientImpl client =
-                new DevBoxesClientImpl(
+        DeploymentEnvironmentsClientImpl client =
+                new DeploymentEnvironmentsClientImpl(
                         localPipeline,
                         JacksonAdapter.createDefaultSerializerAdapter(),
                         this.endpoint,
@@ -279,24 +279,24 @@ public final class DevBoxesClientBuilder
     }
 
     /**
-     * Builds an instance of DevBoxesAsyncClient class.
+     * Builds an instance of DeploymentEnvironmentsAsyncClient class.
      *
-     * @return an instance of DevBoxesAsyncClient.
+     * @return an instance of DeploymentEnvironmentsAsyncClient.
      */
     @Generated
-    public DevBoxesAsyncClient buildAsyncClient() {
-        return new DevBoxesAsyncClient(buildInnerClient());
+    public DeploymentEnvironmentsAsyncClient buildAsyncClient() {
+        return new DeploymentEnvironmentsAsyncClient(buildInnerClient());
     }
 
     /**
-     * Builds an instance of DevBoxesClient class.
+     * Builds an instance of DeploymentEnvironmentsClient class.
      *
-     * @return an instance of DevBoxesClient.
+     * @return an instance of DeploymentEnvironmentsClient.
      */
     @Generated
-    public DevBoxesClient buildClient() {
-        return new DevBoxesClient(buildInnerClient());
+    public DeploymentEnvironmentsClient buildClient() {
+        return new DeploymentEnvironmentsClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DevBoxesClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DeploymentEnvironmentsClientBuilder.class);
 }
