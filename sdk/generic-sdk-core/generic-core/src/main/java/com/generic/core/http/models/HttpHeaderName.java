@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http;
+package com.generic.core.http.models;
 
-import com.generic.core.util.ExpandableStringEnum;
+import com.generic.core.models.ExpandableStringEnum;
 
 import java.util.Locale;
 

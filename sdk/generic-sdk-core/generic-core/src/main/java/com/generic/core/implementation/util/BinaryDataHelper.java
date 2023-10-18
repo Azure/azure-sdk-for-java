@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.util;
 
-import com.generic.core.util.BinaryData;
+import com.generic.core.models.BinaryData;
 
 /**
  * Helper class to access private values of {@link BinaryData} across package boundaries.
@@ -71,8 +71,8 @@ public final class BinaryDataHelper {
      * which in turns populates the accessor.
      */
     private static void ensureAccessorSet() {
-        if (accessor == null) {
-            BinaryData.fromString("");
-        }
+//        if (accessor == null) {
+//            BinaryData.fromString("");
+//        }
     }
 }

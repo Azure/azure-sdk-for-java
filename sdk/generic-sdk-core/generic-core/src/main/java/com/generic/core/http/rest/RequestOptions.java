@@ -4,10 +4,10 @@
 package com.generic.core.http.rest;
 
 import com.generic.core.annotation.QueryParam;
-import com.generic.core.http.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.models.Context;
-import com.generic.core.util.BinaryData;
+import com.generic.core.models.BinaryData;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.Objects;

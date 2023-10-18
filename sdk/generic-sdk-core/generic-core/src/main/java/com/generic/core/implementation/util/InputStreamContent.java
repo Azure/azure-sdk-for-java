@@ -4,8 +4,6 @@
 package com.generic.core.implementation.util;
 
 import com.generic.core.util.logging.ClientLogger;
-import com.generic.core.util.serializer.ObjectSerializer;
-import com.generic.core.util.serializer.TypeReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -79,32 +77,8 @@ public final class InputStreamContent extends BinaryDataContent {
     }
 
     @Override
-    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        return serializer.deserializeFromBytes(toBytes(), typeReference);
-    }
-
-    @Override
     public InputStream toStream() {
         return this.content.get();
-    }
-
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
-    }
-
-    @Override
-    public boolean isReplayable() {
-        return isReplayable;
-    }
-
-    @Override
-    public BinaryDataContent toReplayableContent() {
-        if (isReplayable) {
-            return this;
-        }
-
-        return readAndBuffer(this.content.get(), length);
     }
 
     @Override
@@ -130,9 +104,7 @@ public final class InputStreamContent extends BinaryDataContent {
             List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
                 inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
 
-            return new InputStreamContent(
-                () -> new IterableOfByteBuffersInputStream(byteBuffers),
-                length, true);
+            return null;
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }

@@ -3,7 +3,7 @@
 
 package com.generic.core.http.policy.logging;
 
-import com.generic.core.http.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.HttpPipelineNextPolicy;
 import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
@@ -12,7 +12,7 @@ import com.generic.core.http.policy.HttpPipelinePolicy;
 import com.generic.core.models.Context;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
-import com.generic.core.util.BinaryData;
+import com.generic.core.models.BinaryData;
 import com.generic.core.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.logging.LogLevel;

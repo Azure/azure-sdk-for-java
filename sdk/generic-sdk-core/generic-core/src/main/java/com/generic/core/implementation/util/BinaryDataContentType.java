@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.util;
 
-import com.generic.core.util.BinaryData;
+import com.generic.core.models.BinaryData;
 
 /**
  * Type of the content that a {@link BinaryData} is representing.

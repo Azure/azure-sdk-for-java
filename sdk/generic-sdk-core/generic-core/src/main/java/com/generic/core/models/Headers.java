@@ -3,7 +3,7 @@
 
 package com.generic.core.models;
 
-import com.generic.core.http.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.util.CoreUtils;
 
 import java.util.Collections;

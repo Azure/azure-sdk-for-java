@@ -3,12 +3,8 @@
 
 package com.generic.core.implementation.util;
 
-import com.generic.core.util.serializer.ObjectSerializer;
-import com.generic.core.util.serializer.TypeReference;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -48,30 +44,9 @@ public final class StringContent extends BinaryDataContent {
     }
 
     @Override
-    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        return serializer.deserializeFromBytes(toBytes(), typeReference);
-    }
-
-    @Override
     public InputStream toStream() {
         return new ByteArrayInputStream(toBytes());
     }
-
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
-    }
-
-    @Override
-    public boolean isReplayable() {
-        return true;
-    }
-
-    @Override
-    public BinaryDataContent toReplayableContent() {
-        return this;
-    }
-
     @Override
     public BinaryDataContentType getContentType() {
         return BinaryDataContentType.TEXT;
