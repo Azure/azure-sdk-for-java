@@ -59,15 +59,15 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         /**
          * Setup worker
          */
-        Map<String, LabelValue> labels = new HashMap<String, LabelValue>() {
+        Map<String, Object> labels = new HashMap<String, Object>() {
             {
-                put("Label", new LabelValue("Value"));
+                put("Label", "Value");
             }
         };
 
-        Map<String, LabelValue> tags = new HashMap<String, LabelValue>() {
+        Map<String, Object> tags = new HashMap<String, Object>() {
             {
-                put("Tag", new LabelValue("Value"));
+                put("Tag", "Value");
             }
         };
 

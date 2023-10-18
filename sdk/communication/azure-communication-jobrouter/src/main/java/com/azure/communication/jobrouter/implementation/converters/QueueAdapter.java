@@ -4,12 +4,7 @@
 package com.azure.communication.jobrouter.implementation.converters;
 
 import com.azure.communication.jobrouter.models.CreateQueueOptions;
-import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.RouterQueue;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Converts request options for create and update Queue to {@link RouterQueue}.
@@ -22,13 +17,9 @@ public class QueueAdapter {
      * @return JobQueue
      */
     public static RouterQueue convertCreateQueueOptionsToRouterQueue(CreateQueueOptions createQueueOptions) {
-        Map<String, LabelValue> labelValueMap = createQueueOptions.getLabels();
-        Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : new HashMap<>();
-
         return new RouterQueue()
             .setName(createQueueOptions.getName())
-            .setLabels(labels)
+            .setLabels(createQueueOptions.getLabels())
             .setDistributionPolicyId(createQueueOptions.getDistributionPolicyId())
             .setExceptionPolicyId(createQueueOptions.getExceptionPolicyId());
     }

@@ -44,15 +44,15 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
          */
         String workerId = String.format("%s-CreateWorker-Worker", JAVA_LIVE_TESTS);
 
-        Map<String, LabelValue> labels = new HashMap<String, LabelValue>() {
+        Map<String, Object> labels = new HashMap<String, Object>() {
             {
-                put("Label", new LabelValue("Value"));
+                put("Label", "Value");
             }
         };
 
-        Map<String, LabelValue> tags = new HashMap<String, LabelValue>() {
+        Map<String, Object> tags = new HashMap<String, Object>() {
             {
-                put("Tag", new LabelValue("Value"));
+                put("Tag", "Value");
             }
         };
 
