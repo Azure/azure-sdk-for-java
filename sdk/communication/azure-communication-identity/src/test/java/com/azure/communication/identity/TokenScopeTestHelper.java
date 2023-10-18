@@ -6,8 +6,6 @@ package com.azure.communication.identity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import com.azure.communication.identity.models.CommunicationTokenScope;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.communication.identity.models.CommunicationTokenScope.*;
@@ -33,10 +31,5 @@ public class TokenScopeTestHelper {
         argumentsList.add(Arguments.of("AllVoipScopes", asList(VOIP, VOIP_JOIN)));
         argumentsList.add(Arguments.of("ChatJoinVoipJoinScopes", asList(CHAT_JOIN, VOIP_JOIN)));
         return argumentsList.stream();
-    }
-
-    /** Method to check if VoipJoin scope is present */
-    static boolean skipVoipJoinScopeTest(List<CommunicationTokenScope> scopes) {
-        return scopes.contains(VOIP_JOIN);
     }
 }

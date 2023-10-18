@@ -18,7 +18,6 @@ import java.util.List;
 
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 import static com.azure.communication.identity.TokenCustomExpirationTimeHelper.assertTokenExpirationWithinAllowedDeviation;
-import static com.azure.communication.identity.TokenScopeTestHelper.skipVoipJoinScopeTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
@@ -80,10 +79,6 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
     public void createUserAndToken(String testName, List<CommunicationTokenScope> scopes) {
-        if (skipVoipJoinScopeTest(scopes)) {
-            return;
-        }
-
         // Arrange
         client = setupClient(builder, "createUserAndTokenWith" + testName + SYNC_TEST_SUFFIX);
 
@@ -302,10 +297,6 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
     public void getToken(String testName, List<CommunicationTokenScope> scopes) {
-        if (skipVoipJoinScopeTest(scopes)) {
-            return;
-        }
-
         // Arrange
         client = setupClient(builder, "getTokenWith" + testName + SYNC_TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
