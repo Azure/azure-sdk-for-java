@@ -3,8 +3,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.accesshelpers.LabelValueConstructorProxy;
-
 import com.azure.core.util.logging.ClientLogger;
 
 /**
@@ -48,10 +46,6 @@ public final class LabelValue {
      */
     public LabelValue(Boolean boolValue) {
         this.value = boolValue;
-    }
-
-    static {
-        LabelValueConstructorProxy.setAccessor(internal -> new LabelValue(internal));
     }
 
     LabelValue(Object objectValue) {
