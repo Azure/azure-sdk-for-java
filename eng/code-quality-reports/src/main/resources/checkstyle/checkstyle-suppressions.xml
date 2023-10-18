@@ -509,7 +509,7 @@ the main ServiceBusClientBuilder. -->
  <suppress checks="ThrowFromClientLogger" files="com.azure.security.attestation.implementation.models.*\.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.core.test.(AzureTestWatcher|TestBase|ThreadDumper).java"/>
+            files="com.azure.core.test.(AzureTestWatcher|ThreadDumper).java"/>
 
   <!-- This policy is purely an implementation detail and should not be used by customers -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
