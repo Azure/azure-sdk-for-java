@@ -242,8 +242,10 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalitiesWithInvalidAdministrativeDivision(HttpClient httpClient) {
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "listAvailableLocalities");
-        
-        assertThrows(CommunicationErrorResponseException.class, ()->client.listAvailableLocalities("US", "null").iterator().next(),"No localities were found for the given parameters");
+
+        assertThrows(CommunicationErrorResponseException.class,
+                () -> client.listAvailableLocalities("US", "null").iterator().next(),
+                "No localities were found for the given parameters");
     }
 
     @ParameterizedTest
