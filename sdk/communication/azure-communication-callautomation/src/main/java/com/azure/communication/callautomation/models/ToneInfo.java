@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The information about the tone. */
 @Fluent
 public final class ToneInfo {
+
     /*
      * The sequence id which can be used to determine if the same tone was played multiple times or if any tones were missed.
      */

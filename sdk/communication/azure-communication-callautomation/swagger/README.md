@@ -21,14 +21,14 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.26.0
 ```
 
 ### Code generation settings
 ``` yaml
-tag: package-2023-01-15-preview
+tag: package-2023-10-15
 require:
-    - https://github.com/williamzhao87/azure-rest-api-specs/blob/5b7321a923a30b83b978e3a30ed1d497e35052fd/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/981a700419dad69f81792e2e3dfcaccd32de833e/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -125,11 +125,11 @@ directive:
     from: ContinuousDtmfRecognitionOptions
     to: ContinuousDtmfRecognitionOptionsInternal
 - rename-model:
-    from: SendDtmfOptions
-    to: SendDtmfOptionsInternal
+    from: SendDtmfTonesOptions
+    to: SendDtmfTonesOptionsInternal
 - rename-model:
-    from: SendDtmfRequest
-    to: SendDtmfRequestInternal
+    from: SendDtmfTonesRequest
+    to: SendDtmfTonesRequestInternal
 - rename-model:
     from: ChannelAffinity
     to: ChannelAffinityInternal
@@ -153,25 +153,13 @@ directive:
     to: RecognizeOptionsInternal
 - rename-model:
     from: Choice
-    to: RecognizeChoiceInternal
+    to: RecognitionChoiceInternal
 - rename-model:
     from: MuteParticipantsRequest
     to: MuteParticipantsRequestInternal
 - rename-model:
-    from: MuteParticipantsResponse
-    to: MuteParticipantsResponseInternal
-- rename-model:
-    from: UnmuteParticipantsRequest
-    to: UnmuteParticipantsRequestInternal
-- rename-model:
-    from: UnmuteParticipantsResponse
-    to: UnmuteParticipantsResponseInternal
-- rename-model:
-    from: StartHoldMusicRequest
-    to: StartHoldMusicRequestInternal
-- rename-model:
-    from: StopHoldMusicRequest
-    to: StopHoldMusicRequestInternal
+    from: MuteParticipantsResult
+    to: MuteParticipantsResultInternal
 - rename-model:
     from: CollectTonesResult
     to: CollectTonesResultInternal
@@ -191,11 +179,11 @@ directive:
     from: ContinuousDtmfRecognitionRequest
     to: ContinuousDtmfRecognitionRequestInternal
 - rename-model:
-    from: SendDtmfRequest
-    to: SendDtmfRequestInternal
+    from: SendDtmfTonesResult
+    to: SendDtmfTonesResultInternal
 - rename-model:
-    from: StartDialogRequest
-    to: StartDialogRequestInternal
+    from: SendDtmfTonesRequest
+    to: SendDtmfTonesRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -217,19 +205,13 @@ directive:
 - remove-model: ToneInfo
 - remove-model: ContinuousDtmfRecognitionToneFailed
 - remove-model: ContinuousDtmfRecognitionStopped
-- remove-model: SendDtmfCompleted
-- remove-model: SendDtmfFailed
-- remove-model: AddParticipantCancelled
+- remove-model: SendDtmfTonesCompleted
+- remove-model: SendDtmfTonesFailed
+- remove-model: Choice
+- remove-model: ChoiceResult
+- remove-model: SpeechResult
+- remove-model: CancelAddParticipantSucceeded
 - remove-model: CancelAddParticipantFailed
-- remove-model: DialogCompleted
-- remove-model: DialogConsent
-- remove-model: DialogFailed
-- remove-model: DialogHangup
-- remove-model: DialogLanguageChange
-- remove-model: DialogSensitivityUpdate
-- remove-model: DialogStarted
-- remove-model: DialogTransfer
-- remove-model: DialogFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
@@ -386,13 +368,13 @@ directive:
     $.name = "DtmfOptionsInternal";
 ```
 
-### Rename Choice to GenderType
+### Rename VoiceKind to VoiceKindInternal
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.Gender["x-ms-enum"]
+  where: $.definitions.VoiceKind["x-ms-enum"]
   transform: >
-    $.name = "GenderTypeInternal";
+    $.name = "VoiceKindInternal";
 ```
 
 ### Rename RecordingStorageType to RecordingStorageTypeInternal
