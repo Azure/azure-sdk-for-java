@@ -45,6 +45,7 @@ add-context-parameter: true
 context-client-method-parameter: true
 generic-response-type: true
 custom-types: HealthcareEntityRelationType,ExtractiveSummarySentencesOrder,HealthcareEntityCategory
+stream-style-serialization: true
 ```
 
 ### Renames

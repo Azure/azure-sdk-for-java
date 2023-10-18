@@ -5,20 +5,24 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /** The EntityRecognitionLROResult model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("EntityRecognitionLROResults")
 @Fluent
 public final class EntityRecognitionLROResult extends AnalyzeTextLROResult {
     /*
+     * Enumeration of supported Text Analysis long-running operation task results.
+     */
+    private static final AnalyzeTextLROResultsKind KIND = AnalyzeTextLROResultsKind.ENTITY_RECOGNITION_LRORESULTS;
+
+    /*
      * The results property.
      */
-    @JsonProperty(value = "results", required = true)
     private EntitiesResult results;
 
     /** Creates an instance of EntityRecognitionLROResult class. */
@@ -63,5 +67,64 @@ public final class EntityRecognitionLROResult extends AnalyzeTextLROResult {
     public EntityRecognitionLROResult setStatus(State status) {
         super.setStatus(status);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
+        jsonWriter.writeStringField("lastUpdateDateTime", Objects.toString(getLastUpdateDateTime(), null));
+        jsonWriter.writeStringField("status", Objects.toString(getStatus(), null));
+        jsonWriter.writeStringField("taskName", getTaskName());
+        jsonWriter.writeJsonField("results", this.results);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityRecognitionLROResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityRecognitionLROResult if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the EntityRecognitionLROResult.
+     */
+    public static EntityRecognitionLROResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    EntityRecognitionLROResult deserializedEntityRecognitionLROResult =
+                            new EntityRecognitionLROResult();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("kind".equals(fieldName)) {
+                            String kind = reader.getString();
+                            if (!KIND.equals(kind)) {
+                                throw new IllegalStateException(
+                                        "'kind' was expected to be non-null and equal to '"
+                                                + KIND
+                                                + "'. The found 'kind' was '"
+                                                + kind
+                                                + "'.");
+                            }
+                        } else if ("lastUpdateDateTime".equals(fieldName)) {
+                            deserializedEntityRecognitionLROResult.setLastUpdateDateTime(
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                        } else if ("status".equals(fieldName)) {
+                            deserializedEntityRecognitionLROResult.setStatus(State.fromString(reader.getString()));
+                        } else if ("taskName".equals(fieldName)) {
+                            deserializedEntityRecognitionLROResult.setTaskName(reader.getString());
+                        } else if ("results".equals(fieldName)) {
+                            deserializedEntityRecognitionLROResult.results = EntitiesResult.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedEntityRecognitionLROResult;
+                });
     }
 }

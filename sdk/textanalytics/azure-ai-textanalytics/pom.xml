@@ -53,6 +53,11 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.13.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+    </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
     Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
