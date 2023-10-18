@@ -3,7 +3,7 @@
 ### 3.39.0-beta.1 (Unreleased)
 
 #### Features Added
-* Changed Spring and Reactive Spring repository functionality to use bulk operations for `SaveAll` and `DeleteAll` functions - See [PR 36611](https://github.com/Azure/azure-sdk-for-java/pull/36611).
+* Updated Spring and Reactive Spring repository `saveAll` and `deleteAll` APIs to use bulk functionality implementation - See [PR 36611](https://github.com/Azure/azure-sdk-for-java/pull/36611).
 
 #### Breaking Changes
 

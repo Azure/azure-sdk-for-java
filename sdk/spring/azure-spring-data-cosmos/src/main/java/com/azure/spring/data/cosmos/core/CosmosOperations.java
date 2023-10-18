@@ -162,7 +162,7 @@ public interface CosmosOperations {
     <T> T insert(String containerName, T objectToSave, PartitionKey partitionKey);
 
     /**
-     * Inserts item with bulk.
+     * Insert items using bulk operations.
      *
      * @param information must not be {@literal null}
      * @param entities must not be {@literal null}
