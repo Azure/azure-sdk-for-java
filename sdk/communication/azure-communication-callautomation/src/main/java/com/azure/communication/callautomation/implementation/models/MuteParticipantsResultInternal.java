@@ -7,14 +7,17 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The response payload for unmuting participants from the call. */
+/** The result payload for muting participants from the call. */
 @Fluent
-public final class UnholdParticipantResponseInternal {
+public final class MuteParticipantsResultInternal {
     /*
      * The operation context provided by client.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /** Creates an instance of MuteParticipantsResultInternal class. */
+    public MuteParticipantsResultInternal() {}
 
     /**
      * Get the operationContext property: The operation context provided by client.
@@ -29,9 +32,9 @@ public final class UnholdParticipantResponseInternal {
      * Set the operationContext property: The operation context provided by client.
      *
      * @param operationContext the operationContext value to set.
-     * @return the UnholdParticipantResponseInternal object itself.
+     * @return the MuteParticipantsResultInternal object itself.
      */
-    public UnholdParticipantResponseInternal setOperationContext(String operationContext) {
+    public MuteParticipantsResultInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

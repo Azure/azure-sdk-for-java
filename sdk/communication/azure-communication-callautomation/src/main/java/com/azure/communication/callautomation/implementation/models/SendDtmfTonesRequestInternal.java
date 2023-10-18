@@ -6,12 +6,19 @@ package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The ContinuousDtmfRecognitionRequestInternal model. */
+/** The SendDtmfTonesRequestInternal model. */
 @Fluent
-public final class ContinuousDtmfRecognitionRequestInternal {
+public final class SendDtmfTonesRequestInternal {
     /*
-     * Defines options for recognition.
+     * List of tones to be sent to target participant.
+     */
+    @JsonProperty(value = "tones", required = true)
+    private List<DtmfToneInternal> tones;
+
+    /*
+     * Target participant of send Dtmf tones.
      */
     @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
@@ -30,11 +37,31 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
-    /** Creates an instance of ContinuousDtmfRecognitionRequestInternal class. */
-    public ContinuousDtmfRecognitionRequestInternal() {}
+    /** Creates an instance of SendDtmfTonesRequestInternal class. */
+    public SendDtmfTonesRequestInternal() {}
 
     /**
-     * Get the targetParticipant property: Defines options for recognition.
+     * Get the tones property: List of tones to be sent to target participant.
+     *
+     * @return the tones value.
+     */
+    public List<DtmfToneInternal> getTones() {
+        return this.tones;
+    }
+
+    /**
+     * Set the tones property: List of tones to be sent to target participant.
+     *
+     * @param tones the tones value to set.
+     * @return the SendDtmfTonesRequestInternal object itself.
+     */
+    public SendDtmfTonesRequestInternal setTones(List<DtmfToneInternal> tones) {
+        this.tones = tones;
+        return this;
+    }
+
+    /**
+     * Get the targetParticipant property: Target participant of send Dtmf tones.
      *
      * @return the targetParticipant value.
      */
@@ -43,13 +70,12 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     }
 
     /**
-     * Set the targetParticipant property: Defines options for recognition.
+     * Set the targetParticipant property: Target participant of send Dtmf tones.
      *
      * @param targetParticipant the targetParticipant value to set.
-     * @return the ContinuousDtmfRecognitionRequestInternal object itself.
+     * @return the SendDtmfTonesRequestInternal object itself.
      */
-    public ContinuousDtmfRecognitionRequestInternal setTargetParticipant(
-            CommunicationIdentifierModel targetParticipant) {
+    public SendDtmfTonesRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
     }
@@ -67,9 +93,9 @@ public final class ContinuousDtmfRecognitionRequestInternal {
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
-     * @return the ContinuousDtmfRecognitionRequestInternal object itself.
+     * @return the SendDtmfTonesRequestInternal object itself.
      */
-    public ContinuousDtmfRecognitionRequestInternal setOperationContext(String operationContext) {
+    public SendDtmfTonesRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -91,9 +117,9 @@ public final class ContinuousDtmfRecognitionRequestInternal {
      * set by CreateCall/AnswerCall will be used.
      *
      * @param operationCallbackUri the operationCallbackUri value to set.
-     * @return the ContinuousDtmfRecognitionRequestInternal object itself.
+     * @return the SendDtmfTonesRequestInternal object itself.
      */
-    public ContinuousDtmfRecognitionRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+    public SendDtmfTonesRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
     }

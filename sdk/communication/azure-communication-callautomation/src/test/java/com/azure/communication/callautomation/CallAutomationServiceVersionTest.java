@@ -6,7 +6,6 @@ package com.azure.communication.callautomation;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.communication.callautomation.CallAutomationServiceVersion.V2023_03_06;
-import static com.azure.communication.callautomation.CallAutomationServiceVersion.V2023_06_15_PREVIEW;
 import static com.azure.communication.callautomation.CallAutomationServiceVersion.V2023_10_15;
 import static org.junit.jupiter.api.Assertions.*;
 

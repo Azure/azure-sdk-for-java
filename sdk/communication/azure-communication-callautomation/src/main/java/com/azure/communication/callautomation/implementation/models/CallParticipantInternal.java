@@ -7,7 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contract model of an ACS call participant. */
+/** A call participant. */
 @Fluent
 public final class CallParticipantInternal {
     /*
@@ -21,6 +21,9 @@ public final class CallParticipantInternal {
      */
     @JsonProperty(value = "isMuted")
     private Boolean isMuted;
+
+    /** Creates an instance of CallParticipantInternal class. */
+    public CallParticipantInternal() {}
 
     /**
      * Get the identifier property: Communication identifier of the participant.

@@ -18,7 +18,7 @@ import com.azure.core.annotation.Fluent;
 public final class TransferCallToParticipantOptions {
     private final CommunicationIdentifier targetParticipant;
     private final CustomContext customContext;
-    private String overrideCallbackUrl;
+    private String operationCallbackUrl;
 
     /**
      *  Participant being transferred away
@@ -129,22 +129,23 @@ public final class TransferCallToParticipantOptions {
     }
 
     /**
-     * Get the callbackUrlOverride.
+     * Get the overridden call back URL override for operation.
      *
-     * @return the callbackUrlOverride
+     * @return the operationCallbackUrl
      */
-    public String getOverrideCallbackUrl() {
-        return overrideCallbackUrl;
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
     }
 
     /**
-     * Set the callbackUrl.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      *
-     * @param overrideCallbackUrl the callbackUrlOverride to set
+     * @param operationCallbackUrl the operationCallbackUrl to set
      * @return the TransferCallToParticipantOptions object itself.
      */
-    public TransferCallToParticipantOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
-        this.overrideCallbackUrl = overrideCallbackUrl;
+    public TransferCallToParticipantOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
 }

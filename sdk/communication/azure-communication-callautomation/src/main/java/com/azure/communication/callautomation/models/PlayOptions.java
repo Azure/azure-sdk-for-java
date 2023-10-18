@@ -36,7 +36,7 @@ public final class PlayOptions {
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    private String overrideCallbackUrl;
+    private String operationCallbackUrl;
 
     /**
      * Constructor
@@ -118,22 +118,23 @@ public final class PlayOptions {
     }
 
     /**
-     * Get the call back URI override.
+     * Get the overridden call back URL override for operation.
      *
-     * @return the overrideCallbackUrl
+     * @return the operationCallbackUrl
      */
-    public String getOverrideCallbackUrl() {
-        return overrideCallbackUrl;
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
     }
 
     /**
-     * Set the call back URI override.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      *
-     * @param overrideCallbackUrl The call back URI override to set
+     * @param operationCallbackUrl the operationCallbackUrl to set
      * @return the PlayOptions object itself.
      */
-    public PlayOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
-        this.overrideCallbackUrl = overrideCallbackUrl;
+    public PlayOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
 }

@@ -39,7 +39,7 @@ public class CallAutomationUnitTestBase {
     static final String CALL_CONNECTION_STATE = "connected";
     static final String CALL_SUBJECT = "subject";
     static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
-    static final String OVERRIDE_CALL_CALLBACK_URL = "https://REDACTED.com/events";
+    static final String OPERATION_CALLBACK_URL = "https://REDACTED.com/events";
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
     static final String MEDIA_SUBSCRIPTION_ID = "mediaSubscriptionId";

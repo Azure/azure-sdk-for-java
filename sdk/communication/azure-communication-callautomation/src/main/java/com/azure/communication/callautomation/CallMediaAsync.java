@@ -249,7 +249,7 @@ public final class CallMediaAsync {
             PlayOptions playOptions = new PlayOptions(options.getPlaySources(), Collections.emptyList());
             playOptions.setLoop(options.isLoop());
             playOptions.setOperationContext(options.getOperationContext());
-            playOptions.setOverrideCallbackUrl(options.getOverrideCallbackUrl());
+            playOptions.setOperationCallbackUrl(options.getOperationCallbackUrl());
 
             return playWithResponseInternal(playOptions, context);
         } catch (RuntimeException ex) {
@@ -286,7 +286,7 @@ public final class CallMediaAsync {
 
             request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
             request.setOperationContext(options.getOperationContext());
-            request.setOverrideCallbackUri(options.getOverrideCallbackUrl());
+            request.setOperationCallbackUri(options.getOperationCallbackUrl());
 
             return request;
         }
@@ -395,7 +395,7 @@ public final class CallMediaAsync {
             .setPlayPrompt(playSourceInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
             .setOperationContext(recognizeOptions.getOperationContext())
-            .setOverrideCallbackUri(recognizeOptions.getOverrideCallbackUrl());
+            .setOperationCallbackUri(recognizeOptions.getOperationCallbackUrl());
     }
 
     private RecognizeRequest getRecognizeRequestFromChoiceConfiguration(CallMediaRecognizeOptions recognizeOptions) {
@@ -427,7 +427,7 @@ public final class CallMediaAsync {
             .setPlayPrompt(playSourceInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
             .setOperationContext(recognizeOptions.getOperationContext())
-            .setOverrideCallbackUri(recognizeOptions.getOverrideCallbackUrl());
+            .setOperationCallbackUri(recognizeOptions.getOperationCallbackUrl());
     }
 
     private RecognizeRequest getRecognizeRequestFromSpeechConfiguration(CallMediaRecognizeOptions recognizeOptions) {
@@ -461,7 +461,7 @@ public final class CallMediaAsync {
             .setPlayPrompt(playSourceInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
             .setOperationContext(recognizeOptions.getOperationContext())
-            .setOverrideCallbackUri(recognizeOptions.getOverrideCallbackUrl());
+            .setOperationCallbackUri(recognizeOptions.getOperationCallbackUrl());
     }
 
     private RecognizeRequest getRecognizeRequestFromSpeechOrDtmfConfiguration(CallMediaRecognizeOptions recognizeOptions) {
@@ -502,7 +502,7 @@ public final class CallMediaAsync {
             .setPlayPrompt(playSourceInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
             .setOperationContext(recognizeOptions.getOperationContext())
-            .setOverrideCallbackUri(recognizeOptions.getOverrideCallbackUrl());
+            .setOperationCallbackUri(recognizeOptions.getOperationCallbackUrl());
     }
 
     private DtmfOptionsInternal getDtmfOptionsInternal(Duration interToneTimeout, Integer maxTonesToCollect, List<DtmfTone> stopTones) {
@@ -561,7 +561,7 @@ public final class CallMediaAsync {
                 .map(this::convertDtmfToneInternal)
                 .collect(Collectors.toList()))
                 .setOperationContext(options.getOperationContext())
-                .setOverrideCallbackUri(options.getOverrideCallbackUrl());
+                .setOperationCallbackUri(options.getOperationCallbackUrl());
 
             return contentsInternal.sendDtmfTonesWithResponseAsync(
                 callConnectionId,
@@ -629,7 +629,7 @@ public final class CallMediaAsync {
             ContinuousDtmfRecognitionRequestInternal requestInternal = new ContinuousDtmfRecognitionRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
                 .setOperationContext(options.getOperationContext())
-                .setOverrideCallbackUri(options.getOverrideCallbackUrl());
+                .setOperationCallbackUri(options.getOperationCallbackUrl());
 
             return contentsInternal.stopContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal, context);
         } catch (RuntimeException e) {

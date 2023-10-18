@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.communication.callautomation.CallAutomationUnitTestBase.CALL_OPERATION_CONTEXT;
-import static com.azure.communication.callautomation.CallAutomationUnitTestBase.OVERRIDE_CALL_CALLBACK_URL;
+import static com.azure.communication.callautomation.CallAutomationUnitTestBase.OPERATION_CALLBACK_URL;
 import static com.azure.communication.callautomation.CallAutomationUnitTestBase.serializeObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -179,10 +179,9 @@ public class CallMediaAsyncUnitTests {
     public void startContinuousDtmfRecognitionWithResponse() {
         // override callMedia to mock 200 response code
         callMedia = getMockCallMedia(200);
-        StepVerifier.create(
-                callMedia.startContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
-                    "operationContext")
-            )
+        ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
+        options.setOperationContext(CALL_OPERATION_CONTEXT);
+        StepVerifier.create(callMedia.startContinuousDtmfRecognitionWithResponse(options))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -193,7 +192,7 @@ public class CallMediaAsyncUnitTests {
         callMedia = getMockCallMedia(200);
         ContinuousDtmfRecognitionOptions options = new ContinuousDtmfRecognitionOptions(new CommunicationUserIdentifier("id"));
         options.setOperationContext(CALL_OPERATION_CONTEXT);
-        options.setOverrideCallbackUrl(OVERRIDE_CALL_CALLBACK_URL);
+        options.setOperationCallbackUrl(OPERATION_CALLBACK_URL);
         StepVerifier.create(callMedia.stopContinuousDtmfRecognitionWithResponse(options))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -210,7 +209,7 @@ public class CallMediaAsyncUnitTests {
         List<DtmfTone> tones = Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList());
         SendDtmfTonesOptions options = new SendDtmfTonesOptions(tones, new CommunicationUserIdentifier("id"));
         options.setOperationContext(CALL_OPERATION_CONTEXT);
-        options.setOverrideCallbackUrl(OVERRIDE_CALL_CALLBACK_URL);
+        options.setOperationCallbackUrl(OPERATION_CALLBACK_URL);
         StepVerifier.create(callMedia.sendDtmfTonesWithResponse(options))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode())).verifyComplete();
     }

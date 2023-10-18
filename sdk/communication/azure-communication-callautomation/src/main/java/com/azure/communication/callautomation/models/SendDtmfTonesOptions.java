@@ -39,9 +39,9 @@ public final class SendDtmfTonesOptions {
     private String operationContext;
 
     /**
-     * The call back URI override.
+     * The overridden call back URL override for operation.
      */
-    private String overrideCallbackUrl;
+    private String operationCallbackUrl;
 
     /**
      * Get the list of Tones to be sent.
@@ -82,22 +82,23 @@ public final class SendDtmfTonesOptions {
     }
 
     /**
-     * Get the call back URI override.
+     * Get the overridden call back URL override for operation.
      *
-     * @return the overrideCallbackUrl
+     * @return the operationCallbackUrl
      */
-    public String getOverrideCallbackUrl() {
-        return overrideCallbackUrl;
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
     }
 
     /**
-     * Set the call back URI override.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      *
-     * @param overrideCallbackUrl The call back URI override to set
-     * @return the PlayOptions object itself.
+     * @param operationCallbackUrl the operationCallbackUrl to set
+     * @return the SendDtmfTonesOptions object itself.
      */
-    public SendDtmfTonesOptions setOverrideCallbackUrl(String overrideCallbackUrl) {
-        this.overrideCallbackUrl = overrideCallbackUrl;
+    public SendDtmfTonesOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
 }
