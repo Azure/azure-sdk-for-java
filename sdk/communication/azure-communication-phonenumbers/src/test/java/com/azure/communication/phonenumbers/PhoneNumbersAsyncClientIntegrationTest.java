@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
@@ -311,6 +312,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .assertNext((PhoneNumberLocality localityWithAD) -> {
                     assertNotNull(localityWithAD);
                     assertEquals(localityWithAD.getAdministrativeDivision().getAbbreviatedName(), locality.getAdministrativeDivision().getAbbreviatedName());
+                    assertEquals(localityWithAD.getAdministrativeDivision().getLocalizedName(), locality.getAdministrativeDivision().getLocalizedName());
                 })
                 .verifyComplete();
     }
@@ -379,15 +381,17 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalitiesAdministrativeDivision(HttpClient httpClient) {
-        String localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", null).blockFirst().getAdministrativeDivision().getAbbreviatedName();
+        PhoneNumberAdministrativeDivision localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).blockFirst().getAdministrativeDivision();
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                        .listAvailableLocalities("US", localityAdministraiveDivision).next())
+                        .listAvailableLocalities("US", localityAdministraiveDivision.getAbbreviatedName()).next())
                 .assertNext((PhoneNumberLocality locality) -> {
                     assertNotNull(locality);
                     assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(),
-                            localityAdministraiveDivision);
+                            localityAdministraiveDivision.getAbbreviatedName());
+                    assertEquals(locality.getAdministrativeDivision().getLocalizedName(),
+                            localityAdministraiveDivision.getLocalizedName());
                 })
                 .verifyComplete();
     }

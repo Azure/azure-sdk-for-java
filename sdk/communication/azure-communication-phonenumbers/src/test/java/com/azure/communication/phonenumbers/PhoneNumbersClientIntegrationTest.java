@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
@@ -226,14 +227,15 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalitiesWithAdministrativeDivision(HttpClient httpClient) {
-        String localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", null).iterator().next().getAdministrativeDivision().getAbbreviatedName();
+        PhoneNumberAdministrativeDivision localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).iterator().next().getAdministrativeDivision();
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", localityAdministraiveDivision);
+                .listAvailableLocalities("US", localityAdministraiveDivision.getAbbreviatedName());
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
-        assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityAdministraiveDivision);
+        assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityAdministraiveDivision.getAbbreviatedName());
+        assertEquals(locality.getAdministrativeDivision().getLocalizedName(), localityAdministraiveDivision.getLocalizedName());
     }
 
     @ParameterizedTest
@@ -305,6 +307,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
         assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityWithAD.getAdministrativeDivision().getAbbreviatedName());
+        assertEquals(locality.getAdministrativeDivision().getLocalizedName(), localityWithAD.getAdministrativeDivision().getLocalizedName());
     }
 
     @ParameterizedTest
