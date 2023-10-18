@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.44.1 (2023-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.31` to `3.4.33`.
+
 ## 1.44.0 (2023-10-06)
 
 ### Features Added
