@@ -124,11 +124,15 @@ public class HttpUrlConnectionClientBuilder {
         return this;
     }
 
-    /*
+    /**
      * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
      *
      * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
      * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
+     *
+     * @param configuredTimeout The desired timeout Duration or null if using the default timeout.
+     * @param defaultTimeout The default timeout Duration to be used if configuredTimeout is null.
+     * @return The timeout in milliseconds
      */
     static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
         if (configuredTimeout == null) {
