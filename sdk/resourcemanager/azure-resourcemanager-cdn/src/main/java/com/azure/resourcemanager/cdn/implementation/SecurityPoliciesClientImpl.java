@@ -65,11 +65,10 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientS")
-    private interface SecurityPoliciesService {
+    public interface SecurityPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/securityPolicies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityPolicyListResult>> listByProfile(
@@ -83,8 +82,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/securityPolicies/{securityPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityPolicyInner>> get(
@@ -99,8 +97,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/securityPolicies/{securityPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -116,8 +113,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/securityPolicies/{securityPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> patch(
@@ -133,8 +129,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/securityPolicies/{securityPolicyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -481,23 +476,6 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
      *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing security policy within a profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityPolicyInner get(String resourceGroupName, String profileName, String securityPolicyName) {
-        return getAsync(resourceGroupName, profileName, securityPolicyName).block();
-    }
-
-    /**
-     * Gets an existing security policy within a profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -508,6 +486,23 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     public Response<SecurityPolicyInner> getWithResponse(
         String resourceGroupName, String profileName, String securityPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, securityPolicyName, context).block();
+    }
+
+    /**
+     * Gets an existing security policy within a profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing security policy within a profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityPolicyInner get(String resourceGroupName, String profileName, String securityPolicyName) {
+        return getWithResponse(resourceGroupName, profileName, securityPolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -712,7 +707,9 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreate(
         String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy) {
-        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy)
+            .getSyncPoller();
     }
 
     /**
@@ -736,7 +733,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
         String securityPolicyName,
         SecurityPolicyInner securityPolicy,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy, context)
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy, context)
             .getSyncPoller();
     }
 
@@ -1048,7 +1046,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
         String profileName,
         String securityPolicyName,
         SecurityPolicyUpdateParameters securityPolicyUpdateProperties) {
-        return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyUpdateProperties)
+        return this
+            .beginPatchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyUpdateProperties)
             .getSyncPoller();
     }
 
@@ -1073,7 +1072,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
         String securityPolicyName,
         SecurityPolicyUpdateParameters securityPolicyUpdateProperties,
         Context context) {
-        return beginPatchAsync(
+        return this
+            .beginPatchAsync(
                 resourceGroupName, profileName, securityPolicyName, securityPolicyUpdateProperties, context)
             .getSyncPoller();
     }
@@ -1346,7 +1346,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String securityPolicyName) {
-        return beginDeleteAsync(resourceGroupName, profileName, securityPolicyName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, securityPolicyName).getSyncPoller();
     }
 
     /**
@@ -1365,7 +1365,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String securityPolicyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, securityPolicyName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, securityPolicyName, context).getSyncPoller();
     }
 
     /**

@@ -132,7 +132,7 @@
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
       <scope>test</scope>
-      <version>0.8.9</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
     </dependency>
   </dependencies>
   <build>
@@ -140,7 +140,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.9</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.11</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <includes>
             <include>com/azure/communication/callingserver/*.class</include>

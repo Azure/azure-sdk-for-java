@@ -65,8 +65,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
     public interface RoleAssignmentScheduleRequestsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests"
-                + "/{roleAssignmentScheduleRequestName}")
+            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentScheduleRequestInner>> create(
@@ -80,8 +79,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests"
-                + "/{roleAssignmentScheduleRequestName}")
+            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentScheduleRequestInner>> get(
@@ -106,8 +104,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests"
-                + "/{roleAssignmentScheduleRequestName}/cancel")
+            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}/cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancel(
@@ -120,8 +117,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests"
-                + "/{roleAssignmentScheduleRequestName}/validate")
+            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}/validate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentScheduleRequestInner>> validate(

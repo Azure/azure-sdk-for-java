@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Origins Delete. */
 public final class OriginsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Origins_Delete.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Origins_Delete.json
      */
     /**
      * Sample code: Origins_Delete.
@@ -22,6 +20,6 @@ public final class OriginsDeleteSamples {
             .manager()
             .serviceClient()
             .getOrigins()
-            .delete("RG", "profile1", "endpoint1", "origin1", Context.NONE);
+            .delete("RG", "profile1", "endpoint1", "origin1", com.azure.core.util.Context.NONE);
     }
 }

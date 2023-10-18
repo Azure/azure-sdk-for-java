@@ -26,6 +26,15 @@ public final class ProfileProvisioningState extends ExpandableStringEnum<Profile
     public static final ProfileProvisioningState CREATING = fromString("Creating");
 
     /**
+     * Creates a new instance of ProfileProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProfileProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ProfileProvisioningState from its string representation.
      *
      * @param name a name to look for.

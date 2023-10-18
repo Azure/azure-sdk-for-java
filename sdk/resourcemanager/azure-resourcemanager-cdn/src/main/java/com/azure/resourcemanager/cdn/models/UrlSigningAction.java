@@ -21,6 +21,10 @@ public final class UrlSigningAction extends DeliveryRuleAction {
     @JsonProperty(value = "parameters", required = true)
     private UrlSigningActionParameters parameters;
 
+    /** Creates an instance of UrlSigningAction class. */
+    public UrlSigningAction() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the action.
      *
