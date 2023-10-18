@@ -19,6 +19,10 @@ stages:
       - job: Reporting
         displayName: Generate reports (with build)
         timeoutInMinutes: 180
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - name: DisableDockerDetector
+            value: false
 
         pool:
           name: 'azsdk-pool-mms-ubuntu-2004-general'
@@ -109,40 +113,6 @@ stages:
             displayName: 'Publish Report Artifacts'
             artifact: reports
 
-          - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
-
-      - job: Compliance
-        displayName: Analyze (no build)
-        timeoutInMinutes: 120
-        variables:
-          - template: /eng/pipelines/templates/variables/globals.yml
-          - name: DisableDockerDetector
-            value: false
-
-        pool:
-          # CredScan build task is Windows only (https://aka.ms/credscan).
-          name: 'azsdk-pool-mms-win-2022-general'
-          vmImage: 'windows-2022'
-        steps:
-          - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
-            parameters:
-              JobType: 'Reporting'
-              Artifacts:
-                - name: aggregate-reports # fake artifact name
-                  groupId: reports # fake group Id
-
-          - task: Maven@3
-            displayName: 'Build All Libraries'
-            inputs:
-              mavenPomFile: pom.xml
-              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true'
-              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.8'
-              jdkArchitectureOption: 'x64'
-              publishJUnitResults: false
-              goals: 'clean install'
-
           - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
             # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
             # builds should be sufficient.
@@ -162,6 +132,8 @@ stages:
               Directory: ""
               CheckLinkGuidance: $true
               Condition: succeededOrFailed()
+
+          - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
   - stage: ComplianceTools
     displayName: Compliance Tools
