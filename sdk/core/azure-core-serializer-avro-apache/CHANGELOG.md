@@ -7,6 +7,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.44.0` to `1.44.1`.
+- 
 
 ## 1.0.0-beta.40 (2023-10-06)
 
@@ -15,6 +16,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.43.0` to `1.44.0`.
+- Upgraded `avro` from `1.11.0` to `1.11.3`.
 
 ## 1.0.0-beta.39 (2023-09-07)
 
