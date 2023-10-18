@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy;
+package com.generic.core.http.policy.retry;
 
 import com.generic.core.http.models.HttpResponse;
 
@@ -16,7 +16,7 @@ public interface RetryStrategy {
     /**
      * HTTP response status code for {@code Too Many Requests}.
      */
-    int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
+//    private int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
 
     /**
      * Max number of retry attempts to be make.
@@ -43,7 +43,7 @@ public interface RetryStrategy {
     default boolean shouldRetry(HttpResponse httpResponse) {
         int code = httpResponse.getStatusCode();
         return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
-            || code == HTTP_STATUS_TOO_MANY_REQUESTS // HttpUrlConnection does not define HTTP status 429
+//            || code == HTTP_STATUS_TOO_MANY_REQUESTS // HttpUrlConnection does not define HTTP status 429
             || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
             && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
             && code != HttpURLConnection.HTTP_VERSION));
@@ -53,10 +53,11 @@ public interface RetryStrategy {
      * This method is consulted to determine if a retry attempt should be made for the given {@link Throwable}
      * propagated when the request failed to send.
      *
-     * @param throwable The {@link Throwable} thrown during the previous attempt.
+     * @param exception The {@link Throwable} thrown during the previous attempt.
      * @return Whether a retry should be attempted.
      */
-    default boolean shouldRetryException(Throwable throwable) {
-        return throwable instanceof Exception;
+    default boolean shouldRetryException(Exception exception) {
+//        return throwable instanceof Exception;
+        return false;
     }
 }

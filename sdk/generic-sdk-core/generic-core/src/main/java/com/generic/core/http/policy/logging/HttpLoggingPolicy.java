@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy;
+package com.generic.core.http.policy.logging;
 
 import com.generic.core.http.HttpHeaderName;
 import com.generic.core.http.HttpPipelineNextPolicy;
 import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.policy.HttpPipelinePolicy;
 import com.generic.core.models.Context;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
@@ -108,7 +109,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
         final long startNs = System.nanoTime();
 
-        requestLogger.logRequestSync(logger, getRequestLoggingOptions(context));
+        requestLogger.logRequest(logger, getRequestLoggingOptions(context));
         try {
             HttpResponse response = next.process();
             if (response != null) {
@@ -117,7 +118,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
             return response;
         } catch (RuntimeException e) {
-            logger.warning("<-- HTTP FAILED: ", e);
+//            logger.warning("<-- HTTP FAILED: ", e);
             throw logger.logExceptionAsWarning(e);
         }
     }
@@ -137,7 +138,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
         @Override
-        public void logRequestSync(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
+        public void logRequest(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
             final LogLevel logLevel = getLogLevel(loggingOptions);
             if (logger.canLogAtLevel(logLevel)) {
                 log(logLevel, logger, loggingOptions);
@@ -324,7 +325,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 // final Object deserialized = PRETTY_PRINTER.readTree(body);
                 // result = PRETTY_PRINTER.writeValueAsString(deserialized);
             } catch (Exception e) {
-                logger.warning("Failed to pretty print JSON", e);
+//                logger.warning("Failed to pretty print JSON", e);
             }
         }
         return result;
@@ -348,7 +349,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             contentLength = Long.parseLong(contentLengthString);
         } catch (NumberFormatException | NullPointerException e) {
-            logger.warning("Could not parse the HTTP header content-length: '{}'.", contentLengthString, e);
+//            logger.warning("Could not parse the HTTP header content-length: '{}'.", contentLengthString, e);
         }
 
         return contentLength;
@@ -385,7 +386,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             return Integer.valueOf(rawRetryCount.toString());
         } catch (NumberFormatException ex) {
-            LOGGER.warning("Could not parse the request retry count: '{}'.", rawRetryCount);
+//            LOGGER.warning("Could not parse the request retry count: '{}'.", rawRetryCount);
             return null;
         }
     }

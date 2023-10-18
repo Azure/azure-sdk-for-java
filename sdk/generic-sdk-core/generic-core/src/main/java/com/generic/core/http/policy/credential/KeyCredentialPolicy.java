@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy;
+package com.generic.core.http.policy.credential;
 
 import com.generic.core.credential.KeyCredential;
 import com.generic.core.http.HttpPipelineNextPolicy;
 import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.policy.HttpPipelinePolicy;
 import com.generic.core.models.Headers;
 import com.generic.core.util.logging.ClientLogger;
 

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy;
+package com.generic.core.http.policy.logging;
 
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.logging.LogLevel;
@@ -30,5 +30,5 @@ public interface HttpRequestLogger {
      * @param logger The {@link ClientLogger} used to log the HTTP request.
      * @param loggingOptions The information available during request logging.
      */
-    void logRequestSync(ClientLogger logger, HttpRequestLoggingContext loggingOptions);
+    void logRequest(ClientLogger logger, HttpRequestLoggingContext loggingOptions);
 }

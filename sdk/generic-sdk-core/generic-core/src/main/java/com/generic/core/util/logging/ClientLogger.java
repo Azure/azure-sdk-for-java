@@ -17,8 +17,7 @@ import java.util.function.Supplier;
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
  *
  * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
- * is the last argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String,
- * Object...) verbose}, the stack trace for the throwable is logged.</p>
+ * is the last argument of the format varargs and the logger is enabled for the stack trace for the throwable is logged.</p>
  *
  * <p>A minimum logging level threshold is determined by the
  * {@link Configuration#PROPERTY_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
@@ -26,10 +25,6 @@ import java.util.function.Supplier;
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>
- * <li>{@link ClientLogger#error(String, Object...) Error}</li>
- * <li>{@link ClientLogger#warning(String, Object...) Warning}</li>
- * <li>{@link ClientLogger#info(String, Object...) Info}</li>
- * <li>{@link ClientLogger#verbose(String, Object...) Verbose}</li>
  * </ol>
  *
  * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.
@@ -124,174 +119,6 @@ public class ClientLogger {
     public void log(LogLevel logLevel, Supplier<String> message, Throwable throwable) {
         if (message != null && canLogAtLevel(logLevel)) {
             performDeferredLogging(logLevel, message, throwable);
-        }
-    }
-
-    /**
-     * Logs a message at {@code verbose} log level.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging a message at verbose log level.</p>
-     *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.verbose -->
-     * <!-- end com.azure.core.util.logging.clientlogger.verbose -->
-     *
-     * @param message The message to log.
-     */
-    public void verbose(String message) {
-        if (logger.isDebugEnabled()) {
-            if (hasGlobalContext) {
-                atVerbose().log(message);
-            } else {
-                // logger.debug(LoggingUtils.removeNewLinesFromLogMessage(message));
-            }
-        }
-    }
-
-    /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at {@code verbose} log level.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging a message at verbose log level.</p>
-     *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.verbose#string-object -->
-     * <!-- end com.azure.core.util.logging.clientlogger.verbose#string-object -->
-     *
-     * @param format The formattable message to log.
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
-     * Throwable}.
-     */
-    public void verbose(String format, Object... args) {
-        if (logger.isDebugEnabled()) {
-            performLogging(LogLevel.VERBOSE, false, format, args);
-        }
-    }
-
-    /**
-     * Logs a message at {@code info} log level.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging a message at verbose log level.</p>
-     *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.info -->
-     * <!-- end com.azure.core.util.logging.clientlogger.info -->
-     *
-     * @param message The message to log.
-     */
-    public void info(String message) {
-        if (logger.isInfoEnabled()) {
-            if (hasGlobalContext) {
-                atInfo().log(message);
-            } else {
-                // logger.info(LoggingUtils.removeNewLinesFromLogMessage(message));
-            }
-        }
-    }
-
-    /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at {@code informational} log level.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging a message at informational log level.</p>
-     *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.info#string-object -->
-     * <!-- end com.azure.core.util.logging.clientlogger.info#string-object -->
-     *
-     * @param format The format-able message to log
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
-     * Throwable}.
-     */
-    public void info(String format, Object... args) {
-        if (logger.isInfoEnabled()) {
-            performLogging(LogLevel.INFORMATIONAL, false, format, args);
-        }
-    }
-
-    /**
-     * Logs a message at {@code warning} log level.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging a message at warning log level.</p>
-     *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.warning -->
-     * <!-- end com.azure.core.util.logging.clientlogger.warning -->
-     *
-     * @param message The message to log.
-     */
-    public void warning(String message) {
-        if (logger.isWarnEnabled()) {
-            if (hasGlobalContext) {
-                atWarning().log(message);
-            } else {
-                // logger.warn(LoggingUtils.removeNewLinesFromLogMessage(message));
-            }
-        }
-    }
-
-    /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at {@code warning} log level.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging a message at warning log level.</p>
-     *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.warning#string-object -->
-     * <!-- end com.azure.core.util.logging.clientlogger.warning#string-object -->
-     *
-     * @param format The format-able message to log.
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
-     * Throwable}.
-     */
-    public void warning(String format, Object... args) {
-        if (logger.isWarnEnabled()) {
-            performLogging(LogLevel.WARNING, false, format, args);
-        }
-    }
-
-    /**
-     * Logs a message at {@code error} log level.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging a message at error log level.</p>
-     *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.error -->
-     * <!-- end com.azure.core.util.logging.clientlogger.error -->
-     *
-     * @param message The message to log.
-     */
-    public void error(String message) {
-        if (logger.isErrorEnabled()) {
-            if (hasGlobalContext) {
-                atError().log(message);
-            } else {
-                // logger.error(LoggingUtils.removeNewLinesFromLogMessage(message));
-            }
-        }
-    }
-
-    /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at {@code error} log level.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging an error with stack trace.</p>
-     *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.error#string-object -->
-     * <!-- end com.azure.core.util.logging.clientlogger.error#string-object -->
-     *
-     * @param format The format-able message to log.
-     * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
-     * Throwable}.
-     */
-    public void error(String format, Object... args) {
-        if (logger.isErrorEnabled()) {
-            performLogging(LogLevel.ERROR, false, format, args);
         }
     }
 

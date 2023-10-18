@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy;
+package com.generic.core.http.policy.retry;
 
 import com.generic.core.util.CoreUtils;
 import com.generic.core.util.configuration.Configuration;
@@ -34,8 +34,8 @@ public class ExponentialBackoff implements RetryStrategy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                LOGGER.verbose("{} was loaded but is an invalid number. Using 3 retries as the maximum.",
-                    Configuration.PROPERTY_REQUEST_RETRY_COUNT);
+//                LOGGER.verbose("{} was loaded but is an invalid number. Using 3 retries as the maximum.",
+//                    Configuration.PROPERTY_REQUEST_RETRY_COUNT);
             }
         }
 

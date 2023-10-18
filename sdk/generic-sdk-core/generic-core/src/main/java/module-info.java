@@ -3,8 +3,7 @@
 
 module com.generic.core {
 
-    requires java.xml;
-    requires org.slf4j;
+    requires transitive org.slf4j;
 
     // public API surface area
     exports com.generic.core.annotation;

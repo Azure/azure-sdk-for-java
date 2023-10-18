@@ -19,7 +19,7 @@ public interface HttpClient {
      * @param context Contextual information about the request.
      * @return The response.
      */
-    HttpResponse sendSync(HttpRequest request, Context context);
+    HttpResponse send(HttpRequest request, Context context);
 
     /**
      * Creates a new {@link HttpClient} instance.

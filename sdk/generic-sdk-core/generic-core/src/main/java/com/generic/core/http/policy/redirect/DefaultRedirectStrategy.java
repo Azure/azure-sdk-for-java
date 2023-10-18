@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy;
+package com.generic.core.http.policy.redirect;
 
 import com.generic.core.http.HttpHeaderName;
 import com.generic.core.http.HttpMethod;
@@ -78,7 +78,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static HttpHeaderName validateLocationHeader(String locationHeader) {
         if (CoreUtils.isNullOrEmpty(locationHeader)) {
-            LOGGER.error("'locationHeader' provided as null will be defaulted to {}", HttpHeaderName.LOCATION);
+//            LOGGER.error("'locationHeader' provided as null will be defaulted to {}", HttpHeaderName.LOCATION);
             return HttpHeaderName.LOCATION;
         } else {
             return HttpHeaderName.LOCATION; //change
@@ -87,7 +87,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static Set<HttpMethod> validateAllowedMethods(Set<HttpMethod> allowedMethods) {
         if (CoreUtils.isNullOrEmpty(allowedMethods)) {
-            LOGGER.error("'allowedMethods' provided as null will be defaulted to {}", DEFAULT_REDIRECT_ALLOWED_METHODS);
+//            LOGGER.error("'allowedMethods' provided as null will be defaulted to {}", DEFAULT_REDIRECT_ALLOWED_METHODS);
             return DEFAULT_REDIRECT_ALLOWED_METHODS;
         } else {
             return EnumSet.copyOf(allowedMethods);

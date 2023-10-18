@@ -15,18 +15,6 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     private String caseInsensitive;
 
     /**
-     * Creates a new instance of {@link HttpHeaderName} without a {@link #toString()} value.
-     * <p>
-     * This constructor shouldn't be called as it will produce a {@link HttpHeaderName} which doesn't have a String enum
-     * value.
-     *
-     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public HttpHeaderName() {
-    }
-
-    /**
      * Gets the HTTP header name based on the name passed into {@link #fromString(String)}.
      *
      * @return The HTTP header name based on the construction of this {@link HttpHeaderName}.

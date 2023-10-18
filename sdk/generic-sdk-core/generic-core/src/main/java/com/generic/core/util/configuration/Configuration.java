@@ -39,11 +39,6 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_NO_PROXY = "NO_PROXY";
 
     /**
-     * Disables telemetry collection.
-     */
-    public static final String PROPERTY_TELEMETRY_DISABLED = "TELEMETRY_DISABLED";
-
-    /**
      * Enables logging by setting a log level.
      */
     public static final String PROPERTY_LOG_LEVEL = "LOG_LEVEL";
@@ -52,11 +47,6 @@ public class Configuration implements Cloneable {
      * Enables HTTP request/response logging by setting an HTTP log detail level.
      */
     public static final String PROPERTY_HTTP_LOG_DETAIL_LEVEL = "HTTP_LOG_DETAIL_LEVEL";
-
-    /**
-     * Disables tracing.
-     */
-    public static final String PROPERTY_TRACING_DISABLED = "TRACING_DISABLED";
 
     /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it

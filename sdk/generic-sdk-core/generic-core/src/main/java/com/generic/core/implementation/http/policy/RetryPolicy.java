@@ -8,12 +8,12 @@ import com.generic.core.http.HttpPipelineNextPolicy;
 import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.policy.ExponentialBackoff;
-import com.generic.core.http.policy.FixedDelay;
-import com.generic.core.http.policy.HttpLoggingPolicy;
+import com.generic.core.http.policy.retry.ExponentialBackoff;
+import com.generic.core.http.policy.retry.FixedDelay;
+import com.generic.core.http.policy.logging.HttpLoggingPolicy;
 import com.generic.core.http.policy.HttpPipelinePolicy;
-import com.generic.core.http.policy.RetryOptions;
-import com.generic.core.http.policy.RetryStrategy;
+import com.generic.core.http.policy.retry.RetryOptions;
+import com.generic.core.http.policy.retry.RetryStrategy;
 import com.generic.core.models.Headers;
 import com.generic.core.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
@@ -184,13 +184,13 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
 
         // Check all causal exceptions in the exception chain.
-        while (causalThrowable != null) {
-            if (retryStrategy.shouldRetryException(causalThrowable)) {
-                return true;
-            }
-
-            causalThrowable = causalThrowable.getCause();
-        }
+//        while (causalThrowable != null) {
+//            if (retryStrategy.shouldRetryException(causalThrowable)) {
+//                return true;
+//            }
+//
+//            causalThrowable = causalThrowable.getCause();
+//        }
 
         // Finally just return false as this can't be retried.
         return false;
