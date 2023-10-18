@@ -21,7 +21,7 @@ import java.time.Duration;
  */
 public class ReceiveMessage {
 
-    private static final String TAG = "ReceiveMessageOutput";
+    private static final String TAG = "ServiceBusReceiveMessageOutput";
 
     /**
      * Main method to invoke this demo on how to receive a set of {@link ServiceBusMessage messages} from an Azure

@@ -29,7 +29,7 @@ public class ServiceBusSessionProcessor {
 
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
             .fullyQualifiedNamespace("https://android-service-bus.servicebus.windows.net")
-            .credential(credential) // Use DefaultAzureCredential for authentication
+            .credential(credential)
             .sessionProcessor()
             .queueName(queueName)
             .maxConcurrentSessions(2)

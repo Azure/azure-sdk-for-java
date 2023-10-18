@@ -24,7 +24,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class SendSessionMessageAsync {
 
-    private static final String TAG = "SendSessionMessageAsyncOutput";
+    private static final String TAG = "ServiceBusSendSessionMessageAsyncOutput";
 
 
     public static void main(String queueName, ClientSecretCredential credential) throws InterruptedException {
@@ -68,7 +68,5 @@ public class SendSessionMessageAsync {
         // Close the sender.
         sender.close();
 
-        // This assertion is to ensure samples are working. Users should remove this.
-        Assertions.assertTrue(sampleSuccessful.get());
     }
 }

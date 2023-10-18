@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class PeekMessageAsync {
 
-    private static final String TAG = "PeekMessageAsyncOutput";
+    private static final String TAG = "ServiceBusPeekMessageAsyncOutput";
 
 
     public static void main(String queueName, ClientSecretCredential credential) throws InterruptedException {

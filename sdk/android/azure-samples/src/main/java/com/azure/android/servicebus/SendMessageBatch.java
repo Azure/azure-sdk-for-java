@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class SendMessageBatch {
 
-    private static final String TAG = "SendMessageBatchOutput";
+    private static final String TAG = "ServiceBusSendMessageBatchOutput";
 
     @Test
     public static void main(String queueName, ClientSecretCredential credential) {
