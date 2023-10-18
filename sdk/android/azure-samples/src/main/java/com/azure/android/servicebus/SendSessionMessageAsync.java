@@ -82,7 +82,7 @@ public class SendSessionMessageAsync {
         // This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Service queue or topic. It completes with an error if an exception occurred
         // while sending the message.
-        sender.sendMessages(messages).subscribe(unused -> System.out.println("Batch sent."),
+        sender.sendMessages(messages).subscribe(unused -> Log.i(TAG, "Batch sent."),
             error -> Log.e(TAG, "Error occurred while publishing message batch: " + error),
             () -> {
                 Log.i(TAG, "Batch send complete.");

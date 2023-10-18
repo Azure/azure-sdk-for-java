@@ -64,6 +64,9 @@ dependencies {
     implementation("com.azure:azure-security-keyvault-keys")
     implementation("com.azure:azure-security-keyvault-certificates")
 
+    // azure_servicebus
+    implementation("com.azure:azure-messaging-servicebus")
+
     // azure_storage
     implementation("com.azure:azure-storage-blob")
 
