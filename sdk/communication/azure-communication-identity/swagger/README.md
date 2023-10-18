@@ -29,7 +29,7 @@ java: true
 output-folder: ..\
 use: '@autorest/java@4.1.17'
 tag: package-2023-10
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d060b0ad94d8a284681bf64281845c1aec1fa6f3/specification/communication/data-plane/Identity/readme.md
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5797d78f04cd8ca773be82d2c99a3294009b3f0a/specification/communication/data-plane/Identity/readme.md
 add-context-parameter: true
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.identity

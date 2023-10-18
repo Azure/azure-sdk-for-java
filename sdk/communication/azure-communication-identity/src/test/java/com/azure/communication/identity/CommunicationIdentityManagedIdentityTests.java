@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.TokenScopeTestHelper.skipVoipJoinScopeTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -55,6 +56,10 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
     public void createUserAndToken(String testName, List<CommunicationTokenScope> scopes) {
+        if (skipVoipJoinScopeTest(scopes)) {
+            return;
+        }
+
         // Arrange
         client = setupClient(builder, "createUserAndTokenUsingManagedIdentityWith" + testName + SYNC_TEST_SUFFIX);
 
@@ -80,6 +85,10 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
     public void getToken(String testName, List<CommunicationTokenScope> scopes) {
+        if (skipVoipJoinScopeTest(scopes)) {
+            return;
+        }
+
         // Arrange
         client = setupClient(builder, "getTokenUsingManagedIdentityWith" + testName + SYNC_TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
