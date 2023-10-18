@@ -56,6 +56,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
+        assertEquals("0", converted.toString()); 
     }
 
     @Test
@@ -96,42 +97,43 @@ public class JsonConversionTests {
     //1.2: Number
     @Test
     public void convertEmptyNumberToSelf(){
-        JsonElement test = new JsonNumber();
+        JsonElement test = new JsonNumber(0);
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
+        assertEquals("0", converted.toString()); 
     }
 
     @Test
     public void convertEmptyNumberToArray(){
-        JsonElement test = new JsonNumber();
+        JsonElement test = new JsonNumber(0);
         JsonArray converted = test.asArray();
         assertTrue(converted.isArray());
     }
 
     @Test
     public void convertEmptyNumberToBoolean(){
-        JsonElement test = new JsonNumber();
+        JsonElement test = new JsonNumber(0);
         JsonBoolean converted = test.asBoolean();
         assertTrue(converted.isBoolean());
     }
 
     @Test
     public void convertEmptyNumberToNull(){
-        JsonElement test = new JsonNumber();
+        JsonElement test = new JsonNumber(0);
         JsonNull converted = test.asNull();
         assertTrue(converted.isNull());
     }
 
     @Test
     public void convertEmptyNumberToString(){
-        JsonElement test = new JsonNumber();
+        JsonElement test = new JsonNumber(0);
         JsonString converted = test.asString();
         assertTrue(converted.isString());
     }
 
     @Test
     public void convertEmptyNumberToObject(){
-        JsonElement test = new JsonNumber();
+        JsonElement test = new JsonNumber(0);
         JsonObject converted = test.asObject();
         assertTrue(converted.isObject());
     }
@@ -142,6 +144,7 @@ public class JsonConversionTests {
         JsonElement test = JsonBoolean.getInstance(true);
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
+        assertEquals("1", converted.toString()); 
     }
 
     @Test
@@ -185,6 +188,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonString("");
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
+        assertEquals("0", converted.toString()); 
     }
 
     @Test
@@ -228,6 +232,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonArray();
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
+        assertEquals("0", converted.toString()); 
     }
 
     @Test
@@ -272,6 +277,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertFalse(converted.isBoolean());
+        assertEquals("0", converted.toString()); 
     }
 
     @Test
@@ -279,6 +285,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertFalse(converted.isString());
+        assertEquals("0", converted.toString()); 
     }
 
     @Test
@@ -286,6 +293,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertFalse(converted.isNull());
+        assertEquals("0", converted.toString()); 
     }
 
     @Test
@@ -293,6 +301,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertFalse(converted.isArray());
+        assertEquals("0", converted.toString()); 
     }
 
     @Test
@@ -300,6 +309,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertFalse(converted.isObject());
+        assertEquals("0", converted.toString()); 
     }
 
 
@@ -502,7 +512,7 @@ public class JsonConversionTests {
     public void filledObjectToNumberInvalid() { //Is this the correct formatting?
         JsonElement test = new JsonObject().setProperty("Key 1", new JsonString("one"));
         JsonNumber converted = test.asNumber();
-        assertNull(converted.toString());
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -754,7 +764,7 @@ public class JsonConversionTests {
     public void filledStringToNumberInvalid() { //Is this the correct formatting?
         JsonElement test = new JsonString("one");
         JsonNumber converted = test.asNumber();
-        assertNull(converted.toString());
+        assertEquals("0", converted.toString());
     }
 
 
@@ -874,7 +884,7 @@ public class JsonConversionTests {
     public void filledArrayStringToNumberInvalid(){
         JsonElement test = new JsonArray().addElement(new JsonString("Twenty"));
         JsonNumber converted = test.asNumber();
-        assertNull(converted.toString());
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -1019,7 +1029,7 @@ public class JsonConversionTests {
     public void filledArrayObjectStringToNumberInvalid(){
         JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", new JsonString("tenth")));
         JsonNumber converted = test.asNumber();
-        assertNull(converted.toString());
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -1083,7 +1093,7 @@ public class JsonConversionTests {
     public void filledArrayObjectNullToNumber(){
         JsonElement test = new JsonArray().addElement(new JsonObject().setProperty("Value", JsonNull.getInstance()));
         JsonNumber converted = test.asNumber();
-        assertNull(converted.toString());
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -1158,6 +1168,7 @@ public class JsonConversionTests {
         JsonElement test = JsonNull.getInstance();
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
+        assertEquals("0", converted.toString());
     }
 
     @Test

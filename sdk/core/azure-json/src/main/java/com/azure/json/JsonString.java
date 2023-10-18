@@ -81,10 +81,10 @@ public class JsonString extends JsonElement {
             try {
                 return new JsonNumber(Float.parseFloat(stringValue));
             } catch (NullPointerException x) {
-                return new JsonNumber();
+                return new JsonNumber(0);
             }
         } catch (NumberFormatException z) {
-            return new JsonNumber();
+            return new JsonNumber(0);
         }
     }
 
