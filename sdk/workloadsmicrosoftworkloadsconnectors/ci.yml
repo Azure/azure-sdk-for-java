@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/workloadsmicrosoftworkloadsconnectors/ci.yml
+      - sdk/workloadsmicrosoftworkloadsconnectors/azure-resourcemanager-workloadsmicrosoftworkloadsconnectors/
+    exclude:
+      - sdk/workloadsmicrosoftworkloadsconnectors/pom.xml
+      - sdk/workloadsmicrosoftworkloadsconnectors/azure-resourcemanager-workloadsmicrosoftworkloadsconnectors/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/workloadsmicrosoftworkloadsconnectors/ci.yml
+      - sdk/workloadsmicrosoftworkloadsconnectors/azure-resourcemanager-workloadsmicrosoftworkloadsconnectors/
+    exclude:
+      - sdk/workloadsmicrosoftworkloadsconnectors/pom.xml
+      - sdk/workloadsmicrosoftworkloadsconnectors/azure-resourcemanager-workloadsmicrosoftworkloadsconnectors/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerworkloadsmicrosoftworkloadsconnectors
+    displayName: azure-resourcemanager-workloadsmicrosoftworkloadsconnectors
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: workloadsmicrosoftworkloadsconnectors
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-workloadsmicrosoftworkloadsconnectors
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerworkloadsmicrosoftworkloadsconnectors
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerworkloadsmicrosoftworkloadsconnectors }}
