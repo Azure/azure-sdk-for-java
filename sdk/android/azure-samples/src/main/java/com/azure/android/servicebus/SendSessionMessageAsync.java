@@ -36,7 +36,7 @@ public class SendSessionMessageAsync {
 
         // Any clients built from the same ServiceBusClientBuilder share the same connection.
         ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
-            .fullyQualifiedNamespace("https://android-service-bus.servicebus.windows.net")
+            .fullyQualifiedNamespace("android-service-bus.servicebus.windows.net")
             .credential(credential);
 
         // Instantiate a client that will be used to send messages.

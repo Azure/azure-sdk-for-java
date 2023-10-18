@@ -28,7 +28,7 @@ public class PeekMessageAsync {
         CountDownLatch countdownLatch = new CountDownLatch(1);
 
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .fullyQualifiedNamespace("https://android-service-bus.servicebus.windows.net")
+            .fullyQualifiedNamespace("android-service-bus.servicebus.windows.net")
             .credential(credential)
             .receiver()
             .queueName(queueName)

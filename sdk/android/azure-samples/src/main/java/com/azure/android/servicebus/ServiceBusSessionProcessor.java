@@ -28,7 +28,7 @@ public class ServiceBusSessionProcessor {
     public static void main(String queueName, ClientSecretCredential credential) throws InterruptedException {
 
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-            .fullyQualifiedNamespace("https://android-service-bus.servicebus.windows.net")
+            .fullyQualifiedNamespace("android-service-bus.servicebus.windows.net")
             .credential(credential)
             .sessionProcessor()
             .queueName(queueName)

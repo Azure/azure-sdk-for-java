@@ -36,7 +36,7 @@ public class SendMessageBatch {
 
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .fullyQualifiedNamespace("https://android-service-bus.servicebus.windows.net")
+            .fullyQualifiedNamespace("android-service-bus.servicebus.windows.net")
             .credential(credential)
             .sender()
             .queueName(queueName)
