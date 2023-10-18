@@ -1,5 +1,11 @@
 # Release History
 
+## 1.44.1 (2023-10-17)
+
+### Other Changes
+
+- External dependency updates.
+
 ## 1.44.0 (2023-10-06)
 
 ### Features Added
