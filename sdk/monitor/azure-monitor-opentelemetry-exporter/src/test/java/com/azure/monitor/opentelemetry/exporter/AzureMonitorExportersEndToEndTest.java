@@ -217,6 +217,55 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         assertThat(customValidationPolicy.url)
             .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
 
+        verifyStatsbeatTelemetry(customValidationPolicy);
+    }
+
+    @Test
+    public void testStatsbeatShutdownWhen400InvalidIKeyReturned() throws Exception {
+        String fakeBody = "{\"itemsReceived\":4,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":1,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":2,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":3,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"}]}";
+        verifyStatsbeatShutdownOrnNot(fakeBody, true);
+    }
+
+    @Test
+    public void testStatsbeatNotShutDownWhen400InvalidDataReturned() throws Exception {
+        String fakeBody = "{\"itemsReceived\":1,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"102: Field 'time' on type 'Envelope' is not a valid time string. Expected: date, Actual: fake\"}]}";
+        verifyStatsbeatShutdownOrnNot(fakeBody, false);
+    }
+
+    private void verifyStatsbeatShutdownOrnNot(String fakeBody, boolean shutdown) throws Exception {
+        MockedHttpClient mockedHttpClient =
+            new MockedHttpClient(
+                request -> {
+                    return Mono.just(new MockHttpResponse(request, 400, new HttpHeaders(), fakeBody.getBytes()));
+                });
+
+        // create OpenTelemetrySdk
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        AzureMonitorExportersEndToEndTest.CustomValidationPolicy customValidationPolicy = new AzureMonitorExportersEndToEndTest.CustomValidationPolicy(countDownLatch);
+        OpenTelemetrySdk openTelemetrySdk =
+            TestUtils.createOpenTelemetrySdk(
+                getHttpPipeline(customValidationPolicy, mockedHttpClient), getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
+
+        generateMetric(openTelemetrySdk);
+
+        // close to flush
+        openTelemetrySdk.close();
+
+        Thread.sleep(2000);
+
+        // wait for export
+        countDownLatch.await(10, SECONDS);
+        assertThat(customValidationPolicy.url)
+            .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
+
+        if (shutdown) {
+            assertThat(customValidationPolicy.actualTelemetryItems.stream().filter(item -> item.getName().equals("Statsbeat")).count()).isEqualTo(0);
+        } else {
+            verifyStatsbeatTelemetry(customValidationPolicy);
+        }
+    }
+
+    private void verifyStatsbeatTelemetry(CustomValidationPolicy customValidationPolicy) {
         TelemetryItem attachStatsbeat =
             customValidationPolicy.actualTelemetryItems.stream()
                 .filter(item -> item.getName().equals("Statsbeat"))
@@ -238,36 +287,6 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
                 .findFirst()
                 .get();
         validateFeatureStatsbeat(featureStatsbeat);
-    }
-
-    @Test
-    public void testStatsbeatShutdownWhen400InvalidIKeyReturned() throws Exception {
-        String fakeBody = "{\"itemsReceived\":1,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"}]}";
-        MockedHttpClient mockedHttpClient =
-            new MockedHttpClient(
-                request -> {
-                    return Mono.just(new MockHttpResponse(request, 400, new HttpHeaders(), fakeBody.getBytes()));
-                });
-
-        // create OpenTelemetrySdk
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        AzureMonitorExportersEndToEndTest.CustomValidationPolicy customValidationPolicy = new AzureMonitorExportersEndToEndTest.CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetrySdk =
-            TestUtils.createOpenTelemetrySdk(
-                getHttpPipeline(customValidationPolicy, mockedHttpClient), getConfiguration(), STATSBEAT_CONNECTION_STRING);
-
-        generateMetric(openTelemetrySdk);
-
-        // close to flush
-        openTelemetrySdk.close();
-
-        Thread.sleep(1000);
-
-        // wait for export
-        countDownLatch.await(10, SECONDS);
-        assertThat(customValidationPolicy.url)
-            .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.actualTelemetryItems.stream().filter(item -> item.getName().equals("Statsbeat")).count()).isEqualTo(0);
     }
 
     private static Map<String, String> getConfiguration() {
