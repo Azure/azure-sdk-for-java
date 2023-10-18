@@ -207,7 +207,7 @@ io.opentelemetry:opentelemetry-sdk-testing;1.31.0
 io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.31.0
 io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.31.0
 io.opentelemetry:opentelemetry-bom;1.31.0
-io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha:1.31.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha;1.31.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;1.31.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;1.31.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-jdbc;1.31.0-alpha
