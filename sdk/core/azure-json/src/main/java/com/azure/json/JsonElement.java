@@ -1,6 +1,10 @@
 package com.azure.json;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+
+import static com.azure.json.JsonToken.END_DOCUMENT;
 
 /*
 
@@ -96,168 +100,76 @@ public abstract class JsonElement {
         return null;
     }
 
-// Commented out APIs relating to JsonArray and JsonObject in JsonElement. 
-// 
-//     //------------------------------------------------------------------------//
-//     //------------------------ Methods for JsonArray -------------------------//
-//     // TODO: could be extracted into an interface instead of type checking in //
-//     // JsonElement. Could create JsonArrayable interface or some other more   //
-//     // appropriately named interface to be implemented by JsonArray.          //
-//     //------------------------------------------------------------------------//
-// 
-//     // All throw unless isArray is true.
-//    /**
-//     *
-//     * @param element
-//     * @return
-//     * @throws IllegalArgumentException
-//     */
-//    public JsonArray addElement(JsonElement element) throws IllegalArgumentException  {
-//        if (this.isArray()) {
-//            return (this.asArray()).addElement(element);
-//        } else {
-//            throw new InvalidJsonDataTypeException();
-//        }
-//    }
-//
-//    /**
-//     *
-//     * @param index
-//     * @param element
-//     * @return
-//     * @throws IllegalArgumentException
-//     * @throws IndexOutOfBoundsException
-//     */
-//    public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
-//        if (this.isArray()) {
-//            return (this.asArray()).addElement(index, element);
-//        } else {
-//            throw new InvalidJsonDataTypeException();
-//        }
-//    }
-//
-//    /**
-//     *
-//     * @param index
-//     * @param element
-//     * @return
-//     * @throws IllegalArgumentException
-//     * @throws IndexOutOfBoundsException
-//     */
-//    public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
-//        if (this.isArray()) {
-//            return (this.asArray()).setElement(index, element);
-//        } else {
-//            throw new InvalidJsonDataTypeException();
-//        }
-//    }
-//
-//    /**
-//     *
-//     * @param index
-//     * @return
-//     * @throws IndexOutOfBoundsException
-//     */
-//    public JsonElement getElement(int index) throws IndexOutOfBoundsException {
-//        if (this.isArray()) {
-//            return (this.asArray()).getElement(index);
-//        } else {
-//            throw new InvalidJsonDataTypeException();
-//        }
-//    }
-//
-//    /**
-//     *
-//     * @param index
-//     * @return
-//     * @throws IndexOutOfBoundsException
-//     */
-//    public JsonElement removeElement(int index) throws IndexOutOfBoundsException {
-//        if (this.isArray()) {
-//            return (this.asArray()).removeElement(index);
-//        } else {
-//            throw new InvalidJsonDataTypeException();
-//        }
-//    }
 
-//     //------------------------------------------------------------------------//
-//     //------------------------ Methods for JsonObject ------------------------//
-//     // TODO: could be extracted into an interface instead of type checking in //
-//     // JsonElement. Could create JsonObjectable interface or some other more  //
-//     // appropriately named interface to be implemented by JsonObject.         //
-//     //------------------------------------------------------------------------//
-// 
-//    /**
-//     *
-//     * @param key
-//     * @param element
-//     * @return
-//     * @throws InvalidJsonDataTypeException
-//     */
-//    public JsonObject addProperty(String key, Object element) throws InvalidJsonDataTypeException {
-//        if(this.isObject()) {
-//            return (this.asObject()).addProperty(key, element);
-//        } else {
-//            throw new InvalidJsonDataTypeException();
-//        }
-//    }
-//
-//    /**
-//     *
-//     * @param key
-//     * @param element
-//     * @return
-//     * @throws InvalidJsonDataTypeException
-//     */
-//    public JsonObject setProperty(String key, JsonElement element) throws InvalidJsonDataTypeException, IOException {
-//    if(this.isObject()) {
-//            return (this.asObject()).setProperty(key, element);
-//        } else {
-//            throw new InvalidJsonDataTypeException();
-//        }
-//    }
-//
-//    /**
-//     *
-//     * @param key
-//     * @return
-//     * @throws InvalidJsonDataTypeException
-//     */
-//    public JsonElement getProperty(String key) throws InvalidJsonDataTypeException {
-//        if(this.isObject()) {
-//            return (this.asObject()).getProperty(key);
-//        } else {
-//            throw new InvalidJsonDataTypeException();
-//        }
-//    }
-//
-//    /**
-//     *
-//     * @param key
-//     * @return
-//     * @throws InvalidJsonDataTypeException
-//     */
-//    public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException, IOException {
-//        if (this.isObject()) {
-//            return (this.asObject()).removeProperty(key);
-//        } else {
-//            throw new InvalidJsonDataTypeException();
-//        }
-//    }
-//
-//    /**
-//     *
-//     * @param key
-//     * @return
-//     * @throws InvalidJsonDataTypeException
-//     */
-//    public JsonElement getValueByKey(String key) throws InvalidJsonDataTypeException {
-//        if (this.isObject()) {
-//            return (this.asObject()).getValueByKey(key);
-//        } else {
-//            throw new InvalidJsonDataTypeException();
-//        }
-//    }
+    //------------------------------------------------------------------------//
+    //------------------------ Methods for JSON deserialzing -----------------//
+    //------------------------------------------------------------------------//
+    // The following are the methods that build a JsonObject or JsonArray from
+    // an injected String, byte[] array, Reader or InputStream.
+
+    public static JsonElement fromString(String json) throws IOException {
+        return deserializeOutput(JsonProviders.createReader(json));
+    }
+
+    public static JsonElement fromBytes(byte[] json) throws IOException {
+        return deserializeOutput(JsonProviders.createReader(json));
+    }
+
+    public static JsonElement fromStream(InputStream json) throws IOException {
+        return deserializeOutput(JsonProviders.createReader(json));
+    }
+
+    public static JsonElement fromReader(Reader json) throws IOException {
+        return deserializeOutput(JsonProviders.createReader(json));
+    }
+
+    private static JsonElement deserializeOutput(JsonReader jsonReader) throws IOException {
+
+        JsonElement output = null;
+        JsonToken token = jsonReader.nextToken();
+
+        while (token != END_DOCUMENT) {
+
+            switch (token) {
+                // Case: deserialising top level JSON array
+                case START_ARRAY:
+                    output = new JsonArray(jsonReader);
+                    break;
+                // Case: deserialising top level JSON object
+                case START_OBJECT:
+                    output = new JsonObject(jsonReader);
+                    break;
+                // Invalid JsonToken token cases:
+                // NOTE: previous comment mentioned "In theory the reader takes care of this"
+                case END_ARRAY:
+                    break;
+                //              throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON. Deserialisation aborted.");
+                case END_OBJECT:
+                    throw new IOException("Invalid JsonToken.END_OBJECT token read from deserialised JSON. Deserialisation aborted.");
+                case FIELD_NAME:
+                    throw new IOException("Invalid JsonToken.FIELD_NAME token read from deserialised JSON. Deserialisation aborted.");
+                case STRING:
+                    throw new IOException("Invalid JsonToken.STRING token read from deserialised JSON. Deserialisation aborted.");
+                case NUMBER:
+                    throw new IOException("Invalid JsonToken.NUMBER token read from deserialised JSON. Deserialisation aborted.");
+                case BOOLEAN:
+                    throw new IOException("Invalid JsonToken.BOOLEAN token read from deserialised JSON. Deserialisation aborted.");
+                case NULL:
+                    throw new IOException("Invalid JsonToken.NULL token read from deserialised JSON. Deserialisation aborted.");
+                    // Case: this should never be the case because of the while condition.
+                case END_DOCUMENT:
+                    throw new IOException("Invalid JsonToken.END_DOCUMENT token read from deserialised JSON. Deserialisation aborted.");
+                    // Case: tokens read from JsonReader must be JsonTokens. This
+                    // default case would only succeed if an unknown token type is
+                    // encountered.
+                default:
+                    throw new IOException("Invalid token deserialised from JsonReader. Deserialisation aborted.");
+            }
+            token = jsonReader.nextToken();
+        }
+        return output;
+    }
+
 
     //------------------------------------------------------------------------//
     //--------------- isX Methods (JSON type checking methods) ---------------//
