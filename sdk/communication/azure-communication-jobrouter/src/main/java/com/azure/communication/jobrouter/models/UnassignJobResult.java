@@ -4,42 +4,51 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response payload after a job has been successfully unassigned. */
-@Fluent
+@Immutable
 public final class UnassignJobResult {
     /*
      * The Id of the job unassigned.
      */
-    @JsonProperty(value = "jobId", required = true)
+    @Generated
+    @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * The number of times a job is unassigned. At a maximum 3.
      */
-    @JsonProperty(value = "unassignmentCount", required = true)
+    @Generated
+    @JsonProperty(value = "unassignmentCount")
     private int unassignmentCount;
+
+    /**
+     * Creates an instance of UnassignJobResult class.
+     *
+     * @param jobId the jobId value to set.
+     * @param unassignmentCount the unassignmentCount value to set.
+     */
+    @Generated
+    @JsonCreator
+    private UnassignJobResult(
+            @JsonProperty(value = "jobId") String jobId,
+            @JsonProperty(value = "unassignmentCount") int unassignmentCount) {
+        this.jobId = jobId;
+        this.unassignmentCount = unassignmentCount;
+    }
 
     /**
      * Get the jobId property: The Id of the job unassigned.
      *
      * @return the jobId value.
      */
+    @Generated
     public String getJobId() {
         return this.jobId;
-    }
-
-    /**
-     * Set the jobId property: The Id of the job unassigned.
-     *
-     * @param jobId the jobId value to set.
-     * @return the UnassignJobResult object itself.
-     */
-    public UnassignJobResult setJobId(String jobId) {
-        this.jobId = jobId;
-        return this;
     }
 
     /**
@@ -47,18 +56,8 @@ public final class UnassignJobResult {
      *
      * @return the unassignmentCount value.
      */
+    @Generated
     public int getUnassignmentCount() {
         return this.unassignmentCount;
-    }
-
-    /**
-     * Set the unassignmentCount property: The number of times a job is unassigned. At a maximum 3.
-     *
-     * @param unassignmentCount the unassignmentCount value to set.
-     * @return the UnassignJobResult object itself.
-     */
-    public UnassignJobResult setUnassignmentCount(int unassignmentCount) {
-        this.unassignmentCount = unassignmentCount;
-        return this;
     }
 }
