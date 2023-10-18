@@ -28,7 +28,9 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private Duration currentBackoff;
     private RetryContext retryContext;
     private final AtomicInteger maxRetryAttemptsInCurrentRegion;
-    private final SessionRetryOptions sessionRetryOptions;
+    private final CosmosRegionSwitchHint regionSwitchHint;
+
+    private final Duration minInRegionRetryTime;
 
     public SessionTokenMismatchRetryPolicy(
         RetryContext retryContext,
@@ -39,10 +41,17 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
-        this.maxRetryAttemptsInCurrentRegion =
-            new AtomicInteger(sessionRetryOptionsAccessor.getMaxInRegionRetryCount(sessionRetryOptions));
+        if (sessionRetryOptions != null) {
+            this.maxRetryAttemptsInCurrentRegion =
+                new AtomicInteger(sessionRetryOptionsAccessor.getMaxInRegionRetryCount(sessionRetryOptions));
+            this.regionSwitchHint = sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptions);
+            this.minInRegionRetryTime = sessionRetryOptionsAccessor.getMinInRegionRetryTime(sessionRetryOptions);
+        } else {
+            this.maxRetryAttemptsInCurrentRegion = null;
+            this.regionSwitchHint = CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED;
+            this.minInRegionRetryTime = null;
+        }
         this.retryContext = retryContext;
-        this.sessionRetryOptions = sessionRetryOptions;
     }
 
     @Override
@@ -81,7 +90,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         //      to the write region then region switch using ClientRetryPolicy will route
         //      the retry to the same write region again, therefore the DIFFERENT_REGION_PREFERRED
         //      hint causes quicker switch to the same write region which is reasonable
-        if (!shouldRetryLocally(sessionRetryOptions, retryCount.get())) {
+        if (!shouldRetryLocally(regionSwitchHint, retryCount.get())) {
 
             LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for the current region and " +
                 "fallback to a different region is preferred ");
@@ -109,13 +118,11 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
 
         // For remote region preference ensure that the last retry is long enough (even when exceeding max backoff time)
         // to consume the entire minRetryTimeInLocalRegion
-        if (sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptions) ==
-                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
+        if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
             && attempt >= (this.maxRetryAttemptsInCurrentRegion.get() - 1)) {
 
-            Duration remainingMinRetryTimeInLocalRegion = this.waitTimeTimeoutHelper.getRemainingTime(
-                sessionRetryOptionsAccessor.getMinInRegionRetryTime(this.sessionRetryOptions)
-            );
+            Duration remainingMinRetryTimeInLocalRegion =
+                this.waitTimeTimeoutHelper.getRemainingTime(minInRegionRetryTime);
 
             if (remainingMinRetryTimeInLocalRegion.compareTo(effectiveBackoff) > 0) {
                 effectiveBackoff = remainingMinRetryTimeInLocalRegion;
@@ -143,15 +150,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         return backoff;
     }
 
-    private boolean shouldRetryLocally(SessionRetryOptions sessionRetryOptions, int sessionTokenMismatchRetryAttempts) {
-
-        if (sessionRetryOptions == null) {
-            return true;
-        }
-
-        CosmosRegionSwitchHint regionSwitchHint = sessionRetryOptionsAccessor
-            .getRegionSwitchHint(sessionRetryOptions);
-
+    private boolean shouldRetryLocally(CosmosRegionSwitchHint regionSwitchHint, int sessionTokenMismatchRetryAttempts) {
         if (regionSwitchHint != CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
             return true;
         }
