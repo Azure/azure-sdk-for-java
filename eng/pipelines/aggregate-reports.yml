@@ -40,10 +40,10 @@ stages:
             displayName: 'Build All Libraries'
             inputs:
               mavenPomFile: pom.xml
-              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true'
+              options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaBuildVersion)
+              jdkVersionOption: '1.8'
               jdkArchitectureOption: 'x64'
               publishJUnitResults: false
               goals: 'clean install'
@@ -62,7 +62,7 @@ stages:
               options: '$(DefaultOptions)'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaBuildVersion)
+              jdkVersionOption: '1.8'
               jdkArchitectureOption: 'x64'
               publishJUnitResults: false
               goals: 'clean package'
@@ -82,7 +82,7 @@ stages:
               options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaBuildVersion)
+              jdkVersionOption: '1.8'
               jdkArchitectureOption: 'x64'
               publishJUnitResults: false
               goals: 'javadoc:aggregate'
@@ -135,10 +135,10 @@ stages:
             displayName: 'Build All Libraries'
             inputs:
               mavenPomFile: pom.xml
-              options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true'
+              options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaBuildVersion)
+              jdkVersionOption: '1.8'
               jdkArchitectureOption: 'x64'
               publishJUnitResults: false
               goals: 'clean install'
