@@ -3,6 +3,7 @@
 
 package com.azure.android.servicebus;
 
+import com.azure.identity.ClientSecretCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
@@ -24,39 +25,13 @@ public class ServiceBusSessionProcessor {
 
     private static final String TAG = "ServiceBusSessionProcessorOutput";
 
-    /**
-     * Main method to start the sample application.
-     * @param connectionString
-     * @param sessionQueueName
-     * @throws InterruptedException If the application is interrupted.
-     */
-    public static void main(String connectionString, String sessionQueueName) throws InterruptedException {
-        SendSessionMessageAsync sample = new SendSessionMessageAsync();
-        sample.run(connectionString, sessionQueueName);
-    }
+    public static void main(String queueName, ClientSecretCredential credential) throws InterruptedException {
 
-    /**
-     * This method to start the sample application.
-     * @throws InterruptedException If the application is interrupted.
-     */
-    @Test
-    public void run(String connectionString, String sessionQueueName) throws InterruptedException {
-        // The connection string value can be obtained by:
-        // 1. Going to your Service Bus namespace in Azure Portal.
-        // 2. Go to "Shared access policies"
-        // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        // The 'connectionString' format is shown below.
-        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
-        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // 3. "sessionQueueName" will be the name of the session enabled Service Bus queue instance you created inside
-        //    the Service Bus namespace.
-
-        // Create an instance of session-enabled processor through the ServiceBusClientBuilder that processes
-        // two sessions concurrently.
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+            .fullyQualifiedNamespace("https://android-service-bus.servicebus.windows.net")
+            .credential(credential) // Use DefaultAzureCredential for authentication
             .sessionProcessor()
-            .queueName(sessionQueueName)
+            .queueName(queueName)
             .maxConcurrentSessions(2)
             .processMessage(ServiceBusSessionProcessor::processMessage)
             .processError(ServiceBusSessionProcessor::processError)

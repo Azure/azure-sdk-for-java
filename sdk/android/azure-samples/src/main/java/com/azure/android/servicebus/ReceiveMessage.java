@@ -3,6 +3,7 @@
 
 package com.azure.android.servicebus;
 
+import com.azure.identity.ClientSecretCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
@@ -27,20 +28,11 @@ public class ReceiveMessage {
      * Service Bus Queue.
      *
      */
-    public static void main(String connectionString, String queueName) {
+    public static void main(String queueName, ClientSecretCredential credential) {
 
-        // The connection string value can be obtained by:
-        // 1. Going to your Service Bus namespace in Azure Portal.
-        // 2. Go to "Shared access policies"
-        // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-
-        // Create a receiver.
-        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // "<<queue-name>>" will be the name of the Service Bus queue instance you created
-        // inside the Service Bus namespace.
-        // Each message's lock is renewed up to 1 minute.
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+            .fullyQualifiedNamespace("https://android-service-bus.servicebus.windows.net")
+            .credential(credential)
             .receiver()
             .maxAutoLockRenewDuration(Duration.ofMinutes(1))
             .queueName(queueName)

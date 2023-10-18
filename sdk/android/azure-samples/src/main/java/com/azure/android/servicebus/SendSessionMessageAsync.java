@@ -4,6 +4,7 @@
 package com.azure.android.servicebus;
 
 import com.azure.core.util.BinaryData;
+import com.azure.identity.ClientSecretCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
@@ -25,46 +26,18 @@ public class SendSessionMessageAsync {
 
     private static final String TAG = "SendSessionMessageAsyncOutput";
 
-    /**
-     * Main method to invoke this demo on how to send and receive a {@link ServiceBusMessage} to and from a
-     * session-enabled Azure Service Bus queue.
-     *
-     * @param connectionString
-     * @param queueName
-     * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
-     */
-    public static void main(String connectionString, String queueName) throws InterruptedException {
-        SendSessionMessageAsync sample = new SendSessionMessageAsync();
-        sample.run(connectionString, queueName);
-    }
 
-    /**
-     * This method to invoke this demo on how to send and receive a {@link ServiceBusMessage} to and from a
-     * session-enabled Azure Service Bus queue.
-     *
-     * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
-     */
-    @Test
-    public void run(String connectionString, String queueName) throws InterruptedException {
+    public static void main(String queueName, ClientSecretCredential credential) throws InterruptedException {
         AtomicBoolean sampleSuccessful = new AtomicBoolean(false);
         CountDownLatch countdownLatch = new CountDownLatch(1);
-
-        // The connection string value can be obtained by:
-        // 1. Going to your Service Bus namespace in Azure Portal.
-        // 2. Go to "Shared access policies"
-        // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        // The 'connectionString' format is shown below.
-        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
-        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // 3. "queueName" will be the name of the Service Bus queue instance you created
-        //    inside the Service Bus namespace.
 
         // We want all our greetings in the same session to be processed.
         String sessionId = "greetings-id";
 
         // Any clients built from the same ServiceBusClientBuilder share the same connection.
         ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(connectionString);
+            .fullyQualifiedNamespace("https://android-service-bus.servicebus.windows.net")
+            .credential(credential);
 
         // Instantiate a client that will be used to send messages.
         ServiceBusSenderAsyncClient sender = builder

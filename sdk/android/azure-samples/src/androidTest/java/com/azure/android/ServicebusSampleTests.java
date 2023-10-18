@@ -32,7 +32,7 @@ public class AppConfigurationSampleTests {
     }
 
     @Test
-    public void peekMeassageAsync() {
+    public void peekMessageAsync() {
         try {
             PeekMessageAsync.main(serviceBusQueueName, clientSecretCredential);
         } catch (RuntimeException | IOException e) {
@@ -41,9 +41,9 @@ public class AppConfigurationSampleTests {
     }
 
     @Test
-    public void recieveMessage() {
+    public void receiveMessage() {
         try {
-            RecieveMessage.main(serviceBusQueueName, clientSecretCredential);
+            ReceiveMessage.main(serviceBusQueueName, clientSecretCredential);
         } catch (RuntimeException | IOException e) {
             fail();
         }

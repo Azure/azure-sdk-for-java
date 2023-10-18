@@ -4,6 +4,7 @@
 package com.azure.android.servicebus;
 
 import com.azure.core.util.BinaryData;
+import com.azure.identity.ClientSecretCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusMessageBatch;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import android.util.Log;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,42 +26,20 @@ public class SendMessageBatch {
 
     private static final String TAG = "SendMessageBatchOutput";
 
-    /**
-     * Main method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
-     *
-     * @param connectionString
-     * @param topicName
-     */
-    public static void main(String connectionString, String topicName) {
-        SendMessageBatch sample = new SendMessageBatch();
-        sample.run(connectionString, topicName);
-    }
-
-    /**
-     * This method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
-     */
     @Test
-    public void run(String connectionString, String topicName) {
+    public static void main(String queueName, ClientSecretCredential credential) {
         List<ServiceBusMessage> testMessages = Arrays.asList(
             new ServiceBusMessage(BinaryData.fromString("Green")),
             new ServiceBusMessage(BinaryData.fromString("Red")),
             new ServiceBusMessage(BinaryData.fromString("Blue")),
             new ServiceBusMessage(BinaryData.fromString("Orange")));
 
-        // The connection string value can be obtained by:
-        // 1. Going to your Service Bus namespace in Azure Portal.
-        // 2. Go to "Shared access policies"
-        // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        // The 'connectionString' format is shown below.
-        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
-        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // 3. "topicName" will be the name of the Service Bus topic instance you created in the Service Bus namespace.
-
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+            .fullyQualifiedNamespace("https://android-service-bus.servicebus.windows.net")
+            .credential(credential)
             .sender()
-            .topicName(topicName)
+            .queueName(queueName)
             .buildClient();
 
         // Creates an ServiceBusMessageBatch where the ServiceBus.
