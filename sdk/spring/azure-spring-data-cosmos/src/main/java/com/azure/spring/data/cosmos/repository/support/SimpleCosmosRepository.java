@@ -282,13 +282,14 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         Assert.notNull(entities, "Iterable entities should not be null");
 
         if (information.getPartitionKeyFieldName() != null) {
-            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity -> {
+            List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+            entities.forEach(entity -> {
                 ID id = information.getId(entity);
-                return CosmosBulkOperations.getDeleteItemOperation(id != null ? id.toString() : "",
-                    new PartitionKey(information.getPartitionKeyFieldValue(entity)));
+                cosmosItemOperations.add(CosmosBulkOperations.getDeleteItemOperation(id != null ? id.toString() : "",
+                    new PartitionKey(information.getPartitionKeyFieldValue(entity))));
             });
 
-            this.operation.deleteEntities(this.information.getContainerName(), cosmosItemOperationFlux);
+            this.operation.deleteEntities(this.information.getContainerName(), cosmosItemOperations);
         } else {
             StreamSupport.stream(entities.spliterator(), true).forEach(this::delete);
         }

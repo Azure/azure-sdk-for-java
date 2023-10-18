@@ -233,7 +233,7 @@ public interface CosmosOperations {
      * @param containerName the container name
      * @param cosmosItemOperations the Flux of the CosmosItemOperation's to delete
      */
-    <T> void deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations);
+    <T> void deleteEntities(String containerName, Iterable<CosmosItemOperation> cosmosItemOperations);
 
     /**
      * Delete all items in a container

@@ -731,13 +731,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param cosmosItemOperations the Flux of the CosmosItemOperation's to delete
      */
     @Override
-    public <T> void deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations) {
+    public <T> void deleteEntities(String containerName, Iterable<CosmosItemOperation> cosmosItemOperations) {
         Assert.notNull(cosmosItemOperations, "entities to be deleted should not be null");
 
         this.getCosmosAsyncClient()
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
-                .executeBulkOperations(cosmosItemOperations)
+                .executeBulkOperations(Flux.fromIterable(cosmosItemOperations))
                 .publishOn(Schedulers.parallel())
                 .onErrorResume(throwable ->
                     CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
