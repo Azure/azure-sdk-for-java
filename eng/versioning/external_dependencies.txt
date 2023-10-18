@@ -19,9 +19,9 @@ com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.5
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.5
 com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.5
 com.fasterxml.woodstox:woodstox-core;6.4.0
-com.github.spotbugs:spotbugs;4.2.2
-com.github.spotbugs:spotbugs-annotations;4.2.2
-com.github.spotbugs:spotbugs-maven-plugin;4.2.2
+com.github.spotbugs:spotbugs;4.8.0
+com.github.spotbugs:spotbugs-annotations;4.8.0
+com.github.spotbugs:spotbugs-maven-plugin;4.7.3.6
 com.google.code.gson:gson;2.10
 com.google.guava:guava;32.0.1-jre
 com.h2database:h2;2.2.220
@@ -289,7 +289,7 @@ org.apache.maven.plugins:maven-failsafe-plugin;3.1.0
 org.apache.maven.plugins:maven-help-plugin;3.2.0
 org.apache.maven.plugins:maven-install-plugin;3.0.0-M1
 org.apache.maven.plugins:maven-jar-plugin;3.2.2
-org.apache.maven.plugins:maven-javadoc-plugin;3.4.1
+org.apache.maven.plugins:maven-javadoc-plugin;3.6.0
 org.apache.maven.plugins:maven-jxr-plugin;3.0.0
 org.apache.maven.plugins:maven-plugin-plugin;3.6.4
 org.apache.maven.plugins:maven-project-info-reports-plugin;3.0.0
@@ -309,12 +309,12 @@ org.codehaus.mojo:xml-maven-plugin;1.0.2
 org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
 org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
-org.jacoco:jacoco-maven-plugin;0.8.9
-org.jacoco:org.jacoco.agent;0.8.9
+org.jacoco:jacoco-maven-plugin;0.8.11
+org.jacoco:org.jacoco.agent;0.8.11
 org.mockito:mockito-core;4.11.0
 org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
-org.ow2.asm:asm;9.5
+org.ow2.asm:asm;9.6
 org.revapi:revapi;0.14.4
 org.revapi:revapi-java;0.26.1
 org.revapi:revapi-java-spi;0.23.6
@@ -377,7 +377,7 @@ cosmos_org.mockito:mockito-core;4.8.1
 
 # Maven Tools for Cosmos Spark connector only
 cosmos_org.scalatest:scalatest-maven-plugin;2.0.2
-cosmos_net.alchim31.maven:scala-maven-plugin;4.5.4
+cosmos_net.alchim31.maven:scala-maven-plugin;4.8.1
 cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 
 # sdk\core\azure-core-serializer-avro-jackson\pom.xml
