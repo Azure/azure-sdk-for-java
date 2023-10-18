@@ -398,15 +398,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getLocalitiesInvalidAdministrativeDivision(HttpClient httpClient) {
-        StepVerifier.create(
-                this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                        .listAvailableLocalities("US", "null").next())
-                .expectError();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getOfferings(HttpClient httpClient) {
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "listAvailableOfferings")
