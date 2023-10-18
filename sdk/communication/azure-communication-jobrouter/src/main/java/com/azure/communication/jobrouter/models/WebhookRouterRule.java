@@ -5,29 +5,20 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
-import java.util.Objects;
 
 /** A rule providing a binding to an external web server. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("webhook-rule")
 @Fluent
 public final class WebhookRouterRule extends RouterRule {
-    /**
-     * Creates an instance of WebhookRouterRule class.
-     *
-     * @param webhookUri Uri for Contoso's Web Server.
-     */
-    public WebhookRouterRule(String webhookUri) {
-        this.webhookUri = Objects.requireNonNull(webhookUri, "'webhookUri' cannot be null.");
-    }
-
     /*
      * Uri for Authorization Server.
      */
+    @Generated
     @JsonProperty(value = "authorizationServerUri")
     private String authorizationServerUri;
 
@@ -36,20 +27,27 @@ public final class WebhookRouterRule extends RouterRule {
      * Reference:
      * https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
      */
+    @Generated
     @JsonProperty(value = "clientCredential")
     private Oauth2ClientCredential clientCredential;
 
     /*
      * Uri for Contoso's Web Server.
      */
+    @Generated
     @JsonProperty(value = "webhookUri")
-    private final String webhookUri;
+    private String webhookUri;
+
+    /** Creates an instance of WebhookRouterRule class. */
+    @Generated
+    public WebhookRouterRule() {}
 
     /**
      * Get the authorizationServerUri property: Uri for Authorization Server.
      *
      * @return the authorizationServerUri value.
      */
+    @Generated
     public String getAuthorizationServerUri() {
         return this.authorizationServerUri;
     }
@@ -58,8 +56,9 @@ public final class WebhookRouterRule extends RouterRule {
      * Set the authorizationServerUri property: Uri for Authorization Server.
      *
      * @param authorizationServerUri the authorizationServerUri value to set.
-     * @return the WebhookRule object itself.
+     * @return the WebhookRouterRule object itself.
      */
+    @Generated
     public WebhookRouterRule setAuthorizationServerUri(String authorizationServerUri) {
         this.authorizationServerUri = authorizationServerUri;
         return this;
@@ -71,6 +70,7 @@ public final class WebhookRouterRule extends RouterRule {
      *
      * @return the clientCredential value.
      */
+    @Generated
     public Oauth2ClientCredential getClientCredential() {
         return this.clientCredential;
     }
@@ -80,8 +80,9 @@ public final class WebhookRouterRule extends RouterRule {
      * https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/.
      *
      * @param clientCredential the clientCredential value to set.
-     * @return the WebhookRule object itself.
+     * @return the WebhookRouterRule object itself.
      */
+    @Generated
     public WebhookRouterRule setClientCredential(Oauth2ClientCredential clientCredential) {
         this.clientCredential = clientCredential;
         return this;
@@ -92,7 +93,20 @@ public final class WebhookRouterRule extends RouterRule {
      *
      * @return the webhookUri value.
      */
+    @Generated
     public String getWebhookUri() {
         return this.webhookUri;
+    }
+
+    /**
+     * Set the webhookUri property: Uri for Contoso's Web Server.
+     *
+     * @param webhookUri the webhookUri value to set.
+     * @return the WebhookRouterRule object itself.
+     */
+    @Generated
+    public WebhookRouterRule setWebhookUri(String webhookUri) {
+        this.webhookUri = webhookUri;
+        return this;
     }
 }

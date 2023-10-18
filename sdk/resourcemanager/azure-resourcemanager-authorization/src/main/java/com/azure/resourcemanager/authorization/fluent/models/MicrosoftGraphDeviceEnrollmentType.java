@@ -44,6 +44,15 @@ public final class MicrosoftGraphDeviceEnrollmentType extends ExpandableStringEn
     public static final MicrosoftGraphDeviceEnrollmentType WINDOWS_CO_MANAGEMENT = fromString("windowsCoManagement");
 
     /**
+     * Creates a new instance of MicrosoftGraphDeviceEnrollmentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphDeviceEnrollmentType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphDeviceEnrollmentType from its string representation.
      *
      * @param name a name to look for.
