@@ -127,7 +127,6 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             this.retryCount,
             effectiveBackoff.toMillis());
 
-
         return Mono.just(ShouldRetryResult.retryAfter(effectiveBackoff));
     }
 
