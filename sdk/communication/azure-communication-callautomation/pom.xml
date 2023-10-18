@@ -158,9 +158,6 @@
           <includes>
             <include>com/azure/communication/callautomation/*.class</include>
           </includes>
-          <excludes>
-            <exclude>com/azure/communication/callautomation/CustomBearerTokenAuthenticationPolicy.class</exclude>
-          </excludes>
         </configuration>
         <executions>
           <execution>

@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImplBuilder;
+import com.azure.communication.callautomation.implementation.CustomBearerTokenAuthenticationPolicy;
 import com.azure.communication.callautomation.implementation.CustomHmacAuthenticationPolicy;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
@@ -70,7 +71,7 @@ public final class CallAutomationClientBuilder implements
     private final ClientLogger logger = new ClientLogger(CallAutomationClientBuilder.class);
     private String connectionString;
     private String endpoint;
-    private String pmaEnpoint;
+    private String pmaEndpoint;
     private String hostName;
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
@@ -111,7 +112,7 @@ public final class CallAutomationClientBuilder implements
      * @return CallAutomationClientBuilder object.
      */
     public CallAutomationClientBuilder pmaEndpoint(String pmaEndpoint) {
-        this.pmaEnpoint = Objects.requireNonNull(pmaEndpoint, "'pmaEndpoint' cannot be null.");
+        this.pmaEndpoint = Objects.requireNonNull(pmaEndpoint, "'pmaEndpoint' cannot be null.");
         return this;
     }
 
@@ -400,8 +401,8 @@ public final class CallAutomationClientBuilder implements
 
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
 
-        if (pmaEnpoint != null) {
-            clientBuilder.endpoint(pmaEnpoint).pipeline(builderPipeline);
+        if (pmaEndpoint != null) {
+            clientBuilder.endpoint(pmaEndpoint).pipeline(builderPipeline);
         } else {
             clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
         }
@@ -430,15 +431,14 @@ public final class CallAutomationClientBuilder implements
 
         List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
         if (tokenCredential != null) {
-            if (pmaEnpoint != null) {
+            if (pmaEndpoint != null) {
                 pipelinePolicies.add(new CustomBearerTokenAuthenticationPolicy(tokenCredential, endpoint,  "https://communication.azure.com//.default"));
             } else {
-                pipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                    "https://communication.azure.com//.default"));
-                Map<String, String> httpHeaders = new HashMap<>();
-                httpHeaders.put("x-ms-host", hostName);
-                pipelinePolicies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaders)));
+                pipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, "https://communication.azure.com//.default"));
             }
+            Map<String, String> httpHeaders = new HashMap<>();
+            httpHeaders.put("x-ms-host", hostName);
+            pipelinePolicies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaders)));
         } else if (azureKeyCredential != null) {
             if (isCustomEndpointUsed) {
                 String acsEndpoint = (new CommunicationConnectionString(connectionString)).getEndpoint();
