@@ -10,7 +10,6 @@ import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.LabelOperator;
-import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueue;
@@ -52,15 +51,20 @@ class JobRouterTestBase extends TestProxyTestBase {
 
     protected JobRouterAdministrationClient getRouterAdministrationClient(HttpClient client) {
         HttpPipeline httpPipeline = buildHttpPipeline(client);
+        CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
         JobRouterAdministrationClient jobRouterAdministrationClient = new JobRouterAdministrationClientBuilder()
+            .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildClient();
         return jobRouterAdministrationClient;
     }
 
     protected JobRouterClient getRouterClient(HttpClient client) {
+        CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
+
         HttpPipeline httpPipeline = buildHttpPipeline(client);
         JobRouterClient jobRouterClient = new JobRouterClientBuilder()
+            .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildClient();
         return jobRouterClient;

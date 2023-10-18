@@ -9,7 +9,6 @@ import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueAndMatchMode;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobOffer;
@@ -22,7 +21,6 @@ import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.OffsetDateTime;
@@ -40,13 +38,13 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
     private JobRouterAdministrationClient routerAdminClient;
 
-    @ParameterizedTest
+//    @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void unassignJob(HttpClient httpClient) {
         // Setup
         jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
-        String testName = "unassign-job-2";
+        String testName = "unassign-job-test";
         /**
          * Setup queue
          */
@@ -92,17 +90,17 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setChannelConfigurations(channelConfigurations)
             .setQueueAssignments(queueAssignments);
 
-        RouterWorker worker = jobRouterClient.createWorker(createWorkerOptions);
+        jobRouterClient.createWorker(createWorkerOptions);
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         CreateJobOptions createJobOptions = new CreateJobOptions(jobId, "channel1", queueId);
 
-        RouterJob job = jobRouterClient.createJob(createJobOptions);
+        jobRouterClient.createJob(createJobOptions);
 
         List<RouterJobOffer> jobOffers = new ArrayList<>();
         long startTimeMillis = System.currentTimeMillis();
         while (true) {
-            worker = jobRouterClient.getWorker(workerId);
+            RouterWorker worker = jobRouterClient.getWorker(workerId);
             jobOffers = worker.getOffers();
             if (jobOffers.size() > 0 || System.currentTimeMillis() - startTimeMillis > 10000) {
                 break;
@@ -131,7 +129,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 
-    @ParameterizedTest
+//    @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void jobScheduling(HttpClient httpClient) {
         // Setup

@@ -37,15 +37,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import java.time.OffsetDateTime;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.azure.core.util.FluxUtil.withContext;
+import java.time.OffsetDateTime;
+import java.util.stream.Collectors;
 
 /** Initializes a new instance of the asynchronous JobRouterClient type. */
 @ServiceClient(builder = JobRouterClientBuilder.class, isAsync = true)
