@@ -57,18 +57,15 @@ public class AppConfigurationSampleTests {
         }
     }
 
-    /*
-        I've been unable to get the dependencies for CreateSnapshot, I suspect they're in the preview version
-        of the SDK. Once that is figured out this test should be able to be safely uncommented
     @Test
-    public void createSnapshot() {
+    public void readOnly() {
         try {
-            CreateSnapshot.main(appconfigEndpoint, clientSecretCredential);
+            ReadOnly.main(appconfigEndpoint, clientSecretCredential);
         } catch (RuntimeException e) {
             fail();
         }
     }
-     */
+
 
     @Test
     public void conditionalRequestAsync() {
