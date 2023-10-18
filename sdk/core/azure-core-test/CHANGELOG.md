@@ -1,10 +1,6 @@
 # Release History
 
-## 1.22.0 (2023-10-17)
-
-### Features Added
-
-- Added support for "aarch64" architecture. ([#37137](https://github.com/Azure/azure-sdk-for-java/pull/37137))
+## 1.21.1 (2023-10-17)
 
 ### Other Changes
 
