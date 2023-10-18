@@ -5,7 +5,6 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -117,7 +116,7 @@ public final class AcsRouterWorkerSelector {
      *
      * @return the ttlSeconds value.
      */
-    public Duration getTtlSeconds() {
+    public Duration getTimeToLive() {
         return Duration.ofSeconds(ttlSeconds.longValue());
     }
 
@@ -127,7 +126,7 @@ public final class AcsRouterWorkerSelector {
      * @param ttlSeconds the ttlSeconds value to set.
      * @return the AcsRouterWorkerSelector object itself.
      */
-    public AcsRouterWorkerSelector setTtlSeconds(Duration ttlSeconds) {
+    public AcsRouterWorkerSelector setTimeToLive(Duration ttlSeconds) {
         this.ttlSeconds = (float) ttlSeconds.getSeconds();
         return this;
     }

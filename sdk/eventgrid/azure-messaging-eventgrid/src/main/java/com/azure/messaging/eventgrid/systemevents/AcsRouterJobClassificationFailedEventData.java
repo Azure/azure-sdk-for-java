@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.models.ResponseError;
 import com.azure.messaging.eventgrid.implementation.models.AcsRouterCommunicationError;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -59,7 +58,9 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      * @return the errors value.
      */
     public List<ResponseError> getErrors() {
-        return this.errors.stream().map(e -> new ResponseError(e.getCode(), e.getMessage())).collect(Collectors.toList());
+        return this.errors.stream()
+                .map(e -> new ResponseError(e.getCode(), e.getMessage()))
+                .collect(Collectors.toList());
     }
 
     /**

@@ -453,27 +453,30 @@ PackageCustomization packageModels = customization.getPackage("com.azure.messagi
             clazz.getMethodsByName("getTtlSeconds").forEach(m -> {
                 m.setType(Duration.class);
                 m.setBody(parseBlock("{ return Duration.ofSeconds(ttlSeconds.longValue()); }"));
+                m.setName("getTimeToLive");
             });
 
             clazz.getMethodsByName("setTtlSeconds").forEach(m -> {
                 m.setType("AcsRouterWorkerSelector");
                 m.getParameter(0).setType(Duration.class);
                 m.setBody(parseBlock("{ this.ttlSeconds = (float) ttlSeconds.getSeconds(); return this; }"));
+                m.setName("setTimeToLive");
             });
         });
 
         classCustomization = packageModels.getClass("AcsRouterJobClassificationFailedEventData");
         classCustomization.addImports("com.azure.core.models.ResponseError");
+        classCustomization.addImports("java.util.stream.Collectors");
         classCustomization.customizeAst(comp -> {
            ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterJobClassificationFailedEventData").get();
            clazz.getMethodsByName("getErrors").forEach(m -> {
                m.setType("List<ResponseError>");
-               m.setBody(parseBlock("{ return this.errors.stream().map(e -> new ResponseError(e.getCode(), e.getMessage())).toList(); }"));
+               m.setBody(parseBlock("{ return this.errors.stream().map(e -> new ResponseError(e.getCode(), e.getMessage())).collect(Collectors.toList()); }"));
            });
 
            clazz.getMethodsByName("setErrors").forEach(m -> {
                m.setParameter(0, new Parameter().setType("List<ResponseError>").setName("errors"));
-              m.setBody(parseBlock("{ this.errors = errors.stream().map(e -> new AcsRouterCommunicationError().setCode(e.getCode()).setMessage(e.getMessage())).toList(); return this; }"));
+              m.setBody(parseBlock("{ this.errors = errors.stream().map(e -> new AcsRouterCommunicationError().setCode(e.getCode()).setMessage(e.getMessage())).collect(Collectors.toList()); return this; }"));
            });
         });
     }
