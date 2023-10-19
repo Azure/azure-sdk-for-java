@@ -739,6 +739,22 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     public Mono<List<Address>> getMasterAddressesViaGatewayAsync(
+        RxDocumentServiceRequest request,
+        ResourceType resourceType,
+        String resourceAddress,
+        String entryUrl,
+        boolean forceRefresh,
+        boolean useMasterCollectionResolver,
+        Map<String, Object> properties) {
+        request.setAddressRefresh(true, forceRefresh);
+        MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(globalEndpointManager);
+        metadataRequestRetryPolicy.onBeforeSendRequest(request);
+
+        return BackoffRetryUtility.executeRetry(() -> this.getMasterAddressesViaGatewayAsyncInternal(
+            request, resourceType, resourceAddress, entryUrl, forceRefresh, useMasterCollectionResolver, properties), metadataRequestRetryPolicy);
+    }
+
+    private Mono<List<Address>> getMasterAddressesViaGatewayAsyncInternal(
             RxDocumentServiceRequest request,
             ResourceType resourceType,
             String resourceAddress,
@@ -758,7 +774,6 @@ public class GatewayAddressCache implements IAddressCache {
             forceRefresh,
             useMasterCollectionResolver
         );
-        request.setAddressRefresh(true, forceRefresh);
         HashMap<String, String> queryParameters = new HashMap<>();
         queryParameters.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
         HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
