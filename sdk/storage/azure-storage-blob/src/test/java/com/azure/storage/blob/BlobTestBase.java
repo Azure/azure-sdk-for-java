@@ -530,6 +530,26 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder;
     }
 
+    protected BlobServiceClientBuilder getServiceClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(endpoint);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+
+        instrument(builder);
+        return builder;
+    }
+
     protected static BlobLeaseClient createLeaseClient(BlobClientBase blobClient) {
         return createLeaseClient(blobClient, null);
     }
@@ -593,6 +613,26 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder;
     }
 
+    protected BlobContainerClientBuilder getContainerClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
+            .endpoint(endpoint);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+
+        instrument(builder);
+        return builder;
+    }
+
     protected BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
@@ -629,6 +669,26 @@ public class BlobTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return builder.credential(credential).buildClient();
+    }
+
+    protected BlobClientBuilder getBlobClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+
+        instrument(builder);
+        return builder;
     }
 
     protected BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint,
@@ -691,6 +751,26 @@ public class BlobTestBase extends TestProxyTestBase {
 
         builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
         return instrument(builder);
+    }
+
+    protected SpecializedBlobClientBuilder getSpecializedBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
+            .endpoint(endpoint);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+
+        instrument(builder);
+        return builder;
     }
 
     /*
