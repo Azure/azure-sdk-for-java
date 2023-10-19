@@ -9,7 +9,7 @@
 d
 ### Breaking Changes
 
-- Split `PurviewWorkflowClient` into `UserRequestClient`, `WorkflowClient`, `WorkflowRunClient` and `WorkflowTaskClient`.
+- Split `PurviewWorkflowClient` into `UserRequestsClient`, `WorkflowClient`, `WorkflowRunClient` and `WorkflowTaskClient`.
 
 ### Other Changes
 
