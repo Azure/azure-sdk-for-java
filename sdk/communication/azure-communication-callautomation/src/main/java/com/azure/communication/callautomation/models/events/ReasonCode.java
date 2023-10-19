@@ -23,8 +23,8 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
         /** Action completed as stop tone was detected. */
         public static final ReasonCode STOP_TONE_DETECTED = fromReasonCode(8514);
 
-        /** Recognize option DTMF matched. */
-        public static final ReasonCode DTMF_OPTION_MATCHED = fromReasonCode(8533);
+        /** Recognize option DMTF matched. */
+        public static final ReasonCode DMTF_OPTION_MATCHED = fromReasonCode(8533);
         /** Recognize option Speech matched. */
         public static final ReasonCode SPEECH_OPTION_MATCHED = fromReasonCode(8545);
         /** Recognize option Speech not matched. */

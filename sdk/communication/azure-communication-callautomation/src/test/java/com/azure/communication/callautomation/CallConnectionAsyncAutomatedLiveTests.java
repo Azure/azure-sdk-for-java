@@ -11,6 +11,8 @@ import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
+import com.azure.communication.callautomation.models.MuteParticipantOptions;
+import com.azure.communication.callautomation.models.MuteParticipantResult;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.CallConnected;
@@ -20,6 +22,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,8 +33,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static com.azure.communication.callautomation.CallAutomationUnitTestBase.CALL_OPERATION_CONTEXT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
@@ -154,7 +159,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         }
     }
 
-/*    //@DoNotRecord(skipInPlayback = true)
+    //@DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -162,7 +167,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         matches = "(?i)(true)",
         disabledReason = "Requires environment to be set up")
     public void addAParticipantAndMuteInCallAutomatedTest(HttpClient httpClient) {
-        *//* Test case: ACS to ACS call
+        /* Test case: ACS to ACS call
          * 1. create a CallAutomationClient.
          * 2. create a call from source to one ACS target.
          * 3. get updated call properties and check for the connected state.
@@ -171,7 +176,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
          * 6. answer the call
          * 7. mute the participant
          * 9. verify that the participant got successfully muted
-         *//*
+         */
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("addAParticipantAndMuteInCallAutomatedTest", next))
             .buildAsyncClient();
@@ -250,10 +255,10 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             AddParticipantSucceeded addParticipantSucceeded = waitForEvent(AddParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(addParticipantSucceeded);
 
-            // check participant number in the call
+/*            // check participant number in the call
             List<CallParticipant> listParticipantsResult = createCallResult.getCallConnectionAsync().listParticipants().log().collectList().block();
             assertNotNull(listParticipantsResult);
-            assertEquals(3, listParticipantsResult.size());
+            assertEquals(3, listParticipantsResult.size());*/
 
             //sleepIfRunningAgainstService(2000);
 
@@ -273,7 +278,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             }
 
             // verify that the participant got successfully muted
-            listParticipantsResult = createCallResult.getCallConnectionAsync().listParticipants().log().collectList().block();
+            List<CallParticipant> listParticipantsResult = createCallResult.getCallConnectionAsync().listParticipants().log().collectList().block();
             if (listParticipantsResult != null) {
                 for (CallParticipant participant : listParticipantsResult) {
                     if (participant.getIdentifier().equals(receiver)) {
@@ -293,7 +298,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
                 }
             }
         }
-    }*/
+    }
 
 /*    TODO: uncomment once the the invitation-id fix is deployed on server
     //@DoNotRecord(skipInPlayback = true)
