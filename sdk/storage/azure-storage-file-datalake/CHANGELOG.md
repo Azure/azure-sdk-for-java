@@ -1,8 +1,9 @@
 # Release History
 
-## 12.18.0-beta.1 (Unreleased)
+## 12.18.0-beta.1 (2023-10-19)
 
 ### Features Added
+- Added support for DataLakeAudience
 
 ### Breaking Changes
 

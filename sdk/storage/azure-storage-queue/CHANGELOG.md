@@ -1,6 +1,7 @@
 # Release History
 
-## 12.20.0-beta.1 (Unreleased)
+## 12.20.0-beta.1 (2023-10-19)
+- Added support for QueueAudience
 
 ### Features Added
 
