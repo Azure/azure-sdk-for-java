@@ -25,15 +25,6 @@ public class HttpUrlConnectionClientBuilder {
     private static final Duration DEFAULT_WRITE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-
-    static final Set<String> DEFAULT_RESTRICTED_HEADERS;
-
-    static {
-        Set<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        Collections.addAll(treeSet, "connection", "content-length", "expect", "host", "upgrade");
-        DEFAULT_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
-    }
-
     private Duration connectionTimeout;
     private Duration readTimeout;
     private Duration writeTimeout;
