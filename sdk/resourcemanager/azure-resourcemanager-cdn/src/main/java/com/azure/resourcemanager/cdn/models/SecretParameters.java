@@ -26,6 +26,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class SecretParameters {
+    /** Creates an instance of SecretParameters class. */
+    public SecretParameters() {
+    }
+
     /**
      * Validates the instance.
      *

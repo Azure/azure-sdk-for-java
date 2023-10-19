@@ -35,6 +35,7 @@ models-subpackage: systemevents
 customization-class: src/main/java/EventGridCustomization.java
 service-interface-as-public: true
 url-as-string: true
+enable-sync-stack: true
 directive:
     - rename-model:
         from: ResourceActionCancelData

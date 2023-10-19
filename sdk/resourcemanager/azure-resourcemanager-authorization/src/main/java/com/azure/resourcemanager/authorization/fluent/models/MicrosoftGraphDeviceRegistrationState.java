@@ -37,6 +37,15 @@ public final class MicrosoftGraphDeviceRegistrationState
     public static final MicrosoftGraphDeviceRegistrationState UNKNOWN = fromString("unknown");
 
     /**
+     * Creates a new instance of MicrosoftGraphDeviceRegistrationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphDeviceRegistrationState() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphDeviceRegistrationState from its string representation.
      *
      * @param name a name to look for.

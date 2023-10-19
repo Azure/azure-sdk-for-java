@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -14,27 +15,36 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("static-rule")
 @Fluent
 public final class StaticRouterRule extends RouterRule {
-    /**
-     * Creates an instance of StaticRouterRule class.
-     *
-     * @param value The static value this rule always returns.
-     */
-    public StaticRouterRule(LabelValue value) {
-        this.value = value;
-    }
-
     /*
      * The static value this rule always returns.
      */
+    @Generated
     @JsonProperty(value = "value")
-    private final LabelValue value;
+    private Object value;
+
+    /** Creates an instance of StaticRouterRule class. */
+    @Generated
+    public StaticRouterRule() {}
 
     /**
      * Get the value property: The static value this rule always returns.
      *
      * @return the value value.
      */
-    public LabelValue getValue() {
+    @Generated
+    public Object getValue() {
         return this.value;
+    }
+
+    /**
+     * Set the value property: The static value this rule always returns.
+     *
+     * @param value the value value to set.
+     * @return the StaticRouterRule object itself.
+     */
+    @Generated
+    public StaticRouterRule setValue(Object value) {
+        this.value = value;
+        return this;
     }
 }

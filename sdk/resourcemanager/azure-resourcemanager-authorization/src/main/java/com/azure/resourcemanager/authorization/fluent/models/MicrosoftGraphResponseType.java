@@ -29,6 +29,15 @@ public final class MicrosoftGraphResponseType extends ExpandableStringEnum<Micro
     public static final MicrosoftGraphResponseType NOT_RESPONDED = fromString("notResponded");
 
     /**
+     * Creates a new instance of MicrosoftGraphResponseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphResponseType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphResponseType from its string representation.
      *
      * @param name a name to look for.

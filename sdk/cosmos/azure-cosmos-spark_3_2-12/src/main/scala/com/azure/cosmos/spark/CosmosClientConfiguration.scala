@@ -3,6 +3,8 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
+import org.apache.spark.SparkConf
+import org.apache.spark.sql.SparkSession
 
 import java.lang.management.ManagementFactory
 
@@ -21,33 +23,41 @@ private[spark] case class CosmosClientConfiguration (
                                                       subscriptionId: Option[String],
                                                       tenantId: Option[String],
                                                       resourceGroupName: Option[String],
-                                                      azureEnvironment: AzureEnvironment)
+                                                      azureEnvironment: AzureEnvironment,
+                                                      sparkEnvironmentInfo: String)
 
 private[spark] object CosmosClientConfiguration {
   def apply(
              config: Map[String, String],
-             useEventualConsistency: Boolean): CosmosClientConfiguration = {
+             useEventualConsistency: Boolean,
+             sparkEnvironmentInfo: String): CosmosClientConfiguration = {
 
     val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
     val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
 
-    apply(cosmosAccountConfig, diagnosticsConfig, useEventualConsistency)
+    apply(cosmosAccountConfig, diagnosticsConfig, useEventualConsistency, sparkEnvironmentInfo)
   }
 
   def apply(
             cosmosAccountConfig: CosmosAccountConfig,
             diagnosticsConfig: DiagnosticsConfig,
-            useEventualConsistency: Boolean): CosmosClientConfiguration = {
+            useEventualConsistency: Boolean,
+            sparkEnvironmentInfo: String): CosmosClientConfiguration = {
 
     var applicationName = CosmosConstants.userAgentSuffix
-    val customApplicationNameSuffix = cosmosAccountConfig.applicationName
-    val runtimeInfo = runtimeInformation()
-    if (runtimeInfo.isDefined) {
-      applicationName = s"$applicationName ${runtimeInfo.get}"
+
+    if (!sparkEnvironmentInfo.isEmpty) {
+      applicationName = s"$applicationName|$sparkEnvironmentInfo"
     }
 
+    val runtimeInfo = runtimeInformation()
+    if (runtimeInfo.isDefined) {
+      applicationName = s"$applicationName|${runtimeInfo.get}"
+    }
+
+    val customApplicationNameSuffix = cosmosAccountConfig.applicationName
     if (customApplicationNameSuffix.isDefined){
-      applicationName = s"$applicationName ${customApplicationNameSuffix.get}"
+      applicationName = s"$applicationName|${customApplicationNameSuffix.get}"
     }
 
     CosmosClientConfiguration(
@@ -65,7 +75,34 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.subscriptionId,
       cosmosAccountConfig.tenantId,
       cosmosAccountConfig.resourceGroupName,
-      cosmosAccountConfig.azureEnvironment)
+      cosmosAccountConfig.azureEnvironment,
+      sparkEnvironmentInfo)
+  }
+
+  private[spark] def getSparkEnvironmentInfo(sessionOption: Option[SparkSession]): String = {
+    sessionOption match {
+      case Some(session) => getSparkEnvironmentInfoFromConfig(Some(session.sparkContext.getConf))
+      case _ => ""
+    }
+  }
+
+  private[spark] def getSparkEnvironmentInfoFromConfig(configOption: Option[SparkConf]): String = {
+    configOption match {
+      case Some(config) =>
+        if (config.contains("spark.databricks.clusterUsageTags.orgId")) {
+          val workspaceId = config.get("spark.databricks.clusterUsageTags.orgId", "")
+          val clusterName = config.get("spark.databricks.clusterUsageTags.clusterName", "").take(32)
+
+          s"DBX|$workspaceId|$clusterName"
+        } else if (config.contains("spark.synapse.workspace.name")) {
+          val workspaceId = config.get("spark.synapse.workspace.name", "")
+          val clusterName = config.get("spark.synapse.pool.name", "").take(32)
+          s"SYN|$workspaceId|$clusterName"
+        } else {
+          ""
+        }
+      case _ => ""
+    }
   }
 
   private[this] def runtimeInformation(): Option[String] = {

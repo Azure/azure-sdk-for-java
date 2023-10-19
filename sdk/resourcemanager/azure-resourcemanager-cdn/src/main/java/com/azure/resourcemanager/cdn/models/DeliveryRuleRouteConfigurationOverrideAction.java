@@ -24,6 +24,10 @@ public final class DeliveryRuleRouteConfigurationOverrideAction extends Delivery
     @JsonProperty(value = "parameters", required = true)
     private RouteConfigurationOverrideActionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleRouteConfigurationOverrideAction class. */
+    public DeliveryRuleRouteConfigurationOverrideAction() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the action.
      *

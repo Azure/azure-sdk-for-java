@@ -3,11 +3,11 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.models.AzureFunctionRouterRule;
-import com.azure.communication.jobrouter.models.AzureFunctionRouterRuleCredential;
 import com.azure.communication.jobrouter.models.BestWorkerMode;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.FunctionRouterRule;
+import com.azure.communication.jobrouter.models.FunctionRouterRuleCredential;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RoundRobinMode;
 import com.azure.core.http.HttpClient;
@@ -56,9 +56,8 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
         String bestWorkerModeDistributionPolicyId = String.format("%s-BestWorkerAzureFunctionRule-DistributionPolicy", JAVA_LIVE_TESTS);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
 
-        AzureFunctionRouterRule azureFunctionRule = new AzureFunctionRouterRule()
-            .setFunctionUrl("https://my.function.app/api/myfunction?code=Kg==")
-            .setCredential(new AzureFunctionRouterRuleCredential()
+        FunctionRouterRule azureFunctionRule = new FunctionRouterRule("https://my.function.app/api/myfunction?code=Kg==")
+            .setCredential(new FunctionRouterRuleCredential()
                 .setAppKey("MyAppKey")
                 .setClientId("MyClientId"));
 
