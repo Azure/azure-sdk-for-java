@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -254,6 +256,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .listAvailableLocalities("US", null);
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithInvalidAdministrativeDivision(HttpClient httpClient) {
+        PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "listAvailableLocalities");
+
+        assertThrows(CommunicationErrorResponseException.class,
+                () -> client.listAvailableLocalities("US", "null").iterator().next(),
+                "No localities were found for the given parameters");
     }
 
     @ParameterizedTest
