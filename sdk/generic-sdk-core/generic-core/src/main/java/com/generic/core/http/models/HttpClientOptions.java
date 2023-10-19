@@ -4,8 +4,8 @@
 package com.generic.core.http.models;
 
 import com.generic.core.annotation.Fluent;
-import com.generic.core.http.HttpClient;
-import com.generic.core.http.HttpClientProvider;
+import com.generic.core.http.client.HttpClient;
+import com.generic.core.http.client.HttpClientProvider;
 import com.generic.core.models.ClientOptions;
 import com.generic.core.models.Header;
 import com.generic.core.util.configuration.Configuration;

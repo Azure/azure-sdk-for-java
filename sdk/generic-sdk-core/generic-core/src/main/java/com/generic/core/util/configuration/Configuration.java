@@ -3,8 +3,8 @@
 
 package com.generic.core.util.configuration;
 
-import com.generic.core.http.HttpClient;
-import com.generic.core.http.HttpClientProvider;
+import com.generic.core.http.client.HttpClient;
+import com.generic.core.http.client.HttpClientProvider;
 import com.generic.core.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 

@@ -37,6 +37,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
     <javaModulesSurefireArgLine>
       --add-exports com.generic.core/com.generic.core.implementation.http=ALL-UNNAMED
       --add-exports com.generic.core/com.generic.core.implementation.http.rest=ALL-UNNAMED
