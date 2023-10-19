@@ -5,6 +5,7 @@
 ### Features Added
 - Start/Stop continuous DTMF recognition by subscribing/unsubscribing to tones.
 - Send DTMF tones to a participant in the call
+- StartRecording now accepts PauseOnStart.
 
 ### Breaking Changes
 

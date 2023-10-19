@@ -2526,12 +2526,18 @@ public class MaxRetryCountTests extends TestSuiteBase {
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
             .diagnosticsHandler(new CosmosDiagnosticsLogger());
 
+        CosmosRegionSwitchHint effectiveRegionSwitchHint = regionSwitchHint != null
+            ? regionSwitchHint
+            : CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED;
+        SessionRetryOptionsBuilder retryOptionsBuilder = new SessionRetryOptionsBuilder()
+            .regionSwitchHint(effectiveRegionSwitchHint);
+
         CosmosClientBuilder builder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .consistencyLevel(ConsistencyLevel.SESSION)
             .preferredRegions(preferredRegions)
-            .sessionRetryOptions(new SessionRetryOptions(regionSwitchHint))
+            .sessionRetryOptions(retryOptionsBuilder.build())
             .multipleWriteRegionsEnabled(true)
             .clientTelemetryConfig(telemetryConfig);
 

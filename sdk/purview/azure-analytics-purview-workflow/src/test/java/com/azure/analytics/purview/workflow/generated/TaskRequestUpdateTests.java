@@ -18,7 +18,7 @@ public final class TaskRequestUpdateTests extends PurviewWorkflowClientTestBase 
         BinaryData taskUpdateCommand = BinaryData.fromString("{\"comment\":\"Thanks!\",\"newStatus\":\"InProgress\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
-                purviewWorkflowClient.updateTaskStatusWithResponse(
+                taskStatusClient.updateWithResponse(
                         "d5bd0215-df84-4245-8e18-3a8f012be376", taskUpdateCommand, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.RoleManagementPolicyInner;
 import com.azure.resourcemanager.authorization.models.ApprovalMode;
 import com.azure.resourcemanager.authorization.models.ApprovalSettings;
@@ -68,7 +67,7 @@ public final class RoleManagementPoliciesUpdateSamples {
                                     .withRecipientType(RecipientType.ADMIN)
                                     .withNotificationRecipients(Arrays.asList("admin_admin_eligible@test.com"))
                                     .withIsDefaultRecipientsEnabled(false))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -305,6 +304,6 @@ public final class RoleManagementPoliciesUpdateSamples {
                                     .withNotificationLevel(NotificationLevel.CRITICAL)
                                     .withRecipientType(RecipientType.APPROVER)
                                     .withIsDefaultRecipientsEnabled(true))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
