@@ -27,6 +27,7 @@ import com.azure.communication.callautomation.models.CancelAddParticipantResult;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
+import com.azure.communication.callautomation.models.MuteParticipantOptions;
 import com.azure.communication.callautomation.models.MuteParticipantResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
@@ -390,26 +391,26 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MuteParticipantResult> muteParticipant(CommunicationIdentifier targetParticipant) {
-        return muteParticipantWithResponse(targetParticipant, null).flatMap(FluxUtil::toMono);
+        return muteParticipantWithResponse(new MuteParticipantOptions(targetParticipant)).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Mutes a participant in the call.
-     * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
-     * @param operationContext operationContext (pass null if not applicable)
+     *
+     * @param options -  MuteParticipantOptions configuration options.
      * @return Response with result of muting a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MuteParticipantResult>> muteParticipantWithResponse(CommunicationIdentifier targetParticipant, String operationContext) {
-        return withContext(context -> muteParticipantWithResponseInternal(targetParticipant, operationContext, context));
+    public Mono<Response<MuteParticipantResult>> muteParticipantWithResponse(MuteParticipantOptions options) {
+        return withContext(context -> muteParticipantWithResponseInternal(options, context));
     }
 
-    Mono<Response<MuteParticipantResult>> muteParticipantWithResponseInternal(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
+    Mono<Response<MuteParticipantResult>> muteParticipantWithResponseInternal(MuteParticipantOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             MuteParticipantsRequestInternal request = new MuteParticipantsRequestInternal()
-                .setTargetParticipants(Collections.singletonList(CommunicationIdentifierConverter.convert(targetParticipant)))
-                .setOperationContext(operationContext);
+                .setTargetParticipants(Collections.singletonList(CommunicationIdentifierConverter.convert(options.getTargetParticipant())))
+                .setOperationContext(options.getOperationContext());
 
             return callConnectionInternal.muteWithResponseAsync(
                 callConnectionId,

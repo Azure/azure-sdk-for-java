@@ -6,19 +6,16 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.util.List;
-
 /**
  * The options for muting a participant.
  */
 @Fluent
-public final class MuteParticipantsOptions {
+public final class MuteParticipantOptions {
     /**
-     * The participants to mute.
-     * Only one participant currently supported.
+     * The participant to mute.
      * Only ACS Users are currently supported.
      */
-    private final List<CommunicationIdentifier> targetParticipant;
+    private final CommunicationIdentifier targetParticipant;
 
     /**
      * The operational context
@@ -30,16 +27,16 @@ public final class MuteParticipantsOptions {
      *
      * @param targetParticipant The targetParticipant to mute.
      */
-    public MuteParticipantsOptions(List<CommunicationIdentifier> targetParticipant) {
+    public MuteParticipantOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
     }
 
     /**
      * Get the participant.
      *
-     * @return the participants to mute.
+     * @return the participant to mute.
      */
-    public List<CommunicationIdentifier> getTargetParticipant() {
+    public CommunicationIdentifier getTargetParticipant() {
         return targetParticipant;
     }
 
@@ -56,9 +53,9 @@ public final class MuteParticipantsOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the MuteParticipantsOptions object itself.
+     * @return the MuteParticipantOptions object itself.
      */
-    public MuteParticipantsOptions setOperationContext(String operationContext) {
+    public MuteParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

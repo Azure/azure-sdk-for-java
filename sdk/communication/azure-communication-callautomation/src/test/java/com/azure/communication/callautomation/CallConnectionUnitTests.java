@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsResultInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
@@ -246,16 +247,38 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     public void muteParticipant() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new MuteParticipantsResultInternal()), 202)
+                new SimpleEntry<>(serializeObject(new MuteParticipantsResultInternal()), 200)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        Response<MuteParticipantResult> muteParticipantResultResponse =
-            callConnection.muteParticipantWithResponse(new CommunicationUserIdentifier(CALL_TARGET_ID), CALL_OPERATION_CONTEXT, Context.NONE);
+        MuteParticipantOptions options = new MuteParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID));
+        options.setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<MuteParticipantResult> muteParticipantResultResponse = callConnection.muteParticipantWithResponse(options, Context.NONE);
 
         assertNotNull(muteParticipantResultResponse);
         assertNull(muteParticipantResultResponse.getValue().getOperationContext());
     }
+
+    @Test
+    public void muteParticipantsWithResponse() {
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new MuteParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 200)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        MuteParticipantOptions options = new MuteParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        Response<MuteParticipantResult> muteParticipantsResultResponse =
+            callConnection.muteParticipantWithResponse(options, Context.NONE);
+
+        assertNotNull(muteParticipantsResultResponse);
+        assertEquals(200, muteParticipantsResultResponse.getStatusCode());
+        assertNotNull(muteParticipantsResultResponse.getValue());
+    }
+
 
     @Test
     public void cancelAddParticipant() {
