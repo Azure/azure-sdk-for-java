@@ -16,7 +16,7 @@ import java.util.Objects;
  * The result of answering a call
  */
 @Immutable
-public final class CreateCallResult extends CallResult<CreateCallEventResult> {
+public final class CreateCallResult extends CallResult {
 
     /**
      * Constructor
@@ -34,7 +34,15 @@ public final class CreateCallResult extends CallResult<CreateCallEventResult> {
      *
      * @return the result of the event processing
      */
-    @Override
+    public CreateCallEventResult waitForEventProcessor() {
+        return waitForEventProcessorAsync().block();
+    }
+
+    /**
+     * Waits for the event processor to process the event
+     *
+     * @return the result of the event processing
+     */
     public Mono<CreateCallEventResult> waitForEventProcessorAsync() {
         if (eventProcessor == null) {
             return Mono.empty();
@@ -52,8 +60,7 @@ public final class CreateCallResult extends CallResult<CreateCallEventResult> {
      * @param event the event to set
      * @return the result of the event processing
      */
-    @Override
-    protected CreateCallEventResult getReturnedEvent(CallAutomationEventBase event) {
+    private CreateCallEventResult getReturnedEvent(CallAutomationEventBase event) {
         return new CreateCallEventResult(true, (CallConnected) event);
     }
 }
