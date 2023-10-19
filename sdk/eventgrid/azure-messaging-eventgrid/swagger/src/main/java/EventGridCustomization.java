@@ -460,8 +460,14 @@ PackageCustomization packageModels = customization.getPackage("com.azure.messagi
             clazz.getMethodsByName("setTtlSeconds").forEach(m -> {
                 m.setType("AcsRouterWorkerSelector");
                 m.getParameter(0).setType(Duration.class);
-                m.setBody(parseBlock("{ Objects.requireNonNull(ttlSeconds); this.ttlSeconds = (float) ttlSeconds.getSeconds(); return this; }"));
+                m.setBody(parseBlock("{ Objects.requireNonNull(timeToLive); this.ttlSeconds = (float) timeToLive.getSeconds(); return this; }"));
                 m.setName("setTimeToLive");
+                m.getParameter(0).setName("timeToLive");
+                m.setJavadocComment(
+                      "     * Set the timeToLive property: Router Job Worker Selector Time to Live in Seconds.\n"
+                    + "     *\n"
+                    + "     * @param timeToLive the timeToLive value to set.\n"
+                    + "     * @return the AcsRouterWorkerSelector object itself.\n");
             });
         });
 
@@ -477,7 +483,29 @@ PackageCustomization packageModels = customization.getPackage("com.azure.messagi
 
            clazz.getMethodsByName("setErrors").forEach(m -> {
                m.setParameter(0, new Parameter().setType("List<ResponseError>").setName("errors"));
-              m.setBody(parseBlock("{ this.errors = errors.stream().map(e -> new AcsRouterCommunicationError().setCode(e.getCode()).setMessage(e.getMessage())).collect(Collectors.toList()); return this; }"));
+               m.setBody(parseBlock("{ this.errors = errors.stream().map(e -> new AcsRouterCommunicationError().setCode(e.getCode()).setMessage(e.getMessage())).collect(Collectors.toList()); return this; }"));
+           });
+        });
+
+        classCustomization = packageModels.getClass("AcsRouterJobReceivedEventData");
+        classCustomization.customizeAst(comp -> {
+           ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterJobReceivedEventData").get();
+           clazz.getMethodsByName("setUnavailableForMatching").forEach(m -> {
+               m.getParameter(0).setType(Boolean.class);
+           });
+           clazz.getMethodsByName("isUnavailableForMatching").forEach(m -> {
+               m.setType(Boolean.class);
+           });
+        });
+
+        classCustomization = packageModels.getClass("AcsRouterJobWaitingForActivationEventData");
+        classCustomization.customizeAst(comp -> {
+           ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterJobWaitingForActivationEventData").get();
+           clazz.getMethodsByName("setUnavailableForMatching").forEach(m -> {
+             m.getParameter(0).setType(Boolean.class);
+           });
+           clazz.getMethodsByName("isUnavailableForMatching").forEach(m -> {
+               m.setType(Boolean.class);
            });
         });
     }
