@@ -66,6 +66,10 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
 
             // * for wildcard match
             List<ConfigurationSetting> settings = replicaClient.listSettings(settingSelector).collectList().block();
+            
+            if (settings == null) {
+                return;
+            }
 
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(keyFilter.length())

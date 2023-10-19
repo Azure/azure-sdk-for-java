@@ -220,6 +220,10 @@ class AppConfigurationRefreshUtil {
                 SettingSelector selector = new SettingSelector().setKeyFilter(keyFilter)
                     .setLabelFilter(watchKey.getLabelFilterText(profiles));
                 List<ConfigurationSetting> currentKeys = client.listSettings(selector).collectList().block();
+                
+                if (currentKeys == null) {
+                    return;
+                }
 
                 watchedKeySize += checkFeatureFlags(currentKeys, state, client, eventData);
             }
@@ -277,6 +281,10 @@ class AppConfigurationRefreshUtil {
             SettingSelector selector = new SettingSelector().setKeyFilter(keyFilter)
                 .setLabelFilter(watchKey.getLabelFilterText(profiles));            
             List<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector).collectList().block();
+            
+            if (currentTriggerConfigurations == null) {
+                return;
+            }
 
             int watchedKeySize = 0;
 
