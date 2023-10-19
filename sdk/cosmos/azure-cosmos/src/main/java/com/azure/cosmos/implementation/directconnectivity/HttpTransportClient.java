@@ -953,10 +953,9 @@ public class HttpTransportClient extends TransportClient {
 
                         case HttpConstants.StatusCodes.SERVICE_UNAVAILABLE:
                             int subStatusCode = getSubStatusCodeFromHeader(response);
-                            ServiceUnavailableException serviceUnavailableException = new ServiceUnavailableException(errorMessage, response.headers(), request.uri(),
+                            exception = new ServiceUnavailableException(errorMessage, response.headers(), request.uri(),
                                 (subStatusCode == 0) ? HttpConstants.SubStatusCodes.SERVER_GENERATED_503
                                     : HttpConstants.SubStatusCodes.UNKNOWN);
-                            exception = serviceUnavailableException;
                             break;
 
                         case HttpConstants.StatusCodes.REQUEST_TIMEOUT:

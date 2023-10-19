@@ -139,9 +139,8 @@ public class FaultInjectionServerErrorResultInternal {
             case SERVICE_UNAVAILABLE:
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.SERVER_GENERATED_503));
-                ServiceUnavailableException serviceUnavailableException =
+                cosmosException =
                     new ServiceUnavailableException(null, lsn, null, responseHeaders, HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
-                cosmosException = serviceUnavailableException;
                 break;
 
             case STALED_ADDRESSES_SERVER_GONE:

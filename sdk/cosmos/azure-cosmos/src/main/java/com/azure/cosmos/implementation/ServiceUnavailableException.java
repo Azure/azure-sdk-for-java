@@ -15,7 +15,6 @@ import java.util.Map;
  * The type Service unavailable exception.
  */
 public class ServiceUnavailableException extends CosmosException {
-
     ServiceUnavailableException() {
         this(RMResources.ServiceUnavailable, HttpConstants.SubStatusCodes.UNKNOWN);
     }

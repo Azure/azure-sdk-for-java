@@ -1113,14 +1113,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 case StatusCodes.SERVICE_UNAVAILABLE:
-                    ServiceUnavailableException serviceUnavailableException =
-                        new ServiceUnavailableException(
-                            error,
-                            lsn,
-                            partitionKeyRangeId,
-                            responseHeaders,
-                            SubStatusCodes.SERVER_GENERATED_503);
-                    cause = serviceUnavailableException;
+                    cause = new ServiceUnavailableException(error, lsn, partitionKeyRangeId, responseHeaders,
+                        SubStatusCodes.SERVER_GENERATED_503);
                     break;
 
                 case StatusCodes.TOO_MANY_REQUESTS:
