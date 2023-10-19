@@ -100,7 +100,7 @@ public class FileTests extends BatchServiceClientTestBase {
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 BatchTask task = batchClient.getTask(jobId, taskId);
                 String nodeId = task.getNodeInfo().getNodeId();
-                PagedIterable<NodeFile> files = batchClient.listNodeFiles(poolId, nodeId, null, null, null, null, true);
+                PagedIterable<NodeFile> files = batchClient.listNodeFiles(poolId, nodeId, null, null, null, true);
                 String fileName = null;
                 for (NodeFile f : files) {
                     if (f.getName().endsWith("stdout.txt")) {
