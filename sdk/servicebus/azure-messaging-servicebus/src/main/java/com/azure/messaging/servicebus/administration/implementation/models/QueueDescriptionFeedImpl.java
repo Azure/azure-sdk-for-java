@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +25,8 @@ public final class QueueDescriptionFeedImpl {
     /*
      * The entity type for the feed.
      */
-    @JsonProperty(value = "title")
-    private Object title;
+    @JacksonXmlProperty(localName = "title", namespace = "http://www.w3.org/2005/Atom")
+    private TitleImpl title;
 
     /*
      * Datetime of the query.
@@ -75,7 +74,7 @@ public final class QueueDescriptionFeedImpl {
      *
      * @return the title value.
      */
-    public Object getTitle() {
+    public TitleImpl getTitle() {
         return this.title;
     }
 
@@ -85,7 +84,7 @@ public final class QueueDescriptionFeedImpl {
      * @param title the title value to set.
      * @return the QueueDescriptionFeed object itself.
      */
-    public QueueDescriptionFeedImpl setTitle(Object title) {
+    public QueueDescriptionFeedImpl setTitle(TitleImpl title) {
         this.title = title;
         return this;
     }

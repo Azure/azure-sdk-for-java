@@ -44,6 +44,15 @@ public final class EnvironmentProvisioningState extends ExpandableStringEnum<Env
     public static final EnvironmentProvisioningState UPGRADE_FAILED = fromString("UpgradeFailed");
 
     /**
+     * Creates a new instance of EnvironmentProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnvironmentProvisioningState() {
+    }
+
+    /**
      * Creates or finds a EnvironmentProvisioningState from its string representation.
      *
      * @param name a name to look for.

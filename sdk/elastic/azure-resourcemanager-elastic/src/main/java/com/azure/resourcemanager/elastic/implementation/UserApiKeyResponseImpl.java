@@ -6,6 +6,7 @@ package com.azure.resourcemanager.elastic.implementation;
 
 import com.azure.resourcemanager.elastic.fluent.models.UserApiKeyResponseInner;
 import com.azure.resourcemanager.elastic.models.UserApiKeyResponse;
+import com.azure.resourcemanager.elastic.models.UserApiKeyResponseProperties;
 
 public final class UserApiKeyResponseImpl implements UserApiKeyResponse {
     private UserApiKeyResponseInner innerObject;
@@ -18,8 +19,8 @@ public final class UserApiKeyResponseImpl implements UserApiKeyResponse {
         this.serviceManager = serviceManager;
     }
 
-    public String apiKey() {
-        return this.innerModel().apiKey();
+    public UserApiKeyResponseProperties properties() {
+        return this.innerModel().properties();
     }
 
     public UserApiKeyResponseInner innerModel() {

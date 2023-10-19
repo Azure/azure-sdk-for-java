@@ -7,8 +7,6 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.AccountInfo;
 import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
-import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicAccountProperties;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicSingleSignOnProperties;
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
@@ -17,7 +15,6 @@ import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.ProvisioningState;
 import com.azure.resourcemanager.newrelicobservability.models.SingleSignOnStates;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
-import com.azure.resourcemanager.newrelicobservability.models.UserAssignedIdentity;
 import com.azure.resourcemanager.newrelicobservability.models.UserInfo;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -41,10 +38,6 @@ public final class MonitorsCreateOrUpdateSamples {
             .withRegion("k")
             .withExistingResourceGroup("rgNewRelic")
             .withTags(mapOf("key6976", "oaxfhf"))
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.NONE)
-                    .withUserAssignedIdentities(mapOf("key8903", new UserAssignedIdentity())))
             .withNewRelicAccountProperties(
                 new NewRelicAccountProperties()
                     .withUserId("vcscxlncofcuduadesd")

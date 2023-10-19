@@ -13,16 +13,16 @@ public final class ClusterPrincipalAssignmentCheckNameRequestTests {
     public void testDeserialize() throws Exception {
         ClusterPrincipalAssignmentCheckNameRequest model =
             BinaryData
-                .fromString("{\"name\":\"fhrtxilnerkujysv\"}")
+                .fromString("{\"name\":\"jaoyfhrtx\"}")
                 .toObject(ClusterPrincipalAssignmentCheckNameRequest.class);
-        Assertions.assertEquals("fhrtxilnerkujysv", model.name());
+        Assertions.assertEquals("jaoyfhrtx", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterPrincipalAssignmentCheckNameRequest model =
-            new ClusterPrincipalAssignmentCheckNameRequest().withName("fhrtxilnerkujysv");
+            new ClusterPrincipalAssignmentCheckNameRequest().withName("jaoyfhrtx");
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalAssignmentCheckNameRequest.class);
-        Assertions.assertEquals("fhrtxilnerkujysv", model.name());
+        Assertions.assertEquals("jaoyfhrtx", model.name());
     }
 }

@@ -13,7 +13,7 @@ public final class StorageEditionCapabilityTests {
         StorageEditionCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"mdajv\",\"minStorageSize\":5255504053671338528,\"maxStorageSize\":2854905185891703166,\"minBackupRetentionDays\":23708408550027881,\"maxBackupRetentionDays\":7342412992819459793}")
+                    "{\"name\":\"cspkwlhzdobpxjmf\",\"minStorageSize\":885653517533476770,\"maxStorageSize\":6115186458339394637,\"minBackupRetentionDays\":5158769929678256713,\"maxBackupRetentionDays\":8269509488732598965}")
                 .toObject(StorageEditionCapability.class);
     }
 

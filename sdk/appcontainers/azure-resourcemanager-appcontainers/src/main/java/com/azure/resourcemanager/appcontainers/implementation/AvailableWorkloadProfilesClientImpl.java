@@ -57,11 +57,10 @@ public final class AvailableWorkloadProfilesClientImpl implements AvailableWorkl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")
-    private interface AvailableWorkloadProfilesService {
+    public interface AvailableWorkloadProfilesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.App/locations/{location}"
-                + "/availableManagedEnvironmentsWorkloadProfileTypes")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.App/locations/{location}/availableManagedEnvironmentsWorkloadProfileTypes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailableWorkloadProfilesCollection>> get(

@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.SyncMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -270,6 +271,29 @@ public final class BackendAddressPoolInner extends SubResource {
             this.innerProperties = new BackendAddressPoolPropertiesFormat();
         }
         this.innerProperties().withVirtualNetwork(virtualNetwork);
+        return this;
+    }
+
+    /**
+     * Get the syncMode property: Backend address synchronous mode for the backend pool.
+     *
+     * @return the syncMode value.
+     */
+    public SyncMode syncMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().syncMode();
+    }
+
+    /**
+     * Set the syncMode property: Backend address synchronous mode for the backend pool.
+     *
+     * @param syncMode the syncMode value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withSyncMode(SyncMode syncMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendAddressPoolPropertiesFormat();
+        }
+        this.innerProperties().withSyncMode(syncMode);
         return this;
     }
 

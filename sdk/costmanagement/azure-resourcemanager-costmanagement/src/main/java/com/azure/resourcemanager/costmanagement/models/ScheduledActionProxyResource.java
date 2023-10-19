@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class ScheduledActionProxyResource extends ProxyResource {
     /*
-     * Resource Etag. For update calls, eTag is mandatory. Fetch the resource's eTag by doing a 'GET' call first and
-     * then including the latest eTag as part of the request body or 'If-Match' header while performing the update. For
-     * create calls, eTag is not required.
+     * Resource Etag. For update calls, eTag is optional and can be specified to achieve optimistic concurrency. Fetch
+     * the resource's eTag by doing a 'GET' call first and then including the latest eTag as part of the request body
+     * or 'If-Match' header while performing the update. For create calls, eTag is not required.
      */
     @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -37,9 +37,10 @@ public class ScheduledActionProxyResource extends ProxyResource {
     }
 
     /**
-     * Get the etag property: Resource Etag. For update calls, eTag is mandatory. Fetch the resource's eTag by doing a
-     * 'GET' call first and then including the latest eTag as part of the request body or 'If-Match' header while
-     * performing the update. For create calls, eTag is not required.
+     * Get the etag property: Resource Etag. For update calls, eTag is optional and can be specified to achieve
+     * optimistic concurrency. Fetch the resource's eTag by doing a 'GET' call first and then including the latest eTag
+     * as part of the request body or 'If-Match' header while performing the update. For create calls, eTag is not
+     * required.
      *
      * @return the etag value.
      */

@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-ingestion</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -76,7 +76,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.8.2</version>
+    <version>1.10.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -152,7 +152,7 @@ client library.
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 LogsIngestionClient client = new LogsIngestionClientBuilder()
-        .endpoint("<data-collection-endpoint")
+        .endpoint("<data-collection-endpoint>")
         .credential(tokenCredential)
         .buildClient();
 
@@ -171,7 +171,7 @@ can be concurrently sent to the service as shown in the example below.
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 LogsIngestionClient client = new LogsIngestionClientBuilder()
-        .endpoint("<data-collection-endpoint")
+        .endpoint("<data-collection-endpoint>")
         .credential(tokenCredential)
         .buildClient();
 
@@ -194,7 +194,7 @@ not provided, the upload method will throw an aggregate exception that includes 
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 LogsIngestionClient client = new LogsIngestionClientBuilder()
-        .endpoint("<data-collection-endpoint")
+        .endpoint("<data-collection-endpoint>")
         .credential(tokenCredential)
         .buildClient();
 
@@ -213,11 +213,7 @@ client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOpti
 ```
 ## Troubleshooting
 
-### Enabling Logging
-
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
-their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
-locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+For details on diagnosing various failure scenarios, see our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/TROUBLESHOOTING.md).
 
 ## Next steps
 More samples can be found [here][samples].

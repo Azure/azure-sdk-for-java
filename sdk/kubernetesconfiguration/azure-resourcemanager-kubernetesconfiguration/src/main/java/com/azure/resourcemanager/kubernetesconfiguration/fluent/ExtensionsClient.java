@@ -130,29 +130,6 @@ public interface ExtensionsClient {
      *     provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetes Cluster Extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtensionInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName);
-
-    /**
-     * Gets Kubernetes Cluster Extension.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param extensionName Name of the Extension.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -169,6 +146,29 @@ public interface ExtensionsClient {
         Context context);
 
     /**
+     * Gets Kubernetes Cluster Extension.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
+     *     Microsoft.HybridContainerService.
+     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
+     *     provisionedClusters.
+     * @param clusterName The name of the kubernetes cluster.
+     * @param extensionName Name of the Extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return kubernetes Cluster Extension.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExtensionInner get(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String extensionName);
+
+    /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -178,7 +178,6 @@ public interface ExtensionsClient {
      *     provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param extensionName Name of the Extension.
-     * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -190,8 +189,7 @@ public interface ExtensionsClient {
         String clusterRp,
         String clusterResourceName,
         String clusterName,
-        String extensionName,
-        Boolean forceDelete);
+        String extensionName);
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
@@ -219,30 +217,6 @@ public interface ExtensionsClient {
         String extensionName,
         Boolean forceDelete,
         Context context);
-
-    /**
-     * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param extensionName Name of the Extension.
-     * @param forceDelete Delete the extension resource in Azure - not the normal asynchronous delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        Boolean forceDelete);
 
     /**
      * Delete a Kubernetes Cluster Extension. This will cause the Agent to Uninstall the extension from the cluster.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.frontdoor.generated;
 /** Samples for FrontDoors Delete. */
 public final class FrontDoorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorDelete.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorDelete.json
      */
     /**
      * Sample code: Delete Front Door.

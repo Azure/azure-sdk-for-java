@@ -9,7 +9,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AdvSecurityObjectT
 /** Samples for GlobalRulestack ListAdvancedSecurityObjects. */
 public final class GlobalRulestackListAdvancedSecurityObjectsSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listAdvancedSecurityObjects_MaximumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/GlobalRulestack_listAdvancedSecurityObjects_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listAdvancedSecurityObjects_MaximumSet_Gen.
@@ -29,7 +29,7 @@ public final class GlobalRulestackListAdvancedSecurityObjectsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/GlobalRulestack_listAdvancedSecurityObjects_MinimumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/GlobalRulestack_listAdvancedSecurityObjects_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_listAdvancedSecurityObjects_MinimumSet_Gen.

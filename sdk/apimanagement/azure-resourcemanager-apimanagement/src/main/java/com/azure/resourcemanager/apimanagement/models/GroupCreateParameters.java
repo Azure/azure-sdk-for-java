@@ -17,6 +17,10 @@ public final class GroupCreateParameters {
     @JsonProperty(value = "properties")
     private GroupCreateParametersProperties innerProperties;
 
+    /** Creates an instance of GroupCreateParameters class. */
+    public GroupCreateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties supplied to Create Group operation.
      *

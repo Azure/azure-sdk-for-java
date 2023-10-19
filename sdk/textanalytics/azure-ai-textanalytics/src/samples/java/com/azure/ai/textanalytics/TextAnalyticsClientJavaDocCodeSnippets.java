@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
-import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
-import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOptions;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
@@ -23,10 +23,11 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
-import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
-import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOptions;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -38,22 +39,22 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
-import com.azure.ai.textanalytics.models.SummaryContext;
-import com.azure.ai.textanalytics.models.SummarySentence;
-import com.azure.ai.textanalytics.models.SummarySentencesOrder;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AbstractSummaryPagedIterable;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.ExtractSummaryPagedIterable;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
@@ -205,7 +206,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String
-        final CategorizedEntityCollection recognizeEntitiesResult =
+        CategorizedEntityCollection recognizeEntitiesResult =
             textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft");
         for (CategorizedEntity entity : recognizeEntitiesResult) {
             System.out.printf("Recognized entity: %s, entity category: %s, confidence score: %f.%n",
@@ -219,7 +220,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeEntitiesWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String-String
-        final CategorizedEntityCollection recognizeEntitiesResult =
+        CategorizedEntityCollection recognizeEntitiesResult =
             textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft", "en");
 
         for (CategorizedEntity entity : recognizeEntitiesResult) {
@@ -406,7 +407,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeLinkedEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String
-        final String document = "Old Faithful is a geyser at Yellowstone Park.";
+        String document = "Old Faithful is a geyser at Yellowstone Park.";
         System.out.println("Linked Entities:");
         textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
@@ -513,8 +514,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrases() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
-        System.out.println("Extracted phrases:");
-        for (String keyPhrase : textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.")) {
+        KeyPhrasesCollection extractedKeyPhrases =
+            textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.");
+        for (String keyPhrase : extractedKeyPhrases) {
             System.out.printf("%s.%n", keyPhrase);
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String
@@ -525,7 +527,6 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void extractKeyPhrasesWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
-        System.out.println("Extracted phrases:");
         textAnalyticsClient.extractKeyPhrases("My cat might need to see a veterinarian.", "en")
             .forEach(kegPhrase -> System.out.printf("%s.%n", kegPhrase));
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context
@@ -607,7 +608,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void analyzeSentiment() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String
-        final DocumentSentiment documentSentiment =
+        DocumentSentiment documentSentiment =
             textAnalyticsClient.analyzeSentiment("The hotel was dark and unclean.");
 
         System.out.printf(
@@ -633,7 +634,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void analyzeSentimentWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String
-        final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
+        DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
             "The hotel was dark and unclean.", "en");
 
         System.out.printf(
@@ -659,7 +660,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void analyzeSentimentWithLanguageWithOpinionMining() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions
-        final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
+        DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
             "The hotel was dark and unclean.", "en",
             new AnalyzeSentimentOptions().setIncludeOpinionMining(true));
         for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
@@ -1000,7 +1001,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         AnalyzeHealthcareEntitiesPagedIterable result = syncPoller.getFinalResult();
 
         // Task operation statistics
-        final AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
+        AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
         System.out.printf("Operation created time: %s, expiration time: %s.%n",
             operationResult.getCreatedAt(), operationResult.getExpiresAt());
 
@@ -1340,7 +1341,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     /**
      * Code snippet for {@link TextAnalyticsClient#beginAbstractSummary(Iterable)}.
      */
-    public void abstractSummaryStringInput() {
+    public void abstractiveSummaryStringInput() {
         // BEGIN: Client.beginAbstractSummary#Iterable
         List<String> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -1364,17 +1365,17 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks.");
         }
-        SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
+        SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginAbstractSummary(documents);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
-            for (AbstractSummaryResult documentResult : resultCollection) {
-                System.out.println("\tAbstract summary sentences:");
+            for (AbstractiveSummaryResult documentResult : resultCollection) {
+                System.out.println("\tAbstractive summary sentences:");
                 for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                     System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
-                    for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                    for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
                         System.out.printf("\t\t offset: %d, length: %d%n",
-                            summaryContext.getOffset(), summaryContext.getLength());
+                            abstractiveSummaryContext.getOffset(), abstractiveSummaryContext.getLength());
                     }
                 }
             }
@@ -1383,10 +1384,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginAbstractSummary(Iterable, String, AbstractSummaryOptions)}.
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginAbstractSummary(Iterable, String, AbstractiveSummaryOptions)}.
      */
-    public void abstractSummaryStringInputWithOption() {
-        // BEGIN: Client.beginAbstractSummary#Iterable-String-AbstractSummaryOptions
+    public void abstractiveSummaryStringInputWithOption() {
+        // BEGIN: Client.beginAbstractSummary#Iterable-String-AbstractiveSummaryOptions
         List<String> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             documents.add(
@@ -1409,30 +1410,30 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks.");
         }
-        SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
+        SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginAbstractSummary(documents, "en",
-                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3));
+                new AbstractiveSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3));
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
-            for (AbstractSummaryResult documentResult : resultCollection) {
-                System.out.println("\tAbstract summary sentences:");
+            for (AbstractiveSummaryResult documentResult : resultCollection) {
+                System.out.println("\tAbstractive summary sentences:");
                 for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                     System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
-                    for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                    for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
                         System.out.printf("\t\t offset: %d, length: %d%n",
-                            summaryContext.getOffset(), summaryContext.getLength());
+                            abstractiveSummaryContext.getOffset(), abstractiveSummaryContext.getLength());
                     }
                 }
             }
         });
-        // END: Client.beginAbstractSummary#Iterable-String-AbstractSummaryOptions
+        // END: Client.beginAbstractSummary#Iterable-String-AbstractiveSummaryOptions
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#beginAbstractSummary(Iterable, AbstractSummaryOptions, Context)}.
+     * Code snippet for {@link TextAnalyticsClient#beginAbstractSummary(Iterable, AbstractiveSummaryOptions, Context)}.
      */
-    public void abstractSummaryMaxOverload() {
-        // BEGIN: Client.beginAbstractSummary#Iterable-AbstractSummaryOptions-Context
+    public void abstractiveSummaryMaxOverload() {
+        // BEGIN: Client.beginAbstractSummary#Iterable-AbstractiveSummaryOptions-Context
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
@@ -1455,31 +1456,31 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks."));
         }
-        SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
+        SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginAbstractSummary(documents,
-                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3),
+                new AbstractiveSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3),
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
-            for (AbstractSummaryResult documentResult : resultCollection) {
-                System.out.println("\tAbstract summary sentences:");
+            for (AbstractiveSummaryResult documentResult : resultCollection) {
+                System.out.println("\tAbstractive summary sentences:");
                 for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                     System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
-                    for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                    for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
                         System.out.printf("\t\t offset: %d, length: %d%n",
-                            summaryContext.getOffset(), summaryContext.getLength());
+                            abstractiveSummaryContext.getOffset(), abstractiveSummaryContext.getLength());
                     }
                 }
             }
         });
-        // END: Client.beginAbstractSummary#Iterable-AbstractSummaryOptions-Context
+        // END: Client.beginAbstractSummary#Iterable-AbstractiveSummaryOptions-Context
     }
 
     // Extractive Summarization
     /**
      * Code snippet for {@link TextAnalyticsClient#beginExtractSummary(Iterable)}.
      */
-    public void extractSummaryStringInput() {
+    public void extractiveSummaryStringInput() {
         // BEGIN: Client.beginExtractSummary#Iterable
         List<String> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -1503,17 +1504,17 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks.");
         }
-        SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> syncPoller =
+        SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginExtractSummary(documents);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
-            for (ExtractSummaryResult documentResult : resultCollection) {
+            for (ExtractiveSummaryResult documentResult : resultCollection) {
                 System.out.println("\tExtracted summary sentences:");
-                for (SummarySentence summarySentence : documentResult.getSentences()) {
+                for (ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences()) {
                     System.out.printf(
                         "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                        summarySentence.getText(), summarySentence.getLength(),
-                        summarySentence.getOffset(), summarySentence.getRankScore());
+                        extractiveSummarySentence.getText(), extractiveSummarySentence.getLength(),
+                        extractiveSummarySentence.getOffset(), extractiveSummarySentence.getRankScore());
                 }
             }
         });
@@ -1521,9 +1522,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable, String, ExtractSummaryOptions)}.
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable, String, ExtractiveSummaryOptions)}.
      */
-    public void extractSummaryStringInputWithOption() {
+    public void extractiveSummaryStringInputWithOption() {
         // BEGIN: Client.beginExtractSummary#Iterable-String-ExtractSummaryOptions
         List<String> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -1547,19 +1548,19 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks.");
         }
-        SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> syncPoller =
+        SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginExtractSummary(documents,
                 "en",
-                new ExtractSummaryOptions().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK));
+                new ExtractiveSummaryOptions().setMaxSentenceCount(4).setOrderBy(ExtractiveSummarySentencesOrder.RANK));
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
-            for (ExtractSummaryResult documentResult : resultCollection) {
+            for (ExtractiveSummaryResult documentResult : resultCollection) {
                 System.out.println("\tExtracted summary sentences:");
-                for (SummarySentence summarySentence : documentResult.getSentences()) {
+                for (ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences()) {
                     System.out.printf(
                         "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                        summarySentence.getText(), summarySentence.getLength(),
-                        summarySentence.getOffset(), summarySentence.getRankScore());
+                        extractiveSummarySentence.getText(), extractiveSummarySentence.getLength(),
+                        extractiveSummarySentence.getOffset(), extractiveSummarySentence.getRankScore());
                 }
             }
         });
@@ -1567,9 +1568,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#beginExtractSummary(Iterable, ExtractSummaryOptions, Context)}.
+     * Code snippet for {@link TextAnalyticsClient#beginExtractSummary(Iterable, ExtractiveSummaryOptions, Context)}.
      */
-    public void extractSummaryMaxOverload() {
+    public void extractiveSummaryMaxOverload() {
         // BEGIN: Client.beginExtractSummary#Iterable-ExtractSummaryOptions-Context
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -1593,19 +1594,19 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     + "foundational component of this aspiration, if grounded with external knowledge sources in "
                     + "the downstream AI tasks."));
         }
-        SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> syncPoller =
+        SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginExtractSummary(documents,
-                new ExtractSummaryOptions().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK),
+                new ExtractiveSummaryOptions().setMaxSentenceCount(4).setOrderBy(ExtractiveSummarySentencesOrder.RANK),
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
-            for (ExtractSummaryResult documentResult : resultCollection) {
+            for (ExtractiveSummaryResult documentResult : resultCollection) {
                 System.out.println("\tExtracted summary sentences:");
-                for (SummarySentence summarySentence : documentResult.getSentences()) {
+                for (ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences()) {
                     System.out.printf(
                         "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                        summarySentence.getText(), summarySentence.getLength(),
-                        summarySentence.getOffset(), summarySentence.getRankScore());
+                        extractiveSummarySentence.getText(), extractiveSummarySentence.getLength(),
+                        extractiveSummarySentence.getOffset(), extractiveSummarySentence.getRankScore());
                 }
             }
         });

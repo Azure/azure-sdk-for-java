@@ -14,18 +14,18 @@ public final class ExperimentUpdatePropertiesTests {
     public void testDeserialize() throws Exception {
         ExperimentUpdateProperties model =
             BinaryData
-                .fromString("{\"description\":\"u\",\"enabledState\":\"Enabled\"}")
+                .fromString("{\"description\":\"zonokixrjqci\",\"enabledState\":\"Enabled\"}")
                 .toObject(ExperimentUpdateProperties.class);
-        Assertions.assertEquals("u", model.description());
+        Assertions.assertEquals("zonokixrjqci", model.description());
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExperimentUpdateProperties model =
-            new ExperimentUpdateProperties().withDescription("u").withEnabledState(State.ENABLED);
+            new ExperimentUpdateProperties().withDescription("zonokixrjqci").withEnabledState(State.ENABLED);
         model = BinaryData.fromObject(model).toObject(ExperimentUpdateProperties.class);
-        Assertions.assertEquals("u", model.description());
+        Assertions.assertEquals("zonokixrjqci", model.description());
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 }

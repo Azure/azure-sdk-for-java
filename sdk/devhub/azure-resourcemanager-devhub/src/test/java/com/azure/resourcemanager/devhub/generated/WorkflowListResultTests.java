@@ -11,48 +11,59 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkflowListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkflowListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{},\"location\":\"ejhkry\",\"tags\":{\"lokjyemkk\":\"apcz\",\"joxzjnchgejspodm\":\"ni\",\"h\":\"ilzyd\"},\"id\":\"jwyahuxinpmqnja\",\"name\":\"wixjsprozvcp\",\"type\":\"tegjvwmf\"},{\"properties\":{},\"location\":\"scmdvpjhulsuu\",\"tags\":{\"pslwejdpvw\":\"jozkrwfndiod\",\"akl\":\"yoqpsoaccta\",\"fdosyg\":\"lahbcryff\"},\"id\":\"xpaojakhmsbz\",\"name\":\"hcrzevd\",\"type\":\"hlxaolthqtr\"},{\"properties\":{},\"location\":\"bpf\",\"tags\":{\"wzo\":\"inzgvfcj\"},\"id\":\"xjtfelluwfzit\",\"name\":\"np\",\"type\":\"qfpjk\"},{\"properties\":{},\"location\":\"ofpdvh\",\"tags\":{\"odepoogin\":\"xypininmayhuybbk\",\"ognarxzxtheotus\":\"vamih\",\"nhungbw\":\"vyevcciqi\"},\"id\":\"zrnf\",\"name\":\"gxg\",\"type\":\"spemvtzfk\"}],\"nextLink\":\"ubljofxqe\"}")
+                    "{\"value\":[{\"properties\":{},\"location\":\"rwfndiod\",\"tags\":{\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"},{\"properties\":{},\"location\":\"tonpe\",\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"},\"id\":\"vyevcciqi\",\"name\":\"nhungbw\",\"type\":\"zrnf\"},{\"properties\":{},\"location\":\"spemvtzfk\",\"tags\":{\"aeqjhqjbasvms\":\"bljofxqeof\",\"gsntnbybkzgcwr\":\"jqul\",\"skcqvkocrcjd\":\"clxxwrljdo\"},\"id\":\"wtnhxbnjbiksqr\",\"name\":\"lssai\",\"type\":\"qpjwnzlljfm\"}],\"nextLink\":\"eebvmgxsab\"}")
                 .toObject(WorkflowListResult.class);
-        Assertions.assertEquals("ejhkry", model.value().get(0).location());
-        Assertions.assertEquals("apcz", model.value().get(0).tags().get("lokjyemkk"));
+        Assertions.assertEquals("rwfndiod", model.value().get(0).location());
+        Assertions.assertEquals("lwejdpv", model.value().get(0).tags().get("ryo"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkflowListResult model =
             new WorkflowListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new WorkflowInner()
-                                .withLocation("ejhkry")
-                                .withTags(mapOf("lokjyemkk", "apcz", "joxzjnchgejspodm", "ni", "h", "ilzyd")),
-                            new WorkflowInner()
-                                .withLocation("scmdvpjhulsuu")
-                                .withTags(
-                                    mapOf("pslwejdpvw", "jozkrwfndiod", "akl", "yoqpsoaccta", "fdosyg", "lahbcryff")),
-                            new WorkflowInner().withLocation("bpf").withTags(mapOf("wzo", "inzgvfcj")),
-                            new WorkflowInner()
-                                .withLocation("ofpdvh")
+                                .withLocation("rwfndiod")
                                 .withTags(
                                     mapOf(
-                                        "odepoogin",
-                                        "xypininmayhuybbk",
+                                        "ryo",
+                                        "lwejdpv",
+                                        "hbcryffdfdosyge",
+                                        "psoacctazakljl",
+                                        "rzevdphlxaol",
+                                        "paojakhmsbzjh")),
+                            new WorkflowInner()
+                                .withLocation("tonpe")
+                                .withTags(
+                                    mapOf(
+                                        "ypininm",
+                                        "jkjlxofpdvhpfx",
+                                        "po",
+                                        "yhuybbkpod",
                                         "ognarxzxtheotus",
-                                        "vamih",
-                                        "nhungbw",
-                                        "vyevcciqi"))));
+                                        "ginuvamih")),
+                            new WorkflowInner()
+                                .withLocation("spemvtzfk")
+                                .withTags(
+                                    mapOf(
+                                        "aeqjhqjbasvms",
+                                        "bljofxqeof",
+                                        "gsntnbybkzgcwr",
+                                        "jqul",
+                                        "skcqvkocrcjd",
+                                        "clxxwrljdo"))));
         model = BinaryData.fromObject(model).toObject(WorkflowListResult.class);
-        Assertions.assertEquals("ejhkry", model.value().get(0).location());
-        Assertions.assertEquals("apcz", model.value().get(0).tags().get("lokjyemkk"));
+        Assertions.assertEquals("rwfndiod", model.value().get(0).location());
+        Assertions.assertEquals("lwejdpv", model.value().get(0).tags().get("ryo"));
     }
 
     @SuppressWarnings("unchecked")

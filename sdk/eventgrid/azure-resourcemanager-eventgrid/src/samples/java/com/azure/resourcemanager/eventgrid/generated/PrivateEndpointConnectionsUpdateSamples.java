@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.models.ConnectionState;
 import com.azure.resourcemanager.eventgrid.models.PersistedConnectionStatus;
@@ -13,7 +12,7 @@ import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsPare
 /** Samples for PrivateEndpointConnections Update. */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PrivateEndpointConnections_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PrivateEndpointConnections_Update.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Update.
@@ -34,6 +33,6 @@ public final class PrivateEndpointConnectionsUpdateSamples {
                             .withStatus(PersistedConnectionStatus.APPROVED)
                             .withDescription("approving connection")
                             .withActionsRequired("None")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

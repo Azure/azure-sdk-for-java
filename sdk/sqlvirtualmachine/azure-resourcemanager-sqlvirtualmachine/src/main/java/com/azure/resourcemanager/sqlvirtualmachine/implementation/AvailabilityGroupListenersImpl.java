@@ -28,17 +28,6 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         this.serviceManager = serviceManager;
     }
 
-    public AvailabilityGroupListener get(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
-        AvailabilityGroupListenerInner inner =
-            this.serviceClient().get(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName);
-        if (inner != null) {
-            return new AvailabilityGroupListenerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AvailabilityGroupListener> getWithResponse(
         String resourceGroupName,
         String sqlVirtualMachineGroupName,
@@ -56,6 +45,17 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AvailabilityGroupListenerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AvailabilityGroupListener get(
+        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
+        AvailabilityGroupListenerInner inner =
+            this.serviceClient().get(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName);
+        if (inner != null) {
+            return new AvailabilityGroupListenerImpl(inner, this.manager());
         } else {
             return null;
         }

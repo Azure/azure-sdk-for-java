@@ -17,6 +17,14 @@ public final class BlobEventType extends ExpandableStringEnum<BlobEventType> {
     public static final BlobEventType MICROSOFT_STORAGE_BLOB_DELETED = fromString("Microsoft.Storage.BlobDeleted");
 
     /**
+     * Creates a new instance of BlobEventType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobEventType() {}
+
+    /**
      * Creates or finds a BlobEventType from its string representation.
      *
      * @param name a name to look for.

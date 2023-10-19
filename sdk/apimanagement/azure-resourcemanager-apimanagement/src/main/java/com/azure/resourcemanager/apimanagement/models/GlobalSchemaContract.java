@@ -59,6 +59,13 @@ public interface GlobalSchemaContract {
     Object document();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.GlobalSchemaContractInner object.
      *
      * @return the inner object.
@@ -69,22 +76,25 @@ public interface GlobalSchemaContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The GlobalSchemaContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the GlobalSchemaContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the GlobalSchemaContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the GlobalSchemaContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -110,6 +120,7 @@ public interface GlobalSchemaContract {
              */
             GlobalSchemaContract create(Context context);
         }
+
         /** The stage of the GlobalSchemaContract definition allowing to specify schemaType. */
         interface WithSchemaType {
             /**
@@ -120,6 +131,7 @@ public interface GlobalSchemaContract {
              */
             WithCreate withSchemaType(SchemaType schemaType);
         }
+
         /** The stage of the GlobalSchemaContract definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -130,6 +142,7 @@ public interface GlobalSchemaContract {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the GlobalSchemaContract definition allowing to specify value. */
         interface WithValue {
             /**
@@ -140,6 +153,7 @@ public interface GlobalSchemaContract {
              */
             WithCreate withValue(Object value);
         }
+
         /** The stage of the GlobalSchemaContract definition allowing to specify document. */
         interface WithDocument {
             /**
@@ -151,6 +165,7 @@ public interface GlobalSchemaContract {
              */
             WithCreate withDocument(Object document);
         }
+
         /** The stage of the GlobalSchemaContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -164,6 +179,7 @@ public interface GlobalSchemaContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the GlobalSchemaContract resource.
      *
@@ -193,6 +209,7 @@ public interface GlobalSchemaContract {
          */
         GlobalSchemaContract apply(Context context);
     }
+
     /** The GlobalSchemaContract update stages. */
     interface UpdateStages {
         /** The stage of the GlobalSchemaContract update allowing to specify schemaType. */
@@ -205,6 +222,7 @@ public interface GlobalSchemaContract {
              */
             Update withSchemaType(SchemaType schemaType);
         }
+
         /** The stage of the GlobalSchemaContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -215,6 +233,7 @@ public interface GlobalSchemaContract {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the GlobalSchemaContract update allowing to specify value. */
         interface WithValue {
             /**
@@ -225,6 +244,7 @@ public interface GlobalSchemaContract {
              */
             Update withValue(Object value);
         }
+
         /** The stage of the GlobalSchemaContract update allowing to specify document. */
         interface WithDocument {
             /**
@@ -236,6 +256,7 @@ public interface GlobalSchemaContract {
              */
             Update withDocument(Object document);
         }
+
         /** The stage of the GlobalSchemaContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -249,6 +270,7 @@ public interface GlobalSchemaContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

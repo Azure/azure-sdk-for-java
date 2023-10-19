@@ -23,6 +23,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.AzureADAdministratorsClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.BackupAndExportsClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.BackupsClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.CheckNameAvailabilityWithoutLocationsClient;
@@ -73,18 +74,6 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
         return this.endpoint;
     }
 
-    /** Api Version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -121,6 +110,18 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
         return this.defaultPollInterval;
     }
 
+    /** The AzureADAdministratorsClient object to access its operations. */
+    private final AzureADAdministratorsClient azureADAdministrators;
+
+    /**
+     * Gets the AzureADAdministratorsClient object to access its operations.
+     *
+     * @return the AzureADAdministratorsClient object.
+     */
+    public AzureADAdministratorsClient getAzureADAdministrators() {
+        return this.azureADAdministrators;
+    }
+
     /** The BackupsClient object to access its operations. */
     private final BackupsClient backups;
 
@@ -131,6 +132,18 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
      */
     public BackupsClient getBackups() {
         return this.backups;
+    }
+
+    /** The BackupAndExportsClient object to access its operations. */
+    private final BackupAndExportsClient backupAndExports;
+
+    /**
+     * Gets the BackupAndExportsClient object to access its operations.
+     *
+     * @return the BackupAndExportsClient object.
+     */
+    public BackupAndExportsClient getBackupAndExports() {
+        return this.backupAndExports;
     }
 
     /** The ConfigurationsClient object to access its operations. */
@@ -277,18 +290,6 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
         return this.operations;
     }
 
-    /** The AzureADAdministratorsClient object to access its operations. */
-    private final AzureADAdministratorsClient azureADAdministrators;
-
-    /**
-     * Gets the AzureADAdministratorsClient object to access its operations.
-     *
-     * @return the AzureADAdministratorsClient object.
-     */
-    public AzureADAdministratorsClient getAzureADAdministrators() {
-        return this.azureADAdministrators;
-    }
-
     /**
      * Initializes an instance of MySqlManagementClient client.
      *
@@ -311,8 +312,9 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-12-01-preview";
+        this.azureADAdministrators = new AzureADAdministratorsClientImpl(this);
         this.backups = new BackupsClientImpl(this);
+        this.backupAndExports = new BackupAndExportsClientImpl(this);
         this.configurations = new ConfigurationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
@@ -325,7 +327,6 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
         this.checkNameAvailabilityWithoutLocations = new CheckNameAvailabilityWithoutLocationsClientImpl(this);
         this.getPrivateDnsZoneSuffixes = new GetPrivateDnsZoneSuffixesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.azureADAdministrators = new AzureADAdministratorsClientImpl(this);
     }
 
     /**

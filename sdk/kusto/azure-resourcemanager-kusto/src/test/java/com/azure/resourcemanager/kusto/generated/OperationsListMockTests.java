@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"bfjkw\",\"display\":{\"provider\":\"nkqbhsyrq\",\"operation\":\"jqhden\",\"resource\":\"ulkpakd\",\"description\":\"fmjnnawtqa\"},\"origin\":\"xuckpggqoweyir\",\"properties\":\"datalisn\"}]}";
+            "{\"value\":[{\"name\":\"rnnqb\",\"display\":{\"provider\":\"pizxqltgrdogyp\",\"operation\":\"x\",\"resource\":\"fihwu\",\"description\":\"ctafsrbxrblm\"},\"origin\":\"owxih\",\"properties\":\"datanxw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bfjkw", response.iterator().next().name());
-        Assertions.assertEquals("nkqbhsyrq", response.iterator().next().display().provider());
-        Assertions.assertEquals("jqhden", response.iterator().next().display().operation());
-        Assertions.assertEquals("ulkpakd", response.iterator().next().display().resource());
-        Assertions.assertEquals("fmjnnawtqa", response.iterator().next().display().description());
-        Assertions.assertEquals("xuckpggqoweyir", response.iterator().next().origin());
+        Assertions.assertEquals("rnnqb", response.iterator().next().name());
+        Assertions.assertEquals("pizxqltgrdogyp", response.iterator().next().display().provider());
+        Assertions.assertEquals("x", response.iterator().next().display().operation());
+        Assertions.assertEquals("fihwu", response.iterator().next().display().resource());
+        Assertions.assertEquals("ctafsrbxrblm", response.iterator().next().display().description());
+        Assertions.assertEquals("owxih", response.iterator().next().origin());
     }
 }

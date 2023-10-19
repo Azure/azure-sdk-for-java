@@ -16,6 +16,10 @@ public final class DeleteWorkflowResponseInner {
     @JsonProperty(value = "status")
     private String status;
 
+    /** Creates an instance of DeleteWorkflowResponseInner class. */
+    public DeleteWorkflowResponseInner() {
+    }
+
     /**
      * Get the status property: delete status message.
      *

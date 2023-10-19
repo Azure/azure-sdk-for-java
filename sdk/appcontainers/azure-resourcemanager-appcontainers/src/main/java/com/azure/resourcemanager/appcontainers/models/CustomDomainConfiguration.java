@@ -34,7 +34,7 @@ public final class CustomDomainConfiguration {
      * Certificate password
      */
     @JsonProperty(value = "certificatePassword")
-    private byte[] certificatePassword;
+    private String certificatePassword;
 
     /*
      * Certificate expiration date.
@@ -112,8 +112,8 @@ public final class CustomDomainConfiguration {
      *
      * @return the certificatePassword value.
      */
-    public byte[] certificatePassword() {
-        return CoreUtils.clone(this.certificatePassword);
+    public String certificatePassword() {
+        return this.certificatePassword;
     }
 
     /**
@@ -122,8 +122,8 @@ public final class CustomDomainConfiguration {
      * @param certificatePassword the certificatePassword value to set.
      * @return the CustomDomainConfiguration object itself.
      */
-    public CustomDomainConfiguration withCertificatePassword(byte[] certificatePassword) {
-        this.certificatePassword = CoreUtils.clone(certificatePassword);
+    public CustomDomainConfiguration withCertificatePassword(String certificatePassword) {
+        this.certificatePassword = certificatePassword;
         return this;
     }
 

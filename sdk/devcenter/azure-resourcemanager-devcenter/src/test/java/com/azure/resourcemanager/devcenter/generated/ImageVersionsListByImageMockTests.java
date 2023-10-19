@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.ImageVersion;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class ImageVersionsListByImageMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"name\":\"dlgzibthostgkt\",\"publishedDate\":\"2021-09-21T04:56:25Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":318971885,\"provisioningState\":\"TransientFailure\"},\"id\":\"dqbcvhzlhplod\",\"name\":\"kdl\",\"type\":\"wqfbumlkxtrqjfsm\"}]}";
+            "{\"value\":[{\"properties\":{\"name\":\"sivfomilo\",\"publishedDate\":\"2021-10-29T08:24:04Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1002806414,\"provisioningState\":\"Succeeded\"},\"id\":\"ieuzaofjchvcyyy\",\"name\":\"fgdo\",\"type\":\"cubiipuipw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +60,9 @@ public final class ImageVersionsListByImageMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ImageVersion> response =
-            manager.imageVersions().listByImage("tbaxk", "xywr", "kpyklyhp", "uodpv", Context.NONE);
+            manager
+                .imageVersions()
+                .listByImage(
+                    "nuuepzlrp", "wzsoldweyuqdunv", "nnrwrbiork", "alywjhhgdn", com.azure.core.util.Context.NONE);
     }
 }

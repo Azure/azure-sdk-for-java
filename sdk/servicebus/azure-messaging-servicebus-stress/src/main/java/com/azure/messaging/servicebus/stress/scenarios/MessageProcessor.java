@@ -3,17 +3,22 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import com.azure.messaging.servicebus.stress.util.EntityType;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.messaging.servicebus.stress.util.RunResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.util.concurrent.CountDownLatch;
+import java.time.OffsetDateTime;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createMessagePayload;
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getProcessorBuilder;
 
 /**
  * Test ServiceBusProcessorClient
@@ -22,69 +27,147 @@ import java.util.concurrent.CountDownLatch;
 public class MessageProcessor extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
 
-    @Value("${MAX_CONCURRENT_CALLS:20}")
+    @Value("${PROCESS_CALLBACK_DURATION_MAX_IN_MS:50}")
+    private int processMessageDurationMaxInMs;
+
+    @Value("${MAX_CONCURRENT_CALLS:100}")
     private int maxConcurrentCalls;
 
     @Value("${PREFETCH_COUNT:0}")
     private int prefetchCount;
 
+    @Value("${ABANDON_RATIO:0}")
+    private double abandonRatio;
+
+    @Value("${NO_DISPOSITION_RATIO:0}")
+    private double noDispositionRatio;
+
+    @Value("${LOCK_RENEWAL_NEEDED_RATIO:0}")
+    private double lockRenewalNeededRatio;
+
+    @Value("${LOCK_DURATION_IN_MS:30000}")
+    private int lockDurationInMs;
+
+    @Value("${AUTO_RENEW_LOCK:true}")
+    private boolean renewLock;
+
+    private byte[] expectedPayload;
+
+    private final AtomicReference<RunResult> runResult = new AtomicReference<>(RunResult.INCONCLUSIVE);
+
+
     @Override
-    public void run() {
-        final CountDownLatch latch = new CountDownLatch(1);
+    public RunResult run() throws InterruptedException {
+        expectedPayload = createMessagePayload(options.getMessageSize());
 
-        final String connectionString = options.getServicebusConnectionString();
-        final EntityType entityType = options.getServicebusEntityType();
-        String queueName = null;
-        String topicName = null;
-        String subscriptionName = null;
-        if (entityType == EntityType.QUEUE) {
-            queueName = options.getServicebusQueueName();
-        } else if (entityType == EntityType.TOPIC) {
-            topicName = options.getServicebusTopicName();
-            subscriptionName = options.getServicebusSubscriptionName();
-        }
-
-        final String receiveCounterKey = "Number of received messages - "
-            + (queueName != null ? queueName : topicName + "/" + subscriptionName);
-
-        ServiceBusProcessorClient client = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5)))
-            .processor()
-            .queueName(queueName)
-            .topicName(topicName)
-            .subscriptionName(subscriptionName)
+        ServiceBusProcessorClient processor = toClose(getProcessorBuilder(options)
+            .maxAutoLockRenewDuration(renewLock ? Duration.ofMinutes(5) : Duration.ZERO)
             .maxConcurrentCalls(maxConcurrentCalls)
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .disableAutoComplete()
             .prefetchCount(prefetchCount)
-            .processMessage(messageContext -> {
-                LOGGER.verbose("Before complete. messageId: {}, lockToken: {}",
-                    messageContext.getMessage().getMessageId(),
-                    messageContext.getMessage().getLockToken());
-                messageContext.complete();
-                rateMeter.add(receiveCounterKey, 1);
-                LOGGER.verbose("After complete. messageId: {}, lockToken: {}",
-                    messageContext.getMessage().getMessageId(),
-                    messageContext.getMessage().getLockToken());
-            })
+            .processMessage(this::process)
             .processError(err -> {
-                throw LOGGER.logExceptionAsError(new RuntimeException(err.getException()));
+                LOGGER.atError()
+                    .addKeyValue("source", err.getErrorSource())
+                    .log("processor error", err.getException());
+                runResult.set(RunResult.ERROR);
             })
-            .buildProcessorClient();
+            .buildProcessorClient());
+        processor.start();
 
-        client.start();
+        blockingWait(options.getTestDuration());
 
-        // When the connection is recovering, there is a gap between the creation of new reactor-executor thread and
-        // the disposal of old reactor-executor thread. Since only the daemon threads are running, the program ends.
-        // Here we add a 'CountDownLatch' to block main thread and keep the processor running forever.
-        // In the future, we can add wait time as test parameter so that we can control the testing time.
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        int activeMessages = getRemainingQueueMessages();
+        for (int extraMinutes = 0; extraMinutes < 3 && activeMessages > 0; extraMinutes++) {
+            blockingWait(Duration.ofMinutes(1));
+            activeMessages = getRemainingQueueMessages();
         }
-        // We won't hit here unless we add a wait time for the 'CountDownLatch'.
-        client.close();
+
+        return activeMessages != 0 ? RunResult.WARNING : runResult.get();
+    }
+
+    private void process(ServiceBusReceivedMessageContext messageContext) {
+        ServiceBusReceivedMessage message = messageContext.getMessage();
+        if (checkMessage(message)) {
+            blockingWait(Duration.ofMillis(getWaitTime()));
+            settleMessage(messageContext);
+        }
+    }
+
+    private int getWaitTime() {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        if (random.nextDouble(1) < lockRenewalNeededRatio) {
+            return lockDurationInMs + 1000;
+        } else if (processMessageDurationMaxInMs != 0) {
+            return random.nextInt(processMessageDurationMaxInMs);
+        }
+
+        return 0;
+    }
+
+    private boolean checkMessage(ServiceBusReceivedMessage message) {
+        LOGGER.atInfo()
+            .addKeyValue("messageId", message.getMessageId())
+            .addKeyValue("traceparent", message.getApplicationProperties().get("traceparent"))
+            .addKeyValue("deliveryCount", message.getDeliveryCount())
+            .addKeyValue("lockToken", message.getLockToken())
+            .addKeyValue("lockedUntil", message.getLockedUntil())
+            .log("message received");
+
+        if (message.getLockedUntil().isBefore(OffsetDateTime.now())) {
+            LOGGER.atError()
+                .addKeyValue("messageId", message.getMessageId())
+                .addKeyValue("deliveryCount", message.getDeliveryCount())
+                .log("message lock expired");
+            runResult.set(RunResult.ERROR);
+            return false;
+        }
+
+        byte[] payload = message.getBody().toBytes();
+        if (payload.length != expectedPayload.length) {
+            LOGGER.atError()
+                .addKeyValue("messageId", message.getMessageId())
+                .addKeyValue("actualSize", payload.length)
+                .addKeyValue("expectedSize", expectedPayload.length)
+                .log("message corrupted");
+            runResult.set(RunResult.ERROR);
+        }
+
+        for (int i = 0; i < payload.length; i++) {
+            if (payload[i] != expectedPayload[i]) {
+                LOGGER.atError()
+                    .addKeyValue("messageId", message.getMessageId())
+                    .addKeyValue("index", i)
+                    .addKeyValue("actual", payload[i])
+                    .addKeyValue("expected", expectedPayload[i])
+                    .log("message corrupted");
+                runResult.set(RunResult.ERROR);
+            }
+        }
+
+        return true;
+    }
+
+    private void settleMessage(ServiceBusReceivedMessageContext messageContext) {
+        String operation = "ignored";
+        try {
+            double random = ThreadLocalRandom.current().nextDouble(1);
+            if (random < abandonRatio) {
+                operation = "abandoned";
+                messageContext.abandon();
+            } else if (random >= abandonRatio + noDispositionRatio) {
+                operation = "completed";
+                messageContext.complete();
+            }
+
+            LOGGER.atInfo()
+                .addKeyValue("messageId", messageContext.getMessage().getMessageId())
+                .addKeyValue("deliveryCount", messageContext.getMessage().getDeliveryCount())
+                .log("message " + operation);
+        } catch (RuntimeException ex) {
+            runResult.set(RunResult.ERROR);
+            LOGGER.atVerbose()
+                .addKeyValue("messageId", messageContext.getMessage().getMessageId())
+                .log("message settlement failed");
+        }
     }
 }

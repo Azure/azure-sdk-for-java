@@ -9,7 +9,7 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.NameAvailabilityRequ
 /** Samples for CheckNameAvailability Execute. */
 public final class CheckNameAvailabilityExecuteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/CheckNameAvailability.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2021-12-01-preview/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: Check name availability.

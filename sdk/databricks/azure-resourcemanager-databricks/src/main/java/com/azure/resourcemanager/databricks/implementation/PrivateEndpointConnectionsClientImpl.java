@@ -68,8 +68,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public interface PrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/privateEndpointConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<PrivateEndpointConnectionsList>> list(
@@ -83,8 +82,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<PrivateEndpointConnectionInner>> get(
@@ -99,8 +97,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -116,8 +113,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -176,6 +172,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -185,7 +182,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -237,6 +234,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -244,7 +242,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context)
@@ -376,6 +374,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -385,7 +384,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             privateEndpointConnectionName,
                             accept,
@@ -436,6 +435,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -443,7 +443,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 privateEndpointConnectionName,
                 accept,
@@ -564,6 +564,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             privateEndpointConnection.validate();
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -573,7 +574,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             privateEndpointConnectionName,
                             privateEndpointConnection,
@@ -638,6 +639,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             privateEndpointConnection.validate();
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -645,7 +647,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 privateEndpointConnectionName,
                 privateEndpointConnection,
@@ -922,6 +924,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -931,7 +934,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             privateEndpointConnectionName,
                             accept,
@@ -981,6 +984,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -988,7 +992,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 privateEndpointConnectionName,
                 accept,

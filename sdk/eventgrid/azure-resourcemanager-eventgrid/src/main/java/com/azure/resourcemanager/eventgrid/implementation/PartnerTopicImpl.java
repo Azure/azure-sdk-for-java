@@ -201,20 +201,20 @@ public final class PartnerTopicImpl implements PartnerTopic, PartnerTopic.Defini
         return this;
     }
 
-    public PartnerTopic activate() {
-        return serviceManager.partnerTopics().activate(resourceGroupName, partnerTopicName);
-    }
-
     public Response<PartnerTopic> activateWithResponse(Context context) {
         return serviceManager.partnerTopics().activateWithResponse(resourceGroupName, partnerTopicName, context);
     }
 
-    public PartnerTopic deactivate() {
-        return serviceManager.partnerTopics().deactivate(resourceGroupName, partnerTopicName);
+    public PartnerTopic activate() {
+        return serviceManager.partnerTopics().activate(resourceGroupName, partnerTopicName);
     }
 
     public Response<PartnerTopic> deactivateWithResponse(Context context) {
         return serviceManager.partnerTopics().deactivateWithResponse(resourceGroupName, partnerTopicName, context);
+    }
+
+    public PartnerTopic deactivate() {
+        return serviceManager.partnerTopics().deactivate(resourceGroupName, partnerTopicName);
     }
 
     public PartnerTopicImpl withRegion(Region location) {

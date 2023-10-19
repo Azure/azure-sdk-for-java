@@ -12,7 +12,7 @@ public final class ValidateCustomDomainOutputInnerTests {
     public void testDeserialize() throws Exception {
         ValidateCustomDomainOutputInner model =
             BinaryData
-                .fromString("{\"customDomainValidated\":false,\"reason\":\"qvujzraehtwdwrf\",\"message\":\"wib\"}")
+                .fromString("{\"customDomainValidated\":false,\"reason\":\"rtfudxepxg\",\"message\":\"agvrvmnpkuk\"}")
                 .toObject(ValidateCustomDomainOutputInner.class);
     }
 

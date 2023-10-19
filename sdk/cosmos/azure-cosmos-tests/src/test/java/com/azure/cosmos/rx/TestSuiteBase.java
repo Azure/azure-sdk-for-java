@@ -39,7 +39,6 @@ import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -201,7 +200,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -217,7 +216,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -971,6 +970,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         };
     }
 
+    @DataProvider
+    public static Object[][] clientBuilderSolelyDirectWithSessionConsistency() {
+        return new Object[][]{
+                {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)}
+        };
+    }
+
     static ConsistencyLevel parseConsistency(String consistency) {
         if (consistency != null) {
             consistency = CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistency).trim();
@@ -1039,9 +1045,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
-    public static Object[][] simpleClientBuildersForDirectTcpWithoutRetryOnThrottledRequests() {
+    public static Object[][] simpleClientBuildersWithoutRetryOnThrottledRequests() {
         return new Object[][]{
-            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, false)},
+            { createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, false) },
+            { createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, false) }
         };
     }
 

@@ -50,6 +50,13 @@ public class AzureBackupRestoreRequest {
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
+    /*
+     * Contains information of the Identity Details for the BI.
+     * If it is null, default will be considered as System Assigned.
+     */
+    @JsonProperty(value = "identityDetails")
+    private IdentityDetails identityDetails;
+
     /** Creates an instance of AzureBackupRestoreRequest class. */
     public AzureBackupRestoreRequest() {
     }
@@ -117,6 +124,28 @@ public class AzureBackupRestoreRequest {
     }
 
     /**
+     * Get the identityDetails property: Contains information of the Identity Details for the BI. If it is null, default
+     * will be considered as System Assigned.
+     *
+     * @return the identityDetails value.
+     */
+    public IdentityDetails identityDetails() {
+        return this.identityDetails;
+    }
+
+    /**
+     * Set the identityDetails property: Contains information of the Identity Details for the BI. If it is null, default
+     * will be considered as System Assigned.
+     *
+     * @param identityDetails the identityDetails value to set.
+     * @return the AzureBackupRestoreRequest object itself.
+     */
+    public AzureBackupRestoreRequest withIdentityDetails(IdentityDetails identityDetails) {
+        this.identityDetails = identityDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -135,6 +164,9 @@ public class AzureBackupRestoreRequest {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceDataStoreType in model AzureBackupRestoreRequest"));
+        }
+        if (identityDetails() != null) {
+            identityDetails().validate();
         }
     }
 

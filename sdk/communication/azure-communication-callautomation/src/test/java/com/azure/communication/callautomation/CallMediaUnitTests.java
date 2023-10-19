@@ -45,6 +45,7 @@ public class CallMediaUnitTests {
         playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
+        playTextSource.setCustomVoiceEndpointId("customVoiceEndpointId");
     }
 
     @Test
@@ -133,7 +134,7 @@ public class CallMediaUnitTests {
         callMedia = callConnection.getCallMedia();
         Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(
             new CommunicationUserIdentifier("id"),
-            "operationContext", Context.NONE
+            "operationContext", null, Context.NONE
         );
         assertEquals(response.getStatusCode(), 200);
     }
@@ -141,11 +142,36 @@ public class CallMediaUnitTests {
     @Test
     public void sendDtmfWithResponseTest() {
         Response<Void> response = callMedia.sendDtmfWithResponse(
-            new CommunicationUserIdentifier("id"),
-            Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()),
-            "ctx", Context.NONE
+            Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
+            "ctx", null, Context.NONE
         );
         assertEquals(response.getStatusCode(), 202);
     }
 
+    @Test
+    public void startHoldMusicWithResponseTest() {
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
+            );
+        callMedia = callConnection.getCallMedia();
+        StartHoldMusicOptions options = new StartHoldMusicOptions(
+            new CommunicationUserIdentifier("id"),
+            new TextSource().setText("audio to play"));
+        Response<Void> response = callMedia.startHoldMusicWithResponse(options, null);
+        assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void stopHoldMusicWithResponseTest() {
+        CallConnection callConnection =
+            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
+                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
+            );
+        callMedia = callConnection.getCallMedia();
+
+        Response<Void> response = callMedia.stopHoldMusicWithResponse(new CommunicationUserIdentifier("id"),
+            "operationalContext", Context.NONE);
+        assertEquals(response.getStatusCode(), 200);
+    }
 }

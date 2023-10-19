@@ -6,11 +6,13 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectEnableStatus;
 
 /** Samples for Pools CreateOrUpdate. */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_Put.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -27,6 +29,10 @@ public final class PoolsCreateOrUpdateSamples {
             .withNetworkConnectionName("Network1-westus2")
             .withLicenseType(LicenseType.WINDOWS_CLIENT)
             .withLocalAdministrator(LocalAdminStatus.ENABLED)
+            .withStopOnDisconnect(
+                new StopOnDisconnectConfiguration()
+                    .withStatus(StopOnDisconnectEnableStatus.ENABLED)
+                    .withGracePeriodMinutes(60))
             .create();
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateZones ListByResourceGroup. */
 public final class PrivateZonesListByResourceGroupSamples {
     /*
@@ -22,6 +20,6 @@ public final class PrivateZonesListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getPrivateZones()
-            .listByResourceGroup("resourceGroup1", null, Context.NONE);
+            .listByResourceGroup("resourceGroup1", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -8,25 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlStorageSettings;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SqlStorageSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SqlStorageSettings model =
             BinaryData
-                .fromString("{\"luns\":[1233954324],\"defaultFilePath\":\"lzlfbxzpuz\"}")
+                .fromString("{\"luns\":[186143874,2120884016],\"defaultFilePath\":\"qn\"}")
                 .toObject(SqlStorageSettings.class);
-        Assertions.assertEquals(1233954324, model.luns().get(0));
-        Assertions.assertEquals("lzlfbxzpuz", model.defaultFilePath());
+        Assertions.assertEquals(186143874, model.luns().get(0));
+        Assertions.assertEquals("qn", model.defaultFilePath());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SqlStorageSettings model =
-            new SqlStorageSettings().withLuns(Arrays.asList(1233954324)).withDefaultFilePath("lzlfbxzpuz");
+            new SqlStorageSettings().withLuns(Arrays.asList(186143874, 2120884016)).withDefaultFilePath("qn");
         model = BinaryData.fromObject(model).toObject(SqlStorageSettings.class);
-        Assertions.assertEquals(1233954324, model.luns().get(0));
-        Assertions.assertEquals("lzlfbxzpuz", model.defaultFilePath());
+        Assertions.assertEquals(186143874, model.luns().get(0));
+        Assertions.assertEquals("qn", model.defaultFilePath());
     }
 }

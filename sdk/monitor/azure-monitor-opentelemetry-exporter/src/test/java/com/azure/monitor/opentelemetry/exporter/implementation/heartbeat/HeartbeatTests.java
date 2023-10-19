@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 
 class HeartbeatTests {
 
@@ -31,12 +30,13 @@ class HeartbeatTests {
         HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {
         }, telemetryItemsConsumer);
 
-        await().until(() -> ((MetricsData) provider.gatherData().getData().getBaseData()).getProperties().size() > 0);
+        // some of the initialization above happens in a separate thread
+        Thread.sleep(1000);
 
         // then
         MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
         assertThat(data).isNotNull();
-        assertThat(data.getProperties().size() > 0).isTrue();
+        assertThat(data.getProperties()).isNotEmpty();
     }
 
     @Test

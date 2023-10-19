@@ -9,46 +9,45 @@ import com.azure.resourcemanager.appcontainers.models.AppProtocol;
 import com.azure.resourcemanager.appcontainers.models.Dapr;
 import com.azure.resourcemanager.appcontainers.models.LogLevel;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DaprTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Dapr model =
             BinaryData
                 .fromString(
-                    "{\"enabled\":true,\"appId\":\"prwmdyvxqt\",\"appProtocol\":\"http\",\"appPort\":357638492,\"httpReadBufferSize\":438099264,\"httpMaxRequestSize\":1692678524,\"logLevel\":\"debug\",\"enableApiLogging\":true}")
+                    "{\"enabled\":false,\"appId\":\"rfbjf\",\"appProtocol\":\"http\",\"appPort\":2146010865,\"httpReadBufferSize\":22179172,\"httpMaxRequestSize\":2101794539,\"logLevel\":\"info\",\"enableApiLogging\":true}")
                 .toObject(Dapr.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("prwmdyvxqt", model.appId());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("rfbjf", model.appId());
         Assertions.assertEquals(AppProtocol.HTTP, model.appProtocol());
-        Assertions.assertEquals(357638492, model.appPort());
-        Assertions.assertEquals(438099264, model.httpReadBufferSize());
-        Assertions.assertEquals(1692678524, model.httpMaxRequestSize());
-        Assertions.assertEquals(LogLevel.DEBUG, model.logLevel());
+        Assertions.assertEquals(2146010865, model.appPort());
+        Assertions.assertEquals(22179172, model.httpReadBufferSize());
+        Assertions.assertEquals(2101794539, model.httpMaxRequestSize());
+        Assertions.assertEquals(LogLevel.INFO, model.logLevel());
         Assertions.assertEquals(true, model.enableApiLogging());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Dapr model =
             new Dapr()
-                .withEnabled(true)
-                .withAppId("prwmdyvxqt")
+                .withEnabled(false)
+                .withAppId("rfbjf")
                 .withAppProtocol(AppProtocol.HTTP)
-                .withAppPort(357638492)
-                .withHttpReadBufferSize(438099264)
-                .withHttpMaxRequestSize(1692678524)
-                .withLogLevel(LogLevel.DEBUG)
+                .withAppPort(2146010865)
+                .withHttpReadBufferSize(22179172)
+                .withHttpMaxRequestSize(2101794539)
+                .withLogLevel(LogLevel.INFO)
                 .withEnableApiLogging(true);
         model = BinaryData.fromObject(model).toObject(Dapr.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("prwmdyvxqt", model.appId());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("rfbjf", model.appId());
         Assertions.assertEquals(AppProtocol.HTTP, model.appProtocol());
-        Assertions.assertEquals(357638492, model.appPort());
-        Assertions.assertEquals(438099264, model.httpReadBufferSize());
-        Assertions.assertEquals(1692678524, model.httpMaxRequestSize());
-        Assertions.assertEquals(LogLevel.DEBUG, model.logLevel());
+        Assertions.assertEquals(2146010865, model.appPort());
+        Assertions.assertEquals(22179172, model.httpReadBufferSize());
+        Assertions.assertEquals(2101794539, model.httpMaxRequestSize());
+        Assertions.assertEquals(LogLevel.INFO, model.logLevel());
         Assertions.assertEquals(true, model.enableApiLogging());
     }
 }

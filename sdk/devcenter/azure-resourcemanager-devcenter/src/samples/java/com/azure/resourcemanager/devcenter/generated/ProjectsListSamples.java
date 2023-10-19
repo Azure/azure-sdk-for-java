@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Projects List. */
 public final class ProjectsListSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Projects_ListBySubscription.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Projects_ListBySubscription.json
      */
     /**
      * Sample code: Projects_ListBySubscription.
@@ -17,6 +15,6 @@ public final class ProjectsListSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void projectsListBySubscription(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.projects().list(null, Context.NONE);
+        manager.projects().list(null, com.azure.core.util.Context.NONE);
     }
 }

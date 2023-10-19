@@ -21,18 +21,19 @@ public final class ManagedRuleGroupOverrideTests {
         ManagedRuleGroupOverride model =
             BinaryData
                 .fromString(
-                    "{\"ruleGroupName\":\"rvqqaatj\",\"exclusions\":[{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"oupmfii\"}],\"rules\":[{\"ruleId\":\"gjio\",\"enabledState\":\"Disabled\",\"action\":\"Log\",\"exclusions\":[]},{\"ruleId\":\"v\",\"enabledState\":\"Disabled\",\"action\":\"Redirect\",\"exclusions\":[]},{\"ruleId\":\"wjygvjayvblmhvk\",\"enabledState\":\"Enabled\",\"action\":\"Allow\",\"exclusions\":[]}]}")
+                    "{\"ruleGroupName\":\"theotusiv\",\"exclusions\":[{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"iqihn\"}],\"rules\":[{\"ruleId\":\"gbwjzrnf\",\"enabledState\":\"Enabled\",\"action\":\"Log\",\"exclusions\":[]},{\"ruleId\":\"emv\",\"enabledState\":\"Disabled\",\"action\":\"AnomalyScoring\",\"exclusions\":[]}]}")
                 .toObject(ManagedRuleGroupOverride.class);
-        Assertions.assertEquals("rvqqaatj", model.ruleGroupName());
+        Assertions.assertEquals("theotusiv", model.ruleGroupName());
         Assertions
             .assertEquals(
                 ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES, model.exclusions().get(0).matchVariable());
         Assertions
             .assertEquals(
-                ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH, model.exclusions().get(0).selectorMatchOperator());
-        Assertions.assertEquals("oupmfii", model.exclusions().get(0).selector());
-        Assertions.assertEquals("gjio", model.rules().get(0).ruleId());
-        Assertions.assertEquals(ManagedRuleEnabledState.DISABLED, model.rules().get(0).enabledState());
+                ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH,
+                model.exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("iqihn", model.exclusions().get(0).selector());
+        Assertions.assertEquals("gbwjzrnf", model.rules().get(0).ruleId());
+        Assertions.assertEquals(ManagedRuleEnabledState.ENABLED, model.rules().get(0).enabledState());
         Assertions.assertEquals(ActionType.LOG, model.rules().get(0).action());
     }
 
@@ -40,43 +41,39 @@ public final class ManagedRuleGroupOverrideTests {
     public void testSerialize() throws Exception {
         ManagedRuleGroupOverride model =
             new ManagedRuleGroupOverride()
-                .withRuleGroupName("rvqqaatj")
+                .withRuleGroupName("theotusiv")
                 .withExclusions(
                     Arrays
                         .asList(
                             new ManagedRuleExclusion()
                                 .withMatchVariable(ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
-                                .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
-                                .withSelector("oupmfii")))
+                                .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                .withSelector("iqihn")))
                 .withRules(
                     Arrays
                         .asList(
                             new ManagedRuleOverride()
-                                .withRuleId("gjio")
-                                .withEnabledState(ManagedRuleEnabledState.DISABLED)
+                                .withRuleId("gbwjzrnf")
+                                .withEnabledState(ManagedRuleEnabledState.ENABLED)
                                 .withAction(ActionType.LOG)
                                 .withExclusions(Arrays.asList()),
                             new ManagedRuleOverride()
-                                .withRuleId("v")
+                                .withRuleId("emv")
                                 .withEnabledState(ManagedRuleEnabledState.DISABLED)
-                                .withAction(ActionType.REDIRECT)
-                                .withExclusions(Arrays.asList()),
-                            new ManagedRuleOverride()
-                                .withRuleId("wjygvjayvblmhvk")
-                                .withEnabledState(ManagedRuleEnabledState.ENABLED)
-                                .withAction(ActionType.ALLOW)
+                                .withAction(ActionType.ANOMALY_SCORING)
                                 .withExclusions(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(ManagedRuleGroupOverride.class);
-        Assertions.assertEquals("rvqqaatj", model.ruleGroupName());
+        Assertions.assertEquals("theotusiv", model.ruleGroupName());
         Assertions
             .assertEquals(
                 ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES, model.exclusions().get(0).matchVariable());
         Assertions
             .assertEquals(
-                ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH, model.exclusions().get(0).selectorMatchOperator());
-        Assertions.assertEquals("oupmfii", model.exclusions().get(0).selector());
-        Assertions.assertEquals("gjio", model.rules().get(0).ruleId());
-        Assertions.assertEquals(ManagedRuleEnabledState.DISABLED, model.rules().get(0).enabledState());
+                ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH,
+                model.exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("iqihn", model.exclusions().get(0).selector());
+        Assertions.assertEquals("gbwjzrnf", model.rules().get(0).ruleId());
+        Assertions.assertEquals(ManagedRuleEnabledState.ENABLED, model.rules().get(0).enabledState());
         Assertions.assertEquals(ActionType.LOG, model.rules().get(0).action());
     }
 }

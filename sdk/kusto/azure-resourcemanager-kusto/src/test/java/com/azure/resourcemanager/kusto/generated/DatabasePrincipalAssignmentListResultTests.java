@@ -18,11 +18,11 @@ public final class DatabasePrincipalAssignmentListResultTests {
         DatabasePrincipalAssignmentListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"principalId\":\"cykvceo\",\"role\":\"User\",\"tenantId\":\"lo\",\"principalType\":\"Group\",\"tenantName\":\"tyfjfcnjbkcnxdhb\",\"principalName\":\"kphywpnvjto\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"mclfplphoxuscr\"},\"id\":\"abgy\",\"name\":\"psbjta\",\"type\":\"qugxywpmueefjzwf\"},{\"properties\":{\"principalId\":\"q\",\"role\":\"Monitor\",\"tenantId\":\"dsuyonobgla\",\"principalType\":\"User\",\"tenantName\":\"xtccmg\",\"principalName\":\"dxyt\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"rxv\"},\"id\":\"fudwpznt\",\"name\":\"hdzhlrqj\",\"type\":\"hckfrlhrx\"},{\"properties\":{\"principalId\":\"kyv\",\"role\":\"User\",\"tenantId\":\"anuzbpzkafkuw\",\"principalType\":\"Group\",\"tenantName\":\"nwbmeh\",\"principalName\":\"eyvjusrtslhspkde\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"fm\"},\"id\":\"ag\",\"name\":\"vt\",\"type\":\"elmqk\"},{\"properties\":{\"principalId\":\"ahvljuaha\",\"role\":\"UnrestrictedViewer\",\"tenantId\":\"c\",\"principalType\":\"Group\",\"tenantName\":\"duala\",\"principalName\":\"qpv\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"ws\"},\"id\":\"crgvxpvgom\",\"name\":\"lf\",\"type\":\"isgwbnbbeldawkz\"}]}")
+                    "{\"value\":[{\"properties\":{\"principalId\":\"dahzxctobg\",\"role\":\"Ingestor\",\"tenantId\":\"moizpos\",\"principalType\":\"Group\",\"tenantName\":\"rcfbunrm\",\"principalName\":\"jhhkxbp\",\"provisioningState\":\"Running\",\"aadObjectId\":\"jhxxjyn\"},\"id\":\"u\",\"name\":\"ivkrtsw\",\"type\":\"xqzvszjfa\"},{\"properties\":{\"principalId\":\"j\",\"role\":\"User\",\"tenantId\":\"xivetvt\",\"principalType\":\"User\",\"tenantName\":\"qtdo\",\"principalName\":\"cbxvwvxyslqbh\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"blytk\"},\"id\":\"lmpewwwfbkr\",\"name\":\"rn\",\"type\":\"vshqjohxcr\"},{\"properties\":{\"principalId\":\"fovasr\",\"role\":\"Viewer\",\"tenantId\":\"wbhsqfsub\",\"principalType\":\"App\",\"tenantName\":\"birx\",\"principalName\":\"ybsrfbjfdtwss\",\"provisioningState\":\"Running\",\"aadObjectId\":\"pvjzbe\"},\"id\":\"ilzznfqqnvwp\",\"name\":\"qtaruoujmkcjhwq\",\"type\":\"tjrybnwjewgdr\"},{\"properties\":{\"principalId\":\"rvnaenqpeh\",\"role\":\"UnrestrictedViewer\",\"tenantId\":\"oygmift\",\"principalType\":\"Group\",\"tenantName\":\"d\",\"principalName\":\"sl\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"qig\"},\"id\":\"nduhavhqlkthum\",\"name\":\"qolbgyc\",\"type\":\"uie\"}]}")
                 .toObject(DatabasePrincipalAssignmentListResult.class);
-        Assertions.assertEquals("cykvceo", model.value().get(0).principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.USER, model.value().get(0).role());
-        Assertions.assertEquals("lo", model.value().get(0).tenantId());
+        Assertions.assertEquals("dahzxctobg", model.value().get(0).principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, model.value().get(0).role());
+        Assertions.assertEquals("moizpos", model.value().get(0).tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, model.value().get(0).principalType());
     }
 
@@ -34,29 +34,29 @@ public final class DatabasePrincipalAssignmentListResultTests {
                     Arrays
                         .asList(
                             new DatabasePrincipalAssignmentInner()
-                                .withPrincipalId("cykvceo")
-                                .withRole(DatabasePrincipalRole.USER)
-                                .withTenantId("lo")
+                                .withPrincipalId("dahzxctobg")
+                                .withRole(DatabasePrincipalRole.INGESTOR)
+                                .withTenantId("moizpos")
                                 .withPrincipalType(PrincipalType.GROUP),
                             new DatabasePrincipalAssignmentInner()
-                                .withPrincipalId("q")
-                                .withRole(DatabasePrincipalRole.MONITOR)
-                                .withTenantId("dsuyonobgla")
+                                .withPrincipalId("j")
+                                .withRole(DatabasePrincipalRole.USER)
+                                .withTenantId("xivetvt")
                                 .withPrincipalType(PrincipalType.USER),
                             new DatabasePrincipalAssignmentInner()
-                                .withPrincipalId("kyv")
-                                .withRole(DatabasePrincipalRole.USER)
-                                .withTenantId("anuzbpzkafkuw")
-                                .withPrincipalType(PrincipalType.GROUP),
+                                .withPrincipalId("fovasr")
+                                .withRole(DatabasePrincipalRole.VIEWER)
+                                .withTenantId("wbhsqfsub")
+                                .withPrincipalType(PrincipalType.APP),
                             new DatabasePrincipalAssignmentInner()
-                                .withPrincipalId("ahvljuaha")
+                                .withPrincipalId("rvnaenqpeh")
                                 .withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
-                                .withTenantId("c")
+                                .withTenantId("oygmift")
                                 .withPrincipalType(PrincipalType.GROUP)));
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalAssignmentListResult.class);
-        Assertions.assertEquals("cykvceo", model.value().get(0).principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.USER, model.value().get(0).role());
-        Assertions.assertEquals("lo", model.value().get(0).tenantId());
+        Assertions.assertEquals("dahzxctobg", model.value().get(0).principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, model.value().get(0).role());
+        Assertions.assertEquals("moizpos", model.value().get(0).tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, model.value().get(0).principalType());
     }
 }

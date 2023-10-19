@@ -18,8 +18,7 @@ public interface AssociationsInterfaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Association> listByTrafficController(String resourceGroupName, String trafficControllerName);
 
@@ -32,14 +31,13 @@ public interface AssociationsInterfaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Association> listByTrafficController(
         String resourceGroupName, String trafficControllerName, Context context);
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -48,13 +46,13 @@ public interface AssociationsInterfaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association along with {@link Response}.
+     * @return a Association along with {@link Response}.
      */
     Response<Association> getWithResponse(
         String resourceGroupName, String trafficControllerName, String associationName, Context context);
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -62,12 +60,12 @@ public interface AssociationsInterfaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association.
+     * @return a Association.
      */
     Association get(String resourceGroupName, String trafficControllerName, String associationName);
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -79,7 +77,7 @@ public interface AssociationsInterfaces {
     void delete(String resourceGroupName, String trafficControllerName, String associationName);
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -92,30 +90,30 @@ public interface AssociationsInterfaces {
     void delete(String resourceGroupName, String trafficControllerName, String associationName, Context context);
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association along with {@link Response}.
+     * @return a Association along with {@link Response}.
      */
     Association getById(String id);
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association along with {@link Response}.
+     * @return a Association along with {@link Response}.
      */
     Response<Association> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +123,7 @@ public interface AssociationsInterfaces {
     void deleteById(String id);
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

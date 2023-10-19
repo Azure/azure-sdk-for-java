@@ -119,6 +119,18 @@ public final class RedisConfiguration {
     private String authnotrequired;
 
     /*
+     * SubscriptionId of the storage account for persistence (aof/rdb) using ManagedIdentity.
+     */
+    @JsonProperty(value = "storage-subscription-id")
+    private String storageSubscriptionId;
+
+    /*
+     * Specifies whether AAD based authentication has been enabled or disabled for the cache
+     */
+    @JsonProperty(value = "aad-enabled")
+    private String aadEnabled;
+
+    /*
      * All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
      * etc.
@@ -420,6 +432,50 @@ public final class RedisConfiguration {
      */
     public RedisConfiguration withAuthnotrequired(String authnotrequired) {
         this.authnotrequired = authnotrequired;
+        return this;
+    }
+
+    /**
+     * Get the storageSubscriptionId property: SubscriptionId of the storage account for persistence (aof/rdb) using
+     * ManagedIdentity.
+     *
+     * @return the storageSubscriptionId value.
+     */
+    public String storageSubscriptionId() {
+        return this.storageSubscriptionId;
+    }
+
+    /**
+     * Set the storageSubscriptionId property: SubscriptionId of the storage account for persistence (aof/rdb) using
+     * ManagedIdentity.
+     *
+     * @param storageSubscriptionId the storageSubscriptionId value to set.
+     * @return the RedisConfiguration object itself.
+     */
+    public RedisConfiguration withStorageSubscriptionId(String storageSubscriptionId) {
+        this.storageSubscriptionId = storageSubscriptionId;
+        return this;
+    }
+
+    /**
+     * Get the aadEnabled property: Specifies whether AAD based authentication has been enabled or disabled for the
+     * cache.
+     *
+     * @return the aadEnabled value.
+     */
+    public String aadEnabled() {
+        return this.aadEnabled;
+    }
+
+    /**
+     * Set the aadEnabled property: Specifies whether AAD based authentication has been enabled or disabled for the
+     * cache.
+     *
+     * @param aadEnabled the aadEnabled value to set.
+     * @return the RedisConfiguration object itself.
+     */
+    public RedisConfiguration withAadEnabled(String aadEnabled) {
+        this.aadEnabled = aadEnabled;
         return this;
     }
 

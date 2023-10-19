@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.models.EnvironmentType;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for EnvironmentTypes Update. */
 public final class EnvironmentTypesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/EnvironmentTypes_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/EnvironmentTypes_Patch.json
      */
     /**
      * Sample code: EnvironmentTypes_Update.
@@ -21,7 +20,10 @@ public final class EnvironmentTypesUpdateSamples {
      */
     public static void environmentTypesUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         EnvironmentType resource =
-            manager.environmentTypes().getWithResponse("rg1", "Contoso", "DevTest", Context.NONE).getValue();
+            manager
+                .environmentTypes()
+                .getWithResponse("rg1", "Contoso", "DevTest", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("Owner", "superuser")).apply();
     }
 

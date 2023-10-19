@@ -71,12 +71,13 @@ The following application starters are provided by Spring Cloud Azure under the 
 | Name                                                 | Description                                                        |
 |------------------------------------------------------|--------------------------------------------------------------------|
 | spring-cloud-azure-starter                           | Core starter, including auto-configuration support                 |
-| spring-cloud-azure-starter-active-directory          | Starter for using Azure Active Directory with Spring Security      |
+| spring-cloud-azure-starter-active-directory          | Starter for using Microsoft Entra ID with Spring Security          |
 | spring-cloud-azure-starter-active-directory-b2c      | Starter for using Azure Active Directory B2C with Spring Security  |
 | spring-cloud-azure-starter-appconfiguration          | Starter for using Azure App Configuration                          |
 | spring-cloud-azure-starter-cosmos                    | Starter for using Azure Cosmos DB                                  |
 | spring-cloud-azure-starter-data-cosmos               | Starter for using Azure Cosmos DB and Spring Data Cosmos DB        |
 | spring-cloud-azure-starter-eventhubs                 | Starter for using Azure Event Hubs                                 |
+| spring-cloud-azure-starter-eventgrid                 | Starter for using Azure Event Grid                                 |
 | spring-cloud-azure-starter-integration-eventhubs     | Starter for using Azure Event Hubs and Spring Integration          |
 | spring-cloud-azure-starter-integration-servicebus    | Starter for using Azure Service Bus and Spring Integration         |
 | spring-cloud-azure-starter-integration-storage-queue | Starter for using Azure Storage Queue and Spring Integration       |
@@ -137,7 +138,7 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>4.7.0</version>
+            <version>4.11.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

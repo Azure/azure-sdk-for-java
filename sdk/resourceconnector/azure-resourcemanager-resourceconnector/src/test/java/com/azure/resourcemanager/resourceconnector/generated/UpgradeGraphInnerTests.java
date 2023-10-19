@@ -14,7 +14,7 @@ public final class UpgradeGraphInnerTests {
         UpgradeGraphInner model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"si\",\"name\":\"evcciqihnhun\",\"properties\":{\"applianceVersion\":\"jzrnf\",\"supportedVersions\":[{\"version\":\"spemvtzfk\"},{\"version\":\"bljofxqeof\"},{\"version\":\"qjhqjbas\"},{\"version\":\"mjqulngsn\"}]}}")
+                    "{\"id\":\"fsinzgvfcjrwzoxx\",\"name\":\"felluwfzitonpe\",\"properties\":{\"applianceVersion\":\"jkjlxofpdvhpfx\",\"supportedVersions\":[{\"metadata\":{\"catalogVersion\":{\"data\":{},\"name\":\"mayhuybbkpodepoo\",\"namespace\":\"nuvamiheogna\"}},\"version\":\"zxtheotusivyevcc\"}]}}")
                 .toObject(UpgradeGraphInner.class);
     }
 

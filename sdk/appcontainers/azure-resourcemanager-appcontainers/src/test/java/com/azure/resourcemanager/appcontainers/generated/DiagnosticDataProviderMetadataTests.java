@@ -9,38 +9,38 @@ import com.azure.resourcemanager.appcontainers.models.DiagnosticDataProviderMeta
 import com.azure.resourcemanager.appcontainers.models.DiagnosticDataProviderMetadataPropertyBagItem;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticDataProviderMetadataTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DiagnosticDataProviderMetadata model =
             BinaryData
                 .fromString(
-                    "{\"providerName\":\"kkudzp\",\"propertyBag\":[{\"name\":\"plmag\",\"value\":\"cyohpfkyrkdbd\"},{\"name\":\"ogsjkmnwqjno\",\"value\":\"iyhddvi\"}]}")
+                    "{\"providerName\":\"vazivjlfr\",\"propertyBag\":[{\"name\":\"ajlkatnw\",\"value\":\"iopid\"},{\"name\":\"qfkuvscxkdmli\",\"value\":\"vibrxkpmloazuruo\"},{\"name\":\"goorbteo\",\"value\":\"fhjxakvvjgs\"}]}")
                 .toObject(DiagnosticDataProviderMetadata.class);
-        Assertions.assertEquals("kkudzp", model.providerName());
-        Assertions.assertEquals("plmag", model.propertyBag().get(0).name());
-        Assertions.assertEquals("cyohpfkyrkdbd", model.propertyBag().get(0).value());
+        Assertions.assertEquals("vazivjlfr", model.providerName());
+        Assertions.assertEquals("ajlkatnw", model.propertyBag().get(0).name());
+        Assertions.assertEquals("iopid", model.propertyBag().get(0).value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DiagnosticDataProviderMetadata model =
             new DiagnosticDataProviderMetadata()
-                .withProviderName("kkudzp")
+                .withProviderName("vazivjlfr")
                 .withPropertyBag(
                     Arrays
                         .asList(
+                            new DiagnosticDataProviderMetadataPropertyBagItem().withName("ajlkatnw").withValue("iopid"),
                             new DiagnosticDataProviderMetadataPropertyBagItem()
-                                .withName("plmag")
-                                .withValue("cyohpfkyrkdbd"),
+                                .withName("qfkuvscxkdmli")
+                                .withValue("vibrxkpmloazuruo"),
                             new DiagnosticDataProviderMetadataPropertyBagItem()
-                                .withName("ogsjkmnwqjno")
-                                .withValue("iyhddvi")));
+                                .withName("goorbteo")
+                                .withValue("fhjxakvvjgs")));
         model = BinaryData.fromObject(model).toObject(DiagnosticDataProviderMetadata.class);
-        Assertions.assertEquals("kkudzp", model.providerName());
-        Assertions.assertEquals("plmag", model.propertyBag().get(0).name());
-        Assertions.assertEquals("cyohpfkyrkdbd", model.propertyBag().get(0).value());
+        Assertions.assertEquals("vazivjlfr", model.providerName());
+        Assertions.assertEquals("ajlkatnw", model.propertyBag().get(0).name());
+        Assertions.assertEquals("iopid", model.propertyBag().get(0).value());
     }
 }

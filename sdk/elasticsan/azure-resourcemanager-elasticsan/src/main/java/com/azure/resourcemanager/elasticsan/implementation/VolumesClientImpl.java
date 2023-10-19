@@ -64,12 +64,11 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ElasticSanManagement")
-    private interface VolumesService {
+    public interface VolumesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan"
-                + "/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
-        @ExpectedResponses({200, 202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
@@ -85,8 +84,7 @@ public final class VolumesClientImpl implements VolumesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan"
-                + "/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -103,8 +101,7 @@ public final class VolumesClientImpl implements VolumesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan"
-                + "/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -120,8 +117,7 @@ public final class VolumesClientImpl implements VolumesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan"
-                + "/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VolumeInner>> get(
@@ -137,8 +133,7 @@ public final class VolumesClientImpl implements VolumesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan"
-                + "/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VolumeList>> listByVolumeGroup(
@@ -381,7 +376,8 @@ public final class VolumesClientImpl implements VolumesClient {
         String volumeGroupName,
         String volumeName,
         VolumeInner parameters) {
-        return beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters)
+        return this
+            .beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters)
             .getSyncPoller();
     }
 
@@ -407,7 +403,8 @@ public final class VolumesClientImpl implements VolumesClient {
         String volumeName,
         VolumeInner parameters,
         Context context) {
-        return beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context)
+        return this
+            .beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context)
             .getSyncPoller();
     }
 
@@ -730,7 +727,8 @@ public final class VolumesClientImpl implements VolumesClient {
         String volumeGroupName,
         String volumeName,
         VolumeUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters)
             .getSyncPoller();
     }
 
@@ -756,7 +754,8 @@ public final class VolumesClientImpl implements VolumesClient {
         String volumeName,
         VolumeUpdate parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1038,7 +1037,7 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
-        return beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName).getSyncPoller();
     }
 
     /**
@@ -1057,7 +1056,8 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context) {
-        return beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context)
             .getSyncPoller();
     }
 

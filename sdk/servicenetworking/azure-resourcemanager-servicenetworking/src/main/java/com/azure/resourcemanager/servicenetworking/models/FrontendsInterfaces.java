@@ -18,8 +18,7 @@ public interface FrontendsInterfaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Frontend list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Frontend> listByTrafficController(String resourceGroupName, String trafficControllerName);
 
@@ -32,14 +31,13 @@ public interface FrontendsInterfaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Frontend list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Frontend> listByTrafficController(
         String resourceGroupName, String trafficControllerName, Context context);
 
     /**
-     * Get a Traffic Controller Frontend.
+     * Get a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -48,13 +46,13 @@ public interface FrontendsInterfaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Frontend along with {@link Response}.
+     * @return a Frontend along with {@link Response}.
      */
     Response<Frontend> getWithResponse(
         String resourceGroupName, String trafficControllerName, String frontendName, Context context);
 
     /**
-     * Get a Traffic Controller Frontend.
+     * Get a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -62,12 +60,12 @@ public interface FrontendsInterfaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Frontend.
+     * @return a Frontend.
      */
     Frontend get(String resourceGroupName, String trafficControllerName, String frontendName);
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -79,7 +77,7 @@ public interface FrontendsInterfaces {
     void delete(String resourceGroupName, String trafficControllerName, String frontendName);
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -92,30 +90,30 @@ public interface FrontendsInterfaces {
     void delete(String resourceGroupName, String trafficControllerName, String frontendName, Context context);
 
     /**
-     * Get a Traffic Controller Frontend.
+     * Get a Frontend.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Frontend along with {@link Response}.
+     * @return a Frontend along with {@link Response}.
      */
     Frontend getById(String id);
 
     /**
-     * Get a Traffic Controller Frontend.
+     * Get a Frontend.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Frontend along with {@link Response}.
+     * @return a Frontend along with {@link Response}.
      */
     Response<Frontend> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +123,7 @@ public interface FrontendsInterfaces {
     void deleteById(String id);
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

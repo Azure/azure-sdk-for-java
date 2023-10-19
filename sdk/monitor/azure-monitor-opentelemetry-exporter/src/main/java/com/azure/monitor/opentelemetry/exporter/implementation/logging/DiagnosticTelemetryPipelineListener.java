@@ -31,13 +31,15 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
     private static final AtomicBoolean friendlyExceptionThrown = new AtomicBoolean();
 
     private final OperationLogger operationLogger;
-    private final boolean suppressWarningsOnRetryableFailures;
+    private final boolean logRetryableFailures;
+    private final String retryableFailureSuffix;
 
     // e.g. "Sending telemetry to the ingestion service"
     public DiagnosticTelemetryPipelineListener(
-        String operation, boolean suppressWarningsOnRetryableFailures) {
+        String operation, boolean logRetryableFailures, String retryableFailureSuffix) {
         operationLogger = new OperationLogger(FOR_CLASS, operation);
-        this.suppressWarningsOnRetryableFailures = suppressWarningsOnRetryableFailures;
+        this.logRetryableFailures = logRetryableFailures;
+        this.retryableFailureSuffix = retryableFailureSuffix;
     }
 
     @Override
@@ -49,7 +51,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
                 break;
             case 206: // PARTIAL CONTENT, Breeze-specific: PARTIAL SUCCESS
             case 400: // breeze returns if json content is bad (e.g. missing required field)
-                Set<String> errors = getErrors(response.getBody());
+                Set<String> errors = response.getErrors();
                 if (!errors.isEmpty()) {
                     operationLogger.recordFailure(
                         "Received response code " + responseCode + " (" + String.join(", ", errors) + ")",
@@ -62,7 +64,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
                 break;
             case 401: // breeze returns if aad enabled and no authentication token provided
             case 403: // breeze returns if aad enabled or disabled (both cases) and
-                if (!suppressWarningsOnRetryableFailures) {
+                if (logRetryableFailures) {
                     operationLogger.recordFailure(
                         getErrorMessageFromCredentialRelatedResponse(responseCode, response.getBody()),
                         INGESTION_ERROR);
@@ -71,12 +73,12 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
             case 408: // REQUEST TIMEOUT
             case 429: // TOO MANY REQUESTS
             case 500: // INTERNAL SERVER ERROR
+            case 502: // BAD GATEWAY
             case 503: // SERVICE UNAVAILABLE
-                if (!suppressWarningsOnRetryableFailures) {
+            case 504: // GATEWAY TIMEOUT
+                if (logRetryableFailures) {
                     operationLogger.recordFailure(
-                        "Received response code "
-                            + responseCode
-                            + " (telemetry will be stored to disk and retried later)",
+                        "Received response code " + responseCode + retryableFailureSuffix,
                         INGESTION_ERROR);
                 }
                 break;
@@ -99,7 +101,12 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
     public void onException(TelemetryPipelineRequest request, String reason, Throwable throwable) {
         if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(
             throwable, request.getUrl().toString(), friendlyExceptionThrown, logger)) {
-            operationLogger.recordFailure(reason, throwable, INGESTION_ERROR);
+            if (logRetryableFailures) {
+                operationLogger.recordFailure(
+                    reason + retryableFailureSuffix,
+                    throwable,
+                    INGESTION_ERROR);
+            }
         }
     }
 
@@ -108,23 +115,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
         return CompletableResultCode.ofSuccess();
     }
 
-    private static Set<String> getErrors(String body) {
-        JsonNode jsonNode;
-        try {
-            jsonNode = new ObjectMapper().readTree(body);
-        } catch (JsonProcessingException e) {
-            // fallback to generic message
-            return singleton("Could not parse response");
-        }
-        List<JsonNode> errorNodes = new ArrayList<>();
-        jsonNode.get("errors").forEach(errorNodes::add);
-        return errorNodes.stream()
-            .map(errorNode -> errorNode.get("message").asText())
-            .filter(s -> !s.equals("Telemetry sampled out."))
-            .collect(Collectors.toSet());
-    }
-
-    private static String getErrorMessageFromCredentialRelatedResponse(
+    public static String getErrorMessageFromCredentialRelatedResponse(
         int responseCode, String responseBody) {
         JsonNode jsonNode;
         try {
@@ -143,6 +134,6 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
         jsonNode.get("errors").forEach(errors::add);
         return errors.get(0).get("message").asText()
             + action
-            + " (telemetry will be stored to disk and retried later)";
+            + " (telemetry will be stored to disk and retried)";
     }
 }

@@ -36,6 +36,12 @@ public final class RecognizeOptionsInternal {
     private String speechLanguage;
 
     /*
+     * Endpoint where the custom model was deployed.
+     */
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
+    private String speechRecognitionModelEndpointId;
+
+    /*
      * Defines configurations for DTMF.
      */
     @JsonProperty(value = "dtmfOptions")
@@ -130,6 +136,26 @@ public final class RecognizeOptionsInternal {
      */
     public RecognizeOptionsInternal setSpeechLanguage(String speechLanguage) {
         this.speechLanguage = speechLanguage;
+        return this;
+    }
+
+    /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
         return this;
     }
 

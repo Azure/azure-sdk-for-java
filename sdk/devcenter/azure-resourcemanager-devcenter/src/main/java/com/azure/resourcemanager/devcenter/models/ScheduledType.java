@@ -14,6 +14,15 @@ public final class ScheduledType extends ExpandableStringEnum<ScheduledType> {
     public static final ScheduledType STOP_DEV_BOX = fromString("StopDevBox");
 
     /**
+     * Creates a new instance of ScheduledType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScheduledType() {
+    }
+
+    /**
      * Creates or finds a ScheduledType from its string representation.
      *
      * @param name a name to look for.

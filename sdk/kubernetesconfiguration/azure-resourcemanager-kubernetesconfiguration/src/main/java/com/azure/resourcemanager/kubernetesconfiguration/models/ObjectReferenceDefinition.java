@@ -22,6 +22,10 @@ public final class ObjectReferenceDefinition {
     @JsonProperty(value = "namespace")
     private String namespace;
 
+    /** Creates an instance of ObjectReferenceDefinition class. */
+    public ObjectReferenceDefinition() {
+    }
+
     /**
      * Get the name property: Name of the object.
      *

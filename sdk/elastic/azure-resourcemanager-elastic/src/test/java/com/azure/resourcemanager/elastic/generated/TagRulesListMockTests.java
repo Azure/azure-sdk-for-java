@@ -33,7 +33,7 @@ public final class TagRulesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":false,\"filteringTags\":[]}},\"id\":\"ajdeyeamdphaga\",\"name\":\"pbuxwgipwhon\",\"type\":\"wkgshwa\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":true,\"filteringTags\":[]}},\"id\":\"eamdp\",\"name\":\"agalpbuxwgipwhon\",\"type\":\"wkgshwa\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class TagRulesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<MonitoringTagRules> response =
-            manager.tagRules().list("w", "fsj", com.azure.core.util.Context.NONE);
+            manager.tagRules().list("cwif", "jttgzf", com.azure.core.util.Context.NONE);
 
         Assertions
-            .assertEquals(ProvisioningState.CANCELED, response.iterator().next().properties().provisioningState());
+            .assertEquals(ProvisioningState.NOT_SPECIFIED, response.iterator().next().properties().provisioningState());
         Assertions.assertEquals(false, response.iterator().next().properties().logRules().sendAadLogs());
         Assertions.assertEquals(true, response.iterator().next().properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(false, response.iterator().next().properties().logRules().sendActivityLogs());
+        Assertions.assertEquals(true, response.iterator().next().properties().logRules().sendActivityLogs());
     }
 }

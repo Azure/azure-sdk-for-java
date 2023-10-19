@@ -11,10 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
+import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentAuthToken;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
-import com.azure.resourcemanager.appcontainers.models.EnvironmentSkuProperties;
+import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import java.util.Collections;
@@ -52,8 +54,8 @@ public final class ManagedEnvironmentImpl
         }
     }
 
-    public EnvironmentSkuProperties sku() {
-        return this.innerModel().sku();
+    public String kind() {
+        return this.innerModel().kind();
     }
 
     public SystemData systemData() {
@@ -111,6 +113,22 @@ public final class ManagedEnvironmentImpl
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public KedaConfiguration kedaConfiguration() {
+        return this.innerModel().kedaConfiguration();
+    }
+
+    public DaprConfiguration daprConfiguration() {
+        return this.innerModel().daprConfiguration();
+    }
+
+    public String infrastructureResourceGroup() {
+        return this.innerModel().infrastructureResourceGroup();
+    }
+
+    public ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication() {
+        return this.innerModel().peerAuthentication();
     }
 
     public Region region() {
@@ -176,7 +194,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
+                .update(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -185,7 +203,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), context);
+                .update(resourceGroupName, environmentName, this.innerModel(), context);
         return this;
     }
 
@@ -243,8 +261,8 @@ public final class ManagedEnvironmentImpl
         return this;
     }
 
-    public ManagedEnvironmentImpl withSku(EnvironmentSkuProperties sku) {
-        this.innerModel().withSku(sku);
+    public ManagedEnvironmentImpl withKind(String kind) {
+        this.innerModel().withKind(kind);
         return this;
     }
 
@@ -280,6 +298,27 @@ public final class ManagedEnvironmentImpl
 
     public ManagedEnvironmentImpl withWorkloadProfiles(List<WorkloadProfile> workloadProfiles) {
         this.innerModel().withWorkloadProfiles(workloadProfiles);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withKedaConfiguration(KedaConfiguration kedaConfiguration) {
+        this.innerModel().withKedaConfiguration(kedaConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withDaprConfiguration(DaprConfiguration daprConfiguration) {
+        this.innerModel().withDaprConfiguration(daprConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withInfrastructureResourceGroup(String infrastructureResourceGroup) {
+        this.innerModel().withInfrastructureResourceGroup(infrastructureResourceGroup);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withPeerAuthentication(
+        ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication) {
+        this.innerModel().withPeerAuthentication(peerAuthentication);
         return this;
     }
 }

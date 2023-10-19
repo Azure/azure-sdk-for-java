@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperatorScopeType. */
+/** Scope at which the operator will be installed. */
 public final class OperatorScopeType extends ExpandableStringEnum<OperatorScopeType> {
     /** Static value cluster for OperatorScopeType. */
     public static final OperatorScopeType CLUSTER = fromString("cluster");
 
     /** Static value namespace for OperatorScopeType. */
     public static final OperatorScopeType NAMESPACE = fromString("namespace");
+
+    /**
+     * Creates a new instance of OperatorScopeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperatorScopeType() {
+    }
 
     /**
      * Creates or finds a OperatorScopeType from its string representation.
@@ -27,7 +36,11 @@ public final class OperatorScopeType extends ExpandableStringEnum<OperatorScopeT
         return fromString(name, OperatorScopeType.class);
     }
 
-    /** @return known OperatorScopeType values. */
+    /**
+     * Gets known OperatorScopeType values.
+     *
+     * @return known OperatorScopeType values.
+     */
     public static Collection<OperatorScopeType> values() {
         return values(OperatorScopeType.class);
     }

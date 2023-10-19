@@ -71,11 +71,10 @@ public final class PrivateZonesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "PrivateDnsManagement")
-    private interface PrivateZonesService {
+    public interface PrivateZonesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/privateDnsZones/{privateZoneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -92,8 +91,7 @@ public final class PrivateZonesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/privateDnsZones/{privateZoneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -109,8 +107,7 @@ public final class PrivateZonesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/privateDnsZones/{privateZoneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -125,8 +122,7 @@ public final class PrivateZonesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/privateDnsZones/{privateZoneName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateZoneInner>> getByResourceGroup(
@@ -152,8 +148,7 @@ public final class PrivateZonesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/privateDnsZones")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateZoneListResult>> listByResourceGroup(
@@ -357,6 +352,34 @@ public final class PrivateZonesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes a Private DNS zone.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<PrivateZoneInner>, PrivateZoneInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, privateZoneName, parameters, ifMatch, ifNoneMatch);
+        return this
+            .client
+            .<PrivateZoneInner, PrivateZoneInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateZoneInner.class,
+                PrivateZoneInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
+     * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
      *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
@@ -391,10 +414,6 @@ public final class PrivateZonesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
-     *     zone. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -402,12 +421,11 @@ public final class PrivateZonesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateZoneInner>, PrivateZoneInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        PrivateZoneInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch, ifNoneMatch)
+        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch, ifNoneMatch)
             .getSyncPoller();
     }
 
@@ -435,7 +453,8 @@ public final class PrivateZonesClientImpl
         String ifMatch,
         String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch, ifNoneMatch, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch, ifNoneMatch, context)
             .getSyncPoller();
     }
 
@@ -514,31 +533,6 @@ public final class PrivateZonesClientImpl
         return beginCreateOrUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch, ifNoneMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
-     *     zone. Other values will be ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Private DNS zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateZoneInner createOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        PrivateZoneInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
-        return createOrUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch, ifNoneMatch).block();
     }
 
     /**
@@ -742,6 +736,33 @@ public final class PrivateZonesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes a Private DNS zone.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<PrivateZoneInner>, PrivateZoneInner> beginUpdateAsync(
+        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters) {
+        final String ifMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, privateZoneName, parameters, ifMatch);
+        return this
+            .client
+            .<PrivateZoneInner, PrivateZoneInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateZoneInner.class,
+                PrivateZoneInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
+     * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
      *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
@@ -772,8 +793,6 @@ public final class PrivateZonesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -781,8 +800,9 @@ public final class PrivateZonesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateZoneInner>, PrivateZoneInner> beginUpdate(
-        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters, String ifMatch) {
-        return beginUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch).getSyncPoller();
+        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters) {
+        final String ifMatch = null;
+        return this.beginUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch).getSyncPoller();
     }
 
     /**
@@ -806,7 +826,7 @@ public final class PrivateZonesClientImpl
         PrivateZoneInner parameters,
         String ifMatch,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch, context).getSyncPoller();
     }
 
     /**
@@ -874,25 +894,6 @@ public final class PrivateZonesClientImpl
         return beginUpdateAsync(resourceGroupName, privateZoneName, parameters, ifMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Private DNS zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateZoneInner update(
-        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters, String ifMatch) {
-        return updateAsync(resourceGroupName, privateZoneName, parameters, ifMatch).block();
     }
 
     /**
@@ -1069,6 +1070,27 @@ public final class PrivateZonesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateZoneName) {
+        final String ifMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateZoneName, ifMatch);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
+     * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the
      *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @param context The context to associate with this operation.
@@ -1094,17 +1116,15 @@ public final class PrivateZonesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateZoneName, String ifMatch) {
-        return beginDeleteAsync(resourceGroupName, privateZoneName, ifMatch).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateZoneName) {
+        final String ifMatch = null;
+        return this.beginDeleteAsync(resourceGroupName, privateZoneName, ifMatch).getSyncPoller();
     }
 
     /**
@@ -1124,7 +1144,7 @@ public final class PrivateZonesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateZoneName, String ifMatch, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateZoneName, ifMatch, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateZoneName, ifMatch, context).getSyncPoller();
     }
 
     /**
@@ -1185,23 +1205,6 @@ public final class PrivateZonesClientImpl
         return beginDeleteAsync(resourceGroupName, privateZoneName, ifMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
-     * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String privateZoneName, String ifMatch) {
-        deleteAsync(resourceGroupName, privateZoneName, ifMatch).block();
     }
 
     /**
@@ -1359,22 +1362,6 @@ public final class PrivateZonesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Private DNS zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateZoneInner getByResourceGroup(String resourceGroupName, String privateZoneName) {
-        return getByResourceGroupAsync(resourceGroupName, privateZoneName).block();
-    }
-
-    /**
-     * Gets a Private DNS zone. Retrieves the zone properties, but not the virtual networks links or the record sets
-     * within the zone.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1385,6 +1372,22 @@ public final class PrivateZonesClientImpl
     public Response<PrivateZoneInner> getByResourceGroupWithResponse(
         String resourceGroupName, String privateZoneName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, privateZoneName, context).block();
+    }
+
+    /**
+     * Gets a Private DNS zone. Retrieves the zone properties, but not the virtual networks links or the record sets
+     * within the zone.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Private DNS zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateZoneInner getByResourceGroup(String resourceGroupName, String privateZoneName) {
+        return getByResourceGroupWithResponse(resourceGroupName, privateZoneName, Context.NONE).getValue();
     }
 
     /**

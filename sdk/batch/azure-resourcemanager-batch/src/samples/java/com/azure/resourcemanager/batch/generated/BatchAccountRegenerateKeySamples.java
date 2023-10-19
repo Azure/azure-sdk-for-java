@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.AccountKeyType;
 import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameters;
 
 /** Samples for BatchAccount RegenerateKey. */
 public final class BatchAccountRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/BatchAccountRegenerateKey.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountRegenerateKey.json
      */
     /**
      * Sample code: BatchAccountRegenerateKey.
@@ -25,6 +24,6 @@ public final class BatchAccountRegenerateKeySamples {
                 "default-azurebatch-japaneast",
                 "sampleacct",
                 new BatchAccountRegenerateKeyParameters().withKeyName(AccountKeyType.PRIMARY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

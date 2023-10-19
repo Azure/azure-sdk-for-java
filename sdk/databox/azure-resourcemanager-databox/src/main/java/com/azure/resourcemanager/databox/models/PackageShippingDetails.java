@@ -7,9 +7,15 @@ package com.azure.resourcemanager.databox.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Shipping details. */
+/** package shipping details. */
 @Immutable
 public final class PackageShippingDetails {
+    /*
+     * Url where shipment can be tracked.
+     */
+    @JsonProperty(value = "trackingUrl", access = JsonProperty.Access.WRITE_ONLY)
+    private String trackingUrl;
+
     /*
      * Name of the carrier.
      */
@@ -22,14 +28,17 @@ public final class PackageShippingDetails {
     @JsonProperty(value = "trackingId", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingId;
 
-    /*
-     * Url where shipment can be tracked.
-     */
-    @JsonProperty(value = "trackingUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String trackingUrl;
-
     /** Creates an instance of PackageShippingDetails class. */
     public PackageShippingDetails() {
+    }
+
+    /**
+     * Get the trackingUrl property: Url where shipment can be tracked.
+     *
+     * @return the trackingUrl value.
+     */
+    public String trackingUrl() {
+        return this.trackingUrl;
     }
 
     /**
@@ -48,15 +57,6 @@ public final class PackageShippingDetails {
      */
     public String trackingId() {
         return this.trackingId;
-    }
-
-    /**
-     * Get the trackingUrl property: Url where shipment can be tracked.
-     *
-     * @return the trackingUrl value.
-     */
-    public String trackingUrl() {
-        return this.trackingUrl;
     }
 
     /**

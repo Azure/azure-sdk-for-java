@@ -58,13 +58,9 @@ import java.util.stream.Collectors;
 
 /** Entry point to FrontDoorManager. FrontDoor Client. */
 public final class FrontDoorManager {
-    private NetworkExperimentProfiles networkExperimentProfiles;
+    private Policies policies;
 
-    private PreconfiguredEndpoints preconfiguredEndpoints;
-
-    private Experiments experiments;
-
-    private Reports reports;
+    private ManagedRuleSets managedRuleSets;
 
     private FrontDoorNameAvailabilities frontDoorNameAvailabilities;
 
@@ -78,9 +74,13 @@ public final class FrontDoorManager {
 
     private RulesEngines rulesEngines;
 
-    private Policies policies;
+    private NetworkExperimentProfiles networkExperimentProfiles;
 
-    private ManagedRuleSets managedRuleSets;
+    private PreconfiguredEndpoints preconfiguredEndpoints;
+
+    private Experiments experiments;
+
+    private Reports reports;
 
     private final FrontDoorManagementClient clientObject;
 
@@ -247,7 +247,7 @@ public final class FrontDoorManager {
                 .append("-")
                 .append("com.azure.resourcemanager.frontdoor")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -305,53 +305,27 @@ public final class FrontDoorManager {
     }
 
     /**
-     * Gets the resource collection API of NetworkExperimentProfiles. It manages Profile.
+     * Gets the resource collection API of Policies. It manages WebApplicationFirewallPolicy.
      *
-     * @return Resource collection API of NetworkExperimentProfiles.
+     * @return Resource collection API of Policies.
      */
-    public NetworkExperimentProfiles networkExperimentProfiles() {
-        if (this.networkExperimentProfiles == null) {
-            this.networkExperimentProfiles =
-                new NetworkExperimentProfilesImpl(clientObject.getNetworkExperimentProfiles(), this);
+    public Policies policies() {
+        if (this.policies == null) {
+            this.policies = new PoliciesImpl(clientObject.getPolicies(), this);
         }
-        return networkExperimentProfiles;
+        return policies;
     }
 
     /**
-     * Gets the resource collection API of PreconfiguredEndpoints.
+     * Gets the resource collection API of ManagedRuleSets.
      *
-     * @return Resource collection API of PreconfiguredEndpoints.
+     * @return Resource collection API of ManagedRuleSets.
      */
-    public PreconfiguredEndpoints preconfiguredEndpoints() {
-        if (this.preconfiguredEndpoints == null) {
-            this.preconfiguredEndpoints =
-                new PreconfiguredEndpointsImpl(clientObject.getPreconfiguredEndpoints(), this);
+    public ManagedRuleSets managedRuleSets() {
+        if (this.managedRuleSets == null) {
+            this.managedRuleSets = new ManagedRuleSetsImpl(clientObject.getManagedRuleSets(), this);
         }
-        return preconfiguredEndpoints;
-    }
-
-    /**
-     * Gets the resource collection API of Experiments. It manages Experiment.
-     *
-     * @return Resource collection API of Experiments.
-     */
-    public Experiments experiments() {
-        if (this.experiments == null) {
-            this.experiments = new ExperimentsImpl(clientObject.getExperiments(), this);
-        }
-        return experiments;
-    }
-
-    /**
-     * Gets the resource collection API of Reports.
-     *
-     * @return Resource collection API of Reports.
-     */
-    public Reports reports() {
-        if (this.reports == null) {
-            this.reports = new ReportsImpl(clientObject.getReports(), this);
-        }
-        return reports;
+        return managedRuleSets;
     }
 
     /**
@@ -430,27 +404,53 @@ public final class FrontDoorManager {
     }
 
     /**
-     * Gets the resource collection API of Policies. It manages WebApplicationFirewallPolicy.
+     * Gets the resource collection API of NetworkExperimentProfiles. It manages Profile.
      *
-     * @return Resource collection API of Policies.
+     * @return Resource collection API of NetworkExperimentProfiles.
      */
-    public Policies policies() {
-        if (this.policies == null) {
-            this.policies = new PoliciesImpl(clientObject.getPolicies(), this);
+    public NetworkExperimentProfiles networkExperimentProfiles() {
+        if (this.networkExperimentProfiles == null) {
+            this.networkExperimentProfiles =
+                new NetworkExperimentProfilesImpl(clientObject.getNetworkExperimentProfiles(), this);
         }
-        return policies;
+        return networkExperimentProfiles;
     }
 
     /**
-     * Gets the resource collection API of ManagedRuleSets.
+     * Gets the resource collection API of PreconfiguredEndpoints.
      *
-     * @return Resource collection API of ManagedRuleSets.
+     * @return Resource collection API of PreconfiguredEndpoints.
      */
-    public ManagedRuleSets managedRuleSets() {
-        if (this.managedRuleSets == null) {
-            this.managedRuleSets = new ManagedRuleSetsImpl(clientObject.getManagedRuleSets(), this);
+    public PreconfiguredEndpoints preconfiguredEndpoints() {
+        if (this.preconfiguredEndpoints == null) {
+            this.preconfiguredEndpoints =
+                new PreconfiguredEndpointsImpl(clientObject.getPreconfiguredEndpoints(), this);
         }
-        return managedRuleSets;
+        return preconfiguredEndpoints;
+    }
+
+    /**
+     * Gets the resource collection API of Experiments. It manages Experiment.
+     *
+     * @return Resource collection API of Experiments.
+     */
+    public Experiments experiments() {
+        if (this.experiments == null) {
+            this.experiments = new ExperimentsImpl(clientObject.getExperiments(), this);
+        }
+        return experiments;
+    }
+
+    /**
+     * Gets the resource collection API of Reports.
+     *
+     * @return Resource collection API of Reports.
+     */
+    public Reports reports() {
+        if (this.reports == null) {
+            this.reports = new ReportsImpl(clientObject.getReports(), this);
+        }
+        return reports;
     }
 
     /**

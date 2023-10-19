@@ -36,9 +36,11 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devcenter.fluent.NetworkConnectionsClient;
 import com.azure.resourcemanager.devcenter.fluent.models.HealthCheckStatusDetailsInner;
 import com.azure.resourcemanager.devcenter.fluent.models.NetworkConnectionInner;
+import com.azure.resourcemanager.devcenter.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatusDetailsListResult;
 import com.azure.resourcemanager.devcenter.models.NetworkConnectionListResult;
 import com.azure.resourcemanager.devcenter.models.NetworkConnectionUpdate;
+import com.azure.resourcemanager.devcenter.models.OutboundEnvironmentEndpointCollection;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -83,8 +85,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/networkConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkConnectionListResult>> listByResourceGroup(
@@ -98,8 +99,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/networkConnections/{networkConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkConnectionInner>> getByResourceGroup(
@@ -113,8 +113,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/networkConnections/{networkConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -129,8 +128,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/networkConnections/{networkConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -145,8 +143,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/networkConnections/{networkConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -160,8 +157,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/networkConnections/{networkConnectionName}/healthChecks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/healthChecks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HealthCheckStatusDetailsListResult>> listHealthDetails(
@@ -176,8 +172,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/networkConnections/{networkConnectionName}/healthChecks/latest")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/healthChecks/latest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HealthCheckStatusDetailsInner>> getHealthDetails(
@@ -191,8 +186,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/networkConnections/{networkConnectionName}/runHealthChecks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/runHealthChecks")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> runHealthChecks(
@@ -200,6 +194,21 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkConnectionName") String networkConnectionName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/networkConnections/{networkConnectionName}/outboundNetworkDependenciesEndpoints")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpoints(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("$top") Integer top,
             @PathParam("networkConnectionName") String networkConnectionName,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -229,6 +238,16 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HealthCheckStatusDetailsListResult>> listHealthDetailsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpointsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -919,7 +938,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String networkConnectionName, NetworkConnectionInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkConnectionName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, networkConnectionName, body).getSyncPoller();
     }
 
     /**
@@ -937,7 +956,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String networkConnectionName, NetworkConnectionInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkConnectionName, body, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, networkConnectionName, body, context).getSyncPoller();
     }
 
     /**
@@ -1191,7 +1210,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdate(
         String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body) {
-        return beginUpdateAsync(resourceGroupName, networkConnectionName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, networkConnectionName, body).getSyncPoller();
     }
 
     /**
@@ -1209,7 +1228,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdate(
         String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body, Context context) {
-        return beginUpdateAsync(resourceGroupName, networkConnectionName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, networkConnectionName, body, context).getSyncPoller();
     }
 
     /**
@@ -1436,7 +1455,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkConnectionName) {
-        return beginDeleteAsync(resourceGroupName, networkConnectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, networkConnectionName).getSyncPoller();
     }
 
     /**
@@ -1453,7 +1472,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkConnectionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, networkConnectionName, context).getSyncPoller();
     }
 
     /**
@@ -2035,7 +2054,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(
         String resourceGroupName, String networkConnectionName) {
-        return beginRunHealthChecksAsync(resourceGroupName, networkConnectionName).getSyncPoller();
+        return this.beginRunHealthChecksAsync(resourceGroupName, networkConnectionName).getSyncPoller();
     }
 
     /**
@@ -2053,7 +2072,7 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(
         String resourceGroupName, String networkConnectionName, Context context) {
-        return beginRunHealthChecksAsync(resourceGroupName, networkConnectionName, context).getSyncPoller();
+        return this.beginRunHealthChecksAsync(resourceGroupName, networkConnectionName, context).getSyncPoller();
     }
 
     /**
@@ -2122,6 +2141,234 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void runHealthChecks(String resourceGroupName, String networkConnectionName, Context context) {
         runHealthChecksAsync(resourceGroupName, networkConnectionName, context).block();
+    }
+
+    /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
+        listOutboundNetworkDependenciesEndpointsSinglePageAsync(
+            String resourceGroupName, String networkConnectionName, Integer top) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkConnectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkConnectionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listOutboundNetworkDependenciesEndpoints(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            top,
+                            networkConnectionName,
+                            accept,
+                            context))
+            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
+        listOutboundNetworkDependenciesEndpointsSinglePageAsync(
+            String resourceGroupName, String networkConnectionName, Integer top, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkConnectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkConnectionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listOutboundNetworkDependenciesEndpoints(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                top,
+                networkConnectionName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
+        String resourceGroupName, String networkConnectionName, Integer top) {
+        return new PagedFlux<>(
+            () ->
+                listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, networkConnectionName, top),
+            nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
+        String resourceGroupName, String networkConnectionName) {
+        final Integer top = null;
+        return new PagedFlux<>(
+            () ->
+                listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, networkConnectionName, top),
+            nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
+        String resourceGroupName, String networkConnectionName, Integer top, Context context) {
+        return new PagedFlux<>(
+            () ->
+                listOutboundNetworkDependenciesEndpointsSinglePageAsync(
+                    resourceGroupName, networkConnectionName, top, context),
+            nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String networkConnectionName) {
+        final Integer top = null;
+        return new PagedIterable<>(
+            listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, networkConnectionName, top));
+    }
+
+    /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String networkConnectionName, Integer top, Context context) {
+        return new PagedIterable<>(
+            listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, networkConnectionName, top, context));
     }
 
     /**
@@ -2343,6 +2590,87 @@ public final class NetworkConnectionsClientImpl implements NetworkConnectionsCli
         context = this.client.mergeContext(context);
         return service
             .listHealthDetailsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
+        listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listOutboundNetworkDependenciesEndpointsNext(
+                            nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
+        listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listOutboundNetworkDependenciesEndpointsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

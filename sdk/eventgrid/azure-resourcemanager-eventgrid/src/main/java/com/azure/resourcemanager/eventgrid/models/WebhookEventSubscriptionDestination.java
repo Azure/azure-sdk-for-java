@@ -22,6 +22,10 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
     @JsonProperty(value = "properties")
     private WebhookEventSubscriptionDestinationProperties innerProperties;
 
+    /** Creates an instance of WebhookEventSubscriptionDestination class. */
+    public WebhookEventSubscriptionDestination() {
+    }
+
     /**
      * Get the innerProperties property: WebHook Properties of the event subscription destination.
      *
@@ -183,6 +187,29 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
             this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
         }
         this.innerProperties().withDeliveryAttributeMappings(deliveryAttributeMappings);
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version that should be supported by webhook endpoint.
+     *
+     * @return the minimumTlsVersionAllowed value.
+     */
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersionAllowed();
+    }
+
+    /**
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version that should be supported by webhook endpoint.
+     *
+     * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
+     * @return the WebhookEventSubscriptionDestination object itself.
+     */
+    public WebhookEventSubscriptionDestination withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
         return this;
     }
 

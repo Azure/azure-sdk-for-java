@@ -56,6 +56,8 @@ public final class ApplicationGroupsDeleteByResourceGroupWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.applicationGroups().deleteByResourceGroupWithResponse("u", "rj", com.azure.core.util.Context.NONE);
+        manager
+            .applicationGroups()
+            .deleteByResourceGroupWithResponse("kxxpvbrd", "jmzsyzfh", com.azure.core.util.Context.NONE);
     }
 }

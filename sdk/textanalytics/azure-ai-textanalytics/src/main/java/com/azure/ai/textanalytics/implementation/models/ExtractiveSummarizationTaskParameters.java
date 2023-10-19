@@ -4,6 +4,7 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,7 +21,7 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      * The sorting criteria to use for the results of Extractive Summarization.
      */
     @JsonProperty(value = "sortBy")
-    private ExtractiveSummarizationSortingCriteria sortBy;
+    private ExtractiveSummarySentencesOrder sortBy;
 
     /*
      * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
@@ -57,7 +58,7 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      *
      * @return the sortBy value.
      */
-    public ExtractiveSummarizationSortingCriteria getSortBy() {
+    public ExtractiveSummarySentencesOrder getSortBy() {
         return this.sortBy;
     }
 
@@ -67,7 +68,7 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
      * @param sortBy the sortBy value to set.
      * @return the ExtractiveSummarizationTaskParameters object itself.
      */
-    public ExtractiveSummarizationTaskParameters setSortBy(ExtractiveSummarizationSortingCriteria sortBy) {
+    public ExtractiveSummarizationTaskParameters setSortBy(ExtractiveSummarySentencesOrder sortBy) {
         this.sortBy = sortBy;
         return this;
     }

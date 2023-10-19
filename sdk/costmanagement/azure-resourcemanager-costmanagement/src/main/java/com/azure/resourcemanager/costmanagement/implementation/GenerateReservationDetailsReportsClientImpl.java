@@ -64,8 +64,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     public interface GenerateReservationDetailsReportsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement"
-                + "/generateReservationDetailsReport")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/generateReservationDetailsReport")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> byBillingAccountId(
@@ -79,8 +78,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}"
-                + "/providers/Microsoft.CostManagement/generateReservationDetailsReport")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/generateReservationDetailsReport")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> byBillingProfileId(
@@ -97,7 +95,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -146,7 +144,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -193,7 +191,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -221,7 +219,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -247,7 +245,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -266,7 +264,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -286,7 +284,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -307,7 +305,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -329,7 +327,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -347,7 +345,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
+     * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
      *
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
@@ -368,7 +366,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
@@ -424,7 +422,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
@@ -478,7 +476,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
@@ -508,7 +506,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
@@ -536,7 +534,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
@@ -559,7 +557,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
@@ -583,7 +581,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
@@ -606,7 +604,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
@@ -630,7 +628,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
@@ -651,7 +649,7 @@ public final class GenerateReservationDetailsReportsClientImpl implements Genera
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
-     * https://docs.microsoft.com/en-us/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
+     * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
      *
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.

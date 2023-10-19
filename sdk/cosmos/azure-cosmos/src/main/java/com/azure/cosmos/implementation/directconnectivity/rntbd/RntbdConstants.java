@@ -901,18 +901,6 @@ public final class RntbdConstants {
         }
     }
 
-    public enum RntbdPriorityLevel {
-        High((byte) 0x01),
-        Low((byte) 0x02);
-        private final byte id;
-
-        RntbdPriorityLevel(final byte id) {
-            this.id = id;
-        }
-        public byte id() {
-            return this.id;
-        }
-    }
     interface RntbdHeader {
 
         boolean isRequired();

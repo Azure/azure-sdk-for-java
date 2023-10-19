@@ -77,6 +77,10 @@ public final class TopicTypeInfoImpl implements TopicTypeInfo {
         }
     }
 
+    public Boolean areRegionalAndGlobalSourcesSupported() {
+        return this.innerModel().areRegionalAndGlobalSourcesSupported();
+    }
+
     public TopicTypeInfoInner innerModel() {
         return this.innerObject;
     }

@@ -55,6 +55,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String agentPoolName1 = generateRandomResourceName("ap1", 10);
         String agentPoolName2 = generateRandomResourceName("ap2", 10);
 
+        String agentPoolResourceGroupName = generateRandomResourceName("pool", 15);
+
         /*
         KubeletDiskType requires registering following preview feature:
             azure.features().register("Microsoft.ContainerService", "KubeletDisk");
@@ -65,7 +67,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             containerServiceManager
                 .kubernetesClusters()
                 .define(aksName)
-                .withRegion(Region.US_CENTRAL)
+                .withRegion(Region.US_WEST2)
                 .withExistingResourceGroup(rgName)
                 .withDefaultVersion()
                 .withRootUsername("testaks")
@@ -88,12 +90,16 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                     .attach()
                 .withDnsPrefix("mp1" + dnsPrefix)
                 .withTag("tag1", "value1")
+                .withAgentPoolResourceGroup(agentPoolResourceGroupName)
                 .create(context);
 
         Assertions.assertNotNull(kubernetesCluster.id());
-        Assertions.assertEquals(Region.US_CENTRAL, kubernetesCluster.region());
+        Assertions.assertEquals(Region.US_WEST2, kubernetesCluster.region());
         Assertions.assertEquals("testaks", kubernetesCluster.linuxRootUsername());
         Assertions.assertEquals(2, kubernetesCluster.agentPools().size());
+        Assertions.assertEquals(agentPoolResourceGroupName, kubernetesCluster.agentPoolResourceGroup());
+
+        Assertions.assertEquals(agentPoolResourceGroupName, resourceManager.resourceGroups().getByName(agentPoolResourceGroupName).name());
 
         KubernetesClusterAgentPool agentPool = kubernetesCluster.agentPools().get(agentPoolName);
         Assertions.assertNotNull(agentPool);
@@ -210,7 +216,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         // create cluster
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
-            .withRegion(Region.US_CENTRAL)
+            .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withSystemAssignedManagedServiceIdentity()
@@ -299,7 +305,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         // create cluster
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
-            .withRegion(Region.US_CENTRAL)
+            .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withRootUsername("testaks")
@@ -354,7 +360,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         // create cluster
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
-            .withRegion(Region.US_CENTRAL)
+            .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withRootUsername("testaks")
@@ -438,7 +444,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         // create cluster
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
-            .withRegion(Region.US_CENTRAL)
+            .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withRootUsername("testaks")
@@ -485,7 +491,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         // create cluster
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
-            .withRegion(Region.US_CENTRAL)
+            .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withRootUsername("testaks")

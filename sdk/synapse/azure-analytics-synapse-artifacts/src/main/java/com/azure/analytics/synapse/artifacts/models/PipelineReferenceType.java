@@ -14,6 +14,14 @@ public final class PipelineReferenceType extends ExpandableStringEnum<PipelineRe
     public static final PipelineReferenceType PIPELINE_REFERENCE = fromString("PipelineReference");
 
     /**
+     * Creates a new instance of PipelineReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PipelineReferenceType() {}
+
+    /**
      * Creates or finds a PipelineReferenceType from its string representation.
      *
      * @param name a name to look for.

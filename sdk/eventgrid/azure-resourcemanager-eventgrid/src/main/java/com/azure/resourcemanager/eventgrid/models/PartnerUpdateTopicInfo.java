@@ -16,6 +16,10 @@ public final class PartnerUpdateTopicInfo {
     @JsonProperty(value = "eventTypeInfo")
     private EventTypeInfo eventTypeInfo;
 
+    /** Creates an instance of PartnerUpdateTopicInfo class. */
+    public PartnerUpdateTopicInfo() {
+    }
+
     /**
      * Get the eventTypeInfo property: Event type info for the partner topic.
      *

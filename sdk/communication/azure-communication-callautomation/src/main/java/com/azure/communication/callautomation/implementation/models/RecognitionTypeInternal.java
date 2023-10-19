@@ -16,9 +16,6 @@ public final class RecognitionTypeInternal extends ExpandableStringEnum<Recognit
     /** Static value speech for RecognitionTypeInternal. */
     public static final RecognitionTypeInternal SPEECH = fromString("speech");
 
-    /** Static value speechOrDtmf for RecognitionTypeInternal. */
-    public static final RecognitionTypeInternal SPEECH_OR_DTMF = fromString("speechOrDtmf");
-
     /** Static value choices for RecognitionTypeInternal. */
     public static final RecognitionTypeInternal CHOICES = fromString("choices");
 

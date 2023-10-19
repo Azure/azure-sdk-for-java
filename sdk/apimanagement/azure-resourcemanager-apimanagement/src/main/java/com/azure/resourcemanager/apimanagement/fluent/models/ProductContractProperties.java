@@ -19,6 +19,10 @@ public final class ProductContractProperties extends ProductEntityBaseParameters
     @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
+    /** Creates an instance of ProductContractProperties class. */
+    public ProductContractProperties() {
+    }
+
     /**
      * Get the displayName property: Product name.
      *

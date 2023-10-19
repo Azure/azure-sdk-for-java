@@ -86,15 +86,6 @@ public final class ContainerAppsImpl implements ContainerApps {
         this.serviceClient().delete(resourceGroupName, containerAppName, context);
     }
 
-    public void update(String resourceGroupName, String containerAppName, ContainerAppInner containerAppEnvelope) {
-        this.serviceClient().update(resourceGroupName, containerAppName, containerAppEnvelope);
-    }
-
-    public void update(
-        String resourceGroupName, String containerAppName, ContainerAppInner containerAppEnvelope, Context context) {
-        this.serviceClient().update(resourceGroupName, containerAppName, containerAppEnvelope, context);
-    }
-
     public Response<CustomHostnameAnalysisResult> listCustomHostnameAnalysisWithResponse(
         String resourceGroupName, String containerAppName, String customHostname, Context context) {
         Response<CustomHostnameAnalysisResultInner> inner =
@@ -165,6 +156,42 @@ public final class ContainerAppsImpl implements ContainerApps {
         ContainerAppAuthTokenInner inner = this.serviceClient().getAuthToken(resourceGroupName, containerAppName);
         if (inner != null) {
             return new ContainerAppAuthTokenImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ContainerApp start(String resourceGroupName, String containerAppName) {
+        ContainerAppInner inner = this.serviceClient().start(resourceGroupName, containerAppName);
+        if (inner != null) {
+            return new ContainerAppImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ContainerApp start(String resourceGroupName, String containerAppName, Context context) {
+        ContainerAppInner inner = this.serviceClient().start(resourceGroupName, containerAppName, context);
+        if (inner != null) {
+            return new ContainerAppImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ContainerApp stop(String resourceGroupName, String containerAppName) {
+        ContainerAppInner inner = this.serviceClient().stop(resourceGroupName, containerAppName);
+        if (inner != null) {
+            return new ContainerAppImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ContainerApp stop(String resourceGroupName, String containerAppName, Context context) {
+        ContainerAppInner inner = this.serviceClient().stop(resourceGroupName, containerAppName, context);
+        if (inner != null) {
+            return new ContainerAppImpl(inner, this.manager());
         } else {
             return null;
         }

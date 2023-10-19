@@ -9,10 +9,8 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
@@ -40,7 +38,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link SchemaFormat#AVRO} using {@link SchemaRegistryAsyncClient}.
  */
-public class SchemaRegistryAsyncClientTests extends TestBase {
+public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
     static final String SCHEMA_CONTENT = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" }]}";
 
     private String schemaGroup;
@@ -78,10 +76,8 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
-        } else {
-            builder.addPolicy(new RetryPolicy())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         testBase = new SchemaRegistryAsyncClientTestsBase(schemaGroup, SchemaFormat.AVRO);
@@ -147,6 +143,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
      * Verifies that a 4xx is returned if we use an invalid schema format.
      */
     @Test
+    @RecordWithoutRequestBody
     public void registerSchemaInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
@@ -159,7 +156,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 assertTrue(error instanceof HttpResponseException);
 
                 final HttpResponseException responseException = ((HttpResponseException) error);
-                assertEquals(403, responseException.getResponse().getStatusCode());
+                assertEquals(415, responseException.getResponse().getStatusCode());
             })
             .verify();
     }
@@ -168,6 +165,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
      * Verifies that if we register a schema and try to fetch it using an invalid schema format, an error is returned.
      */
     @Test
+    @RecordWithoutRequestBody
     public void registerAndGetSchemaPropertiesWithInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);

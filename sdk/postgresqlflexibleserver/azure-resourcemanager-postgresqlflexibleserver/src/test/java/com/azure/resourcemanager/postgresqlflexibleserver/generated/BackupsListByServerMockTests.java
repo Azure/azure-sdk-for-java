@@ -33,7 +33,7 @@ public final class BackupsListByServerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-10-24T16:26:16Z\",\"source\":\"ifthnz\"},\"id\":\"dslgnayqigynduh\",\"name\":\"vhqlkthumaqo\",\"type\":\"bgycduiertgccym\"}]}";
+            "{\"value\":[{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-02-25T20:44Z\",\"source\":\"wae\"},\"id\":\"uzkopbminrfd\",\"name\":\"oyuhhziui\",\"type\":\"fozbhdmsmlmzqhof\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,10 @@ public final class BackupsListByServerMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ServerBackup> response =
-            manager.backups().listByServer("enq", "eh", com.azure.core.util.Context.NONE);
+            manager.backups().listByServer("bbejdcngqqm", "akufgmjz", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(Origin.FULL, response.iterator().next().backupType());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-10-24T16:26:16Z"), response.iterator().next().completedTime());
-        Assertions.assertEquals("ifthnz", response.iterator().next().source());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T20:44Z"), response.iterator().next().completedTime());
+        Assertions.assertEquals("wae", response.iterator().next().source());
     }
 }

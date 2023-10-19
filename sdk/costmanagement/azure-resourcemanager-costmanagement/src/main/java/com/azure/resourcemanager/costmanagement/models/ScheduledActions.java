@@ -91,6 +91,8 @@ public interface ScheduledActions {
      *
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
+     *     be specified to achieve optimistic concurrency.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,7 +100,7 @@ public interface ScheduledActions {
      * @return scheduled action definition along with {@link Response}.
      */
     Response<ScheduledAction> createOrUpdateWithResponse(
-        String name, ScheduledActionInner scheduledAction, Context context);
+        String name, ScheduledActionInner scheduledAction, String ifMatch, Context context);
 
     /**
      * Create or update a private scheduled action.

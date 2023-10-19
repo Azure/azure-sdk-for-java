@@ -27,7 +27,7 @@ class Authenticator {
         this.username = username;
         this.tokenCache = tokenCache;
         this.tokenRequestContext = new TokenRequestContext()
-                .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+                .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         lock = new ReentrantLock();
     }
 

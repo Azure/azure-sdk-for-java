@@ -7,7 +7,6 @@ import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
-import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
@@ -17,6 +16,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
+    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -123,7 +124,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true)).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.
@@ -132,6 +133,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
         }
     }
 
+    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(

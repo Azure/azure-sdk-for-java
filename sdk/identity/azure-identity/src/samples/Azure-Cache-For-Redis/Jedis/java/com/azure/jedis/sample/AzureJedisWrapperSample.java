@@ -20,11 +20,12 @@ public class AzureJedisWrapperSample {
             .port(6380) // Port is requried.
             .useSSL(true) // SSL Connection is required.
             .username("<USERNAME>") // Username is required.
-            .credential(defaultAzureCredential) // A Token Credential is required to fetch Azure AD Access tokens.
+            .credential(defaultAzureCredential) // A Token Credential is required to fetch Microsoft Entra access tokens.
             .build();
 
         // Set a value against your key in the Redis cache.
         jedisClient.set("Az:key", "sample");
+        System.out.println(jedisClient.get("Az:key"));
 
         // Close the Jedis Client
         jedisClient.close();

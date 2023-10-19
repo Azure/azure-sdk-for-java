@@ -7,25 +7,24 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProbeHttpGetHttpHeadersItem;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ContainerAppProbeHttpGetHttpHeadersItemTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ContainerAppProbeHttpGetHttpHeadersItem model =
             BinaryData
-                .fromString("{\"name\":\"fcktqumiekke\",\"value\":\"zikhl\"}")
+                .fromString("{\"name\":\"hzoymibmrqy\",\"value\":\"bahwfl\"}")
                 .toObject(ContainerAppProbeHttpGetHttpHeadersItem.class);
-        Assertions.assertEquals("fcktqumiekke", model.name());
-        Assertions.assertEquals("zikhl", model.value());
+        Assertions.assertEquals("hzoymibmrqy", model.name());
+        Assertions.assertEquals("bahwfl", model.value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ContainerAppProbeHttpGetHttpHeadersItem model =
-            new ContainerAppProbeHttpGetHttpHeadersItem().withName("fcktqumiekke").withValue("zikhl");
+            new ContainerAppProbeHttpGetHttpHeadersItem().withName("hzoymibmrqy").withValue("bahwfl");
         model = BinaryData.fromObject(model).toObject(ContainerAppProbeHttpGetHttpHeadersItem.class);
-        Assertions.assertEquals("fcktqumiekke", model.name());
-        Assertions.assertEquals("zikhl", model.value());
+        Assertions.assertEquals("hzoymibmrqy", model.name());
+        Assertions.assertEquals("bahwfl", model.value());
     }
 }

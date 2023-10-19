@@ -103,11 +103,13 @@ public interface DataNetwork {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The DataNetwork definition stages. */
     interface DefinitionStages {
         /** The first stage of the DataNetwork definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the DataNetwork definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -126,6 +128,7 @@ public interface DataNetwork {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the DataNetwork definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -137,6 +140,7 @@ public interface DataNetwork {
              */
             WithCreate withExistingMobileNetwork(String resourceGroupName, String mobileNetworkName);
         }
+
         /**
          * The stage of the DataNetwork definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -157,6 +161,7 @@ public interface DataNetwork {
              */
             DataNetwork create(Context context);
         }
+
         /** The stage of the DataNetwork definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -167,6 +172,7 @@ public interface DataNetwork {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the DataNetwork definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -178,6 +184,7 @@ public interface DataNetwork {
             WithCreate withDescription(String description);
         }
     }
+
     /**
      * Begins update for the DataNetwork resource.
      *
@@ -202,6 +209,7 @@ public interface DataNetwork {
          */
         DataNetwork apply(Context context);
     }
+
     /** The DataNetwork update stages. */
     interface UpdateStages {
         /** The stage of the DataNetwork update allowing to specify tags. */
@@ -215,6 +223,7 @@ public interface DataNetwork {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

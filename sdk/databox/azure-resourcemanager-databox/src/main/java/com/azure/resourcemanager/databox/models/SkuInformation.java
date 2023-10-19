@@ -73,6 +73,14 @@ public interface SkuInformation {
     String requiredFeature();
 
     /**
+     * Gets the countriesWithinCommerceBoundary property: List of all the Countries in the SKU specific commerce
+     * boundary.
+     *
+     * @return the countriesWithinCommerceBoundary value.
+     */
+    List<String> countriesWithinCommerceBoundary();
+
+    /**
      * Gets the inner com.azure.resourcemanager.databox.fluent.models.SkuInformationInner object.
      *
      * @return the inner object.

@@ -93,8 +93,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FrontDoorInner>> getByResourceGroup(
@@ -108,8 +107,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -124,8 +122,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -139,8 +136,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/validateCustomDomain")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/validateCustomDomain")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ValidateCustomDomainOutputInner>> validateCustomDomain(
@@ -196,7 +192,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -239,7 +235,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -336,7 +332,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -391,7 +387,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -508,7 +504,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
         if (frontDoorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter frontDoorName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -559,7 +555,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
         if (frontDoorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter frontDoorName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -663,7 +659,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
         } else {
             frontDoorParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -722,7 +718,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
         } else {
             frontDoorParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -937,7 +933,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
         if (frontDoorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter frontDoorName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -987,7 +983,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
         if (frontDoorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter frontDoorName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1175,7 +1171,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
         } else {
             customDomainProperties.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1237,7 +1233,7 @@ public final class FrontDoorsClientImpl implements FrontDoorsClient {
         } else {
             customDomainProperties.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

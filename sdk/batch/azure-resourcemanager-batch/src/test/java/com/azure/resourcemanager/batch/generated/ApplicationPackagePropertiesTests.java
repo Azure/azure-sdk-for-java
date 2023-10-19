@@ -6,20 +6,19 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationPackageProperties;
-import org.junit.jupiter.api.Test;
 
 public final class ApplicationPackagePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ApplicationPackageProperties model =
             BinaryData
                 .fromString(
-                    "{\"state\":\"Active\",\"format\":\"kirsoodqxhc\",\"storageUrl\":\"nohjt\",\"storageUrlExpiry\":\"2020-12-26T05:08:12Z\",\"lastActivationTime\":\"2021-01-23T02:14:07Z\"}")
+                    "{\"state\":\"Pending\",\"format\":\"tyxolniwpwc\",\"storageUrl\":\"jfkgiawxk\",\"storageUrlExpiry\":\"2021-05-21T20:11:19Z\",\"lastActivationTime\":\"2021-02-17T21:17:55Z\"}")
                 .toObject(ApplicationPackageProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ApplicationPackageProperties model = new ApplicationPackageProperties();
         model = BinaryData.fromObject(model).toObject(ApplicationPackageProperties.class);
     }

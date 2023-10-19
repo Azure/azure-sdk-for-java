@@ -30,6 +30,11 @@ steps:
     npm install -g autorest
   displayName: 'Install autorest'
 
+# - template: /eng/common/testproxy/test-proxy-tool.yml
+#   parameters:
+#     runProxy: true
+#     targetVersion: 1.0.0-dev.20230908.1
+
 - bash: |
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
     java -version

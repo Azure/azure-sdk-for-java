@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devhub.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devhub.fluent.models.WorkflowInner;
 import java.util.Map;
@@ -45,6 +46,13 @@ public interface Workflow {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the repositoryOwner property: The owner of the repository the workflow is associated with.
@@ -157,11 +165,104 @@ public interface Workflow {
     WorkflowRun lastWorkflowRun();
 
     /**
-     * Gets the authStatus property: Determines the type of manifests within the repository.
+     * Gets the authStatus property: Determines the authorization status of requests.
      *
      * @return the authStatus value.
      */
-    ManifestType authStatus();
+    AuthorizationStatus authStatus();
+
+    /**
+     * Gets the generationLanguage property: The programming language used.
+     *
+     * @return the generationLanguage value.
+     */
+    GenerationLanguage generationLanguage();
+
+    /**
+     * Gets the languageVersion property: The version of the language image used for execution in the generated
+     * dockerfile.
+     *
+     * @return the languageVersion value.
+     */
+    String languageVersion();
+
+    /**
+     * Gets the builderVersion property: The version of the language image used for building the code in the generated
+     * dockerfile.
+     *
+     * @return the builderVersion value.
+     */
+    String builderVersion();
+
+    /**
+     * Gets the port property: The port the application is exposed on.
+     *
+     * @return the port value.
+     */
+    String port();
+
+    /**
+     * Gets the appName property: The name of the app.
+     *
+     * @return the appName value.
+     */
+    String appName();
+
+    /**
+     * Gets the dockerfileOutputDirectory property: The directory to output the generated Dockerfile to.
+     *
+     * @return the dockerfileOutputDirectory value.
+     */
+    String dockerfileOutputDirectory();
+
+    /**
+     * Gets the manifestOutputDirectory property: The directory to output the generated manifests to.
+     *
+     * @return the manifestOutputDirectory value.
+     */
+    String manifestOutputDirectory();
+
+    /**
+     * Gets the dockerfileGenerationMode property: The mode of generation to be used for generating Dockerfiles.
+     *
+     * @return the dockerfileGenerationMode value.
+     */
+    DockerfileGenerationMode dockerfileGenerationMode();
+
+    /**
+     * Gets the manifestGenerationMode property: The mode of generation to be used for generating Manifest.
+     *
+     * @return the manifestGenerationMode value.
+     */
+    ManifestGenerationMode manifestGenerationMode();
+
+    /**
+     * Gets the manifestType property: Determines the type of manifests to be generated.
+     *
+     * @return the manifestType value.
+     */
+    GenerationManifestType manifestType();
+
+    /**
+     * Gets the imageName property: The name of the image to be generated.
+     *
+     * @return the imageName value.
+     */
+    String imageName();
+
+    /**
+     * Gets the namespaceArtifactGenerationPropertiesNamespace property: The namespace to deploy the application to.
+     *
+     * @return the namespaceArtifactGenerationPropertiesNamespace value.
+     */
+    String namespaceArtifactGenerationPropertiesNamespace();
+
+    /**
+     * Gets the imageTag property: The tag to apply to the generated image.
+     *
+     * @return the imageTag value.
+     */
+    String imageTag();
 
     /**
      * Gets the region of the resource.
@@ -248,7 +349,19 @@ public interface Workflow {
                 DefinitionStages.WithOidcCredentials,
                 DefinitionStages.WithAksResourceId,
                 DefinitionStages.WithLastWorkflowRun,
-                DefinitionStages.WithAuthStatus {
+                DefinitionStages.WithGenerationLanguage,
+                DefinitionStages.WithLanguageVersion,
+                DefinitionStages.WithBuilderVersion,
+                DefinitionStages.WithPort,
+                DefinitionStages.WithAppName,
+                DefinitionStages.WithDockerfileOutputDirectory,
+                DefinitionStages.WithManifestOutputDirectory,
+                DefinitionStages.WithDockerfileGenerationMode,
+                DefinitionStages.WithManifestGenerationMode,
+                DefinitionStages.WithManifestType,
+                DefinitionStages.WithImageName,
+                DefinitionStages.WithNamespaceArtifactGenerationPropertiesNamespace,
+                DefinitionStages.WithImageTag {
             /**
              * Executes the create request.
              *
@@ -402,15 +515,142 @@ public interface Workflow {
              */
             WithCreate withLastWorkflowRun(WorkflowRun lastWorkflowRun);
         }
-        /** The stage of the Workflow definition allowing to specify authStatus. */
-        interface WithAuthStatus {
+        /** The stage of the Workflow definition allowing to specify generationLanguage. */
+        interface WithGenerationLanguage {
             /**
-             * Specifies the authStatus property: Determines the type of manifests within the repository..
+             * Specifies the generationLanguage property: The programming language used..
              *
-             * @param authStatus Determines the type of manifests within the repository.
+             * @param generationLanguage The programming language used.
              * @return the next definition stage.
              */
-            WithCreate withAuthStatus(ManifestType authStatus);
+            WithCreate withGenerationLanguage(GenerationLanguage generationLanguage);
+        }
+        /** The stage of the Workflow definition allowing to specify languageVersion. */
+        interface WithLanguageVersion {
+            /**
+             * Specifies the languageVersion property: The version of the language image used for execution in the
+             * generated dockerfile..
+             *
+             * @param languageVersion The version of the language image used for execution in the generated dockerfile.
+             * @return the next definition stage.
+             */
+            WithCreate withLanguageVersion(String languageVersion);
+        }
+        /** The stage of the Workflow definition allowing to specify builderVersion. */
+        interface WithBuilderVersion {
+            /**
+             * Specifies the builderVersion property: The version of the language image used for building the code in
+             * the generated dockerfile..
+             *
+             * @param builderVersion The version of the language image used for building the code in the generated
+             *     dockerfile.
+             * @return the next definition stage.
+             */
+            WithCreate withBuilderVersion(String builderVersion);
+        }
+        /** The stage of the Workflow definition allowing to specify port. */
+        interface WithPort {
+            /**
+             * Specifies the port property: The port the application is exposed on..
+             *
+             * @param port The port the application is exposed on.
+             * @return the next definition stage.
+             */
+            WithCreate withPort(String port);
+        }
+        /** The stage of the Workflow definition allowing to specify appName. */
+        interface WithAppName {
+            /**
+             * Specifies the appName property: The name of the app..
+             *
+             * @param appName The name of the app.
+             * @return the next definition stage.
+             */
+            WithCreate withAppName(String appName);
+        }
+        /** The stage of the Workflow definition allowing to specify dockerfileOutputDirectory. */
+        interface WithDockerfileOutputDirectory {
+            /**
+             * Specifies the dockerfileOutputDirectory property: The directory to output the generated Dockerfile to..
+             *
+             * @param dockerfileOutputDirectory The directory to output the generated Dockerfile to.
+             * @return the next definition stage.
+             */
+            WithCreate withDockerfileOutputDirectory(String dockerfileOutputDirectory);
+        }
+        /** The stage of the Workflow definition allowing to specify manifestOutputDirectory. */
+        interface WithManifestOutputDirectory {
+            /**
+             * Specifies the manifestOutputDirectory property: The directory to output the generated manifests to..
+             *
+             * @param manifestOutputDirectory The directory to output the generated manifests to.
+             * @return the next definition stage.
+             */
+            WithCreate withManifestOutputDirectory(String manifestOutputDirectory);
+        }
+        /** The stage of the Workflow definition allowing to specify dockerfileGenerationMode. */
+        interface WithDockerfileGenerationMode {
+            /**
+             * Specifies the dockerfileGenerationMode property: The mode of generation to be used for generating
+             * Dockerfiles..
+             *
+             * @param dockerfileGenerationMode The mode of generation to be used for generating Dockerfiles.
+             * @return the next definition stage.
+             */
+            WithCreate withDockerfileGenerationMode(DockerfileGenerationMode dockerfileGenerationMode);
+        }
+        /** The stage of the Workflow definition allowing to specify manifestGenerationMode. */
+        interface WithManifestGenerationMode {
+            /**
+             * Specifies the manifestGenerationMode property: The mode of generation to be used for generating
+             * Manifest..
+             *
+             * @param manifestGenerationMode The mode of generation to be used for generating Manifest.
+             * @return the next definition stage.
+             */
+            WithCreate withManifestGenerationMode(ManifestGenerationMode manifestGenerationMode);
+        }
+        /** The stage of the Workflow definition allowing to specify manifestType. */
+        interface WithManifestType {
+            /**
+             * Specifies the manifestType property: Determines the type of manifests to be generated..
+             *
+             * @param manifestType Determines the type of manifests to be generated.
+             * @return the next definition stage.
+             */
+            WithCreate withManifestType(GenerationManifestType manifestType);
+        }
+        /** The stage of the Workflow definition allowing to specify imageName. */
+        interface WithImageName {
+            /**
+             * Specifies the imageName property: The name of the image to be generated..
+             *
+             * @param imageName The name of the image to be generated.
+             * @return the next definition stage.
+             */
+            WithCreate withImageName(String imageName);
+        }
+        /** The stage of the Workflow definition allowing to specify namespaceArtifactGenerationPropertiesNamespace. */
+        interface WithNamespaceArtifactGenerationPropertiesNamespace {
+            /**
+             * Specifies the namespaceArtifactGenerationPropertiesNamespace property: The namespace to deploy the
+             * application to..
+             *
+             * @param namespaceArtifactGenerationPropertiesNamespace The namespace to deploy the application to.
+             * @return the next definition stage.
+             */
+            WithCreate withNamespaceArtifactGenerationPropertiesNamespace(
+                String namespaceArtifactGenerationPropertiesNamespace);
+        }
+        /** The stage of the Workflow definition allowing to specify imageTag. */
+        interface WithImageTag {
+            /**
+             * Specifies the imageTag property: The tag to apply to the generated image..
+             *
+             * @param imageTag The tag to apply to the generated image.
+             * @return the next definition stage.
+             */
+            WithCreate withImageTag(String imageTag);
         }
     }
     /**

@@ -35,6 +35,10 @@ public final class ResourceProviderOperationInner {
     @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
 
+    /** Creates an instance of ResourceProviderOperationInner class. */
+    public ResourceProviderOperationInner() {
+    }
+
     /**
      * Get the name property: Operation name, in format of {provider}/{resource}/{operation}.
      *

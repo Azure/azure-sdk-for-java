@@ -6,17 +6,16 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.EnvironmentTypeProperties;
-import org.junit.jupiter.api.Test;
 
 public final class EnvironmentTypePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EnvironmentTypeProperties model =
-            BinaryData.fromString("{\"provisioningState\":\"Running\"}").toObject(EnvironmentTypeProperties.class);
+            BinaryData.fromString("{\"provisioningState\":\"NotSpecified\"}").toObject(EnvironmentTypeProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EnvironmentTypeProperties model = new EnvironmentTypeProperties();
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeProperties.class);
     }

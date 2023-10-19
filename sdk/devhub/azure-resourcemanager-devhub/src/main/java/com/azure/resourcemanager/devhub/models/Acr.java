@@ -34,6 +34,10 @@ public final class Acr {
     @JsonProperty(value = "acrRepositoryName")
     private String acrRepositoryName;
 
+    /** Creates an instance of Acr class. */
+    public Acr() {
+    }
+
     /**
      * Get the acrSubscriptionId property: ACR subscription id.
      *

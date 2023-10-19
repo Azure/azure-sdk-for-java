@@ -6,19 +6,18 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.UserAssignedIdentities;
-import org.junit.jupiter.api.Test;
 
 public final class UserAssignedIdentitiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UserAssignedIdentities model =
             BinaryData
-                .fromString("{\"principalId\":\"jgrtfwvukxga\",\"clientId\":\"ccsnhsjc\"}")
+                .fromString("{\"principalId\":\"gaudcc\",\"clientId\":\"h\"}")
                 .toObject(UserAssignedIdentities.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UserAssignedIdentities model = new UserAssignedIdentities();
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentities.class);
     }

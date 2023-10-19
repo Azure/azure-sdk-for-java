@@ -13,7 +13,7 @@ public final class ManagedRuleGroupDefinitionTests {
         ManagedRuleGroupDefinition model =
             BinaryData
                 .fromString(
-                    "{\"ruleGroupName\":\"pqjlihhyusps\",\"description\":\"sdvlmfwdgzxulucv\",\"rules\":[{\"ruleId\":\"sreuzvxurisjnh\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Block\",\"description\":\"qjzgxmrhublw\"},{\"ruleId\":\"esutrgjupauutpw\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Allow\",\"description\":\"jqgwzp\"},{\"ruleId\":\"qntcypsxjvfoimwk\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Redirect\",\"description\":\"zjxvydfcea\"},{\"ruleId\":\"lhvygdyftu\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Redirect\",\"description\":\"wjslbiwkojgcyzt\"}]}")
+                    "{\"ruleGroupName\":\"ckwhds\",\"description\":\"fiyipjxsqwpgrj\",\"rules\":[{\"ruleId\":\"rcjxvsnbyxqabn\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Log\",\"description\":\"shurzafbljjgpbto\"},{\"ruleId\":\"jmkljavbqidtqajz\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Redirect\",\"description\":\"dj\"},{\"ruleId\":\"lkhbz\",\"defaultState\":\"Enabled\",\"defaultAction\":\"AnomalyScoring\",\"description\":\"gqexzlocxs\"},{\"ruleId\":\"aierhhb\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Redirect\",\"description\":\"majtjaod\"}]}")
                 .toObject(ManagedRuleGroupDefinition.class);
     }
 

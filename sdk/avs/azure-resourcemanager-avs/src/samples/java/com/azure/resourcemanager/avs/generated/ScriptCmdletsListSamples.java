@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for ScriptCmdlets List. */
 public final class ScriptCmdletsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptCmdlets_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptCmdlets_List.json
      */
     /**
      * Sample code: ScriptCmdlets_List.
@@ -15,8 +15,6 @@ public final class ScriptCmdletsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptCmdletsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .scriptCmdlets()
-            .list("group1", "{privateCloudName}", "{scriptPackageName}", com.azure.core.util.Context.NONE);
+        manager.scriptCmdlets().list("group1", "cloud1", "package@1.0.2", com.azure.core.util.Context.NONE);
     }
 }

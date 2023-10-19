@@ -133,11 +133,13 @@ public interface NetAppAccount {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The NetAppAccount definition stages. */
     interface DefinitionStages {
         /** The first stage of the NetAppAccount definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the NetAppAccount definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -156,6 +158,7 @@ public interface NetAppAccount {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the NetAppAccount definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -166,6 +169,7 @@ public interface NetAppAccount {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the NetAppAccount definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -190,6 +194,7 @@ public interface NetAppAccount {
              */
             NetAppAccount create(Context context);
         }
+
         /** The stage of the NetAppAccount definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -200,6 +205,7 @@ public interface NetAppAccount {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the NetAppAccount definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -210,6 +216,7 @@ public interface NetAppAccount {
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
+
         /** The stage of the NetAppAccount definition allowing to specify activeDirectories. */
         interface WithActiveDirectories {
             /**
@@ -220,6 +227,7 @@ public interface NetAppAccount {
              */
             WithCreate withActiveDirectories(List<ActiveDirectory> activeDirectories);
         }
+
         /** The stage of the NetAppAccount definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -231,6 +239,7 @@ public interface NetAppAccount {
             WithCreate withEncryption(AccountEncryption encryption);
         }
     }
+
     /**
      * Begins update for the NetAppAccount resource.
      *
@@ -239,7 +248,11 @@ public interface NetAppAccount {
     NetAppAccount.Update update();
 
     /** The template for NetAppAccount update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithActiveDirectories, UpdateStages.WithEncryption {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
+            UpdateStages.WithActiveDirectories,
+            UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          *
@@ -255,6 +268,7 @@ public interface NetAppAccount {
          */
         NetAppAccount apply(Context context);
     }
+
     /** The NetAppAccount update stages. */
     interface UpdateStages {
         /** The stage of the NetAppAccount update allowing to specify tags. */
@@ -267,6 +281,18 @@ public interface NetAppAccount {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the NetAppAccount update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity used for the resource..
+             *
+             * @param identity The identity used for the resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+
         /** The stage of the NetAppAccount update allowing to specify activeDirectories. */
         interface WithActiveDirectories {
             /**
@@ -277,6 +303,7 @@ public interface NetAppAccount {
              */
             Update withActiveDirectories(List<ActiveDirectory> activeDirectories);
         }
+
         /** The stage of the NetAppAccount update allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -288,6 +315,7 @@ public interface NetAppAccount {
             Update withEncryption(AccountEncryption encryption);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

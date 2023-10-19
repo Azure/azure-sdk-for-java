@@ -46,6 +46,14 @@ public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTe
     public static final AnalyzeTextLROTaskKind ABSTRACTIVE_SUMMARIZATION = fromString("AbstractiveSummarization");
 
     /**
+     * Creates a new instance of AnalyzeTextLROTaskKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnalyzeTextLROTaskKind() {}
+
+    /**
      * Creates or finds a AnalyzeTextLROTaskKind from its string representation.
      *
      * @param name a name to look for.

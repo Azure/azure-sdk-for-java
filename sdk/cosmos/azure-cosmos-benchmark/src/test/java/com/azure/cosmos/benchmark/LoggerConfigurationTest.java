@@ -21,6 +21,13 @@ public class LoggerConfigurationTest {
         assertThat(logger2.isErrorEnabled()).isFalse();
     }
 
+    @Test(groups = {"unit"})
+    public void reactorIsEnabled() {
+        final Logger logger = LoggerFactory.getLogger("io.projectreactor");
+
+        assertThat(logger.isErrorEnabled()).isTrue();
+    }
+
     /**
      * Loggers in the cosmos package should inherit root configuration and log at info.
      */

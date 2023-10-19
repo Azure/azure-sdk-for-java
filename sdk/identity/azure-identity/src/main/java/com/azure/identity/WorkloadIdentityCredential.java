@@ -13,6 +13,7 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IdentitySyncClient;
+import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 import reactor.core.publisher.Mono;
 
@@ -29,8 +30,8 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
  * need to worry about storing and securing sensitive credentials themselves.
  * The WorkloadIdentityCredential supports Azure workload identity authentication on Azure Kubernetes and acquires
  * a token using the service account credentials available in the Azure Kubernetes environment.
- * Refer to <a href="https://learn.microsoft.com/azure/aks/workload-identity-overview">Azure Active Directory
- * Workload Identity</a> for more information.</p>
+ * Refer to <a href="https://learn.microsoft.com/azure/aks/workload-identity-overview">Microsoft Entra Workload ID</a>
+ * for more information.</p>
  *
  * <p><strong>Sample: Construct WorkloadIdentityCredential</strong></p>
  *
@@ -41,7 +42,7 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
  *
  * <!-- src_embed com.azure.identity.credential.workloadidentitycredential.construct -->
  * <pre>
- * TokenCredential onBehalfOfCredential = new WorkloadIdentityCredentialBuilder&#40;&#41;
+ * TokenCredential workloadIdentityCredential = new WorkloadIdentityCredentialBuilder&#40;&#41;
  *     .clientId&#40;&quot;&lt;clientID&gt;&quot;&#41;
  *     .tenantId&#40;&quot;&lt;tenantID&gt;&quot;&#41;
  *     .tokenFilePath&#40;&quot;&lt;token-file-path&gt;&quot;&#41;
@@ -56,12 +57,14 @@ public class WorkloadIdentityCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredential.class);
     private final IdentityClient identityClient;
     private final IdentitySyncClient identitySyncClient;
+    private final IdentityClientOptions identityClientOptions;
+
 
     /**
      * WorkloadIdentityCredential supports Azure workload identity on Kubernetes.
      *
-     * @param tenantId ID of the application's Azure Active Directory tenant. Also called its directory ID.
-     * @param clientId The client ID of an Azure AD app registration.
+     * @param tenantId ID of the application's Microsoft Entra tenant. Also called its directory ID.
+     * @param clientId The client ID of a Microsoft Entra app registration.
      * @param federatedTokenFilePath The path to a file containing a Kubernetes service account token that authenticates the identity.
      * @param identityClientOptions The identity client options to use for authentication.
      */
@@ -86,7 +89,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
             || CoreUtils.isNullOrEmpty(identityClientOptions.getAuthorityHost()))) {
             IdentityClientBuilder builder = new IdentityClientBuilder()
                 .clientAssertionPath(federatedTokenFilePathInput)
-                .clientId(clientId)
+                .clientId(clientIdInput)
                 .tenantId(tenantIdInput)
                 .identityClientOptions(identityClientOptions);
             identityClient = builder.build();
@@ -95,12 +98,14 @@ public class WorkloadIdentityCredential implements TokenCredential {
             identityClient = null;
             identitySyncClient = null;
         }
+        this.identityClientOptions = identityClientOptions;
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (identityClient == null) {
-            return Mono.error(LOGGER.logExceptionAsError(new CredentialUnavailableException("WorkloadIdentityCredential"
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
+                new CredentialUnavailableException("WorkloadIdentityCredential"
                 + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
                 + " guide for more information."
                 + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot")));
@@ -111,7 +116,8 @@ public class WorkloadIdentityCredential implements TokenCredential {
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
         if (identitySyncClient == null) {
-            throw LOGGER.logExceptionAsError(new CredentialUnavailableException("WorkloadIdentityCredential"
+            throw LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
+                new CredentialUnavailableException("WorkloadIdentityCredential"
                 + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
                 + " guide for more information."
                 + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot"));

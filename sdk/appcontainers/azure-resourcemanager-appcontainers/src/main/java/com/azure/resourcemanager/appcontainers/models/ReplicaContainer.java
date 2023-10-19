@@ -41,6 +41,18 @@ public final class ReplicaContainer {
     private Integer restartCount;
 
     /*
+     * Current running state of the container
+     */
+    @JsonProperty(value = "runningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ContainerAppContainerRunningState runningState;
+
+    /*
+     * The details of container current running state
+     */
+    @JsonProperty(value = "runningStateDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private String runningStateDetails;
+
+    /*
      * Log Stream endpoint
      */
     @JsonProperty(value = "logStreamEndpoint", access = JsonProperty.Access.WRITE_ONLY)
@@ -154,6 +166,24 @@ public final class ReplicaContainer {
     public ReplicaContainer withRestartCount(Integer restartCount) {
         this.restartCount = restartCount;
         return this;
+    }
+
+    /**
+     * Get the runningState property: Current running state of the container.
+     *
+     * @return the runningState value.
+     */
+    public ContainerAppContainerRunningState runningState() {
+        return this.runningState;
+    }
+
+    /**
+     * Get the runningStateDetails property: The details of container current running state.
+     *
+     * @return the runningStateDetails value.
+     */
+    public String runningStateDetails() {
+        return this.runningStateDetails;
     }
 
     /**

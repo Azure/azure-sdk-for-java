@@ -9,62 +9,65 @@ import com.azure.resourcemanager.appcontainers.fluent.models.AvailableWorkloadPr
 import com.azure.resourcemanager.appcontainers.models.Applicability;
 import com.azure.resourcemanager.appcontainers.models.AvailableWorkloadProfileProperties;
 import com.azure.resourcemanager.appcontainers.models.AvailableWorkloadProfilesCollection;
-import com.azure.resourcemanager.appcontainers.models.Category;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AvailableWorkloadProfilesCollectionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AvailableWorkloadProfilesCollection model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"location\":\"psttexoq\",\"properties\":{\"billingMeterCategory\":\"PremiumSkuGeneralPurpose\",\"applicability\":\"Custom\",\"cores\":402556977,\"memoryGiB\":130119392,\"displayName\":\"uncuw\"},\"id\":\"spkcdqzh\",\"name\":\"ctddun\",\"type\":\"ndy\"},{\"location\":\"chrqb\",\"properties\":{\"billingMeterCategory\":\"PremiumSkuGeneralPurpose\",\"applicability\":\"Custom\",\"cores\":1318617256,\"memoryGiB\":4442645,\"displayName\":\"wboxjumvqqo\"},\"id\":\"hrraiouaubrj\",\"name\":\"loqxfuojrngif\",\"type\":\"rzpasccbiuimzdly\"}],\"nextLink\":\"fqwmkyoquf\"}")
+                    "{\"value\":[{\"location\":\"jbdlwtgrhpdjpju\",\"properties\":{\"category\":\"xazjpqyegual\",\"applicability\":\"Custom\",\"cores\":1163750271,\"memoryGiB\":344964368,\"displayName\":\"zzvdudgwds\"},\"id\":\"fhotw\",\"name\":\"cynpwlbjnp\",\"type\":\"acfta\"},{\"location\":\"h\",\"properties\":{\"category\":\"tyfsoppusuesn\",\"applicability\":\"LocationDefault\",\"cores\":317621756,\"memoryGiB\":600821678,\"displayName\":\"orxzdmohctbqvud\"},\"id\":\"xdn\",\"name\":\"nvowgujju\",\"type\":\"wdkcglhsl\"},{\"location\":\"jdyggdtji\",\"properties\":{\"category\":\"kuofqweykhme\",\"applicability\":\"LocationDefault\",\"cores\":1463310275,\"memoryGiB\":669612849,\"displayName\":\"whybcib\"},\"id\":\"yvdcsitynnaa\",\"name\":\"dectehfiqsc\",\"type\":\"eypvhezrkg\"}],\"nextLink\":\"c\"}")
                 .toObject(AvailableWorkloadProfilesCollection.class);
-        Assertions.assertEquals("psttexoq", model.value().get(0).location());
-        Assertions
-            .assertEquals(
-                Category.PREMIUM_SKU_GENERAL_PURPOSE, model.value().get(0).properties().billingMeterCategory());
+        Assertions.assertEquals("jbdlwtgrhpdjpju", model.value().get(0).location());
+        Assertions.assertEquals("xazjpqyegual", model.value().get(0).properties().category());
         Assertions.assertEquals(Applicability.CUSTOM, model.value().get(0).properties().applicability());
-        Assertions.assertEquals(402556977, model.value().get(0).properties().cores());
-        Assertions.assertEquals(130119392, model.value().get(0).properties().memoryGiB());
-        Assertions.assertEquals("uncuw", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(1163750271, model.value().get(0).properties().cores());
+        Assertions.assertEquals(344964368, model.value().get(0).properties().memoryGiB());
+        Assertions.assertEquals("zzvdudgwds", model.value().get(0).properties().displayName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AvailableWorkloadProfilesCollection model =
             new AvailableWorkloadProfilesCollection()
                 .withValue(
                     Arrays
                         .asList(
                             new AvailableWorkloadProfileInner()
-                                .withLocation("psttexoq")
+                                .withLocation("jbdlwtgrhpdjpju")
                                 .withProperties(
                                     new AvailableWorkloadProfileProperties()
-                                        .withBillingMeterCategory(Category.PREMIUM_SKU_GENERAL_PURPOSE)
+                                        .withCategory("xazjpqyegual")
                                         .withApplicability(Applicability.CUSTOM)
-                                        .withCores(402556977)
-                                        .withMemoryGiB(130119392)
-                                        .withDisplayName("uncuw")),
+                                        .withCores(1163750271)
+                                        .withMemoryGiB(344964368)
+                                        .withDisplayName("zzvdudgwds")),
                             new AvailableWorkloadProfileInner()
-                                .withLocation("chrqb")
+                                .withLocation("h")
                                 .withProperties(
                                     new AvailableWorkloadProfileProperties()
-                                        .withBillingMeterCategory(Category.PREMIUM_SKU_GENERAL_PURPOSE)
-                                        .withApplicability(Applicability.CUSTOM)
-                                        .withCores(1318617256)
-                                        .withMemoryGiB(4442645)
-                                        .withDisplayName("wboxjumvqqo"))));
+                                        .withCategory("tyfsoppusuesn")
+                                        .withApplicability(Applicability.LOCATION_DEFAULT)
+                                        .withCores(317621756)
+                                        .withMemoryGiB(600821678)
+                                        .withDisplayName("orxzdmohctbqvud")),
+                            new AvailableWorkloadProfileInner()
+                                .withLocation("jdyggdtji")
+                                .withProperties(
+                                    new AvailableWorkloadProfileProperties()
+                                        .withCategory("kuofqweykhme")
+                                        .withApplicability(Applicability.LOCATION_DEFAULT)
+                                        .withCores(1463310275)
+                                        .withMemoryGiB(669612849)
+                                        .withDisplayName("whybcib"))));
         model = BinaryData.fromObject(model).toObject(AvailableWorkloadProfilesCollection.class);
-        Assertions.assertEquals("psttexoq", model.value().get(0).location());
-        Assertions
-            .assertEquals(
-                Category.PREMIUM_SKU_GENERAL_PURPOSE, model.value().get(0).properties().billingMeterCategory());
+        Assertions.assertEquals("jbdlwtgrhpdjpju", model.value().get(0).location());
+        Assertions.assertEquals("xazjpqyegual", model.value().get(0).properties().category());
         Assertions.assertEquals(Applicability.CUSTOM, model.value().get(0).properties().applicability());
-        Assertions.assertEquals(402556977, model.value().get(0).properties().cores());
-        Assertions.assertEquals(130119392, model.value().get(0).properties().memoryGiB());
-        Assertions.assertEquals("uncuw", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(1163750271, model.value().get(0).properties().cores());
+        Assertions.assertEquals(344964368, model.value().get(0).properties().memoryGiB());
+        Assertions.assertEquals("zzvdudgwds", model.value().get(0).properties().displayName());
     }
 }

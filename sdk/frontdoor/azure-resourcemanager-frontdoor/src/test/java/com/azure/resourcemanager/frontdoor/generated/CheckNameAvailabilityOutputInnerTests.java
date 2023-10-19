@@ -12,7 +12,7 @@ public final class CheckNameAvailabilityOutputInnerTests {
     public void testDeserialize() throws Exception {
         CheckNameAvailabilityOutputInner model =
             BinaryData
-                .fromString("{\"nameAvailability\":\"Available\",\"reason\":\"ev\",\"message\":\"ggzfbu\"}")
+                .fromString("{\"nameAvailability\":\"Available\",\"reason\":\"clwhijcoejctbz\",\"message\":\"s\"}")
                 .toObject(CheckNameAvailabilityOutputInner.class);
     }
 

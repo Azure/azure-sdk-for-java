@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkLinks Delete. */
 public final class VirtualNetworkLinksDeleteSamples {
     /*
@@ -22,6 +20,7 @@ public final class VirtualNetworkLinksDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkLinks()
-            .delete("resourceGroup1", "privatezone1.com", "virtualNetworkLink1", null, Context.NONE);
+            .delete(
+                "resourceGroup1", "privatezone1.com", "virtualNetworkLink1", null, com.azure.core.util.Context.NONE);
     }
 }

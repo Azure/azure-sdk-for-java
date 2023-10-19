@@ -86,6 +86,13 @@ public interface FluxConfiguration {
     BucketDefinition bucket();
 
     /**
+     * Gets the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
+     *
+     * @return the azureBlob value.
+     */
+    AzureBlobDefinition azureBlob();
+
+    /**
      * Gets the kustomizations property: Array of kustomizations used to reconcile the artifact pulled by the source
      * type on the cluster.
      *
@@ -137,6 +144,22 @@ public interface FluxConfiguration {
      * @return the statusUpdatedAt value.
      */
     OffsetDateTime statusUpdatedAt();
+
+    /**
+     * Gets the waitForReconciliation property: Whether flux configuration deployment should wait for cluster to
+     * reconcile the kustomizations.
+     *
+     * @return the waitForReconciliation value.
+     */
+    Boolean waitForReconciliation();
+
+    /**
+     * Gets the reconciliationWaitDuration property: Maximum duration to wait for flux configuration reconciliation. E.g
+     * PT1H, PT5M, P1D.
+     *
+     * @return the reconciliationWaitDuration value.
+     */
+    String reconciliationWaitDuration();
 
     /**
      * Gets the complianceState property: Combined status of the Flux Kubernetes resources created by the

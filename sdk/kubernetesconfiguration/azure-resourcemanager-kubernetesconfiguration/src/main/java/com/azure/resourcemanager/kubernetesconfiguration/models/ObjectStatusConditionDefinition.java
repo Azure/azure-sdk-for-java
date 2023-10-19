@@ -41,6 +41,10 @@ public final class ObjectStatusConditionDefinition {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of ObjectStatusConditionDefinition class. */
+    public ObjectStatusConditionDefinition() {
+    }
+
     /**
      * Get the lastTransitionTime property: Last time this status condition has changed.
      *

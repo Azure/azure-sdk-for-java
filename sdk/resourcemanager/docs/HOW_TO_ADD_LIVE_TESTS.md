@@ -7,6 +7,10 @@ Here is a guide to add live tests for management-plane SDK.
 Read [Developer Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#developer-guide).
 It provides guide on how to build, run tests, and the context of live tests.
 
+## Sample PR
+
+Here is a [sample PR](https://github.com/Azure/azure-sdk-for-java/pull/35315) for adding live tests to databricks SDK.
+
 ## Add Test Dependencies
 
 Add following test dependencies to POM at `sdk/<service>/azure-resourcemanager-<service>/pom.xml`,
@@ -48,6 +52,8 @@ Add following test dependencies to POM at `sdk/<service>/azure-resourcemanager-<
 - `azure-resourcemanager-resources` for SDK to manage resource groups.
 - One might add other required libraries in `test` scope.
 
+Note: one only need to add `azure-resourcemanager-resources` to POM, if the SDK already have mock tests enabled (which is usually the case).
+
 And run
 ```
 python eng/versioning/update_versions.py --ut library --bt client --sr
@@ -60,7 +66,7 @@ Add a [bicep](https://github.com/Azure/bicep) script at `sdk/<service>/test-reso
 
 No change to the bicep script is required.
 
-- It adds [Contributor role](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor) of the resource group to the service principal.
+- It adds [Contributor role](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#contributor) of the resource group to the service principal.
 - It provides the name of the resource group, as well as credentials for the live tests.
 
 ## Add Live Tests
@@ -77,7 +83,7 @@ All the environment variables are provided in live tests pipeline.
 
 To verify your tests locally, one need to set these environment variables in local.
 
-For credentials, please refer to [guide on authentication](https://docs.microsoft.com/azure/developer/java/sdk/get-started#set-up-authentication).
+For credentials, please refer to [guide on authentication](https://learn.microsoft.com/azure/developer/java/sdk/get-started#set-up-authentication).
 
 For the resource group, one can create a resource group, and set its name to `AZURE_RESOURCE_GROUP_NAME` environment variable.
 Make sure your service principal above has Contributor role on the resource group.
@@ -101,3 +107,8 @@ After pull request is ready, comment `/azp run prepare-pipelines` to let the aut
 The live tests will be automatically run, before SDK release.
 
 In pull request, comment `/azp run java - <service> - mgmt - tests` to run it manually.
+
+## Troubleshoot
+
+- Sometimes, the CI could be cancelled due to EngSys problem, please re-run it.
+- Resource under test may not have been [registered](https://learn.microsoft.com/azure/azure-resource-manager/troubleshooting/error-register-resource-provider) under "Azure SDK Test Resources" subscription. Developer needs to register the resource provider namespace first, then re-run the CI.

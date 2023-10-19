@@ -5,51 +5,56 @@
 package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.elasticsan.models.Action;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
+import com.azure.resourcemanager.elasticsan.models.VirtualNetworkRule;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroupUpdate;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VolumeGroupUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VolumeGroupUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"protocolType\":\"None\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[]}},\"tags\":{\"a\":\"w\"}}")
+                    "{\"properties\":{\"protocolType\":\"Iscsi\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[{\"id\":\"yoxa\",\"action\":\"Allow\",\"state\":\"provisioning\"},{\"id\":\"jancu\",\"action\":\"Allow\",\"state\":\"succeeded\"},{\"id\":\"bavxbniwdjswzt\",\"action\":\"Allow\",\"state\":\"deprovisioning\"},{\"id\":\"nxytxh\",\"action\":\"Allow\",\"state\":\"networkSourceDeleted\"}]}}}")
                 .toObject(VolumeGroupUpdate.class);
-        Assertions.assertEquals("w", model.tags().get("a"));
-        Assertions.assertEquals(StorageTargetType.NONE, model.protocolType());
+        Assertions.assertEquals(StorageTargetType.ISCSI, model.protocolType());
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, model.encryption());
+        Assertions.assertEquals("yoxa", model.networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals(Action.ALLOW, model.networkAcls().virtualNetworkRules().get(0).action());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VolumeGroupUpdate model =
             new VolumeGroupUpdate()
-                .withTags(mapOf("a", "w"))
-                .withProtocolType(StorageTargetType.NONE)
+                .withProtocolType(StorageTargetType.ISCSI)
                 .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
-                .withNetworkAcls(new NetworkRuleSet().withVirtualNetworkRules(Arrays.asList()));
+                .withNetworkAcls(
+                    new NetworkRuleSet()
+                        .withVirtualNetworkRules(
+                            Arrays
+                                .asList(
+                                    new VirtualNetworkRule()
+                                        .withVirtualNetworkResourceId("yoxa")
+                                        .withAction(Action.ALLOW),
+                                    new VirtualNetworkRule()
+                                        .withVirtualNetworkResourceId("jancu")
+                                        .withAction(Action.ALLOW),
+                                    new VirtualNetworkRule()
+                                        .withVirtualNetworkResourceId("bavxbniwdjswzt")
+                                        .withAction(Action.ALLOW),
+                                    new VirtualNetworkRule()
+                                        .withVirtualNetworkResourceId("nxytxh")
+                                        .withAction(Action.ALLOW))));
         model = BinaryData.fromObject(model).toObject(VolumeGroupUpdate.class);
-        Assertions.assertEquals("w", model.tags().get("a"));
-        Assertions.assertEquals(StorageTargetType.NONE, model.protocolType());
+        Assertions.assertEquals(StorageTargetType.ISCSI, model.protocolType());
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, model.encryption());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals("yoxa", model.networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals(Action.ALLOW, model.networkAcls().virtualNetworkRules().get(0).action());
     }
 }

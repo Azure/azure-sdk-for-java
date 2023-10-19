@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Project;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class ProjectsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"devCenterUri\":\"yhko\",\"devCenterId\":\"pg\",\"description\":\"dkow\"},\"location\":\"bqpc\",\"tags\":{\"ftnkhtj\":\"bwccsnjvcdwxlpqe\",\"ngwfqatm\":\"y\"},\"id\":\"dhtmdvypgikd\",\"name\":\"szywkbirryu\",\"type\":\"hlhkjoqrvqqaatj\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"MovingResources\",\"devCenterUri\":\"ibreb\",\"devCenterId\":\"aysjkixqtnqttez\",\"description\":\"fffiak\",\"maxDevBoxesPerUser\":1860291958},\"location\":\"qmt\",\"tags\":{\"wau\":\"tmmjihyeozph\"},\"id\":\"qncygupkvi\",\"name\":\"mdscwxqupev\",\"type\":\"hfstotxhojujbyp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +60,13 @@ public final class ProjectsListByResourceGroupMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Project> response = manager.projects().listByResourceGroup("rypqlmfeo", 1181848977, Context.NONE);
+        PagedIterable<Project> response =
+            manager.projects().listByResourceGroup("wuenvr", 1615411821, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bqpc", response.iterator().next().location());
-        Assertions.assertEquals("bwccsnjvcdwxlpqe", response.iterator().next().tags().get("ftnkhtj"));
-        Assertions.assertEquals("pg", response.iterator().next().devCenterId());
-        Assertions.assertEquals("dkow", response.iterator().next().description());
+        Assertions.assertEquals("qmt", response.iterator().next().location());
+        Assertions.assertEquals("tmmjihyeozph", response.iterator().next().tags().get("wau"));
+        Assertions.assertEquals("aysjkixqtnqttez", response.iterator().next().devCenterId());
+        Assertions.assertEquals("fffiak", response.iterator().next().description());
+        Assertions.assertEquals(1860291958, response.iterator().next().maxDevBoxesPerUser());
     }
 }

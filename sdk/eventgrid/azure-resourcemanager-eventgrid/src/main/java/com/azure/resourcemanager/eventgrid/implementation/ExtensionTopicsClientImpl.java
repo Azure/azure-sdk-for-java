@@ -50,7 +50,7 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface ExtensionTopicsService {
+    public interface ExtensionTopicsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.EventGrid/extensionTopics/default")
         @ExpectedResponses({200})
@@ -64,7 +64,9 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
     }
 
     /**
-     * Get the properties of an extension topic.
+     * Get properties of an extension topic.
+     *
+     * <p>Get the properties of an extension topic.
      *
      * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
      *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
@@ -97,7 +99,9 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
     }
 
     /**
-     * Get the properties of an extension topic.
+     * Get properties of an extension topic.
+     *
+     * <p>Get the properties of an extension topic.
      *
      * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
      *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
@@ -129,7 +133,9 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
     }
 
     /**
-     * Get the properties of an extension topic.
+     * Get properties of an extension topic.
+     *
+     * <p>Get the properties of an extension topic.
      *
      * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
      *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
@@ -148,26 +154,9 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
     }
 
     /**
-     * Get the properties of an extension topic.
+     * Get properties of an extension topic.
      *
-     * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
-     *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for Azure resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an extension topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtensionTopicInner get(String scope) {
-        return getAsync(scope).block();
-    }
-
-    /**
-     * Get the properties of an extension topic.
+     * <p>Get the properties of an extension topic.
      *
      * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
      *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
@@ -184,5 +173,26 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtensionTopicInner> getWithResponse(String scope, Context context) {
         return getWithResponseAsync(scope, context).block();
+    }
+
+    /**
+     * Get properties of an extension topic.
+     *
+     * <p>Get the properties of an extension topic.
+     *
+     * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
+     *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for Azure resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an extension topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExtensionTopicInner get(String scope) {
+        return getWithResponse(scope, Context.NONE).getValue();
     }
 }

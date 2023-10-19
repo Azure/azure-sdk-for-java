@@ -33,7 +33,7 @@ public final class UserSessionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectId\":\"g\",\"userPrincipalName\":\"hcmavmqfo\",\"applicationType\":\"RemoteApp\",\"sessionState\":\"Pending\",\"activeDirectoryUserName\":\"gyyprotwy\",\"createTime\":\"2020-12-26T18:22:26Z\"},\"id\":\"d\",\"name\":\"bxhugcmjkavlgorb\",\"type\":\"ftpmdtzfjltfv\"}";
+            "{\"properties\":{\"objectId\":\"rttuiaclkiexha\",\"userPrincipalName\":\"fnth\",\"applicationType\":\"RemoteApp\",\"sessionState\":\"LogOff\",\"activeDirectoryUserName\":\"t\",\"createTime\":\"2021-07-20T02:29:06Z\"},\"id\":\"gbpvnwswmtxkyct\",\"name\":\"wgzwxjlmecvog\",\"type\":\"gzyvnee\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,13 @@ public final class UserSessionsGetWithResponseMockTests {
         UserSession response =
             manager
                 .userSessions()
-                .getWithResponse(
-                    "prlpy", "nuciqdsmexiit", "fuxtyasiibmiybnn", "stgnl", com.azure.core.util.Context.NONE)
+                .getWithResponse("gsksrfhf", "olmk", "bnxwc", "ommpvfqaw", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("hcmavmqfo", response.userPrincipalName());
+        Assertions.assertEquals("fnth", response.userPrincipalName());
         Assertions.assertEquals(ApplicationType.REMOTE_APP, response.applicationType());
-        Assertions.assertEquals(SessionState.PENDING, response.sessionState());
-        Assertions.assertEquals("gyyprotwy", response.activeDirectoryUsername());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T18:22:26Z"), response.createTime());
+        Assertions.assertEquals(SessionState.LOG_OFF, response.sessionState());
+        Assertions.assertEquals("t", response.activeDirectoryUsername());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T02:29:06Z"), response.createTime());
     }
 }

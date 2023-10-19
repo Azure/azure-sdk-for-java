@@ -16,7 +16,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.StorageAccount;
 /** Samples for Firewalls SaveLogProfile. */
 public final class FirewallsSaveLogProfileSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_saveLogProfile_MaximumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_saveLogProfile_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_saveLogProfile_MaximumSet_Gen.
@@ -123,7 +123,7 @@ public final class FirewallsSaveLogProfileSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/Firewalls_saveLogProfile_MinimumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/Firewalls_saveLogProfile_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_saveLogProfile_MinimumSet_Gen.

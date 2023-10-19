@@ -220,7 +220,7 @@ public abstract class ThroughputControlGroupInternal {
         hash = (hash * 397) ^ Boolean.hashCode(this.continueOnInitError);
         hash = (hash * 397) ^ (this.targetThroughput == null ? 0 : Integer.hashCode(this.targetThroughput));
         hash = (hash * 397) ^ (this.targetThroughputThreshold == null ? 0 : Double.hashCode(this.targetThroughputThreshold));
-        hash = (hash * 397) ^ (this.priorityLevel == null ? 0 : Integer.hashCode(this.priorityLevel.getPriorityValue()));
+        hash = (hash * 397) ^ (this.priorityLevel == null ? 0 : this.priorityLevel.hashCode());
         return hash;
     }
 }

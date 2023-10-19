@@ -3,32 +3,34 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
 import com.azure.cosmos.implementation.http.ResponseTimeoutAndDelays;
-import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
-public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
+public class WebExceptionRetryPolicy implements IRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicy.class);
 
     private StopWatch durationTimer = new StopWatch();
-    private int backoffSecondsTimeout;
     private RetryContext retryContext;
+    private int retryDelay;
     private RxDocumentServiceRequest request;
     private HttpTimeoutPolicy timeoutPolicy;
-    private HttpMethod httpMethod;
-    private int retryCountTimeout = 0;
+    private boolean isReadRequest;
+    private int retryCount = 0;
+    private URI locationEndpoint;
+    private boolean isOutOfRetries;
 
     public WebExceptionRetryPolicy() {
-        this(null);
+        durationTimer.start();
     }
 
     public WebExceptionRetryPolicy(RetryContext retryContext) {
@@ -38,21 +40,34 @@ public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     @Override
-    public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
-        boolean isOutOfRetries = isOutOfRetries();
+    public Mono<ShouldRetryResult> shouldRetry(Exception e) {
         if (isOutOfRetries) {
             this.durationTimer.stop();
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        if (!WebExceptionUtility.isWebExceptionRetriable(exception)) {
+        // Received Connection error (HttpRequestException), initiate the endpoint rediscovery
+        CosmosException webException = Utils.as(e, CosmosException.class);
+        if (WebExceptionUtility.isNetworkFailure(e) && this.isReadRequest &&
+            (webException != null && WebExceptionUtility.isReadTimeoutException(webException) &&
+                Exceptions.isSubStatusCode(webException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT))) {
+
+            // if operationType AddressRefresh then just retry
+            if (this.request.isAddressRefresh()) {
+                return shouldRetryAddressRefresh();
+            }
+
+            return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(retryDelay)));
+        }
+
+        if (!WebExceptionUtility.isWebExceptionRetriable(e)) {
             // Have caller propagate original exception.
             this.durationTimer.stop();
             return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
         }
-        logger.warn("Received retriable web exception, will retry", exception);
 
-        return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(backoffSecondsTimeout)));
+        logger.warn("Received retriable web exception, will retry", e);
+        return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(retryDelay)));
     }
 
     @Override
@@ -60,27 +75,45 @@ public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
         return this.retryContext;
     }
 
-    @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         this.request = request;
-        if (request.isReadOnlyRequest()) {
-            this.httpMethod = HttpMethod.GET;
-        }
+        this.isReadRequest = request.isReadOnlyRequest();
         this.timeoutPolicy = HttpTimeoutPolicy.getTimeoutPolicy(request);
-        // Fetching the retryCount to correctly get the retry values from the timeout policy
-        if (this.retryContext != null) {
-            this.retryCountTimeout = this.retryContext.getRetryCount();
-        }
-        // Setting the current responseTimeout and delayForNextRequest using the timeout policy being used
-        if (!isOutOfRetries()) {
-            ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCountTimeout);
+        this.isOutOfRetries = isOutOfRetries();
+
+        // Setting the current responseTimeout and retryDelay using the timeout policy being used
+        // and then increasing the counter for retries.
+        if (!isOutOfRetries) {
+            ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount);
             this.request.setResponseTimeout(current.getResponseTimeout());
-            this.backoffSecondsTimeout = current.getDelayForNextRequestInSeconds();
+            this.retryDelay = current.getDelayForNextRequestInSeconds();
         }
+        this.retryCount++;
+        this.locationEndpoint = request.requestContext.locationEndpointToRoute;
     }
 
-    private Boolean isOutOfRetries() {
-        return this.durationTimer.getTime(TimeUnit.SECONDS) > this.timeoutPolicy.maximumRetryTimeLimit() ||
-        this.retryCountTimeout >= this.timeoutPolicy.totalRetryCount();
+    private boolean isOutOfRetries() {
+        return this.retryCount >= this.timeoutPolicy.totalRetryCount();
+    }
+
+    private Mono<ShouldRetryResult> shouldRetryAddressRefresh() {
+        if (isOutOfRetries) {
+            logger
+                .warn(
+                    "shouldRetryAddressRefresh() No more retrying on endpoint {}, operationType = {}, count = {}, " +
+                        "isAddressRefresh = {}",
+                    this.locationEndpoint, this.request.getOperationType(), this.retryCount, this.request.isAddressRefresh());
+            return Mono.just(ShouldRetryResult.noRetry());
+        }
+
+        logger
+            .warn("shouldRetryAddressRefresh() Retrying on endpoint {}, operationType = {}, count = {}, " +
+                    "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
+                    "shouldForceCollectionRoutingMapRefresh = {}",
+                this.locationEndpoint, this.request.getOperationType(), this.retryCount,
+                this.request.isAddressRefresh(),
+                this.request.shouldForceAddressRefresh(),
+                this.request.forceCollectionRoutingMapRefresh);
+        return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(retryDelay)));
     }
 }

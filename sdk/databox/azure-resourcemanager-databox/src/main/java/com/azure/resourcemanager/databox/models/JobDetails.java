@@ -20,6 +20,7 @@ import java.util.List;
     defaultImpl = JobDetails.class)
 @JsonTypeName("JobDetails")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = DataBoxCustomerDiskJobDetails.class),
     @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskJobDetails.class),
     @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyJobDetails.class),
     @JsonSubTypes.Type(name = "DataBox", value = DataBoxJobDetails.class)
@@ -75,6 +76,12 @@ public class JobDetails {
     private Preferences preferences;
 
     /*
+     * Optional Reverse Shipping details for order.
+     */
+    @JsonProperty(value = "reverseShippingDetails")
+    private ReverseShippingDetails reverseShippingDetails;
+
+    /*
      * List of copy log details.
      */
     @JsonProperty(value = "copyLogDetails", access = JsonProperty.Access.WRITE_ONLY)
@@ -91,6 +98,12 @@ public class JobDetails {
      */
     @JsonProperty(value = "chainOfCustodySasKey", access = JsonProperty.Access.WRITE_ONLY)
     private String chainOfCustodySasKey;
+
+    /*
+     * Holds device data erasure details
+     */
+    @JsonProperty(value = "deviceErasureDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private DeviceErasureDetails deviceErasureDetails;
 
     /*
      * Details about which key encryption type is being used.
@@ -115,6 +128,18 @@ public class JobDetails {
      */
     @JsonProperty(value = "lastMitigationActionOnJob", access = JsonProperty.Access.WRITE_ONLY)
     private LastMitigationActionOnJob lastMitigationActionOnJob;
+
+    /*
+     * Datacenter address to ship to, for the given sku and storage location.
+     */
+    @JsonProperty(value = "datacenterAddress", access = JsonProperty.Access.WRITE_ONLY)
+    private DatacenterAddressResponse datacenterAddress;
+
+    /*
+     * DataCenter code.
+     */
+    @JsonProperty(value = "dataCenterCode", access = JsonProperty.Access.WRITE_ONLY)
+    private DataCenterCode dataCenterCode;
 
     /** Creates an instance of JobDetails class. */
     public JobDetails() {
@@ -248,6 +273,26 @@ public class JobDetails {
     }
 
     /**
+     * Get the reverseShippingDetails property: Optional Reverse Shipping details for order.
+     *
+     * @return the reverseShippingDetails value.
+     */
+    public ReverseShippingDetails reverseShippingDetails() {
+        return this.reverseShippingDetails;
+    }
+
+    /**
+     * Set the reverseShippingDetails property: Optional Reverse Shipping details for order.
+     *
+     * @param reverseShippingDetails the reverseShippingDetails value to set.
+     * @return the JobDetails object itself.
+     */
+    public JobDetails withReverseShippingDetails(ReverseShippingDetails reverseShippingDetails) {
+        this.reverseShippingDetails = reverseShippingDetails;
+        return this;
+    }
+
+    /**
      * Get the copyLogDetails property: List of copy log details.
      *
      * @return the copyLogDetails value.
@@ -272,6 +317,15 @@ public class JobDetails {
      */
     public String chainOfCustodySasKey() {
         return this.chainOfCustodySasKey;
+    }
+
+    /**
+     * Get the deviceErasureDetails property: Holds device data erasure details.
+     *
+     * @return the deviceErasureDetails value.
+     */
+    public DeviceErasureDetails deviceErasureDetails() {
+        return this.deviceErasureDetails;
     }
 
     /**
@@ -335,6 +389,24 @@ public class JobDetails {
     }
 
     /**
+     * Get the datacenterAddress property: Datacenter address to ship to, for the given sku and storage location.
+     *
+     * @return the datacenterAddress value.
+     */
+    public DatacenterAddressResponse datacenterAddress() {
+        return this.datacenterAddress;
+    }
+
+    /**
+     * Get the dataCenterCode property: DataCenter code.
+     *
+     * @return the dataCenterCode value.
+     */
+    public DataCenterCode dataCenterCode() {
+        return this.dataCenterCode;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -368,14 +440,23 @@ public class JobDetails {
         if (preferences() != null) {
             preferences().validate();
         }
+        if (reverseShippingDetails() != null) {
+            reverseShippingDetails().validate();
+        }
         if (copyLogDetails() != null) {
             copyLogDetails().forEach(e -> e.validate());
+        }
+        if (deviceErasureDetails() != null) {
+            deviceErasureDetails().validate();
         }
         if (keyEncryptionKey() != null) {
             keyEncryptionKey().validate();
         }
         if (lastMitigationActionOnJob() != null) {
             lastMitigationActionOnJob().validate();
+        }
+        if (datacenterAddress() != null) {
+            datacenterAddress().validate();
         }
     }
 

@@ -14,7 +14,7 @@ public interface DaprSecretsCollection {
      *
      * @return the value value.
      */
-    List<Secret> value();
+    List<DaprSecret> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner object.

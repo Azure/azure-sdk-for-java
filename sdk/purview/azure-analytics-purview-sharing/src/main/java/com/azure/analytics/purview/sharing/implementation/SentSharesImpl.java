@@ -81,7 +81,7 @@ public final class SentSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllSentShares(
+        Mono<Response<BinaryData>> listSentShares(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("referenceName") String referenceName,
                 @QueryParam("api-version") String apiVersion,
@@ -162,7 +162,7 @@ public final class SentSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllSentShareInvitations(
+        Mono<Response<BinaryData>> listSentShareInvitations(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("sentShareId") String sentShareId,
                 @QueryParam("api-version") String apiVersion,
@@ -267,7 +267,7 @@ public final class SentSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllSentSharesNext(
+        Mono<Response<BinaryData>> listSentSharesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -286,7 +286,7 @@ public final class SentSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllSentShareInvitationsNext(
+        Mono<Response<BinaryData>> listSentShareInvitationsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -304,7 +304,6 @@ public final class SentSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -329,12 +328,12 @@ public final class SentSharesImpl {
      * @return list of sent shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getAllSentSharesSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listSentSharesSinglePageAsync(
             String referenceName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getAllSentShares(
+                                service.listSentShares(
                                         this.client.getEndpoint(),
                                         referenceName,
                                         this.client.getServiceVersion().getVersion(),
@@ -362,7 +361,6 @@ public final class SentSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -387,15 +385,15 @@ public final class SentSharesImpl {
      * @return list of sent shares as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllSentSharesAsync(String referenceName, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listSentSharesAsync(String referenceName, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> getAllSentSharesSinglePageAsync(referenceName, requestOptions),
-                nextLink -> getAllSentSharesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listSentSharesSinglePageAsync(referenceName, requestOptions),
+                nextLink -> listSentSharesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -408,7 +406,6 @@ public final class SentSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -433,8 +430,8 @@ public final class SentSharesImpl {
      * @return list of sent shares as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllSentShares(String referenceName, RequestOptions requestOptions) {
-        return new PagedIterable<>(getAllSentSharesAsync(referenceName, requestOptions));
+    public PagedIterable<BinaryData> listSentShares(String referenceName, RequestOptions requestOptions) {
+        return new PagedIterable<>(listSentSharesAsync(referenceName, requestOptions));
     }
 
     /**
@@ -777,7 +774,6 @@ public final class SentSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -803,12 +799,12 @@ public final class SentSharesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getAllSentShareInvitationsSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listSentShareInvitationsSinglePageAsync(
             String sentShareId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getAllSentShareInvitations(
+                                service.listSentShareInvitations(
                                         this.client.getEndpoint(),
                                         sentShareId,
                                         this.client.getServiceVersion().getVersion(),
@@ -836,7 +832,6 @@ public final class SentSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -861,15 +856,15 @@ public final class SentSharesImpl {
      * @return list of the sent share invitations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllSentShareInvitationsAsync(String sentShareId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listSentShareInvitationsAsync(String sentShareId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> getAllSentShareInvitationsSinglePageAsync(sentShareId, requestOptions),
-                nextLink -> getAllSentShareInvitationsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listSentShareInvitationsSinglePageAsync(sentShareId, requestOptions),
+                nextLink -> listSentShareInvitationsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -882,7 +877,6 @@ public final class SentSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -907,8 +901,8 @@ public final class SentSharesImpl {
      * @return list of the sent share invitations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
-        return new PagedIterable<>(getAllSentShareInvitationsAsync(sentShareId, requestOptions));
+    public PagedIterable<BinaryData> listSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
+        return new PagedIterable<>(listSentShareInvitationsAsync(sentShareId, requestOptions));
     }
 
     /**
@@ -1310,12 +1304,12 @@ public final class SentSharesImpl {
      * @return list of sent shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getAllSentSharesNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listSentSharesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getAllSentSharesNext(
+                                service.listSentSharesNext(
                                         nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
@@ -1351,12 +1345,12 @@ public final class SentSharesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getAllSentShareInvitationsNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listSentShareInvitationsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getAllSentShareInvitationsNext(
+                                service.listSentShareInvitationsNext(
                                         nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->

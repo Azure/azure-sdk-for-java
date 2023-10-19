@@ -267,8 +267,12 @@ public class ClientTelemetry {
                 try {
                     String endpoint = Configs.getClientTelemetryEndpoint();
                     if (StringUtils.isEmpty(endpoint)) {
-                        logger.info("ClientTelemetry {}",
-                            OBJECT_MAPPER.writeValueAsString(this.clientTelemetryInfo));
+                        //  This is the case where customer has enabled the client telemetry
+                        //  but has not provided the endpoint
+                        if (logger.isInfoEnabled()) {
+                            logger.info("ClientTelemetry {}",
+                                OBJECT_MAPPER.writeValueAsString(this.clientTelemetryInfo));
+                        }
                         clearDataForNextRun();
                         return this.sendClientTelemetry();
                     } else {

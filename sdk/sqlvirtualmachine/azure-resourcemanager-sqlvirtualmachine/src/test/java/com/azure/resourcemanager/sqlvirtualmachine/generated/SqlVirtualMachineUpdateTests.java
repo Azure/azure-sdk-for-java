@@ -9,35 +9,20 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineUpdat
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SqlVirtualMachineUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SqlVirtualMachineUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"unmpxttd\":\"hj\",\"nbtkcxywnytnr\":\"hrbnlankxmyskpbh\",\"qidybyx\":\"yn\",\"aaxdbabphlwrq\":\"zfcl\"}}")
-                .toObject(SqlVirtualMachineUpdate.class);
-        Assertions.assertEquals("hj", model.tags().get("unmpxttd"));
+            BinaryData.fromString("{\"tags\":{\"e\":\"aos\"}}").toObject(SqlVirtualMachineUpdate.class);
+        Assertions.assertEquals("aos", model.tags().get("e"));
     }
 
-    @Test
-    public void testSerialize() {
-        SqlVirtualMachineUpdate model =
-            new SqlVirtualMachineUpdate()
-                .withTags(
-                    mapOf(
-                        "unmpxttd",
-                        "hj",
-                        "nbtkcxywnytnr",
-                        "hrbnlankxmyskpbh",
-                        "qidybyx",
-                        "yn",
-                        "aaxdbabphlwrq",
-                        "zfcl"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SqlVirtualMachineUpdate model = new SqlVirtualMachineUpdate().withTags(mapOf("e", "aos"));
         model = BinaryData.fromObject(model).toObject(SqlVirtualMachineUpdate.class);
-        Assertions.assertEquals("hj", model.tags().get("unmpxttd"));
+        Assertions.assertEquals("aos", model.tags().get("e"));
     }
 
     @SuppressWarnings("unchecked")

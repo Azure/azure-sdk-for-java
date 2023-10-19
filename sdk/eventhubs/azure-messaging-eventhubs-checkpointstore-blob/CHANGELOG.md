@@ -1,6 +1,6 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
+## 1.18.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,50 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.17.0 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.8` to version `5.16.0`.
+
+## 1.16.9 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.7` to version `5.15.8`.
+
+## 1.16.8 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.6` to version `5.15.7`.
+- Upgraded `azure-storage-blob` from `12.22.3` to version `12.23.0`.
+
+
+## 1.16.7 (2023-06-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.5` to version `5.15.6`.
+- Upgraded `azure-storage-blob` from `12.22.1` to version `12.22.3`.
+
+## 1.16.6 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.22.0` to version `12.22.1`.
+- Upgraded `azure-messaging-eventhubs` from `5.15.4` to version `5.16.0-beta.1`.
 
 ## 1.16.5 (2023-04-21)
 

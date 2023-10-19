@@ -29,7 +29,11 @@ public final class GlobalSchemasGetResponse extends ResponseBase<GlobalSchemasGe
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public GlobalSchemaContractInner getValue() {
         return super.getValue();

@@ -41,7 +41,7 @@ public final class AppResourceProperties {
     /*
      * Fully qualified dns Name.
      */
-    @JsonProperty(value = "fqdn")
+    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
@@ -63,6 +63,12 @@ public final class AppResourceProperties {
     private PersistentDisk persistentDisk;
 
     /*
+     * List of custom persistent disks
+     */
+    @JsonProperty(value = "customPersistentDisks")
+    private List<CustomPersistentDiskResource> customPersistentDisks;
+
+    /*
      * Indicate if end to end TLS is enabled.
      */
     @JsonProperty(value = "enableEndToEndTLS")
@@ -73,6 +79,18 @@ public final class AppResourceProperties {
      */
     @JsonProperty(value = "loadedCertificates")
     private List<LoadedCertificate> loadedCertificates;
+
+    /*
+     * Additional App settings in vnet injection instance
+     */
+    @JsonProperty(value = "vnetAddons")
+    private AppVNetAddons vnetAddons;
+
+    /*
+     * App ingress settings payload.
+     */
+    @JsonProperty(value = "ingressSettings")
+    private IngressSettings ingressSettings;
 
     /**
      * Get the publicProperty property: Indicates whether the App exposes public endpoint.
@@ -142,17 +160,6 @@ public final class AppResourceProperties {
     }
 
     /**
-     * Set the fqdn property: Fully qualified dns Name.
-     *
-     * @param fqdn the fqdn value to set.
-     * @return the AppResourceProperties object itself.
-     */
-    public AppResourceProperties withFqdn(String fqdn) {
-        this.fqdn = fqdn;
-        return this;
-    }
-
-    /**
      * Get the httpsOnly property: Indicate if only https is allowed.
      *
      * @return the httpsOnly value.
@@ -213,6 +220,26 @@ public final class AppResourceProperties {
     }
 
     /**
+     * Get the customPersistentDisks property: List of custom persistent disks.
+     *
+     * @return the customPersistentDisks value.
+     */
+    public List<CustomPersistentDiskResource> customPersistentDisks() {
+        return this.customPersistentDisks;
+    }
+
+    /**
+     * Set the customPersistentDisks property: List of custom persistent disks.
+     *
+     * @param customPersistentDisks the customPersistentDisks value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withCustomPersistentDisks(List<CustomPersistentDiskResource> customPersistentDisks) {
+        this.customPersistentDisks = customPersistentDisks;
+        return this;
+    }
+
+    /**
      * Get the enableEndToEndTls property: Indicate if end to end TLS is enabled.
      *
      * @return the enableEndToEndTls value.
@@ -253,6 +280,46 @@ public final class AppResourceProperties {
     }
 
     /**
+     * Get the vnetAddons property: Additional App settings in vnet injection instance.
+     *
+     * @return the vnetAddons value.
+     */
+    public AppVNetAddons vnetAddons() {
+        return this.vnetAddons;
+    }
+
+    /**
+     * Set the vnetAddons property: Additional App settings in vnet injection instance.
+     *
+     * @param vnetAddons the vnetAddons value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withVnetAddons(AppVNetAddons vnetAddons) {
+        this.vnetAddons = vnetAddons;
+        return this;
+    }
+
+    /**
+     * Get the ingressSettings property: App ingress settings payload.
+     *
+     * @return the ingressSettings value.
+     */
+    public IngressSettings ingressSettings() {
+        return this.ingressSettings;
+    }
+
+    /**
+     * Set the ingressSettings property: App ingress settings payload.
+     *
+     * @param ingressSettings the ingressSettings value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withIngressSettings(IngressSettings ingressSettings) {
+        this.ingressSettings = ingressSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -264,8 +331,17 @@ public final class AppResourceProperties {
         if (persistentDisk() != null) {
             persistentDisk().validate();
         }
+        if (customPersistentDisks() != null) {
+            customPersistentDisks().forEach(e -> e.validate());
+        }
         if (loadedCertificates() != null) {
             loadedCertificates().forEach(e -> e.validate());
+        }
+        if (vnetAddons() != null) {
+            vnetAddons().validate();
+        }
+        if (ingressSettings() != null) {
+            ingressSettings().validate();
         }
     }
 }

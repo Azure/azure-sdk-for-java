@@ -14,8 +14,12 @@ public final class AnalyzeHealthcareEntitiesAction {
     private String actionName;
     private String modelVersion;
     private Boolean disableServiceLogs;
-    private FhirVersion fhirVersion;
-    private HealthcareDocumentType documentType;
+
+    /**
+     * Constructs a {@code AnalyzeHealthcareEntitiesAction} model.
+     */
+    public AnalyzeHealthcareEntitiesAction() {
+    }
 
     /**
      * Get the name of action.
@@ -31,7 +35,7 @@ public final class AnalyzeHealthcareEntitiesAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link AnalyzeHealthcareEntitiesAction} object itself.
+     * @return The {@code AnalyzeHealthcareEntitiesAction} object itself.
      */
     public AnalyzeHealthcareEntitiesAction setActionName(String actionName) {
         this.actionName = actionName;
@@ -53,7 +57,7 @@ public final class AnalyzeHealthcareEntitiesAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link AnalyzeHealthcareEntitiesAction} object itself.
+     * @return The {@code AnalyzeHealthcareEntitiesAction} object itself.
      */
     public AnalyzeHealthcareEntitiesAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -78,54 +82,10 @@ public final class AnalyzeHealthcareEntitiesAction {
      * log your input text. Setting this property to 'false', enables logging your input text for 48 hours,
      * solely to allow for troubleshooting issues.
      *
-     * @return The {@link AnalyzeHealthcareEntitiesAction} object itself.
+     * @return The {@code AnalyzeHealthcareEntitiesAction} object itself.
      */
     public AnalyzeHealthcareEntitiesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
-        return this;
-    }
-
-    /**
-     * Get the fhirVersion property: The FHIR Spec version that the result will use to format the fhirBundle. For
-     * additional information see https://www.hl7.org/fhir/overview.html.
-     *
-     * @return the fhirVersion value.
-     */
-    public FhirVersion getFhirVersion() {
-        return fhirVersion;
-    }
-
-    /**
-     * Set the fhirVersion property: The FHIR Spec version that the result will use to format the fhirBundle. For
-     * additional information see https://www.hl7.org/fhir/overview.html.
-     *
-     * @param fhirVersion the fhirVersion value to set.
-     * @return the AnalyzeHealthcareEntitiesAction object itself.
-     */
-    public AnalyzeHealthcareEntitiesAction setFhirVersion(FhirVersion fhirVersion) {
-        this.fhirVersion = fhirVersion;
-        return this;
-    }
-
-    /**
-     * Get the documentType property: Document type that can be provided as input for Fhir Documents. Expect to have
-     * fhirVersion provided when used. Behavior of using None enum is the same as not using the documentType parameter.
-     *
-     * @return the documentType value.
-     */
-    public HealthcareDocumentType getDocumentType() {
-        return this.documentType;
-    }
-
-    /**
-     * Set the documentType property: Document type that can be provided as input for Fhir Documents. Expect to have
-     * fhirVersion provided when used. Behavior of using None enum is the same as not using the documentType parameter.
-     *
-     * @param documentType the documentType value to set.
-     * @return the AnalyzeHealthcareEntitiesAction object itself.
-     */
-    public AnalyzeHealthcareEntitiesAction setDocumentType(HealthcareDocumentType documentType) {
-        this.documentType = documentType;
         return this;
     }
 }

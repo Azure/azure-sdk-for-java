@@ -18,6 +18,10 @@ public final class ChannelUpdateParameters {
     @JsonProperty(value = "properties")
     private ChannelUpdateParametersProperties innerProperties;
 
+    /** Creates an instance of ChannelUpdateParameters class. */
+    public ChannelUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the channel update parameters.
      *
@@ -51,6 +55,31 @@ public final class ChannelUpdateParameters {
             this.innerProperties = new ChannelUpdateParametersProperties();
         }
         this.innerProperties().withExpirationTimeIfNotActivatedUtc(expirationTimeIfNotActivatedUtc);
+        return this;
+    }
+
+    /**
+     * Get the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
+     * type PartnerDestination.
+     *
+     * @return the partnerDestinationInfo value.
+     */
+    public PartnerUpdateDestinationInfo partnerDestinationInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerDestinationInfo();
+    }
+
+    /**
+     * Set the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
+     * type PartnerDestination.
+     *
+     * @param partnerDestinationInfo the partnerDestinationInfo value to set.
+     * @return the ChannelUpdateParameters object itself.
+     */
+    public ChannelUpdateParameters withPartnerDestinationInfo(PartnerUpdateDestinationInfo partnerDestinationInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ChannelUpdateParametersProperties();
+        }
+        this.innerProperties().withPartnerDestinationInfo(partnerDestinationInfo);
         return this;
     }
 

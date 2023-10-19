@@ -58,6 +58,10 @@ public final class SqlVirtualMachineGroupProperties {
     @JsonProperty(value = "wsfcDomainProfile")
     private WsfcDomainProfile wsfcDomainProfile;
 
+    /** Creates an instance of SqlVirtualMachineGroupProperties class. */
+    public SqlVirtualMachineGroupProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state to track the async operation status.
      *

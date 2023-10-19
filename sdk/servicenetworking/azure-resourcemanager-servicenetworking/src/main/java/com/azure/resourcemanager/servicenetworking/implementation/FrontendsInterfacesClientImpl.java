@@ -68,8 +68,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     public interface FrontendsInterfacesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}/frontends")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FrontendListResult>> listByTrafficController(
@@ -83,8 +82,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FrontendInner>> get(
@@ -99,8 +97,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -116,8 +113,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FrontendInner>> update(
@@ -133,8 +129,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -166,8 +161,8 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Frontend list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the response of a Frontend list operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FrontendInner>> listByTrafficControllerSinglePageAsync(
@@ -226,8 +221,8 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Frontend list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the response of a Frontend list operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FrontendInner>> listByTrafficControllerSinglePageAsync(
@@ -282,8 +277,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Frontend list operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response of a Frontend list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FrontendInner> listByTrafficControllerAsync(
@@ -302,8 +296,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Frontend list operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response of a Frontend list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FrontendInner> listByTrafficControllerAsync(
@@ -321,8 +314,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Frontend list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendInner> listByTrafficController(
@@ -339,8 +331,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Frontend list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendInner> listByTrafficController(
@@ -349,7 +340,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Get a Traffic Controller Frontend.
+     * Get a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -357,7 +348,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Frontend along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Frontend along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FrontendInner>> getWithResponseAsync(
@@ -403,7 +394,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Get a Traffic Controller Frontend.
+     * Get a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -412,7 +403,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Frontend along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Frontend along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FrontendInner>> getWithResponseAsync(
@@ -455,7 +446,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Get a Traffic Controller Frontend.
+     * Get a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -463,7 +454,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Frontend on successful completion of {@link Mono}.
+     * @return a Frontend on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FrontendInner> getAsync(String resourceGroupName, String trafficControllerName, String frontendName) {
@@ -472,7 +463,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Get a Traffic Controller Frontend.
+     * Get a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -481,7 +472,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Frontend along with {@link Response}.
+     * @return a Frontend along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FrontendInner> getWithResponse(
@@ -490,7 +481,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Get a Traffic Controller Frontend.
+     * Get a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -498,7 +489,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Frontend.
+     * @return a Frontend.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendInner get(String resourceGroupName, String trafficControllerName, String frontendName) {
@@ -506,7 +497,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Create a Traffic Controller Frontend.
+     * Create a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -568,7 +559,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Create a Traffic Controller Frontend.
+     * Create a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -632,7 +623,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Create a Traffic Controller Frontend.
+     * Create a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -659,7 +650,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Create a Traffic Controller Frontend.
+     * Create a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -688,7 +679,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Create a Traffic Controller Frontend.
+     * Create a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -702,12 +693,13 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(
         String resourceGroupName, String trafficControllerName, String frontendName, FrontendInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource)
             .getSyncPoller();
     }
 
     /**
-     * Create a Traffic Controller Frontend.
+     * Create a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -726,12 +718,13 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
         String frontendName,
         FrontendInner resource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource, context)
             .getSyncPoller();
     }
 
     /**
-     * Create a Traffic Controller Frontend.
+     * Create a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -751,7 +744,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Create a Traffic Controller Frontend.
+     * Create a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -776,7 +769,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Create a Traffic Controller Frontend.
+     * Create a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -794,7 +787,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Create a Traffic Controller Frontend.
+     * Create a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -817,7 +810,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Update a Traffic Controller Frontend.
+     * Update a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -879,7 +872,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Update a Traffic Controller Frontend.
+     * Update a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -943,7 +936,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Update a Traffic Controller Frontend.
+     * Update a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -962,7 +955,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Update a Traffic Controller Frontend.
+     * Update a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -986,7 +979,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Update a Traffic Controller Frontend.
+     * Update a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1005,7 +998,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1059,7 +1052,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1111,7 +1104,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1133,7 +1126,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1156,7 +1149,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1169,11 +1162,11 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String trafficControllerName, String frontendName) {
-        return beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName).getSyncPoller();
     }
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1187,11 +1180,11 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String trafficControllerName, String frontendName, Context context) {
-        return beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName, context).getSyncPoller();
     }
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1209,7 +1202,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1229,7 +1222,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1244,7 +1237,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     }
 
     /**
-     * Delete a Traffic Controller Frontend.
+     * Delete a Frontend.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1267,8 +1260,8 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Frontend list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the response of a Frontend list operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FrontendInner>> listByTrafficControllerNextSinglePageAsync(String nextLink) {
@@ -1306,8 +1299,8 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Frontend list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the response of a Frontend list operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FrontendInner>> listByTrafficControllerNextSinglePageAsync(

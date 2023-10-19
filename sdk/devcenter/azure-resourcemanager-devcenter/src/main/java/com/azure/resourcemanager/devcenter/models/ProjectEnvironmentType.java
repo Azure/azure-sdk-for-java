@@ -81,7 +81,7 @@ public interface ProjectEnvironmentType {
      *
      * @return the status value.
      */
-    EnableStatus status();
+    EnvironmentTypeEnableStatus status();
 
     /**
      * Gets the creatorRoleAssignment property: The role definition assigned to the environment creator on backing
@@ -232,7 +232,7 @@ public interface ProjectEnvironmentType {
              * @param status Defines whether this Environment Type can be used in this Project.
              * @return the next definition stage.
              */
-            WithCreate withStatus(EnableStatus status);
+            WithCreate withStatus(EnvironmentTypeEnableStatus status);
         }
         /** The stage of the ProjectEnvironmentType definition allowing to specify creatorRoleAssignment. */
         interface WithCreatorRoleAssignment {
@@ -332,7 +332,7 @@ public interface ProjectEnvironmentType {
              * @param status Defines whether this Environment Type can be used in this Project.
              * @return the next definition stage.
              */
-            Update withStatus(EnableStatus status);
+            Update withStatus(EnvironmentTypeEnableStatus status);
         }
         /** The stage of the ProjectEnvironmentType update allowing to specify creatorRoleAssignment. */
         interface WithCreatorRoleAssignment {

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.kusto.generated;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoOperationsList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoOperationsList.json
      */
     /**
      * Sample code: KustoOperationsList.

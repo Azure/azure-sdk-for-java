@@ -16,6 +16,10 @@ public final class PrivateEndpoint {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of PrivateEndpoint class. */
+    public PrivateEndpoint() {
+    }
+
     /**
      * Get the id property: The ARM identifier for Private Endpoint.
      *

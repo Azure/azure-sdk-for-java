@@ -3,12 +3,11 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.DetectedLanguagePropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link DetectedLanguage} model.
+ * The {@code DetectedLanguage} model.
  */
 @Immutable
 public final class DetectedLanguage {
@@ -35,17 +34,7 @@ public final class DetectedLanguage {
     private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
-     * Identifies the script of the input document.
-     */
-    private ScriptKind scriptKind;
-
-    static {
-        DetectedLanguagePropertiesHelper.setAccessor(
-            (detectedLanguage, scriptKind) -> detectedLanguage.setScriptKind(scriptKind));
-    }
-
-    /**
-     * Creates a {@link DetectedLanguage} model that describes detected language content.
+     * Creates a {@code DetectedLanguage} model that describes detected language content.
      *
      * @param name The name of a detected language.
      * @param iso6391Name A two letter representation of the detected language according to the ISO 639-1 standard.
@@ -98,18 +87,5 @@ public final class DetectedLanguage {
      */
     public IterableStream<TextAnalyticsWarning> getWarnings() {
         return this.warnings;
-    }
-
-    /**
-     * Get the script property: Identifies the script of the input document.
-     *
-     * @return the script value.
-     */
-    public ScriptKind getScriptKind() {
-        return this.scriptKind;
-    }
-
-    private void setScriptKind(ScriptKind scriptKind) {
-        this.scriptKind = scriptKind;
     }
 }

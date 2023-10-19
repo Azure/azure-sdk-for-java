@@ -117,4 +117,9 @@ class VertxAsyncHttpClient implements HttpClient {
             }
         }));
     }
+
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        return send(request, context).block();
+    }
 }

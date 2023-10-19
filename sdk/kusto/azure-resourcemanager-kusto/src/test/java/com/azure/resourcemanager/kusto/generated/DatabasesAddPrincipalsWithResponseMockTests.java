@@ -36,7 +36,7 @@ public final class DatabasesAddPrincipalsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"role\":\"User\",\"name\":\"hwahfbousn\",\"type\":\"User\",\"fqn\":\"gfewetwlyxgnc\",\"email\":\"kxhdjhlimmbcx\",\"appId\":\"bcporxvxcjzhqizx\",\"tenantName\":\"xtgqscjavftjuh\"},{\"role\":\"User\",\"name\":\"azkmtgguwp\",\"type\":\"User\",\"fqn\":\"ajc\",\"email\":\"m\",\"appId\":\"hfcf\",\"tenantName\":\"rxgkne\"}]}";
+            "{\"value\":[{\"role\":\"UnrestrictedViewer\",\"name\":\"vwbcblembnkbwv\",\"type\":\"Group\",\"fqn\":\"kdi\",\"email\":\"ihebwtsw\",\"appId\":\"uwfmduragegizvc\",\"tenantName\":\"elisdjub\"},{\"role\":\"Admin\",\"name\":\"bqigkx\",\"type\":\"Group\",\"fqn\":\"azgakg\",\"email\":\"yrcmjdmspofap\",\"appId\":\"hryl\",\"tenantName\":\"ofrzgb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,35 +68,35 @@ public final class DatabasesAddPrincipalsWithResponseMockTests {
             manager
                 .databases()
                 .addPrincipalsWithResponse(
-                    "aehvvibrxjjstoq",
-                    "eitpkxztmo",
-                    "bklftidgfcwqmpim",
+                    "zxrvxcus",
+                    "sphaivmxyasflvg",
+                    "gzwywak",
                     new DatabasePrincipalListRequest()
                         .withValue(
                             Arrays
                                 .asList(
                                     new DatabasePrincipalInner()
                                         .withRole(DatabasePrincipalRole.USER)
-                                        .withName("hemjy")
+                                        .withName("nsmjbl")
                                         .withType(DatabasePrincipalType.GROUP)
-                                        .withFqn("uj")
-                                        .withEmail("t")
-                                        .withAppId("ozzwculkba"),
+                                        .withFqn("hlnymzotq")
+                                        .withEmail("yuzcbmqqvxmvw")
+                                        .withAppId("tayx"),
                                     new DatabasePrincipalInner()
-                                        .withRole(DatabasePrincipalRole.INGESTOR)
-                                        .withName("lhsnvkcdmx")
+                                        .withRole(DatabasePrincipalRole.MONITOR)
+                                        .withName("lzqnhcvs")
                                         .withType(DatabasePrincipalType.USER)
-                                        .withFqn("oaimlnw")
-                                        .withEmail("aomylwea")
-                                        .withAppId("lcsethwwnpj"))),
+                                        .withFqn("nzoibgsxgnx")
+                                        .withEmail("qonmpqoxwdof")
+                                        .withAppId("xiqxeiiqbimh"))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(DatabasePrincipalRole.USER, response.value().get(0).role());
-        Assertions.assertEquals("hwahfbousn", response.value().get(0).name());
-        Assertions.assertEquals(DatabasePrincipalType.USER, response.value().get(0).type());
-        Assertions.assertEquals("gfewetwlyxgnc", response.value().get(0).fqn());
-        Assertions.assertEquals("kxhdjhlimmbcx", response.value().get(0).email());
-        Assertions.assertEquals("bcporxvxcjzhqizx", response.value().get(0).appId());
+        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, response.value().get(0).role());
+        Assertions.assertEquals("vwbcblembnkbwv", response.value().get(0).name());
+        Assertions.assertEquals(DatabasePrincipalType.GROUP, response.value().get(0).type());
+        Assertions.assertEquals("kdi", response.value().get(0).fqn());
+        Assertions.assertEquals("ihebwtsw", response.value().get(0).email());
+        Assertions.assertEquals("uwfmduragegizvc", response.value().get(0).appId());
     }
 }

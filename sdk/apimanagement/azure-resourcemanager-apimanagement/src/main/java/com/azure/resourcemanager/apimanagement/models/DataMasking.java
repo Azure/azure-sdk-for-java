@@ -23,6 +23,10 @@ public final class DataMasking {
     @JsonProperty(value = "headers")
     private List<DataMaskingEntity> headers;
 
+    /** Creates an instance of DataMasking class. */
+    public DataMasking() {
+    }
+
     /**
      * Get the queryParams property: Masking settings for Url query parameters.
      *

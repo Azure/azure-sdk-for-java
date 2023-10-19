@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Project;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class ProjectsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"devCenterUri\":\"vjayvblmhvkzu\",\"devCenterId\":\"xvvy\",\"description\":\"s\"},\"location\":\"byrqufeg\",\"tags\":{\"bnhlmc\":\"wz\"},\"id\":\"l\",\"name\":\"dn\",\"type\":\"itvgbmhrixkwm\"}";
+            "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"devCenterUri\":\"iwkkbn\",\"devCenterId\":\"rywvtylbfpn\",\"description\":\"rd\",\"maxDevBoxesPerUser\":287864608},\"location\":\"ithtywu\",\"tags\":{\"jchrdgoihxumw\":\"bihwqknfdnt\",\"zj\":\"ton\"},\"id\":\"uu\",\"name\":\"fdlwg\",\"type\":\"ytsbwtovv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +62,13 @@ public final class ProjectsGetByResourceGroupWithResponseMockTests {
         Project response =
             manager
                 .projects()
-                .getByResourceGroupWithResponse("nrvgoupmfiibfgg", "ioolvrwxkvtkkgll", Context.NONE)
+                .getByResourceGroupWithResponse("lmcuvhixb", "xyfwnylrcool", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("byrqufeg", response.location());
-        Assertions.assertEquals("wz", response.tags().get("bnhlmc"));
-        Assertions.assertEquals("xvvy", response.devCenterId());
-        Assertions.assertEquals("s", response.description());
+        Assertions.assertEquals("ithtywu", response.location());
+        Assertions.assertEquals("bihwqknfdnt", response.tags().get("jchrdgoihxumw"));
+        Assertions.assertEquals("rywvtylbfpn", response.devCenterId());
+        Assertions.assertEquals("rd", response.description());
+        Assertions.assertEquals(287864608, response.maxDevBoxesPerUser());
     }
 }

@@ -39,7 +39,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     container,
                     6,
                     null,
-                    PriorityLevel.High,
+                    PriorityLevel.HIGH,
                     true,
                     false);
 
@@ -57,7 +57,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     container,
                     6,
                     null,
-                    PriorityLevel.High,
+                    PriorityLevel.HIGH,
                     false,
                     false);
 
@@ -71,7 +71,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                 container,
                 6,
                 null,
-                PriorityLevel.High,
+                PriorityLevel.HIGH,
                 true,
                 true);
 
@@ -87,7 +87,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     container,
                     6,
                     null,
-                    PriorityLevel.High,
+                    PriorityLevel.HIGH,
                     true,
                     false);
             assertThatThrownBy(() -> throughputControlContainerProperties.enableThroughputControlGroup(throughputControlDefaultGroup2, null))
@@ -100,7 +100,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     container,
                     6,
                     null,
-                    PriorityLevel.High,
+                    PriorityLevel.HIGH,
                     false,
                     false);
             stateAfterEnabling =
@@ -116,7 +116,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                     container,
                     newGroup.getTargetThroughput(),
                     newGroup.getTargetThroughputThreshold(),
-                    PriorityLevel.High,
+                    PriorityLevel.HIGH,
                     newGroup.isDefault(),
                     newGroup.isContinueOnInitError());
             stateAfterEnabling =
@@ -132,7 +132,7 @@ public class ContainerThroughputControlGroupPropertiesTests {
                 container,
                 newGroup.getTargetThroughput() + 1,
                 newGroup.getTargetThroughputThreshold(),
-                PriorityLevel.High,
+                PriorityLevel.HIGH,
                 newGroup.isDefault(),
                 newGroup.isContinueOnInitError());
             stateAfterEnabling =

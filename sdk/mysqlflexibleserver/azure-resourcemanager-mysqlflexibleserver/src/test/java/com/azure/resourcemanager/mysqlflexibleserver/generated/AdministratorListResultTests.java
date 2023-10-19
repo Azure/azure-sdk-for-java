@@ -17,14 +17,14 @@ public final class AdministratorListResultTests {
         AdministratorListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"zxbzpfzabglc\",\"sid\":\"xwtctyqiklbbovpl\",\"tenantId\":\"bhvgy\",\"identityResourceId\":\"uosvmkfssxqukk\"},\"id\":\"l\",\"name\":\"mg\",\"type\":\"xnkjzkdesl\"},{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"wiyighxpkdw\",\"sid\":\"aiuebbaumnyqu\",\"tenantId\":\"deoj\",\"identityResourceId\":\"bckhsmtxpsi\"},\"id\":\"tfhvpesapskrdqmh\",\"name\":\"jdhtldwkyzxu\",\"type\":\"tkncwsc\"}],\"nextLink\":\"vlxotogtwrupqsx\"}")
+                    "{\"value\":[{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"dznrbtcqq\",\"sid\":\"qglhq\",\"tenantId\":\"ufo\",\"identityResourceId\":\"jywif\"},\"id\":\"esaagdfm\",\"name\":\"lzl\",\"type\":\"j\"}],\"nextLink\":\"ifkwmrvktsizntoc\"}")
                 .toObject(AdministratorListResult.class);
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, model.value().get(0).administratorType());
-        Assertions.assertEquals("zxbzpfzabglc", model.value().get(0).login());
-        Assertions.assertEquals("xwtctyqiklbbovpl", model.value().get(0).sid());
-        Assertions.assertEquals("bhvgy", model.value().get(0).tenantId());
-        Assertions.assertEquals("uosvmkfssxqukk", model.value().get(0).identityResourceId());
-        Assertions.assertEquals("vlxotogtwrupqsx", model.nextLink());
+        Assertions.assertEquals("dznrbtcqq", model.value().get(0).login());
+        Assertions.assertEquals("qglhq", model.value().get(0).sid());
+        Assertions.assertEquals("ufo", model.value().get(0).tenantId());
+        Assertions.assertEquals("jywif", model.value().get(0).identityResourceId());
+        Assertions.assertEquals("ifkwmrvktsizntoc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,23 +36,17 @@ public final class AdministratorListResultTests {
                         .asList(
                             new AzureADAdministratorInner()
                                 .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
-                                .withLogin("zxbzpfzabglc")
-                                .withSid("xwtctyqiklbbovpl")
-                                .withTenantId("bhvgy")
-                                .withIdentityResourceId("uosvmkfssxqukk"),
-                            new AzureADAdministratorInner()
-                                .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
-                                .withLogin("wiyighxpkdw")
-                                .withSid("aiuebbaumnyqu")
-                                .withTenantId("deoj")
-                                .withIdentityResourceId("bckhsmtxpsi")))
-                .withNextLink("vlxotogtwrupqsx");
+                                .withLogin("dznrbtcqq")
+                                .withSid("qglhq")
+                                .withTenantId("ufo")
+                                .withIdentityResourceId("jywif")))
+                .withNextLink("ifkwmrvktsizntoc");
         model = BinaryData.fromObject(model).toObject(AdministratorListResult.class);
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, model.value().get(0).administratorType());
-        Assertions.assertEquals("zxbzpfzabglc", model.value().get(0).login());
-        Assertions.assertEquals("xwtctyqiklbbovpl", model.value().get(0).sid());
-        Assertions.assertEquals("bhvgy", model.value().get(0).tenantId());
-        Assertions.assertEquals("uosvmkfssxqukk", model.value().get(0).identityResourceId());
-        Assertions.assertEquals("vlxotogtwrupqsx", model.nextLink());
+        Assertions.assertEquals("dznrbtcqq", model.value().get(0).login());
+        Assertions.assertEquals("qglhq", model.value().get(0).sid());
+        Assertions.assertEquals("ufo", model.value().get(0).tenantId());
+        Assertions.assertEquals("jywif", model.value().get(0).identityResourceId());
+        Assertions.assertEquals("ifkwmrvktsizntoc", model.nextLink());
     }
 }

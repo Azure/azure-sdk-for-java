@@ -6,19 +6,18 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.DevCenterProperties;
-import org.junit.jupiter.api.Test;
 
 public final class DevCenterPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DevCenterProperties model =
             BinaryData
                 .fromString("{\"provisioningState\":\"StorageProvisioningFailed\",\"devCenterUri\":\"yejhk\"}")
                 .toObject(DevCenterProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DevCenterProperties model = new DevCenterProperties();
         model = BinaryData.fromObject(model).toObject(DevCenterProperties.class);
     }

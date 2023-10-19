@@ -23,6 +23,15 @@ public final class RedirectType extends ExpandableStringEnum<RedirectType> {
     public static final RedirectType PERMANENT_REDIRECT = fromString("PermanentRedirect");
 
     /**
+     * Creates a new instance of RedirectType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RedirectType() {
+    }
+
+    /**
      * Creates or finds a RedirectType from its string representation.
      *
      * @param name a name to look for.

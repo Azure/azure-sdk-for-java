@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.CommunicationServiceResource;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,7 +33,7 @@ public final class CommunicationServicesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"hostName\":\"tbgsncghkj\",\"dataLocation\":\"szzhbijhtxfvgxbf\",\"notificationHubId\":\"xnehmpvec\",\"version\":\"odebfqkkrbmpu\",\"immutableResourceId\":\"riwflzlfb\",\"linkedDomains\":[\"uzycispnqza\"]},\"location\":\"gkbrpyyd\",\"tags\":{\"agnb\":\"nuqqkpikadrgvt\",\"fsiarbutr\":\"ynhijggme\",\"jrunmpxtt\":\"vpnazzm\"},\"id\":\"bh\",\"name\":\"bnlankxmyskpb\",\"type\":\"enbtkcxywny\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"arbu\",\"dataLocation\":\"rcvpnazzmhjrunmp\",\"notificationHubId\":\"tdbhrbnla\",\"version\":\"xmyskp\",\"immutableResourceId\":\"enbtkcxywny\",\"linkedDomains\":[\"synlqidybyxczfc\"]},\"identity\":{\"principalId\":\"983ee811-4e88-4e04-a331-71299154c241\",\"tenantId\":\"4e30792f-96af-4626-8308-5f4dcab3dafc\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"p\":{\"principalId\":\"4a97fbdc-5250-48ea-ae8d-f40bfa8e858d\",\"clientId\":\"e514e730-edcd-461b-bf5d-094e4fb054ae\"},\"rqlfktsthsucocmn\":{\"principalId\":\"98410989-176f-4dd8-b1f0-630a86c49396\",\"clientId\":\"21844146-dfbf-4ce0-b0db-34095ffab1cf\"},\"zt\":{\"principalId\":\"f42d3bf7-9aab-40c4-a268-d927edf01454\",\"clientId\":\"ad730d97-a363-455f-a9ee-9b85cafbab42\"}}},\"location\":\"twwrqp\",\"tags\":{\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\",\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +62,12 @@ public final class CommunicationServicesListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CommunicationServiceResource> response =
-            manager.communicationServices().listByResourceGroup("uujqgidokgjljyo", com.azure.core.util.Context.NONE);
+            manager.communicationServices().listByResourceGroup("buynhijggm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gkbrpyyd", response.iterator().next().location());
-        Assertions.assertEquals("nuqqkpikadrgvt", response.iterator().next().tags().get("agnb"));
-        Assertions.assertEquals("szzhbijhtxfvgxbf", response.iterator().next().dataLocation());
-        Assertions.assertEquals("uzycispnqza", response.iterator().next().linkedDomains().get(0));
+        Assertions.assertEquals("twwrqp", response.iterator().next().location());
+        Assertions.assertEquals("ckzywbiexzfeyue", response.iterator().next().tags().get("xibxujwbhqwalm"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("rcvpnazzmhjrunmp", response.iterator().next().dataLocation());
+        Assertions.assertEquals("synlqidybyxczfc", response.iterator().next().linkedDomains().get(0));
     }
 }

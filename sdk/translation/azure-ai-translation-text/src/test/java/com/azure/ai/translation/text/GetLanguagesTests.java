@@ -6,23 +6,24 @@ package com.azure.ai.translation.text;
 import com.azure.ai.translation.text.models.GetLanguagesResult;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GetLanguagesTests extends TextTranslationClientBase {
 
     @Test
-    public void getLanguagesAllScopes() throws Exception {
+    public void getLanguagesAllScopes() {
         GetLanguagesResult response = getTranslationClient().getLanguages(null, null, null, null);
-        assertTrue(!response.getTranslation().isEmpty());
-        assertNotNull(!response.getDictionary().isEmpty());
-        assertNotNull(!response.getTransliteration().isEmpty());
+        assertFalse(response.getTranslation().isEmpty());
+        assertFalse(response.getDictionary().isEmpty());
+        assertFalse(response.getTransliteration().isEmpty());
     }
 
     @Test
-    public void getLanguagesTranslationScope() throws Exception {
+    public void getLanguagesTranslationScope() {
         GetLanguagesResult response = getTranslationClient().getLanguages(null, "translation", null, null);
-        assertTrue(!response.getTranslation().isEmpty());
+        assertFalse(response.getTranslation().isEmpty());
         assertTrue(response.getTranslation().containsKey("af"));
         assertNotNull(response.getTranslation().get("af").getDir());
         assertNotNull(response.getTranslation().get("af").getName());
@@ -30,9 +31,9 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     }
 
     @Test
-    public void getLanguagesTransliterationScope() throws Exception {
+    public void getLanguagesTransliterationScope() {
         GetLanguagesResult response = getTranslationClient().getLanguages(null, "transliteration", null, null);
-        assertTrue(!response.getTransliteration().isEmpty());
+        assertFalse(response.getTransliteration().isEmpty());
         assertTrue(response.getTransliteration().containsKey("be"));
 
         assertNotNull(response.getTransliteration().get("be").getName());
@@ -52,10 +53,10 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     }
 
     @Test
-    public void getLanguagesTransliterationScopeMultipleScripts() throws Exception {
+    public void getLanguagesTransliterationScopeMultipleScripts() {
 
         GetLanguagesResult response = getTranslationClient().getLanguages(null, "transliteration", null, null);
-        assertTrue(!response.getTransliteration().isEmpty());
+        assertFalse(response.getTransliteration().isEmpty());
         assertTrue(response.getTransliteration().containsKey("zh-Hant"));
 
         assertNotNull(response.getTransliteration().get("zh-Hant").getName());
@@ -67,14 +68,14 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     }
 
     @Test
-    public void getLanguagesDictionaryScope() throws Exception {
+    public void getLanguagesDictionaryScope() {
         GetLanguagesResult response = getTranslationClient().getLanguages(null, "dictionary", null, null);
-        assertTrue(!response.getDictionary().isEmpty());
+        assertFalse(response.getDictionary().isEmpty());
         assertTrue(response.getDictionary().containsKey("de"));
 
         assertNotNull(response.getDictionary().get("de").getName());
         assertNotNull(response.getDictionary().get("de").getNativeName());
-        assertNotNull(response.getDictionary().get("de").getDir().isEmpty());
+        assertFalse(response.getDictionary().get("de").getDir().isEmpty());
 
         assertNotNull(response.getDictionary().get("de").getTranslations().get(0).getCode());
         assertNotNull(response.getDictionary().get("de").getTranslations().get(0).getDir());
@@ -83,9 +84,9 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     }
 
     @Test
-    public void getLanguagesDictionaryScopeMultipleTranslations() throws Exception {
+    public void getLanguagesDictionaryScopeMultipleTranslations() {
         GetLanguagesResult response = getTranslationClient().getLanguages(null, "dictionary", null, null);
-        assertTrue(!response.getDictionary().isEmpty());
+        assertFalse(response.getDictionary().isEmpty());
         assertTrue(response.getDictionary().containsKey("en"));
 
         assertNotNull(response.getDictionary().get("en").getName());
@@ -96,11 +97,11 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     }
 
     @Test
-    public void getLanguagesWithCulture() throws Exception {
+    public void getLanguagesWithCulture() {
         GetLanguagesResult response = getTranslationClient().getLanguages(null, null, "es", null);
-        assertTrue(!response.getTransliteration().isEmpty());
-        assertTrue(!response.getTranslation().isEmpty());
-        assertTrue(!response.getDictionary().isEmpty());
+        assertFalse(response.getTransliteration().isEmpty());
+        assertFalse(response.getTranslation().isEmpty());
+        assertFalse(response.getDictionary().isEmpty());
 
         assertNotNull(response.getTranslation().get("en").getDir());
         assertNotNull(response.getTranslation().get("en").getName());

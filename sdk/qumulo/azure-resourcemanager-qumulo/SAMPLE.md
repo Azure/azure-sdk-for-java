@@ -29,7 +29,7 @@ import java.util.Map;
 /** Samples for FileSystems CreateOrUpdate. */
 public final class FileSystemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_CreateOrUpdate_MaximumSet_Gen.
@@ -65,7 +65,7 @@ public final class FileSystemsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_CreateOrUpdate_MinimumSet_Gen.
@@ -85,7 +85,7 @@ public final class FileSystemsCreateOrUpdateSamples {
                     .withOfferId("aaaaaaaaaaaaaaaaaaaaaaaaa")
                     .withPublisherId("aa"))
             .withStorageSku(StorageSku.STANDARD)
-            .withUserDetails(new UserDetails().withEmail("aaaaaaaaaaaaaaaaaaaaaaa"))
+            .withUserDetails(new UserDetails().withEmail("viptslwulnpaupfljvnjeq"))
             .withDelegatedSubnetId("aaaaaaaaaa")
             .withAdminPassword("ekceujoecaashtjlsgcymnrdozk")
             .withInitialCapacity(9)
@@ -111,7 +111,7 @@ public final class FileSystemsCreateOrUpdateSamples {
 /** Samples for FileSystems Delete. */
 public final class FileSystemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Delete_MaximumSet_Gen.
@@ -123,7 +123,7 @@ public final class FileSystemsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Delete_MinimumSet_Gen.
@@ -142,7 +142,7 @@ public final class FileSystemsDeleteSamples {
 /** Samples for FileSystems GetByResourceGroup. */
 public final class FileSystemsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Get_MaximumSet_Gen.
@@ -157,7 +157,7 @@ public final class FileSystemsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Get_MinimumSet_Gen.
@@ -178,7 +178,7 @@ public final class FileSystemsGetByResourceGroupSamples {
 /** Samples for FileSystems List. */
 public final class FileSystemsListSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListBySubscription_MinimumSet_Gen.
@@ -191,7 +191,7 @@ public final class FileSystemsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListBySubscription_MaximumSet_Gen.
@@ -211,7 +211,7 @@ public final class FileSystemsListSamples {
 /** Samples for FileSystems ListByResourceGroup. */
 public final class FileSystemsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListByResourceGroup_MaximumSet_Gen.
@@ -224,7 +224,7 @@ public final class FileSystemsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListByResourceGroup_MinimumSet_Gen.
@@ -255,7 +255,7 @@ import java.util.Map;
 /** Samples for FileSystems Update. */
 public final class FileSystemsUpdateSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Update_MinimumSet_Gen.
@@ -272,7 +272,7 @@ public final class FileSystemsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Update_MaximumSet_Gen.
@@ -301,7 +301,7 @@ public final class FileSystemsUpdateSamples {
                             .withPlanId("x")
                             .withOfferId("eiyhbmpwgezcmzrrfoiskuxlcvwojf")
                             .withPublisherId("wfmokfdjbwpjhz"))
-                    .withUserDetails(new UserDetails().withEmail("viptslwulnpaupfljvnjeq"))
+                    .withUserDetails(new UserDetails().withEmail("aa"))
                     .withDelegatedSubnetId("vjfirtaljehawmflyfianw")
                     .withClusterLoginUrl("adabmuthwrbjshzfbo")
                     .withPrivateIPs(Arrays.asList("eugjqbaoucgjsopzfrq")))
@@ -327,7 +327,7 @@ public final class FileSystemsUpdateSamples {
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -339,7 +339,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.

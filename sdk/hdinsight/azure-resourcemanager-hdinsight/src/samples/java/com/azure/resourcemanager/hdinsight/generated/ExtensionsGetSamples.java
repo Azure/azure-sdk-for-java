@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Extensions Get. */
 public final class ExtensionsGetSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetExtension.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/GetExtension.json
      */
     /**
      * Sample code: Get an extension.
@@ -17,6 +15,6 @@ public final class ExtensionsGetSamples {
      * @param manager Entry point to HDInsightManager.
      */
     public static void getAnExtension(com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
-        manager.extensions().getWithResponse("rg1", "cluster1", "clustermonitoring", Context.NONE);
+        manager.extensions().getWithResponse("rg1", "cluster1", "clustermonitoring", com.azure.core.util.Context.NONE);
     }
 }

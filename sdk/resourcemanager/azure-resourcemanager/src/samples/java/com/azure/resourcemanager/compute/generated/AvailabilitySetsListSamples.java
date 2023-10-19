@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for AvailabilitySets List. */
 public final class AvailabilitySetsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
      */
     /**
      * Sample code: List availability sets in a subscription.

@@ -33,7 +33,7 @@ public final class TrafficControllerInterfacesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"configurationEndpoints\":[\"yyvxyqjpkcattpn\",\"jcrcczsqpjhvmda\",\"v\",\"ysou\"],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Succeeded\"},\"location\":\"eupfhyhltrpm\",\"tags\":{\"odsfcpkvxodpuozm\":\"mcmatuokthfuiu\",\"ktwh\":\"zydagfuaxbezyiuo\",\"o\":\"dxwzywqsmbsurexi\",\"fksymddystki\":\"yocf\"},\"id\":\"uxh\",\"name\":\"yudxorrqnbp\",\"type\":\"czvyifq\"}";
+            "{\"properties\":{\"configurationEndpoints\":[\"jiwkuofoskghsau\",\"imjm\"],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Succeeded\"},\"location\":\"idyjrrfbyaosvexc\",\"tags\":{\"vleggzfbuhfmvfax\":\"pclhocohslk\"},\"id\":\"ffeii\",\"name\":\"hl\",\"type\":\"m\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,14 @@ public final class TrafficControllerInterfacesCreateOrUpdateMockTests {
         TrafficController response =
             manager
                 .trafficControllerInterfaces()
-                .define("pgacftadehxnlty")
-                .withRegion("jugwdkcglhsl")
-                .withExistingResourceGroup("ynpwlbj")
-                .withTags(mapOf("fqweykhmene", "dyggdtjixhbku", "cibvyvdcsitynn", "fyexfwhy", "f", "amdecte"))
+                .define("ys")
+                .withRegion("lrmv")
+                .withExistingResourceGroup("ksymd")
+                .withTags(mapOf("zwtruwiqzbqjvsov", "watkpnpulexxb"))
                 .create();
 
-        Assertions.assertEquals("eupfhyhltrpm", response.location());
-        Assertions.assertEquals("mcmatuokthfuiu", response.tags().get("odsfcpkvxodpuozm"));
+        Assertions.assertEquals("idyjrrfbyaosvexc", response.location());
+        Assertions.assertEquals("pclhocohslk", response.tags().get("vleggzfbuhfmvfax"));
     }
 
     @SuppressWarnings("unchecked")

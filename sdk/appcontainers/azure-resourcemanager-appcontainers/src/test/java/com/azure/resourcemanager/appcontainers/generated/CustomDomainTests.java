@@ -8,31 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.BindingType;
 import com.azure.resourcemanager.appcontainers.models.CustomDomain;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomDomainTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CustomDomain model =
             BinaryData
-                .fromString(
-                    "{\"name\":\"hfxobbcswsrtj\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"lrbpbewtghfgbl\"}")
+                .fromString("{\"name\":\"ac\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"fqrhhuaopppc\"}")
                 .toObject(CustomDomain.class);
-        Assertions.assertEquals("hfxobbcswsrtj", model.name());
+        Assertions.assertEquals("ac", model.name());
         Assertions.assertEquals(BindingType.SNI_ENABLED, model.bindingType());
-        Assertions.assertEquals("lrbpbewtghfgbl", model.certificateId());
+        Assertions.assertEquals("fqrhhuaopppc", model.certificateId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CustomDomain model =
             new CustomDomain()
-                .withName("hfxobbcswsrtj")
+                .withName("ac")
                 .withBindingType(BindingType.SNI_ENABLED)
-                .withCertificateId("lrbpbewtghfgbl");
+                .withCertificateId("fqrhhuaopppc");
         model = BinaryData.fromObject(model).toObject(CustomDomain.class);
-        Assertions.assertEquals("hfxobbcswsrtj", model.name());
+        Assertions.assertEquals("ac", model.name());
         Assertions.assertEquals(BindingType.SNI_ENABLED, model.bindingType());
-        Assertions.assertEquals("lrbpbewtghfgbl", model.certificateId());
+        Assertions.assertEquals("fqrhhuaopppc", model.certificateId());
     }
 }

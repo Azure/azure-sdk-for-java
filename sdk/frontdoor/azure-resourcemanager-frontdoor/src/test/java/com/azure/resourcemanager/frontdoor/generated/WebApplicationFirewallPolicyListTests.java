@@ -14,15 +14,15 @@ public final class WebApplicationFirewallPolicyListTests {
         WebApplicationFirewallPolicyList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"frontendEndpointLinks\":[],\"routingRuleLinks\":[],\"securityPolicyLinks\":[],\"provisioningState\":\"wxwlmdjrkvfgb\",\"resourceState\":\"Deleting\"},\"etag\":\"dbodacizsjqlhkrr\",\"sku\":{\"name\":\"Premium_AzureFrontDoor\"},\"location\":\"ibqipqkg\",\"tags\":{\"pjorwkqnyhg\":\"ndzwmkrefa\",\"jivfxzsjabib\":\"ij\"},\"id\":\"ystawfsdjpvkvp\",\"name\":\"jxbkzbzkdvn\",\"type\":\"jabudurgkakmo\"}],\"nextLink\":\"hjjklff\"}")
+                    "{\"value\":[{\"properties\":{\"frontendEndpointLinks\":[],\"routingRuleLinks\":[],\"securityPolicyLinks\":[],\"provisioningState\":\"ybczmehmtzo\",\"resourceState\":\"Deleting\"},\"etag\":\"h\",\"sku\":{\"name\":\"Premium_AzureFrontDoor\"},\"location\":\"dgs\",\"tags\":{\"sx\":\"ejhphoyc\",\"tbmufpo\":\"obhdxbmtqioqjze\",\"hwlrx\":\"noi\",\"dmbpazlobcufpdz\":\"bqsoqijg\"},\"id\":\"rbt\",\"name\":\"qqjnqgl\",\"type\":\"qgn\"},{\"properties\":{\"frontendEndpointLinks\":[],\"routingRuleLinks\":[],\"securityPolicyLinks\":[],\"provisioningState\":\"fsqesaagdfmglzlh\",\"resourceState\":\"Deleting\"},\"etag\":\"f\",\"sku\":{\"name\":\"Premium_AzureFrontDoor\"},\"location\":\"vktsizntocipao\",\"tags\":{\"kfo\":\"psqucmpoyf\"},\"id\":\"knygjofjddeq\",\"name\":\"rd\",\"type\":\"upewnwreitjzy\"},{\"properties\":{\"frontendEndpointLinks\":[],\"routingRuleLinks\":[],\"securityPolicyLinks\":[],\"provisioningState\":\"fcqhsmyurkd\",\"resourceState\":\"Creating\"},\"etag\":\"he\",\"sku\":{\"name\":\"Classic_AzureFrontDoor\"},\"location\":\"jtxukcdm\",\"tags\":{\"w\":\"cryuan\",\"pmrqobm\":\"xzdxtayrlhmwh\",\"knryrtihfxtij\":\"u\",\"zk\":\"pzvgnwzsymglzufc\"},\"id\":\"hdbihan\",\"name\":\"fhfcb\",\"type\":\"y\"}],\"nextLink\":\"git\"}")
                 .toObject(WebApplicationFirewallPolicyList.class);
-        Assertions.assertEquals("hjjklff", model.nextLink());
+        Assertions.assertEquals("git", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebApplicationFirewallPolicyList model = new WebApplicationFirewallPolicyList().withNextLink("hjjklff");
+        WebApplicationFirewallPolicyList model = new WebApplicationFirewallPolicyList().withNextLink("git");
         model = BinaryData.fromObject(model).toObject(WebApplicationFirewallPolicyList.class);
-        Assertions.assertEquals("hjjklff", model.nextLink());
+        Assertions.assertEquals("git", model.nextLink());
     }
 }

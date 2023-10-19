@@ -61,6 +61,13 @@ public class ReadmeSamples {
         return roomsClient;
     }
 
+    public RoomsClientBuilder createRoomsClientBuilder() {
+        // BEGIN: readme-sample-createRoomsCLientBuilder
+        RoomsClientBuilder builder = new RoomsClientBuilder();
+        // END: readme-sample-createRoomsCLientBuilder
+        return builder;
+    }
+
     public RoomsClient createRoomsClientWithAAD() {
         // You can find your endpoint and access key from your resource in the Azure
         // Portal
@@ -101,7 +108,8 @@ public class ReadmeSamples {
         CreateRoomOptions roomOptions = new CreateRoomOptions()
                 .setValidFrom(validFrom)
                 .setValidUntil(validUntil)
-                .setParticipants(participants);
+                .setParticipants(participants)
+                .setPstnDialOutEnabled(true);
 
         CommunicationRoom roomResult = roomsClient.createRoom(roomOptions);
         // END: readme-sample-createRoomWithValidInput
@@ -117,7 +125,8 @@ public class ReadmeSamples {
         // Update Room options
         UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
                 .setValidFrom(validFrom)
-                .setValidUntil(validUntil);
+                .setValidUntil(validUntil)
+                .setPstnDialOutEnabled(true);
 
         try {
             CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id>", updateRoomOptions);
@@ -151,6 +160,24 @@ public class ReadmeSamples {
         }
         // END: readme-sample-deleteRoomWithRoomId
     }
+
+
+    public void listRooms() {
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+
+        // BEGIN: readme-sample-listRooms
+        try {
+            PagedIterable<CommunicationRoom> rooms = roomsClient.listRooms();
+
+            for (CommunicationRoom room : rooms) {
+                System.out.println("Room ID: " + room.getRoomId());
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        // END: readme-sample-listRooms
+    }
+
 
     public void addOrUpdateRoomParticipantsWithRoomId() {
 

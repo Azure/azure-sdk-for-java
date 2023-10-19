@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -15,10 +16,14 @@ import reactor.core.publisher.Flux;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecutionContextBase<T> {
+
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
     private final IDocumentQueryExecutionComponent<T> component;
 
@@ -40,7 +45,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         CosmosQueryRequestOptions requestOptions = initParams.getCosmosQueryRequestOptions();
 
         return (continuationToken, documentQueryParams) -> {
-            CosmosQueryRequestOptions parallelCosmosQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(requestOptions);
+            CosmosQueryRequestOptions parallelCosmosQueryRequestOptions = qryOptAccessor.clone(requestOptions);
             ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
 
             initParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);
@@ -66,7 +71,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         );
     }
 
-    protected static <T> Flux<PipelinedQueryExecutionContextBase<T>> createAsyncCore(
+    static <T> Flux<PipelinedQueryExecutionContextBase<T>> createAsyncCore(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams,
@@ -96,7 +101,8 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient queryClient, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
-        ResourceType resourceTypeEnum) {
+        ResourceType resourceTypeEnum,
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         Flux<IDocumentQueryExecutionComponent<T>> documentQueryExecutionComponentFlux =
             ParallelDocumentQueryExecutionContext.createReadManyQueryAsync(diagnosticsClientContext, queryClient,
@@ -104,7 +110,8 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
                 rangeQueryMap,
                 cosmosQueryRequestOptions, resourceId,
                 collectionLink, activityId, klass,
-                resourceTypeEnum);
+                resourceTypeEnum,
+                isQueryCancelledOnTimeout);
 
         final Function<JsonNode, T> factoryMethod = DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
             cosmosQueryRequestOptions, false, klass);

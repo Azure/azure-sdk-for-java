@@ -100,6 +100,21 @@ public interface JobResource {
     Boolean isShippingAddressEditable();
 
     /**
+     * Gets the reverseShippingDetailsUpdate property: The Editable status for Reverse Shipping Address and Contact
+     * Info.
+     *
+     * @return the reverseShippingDetailsUpdate value.
+     */
+    ReverseShippingDetailsEditStatus reverseShippingDetailsUpdate();
+
+    /**
+     * Gets the reverseTransportPreferenceUpdate property: The Editable status for Reverse Transport preferences.
+     *
+     * @return the reverseTransportPreferenceUpdate value.
+     */
+    ReverseTransportPreferenceEditStatus reverseTransportPreferenceUpdate();
+
+    /**
      * Gets the isPrepareToShipEnabled property: Is Prepare To Ship Enabled on this job.
      *
      * @return the isPrepareToShipEnabled value.
@@ -415,6 +430,28 @@ public interface JobResource {
      * @return the refreshed resource.
      */
     JobResource refresh(Context context);
+
+    /**
+     * Request to mark devices for a given job as shipped.
+     *
+     * @param markDevicesShippedRequest Mark Devices Shipped Request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> markDevicesShippedWithResponse(MarkDevicesShippedRequest markDevicesShippedRequest, Context context);
+
+    /**
+     * Request to mark devices for a given job as shipped.
+     *
+     * @param markDevicesShippedRequest Mark Devices Shipped Request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void markDevicesShipped(MarkDevicesShippedRequest markDevicesShippedRequest);
 
     /**
      * Book shipment pick up.

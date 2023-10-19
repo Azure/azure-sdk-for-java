@@ -17,6 +17,15 @@ public final class PolicyEnabledState extends ExpandableStringEnum<PolicyEnabled
     public static final PolicyEnabledState ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of PolicyEnabledState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyEnabledState() {
+    }
+
+    /**
      * Creates or finds a PolicyEnabledState from its string representation.
      *
      * @param name a name to look for.

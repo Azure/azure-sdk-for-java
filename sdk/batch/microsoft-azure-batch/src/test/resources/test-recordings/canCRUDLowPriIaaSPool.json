@@ -1,19 +1,18 @@
 {
   "networkCallRecords" : [ {
     "Method" : "HEAD",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:23:44 GMT",
+      "date" : "Tue, 23 May 2023 04:39:37 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "ef61daad-1c1a-47c6-adb7-9ee30fbd74db",
+      "client-request-id" : "a7bd289e-e2c4-440c-a632-2726f00a03a2",
       "retry-after" : "0",
-      "request-id" : "f3b53b04-085a-47ca-ab83-9d888ef91242",
+      "request-id" : "9a361dea-64b5-413e-ae80-664ecea93915",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -21,337 +20,301 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:23:46 GMT",
+      "date" : "Tue, 23 May 2023 04:39:40 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "dataserviceid" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool",
+      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool",
       "retry-after" : "0",
-      "request-id" : "69f323f8-25a5-4757-b04f-2652a2c66a38",
+      "request-id" : "a163b698-b3ea-4437-8d31-40a29cc551cc",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:23:46 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:39:40 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "8400ccec-9e2f-4e40-92bd-940126571d04",
-      "etag" : "0x8DAC8D13F8FDD8A",
-      "location" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool",
+      "client-request-id" : "14957ea6-352c-493a-83b0-373a94804c0c",
+      "etag" : "0x8DB5B47B8D1DC99",
+      "location" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:23:46 GMT",
+      "date" : "Tue, 23 May 2023 04:39:40 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:39:40 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "retry-after" : "0",
-      "request-id" : "e3506522-715c-4f00-b11c-07dd2ec0d7b5",
-      "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:23:46 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "08a3bbc9-229d-4535-958d-05df692686ac",
-      "etag" : "0x8DAC8D13F8FDD8A",
-      "dataserviceversion" : "3.0",
-      "Body" : ""
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:23:46 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
+      "client-request-id" : "fe28a141-e2d1-4570-b870-bd1c03a9a3fd",
+      "etag" : "0x8DB5B47B8D1DC99",
       "retry-after" : "0",
-      "request-id" : "28961335-d7ab-47a7-882c-69fd94685151",
-      "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:23:46 GMT",
-      "x-content-type-options" : "nosniff",
-      "client-request-id" : "bbcb02dd-f80c-4f2e-a76c-6991b54d83e6",
-      "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D13F8FDD8A",
-      "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D13F8FDD8A\",\"lastModified\":\"2022-11-17T19:23:46.645953Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"active\",\"stateTransitionTime\":\"2022-11-17T19:23:46.645953Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:23:46.645953Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:24:17 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "retry-after" : "0",
-      "request-id" : "ecd5b2d3-820d-4fd0-8a99-79e239874230",
-      "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:23:46 GMT",
-      "x-content-type-options" : "nosniff",
-      "client-request-id" : "6bec4837-aa10-4707-b012-40d3beebd482",
-      "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D13F8FDD8A",
-      "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D13F8FDD8A\",\"lastModified\":\"2022-11-17T19:23:46.645953Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"active\",\"stateTransitionTime\":\"2022-11-17T19:23:46.645953Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:23:46.645953Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:24:47 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "retry-after" : "0",
-      "request-id" : "119c3243-6b37-41a5-a729-7782f7278056",
-      "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:23:46 GMT",
-      "x-content-type-options" : "nosniff",
-      "client-request-id" : "f3df744e-c495-48fd-b513-548a1c06fdd9",
-      "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D13F8FDD8A",
-      "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D13F8FDD8A\",\"lastModified\":\"2022-11-17T19:23:46.645953Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"active\",\"stateTransitionTime\":\"2022-11-17T19:23:46.645953Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:23:46.645953Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:16 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "retry-after" : "0",
-      "request-id" : "8660f8f6-97ab-4a49-8390-f1df9931d494",
-      "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:23:46 GMT",
-      "x-content-type-options" : "nosniff",
-      "client-request-id" : "66c43469-8f3a-484a-af82-e5e4f25c34be",
-      "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D13F8FDD8A",
-      "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D13F8FDD8A\",\"lastModified\":\"2022-11-17T19:23:46.645953Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"active\",\"stateTransitionTime\":\"2022-11-17T19:23:46.645953Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2022-11-17T19:24:59.4559141Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/nodes?api-version=2022-10-01.16.0",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:16 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "x-content-type-options" : "nosniff",
-      "client-request-id" : "96dc6dce-6761-4bca-91fb-e32e8ebada10",
-      "content-type" : "application/json;odata=minimalmetadata",
-      "retry-after" : "0",
-      "request-id" : "e1324861-b48b-490c-9c6d-891c0cacf72c",
+      "request-id" : "e151225b-3fe2-4c59-b5f1-eda2e8967457",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#nodes\",\"value\":[\r\n    {\r\n      \"id\":\"tvmps_1b6e2e10198194f351e190ec2bb1485281be9c355fcbf2c6eee1831fec5ef4f9_d\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/nodes/tvmps_1b6e2e10198194f351e190ec2bb1485281be9c355fcbf2c6eee1831fec5ef4f9_d\",\"state\":\"idle\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2022-11-17T19:25:04.368823Z\",\"lastBootTime\":\"2022-11-17T19:25:04.277499Z\",\"allocationTime\":\"2022-11-17T19:24:47.9755073Z\",\"ipAddress\":\"10.1.0.8\",\"affinityId\":\"TVM:tvmps_1b6e2e10198194f351e190ec2bb1485281be9c355fcbf2c6eee1831fec5ef4f9_d\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"certificateReferences\":[],\"isDedicated\":true,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"testinbound.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.66.98.77\",\"publicFQDN\":\"dns86ca22cd-0636-4844-a1a1-901fdfb8f639-azurebatch-cloudservice.westus.cloudapp.azure.com\",\"frontendPort\":60000,\"backendPort\":5000\r\n          },{\r\n            \"name\":\"SSHRule.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.66.98.77\",\"publicFQDN\":\"dns86ca22cd-0636-4844-a1a1-901fdfb8f639-azurebatch-cloudservice.westus.cloudapp.azure.com\",\"frontendPort\":50000,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"nodeAgentInfo\":{\r\n        \"lastUpdateTime\":\"2022-11-17T19:25:04.277499Z\",\"version\":\"1.9.33\"\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202210180\"\r\n        }\r\n      }\r\n    },{\r\n      \"id\":\"tvmps_485639cbe8778916016f4aa8e5880cbf4899a4f92eb3b8a9b46d7aa3c4afcbc5_p\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/nodes/tvmps_485639cbe8778916016f4aa8e5880cbf4899a4f92eb3b8a9b46d7aa3c4afcbc5_p\",\"state\":\"idle\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2022-11-17T19:25:04.511811Z\",\"lastBootTime\":\"2022-11-17T19:25:04.450324Z\",\"allocationTime\":\"2022-11-17T19:24:58.0563031Z\",\"ipAddress\":\"10.1.0.6\",\"affinityId\":\"TVM:tvmps_485639cbe8778916016f4aa8e5880cbf4899a4f92eb3b8a9b46d7aa3c4afcbc5_p\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"certificateReferences\":[],\"isDedicated\":false,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"testinbound.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.66.98.66\",\"publicFQDN\":\"dns2e22dcae-c094-4b51-b428-178b9e91e40a-azurebatch-cloudservice.westus.cloudapp.azure.com\",\"frontendPort\":60000,\"backendPort\":5000\r\n          },{\r\n            \"name\":\"SSHRule.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.66.98.66\",\"publicFQDN\":\"dns2e22dcae-c094-4b51-b428-178b9e91e40a-azurebatch-cloudservice.westus.cloudapp.azure.com\",\"frontendPort\":50000,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"nodeAgentInfo\":{\r\n        \"lastUpdateTime\":\"2022-11-17T19:25:04.450324Z\",\"version\":\"1.9.33\"\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202210180\"\r\n        }\r\n      }\r\n    },{\r\n      \"id\":\"tvmps_d4bbaff58813761d82643eedb70c55a2d9f4eb7011467d1cd9c36bd8117772f4_p\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/nodes/tvmps_d4bbaff58813761d82643eedb70c55a2d9f4eb7011467d1cd9c36bd8117772f4_p\",\"state\":\"idle\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2022-11-17T19:25:04.522098Z\",\"lastBootTime\":\"2022-11-17T19:25:04.438086Z\",\"allocationTime\":\"2022-11-17T19:24:58.0563031Z\",\"ipAddress\":\"10.1.0.7\",\"affinityId\":\"TVM:tvmps_d4bbaff58813761d82643eedb70c55a2d9f4eb7011467d1cd9c36bd8117772f4_p\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"certificateReferences\":[],\"isDedicated\":false,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"testinbound.1\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.66.98.66\",\"publicFQDN\":\"dns2e22dcae-c094-4b51-b428-178b9e91e40a-azurebatch-cloudservice.westus.cloudapp.azure.com\",\"frontendPort\":60001,\"backendPort\":5000\r\n          },{\r\n            \"name\":\"SSHRule.1\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.66.98.66\",\"publicFQDN\":\"dns2e22dcae-c094-4b51-b428-178b9e91e40a-azurebatch-cloudservice.westus.cloudapp.azure.com\",\"frontendPort\":50001,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"nodeAgentInfo\":{\r\n        \"lastUpdateTime\":\"2022-11-17T19:25:04.438086Z\",\"version\":\"1.9.33\"\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202210180\"\r\n        }\r\n      }\r\n    },{\r\n      \"id\":\"tvmps_f4a03eb211e09d08e92915ee8eddfa29354d60c83fd1bd077a4a715b5f974a30_d\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/nodes/tvmps_f4a03eb211e09d08e92915ee8eddfa29354d60c83fd1bd077a4a715b5f974a30_d\",\"state\":\"idle\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2022-11-17T19:25:10.392905Z\",\"lastBootTime\":\"2022-11-17T19:25:10.300224Z\",\"allocationTime\":\"2022-11-17T19:24:47.9755073Z\",\"ipAddress\":\"10.1.0.9\",\"affinityId\":\"TVM:tvmps_f4a03eb211e09d08e92915ee8eddfa29354d60c83fd1bd077a4a715b5f974a30_d\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"certificateReferences\":[],\"isDedicated\":true,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"testinbound.1\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.66.98.77\",\"publicFQDN\":\"dns86ca22cd-0636-4844-a1a1-901fdfb8f639-azurebatch-cloudservice.westus.cloudapp.azure.com\",\"frontendPort\":60001,\"backendPort\":5000\r\n          },{\r\n            \"name\":\"SSHRule.1\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.66.98.77\",\"publicFQDN\":\"dns86ca22cd-0636-4844-a1a1-901fdfb8f639-azurebatch-cloudservice.westus.cloudapp.azure.com\",\"frontendPort\":50001,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"nodeAgentInfo\":{\r\n        \"lastUpdateTime\":\"2022-11-17T19:25:10.300224Z\",\"version\":\"1.9.33\"\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202210180\"\r\n        }\r\n      }\r\n    }\r\n  ]\r\n}",
+      "Body" : "",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/nodecounts?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:17 GMT",
+      "date" : "Tue, 23 May 2023 04:39:40 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
+      "retry-after" : "0",
+      "request-id" : "479695df-4324-4205-a9b4-db7cd4cd4039",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:39:40 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "dc45e227-ed47-4f4a-ba86-2b70a29796ee",
+      "client-request-id" : "abedd295-06ec-4ff3-aca3-c065346c9528",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B47B8D1DC99",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47B8D1DC99\",\"lastModified\":\"2023-05-23T04:39:40.4624025Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:39:40.4624025Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:39:40.4624025Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:40:11 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "46d39b88-abaa-474a-aa4e-edf4bf9a2750",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:39:40 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "e9b00300-ad1a-4474-a670-7670b28c30b0",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B47B8D1DC99",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47B8D1DC99\",\"lastModified\":\"2023-05-23T04:39:40.4624025Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:39:40.4624025Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:39:40.4624025Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"default\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:40:40 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "request-id" : "b3eb092e-b5e3-4ea1-a469-6cf8dbf4d755",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 23 May 2023 04:39:40 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "074c268b-3c39-4faf-b7d5-719a00bc75e9",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8DB5B47B8D1DC99",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47B8D1DC99\",\"lastModified\":\"2023-05-23T04:39:40.4624025Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:39:40.4624025Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:37.7566141Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"default\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/nodes?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:40:40 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "9c991162-dafe-460a-b048-d0a48ac105ed",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "0265b9e0-3f6c-4042-bb81-d2dd5d4d57b4",
+      "request-id" : "9b960292-5b82-4788-8c65-7d87a0105bec",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#poolnodecounts\",\"value\":[\r\n    {\r\n      \"poolId\":\"BatchUser-canCRUDLowPri-testPool\",\"dedicated\":{\r\n        \"creating\":0,\"idle\":2,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":2\r\n      },\"lowPriority\":{\r\n        \"creating\":0,\"idle\":2,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":2\r\n      }\r\n    },{\r\n      \"poolId\":\"BatchUser-testIaaSpool\",\"dedicated\":{\r\n        \"creating\":0,\"idle\":1,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":1\r\n      },\"lowPriority\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":0\r\n      }\r\n    },{\r\n      \"poolId\":\"BatchUser-testpool\",\"dedicated\":{\r\n        \"creating\":0,\"idle\":1,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":1\r\n      },\"lowPriority\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":0\r\n      }\r\n    },{\r\n      \"poolId\":\"linuxperfpool\",\"dedicated\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":0\r\n      },\"lowPriority\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":0\r\n      }\r\n    },{\r\n      \"poolId\":\"nikoudsi-pooltest\",\"dedicated\":{\r\n        \"creating\":0,\"idle\":1,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":1\r\n      },\"lowPriority\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":0\r\n      }\r\n    },{\r\n      \"poolId\":\"PersistOutputsSamplePool\",\"dedicated\":{\r\n        \"creating\":0,\"idle\":1,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":1\r\n      },\"lowPriority\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":0\r\n      }\r\n    },{\r\n      \"poolId\":\"TopNWordsPool\",\"dedicated\":{\r\n        \"creating\":0,\"idle\":3,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":3\r\n      },\"lowPriority\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":0\r\n      }\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#nodes\",\"value\":[\r\n    {\r\n      \"id\":\"tvmps_16648d7689cb220a91711ddad0b7ce95c161c5cb102fceb6ebe7fe722a827d82_p\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/nodes/tvmps_16648d7689cb220a91711ddad0b7ce95c161c5cb102fceb6ebe7fe722a827d82_p\",\"state\":\"starting\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2023-05-23T04:40:37.2105035Z\",\"allocationTime\":\"2023-05-23T04:40:37.072134Z\",\"ipAddress\":\"10.0.0.8\",\"affinityId\":\"TVM:tvmps_16648d7689cb220a91711ddad0b7ce95c161c5cb102fceb6ebe7fe722a827d82_p\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"isDedicated\":false,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"testinbound.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"4.255.188.166\",\"publicFQDN\":\"dnsbdf03bc1-4974-4679-9691-cf9d64159ec6-azurebatch-cloudservice.westcentralus.cloudapp.azure.com\",\"frontendPort\":60000,\"backendPort\":5000\r\n          },{\r\n            \"name\":\"SSHRule.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"4.255.188.166\",\"publicFQDN\":\"dnsbdf03bc1-4974-4679-9691-cf9d64159ec6-azurebatch-cloudservice.westcentralus.cloudapp.azure.com\",\"frontendPort\":50000,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202305220\"\r\n        }\r\n      }\r\n    },{\r\n      \"id\":\"tvmps_77f6f9b62da599f7b1aa804fab384da61b15916782f652d09e28c9b851341878_d\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/nodes/tvmps_77f6f9b62da599f7b1aa804fab384da61b15916782f652d09e28c9b851341878_d\",\"state\":\"starting\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2023-05-23T04:40:37.7965158Z\",\"allocationTime\":\"2023-05-23T04:40:37.0571304Z\",\"ipAddress\":\"10.0.0.7\",\"affinityId\":\"TVM:tvmps_77f6f9b62da599f7b1aa804fab384da61b15916782f652d09e28c9b851341878_d\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"isDedicated\":true,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"testinbound.1\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.165.151.77\",\"publicFQDN\":\"dns3c5cfe08-d953-4822-9ace-4bca80cfc1dd-azurebatch-cloudservice.westcentralus.cloudapp.azure.com\",\"frontendPort\":60001,\"backendPort\":5000\r\n          },{\r\n            \"name\":\"SSHRule.1\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.165.151.77\",\"publicFQDN\":\"dns3c5cfe08-d953-4822-9ace-4bca80cfc1dd-azurebatch-cloudservice.westcentralus.cloudapp.azure.com\",\"frontendPort\":50001,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202305220\"\r\n        }\r\n      }\r\n    },{\r\n      \"id\":\"tvmps_7c08c55082dd00efa988788ea2adc5614bf69381dfad4f2b3f04b3404c7ccf14_d\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/nodes/tvmps_7c08c55082dd00efa988788ea2adc5614bf69381dfad4f2b3f04b3404c7ccf14_d\",\"state\":\"starting\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2023-05-23T04:40:37.7965158Z\",\"allocationTime\":\"2023-05-23T04:40:37.0571304Z\",\"ipAddress\":\"10.0.0.6\",\"affinityId\":\"TVM:tvmps_7c08c55082dd00efa988788ea2adc5614bf69381dfad4f2b3f04b3404c7ccf14_d\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"isDedicated\":true,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"testinbound.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.165.151.77\",\"publicFQDN\":\"dns3c5cfe08-d953-4822-9ace-4bca80cfc1dd-azurebatch-cloudservice.westcentralus.cloudapp.azure.com\",\"frontendPort\":60000,\"backendPort\":5000\r\n          },{\r\n            \"name\":\"SSHRule.0\",\"protocol\":\"tcp\",\"publicIPAddress\":\"20.165.151.77\",\"publicFQDN\":\"dns3c5cfe08-d953-4822-9ace-4bca80cfc1dd-azurebatch-cloudservice.westcentralus.cloudapp.azure.com\",\"frontendPort\":50000,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202305220\"\r\n        }\r\n      }\r\n    },{\r\n      \"id\":\"tvmps_ba44a7e7c19d811285029b9736c92189de2032492354437a8cf3225374c9bfe1_p\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/nodes/tvmps_ba44a7e7c19d811285029b9736c92189de2032492354437a8cf3225374c9bfe1_p\",\"state\":\"starting\",\"schedulingState\":\"enabled\",\"stateTransitionTime\":\"2023-05-23T04:40:37.2294938Z\",\"allocationTime\":\"2023-05-23T04:40:37.072134Z\",\"ipAddress\":\"10.0.0.9\",\"affinityId\":\"TVM:tvmps_ba44a7e7c19d811285029b9736c92189de2032492354437a8cf3225374c9bfe1_p\",\"vmSize\":\"standard_d1_v2\",\"totalTasksRun\":0,\"totalTasksSucceeded\":0,\"runningTasksCount\":0,\"runningTaskSlotsCount\":0,\"isDedicated\":false,\"endpointConfiguration\":{\r\n        \"inboundEndpoints\":[\r\n          {\r\n            \"name\":\"testinbound.1\",\"protocol\":\"tcp\",\"publicIPAddress\":\"4.255.188.166\",\"publicFQDN\":\"dnsbdf03bc1-4974-4679-9691-cf9d64159ec6-azurebatch-cloudservice.westcentralus.cloudapp.azure.com\",\"frontendPort\":60001,\"backendPort\":5000\r\n          },{\r\n            \"name\":\"SSHRule.1\",\"protocol\":\"tcp\",\"publicIPAddress\":\"4.255.188.166\",\"publicFQDN\":\"dnsbdf03bc1-4974-4679-9691-cf9d64159ec6-azurebatch-cloudservice.westcentralus.cloudapp.azure.com\",\"frontendPort\":50001,\"backendPort\":22\r\n          }\r\n        ]\r\n      },\"virtualMachineInfo\":{\r\n        \"imageReference\":{\r\n          \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\",\"exactVersion\":\"18.04.202305220\"\r\n        }\r\n      }\r\n    }\r\n  ]\r\n}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/nodecounts?api-version=2023-05-01.17.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 23 May 2023 04:40:40 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "817d7653-4a7d-4386-9b1c-ac432334ddcb",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "retry-after" : "0",
+      "request-id" : "8db531c0-d08a-4806-9ef4-2f916b46de48",
+      "StatusCode" : "200",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#poolnodecounts\",\"value\":[\r\n    {\r\n      \"poolId\":\"BatchUser-canCRUDLowPri-testPool\",\"dedicated\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":2,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":2\r\n      },\"lowPriority\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":2,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":2\r\n      }\r\n    },{\r\n      \"poolId\":\"BatchUser-testIaaSpool\",\"dedicated\":{\r\n        \"creating\":0,\"idle\":1,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":1\r\n      },\"lowPriority\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":0\r\n      }\r\n    },{\r\n      \"poolId\":\"BatchUser-testpool\",\"dedicated\":{\r\n        \"creating\":0,\"idle\":1,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":1\r\n      },\"lowPriority\":{\r\n        \"creating\":0,\"idle\":0,\"leavingPool\":0,\"offline\":0,\"preempted\":0,\"rebooting\":0,\"reimaging\":0,\"running\":0,\"starting\":0,\"startTaskFailed\":0,\"unusable\":0,\"unknown\":0,\"waitingForStartTask\":0,\"total\":0\r\n      }\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/updateproperties?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/updateproperties?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:17 GMT",
+      "date" : "Tue, 23 May 2023 04:40:41 GMT",
       "content-length" : "0",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "dataserviceid" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/updateproperties",
+      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/updateproperties",
       "retry-after" : "0",
-      "request-id" : "d18722e5-1f1f-4b0c-9e9c-7a31fe84f8f9",
+      "request-id" : "5c860504-0c54-4762-ba56-2ce736c1fdca",
       "StatusCode" : "204",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:17 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:41 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "d48f9bb5-906d-4dd9-978c-0df5e1db3e13",
-      "etag" : "0x8DAC8D175F51D07",
+      "client-request-id" : "75817ce1-ffca-443b-9920-799cf39793ac",
+      "etag" : "0x8DB5B47DD5F0F25",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:17 GMT",
+      "date" : "Tue, 23 May 2023 04:40:41 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "8d806036-dee9-4dde-bfc7-fab05c669de9",
+      "request-id" : "5314d9d0-32f2-4a1f-a7c4-7a86f36d07c4",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:17 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:41 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "b5ae01a7-108d-4f9d-a33e-83c636d131a8",
+      "client-request-id" : "f27303ae-80d2-4ab2-a5cd-b2476187380f",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D175F51D07",
+      "etag" : "0x8DB5B47DD5F0F25",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D175F51D07\",\"lastModified\":\"2022-11-17T19:25:17.9064583Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"active\",\"stateTransitionTime\":\"2022-11-17T19:23:46.645953Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2022-11-17T19:24:59.4559141Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"simplified\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47DD5F0F25\",\"lastModified\":\"2023-05-23T04:40:41.7857317Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:39:40.4624025Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:37.7566141Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"simplified\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:17 GMT",
+      "date" : "Tue, 23 May 2023 04:40:41 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "dataserviceid" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool",
+      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool",
       "retry-after" : "0",
-      "request-id" : "d75bfbb6-2bba-4e26-bd57-b01df6a9c138",
+      "request-id" : "d99a7221-62b7-4852-b093-6e77062f8821",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "222a7405-ea12-4e64-9a86-665d237da72d",
-      "etag" : "0x8DAC8D176250850",
+      "client-request-id" : "5b953b61-e413-4899-8906-ff8aa5908705",
+      "etag" : "0x8DB5B47DD989D78",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:17 GMT",
+      "date" : "Tue, 23 May 2023 04:40:41 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "6fa4c155-a7a1-40e6-b74c-491218cd9bc9",
+      "request-id" : "7c2267e3-8da5-4177-ac5f-473ed27c1cc6",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "f6d9e31e-4c8b-48d2-8f08-665148f4165d",
+      "client-request-id" : "42e8b75d-6a87-4483-be09-d4ae032e8fa4",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176250850",
+      "etag" : "0x8DB5B47DD989D78",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176250850\",\"lastModified\":\"2022-11-17T19:25:18.2205008Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"active\",\"stateTransitionTime\":\"2022-11-17T19:23:46.645953Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2022-11-17T19:24:59.4559141Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47DD989D78\",\"lastModified\":\"2023-05-23T04:40:42.1629304Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:39:40.4624025Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:37.7566141Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":2,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":2,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/resize?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/resize?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "date" : "Tue, 23 May 2023 04:40:41 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "dataserviceid" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/resize",
+      "dataserviceid" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool/resize",
       "retry-after" : "0",
-      "request-id" : "1f411c9b-8a0f-4af1-9f72-5928deeea974",
+      "request-id" : "087b6c2d-b41c-40e1-8b31-6fa0703600a7",
       "StatusCode" : "202",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "ada45115-3e1b-4fc8-8c7e-1a7c732a46dd",
-      "etag" : "0x8DAC8D1764C3F84",
+      "client-request-id" : "eec6c6cd-64d0-43ff-9be5-5094c9f934c7",
+      "etag" : "0x8DB5B47DDD19F93",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "date" : "Tue, 23 May 2023 04:40:41 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "f47ae351-c23d-49d4-b38d-a883e4c3dda7",
+      "request-id" : "55c4ec3d-40b2-4914-957c-36c04bef6e98",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "dc037db8-3bb1-4d79-8807-5845a36546fa",
+      "client-request-id" : "cc0c224c-525c-40f4-91bc-e1800a386715",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D1764C3F84",
+      "etag" : "0x8DB5B47DDD19F93",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D1764C3F84\",\"lastModified\":\"2022-11-17T19:25:18.4775044Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"active\",\"stateTransitionTime\":\"2022-11-17T19:23:46.645953Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:18.4775044Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47DDD19F93\",\"lastModified\":\"2023-05-23T04:40:42.5365395Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"active\",\"stateTransitionTime\":\"2023-05-23T04:39:40.4624025Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:42.5365395Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "date" : "Tue, 23 May 2023 04:40:42 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "53823064-4bb4-4672-ad31-d20ccdf5fcbb",
+      "client-request-id" : "bce6911b-5da9-4fa6-937b-e8c707ebec4d",
       "retry-after" : "0",
-      "request-id" : "d47a907a-806b-4ccf-8df9-658e38690f80",
+      "request-id" : "878d9b2b-9811-4b50-837f-2fbbe32e6fee",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",
@@ -359,293 +322,193 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "date" : "Tue, 23 May 2023 04:40:42 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "4b15ab83-6742-4f39-a2af-d641df9868c0",
+      "request-id" : "39c84f75-dd83-4d38-af9d-42c26077505e",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "eaea5088-350a-424f-8ad7-86032c5a2560",
+      "client-request-id" : "4e7d8e9c-e33c-4dde-97a4-1dfdfeb427f3",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
+      "etag" : "0x8DB5B47DE0B31C4",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47DE0B31C4\",\"lastModified\":\"2023-05-23T04:40:42.9138372Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:40:42.9138372Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:42.9138372Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":1,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:33 GMT",
+      "date" : "Tue, 23 May 2023 04:40:58 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "ab8c1036-402c-4807-9736-b3c7466ab409",
+      "request-id" : "bfcf4923-3df1-4f84-ab3f-52e36256b81d",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "3c893617-2662-4c61-af9b-030a43de46b3",
+      "client-request-id" : "0ca584a4-56b3-4cb1-9c11-aa5f41d66ffb",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
+      "etag" : "0x8DB5B47DE0B31C4",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:19.4415096Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47DE0B31C4\",\"lastModified\":\"2023-05-23T04:40:42.9138372Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:40:42.9138372Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:52.9095144Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:25:48 GMT",
+      "date" : "Tue, 23 May 2023 04:41:12 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "610ff325-3bf7-404e-a436-07723be0b176",
+      "request-id" : "c56ac633-f1e9-4f70-8e9f-c5e70f99a6c7",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "84149134-a900-4fcb-803b-f9866598b783",
+      "client-request-id" : "78f52171-00d7-4cbd-a53e-aefe8dbdb380",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
+      "etag" : "0x8DB5B47DE0B31C4",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:19.4415096Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47DE0B31C4\",\"lastModified\":\"2023-05-23T04:40:42.9138372Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:40:42.9138372Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:52.9095144Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:26:04 GMT",
+      "date" : "Tue, 23 May 2023 04:41:28 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "2e0e722a-6cd4-4024-a321-e61fbefb6d10",
+      "request-id" : "2f5eb2be-bc43-4b01-8f54-96144d7c4e9f",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "0897f3a5-face-466d-80e0-50025eb9c8c9",
+      "client-request-id" : "b668af04-802a-4b07-8cd0-f30dfc74d400",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
+      "etag" : "0x8DB5B47DE0B31C4",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:19.4415096Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47DE0B31C4\",\"lastModified\":\"2023-05-23T04:40:42.9138372Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:40:42.9138372Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:52.9095144Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:26:18 GMT",
+      "date" : "Tue, 23 May 2023 04:41:43 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "cb0b72ed-0a5b-44ad-a2ad-6fec54a8d0a9",
+      "request-id" : "a13403a9-557d-4842-8584-09cb0ff30164",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "708477cc-1c2f-4b48-9f7a-7f5267c2a4d0",
+      "client-request-id" : "11ac0788-2bd7-4c2d-a5ce-bf5bbd5db260",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
+      "etag" : "0x8DB5B47DE0B31C4",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:19.4415096Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47DE0B31C4\",\"lastModified\":\"2023-05-23T04:40:42.9138372Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:40:42.9138372Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:52.9095144Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:26:34 GMT",
+      "date" : "Tue, 23 May 2023 04:41:59 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "4dcd22b8-d81d-4593-bac4-6192f2310e0a",
+      "request-id" : "eccf663f-ff7e-4521-9737-2ae4116b6fba",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "24fda8ea-109b-4a85-ac83-4b9cc6c1889f",
+      "client-request-id" : "6bdcec5c-445d-474e-a051-38bf006eadb3",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
+      "etag" : "0x8DB5B47DE0B31C4",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:19.4415096Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47DE0B31C4\",\"lastModified\":\"2023-05-23T04:40:42.9138372Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:40:42.9138372Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:52.9095144Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:26:49 GMT",
+      "date" : "Tue, 23 May 2023 04:42:13 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "19d57568-b6b7-4e87-8d0b-313fc3e915c1",
+      "request-id" : "0db4d53e-015d-4648-b4c9-a13301a56c4c",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
+      "last-modified" : "Tue, 23 May 2023 04:40:42 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "a4708f9d-3fb5-4985-81b2-ba47f05a2179",
+      "client-request-id" : "53fcc830-0999-4282-b4e1-120b04731521",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
+      "etag" : "0x8DB5B47DE0B31C4",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:19.4415096Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":2,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DB5B47DE0B31C4\",\"lastModified\":\"2023-05-23T04:40:42.9138372Z\",\"creationTime\":\"2023-05-23T04:39:40.4624025Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2023-05-23T04:40:42.9138372Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2023-05-23T04:40:52.9095144Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":-1,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/2a0bcf2a-e173-4d51-9d17-6286e2c2aa94/resourceGroups/javasdktest/providers/Microsoft.Network/virtualNetworks/sdkvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    },\"enableAcceleratedNetworking\":true\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:27:04 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "retry-after" : "0",
-      "request-id" : "720aae4f-c0ec-4ddc-8041-be16a926c8b3",
-      "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
-      "x-content-type-options" : "nosniff",
-      "client-request-id" : "2ef4cc13-07d4-4265-b614-507f9c49e756",
-      "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
-      "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:19.4415096Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:27:19 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "retry-after" : "0",
-      "request-id" : "a8615a40-b8a9-44b0-9311-3bc76676c0d9",
-      "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
-      "x-content-type-options" : "nosniff",
-      "client-request-id" : "73f6c3f5-e21d-4af8-a96b-621b5dc15f21",
-      "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
-      "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:19.4415096Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:27:34 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "retry-after" : "0",
-      "request-id" : "1f9a8e32-29b8-4873-afe3-747821083b0c",
-      "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
-      "x-content-type-options" : "nosniff",
-      "client-request-id" : "382ba41a-d54a-4eb9-a8a1-7e3fad3a8754",
-      "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
-      "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:19.4415096Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:27:49 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "retry-after" : "0",
-      "request-id" : "26c6906b-205c-4029-bc95-e55c5737d531",
-      "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Thu, 17 Nov 2022 19:25:18 GMT",
-      "x-content-type-options" : "nosniff",
-      "client-request-id" : "3d1feaaf-4f45-4ed6-910d-1ba35d2cc36d",
-      "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC8D176922208",
-      "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-canCRUDLowPri-testPool\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool\",\"eTag\":\"0x8DAC8D176922208\",\"lastModified\":\"2022-11-17T19:25:18.9355016Z\",\"creationTime\":\"2022-11-17T19:23:46.645953Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2022-11-17T19:25:18.9355016Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-17T19:25:19.4415096Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT7M9.497S\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":2,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\",\"endpointConfiguration\":{\r\n      \"inboundNATPools\":[\r\n        {\r\n          \"name\":\"testinbound\",\"protocol\":\"tcp\",\"backendPort\":5000,\"frontendPortRangeStart\":60000,\"frontendPortRangeEnd\":60040\r\n        }\r\n      ]\r\n    }\r\n  },\"targetNodeCommunicationMode\":\"classic\",\"currentNodeCommunicationMode\":\"classic\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:28:05 GMT",
-      "content-length" : "328",
+      "date" : "Tue, 23 May 2023 04:42:28 GMT",
+      "content-length" : "343",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "ef979e89-a73b-4153-b5ca-fb07e5a449f4",
+      "client-request-id" : "85e7850e-b7b4-432e-9200-cff3cc3bf575",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "25d3714d-4bb5-4144-b956-1eb2688c281f",
+      "request-id" : "4b6dba88-c303-4c34-9ed7-74905ed09d18",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"PoolNotFound\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified pool does not exist.\\nRequestId:25d3714d-4bb5-4144-b956-1eb2688c281f\\nTime:2022-11-17T19:28:05.4335149Z\"\r\n  }\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdkbatchaccount.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"PoolNotFound\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified pool does not exist.\\nRequestId:4b6dba88-c303-4c34-9ed7-74905ed09d18\\nTime:2023-05-23T04:42:29.4233628Z\"\r\n  }\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2022-10-01.16.0",
+    "Uri" : "https://sdkbatchaccount.westcentralus.batch.azure.com/pools/BatchUser-canCRUDLowPri-testPool?api-version=2023-05-01.17.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:acd385f7c12bd773b927be7c3a04f69120c9439caa24ed8be1c62aa5788a2140 Java:1.8.0_361 (BatchServiceClient, 2023-05-01.17.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Thu, 17 Nov 2022 19:28:05 GMT",
+      "date" : "Tue, 23 May 2023 04:42:28 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "9213b65e-7a62-4172-80f7-3bdc60ba2629",
+      "client-request-id" : "13ed02ed-feeb-4900-ae44-7f9bc19ce406",
       "retry-after" : "0",
-      "request-id" : "8a2d53cb-3c61-4aa2-b74d-3e5ee01bf00a",
+      "request-id" : "e905e95c-407c-4be1-9d59-87a28012c32c",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",

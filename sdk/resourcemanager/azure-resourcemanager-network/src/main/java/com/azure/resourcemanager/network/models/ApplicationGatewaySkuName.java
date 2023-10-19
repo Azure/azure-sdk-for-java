@@ -10,19 +10,54 @@ import java.util.Collection;
 
 /** Name of an application gateway SKU. */
 public final class ApplicationGatewaySkuName extends ExpandableStringEnum<ApplicationGatewaySkuName> {
-    /** Static value Standard_Small for ApplicationGatewaySkuName. */
+    /**
+     * Static value Standard_Small for ApplicationGatewaySkuName.
+     *
+     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
+     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+     *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
+     */
+    @Deprecated
     public static final ApplicationGatewaySkuName STANDARD_SMALL = fromString("Standard_Small");
 
-    /** Static value Standard_Medium for ApplicationGatewaySkuName. */
+    /**
+     * Static value Standard_Medium for ApplicationGatewaySkuName.
+     *
+     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
+     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+     *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
+     */
+    @Deprecated
     public static final ApplicationGatewaySkuName STANDARD_MEDIUM = fromString("Standard_Medium");
 
-    /** Static value Standard_Large for ApplicationGatewaySkuName. */
+    /**
+     * Static value Standard_Large for ApplicationGatewaySkuName.
+     *
+     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
+     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+     *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
+     */
+    @Deprecated
     public static final ApplicationGatewaySkuName STANDARD_LARGE = fromString("Standard_Large");
 
-    /** Static value WAF_Medium for ApplicationGatewaySkuName. */
+    /**
+     * Static value WAF_Medium for ApplicationGatewaySkuName.
+     *
+     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
+     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+     *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
+     */
+    @Deprecated
     public static final ApplicationGatewaySkuName WAF_MEDIUM = fromString("WAF_Medium");
 
-    /** Static value WAF_Large for ApplicationGatewaySkuName. */
+    /**
+     * Static value WAF_Large for ApplicationGatewaySkuName.
+     *
+     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
+     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+     *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
+     */
+    @Deprecated
     public static final ApplicationGatewaySkuName WAF_LARGE = fromString("WAF_Large");
 
     /** Static value Standard_v2 for ApplicationGatewaySkuName. */
@@ -30,6 +65,9 @@ public final class ApplicationGatewaySkuName extends ExpandableStringEnum<Applic
 
     /** Static value WAF_v2 for ApplicationGatewaySkuName. */
     public static final ApplicationGatewaySkuName WAF_V2 = fromString("WAF_v2");
+
+    /** Static value Basic for ApplicationGatewaySkuName. */
+    public static final ApplicationGatewaySkuName BASIC = fromString("Basic");
 
     /**
      * Creates a new instance of ApplicationGatewaySkuName value.

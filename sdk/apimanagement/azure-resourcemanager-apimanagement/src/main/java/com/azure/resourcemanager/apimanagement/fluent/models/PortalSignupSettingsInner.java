@@ -18,6 +18,10 @@ public final class PortalSignupSettingsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private PortalSignupSettingsProperties innerProperties;
 
+    /** Creates an instance of PortalSignupSettingsInner class. */
+    public PortalSignupSettingsInner() {
+    }
+
     /**
      * Get the innerProperties property: Sign-up settings contract properties.
      *

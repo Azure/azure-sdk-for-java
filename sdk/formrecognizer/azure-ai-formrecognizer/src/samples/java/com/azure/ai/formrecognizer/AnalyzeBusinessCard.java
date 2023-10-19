@@ -41,7 +41,7 @@ public class AnalyzeBusinessCard {
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources"
             + "/sample-forms/businessCards/businessCard.jpg");
         Path filePath = sourceFile.toPath();
-        BinaryData businessCardData = BinaryData.fromFile(filePath);
+        BinaryData businessCardData = BinaryData.fromFile(filePath, (int) sourceFile.length());
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeBusinessCardPoller =
             client.beginAnalyzeDocument("prebuilt-businessCard", businessCardData);

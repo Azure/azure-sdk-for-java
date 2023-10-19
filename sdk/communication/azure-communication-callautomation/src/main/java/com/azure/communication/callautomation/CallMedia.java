@@ -8,6 +8,7 @@ import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
+import com.azure.communication.callautomation.models.StartHoldMusicOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -30,6 +31,19 @@ public final class CallMedia {
     /**
      * Play
      *
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @param playTo the targets to play to.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void play(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
+        callMediaAsync.play(playSources, playTo).block();
+    }
+
+    /**
+     * Play
+     *
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the targets to play to.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -38,6 +52,18 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
         callMediaAsync.play(playSource, playTo).block();
+    }
+
+    /**
+     * Play to all participants
+     *
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void playToAll(List<PlaySource> playSources) {
+        callMediaAsync.playToAll(playSources).block();
     }
 
     /**
@@ -122,29 +148,31 @@ public final class CallMedia {
         return callMediaAsync.cancelAllMediaOperationsWithResponseInternal(context).block();
     }
 
-
     /**
      * Sends Dtmf tones
-     * @param targetParticipant the target participant
+     *
      * @param tones tones to be sent
+     * @param targetParticipant the target participant
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendDtmf(CommunicationIdentifier targetParticipant, List<DtmfTone> tones) {
-        callMediaAsync.sendDtmf(targetParticipant, tones).block();
+    public void sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        callMediaAsync.sendDtmf(tones, targetParticipant).block();
     }
 
     /**
      * Sends Dtmf tones
-     * @param targetParticipant the target participant
+     *
      * @param tones tones to be sent
+     * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
+     * @param callbackUrl the call back URI override to set (pass null if not applicable)
      * @param context Context
      * @return Response for successful sendDtmf request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendDtmfWithResponse(CommunicationIdentifier targetParticipant, List<DtmfTone> tones,
-                                               String operationContext, Context context) {
-        return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context).block();
+    public Response<Void> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
+                                               String operationContext, String callbackUrl, Context context) {
+        return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, callbackUrl, context).block();
     }
 
     /**
@@ -183,10 +211,59 @@ public final class CallMedia {
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
      * @param context Context
+     * @param callbackUrl the call back URI override to set (pass null if not applicable)
      * @return Response for successful stop continuous dtmf recognition request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
-        return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context).block();
+    public Response<Void> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, String callbackUrl, Context context) {
+        return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, callbackUrl, context).block();
+    }
+
+    /**
+     * Holds participant in call.
+     * @param targetParticipant the target.
+     * @param playSourceInfo audio to play.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void startHoldMusic(CommunicationIdentifier targetParticipant,
+                               PlaySource playSourceInfo) {
+        return callMediaAsync.startHoldMusic(targetParticipant, playSourceInfo).block();
+    }
+
+    /**
+     * Holds participant in call.
+     * @param options - Different options to pass to the request.
+     * @param context Context
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startHoldMusicWithResponse(StartHoldMusicOptions options,
+                                                     Context context) {
+        return callMediaAsync.startHoldMusicWithResponseInternal(options, context).block();
+    }
+
+    /**
+     * Removes hold from participant in call.
+     * @param targetParticipant the target.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void stopHoldMusic(CommunicationIdentifier targetParticipant) {
+        return callMediaAsync.stopHoldMusicAsync(targetParticipant).block();
+    }
+
+    /**
+     * Removes hold from participant in call.
+     * @param targetParticipant the target.
+     * @param operationContext operational context.
+     * @param context Context.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopHoldMusicWithResponse(CommunicationIdentifier targetParticipant,
+                                                     String operationContext,
+                                                     Context context) {
+        return callMediaAsync.stopHoldMusicWithResponseInternal(targetParticipant, operationContext, context).block();
     }
 }

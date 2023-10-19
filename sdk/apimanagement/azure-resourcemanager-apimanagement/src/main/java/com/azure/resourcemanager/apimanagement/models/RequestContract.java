@@ -35,6 +35,10 @@ public final class RequestContract {
     @JsonProperty(value = "representations")
     private List<RepresentationContract> representations;
 
+    /** Creates an instance of RequestContract class. */
+    public RequestContract() {
+    }
+
     /**
      * Get the description property: Operation request description.
      *

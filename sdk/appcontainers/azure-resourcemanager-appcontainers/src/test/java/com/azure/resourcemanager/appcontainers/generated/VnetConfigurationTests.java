@@ -5,52 +5,38 @@
 package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentOutBoundType;
-import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentOutboundSettings;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VnetConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VnetConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"internal\":true,\"infrastructureSubnetId\":\"er\",\"runtimeSubnetId\":\"pqbmfpjbab\",\"dockerBridgeCidr\":\"dfc\",\"platformReservedCidr\":\"spuunnoxyhkxgq\",\"platformReservedDnsIP\":\"rihpfhoq\",\"outboundSettings\":{\"outBoundType\":\"LoadBalancer\",\"virtualNetworkApplianceIp\":\"dao\"}}")
+                    "{\"internal\":true,\"infrastructureSubnetId\":\"lma\",\"dockerBridgeCidr\":\"tcyohpfkyrk\",\"platformReservedCidr\":\"dg\",\"platformReservedDnsIP\":\"gsj\"}")
                 .toObject(VnetConfiguration.class);
         Assertions.assertEquals(true, model.internal());
-        Assertions.assertEquals("er", model.infrastructureSubnetId());
-        Assertions.assertEquals("pqbmfpjbab", model.runtimeSubnetId());
-        Assertions.assertEquals("dfc", model.dockerBridgeCidr());
-        Assertions.assertEquals("spuunnoxyhkxgq", model.platformReservedCidr());
-        Assertions.assertEquals("rihpfhoq", model.platformReservedDnsIp());
-        Assertions.assertEquals(ManagedEnvironmentOutBoundType.LOAD_BALANCER, model.outboundSettings().outBoundType());
-        Assertions.assertEquals("dao", model.outboundSettings().virtualNetworkApplianceIp());
+        Assertions.assertEquals("lma", model.infrastructureSubnetId());
+        Assertions.assertEquals("tcyohpfkyrk", model.dockerBridgeCidr());
+        Assertions.assertEquals("dg", model.platformReservedCidr());
+        Assertions.assertEquals("gsj", model.platformReservedDnsIp());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VnetConfiguration model =
             new VnetConfiguration()
                 .withInternal(true)
-                .withInfrastructureSubnetId("er")
-                .withRuntimeSubnetId("pqbmfpjbab")
-                .withDockerBridgeCidr("dfc")
-                .withPlatformReservedCidr("spuunnoxyhkxgq")
-                .withPlatformReservedDnsIp("rihpfhoq")
-                .withOutboundSettings(
-                    new ManagedEnvironmentOutboundSettings()
-                        .withOutBoundType(ManagedEnvironmentOutBoundType.LOAD_BALANCER)
-                        .withVirtualNetworkApplianceIp("dao"));
+                .withInfrastructureSubnetId("lma")
+                .withDockerBridgeCidr("tcyohpfkyrk")
+                .withPlatformReservedCidr("dg")
+                .withPlatformReservedDnsIp("gsj");
         model = BinaryData.fromObject(model).toObject(VnetConfiguration.class);
         Assertions.assertEquals(true, model.internal());
-        Assertions.assertEquals("er", model.infrastructureSubnetId());
-        Assertions.assertEquals("pqbmfpjbab", model.runtimeSubnetId());
-        Assertions.assertEquals("dfc", model.dockerBridgeCidr());
-        Assertions.assertEquals("spuunnoxyhkxgq", model.platformReservedCidr());
-        Assertions.assertEquals("rihpfhoq", model.platformReservedDnsIp());
-        Assertions.assertEquals(ManagedEnvironmentOutBoundType.LOAD_BALANCER, model.outboundSettings().outBoundType());
-        Assertions.assertEquals("dao", model.outboundSettings().virtualNetworkApplianceIp());
+        Assertions.assertEquals("lma", model.infrastructureSubnetId());
+        Assertions.assertEquals("tcyohpfkyrk", model.dockerBridgeCidr());
+        Assertions.assertEquals("dg", model.platformReservedCidr());
+        Assertions.assertEquals("gsj", model.platformReservedDnsIp());
     }
 }

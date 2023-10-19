@@ -52,95 +52,18 @@ public interface ContainerAppsApiClient {
     ContainerAppsAuthConfigsClient getContainerAppsAuthConfigs();
 
     /**
-     * Gets the ContainerAppsClient object to access its operations.
+     * Gets the AvailableWorkloadProfilesClient object to access its operations.
      *
-     * @return the ContainerAppsClient object.
+     * @return the AvailableWorkloadProfilesClient object.
      */
-    ContainerAppsClient getContainerApps();
+    AvailableWorkloadProfilesClient getAvailableWorkloadProfiles();
 
     /**
-     * Gets the ContainerAppsRevisionsClient object to access its operations.
+     * Gets the BillingMetersClient object to access its operations.
      *
-     * @return the ContainerAppsRevisionsClient object.
+     * @return the BillingMetersClient object.
      */
-    ContainerAppsRevisionsClient getContainerAppsRevisions();
-
-    /**
-     * Gets the ContainerAppsRevisionReplicasClient object to access its operations.
-     *
-     * @return the ContainerAppsRevisionReplicasClient object.
-     */
-    ContainerAppsRevisionReplicasClient getContainerAppsRevisionReplicas();
-
-    /**
-     * Gets the DaprComponentsClient object to access its operations.
-     *
-     * @return the DaprComponentsClient object.
-     */
-    DaprComponentsClient getDaprComponents();
-
-    /**
-     * Gets the ContainerAppsDiagnosticsClient object to access its operations.
-     *
-     * @return the ContainerAppsDiagnosticsClient object.
-     */
-    ContainerAppsDiagnosticsClient getContainerAppsDiagnostics();
-
-    /**
-     * Gets the ManagedEnvironmentDiagnosticsClient object to access its operations.
-     *
-     * @return the ManagedEnvironmentDiagnosticsClient object.
-     */
-    ManagedEnvironmentDiagnosticsClient getManagedEnvironmentDiagnostics();
-
-    /**
-     * Gets the ManagedEnvironmentsDiagnosticsClient object to access its operations.
-     *
-     * @return the ManagedEnvironmentsDiagnosticsClient object.
-     */
-    ManagedEnvironmentsDiagnosticsClient getManagedEnvironmentsDiagnostics();
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
-
-    /**
-     * Gets the ManagedEnvironmentsClient object to access its operations.
-     *
-     * @return the ManagedEnvironmentsClient object.
-     */
-    ManagedEnvironmentsClient getManagedEnvironments();
-
-    /**
-     * Gets the CertificatesClient object to access its operations.
-     *
-     * @return the CertificatesClient object.
-     */
-    CertificatesClient getCertificates();
-
-    /**
-     * Gets the NamespacesClient object to access its operations.
-     *
-     * @return the NamespacesClient object.
-     */
-    NamespacesClient getNamespaces();
-
-    /**
-     * Gets the ManagedEnvironmentsStoragesClient object to access its operations.
-     *
-     * @return the ManagedEnvironmentsStoragesClient object.
-     */
-    ManagedEnvironmentsStoragesClient getManagedEnvironmentsStorages();
-
-    /**
-     * Gets the ContainerAppsSourceControlsClient object to access its operations.
-     *
-     * @return the ContainerAppsSourceControlsClient object.
-     */
-    ContainerAppsSourceControlsClient getContainerAppsSourceControls();
+    BillingMetersClient getBillingMeters();
 
     /**
      * Gets the ConnectedEnvironmentsClient object to access its operations.
@@ -171,16 +94,121 @@ public interface ContainerAppsApiClient {
     ConnectedEnvironmentsStoragesClient getConnectedEnvironmentsStorages();
 
     /**
-     * Gets the AvailableWorkloadProfilesClient object to access its operations.
+     * Gets the ContainerAppsClient object to access its operations.
      *
-     * @return the AvailableWorkloadProfilesClient object.
+     * @return the ContainerAppsClient object.
      */
-    AvailableWorkloadProfilesClient getAvailableWorkloadProfiles();
+    ContainerAppsClient getContainerApps();
 
     /**
-     * Gets the BillingMetersClient object to access its operations.
+     * Gets the ContainerAppsRevisionsClient object to access its operations.
      *
-     * @return the BillingMetersClient object.
+     * @return the ContainerAppsRevisionsClient object.
      */
-    BillingMetersClient getBillingMeters();
+    ContainerAppsRevisionsClient getContainerAppsRevisions();
+
+    /**
+     * Gets the ContainerAppsRevisionReplicasClient object to access its operations.
+     *
+     * @return the ContainerAppsRevisionReplicasClient object.
+     */
+    ContainerAppsRevisionReplicasClient getContainerAppsRevisionReplicas();
+
+    /**
+     * Gets the ContainerAppsDiagnosticsClient object to access its operations.
+     *
+     * @return the ContainerAppsDiagnosticsClient object.
+     */
+    ContainerAppsDiagnosticsClient getContainerAppsDiagnostics();
+
+    /**
+     * Gets the ManagedEnvironmentDiagnosticsClient object to access its operations.
+     *
+     * @return the ManagedEnvironmentDiagnosticsClient object.
+     */
+    ManagedEnvironmentDiagnosticsClient getManagedEnvironmentDiagnostics();
+
+    /**
+     * Gets the ManagedEnvironmentsDiagnosticsClient object to access its operations.
+     *
+     * @return the ManagedEnvironmentsDiagnosticsClient object.
+     */
+    ManagedEnvironmentsDiagnosticsClient getManagedEnvironmentsDiagnostics();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
+     * Gets the JobsClient object to access its operations.
+     *
+     * @return the JobsClient object.
+     */
+    JobsClient getJobs();
+
+    /**
+     * Gets the JobsExecutionsClient object to access its operations.
+     *
+     * @return the JobsExecutionsClient object.
+     */
+    JobsExecutionsClient getJobsExecutions();
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
+
+    /**
+     * Gets the ManagedEnvironmentsClient object to access its operations.
+     *
+     * @return the ManagedEnvironmentsClient object.
+     */
+    ManagedEnvironmentsClient getManagedEnvironments();
+
+    /**
+     * Gets the CertificatesClient object to access its operations.
+     *
+     * @return the CertificatesClient object.
+     */
+    CertificatesClient getCertificates();
+
+    /**
+     * Gets the ManagedCertificatesClient object to access its operations.
+     *
+     * @return the ManagedCertificatesClient object.
+     */
+    ManagedCertificatesClient getManagedCertificates();
+
+    /**
+     * Gets the NamespacesClient object to access its operations.
+     *
+     * @return the NamespacesClient object.
+     */
+    NamespacesClient getNamespaces();
+
+    /**
+     * Gets the DaprComponentsClient object to access its operations.
+     *
+     * @return the DaprComponentsClient object.
+     */
+    DaprComponentsClient getDaprComponents();
+
+    /**
+     * Gets the ManagedEnvironmentsStoragesClient object to access its operations.
+     *
+     * @return the ManagedEnvironmentsStoragesClient object.
+     */
+    ManagedEnvironmentsStoragesClient getManagedEnvironmentsStorages();
+
+    /**
+     * Gets the ContainerAppsSourceControlsClient object to access its operations.
+     *
+     * @return the ContainerAppsSourceControlsClient object.
+     */
+    ContainerAppsSourceControlsClient getContainerAppsSourceControls();
 }

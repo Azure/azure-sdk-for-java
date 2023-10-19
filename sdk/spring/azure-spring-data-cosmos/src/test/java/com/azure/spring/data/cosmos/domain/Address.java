@@ -2,17 +2,38 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
-@Container()
+@Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class Address {
+
+    public static final Address TEST_ADDRESS1_PARTITION1 = new Address(
+        TestConstants.POSTAL_CODE, TestConstants.STREET, TestConstants.CITY);
+    public static final Address TEST_ADDRESS2_PARTITION1 = new Address(
+        TestConstants.POSTAL_CODE_0, TestConstants.STREET_0, TestConstants.CITY);
+    public static final Address TEST_ADDRESS1_PARTITION2 = new Address(
+        TestConstants.POSTAL_CODE_1, TestConstants.STREET_1, TestConstants.CITY_0);
+    public static final Address TEST_ADDRESS4_PARTITION3 = new Address(
+        TestConstants.POSTAL_CODE, TestConstants.STREET_2, TestConstants.CITY_1);
+
     @Id
     String postalCode;
     String street;
+
+    Long longId;
+
+    Integer homeNumber;
+
+    LocalDate registrationDate;
+
+    boolean isOffice;
+
     @PartitionKey
     String city;
 
@@ -36,9 +57,33 @@ public class Address {
         return city;
     }
 
+    public Long getLongId() {
+        return longId;
+    }
+
+    public Integer getHomeNumber() {
+        return homeNumber;
+    }
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public boolean getIsOffice() {
+        return isOffice;
+    }
+
     public void setCity(String city) {
         this.city = city;
     }
+
+    public void setLongId(Long longId) { this.longId = longId; }
+
+    public void setHomeNumber(Integer homeNumber) { this.homeNumber = homeNumber; }
+
+    public void setRegistrationDate(LocalDate registrationDate) { this.registrationDate = registrationDate; }
+
+    public void setIsOffice(boolean isOffice) { this.isOffice = isOffice; }
 
     @Override
     public boolean equals(Object o) {

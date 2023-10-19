@@ -8,20 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.IdentityType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ResourceIdentity;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceIdentity model =
-            BinaryData.fromString("{\"type\":\"SystemAssigned\"}").toObject(ResourceIdentity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
+            BinaryData
+                .fromString(
+                    "{\"principalId\":\"69302b8f-5663-4c3b-932a-ee7af2f94b9f\",\"type\":\"None\",\"tenantId\":\"570ff5b7-a1c1-4e0b-809d-2547824d6276\"}")
+                .toObject(ResourceIdentity.class);
+        Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        ResourceIdentity model = new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ResourceIdentity model = new ResourceIdentity().withType(IdentityType.NONE);
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 }

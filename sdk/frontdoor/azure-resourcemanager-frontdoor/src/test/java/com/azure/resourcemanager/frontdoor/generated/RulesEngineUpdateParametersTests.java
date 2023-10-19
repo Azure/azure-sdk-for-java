@@ -18,10 +18,10 @@ public final class RulesEngineUpdateParametersTests {
         RulesEngineUpdateParameters model =
             BinaryData
                 .fromString(
-                    "{\"rules\":[{\"name\":\"thuma\",\"priority\":1953452133,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Continue\"},{\"name\":\"iertgccymvaolp\",\"priority\":10940345,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Stop\"},{\"name\":\"n\",\"priority\":1962598042,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Stop\"},{\"name\":\"ydmcwyhzdxssa\",\"priority\":759374962,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Continue\"}]}")
+                    "{\"rules\":[{\"name\":\"twrupqsxvnm\",\"priority\":1872755213,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Continue\"}]}")
                 .toObject(RulesEngineUpdateParameters.class);
-        Assertions.assertEquals("thuma", model.rules().get(0).name());
-        Assertions.assertEquals(1953452133, model.rules().get(0).priority());
+        Assertions.assertEquals("twrupqsxvnm", model.rules().get(0).name());
+        Assertions.assertEquals(1872755213, model.rules().get(0).priority());
         Assertions.assertEquals(MatchProcessingBehavior.CONTINUE, model.rules().get(0).matchProcessingBehavior());
     }
 
@@ -33,35 +33,8 @@ public final class RulesEngineUpdateParametersTests {
                     Arrays
                         .asList(
                             new RulesEngineRule()
-                                .withName("thuma")
-                                .withPriority(1953452133)
-                                .withAction(
-                                    new RulesEngineAction()
-                                        .withRequestHeaderActions(Arrays.asList())
-                                        .withResponseHeaderActions(Arrays.asList()))
-                                .withMatchConditions(Arrays.asList())
-                                .withMatchProcessingBehavior(MatchProcessingBehavior.CONTINUE),
-                            new RulesEngineRule()
-                                .withName("iertgccymvaolp")
-                                .withPriority(10940345)
-                                .withAction(
-                                    new RulesEngineAction()
-                                        .withRequestHeaderActions(Arrays.asList())
-                                        .withResponseHeaderActions(Arrays.asList()))
-                                .withMatchConditions(Arrays.asList())
-                                .withMatchProcessingBehavior(MatchProcessingBehavior.STOP),
-                            new RulesEngineRule()
-                                .withName("n")
-                                .withPriority(1962598042)
-                                .withAction(
-                                    new RulesEngineAction()
-                                        .withRequestHeaderActions(Arrays.asList())
-                                        .withResponseHeaderActions(Arrays.asList()))
-                                .withMatchConditions(Arrays.asList())
-                                .withMatchProcessingBehavior(MatchProcessingBehavior.STOP),
-                            new RulesEngineRule()
-                                .withName("ydmcwyhzdxssa")
-                                .withPriority(759374962)
+                                .withName("twrupqsxvnm")
+                                .withPriority(1872755213)
                                 .withAction(
                                     new RulesEngineAction()
                                         .withRequestHeaderActions(Arrays.asList())
@@ -69,8 +42,8 @@ public final class RulesEngineUpdateParametersTests {
                                 .withMatchConditions(Arrays.asList())
                                 .withMatchProcessingBehavior(MatchProcessingBehavior.CONTINUE)));
         model = BinaryData.fromObject(model).toObject(RulesEngineUpdateParameters.class);
-        Assertions.assertEquals("thuma", model.rules().get(0).name());
-        Assertions.assertEquals(1953452133, model.rules().get(0).priority());
+        Assertions.assertEquals("twrupqsxvnm", model.rules().get(0).name());
+        Assertions.assertEquals(1872755213, model.rules().get(0).priority());
         Assertions.assertEquals(MatchProcessingBehavior.CONTINUE, model.rules().get(0).matchProcessingBehavior());
     }
 }

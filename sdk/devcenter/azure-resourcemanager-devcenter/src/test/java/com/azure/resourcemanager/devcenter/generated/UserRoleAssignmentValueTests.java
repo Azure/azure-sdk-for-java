@@ -9,23 +9,19 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
 import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.Test;
 
 public final class UserRoleAssignmentValueTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UserRoleAssignmentValue model =
             BinaryData
-                .fromString(
-                    "{\"roles\":{\"rnwb\":{\"roleName\":\"sbkyvpycanuzbp\",\"description\":\"afkuwb\"},\"ofmxagkvtmelmqkr\":{\"roleName\":\"hhseyv\",\"description\":\"srtslhspkdeem\"}}}")
+                .fromString("{\"roles\":{\"seyvj\":{\"roleName\":\"b\",\"description\":\"nwbmeh\"}}}")
                 .toObject(UserRoleAssignmentValue.class);
     }
 
-    @Test
-    public void testSerialize() {
-        UserRoleAssignmentValue model =
-            new UserRoleAssignmentValue()
-                .withRoles(mapOf("rnwb", new EnvironmentRole(), "ofmxagkvtmelmqkr", new EnvironmentRole()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UserRoleAssignmentValue model = new UserRoleAssignmentValue().withRoles(mapOf("seyvj", new EnvironmentRole()));
         model = BinaryData.fromObject(model).toObject(UserRoleAssignmentValue.class);
     }
 

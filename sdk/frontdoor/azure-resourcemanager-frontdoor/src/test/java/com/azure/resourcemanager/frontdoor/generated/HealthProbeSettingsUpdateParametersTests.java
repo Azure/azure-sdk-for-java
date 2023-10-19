@@ -17,12 +17,12 @@ public final class HealthProbeSettingsUpdateParametersTests {
         HealthProbeSettingsUpdateParameters model =
             BinaryData
                 .fromString(
-                    "{\"path\":\"xitc\",\"protocol\":\"Https\",\"intervalInSeconds\":212130052,\"healthProbeMethod\":\"GET\",\"enabledState\":\"Disabled\"}")
+                    "{\"path\":\"n\",\"protocol\":\"Https\",\"intervalInSeconds\":242994282,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Disabled\"}")
                 .toObject(HealthProbeSettingsUpdateParameters.class);
-        Assertions.assertEquals("xitc", model.path());
+        Assertions.assertEquals("n", model.path());
         Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.protocol());
-        Assertions.assertEquals(212130052, model.intervalInSeconds());
-        Assertions.assertEquals(FrontDoorHealthProbeMethod.GET, model.healthProbeMethod());
+        Assertions.assertEquals(242994282, model.intervalInSeconds());
+        Assertions.assertEquals(FrontDoorHealthProbeMethod.HEAD, model.healthProbeMethod());
         Assertions.assertEquals(HealthProbeEnabled.DISABLED, model.enabledState());
     }
 
@@ -30,16 +30,16 @@ public final class HealthProbeSettingsUpdateParametersTests {
     public void testSerialize() throws Exception {
         HealthProbeSettingsUpdateParameters model =
             new HealthProbeSettingsUpdateParameters()
-                .withPath("xitc")
+                .withPath("n")
                 .withProtocol(FrontDoorProtocol.HTTPS)
-                .withIntervalInSeconds(212130052)
-                .withHealthProbeMethod(FrontDoorHealthProbeMethod.GET)
+                .withIntervalInSeconds(242994282)
+                .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
                 .withEnabledState(HealthProbeEnabled.DISABLED);
         model = BinaryData.fromObject(model).toObject(HealthProbeSettingsUpdateParameters.class);
-        Assertions.assertEquals("xitc", model.path());
+        Assertions.assertEquals("n", model.path());
         Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.protocol());
-        Assertions.assertEquals(212130052, model.intervalInSeconds());
-        Assertions.assertEquals(FrontDoorHealthProbeMethod.GET, model.healthProbeMethod());
+        Assertions.assertEquals(242994282, model.intervalInSeconds());
+        Assertions.assertEquals(FrontDoorHealthProbeMethod.HEAD, model.healthProbeMethod());
         Assertions.assertEquals(HealthProbeEnabled.DISABLED, model.enabledState());
     }
 }

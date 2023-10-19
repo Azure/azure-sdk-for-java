@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.stress.util;
 
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,62 +17,88 @@ public class ScenarioOptions {
     private String testClass;
 
     @Value("${SERVICEBUS_CONNECTION_STRING:#{null}}")
-    private String servicebusConnectionString;
+    private String serviceBusConnectionString;
 
     @Value("${SERVICEBUS_ENTITY_TYPE:QUEUE}}")
-    private EntityType servicebusEntityType;
+    private EntityType serviceBusEntityType;
 
     @Value("${SERVICEBUS_QUEUE_NAME:#{null}}")
-    private String servicebusQueueName;
+    private String serviceBusQueueName;
 
     @Value("${SERVICEBUS_SESSION_QUEUE_NAME:#{null}}")
-    private String servicebusSessionQueueName;
+    private String serviceBusSessionQueueName;
 
     @Value("${SERVICEBUS_TOPIC_NAME:#{null}}")
-    private String servicebusTopicName;
+    private String serviceBusTopicName;
 
     @Value("${SERVICEBUS_SUBSCRIPTION_NAME:#{null}}")
-    private String servicebusSubscriptionName;
+    private String serviceBusSubscriptionName;
 
     @Value("${SERVICEBUS_SESSION_SUBSCRIPTION_NAME:#{null}}")
-    private String servicebusSessionSubscriptionName;
+    private String serviceBusSessionSubscriptionName;
 
-    @Value("${METRIC_INTERVAL_SEC:60}")
-    private String metricIntervalSec;
+    @Value("${DURATION_MINUTES:15}")
+    private int durationInMinutes;
+
+    @Value("${TRY_TIMEOUT_SECONDS:60}")
+    private int tryTimeoutSeconds;
+
+    @Value("${ANNOTATION:#{null}}")
+    private String annotation;
+
+    @Value("${MESSAGE_SIZE_IN_BYTES:128}")
+    private int messageSize;
+
+    @Value("${START_DELAY_MINUTES:0}")
+    private int startDelayInMinutes;
 
     public String getTestClass() {
         return testClass;
     }
 
-    public String getServicebusConnectionString() {
-        return servicebusConnectionString;
+    public String getServiceBusConnectionString() {
+        return serviceBusConnectionString;
     }
 
-    public EntityType getServicebusEntityType() {
-        return servicebusEntityType;
+    public EntityType getServiceBusEntityType() {
+        return serviceBusEntityType;
     }
 
-    public String getServicebusQueueName() {
-        return servicebusQueueName;
+    public String getServiceBusQueueName() {
+        return serviceBusQueueName;
     }
 
-    public String getServicebusSessionQueueName() {
-        return servicebusSessionQueueName;
+    public String getServiceBusSessionQueueName() {
+        return serviceBusSessionQueueName;
     }
 
-    public String getServicebusTopicName() {
-        return servicebusTopicName;
+    public String getServiceBusTopicName() {
+        return serviceBusTopicName;
     }
 
-    public String getServicebusSubscriptionName() {
-        return servicebusSubscriptionName;
+    public String getServiceBusSubscriptionName() {
+        return serviceBusSubscriptionName;
     }
 
-    public String getServicebusSessionSubscriptionName() {
-        return servicebusSessionSubscriptionName;
+    public String getServiceBusSessionSubscriptionName() {
+        return serviceBusSessionSubscriptionName;
     }
 
-    public String getMetricIntervalSec() {
-        return metricIntervalSec;
+    public Duration getTestDuration() {
+        return Duration.ofMinutes(durationInMinutes);
+    }
+
+    public Duration getTryTimeout() {
+        return Duration.ofSeconds(tryTimeoutSeconds);
+    }
+    public String getAnnotation() {
+        return annotation;
+    }
+    public int getMessageSize() {
+        return messageSize;
+    }
+
+    public Duration getStartDelay() {
+        return Duration.ofMinutes(startDelayInMinutes);
     }
 }

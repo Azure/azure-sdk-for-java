@@ -119,6 +119,17 @@ public final class SearchField implements JsonSerializable<SearchField> {
     private LexicalNormalizerName normalizerName;
 
     /*
+     * The dimensionality of the vector field.
+     */
+    private Integer vectorSearchDimensions;
+
+    /*
+     * The name of the vector search profile that specifies the algorithm and vectorizer to use when searching the
+     * vector field.
+     */
+    private String vectorSearchProfile;
+
+    /*
      * A list of the names of synonym maps to associate with this field. This option can be used only with searchable
      * fields. Currently only one synonym map per field is supported. Assigning a synonym map to a field ensures that
      * query terms targeting that field are expanded at query-time using the rules in the synonym map. This attribute
@@ -445,6 +456,48 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
+     * Get the vectorSearchDimensions property: The dimensionality of the vector field.
+     *
+     * @return the vectorSearchDimensions value.
+     */
+    public Integer getVectorSearchDimensions() {
+        return this.vectorSearchDimensions;
+    }
+
+    /**
+     * Set the vectorSearchDimensions property: The dimensionality of the vector field.
+     *
+     * @param vectorSearchDimensions the vectorSearchDimensions value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setVectorSearchDimensions(Integer vectorSearchDimensions) {
+        this.vectorSearchDimensions = vectorSearchDimensions;
+        return this;
+    }
+
+    /**
+     * Get the vectorSearchProfile property: The name of the vector search profile that specifies the algorithm and
+     * vectorizer to use when searching the vector field.
+     *
+     * @return the vectorSearchProfile value.
+     */
+    public String getVectorSearchProfile() {
+        return this.vectorSearchProfile;
+    }
+
+    /**
+     * Set the vectorSearchProfile property: The name of the vector search profile that specifies the algorithm and
+     * vectorizer to use when searching the vector field.
+     *
+     * @param vectorSearchProfile the vectorSearchProfile value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setVectorSearchProfile(String vectorSearchProfile) {
+        this.vectorSearchProfile = vectorSearchProfile;
+        return this;
+    }
+
+    /**
      * Get the synonymMapNames property: A list of the names of synonym maps to associate with this field. This option
      * can be used only with searchable fields. Currently only one synonym map per field is supported. Assigning a
      * synonym map to a field ensures that query terms targeting that field are expanded at query-time using the rules
@@ -509,6 +562,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeStringField("searchAnalyzer", Objects.toString(this.searchAnalyzerName, null));
         jsonWriter.writeStringField("indexAnalyzer", Objects.toString(this.indexAnalyzerName, null));
         jsonWriter.writeStringField("normalizer", Objects.toString(this.normalizerName, null));
+        jsonWriter.writeNumberField("dimensions", this.vectorSearchDimensions);
+        jsonWriter.writeStringField("vectorSearchProfile", this.vectorSearchProfile);
         jsonWriter.writeArrayField(
                 "synonymMaps", this.synonymMapNames, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
@@ -541,6 +596,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     LexicalAnalyzerName searchAnalyzerName = null;
                     LexicalAnalyzerName indexAnalyzerName = null;
                     LexicalNormalizerName normalizerName = null;
+                    Integer vectorSearchDimensions = null;
+                    String vectorSearchProfile = null;
                     List<String> synonymMapNames = null;
                     List<SearchField> fields = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -573,6 +630,10 @@ public final class SearchField implements JsonSerializable<SearchField> {
                             indexAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
                         } else if ("normalizer".equals(fieldName)) {
                             normalizerName = LexicalNormalizerName.fromString(reader.getString());
+                        } else if ("dimensions".equals(fieldName)) {
+                            vectorSearchDimensions = reader.getNullable(JsonReader::getInt);
+                        } else if ("vectorSearchProfile".equals(fieldName)) {
+                            vectorSearchProfile = reader.getString();
                         } else if ("synonymMaps".equals(fieldName)) {
                             synonymMapNames = reader.readArray(reader1 -> reader1.getString());
                         } else if ("fields".equals(fieldName)) {
@@ -593,6 +654,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
                         deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
                         deserializedSearchField.indexAnalyzerName = indexAnalyzerName;
                         deserializedSearchField.normalizerName = normalizerName;
+                        deserializedSearchField.vectorSearchDimensions = vectorSearchDimensions;
+                        deserializedSearchField.vectorSearchProfile = vectorSearchProfile;
                         deserializedSearchField.synonymMapNames = synonymMapNames;
                         deserializedSearchField.fields = fields;
 

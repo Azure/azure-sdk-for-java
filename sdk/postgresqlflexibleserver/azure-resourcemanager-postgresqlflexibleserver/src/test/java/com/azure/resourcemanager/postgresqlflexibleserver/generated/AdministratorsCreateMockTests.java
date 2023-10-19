@@ -32,7 +32,7 @@ public final class AdministratorsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalType\":\"Group\",\"principalName\":\"pe\",\"objectId\":\"wfbkrvrns\",\"tenantId\":\"hqjohxcrsbfova\"},\"id\":\"ruvw\",\"name\":\"hsqfsubcgjbirxbp\",\"type\":\"bsrfbj\"}";
+            "{\"properties\":{\"principalType\":\"User\",\"principalName\":\"mciodhkhazxkhn\",\"objectId\":\"onlwntoeg\",\"tenantId\":\"dwbwhkszzcmrvexz\"},\"id\":\"bt\",\"name\":\"gsfraoyzkoow\",\"type\":\"lmnguxaw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,16 +63,16 @@ public final class AdministratorsCreateMockTests {
         ActiveDirectoryAdministrator response =
             manager
                 .administrators()
-                .define("qtdo")
-                .withExistingFlexibleServer("vjfdx", "ivetvtcq")
-                .withPrincipalType(PrincipalType.USER)
-                .withPrincipalName("vwvxyslqbhsfx")
-                .withTenantId("lyt")
+                .define("i")
+                .withExistingFlexibleServer("jitcjedftwwaez", "ojvdcpzfoqo")
+                .withPrincipalType(PrincipalType.SERVICE_PRINCIPAL)
+                .withPrincipalName("rzgszufoxci")
+                .withTenantId("p")
                 .create();
 
-        Assertions.assertEquals(PrincipalType.GROUP, response.principalType());
-        Assertions.assertEquals("pe", response.principalName());
-        Assertions.assertEquals("wfbkrvrns", response.objectId());
-        Assertions.assertEquals("hqjohxcrsbfova", response.tenantId());
+        Assertions.assertEquals(PrincipalType.USER, response.principalType());
+        Assertions.assertEquals("mciodhkhazxkhn", response.principalName());
+        Assertions.assertEquals("onlwntoeg", response.objectId());
+        Assertions.assertEquals("dwbwhkszzcmrvexz", response.tenantId());
     }
 }

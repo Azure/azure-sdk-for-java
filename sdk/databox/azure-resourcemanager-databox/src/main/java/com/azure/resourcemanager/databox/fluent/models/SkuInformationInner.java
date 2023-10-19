@@ -129,6 +129,16 @@ public final class SkuInformationInner {
     }
 
     /**
+     * Get the countriesWithinCommerceBoundary property: List of all the Countries in the SKU specific commerce
+     * boundary.
+     *
+     * @return the countriesWithinCommerceBoundary value.
+     */
+    public List<String> countriesWithinCommerceBoundary() {
+        return this.innerProperties() == null ? null : this.innerProperties().countriesWithinCommerceBoundary();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.models.Project;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Projects Update. */
 public final class ProjectsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Projects_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Projects_Patch.json
      */
     /**
      * Sample code: Projects_Update.
@@ -21,7 +20,10 @@ public final class ProjectsUpdateSamples {
      */
     public static void projectsUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         Project resource =
-            manager.projects().getByResourceGroupWithResponse("rg1", "DevProject", Context.NONE).getValue();
+            manager
+                .projects()
+                .getByResourceGroupWithResponse("rg1", "DevProject", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("CostCenter", "R&D")).withDescription("This is my first project.").apply();
     }
 

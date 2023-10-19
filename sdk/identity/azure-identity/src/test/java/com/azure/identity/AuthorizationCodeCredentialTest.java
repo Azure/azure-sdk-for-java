@@ -8,8 +8,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
@@ -68,7 +68,7 @@ public class AuthorizationCodeCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityclientMock);
+            Assertions.assertNotNull(identityclientMock);
         }
     }
 

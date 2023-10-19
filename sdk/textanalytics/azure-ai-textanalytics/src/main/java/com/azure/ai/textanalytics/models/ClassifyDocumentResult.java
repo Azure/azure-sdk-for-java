@@ -8,11 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link ClassifyDocumentResult} model. It classify the text document one single category.
+ * The {@code ClassifyDocumentResult} model. It classify the text document one single category.
  */
 @Immutable
 public final class ClassifyDocumentResult extends TextAnalyticsResult {
-    private DetectedLanguage detectedLanguage;
     private IterableStream<ClassificationCategory> classifications;
     private IterableStream<TextAnalyticsWarning> warnings;
 
@@ -26,12 +25,6 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
                 }
 
                 @Override
-                public void setDetectedLanguage(ClassifyDocumentResult classifyDocumentResult,
-                    DetectedLanguage detectedLanguage) {
-                    classifyDocumentResult.setDetectedLanguage(detectedLanguage);
-                }
-
-                @Override
                 public void setWarnings(ClassifyDocumentResult classifyDocumentResult,
                     IterableStream<TextAnalyticsWarning> warnings) {
                     classifyDocumentResult.setWarnings(warnings);
@@ -41,7 +34,7 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
     }
 
     /**
-     * Creates a {@link ClassifyDocumentResult} model.
+     * Creates a {@code ClassifyDocumentResult} model.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
@@ -62,27 +55,12 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain an object of the language detected for this document.
-     *
-     * @return the detectedLanguage value.
-     */
-    public DetectedLanguage getDetectedLanguage() {
-        return this.detectedLanguage;
-    }
-
-
-    /**
      * Gets the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
      *
      * @return {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
     public IterableStream<TextAnalyticsWarning> getWarnings() {
         return this.warnings;
-    }
-
-    private void setDetectedLanguage(DetectedLanguage detectedLanguage) {
-        this.detectedLanguage = detectedLanguage;
     }
 
     private void setClassifications(IterableStream<ClassificationCategory> classifications) {

@@ -29,6 +29,9 @@ public final class Models {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of Models class. */
+    public Models() {}
+
     /**
      * Get the summary property: Summary of all trained custom models.
      *

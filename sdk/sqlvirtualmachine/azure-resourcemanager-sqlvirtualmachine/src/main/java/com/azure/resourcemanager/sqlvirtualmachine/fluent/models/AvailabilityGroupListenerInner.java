@@ -28,6 +28,10 @@ public final class AvailabilityGroupListenerInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of AvailabilityGroupListenerInner class. */
+    public AvailabilityGroupListenerInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

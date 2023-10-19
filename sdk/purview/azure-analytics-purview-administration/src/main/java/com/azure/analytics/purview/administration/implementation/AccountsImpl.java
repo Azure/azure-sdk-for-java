@@ -73,6 +73,25 @@ public final class AccountsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAccountPropertiesSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Patch("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -86,6 +105,26 @@ public final class AccountsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateAccountProperties(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData accountUpdateParameters,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Patch("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> updateAccountPropertiesSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData accountUpdateParameters,
@@ -112,6 +151,25 @@ public final class AccountsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/listkeys")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAccessKeysSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/regeneratekeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -131,6 +189,26 @@ public final class AccountsImpl {
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
+
+        @Post("/regeneratekeys")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> regenerateAccessKeySync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData keyOptions,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -140,70 +218,70 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     identity: {
-     *         principalId: String
-     *         tenantId: String
-     *         type: String(SystemAssigned)
+     *     id: String (Optional)
+     *     identity (Optional): {
+     *         principalId: String (Optional)
+     *         tenantId: String (Optional)
+     *         type: String(SystemAssigned) (Optional)
      *     }
-     *     location: String
-     *     name: String
-     *     properties: {
-     *         cloudConnectors: {
-     *             awsExternalId: String
+     *     location: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         cloudConnectors (Optional): {
+     *             awsExternalId: String (Optional)
      *         }
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByObjectId: String
-     *         endpoints: {
-     *             catalog: String
-     *             guardian: String
-     *             scan: String
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByObjectId: String (Optional)
+     *         endpoints (Optional): {
+     *             catalog: String (Optional)
+     *             guardian: String (Optional)
+     *             scan: String (Optional)
      *         }
-     *         friendlyName: String
-     *         managedResourceGroupName: String
-     *         managedResources: {
-     *             eventHubNamespace: String
-     *             resourceGroup: String
-     *             storageAccount: String
+     *         friendlyName: String (Optional)
+     *         managedResourceGroupName: String (Optional)
+     *         managedResources (Optional): {
+     *             eventHubNamespace: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             storageAccount: String (Optional)
      *         }
-     *         privateEndpointConnections: [
-     *             {
-     *                 id: String
-     *                 name: String
-     *                 properties: {
-     *                     privateEndpoint: {
-     *                         id: String
+     *         privateEndpointConnections (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 properties (Optional): {
+     *                     privateEndpoint (Optional): {
+     *                         id: String (Optional)
      *                     }
-     *                     privateLinkServiceConnectionState: {
-     *                         actionsRequired: String
-     *                         description: String
-     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     privateLinkServiceConnectionState (Optional): {
+     *                         actionsRequired: String (Optional)
+     *                         description: String (Optional)
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected) (Optional)
      *                     }
-     *                     provisioningState: String
+     *                     provisioningState: String (Optional)
      *                 }
-     *                 type: String
+     *                 type: String (Optional)
      *             }
      *         ]
-     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
-     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled) (Optional)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled) (Optional)
      *     }
-     *     sku: {
-     *         capacity: Integer
-     *         name: String(Standard)
+     *     sku (Optional): {
+     *         capacity: Integer (Optional)
+     *         name: String(Standard) (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
-     *     tags: {
-     *         String: String
+     *     tags (Optional): {
+     *         String: String (Optional)
      *     }
-     *     type: String
+     *     type: String (Optional)
      * }
      * }</pre>
      *
@@ -234,164 +312,70 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     identity: {
-     *         principalId: String
-     *         tenantId: String
-     *         type: String(SystemAssigned)
+     *     id: String (Optional)
+     *     identity (Optional): {
+     *         principalId: String (Optional)
+     *         tenantId: String (Optional)
+     *         type: String(SystemAssigned) (Optional)
      *     }
-     *     location: String
-     *     name: String
-     *     properties: {
-     *         cloudConnectors: {
-     *             awsExternalId: String
+     *     location: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         cloudConnectors (Optional): {
+     *             awsExternalId: String (Optional)
      *         }
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByObjectId: String
-     *         endpoints: {
-     *             catalog: String
-     *             guardian: String
-     *             scan: String
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByObjectId: String (Optional)
+     *         endpoints (Optional): {
+     *             catalog: String (Optional)
+     *             guardian: String (Optional)
+     *             scan: String (Optional)
      *         }
-     *         friendlyName: String
-     *         managedResourceGroupName: String
-     *         managedResources: {
-     *             eventHubNamespace: String
-     *             resourceGroup: String
-     *             storageAccount: String
+     *         friendlyName: String (Optional)
+     *         managedResourceGroupName: String (Optional)
+     *         managedResources (Optional): {
+     *             eventHubNamespace: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             storageAccount: String (Optional)
      *         }
-     *         privateEndpointConnections: [
-     *             {
-     *                 id: String
-     *                 name: String
-     *                 properties: {
-     *                     privateEndpoint: {
-     *                         id: String
+     *         privateEndpointConnections (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 properties (Optional): {
+     *                     privateEndpoint (Optional): {
+     *                         id: String (Optional)
      *                     }
-     *                     privateLinkServiceConnectionState: {
-     *                         actionsRequired: String
-     *                         description: String
-     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     privateLinkServiceConnectionState (Optional): {
+     *                         actionsRequired: String (Optional)
+     *                         description: String (Optional)
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected) (Optional)
      *                     }
-     *                     provisioningState: String
+     *                     provisioningState: String (Optional)
      *                 }
-     *                 type: String
+     *                 type: String (Optional)
      *             }
      *         ]
-     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
-     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled) (Optional)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled) (Optional)
      *     }
-     *     sku: {
-     *         capacity: Integer
-     *         name: String(Standard)
+     *     sku (Optional): {
+     *         capacity: Integer (Optional)
+     *         name: String(Standard) (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
-     *     tags: {
-     *         String: String
+     *     tags (Optional): {
+     *         String: String (Optional)
      *     }
-     *     type: String
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an account along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAccountPropertiesWithResponseAsync(
-            RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getAccountProperties(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Get an account.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     identity: {
-     *         principalId: String
-     *         tenantId: String
-     *         type: String(SystemAssigned)
-     *     }
-     *     location: String
-     *     name: String
-     *     properties: {
-     *         cloudConnectors: {
-     *             awsExternalId: String
-     *         }
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByObjectId: String
-     *         endpoints: {
-     *             catalog: String
-     *             guardian: String
-     *             scan: String
-     *         }
-     *         friendlyName: String
-     *         managedResourceGroupName: String
-     *         managedResources: {
-     *             eventHubNamespace: String
-     *             resourceGroup: String
-     *             storageAccount: String
-     *         }
-     *         privateEndpointConnections: [
-     *             {
-     *                 id: String
-     *                 name: String
-     *                 properties: {
-     *                     privateEndpoint: {
-     *                         id: String
-     *                     }
-     *                     privateLinkServiceConnectionState: {
-     *                         actionsRequired: String
-     *                         description: String
-     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
-     *                     }
-     *                     provisioningState: String
-     *                 }
-     *                 type: String
-     *             }
-     *         ]
-     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
-     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
-     *     }
-     *     sku: {
-     *         capacity: Integer
-     *         name: String(Standard)
-     *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     *     tags: {
-     *         String: String
-     *     }
-     *     type: String
+     *     type: String (Optional)
      * }
      * }</pre>
      *
@@ -404,7 +388,13 @@ public final class AccountsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAccountPropertiesWithResponse(RequestOptions requestOptions) {
-        return getAccountPropertiesWithResponseAsync(requestOptions).block();
+        final String accept = "application/json";
+        return service.getAccountPropertiesSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -414,7 +404,7 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     friendlyName: String
+     *     friendlyName: String (Optional)
      * }
      * }</pre>
      *
@@ -422,70 +412,70 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     identity: {
-     *         principalId: String
-     *         tenantId: String
-     *         type: String(SystemAssigned)
+     *     id: String (Optional)
+     *     identity (Optional): {
+     *         principalId: String (Optional)
+     *         tenantId: String (Optional)
+     *         type: String(SystemAssigned) (Optional)
      *     }
-     *     location: String
-     *     name: String
-     *     properties: {
-     *         cloudConnectors: {
-     *             awsExternalId: String
+     *     location: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         cloudConnectors (Optional): {
+     *             awsExternalId: String (Optional)
      *         }
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByObjectId: String
-     *         endpoints: {
-     *             catalog: String
-     *             guardian: String
-     *             scan: String
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByObjectId: String (Optional)
+     *         endpoints (Optional): {
+     *             catalog: String (Optional)
+     *             guardian: String (Optional)
+     *             scan: String (Optional)
      *         }
-     *         friendlyName: String
-     *         managedResourceGroupName: String
-     *         managedResources: {
-     *             eventHubNamespace: String
-     *             resourceGroup: String
-     *             storageAccount: String
+     *         friendlyName: String (Optional)
+     *         managedResourceGroupName: String (Optional)
+     *         managedResources (Optional): {
+     *             eventHubNamespace: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             storageAccount: String (Optional)
      *         }
-     *         privateEndpointConnections: [
-     *             {
-     *                 id: String
-     *                 name: String
-     *                 properties: {
-     *                     privateEndpoint: {
-     *                         id: String
+     *         privateEndpointConnections (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 properties (Optional): {
+     *                     privateEndpoint (Optional): {
+     *                         id: String (Optional)
      *                     }
-     *                     privateLinkServiceConnectionState: {
-     *                         actionsRequired: String
-     *                         description: String
-     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     privateLinkServiceConnectionState (Optional): {
+     *                         actionsRequired: String (Optional)
+     *                         description: String (Optional)
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected) (Optional)
      *                     }
-     *                     provisioningState: String
+     *                     provisioningState: String (Optional)
      *                 }
-     *                 type: String
+     *                 type: String (Optional)
      *             }
      *         ]
-     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
-     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled) (Optional)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled) (Optional)
      *     }
-     *     sku: {
-     *         capacity: Integer
-     *         name: String(Standard)
+     *     sku (Optional): {
+     *         capacity: Integer (Optional)
+     *         name: String(Standard) (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
-     *     tags: {
-     *         String: String
+     *     tags (Optional): {
+     *         String: String (Optional)
      *     }
-     *     type: String
+     *     type: String (Optional)
      * }
      * }</pre>
      *
@@ -519,7 +509,7 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     friendlyName: String
+     *     friendlyName: String (Optional)
      * }
      * }</pre>
      *
@@ -527,174 +517,70 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     identity: {
-     *         principalId: String
-     *         tenantId: String
-     *         type: String(SystemAssigned)
+     *     id: String (Optional)
+     *     identity (Optional): {
+     *         principalId: String (Optional)
+     *         tenantId: String (Optional)
+     *         type: String(SystemAssigned) (Optional)
      *     }
-     *     location: String
-     *     name: String
-     *     properties: {
-     *         cloudConnectors: {
-     *             awsExternalId: String
+     *     location: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         cloudConnectors (Optional): {
+     *             awsExternalId: String (Optional)
      *         }
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByObjectId: String
-     *         endpoints: {
-     *             catalog: String
-     *             guardian: String
-     *             scan: String
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByObjectId: String (Optional)
+     *         endpoints (Optional): {
+     *             catalog: String (Optional)
+     *             guardian: String (Optional)
+     *             scan: String (Optional)
      *         }
-     *         friendlyName: String
-     *         managedResourceGroupName: String
-     *         managedResources: {
-     *             eventHubNamespace: String
-     *             resourceGroup: String
-     *             storageAccount: String
+     *         friendlyName: String (Optional)
+     *         managedResourceGroupName: String (Optional)
+     *         managedResources (Optional): {
+     *             eventHubNamespace: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             storageAccount: String (Optional)
      *         }
-     *         privateEndpointConnections: [
-     *             {
-     *                 id: String
-     *                 name: String
-     *                 properties: {
-     *                     privateEndpoint: {
-     *                         id: String
+     *         privateEndpointConnections (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 properties (Optional): {
+     *                     privateEndpoint (Optional): {
+     *                         id: String (Optional)
      *                     }
-     *                     privateLinkServiceConnectionState: {
-     *                         actionsRequired: String
-     *                         description: String
-     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     privateLinkServiceConnectionState (Optional): {
+     *                         actionsRequired: String (Optional)
+     *                         description: String (Optional)
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected) (Optional)
      *                     }
-     *                     provisioningState: String
+     *                     provisioningState: String (Optional)
      *                 }
-     *                 type: String
+     *                 type: String (Optional)
      *             }
      *         ]
-     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
-     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled) (Optional)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled) (Optional)
      *     }
-     *     sku: {
-     *         capacity: Integer
-     *         name: String(Standard)
+     *     sku (Optional): {
+     *         capacity: Integer (Optional)
+     *         name: String(Standard) (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
-     *     tags: {
-     *         String: String
+     *     tags (Optional): {
+     *         String: String (Optional)
      *     }
-     *     type: String
-     * }
-     * }</pre>
-     *
-     * @param accountUpdateParameters The account properties that can be updated through data plane.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return account resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAccountPropertiesWithResponseAsync(
-            BinaryData accountUpdateParameters, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.updateAccountProperties(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                accountUpdateParameters,
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Updates an account.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     friendlyName: String
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     identity: {
-     *         principalId: String
-     *         tenantId: String
-     *         type: String(SystemAssigned)
-     *     }
-     *     location: String
-     *     name: String
-     *     properties: {
-     *         cloudConnectors: {
-     *             awsExternalId: String
-     *         }
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByObjectId: String
-     *         endpoints: {
-     *             catalog: String
-     *             guardian: String
-     *             scan: String
-     *         }
-     *         friendlyName: String
-     *         managedResourceGroupName: String
-     *         managedResources: {
-     *             eventHubNamespace: String
-     *             resourceGroup: String
-     *             storageAccount: String
-     *         }
-     *         privateEndpointConnections: [
-     *             {
-     *                 id: String
-     *                 name: String
-     *                 properties: {
-     *                     privateEndpoint: {
-     *                         id: String
-     *                     }
-     *                     privateLinkServiceConnectionState: {
-     *                         actionsRequired: String
-     *                         description: String
-     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
-     *                     }
-     *                     provisioningState: String
-     *                 }
-     *                 type: String
-     *             }
-     *         ]
-     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
-     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
-     *     }
-     *     sku: {
-     *         capacity: Integer
-     *         name: String(Standard)
-     *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     *     tags: {
-     *         String: String
-     *     }
-     *     type: String
+     *     type: String (Optional)
      * }
      * }</pre>
      *
@@ -709,7 +595,14 @@ public final class AccountsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAccountPropertiesWithResponse(
             BinaryData accountUpdateParameters, RequestOptions requestOptions) {
-        return updateAccountPropertiesWithResponseAsync(accountUpdateParameters, requestOptions).block();
+        final String accept = "application/json";
+        return service.updateAccountPropertiesSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accountUpdateParameters,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -719,8 +612,8 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     atlasKafkaPrimaryEndpoint: String
-     *     atlasKafkaSecondaryEndpoint: String
+     *     atlasKafkaPrimaryEndpoint: String (Optional)
+     *     atlasKafkaSecondaryEndpoint: String (Optional)
      * }
      * }</pre>
      *
@@ -751,39 +644,8 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     atlasKafkaPrimaryEndpoint: String
-     *     atlasKafkaSecondaryEndpoint: String
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Account access keys along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAccessKeysWithResponseAsync(RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getAccessKeys(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * List the authorization keys associated with this account.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     atlasKafkaPrimaryEndpoint: String
-     *     atlasKafkaSecondaryEndpoint: String
+     *     atlasKafkaPrimaryEndpoint: String (Optional)
+     *     atlasKafkaSecondaryEndpoint: String (Optional)
      * }
      * }</pre>
      *
@@ -796,7 +658,13 @@ public final class AccountsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAccessKeysWithResponse(RequestOptions requestOptions) {
-        return getAccessKeysWithResponseAsync(requestOptions).block();
+        final String accept = "application/json";
+        return service.getAccessKeysSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -806,7 +674,7 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey)
+     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey) (Optional)
      * }
      * }</pre>
      *
@@ -814,8 +682,8 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     atlasKafkaPrimaryEndpoint: String
-     *     atlasKafkaSecondaryEndpoint: String
+     *     atlasKafkaPrimaryEndpoint: String (Optional)
+     *     atlasKafkaSecondaryEndpoint: String (Optional)
      * }
      * }</pre>
      *
@@ -849,7 +717,7 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey)
+     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey) (Optional)
      * }
      * }</pre>
      *
@@ -857,50 +725,8 @@ public final class AccountsImpl {
      *
      * <pre>{@code
      * {
-     *     atlasKafkaPrimaryEndpoint: String
-     *     atlasKafkaSecondaryEndpoint: String
-     * }
-     * }</pre>
-     *
-     * @param keyOptions A access key options used for regeneration.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Account access keys along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> regenerateAccessKeyWithResponseAsync(
-            BinaryData keyOptions, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.regenerateAccessKey(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                keyOptions,
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Regenerate the authorization keys associated with this data catalog.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     atlasKafkaPrimaryEndpoint: String
-     *     atlasKafkaSecondaryEndpoint: String
+     *     atlasKafkaPrimaryEndpoint: String (Optional)
+     *     atlasKafkaSecondaryEndpoint: String (Optional)
      * }
      * }</pre>
      *
@@ -914,6 +740,13 @@ public final class AccountsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> regenerateAccessKeyWithResponse(BinaryData keyOptions, RequestOptions requestOptions) {
-        return regenerateAccessKeyWithResponseAsync(keyOptions, requestOptions).block();
+        final String accept = "application/json";
+        return service.regenerateAccessKeySync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                keyOptions,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 }

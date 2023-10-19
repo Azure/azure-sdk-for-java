@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
@@ -13,6 +14,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
@@ -26,6 +28,7 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
+    private Supplier<CosmosExcludedRegions> excludedRegionsSupplier;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private String userAgentSuffix;
@@ -47,8 +50,8 @@ public final class ConnectionPolicy {
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
     private boolean tcpHealthCheckTimeoutDetectionEnabled;
-    private int minConnectionsPerEndpoint;
-    private int defensiveWarmupConcurrency;
+    private int minConnectionPoolSizePerEndpoint;
+    private int openConnectionsConcurrency;
     private int aggressiveWarmupConcurrency;
 
     /**
@@ -96,6 +99,14 @@ public final class ConnectionPolicy {
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
                 .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
+
+        // NOTE: should be compared with COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT
+        // read during client initialization before connections are created for the container
+        this.minConnectionPoolSizePerEndpoint =
+                Math.max(ImplementationBridgeHelpers
+                    .DirectConnectionConfigHelper
+                    .getDirectConnectionConfigAccessor()
+                    .getMinConnectionPoolSizePerEndpoint(directConnectionConfig), Configs.getMinConnectionPoolSizePerEndpoint());
     }
 
     private ConnectionPolicy() {
@@ -107,8 +118,8 @@ public final class ConnectionPolicy {
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
         this.tcpHealthCheckTimeoutDetectionEnabled = true;
-        this.minConnectionsPerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
-        this.defensiveWarmupConcurrency = Configs.getDefensiveWarmupConcurrency();
+        this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
+        this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
     }
 
@@ -467,6 +478,15 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    public ConnectionPolicy setExcludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
+        this.excludedRegionsSupplier = excludedRegionsSupplier;
+        return this;
+    }
+
+    public Supplier<CosmosExcludedRegions> getExcludedRegionsSupplier() {
+        return this.excludedRegionsSupplier;
+    }
+
     /**
      * Gets the proxy options which contain the InetSocketAddress of proxy server.
      *
@@ -580,6 +600,18 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    public int getMinConnectionPoolSizePerEndpoint() {
+        return minConnectionPoolSizePerEndpoint;
+    }
+
+    public String getExcludedRegionsAsString() {
+        if (this.excludedRegionsSupplier != null && this.excludedRegionsSupplier.get() != null) {
+            CosmosExcludedRegions excludedRegions = this.excludedRegionsSupplier.get();
+            return excludedRegions.toString();
+        }
+        return "[]";
+    }
+
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
@@ -605,8 +637,8 @@ public final class ConnectionPolicy {
             ", ioThreadPriority=" + ioThreadPriority +
             ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             ", tcpHealthCheckTimeoutDetectionEnabled=" + tcpHealthCheckTimeoutDetectionEnabled +
-            ", minConnectionsPerEndpoint=" + minConnectionsPerEndpoint +
-            ", defensiveWarmupConcurrency=" + defensiveWarmupConcurrency +
+            ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
+            ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             '}';
     }

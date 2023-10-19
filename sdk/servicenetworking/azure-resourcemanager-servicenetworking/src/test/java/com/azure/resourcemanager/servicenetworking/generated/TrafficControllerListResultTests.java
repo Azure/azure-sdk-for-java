@@ -11,23 +11,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TrafficControllerListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TrafficControllerListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"configurationEndpoints\":[],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Failed\"},\"location\":\"hab\",\"tags\":{\"byscnp\":\"ikxwc\",\"hiv\":\"x\",\"rtfw\":\"qniwbybrkxvdumj\",\"cs\":\"ukxgaud\"},\"id\":\"h\",\"name\":\"jcny\",\"type\":\"j\"}],\"nextLink\":\"ryhtnapczwlokjy\"}")
+                    "{\"value\":[{\"properties\":{\"configurationEndpoints\":[],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Updating\"},\"location\":\"hab\",\"tags\":{\"byscnp\":\"ikxwc\",\"hiv\":\"x\",\"rtfw\":\"qniwbybrkxvdumj\",\"cs\":\"ukxgaud\"},\"id\":\"h\",\"name\":\"jcny\",\"type\":\"j\"}],\"nextLink\":\"ryhtnapczwlokjy\"}")
                 .toObject(TrafficControllerListResult.class);
         Assertions.assertEquals("hab", model.value().get(0).location());
         Assertions.assertEquals("ikxwc", model.value().get(0).tags().get("byscnp"));
         Assertions.assertEquals("ryhtnapczwlokjy", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TrafficControllerListResult model =
             new TrafficControllerListResult()
                 .withValue(

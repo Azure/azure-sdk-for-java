@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SqlAlwaysEncryptedProperties {
     /*
-     * Sql always encrypted AKV authentication type. Type: string (or Expression with resultType string).
+     * Sql always encrypted AKV authentication type. Type: string.
      */
     @JsonProperty(value = "alwaysEncryptedAkvAuthType", required = true)
     private SqlAlwaysEncryptedAkvAuthType alwaysEncryptedAkvAuthType;
@@ -41,8 +41,7 @@ public final class SqlAlwaysEncryptedProperties {
     }
 
     /**
-     * Get the alwaysEncryptedAkvAuthType property: Sql always encrypted AKV authentication type. Type: string (or
-     * Expression with resultType string).
+     * Get the alwaysEncryptedAkvAuthType property: Sql always encrypted AKV authentication type. Type: string.
      *
      * @return the alwaysEncryptedAkvAuthType value.
      */
@@ -51,8 +50,7 @@ public final class SqlAlwaysEncryptedProperties {
     }
 
     /**
-     * Set the alwaysEncryptedAkvAuthType property: Sql always encrypted AKV authentication type. Type: string (or
-     * Expression with resultType string).
+     * Set the alwaysEncryptedAkvAuthType property: Sql always encrypted AKV authentication type. Type: string.
      *
      * @param alwaysEncryptedAkvAuthType the alwaysEncryptedAkvAuthType value to set.
      * @return the SqlAlwaysEncryptedProperties object itself.

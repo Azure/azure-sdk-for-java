@@ -632,6 +632,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      *
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
+     *     be specified to achieve optimistic concurrency.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -639,7 +641,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduledActionInner>> createOrUpdateWithResponseAsync(
-        String name, ScheduledActionInner scheduledAction) {
+        String name, ScheduledActionInner scheduledAction, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -664,7 +666,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
                             this.client.getEndpoint(),
                             name,
                             this.client.getApiVersion(),
-                            this.client.getIfMatch(),
+                            ifMatch,
                             scheduledAction,
                             accept,
                             context))
@@ -676,6 +678,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      *
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
+     *     be specified to achieve optimistic concurrency.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -684,7 +688,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduledActionInner>> createOrUpdateWithResponseAsync(
-        String name, ScheduledActionInner scheduledAction, Context context) {
+        String name, ScheduledActionInner scheduledAction, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -707,7 +711,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
                 this.client.getEndpoint(),
                 name,
                 this.client.getApiVersion(),
-                this.client.getIfMatch(),
+                ifMatch,
                 scheduledAction,
                 accept,
                 context);
@@ -725,7 +729,9 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScheduledActionInner> createOrUpdateAsync(String name, ScheduledActionInner scheduledAction) {
-        return createOrUpdateWithResponseAsync(name, scheduledAction).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final String ifMatch = null;
+        return createOrUpdateWithResponseAsync(name, scheduledAction, ifMatch)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -733,6 +739,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      *
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
+     *     be specified to achieve optimistic concurrency.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -741,8 +749,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> createOrUpdateWithResponse(
-        String name, ScheduledActionInner scheduledAction, Context context) {
-        return createOrUpdateWithResponseAsync(name, scheduledAction, context).block();
+        String name, ScheduledActionInner scheduledAction, String ifMatch, Context context) {
+        return createOrUpdateWithResponseAsync(name, scheduledAction, ifMatch, context).block();
     }
 
     /**
@@ -757,7 +765,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner createOrUpdate(String name, ScheduledActionInner scheduledAction) {
-        return createOrUpdateWithResponse(name, scheduledAction, Context.NONE).getValue();
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(name, scheduledAction, ifMatch, Context.NONE).getValue();
     }
 
     /**
@@ -975,6 +984,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
+     *     be specified to achieve optimistic concurrency.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -982,7 +993,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduledActionInner>> createOrUpdateByScopeWithResponseAsync(
-        String scope, String name, ScheduledActionInner scheduledAction) {
+        String scope, String name, ScheduledActionInner scheduledAction, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1011,7 +1022,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
                             scope,
                             name,
                             this.client.getApiVersion(),
-                            this.client.getIfMatch(),
+                            ifMatch,
                             scheduledAction,
                             accept,
                             context))
@@ -1039,6 +1050,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
+     *     be specified to achieve optimistic concurrency.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1047,7 +1060,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScheduledActionInner>> createOrUpdateByScopeWithResponseAsync(
-        String scope, String name, ScheduledActionInner scheduledAction, Context context) {
+        String scope, String name, ScheduledActionInner scheduledAction, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1074,7 +1087,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
                 scope,
                 name,
                 this.client.getApiVersion(),
-                this.client.getIfMatch(),
+                ifMatch,
                 scheduledAction,
                 accept,
                 context);
@@ -1109,7 +1122,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScheduledActionInner> createOrUpdateByScopeAsync(
         String scope, String name, ScheduledActionInner scheduledAction) {
-        return createOrUpdateByScopeWithResponseAsync(scope, name, scheduledAction)
+        final String ifMatch = null;
+        return createOrUpdateByScopeWithResponseAsync(scope, name, scheduledAction, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1134,6 +1148,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      *     Subscription scope. Note: Insight Alerts are only available on subscription scope.
      * @param name Scheduled action name.
      * @param scheduledAction Scheduled action to be created or updated.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity and can
+     *     be specified to achieve optimistic concurrency.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1142,8 +1158,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScheduledActionInner> createOrUpdateByScopeWithResponse(
-        String scope, String name, ScheduledActionInner scheduledAction, Context context) {
-        return createOrUpdateByScopeWithResponseAsync(scope, name, scheduledAction, context).block();
+        String scope, String name, ScheduledActionInner scheduledAction, String ifMatch, Context context) {
+        return createOrUpdateByScopeWithResponseAsync(scope, name, scheduledAction, ifMatch, context).block();
     }
 
     /**
@@ -1174,7 +1190,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduledActionInner createOrUpdateByScope(String scope, String name, ScheduledActionInner scheduledAction) {
-        return createOrUpdateByScopeWithResponse(scope, name, scheduledAction, Context.NONE).getValue();
+        final String ifMatch = null;
+        return createOrUpdateByScopeWithResponse(scope, name, scheduledAction, ifMatch, Context.NONE).getValue();
     }
 
     /**

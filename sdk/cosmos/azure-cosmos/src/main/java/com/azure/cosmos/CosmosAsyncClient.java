@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
@@ -62,12 +63,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
  * This asynchronous client is used to configure and execute requests against the service.
+ * <p>
+ * CosmosAsyncClient is thread-safe.
+ * It's recommended to maintain a single instance of CosmosAsyncClient per lifetime of the application which enables efficient connection management and performance.
+ * CosmosAsyncClient initialization is a heavy operation - don't use initialization CosmosAsyncClient instances as credentials or network connectivity validations.
  */
 @ServiceClient(
     builder = CosmosClientBuilder.class,
@@ -94,7 +98,6 @@ public final class CosmosAsyncClient implements Closeable {
     private final DiagnosticsProvider diagnosticsProvider;
     private final Tag clientCorrelationTag;
     private final String accountTagValue;
-    private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
     private final CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
@@ -118,7 +121,8 @@ public final class CosmosAsyncClient implements Closeable {
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
-        CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
+        SessionRetryOptions sessionRetryOptions = builder.getSessionRetryOptions();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -161,6 +165,8 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
                                        .withEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
+                                       .withSessionRetryOptions(sessionRetryOptions)
+                                       .withContainerProactiveInitConfig(this.proactiveContainerInitConfig)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -184,7 +190,6 @@ public final class CosmosAsyncClient implements Closeable {
 
         this.clientMetricRegistrySnapshot = telemetryConfigAccessor
             .getClientMetricRegistry(effectiveTelemetryConfig);
-        this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
 
         CosmosMeterOptions cpuMeterOptions = telemetryConfigAccessor
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_CPU);
@@ -199,7 +204,7 @@ public final class CosmosAsyncClient implements Closeable {
             ".documents.azure.com", ""
         );
 
-        if (this.clientMetricsEnabled) {
+        if (this.clientMetricRegistrySnapshot != null) {
             telemetryConfigAccessor.setClientCorrelationTag(
                 effectiveTelemetryConfig,
                 this.clientCorrelationTag );
@@ -455,22 +460,22 @@ public final class CosmosAsyncClient implements Closeable {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllDatabases";
             CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
-            String operationId = ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getQueryNameOrDefault(nonNullOptions, spanName);
-            pagedFluxOptions.setTracerInformation(
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                this,
                 spanName,
                 null,
                 null,
-                operationId,
-                OperationType.ReadFeed,
                 ResourceType.Database,
-                this,
-                nonNullOptions.getConsistencyLevel(),
-                this.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            return getDocClientWrapper().readDatabases(options)
+                OperationType.ReadFeed,
+                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                nonNullOptions,
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
+
+            return getDocClientWrapper().readDatabases(state)
                 .map(response ->
                     feedResponseAccessor.createFeedResponse(
                         ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
@@ -609,7 +614,9 @@ public final class CosmosAsyncClient implements Closeable {
     // with a sink and block on the wrapping flux for the specified duration
     private Flux<Void> wrapSourceFluxAndSoftCompleteAfterTimeout(Flux<Void> source, Duration timeout) {
         return Flux.<Void>create(sink -> {
-                    source.subscribe(t -> sink.next(t));
+                    source
+                        .doFinally(signalType -> sink.complete())
+                        .subscribe(t -> sink.next(t));
                 })
                 .take(timeout);
     }
@@ -630,22 +637,22 @@ public final class CosmosAsyncClient implements Closeable {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryDatabases";
             CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
-            String operationId = ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getQueryNameOrDefault(nonNullOptions, spanName);
-            pagedFluxOptions.setTracerInformation(
+
+            QueryFeedOperationState state = new QueryFeedOperationState(
+                this,
                 spanName,
                 null,
                 null,
-                operationId,
-                OperationType.Query,
                 ResourceType.Database,
-                this,
-                nonNullOptions.getConsistencyLevel(),
-                this.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(nonNullOptions)));
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            return getDocClientWrapper().queryDatabases(querySpec, options)
+                OperationType.Query,
+                queryOptionsAccessor.getQueryNameOrDefault(nonNullOptions, spanName),
+                nonNullOptions,
+                pagedFluxOptions
+            );
+
+            pagedFluxOptions.setFeedOperationState(state);
+
+            return getDocClientWrapper().queryDatabases(querySpec, state)
                 .map(response -> feedResponseAccessor.createFeedResponse(
                     ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders(),
@@ -693,7 +700,7 @@ public final class CosmosAsyncClient implements Closeable {
             null,
             OperationType.Create,
             ResourceType.Database,
-            this.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()));
+            requestOptions);
     }
 
     private Mono<CosmosDatabaseResponse> createDatabaseInternal(Database database, CosmosDatabaseRequestOptions options,
@@ -714,7 +721,7 @@ public final class CosmosAsyncClient implements Closeable {
                 null,
                 OperationType.Create,
                 ResourceType.Database,
-                this.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()));
+                requestOptions);
     }
 
     private ConsistencyLevel getEffectiveConsistencyLevel(
@@ -822,7 +829,7 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public boolean shouldEnableEmptyPageDiagnostics(CosmosAsyncClient client) {
-                    return client.clientMetricsEnabled || client.isTransportLevelTracingEnabled();
+                    return client.clientMetricRegistrySnapshot != null || client.isTransportLevelTracingEnabled();
                 }
 
                 @Override
@@ -838,6 +845,16 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client) {
                     return client.connectionPolicy.isEndpointDiscoveryEnabled();
+                }
+
+                @Override
+                public String getConnectionMode(CosmosAsyncClient client) {
+                    return client.connectionPolicy.getConnectionMode().toString();
+                }
+
+                @Override
+                public String getUserAgent(CosmosAsyncClient client) {
+                    return client.getUserAgent();
                 }
 
                 @Override

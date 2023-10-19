@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import java.util.Arrays;
 
 /**
- * The {@link TextAnalyticsActions} model.
+ * The {@code TextAnalyticsActions} model.
  */
 @Fluent
 public final class TextAnalyticsActions {
@@ -22,8 +22,14 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
     private Iterable<SingleLabelClassifyAction> singleLabelClassifyActions;
     private Iterable<MultiLabelClassifyAction> multiLabelClassifyActions;
-    private Iterable<AbstractSummaryAction> abstractSummaryActions;
-    private Iterable<ExtractSummaryAction> extractSummaryActions;
+    private Iterable<AbstractiveSummaryAction> abstractiveSummaryActions;
+    private Iterable<ExtractiveSummaryAction> extractiveSummaryActions;
+
+    /**
+     * Constructs a {@code TextAnalyticsActions} model.
+     */
+    public TextAnalyticsActions() {
+    }
 
     /**
      * Gets the custom name for the actions.
@@ -39,7 +45,7 @@ public final class TextAnalyticsActions {
      *
      * @param displayName The custom name for the actions.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setDisplayName(String displayName) {
         this.displayName = displayName;
@@ -60,7 +66,7 @@ public final class TextAnalyticsActions {
      *
      * @param recognizeEntitiesActions The list of {@link RecognizeEntitiesAction} to be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setRecognizeEntitiesActions(RecognizeEntitiesAction... recognizeEntitiesActions) {
         this.recognizeEntitiesActions = recognizeEntitiesActions == null ? null
@@ -82,7 +88,7 @@ public final class TextAnalyticsActions {
      *
      * @param recognizeLinkedEntitiesActions The list of {@link RecognizeLinkedEntitiesAction} to be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setRecognizeLinkedEntitiesActions(
         RecognizeLinkedEntitiesAction... recognizeLinkedEntitiesActions) {
@@ -105,7 +111,7 @@ public final class TextAnalyticsActions {
      *
      * @param recognizePiiEntitiesActions The list of {@link RecognizePiiEntitiesAction} to be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setRecognizePiiEntitiesActions(
         RecognizePiiEntitiesAction... recognizePiiEntitiesActions) {
@@ -128,12 +134,12 @@ public final class TextAnalyticsActions {
      *
      * @param analyzeHealthcareEntitiesActions The list of {@link AnalyzeHealthcareEntitiesAction} to be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setAnalyzeHealthcareEntitiesActions(
         AnalyzeHealthcareEntitiesAction... analyzeHealthcareEntitiesActions) {
         this.analyzeHealthcareEntitiesActions = analyzeHealthcareEntitiesActions == null ? null
-                                               : Arrays.asList(analyzeHealthcareEntitiesActions);
+            : Arrays.asList(analyzeHealthcareEntitiesActions);
         return this;
     }
 
@@ -151,7 +157,7 @@ public final class TextAnalyticsActions {
      *
      * @param extractKeyPhrasesActions The list of {@link ExtractKeyPhrasesAction} to be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setExtractKeyPhrasesActions(ExtractKeyPhrasesAction... extractKeyPhrasesActions) {
         this.extractKeyPhrasesActions = extractKeyPhrasesActions == null ? null
@@ -173,7 +179,7 @@ public final class TextAnalyticsActions {
      *
      * @param analyzeSentimentActions The list of {@link AnalyzeSentimentAction} to be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setAnalyzeSentimentActions(AnalyzeSentimentAction... analyzeSentimentActions) {
         this.analyzeSentimentActions = analyzeSentimentActions == null ? null : Arrays.asList(analyzeSentimentActions);
@@ -182,9 +188,8 @@ public final class TextAnalyticsActions {
 
     /**
      * Gets the list of {@link RecognizeCustomEntitiesAction} to be executed.
-     *
      * See the service documentation for regional support of custom entities recognition:
-     * https://aka.ms/azsdk/textanalytics/customentityrecognition
+     * <a href="https://aka.ms/azsdk/textanalytics/customentityrecognition">Custom NER</a>
      *
      * @return the list of {@link RecognizeCustomEntitiesAction} to be executed.
      */
@@ -194,26 +199,24 @@ public final class TextAnalyticsActions {
 
     /**
      * Sets the list of {@link RecognizeCustomEntitiesAction} to be executed.
-     *
      * See the service documentation for regional support of custom entities recognition:
-     * https://aka.ms/azsdk/textanalytics/customentityrecognition
+     * <a href="https://aka.ms/azsdk/textanalytics/customentityrecognition">Custom NER</a>
      *
      * @param recognizeCustomEntitiesActions The list of {@link RecognizeCustomEntitiesAction} to be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setRecognizeCustomEntitiesActions(
         RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
         this.recognizeCustomEntitiesActions = recognizeCustomEntitiesActions == null ? null
-                                                  : Arrays.asList(recognizeCustomEntitiesActions);
+            : Arrays.asList(recognizeCustomEntitiesActions);
         return this;
     }
 
     /**
      * Gets the list of {@link SingleLabelClassifyAction} to be executed.
-     *
      * See the service documentation for regional support of custom single classification:
-     * https://aka.ms/azsdk/textanalytics/customfunctionalities
+     * <a href="https://aka.ms/azsdk/textanalytics/customfunctionalities">Custom NER</a>
      *
      * @return the list of {@link SingleLabelClassifyAction} to be executed.
      */
@@ -223,26 +226,24 @@ public final class TextAnalyticsActions {
 
     /**
      * Sets the list of {@link SingleLabelClassifyAction} to be executed.
-     *
      * See the service documentation for regional support of custom single classification:
-     * https://aka.ms/azsdk/textanalytics/customfunctionalities
+     * <a href="https://aka.ms/azsdk/textanalytics/customfunctionalities">Custom NER</a>
      *
      * @param singleLabelClassifyActions The list of
      * {@link SingleLabelClassifyAction} to be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setSingleLabelClassifyActions(SingleLabelClassifyAction... singleLabelClassifyActions) {
-        this.singleLabelClassifyActions = singleLabelClassifyActions == null
-                                                 ? null : Arrays.asList(singleLabelClassifyActions);
+        this.singleLabelClassifyActions = singleLabelClassifyActions == null ? null
+            : Arrays.asList(singleLabelClassifyActions);
         return this;
     }
 
     /**
      * Gets the list of {@link MultiLabelClassifyAction} to be executed.
-     *
      * See the service documentation for regional support of custom multi classification:
-     * https://aka.ms/azsdk/textanalytics/customfunctionalities
+     * <a href="https://aka.ms/azsdk/textanalytics/customfunctionalities">Custom NER</a>
      *
      * @return the list of {@link MultiLabelClassifyAction} to be executed.
      */
@@ -252,60 +253,61 @@ public final class TextAnalyticsActions {
 
     /**
      * Sets the list of {@link MultiLabelClassifyAction} to be executed.
-     *
      * See the service documentation for regional support of custom multi classification:
-     * https://aka.ms/azsdk/textanalytics/customfunctionalities
+     * <a href="https://aka.ms/azsdk/textanalytics/customfunctionalities">Custom NER</a>
      *
      * @param multiLabelClassifyActions The list of {@link MultiLabelClassifyAction} to
      * be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setMultiLabelClassifyActions(MultiLabelClassifyAction... multiLabelClassifyActions) {
-        this.multiLabelClassifyActions = multiLabelClassifyActions == null
-                                                ? null : Arrays.asList(multiLabelClassifyActions);
+        this.multiLabelClassifyActions = multiLabelClassifyActions == null ? null
+            : Arrays.asList(multiLabelClassifyActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link AbstractSummaryAction} to be executed.
+     * Gets the list of {@link AbstractiveSummaryAction} to be executed.
      *
-     * @return the list of {@link AbstractSummaryAction} to be executed.
+     * @return the list of {@link AbstractiveSummaryAction} to be executed.
      */
-    public Iterable<AbstractSummaryAction> getAbstractSummaryActions() {
-        return abstractSummaryActions;
+    public Iterable<AbstractiveSummaryAction> getAbstractiveSummaryActions() {
+        return abstractiveSummaryActions;
     }
 
     /**
-     * Sets the list of {@link AbstractSummaryAction} to be executed.
+     * Sets the list of {@link AbstractiveSummaryAction} to be executed.
      *
-     * @param abstractSummaryActions The list of {@link AbstractSummaryAction} to be executed.
+     * @param abstractiveSummaryActions The list of {@link AbstractiveSummaryAction} to be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setAbstractSummaryActions(AbstractSummaryAction... abstractSummaryActions) {
-        this.abstractSummaryActions = abstractSummaryActions == null ? null : Arrays.asList(abstractSummaryActions);
+    public TextAnalyticsActions setAbstractiveSummaryActions(AbstractiveSummaryAction... abstractiveSummaryActions) {
+        this.abstractiveSummaryActions = abstractiveSummaryActions == null ? null
+            : Arrays.asList(abstractiveSummaryActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link ExtractSummaryAction} to be executed.
+     * Gets the list of {@link ExtractiveSummaryAction} to be executed.
      *
-     * @return the list of {@link ExtractSummaryAction} to be executed.
+     * @return the list of {@link ExtractiveSummaryAction} to be executed.
      */
-    public Iterable<ExtractSummaryAction> getExtractSummaryActions() {
-        return extractSummaryActions;
+    public Iterable<ExtractiveSummaryAction> getExtractiveSummaryActions() {
+        return extractiveSummaryActions;
     }
 
     /**
-     * Sets the list of {@link ExtractSummaryAction} to be executed.
+     * Sets the list of {@link ExtractiveSummaryAction} to be executed.
      *
-     * @param extractSummaryActions The list of {@link ExtractSummaryAction} to be executed.
+     * @param extractiveSummaryActions The list of {@link ExtractiveSummaryAction} to be executed.
      *
-     * @return The {@link TextAnalyticsActions} object itself.
+     * @return The {@code TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
-        this.extractSummaryActions = extractSummaryActions == null ? null : Arrays.asList(extractSummaryActions);
+    public TextAnalyticsActions setExtractiveSummaryActions(ExtractiveSummaryAction... extractiveSummaryActions) {
+        this.extractiveSummaryActions = extractiveSummaryActions == null ? null
+            : Arrays.asList(extractiveSummaryActions);
         return this;
     }
 }

@@ -24,6 +24,10 @@ public final class CustomDomain {
     @JsonProperty(value = "useSubDomainName")
     private Boolean useSubDomainName;
 
+    /** Creates an instance of CustomDomain class. */
+    public CustomDomain() {
+    }
+
     /**
      * Get the name property: Gets or sets the custom domain name assigned to the storage account. Name is the CNAME
      * source.

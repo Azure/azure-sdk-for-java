@@ -32,17 +32,17 @@ public class CosmosTemplateIllegalTest {
     private static final String CHECK_FAILURE_MSG = "Illegal argument is not checked";
 
     @Mock(answer = Answers.CALLS_REAL_METHODS)
-    private CosmosTemplate dbTemplate;
-    private Class<?> dbTemplateClass;
+    private CosmosTemplate cosmosTemplate;
+    private Class<?> cosmosTemplateClass;
 
     @Before
     public void setUp() {
-        dbTemplateClass = dbTemplate.getClass();
+        cosmosTemplateClass = cosmosTemplate.getClass();
     }
 
     @Test
     public void deleteIllegalShouldFail() throws NoSuchMethodException {
-        final Method method = dbTemplateClass.getMethod("delete",
+        final Method method = cosmosTemplateClass.getMethod("delete",
             CosmosQuery.class, Class.class, String.class);
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL,
             "faker", Arrays.asList("faker-value"), Part.IgnoreCaseType.NEVER);
@@ -55,7 +55,7 @@ public class CosmosTemplateIllegalTest {
 
     @Test
     public void deleteIllegalContainerShouldFail() throws NoSuchMethodException {
-        final Method method = dbTemplateClass.getDeclaredMethod("deleteAll", String.class, Class.class);
+        final Method method = cosmosTemplateClass.getDeclaredMethod("deleteAll", String.class, Class.class);
 
         checkIllegalArgument(method, NULL_STR, Person.class);
         checkIllegalArgument(method, EMPTY_STR, Person.class);
@@ -63,36 +63,10 @@ public class CosmosTemplateIllegalTest {
     }
 
     @Test
-    public void deleteByIdIllegalArgsShouldFail() throws NoSuchMethodException {
-        final Method method = dbTemplateClass.getDeclaredMethod("deleteById", String.class, Object.class,
-                PartitionKey.class);
-
-        // Test argument containerName
-        checkIllegalArgument(method, null, DUMMY_ID, DUMMY_KEY);
-        checkIllegalArgument(method, EMPTY_STR, DUMMY_ID, DUMMY_KEY);
-        checkIllegalArgument(method, WHITESPACES_STR, DUMMY_ID, DUMMY_KEY);
-
-        // Test argument id
-        checkIllegalArgument(method, DUMMY_COLL, null, DUMMY_KEY);
-        checkIllegalArgument(method, DUMMY_COLL, EMPTY_STR, DUMMY_KEY);
-        checkIllegalArgument(method, DUMMY_COLL, WHITESPACES_STR, DUMMY_KEY);
-    }
-
-    @Test
     public void findByIdIllegalArgsShouldFail() throws NoSuchMethodException {
-        final Method method = dbTemplateClass.getDeclaredMethod("findById", Object.class, Class.class);
+        final Method method = cosmosTemplateClass.getDeclaredMethod("findById", Object.class, Class.class);
 
         checkIllegalArgument(method, DUMMY_ID, null);
-    }
-
-    @Test
-    public void findByCollIdIllegalArgsShouldFail() throws NoSuchMethodException {
-        final Method method = dbTemplateClass.getDeclaredMethod("findById", String.class,
-                Object.class, Class.class);
-
-        checkIllegalArgument(method, DUMMY_COLL, null, Person.class);
-        checkIllegalArgument(method, DUMMY_COLL, EMPTY_STR, Person.class);
-        checkIllegalArgument(method, DUMMY_COLL, WHITESPACES_STR, Person.class);
     }
 
     /**
@@ -102,7 +76,7 @@ public class CosmosTemplateIllegalTest {
      */
     private void checkIllegalArgument(Method method, Object... args) {
         try {
-            method.invoke(dbTemplate, args);
+            method.invoke(cosmosTemplate, args);
         } catch (IllegalAccessException | InvocationTargetException e) {
             Assert.isTrue(e.getCause() instanceof IllegalArgumentException, CHECK_FAILURE_MSG);
             return; // Test passed

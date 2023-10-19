@@ -12,14 +12,14 @@ public final class DataConnectionValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataConnectionValidationResult model =
-            BinaryData.fromString("{\"errorMessage\":\"paxh\"}").toObject(DataConnectionValidationResult.class);
-        Assertions.assertEquals("paxh", model.errorMessage());
+            BinaryData.fromString("{\"errorMessage\":\"nfdn\"}").toObject(DataConnectionValidationResult.class);
+        Assertions.assertEquals("nfdn", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataConnectionValidationResult model = new DataConnectionValidationResult().withErrorMessage("paxh");
+        DataConnectionValidationResult model = new DataConnectionValidationResult().withErrorMessage("nfdn");
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationResult.class);
-        Assertions.assertEquals("paxh", model.errorMessage());
+        Assertions.assertEquals("nfdn", model.errorMessage());
     }
 }

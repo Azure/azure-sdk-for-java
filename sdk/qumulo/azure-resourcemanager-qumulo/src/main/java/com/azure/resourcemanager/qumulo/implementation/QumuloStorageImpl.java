@@ -155,7 +155,7 @@ public final class QumuloStorageImpl implements QumuloStorage {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-10-12-preview";
+        this.apiVersion = "2022-10-12";
         this.operations = new OperationsClientImpl(this);
         this.fileSystems = new FileSystemsClientImpl(this);
     }

@@ -9,35 +9,22 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentTypeUpdate;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EnvironmentTypeUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EnvironmentTypeUpdate model =
             BinaryData
-                .fromString(
-                    "{\"tags\":{\"eoejzic\":\"nfyhx\",\"hajdeyeamdpha\":\"ifsjttgzfbishcb\",\"wkgshwa\":\"alpbuxwgipwhon\",\"bin\":\"kix\"}}")
+                .fromString("{\"tags\":{\"jzicwifsjt\":\"qjsdpydnfyhxdeo\"}}")
                 .toObject(EnvironmentTypeUpdate.class);
-        Assertions.assertEquals("nfyhx", model.tags().get("eoejzic"));
+        Assertions.assertEquals("qjsdpydnfyhxdeo", model.tags().get("jzicwifsjt"));
     }
 
-    @Test
-    public void testSerialize() {
-        EnvironmentTypeUpdate model =
-            new EnvironmentTypeUpdate()
-                .withTags(
-                    mapOf(
-                        "eoejzic",
-                        "nfyhx",
-                        "hajdeyeamdpha",
-                        "ifsjttgzfbishcb",
-                        "wkgshwa",
-                        "alpbuxwgipwhon",
-                        "bin",
-                        "kix"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EnvironmentTypeUpdate model = new EnvironmentTypeUpdate().withTags(mapOf("jzicwifsjt", "qjsdpydnfyhxdeo"));
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeUpdate.class);
-        Assertions.assertEquals("nfyhx", model.tags().get("eoejzic"));
+        Assertions.assertEquals("qjsdpydnfyhxdeo", model.tags().get("jzicwifsjt"));
     }
 
     @SuppressWarnings("unchecked")

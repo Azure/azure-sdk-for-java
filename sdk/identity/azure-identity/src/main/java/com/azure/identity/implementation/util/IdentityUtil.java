@@ -8,8 +8,10 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +23,8 @@ public final class IdentityUtil {
     public static final String ALL_TENANTS = "*";
     public static final String DEFAULT_TENANT = "organizations";
 
+    public static final File NULL_FILE =
+        new File((System.getProperty("os.name").startsWith("Windows") ? "NUL" : "/dev/null"));
 
     private IdentityUtil() { }
     /**
@@ -82,5 +86,10 @@ public final class IdentityUtil {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public static boolean browserCustomizationOptionsPresent(BrowserCustomizationOptions browserCustomizationOptions) {
+        return !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getErrorMessage())
+            || !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getSuccessMessage());
     }
 }

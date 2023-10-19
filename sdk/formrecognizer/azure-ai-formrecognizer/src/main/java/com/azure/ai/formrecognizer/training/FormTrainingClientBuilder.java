@@ -94,6 +94,14 @@ public final class FormTrainingClientBuilder implements
     EndpointTrait<FormTrainingClientBuilder>,
     HttpTrait<FormTrainingClientBuilder>,
     TokenCredentialTrait<FormTrainingClientBuilder> {
+
+    /**
+     * Constructs a {@link FormTrainingClientBuilder} object.
+     */
+    public FormTrainingClientBuilder() {
+        httpLogOptions = new HttpLogOptions();
+    }
+
     private final ClientLogger logger = new ClientLogger(FormTrainingClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -298,7 +306,7 @@ public final class FormTrainingClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated FormTrainingClientBuilder object.
-     * @see HttpClientOptions
+     * {@link HttpClientOptions}
      */
     @Override
     public FormTrainingClientBuilder clientOptions(ClientOptions clientOptions) {

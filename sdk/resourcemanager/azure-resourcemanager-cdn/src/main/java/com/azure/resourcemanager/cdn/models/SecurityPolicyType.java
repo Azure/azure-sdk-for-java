@@ -14,6 +14,15 @@ public final class SecurityPolicyType extends ExpandableStringEnum<SecurityPolic
     public static final SecurityPolicyType WEB_APPLICATION_FIREWALL = fromString("WebApplicationFirewall");
 
     /**
+     * Creates a new instance of SecurityPolicyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityPolicyType() {
+    }
+
+    /**
      * Creates or finds a SecurityPolicyType from its string representation.
      *
      * @param name a name to look for.

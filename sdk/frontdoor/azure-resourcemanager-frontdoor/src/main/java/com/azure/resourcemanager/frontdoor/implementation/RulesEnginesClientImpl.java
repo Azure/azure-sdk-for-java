@@ -66,8 +66,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
     public interface RulesEnginesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/rulesEngines")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RulesEngineListResult>> listByFrontDoor(
@@ -81,8 +80,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/rulesEngines/{rulesEngineName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RulesEngineInner>> get(
@@ -97,8 +95,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/rulesEngines/{rulesEngineName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -114,8 +111,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/rulesEngines/{rulesEngineName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -172,7 +168,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         if (frontDoorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter frontDoorName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -232,7 +228,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         if (frontDoorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter frontDoorName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -363,7 +359,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter rulesEngineName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -420,7 +416,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter rulesEngineName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -537,7 +533,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         } else {
             rulesEngineParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -607,7 +603,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         } else {
             rulesEngineParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -878,7 +874,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter rulesEngineName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -934,7 +930,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter rulesEngineName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

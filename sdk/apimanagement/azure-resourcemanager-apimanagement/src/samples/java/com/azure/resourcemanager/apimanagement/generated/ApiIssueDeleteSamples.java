@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiIssue Delete. */
 public final class ApiIssueDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteApiIssue.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteApiIssue.json
      */
     /**
      * Sample code: ApiManagementDeleteApiIssue.
@@ -21,6 +19,11 @@ public final class ApiIssueDeleteSamples {
         manager
             .apiIssues()
             .deleteWithResponse(
-                "rg1", "apimService1", "57d1f7558aa04f15146d9d8a", "57d2ef278aa04f0ad01d6cdc", "*", Context.NONE);
+                "rg1",
+                "apimService1",
+                "57d1f7558aa04f15146d9d8a",
+                "57d2ef278aa04f0ad01d6cdc",
+                "*",
+                com.azure.core.util.Context.NONE);
     }
 }

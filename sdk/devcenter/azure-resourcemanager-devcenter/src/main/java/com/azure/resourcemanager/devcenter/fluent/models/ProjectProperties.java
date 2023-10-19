@@ -18,7 +18,7 @@ public final class ProjectProperties extends ProjectUpdateProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * The URI of the resource.
+     * The URI of the Dev Center resource this project is associated with.
      */
     @JsonProperty(value = "devCenterUri", access = JsonProperty.Access.WRITE_ONLY)
     private String devCenterUri;
@@ -37,7 +37,7 @@ public final class ProjectProperties extends ProjectUpdateProperties {
     }
 
     /**
-     * Get the devCenterUri property: The URI of the resource.
+     * Get the devCenterUri property: The URI of the Dev Center resource this project is associated with.
      *
      * @return the devCenterUri value.
      */
@@ -56,6 +56,13 @@ public final class ProjectProperties extends ProjectUpdateProperties {
     @Override
     public ProjectProperties withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ProjectProperties withMaxDevBoxesPerUser(Integer maxDevBoxesPerUser) {
+        super.withMaxDevBoxesPerUser(maxDevBoxesPerUser);
         return this;
     }
 

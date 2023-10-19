@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachineExtensions List. */
 public final class VirtualMachineExtensionsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachineExtension_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtension_List_MinimumSet_Gen.
@@ -24,7 +24,7 @@ public final class VirtualMachineExtensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachineExtension_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtension_List_MaximumSet_Gen.

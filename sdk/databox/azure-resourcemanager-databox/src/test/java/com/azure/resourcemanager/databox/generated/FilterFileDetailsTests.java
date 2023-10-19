@@ -14,18 +14,18 @@ public final class FilterFileDetailsTests {
     public void testDeserialize() throws Exception {
         FilterFileDetails model =
             BinaryData
-                .fromString("{\"filterFileType\":\"AzureBlob\",\"filterFilePath\":\"udwxdndnvowguj\"}")
+                .fromString("{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"vfyexfw\"}")
                 .toObject(FilterFileDetails.class);
-        Assertions.assertEquals(FilterFileType.AZURE_BLOB, model.filterFileType());
-        Assertions.assertEquals("udwxdndnvowguj", model.filterFilePath());
+        Assertions.assertEquals(FilterFileType.AZURE_FILE, model.filterFileType());
+        Assertions.assertEquals("vfyexfw", model.filterFilePath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FilterFileDetails model =
-            new FilterFileDetails().withFilterFileType(FilterFileType.AZURE_BLOB).withFilterFilePath("udwxdndnvowguj");
+            new FilterFileDetails().withFilterFileType(FilterFileType.AZURE_FILE).withFilterFilePath("vfyexfw");
         model = BinaryData.fromObject(model).toObject(FilterFileDetails.class);
-        Assertions.assertEquals(FilterFileType.AZURE_BLOB, model.filterFileType());
-        Assertions.assertEquals("udwxdndnvowguj", model.filterFilePath());
+        Assertions.assertEquals(FilterFileType.AZURE_FILE, model.filterFileType());
+        Assertions.assertEquals("vfyexfw", model.filterFilePath());
     }
 }

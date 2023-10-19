@@ -24,6 +24,10 @@ public final class EventSubscriptionsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of EventSubscriptionsListResult class. */
+    public EventSubscriptionsListResult() {
+    }
+
     /**
      * Get the value property: A collection of EventSubscriptions.
      *

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ServerRestartParamet
 /** Samples for Servers Restart. */
 public final class ServersRestartSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ServerRestart.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerRestart.json
      */
     /**
      * Sample code: Restart a server.

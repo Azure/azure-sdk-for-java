@@ -18,6 +18,7 @@
 - [List](#webpubsub_list)
 - [ListByResourceGroup](#webpubsub_listbyresourcegroup)
 - [ListKeys](#webpubsub_listkeys)
+- [ListReplicaSkus](#webpubsub_listreplicaskus)
 - [ListSkus](#webpubsub_listskus)
 - [RegenerateKey](#webpubsub_regeneratekey)
 - [Restart](#webpubsub_restart)
@@ -55,6 +56,15 @@
 
 - [List](#webpubsubprivatelinkresources_list)
 
+## WebPubSubReplicas
+
+- [CreateOrUpdate](#webpubsubreplicas_createorupdate)
+- [Delete](#webpubsubreplicas_delete)
+- [Get](#webpubsubreplicas_get)
+- [List](#webpubsubreplicas_list)
+- [Restart](#webpubsubreplicas_restart)
+- [Update](#webpubsubreplicas_update)
+
 ## WebPubSubSharedPrivateLinkResources
 
 - [CreateOrUpdate](#webpubsubsharedprivatelinkresources_createorupdate)
@@ -67,7 +77,7 @@
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/Operations_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -86,7 +96,7 @@ public final class OperationsListSamples {
 /** Samples for Usages List. */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/Usages_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/Usages_List.json
      */
     /**
      * Sample code: Usages_List.
@@ -107,7 +117,7 @@ import com.azure.resourcemanager.webpubsub.models.NameAvailabilityParameters;
 /** Samples for WebPubSub CheckNameAvailability. */
 public final class WebPubSubCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_CheckNameAvailability.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_CheckNameAvailability.json
      */
     /**
      * Sample code: WebPubSub_CheckNameAvailability.
@@ -138,6 +148,7 @@ import com.azure.resourcemanager.webpubsub.models.ManagedIdentityType;
 import com.azure.resourcemanager.webpubsub.models.NetworkAcl;
 import com.azure.resourcemanager.webpubsub.models.PrivateEndpointAcl;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
+import com.azure.resourcemanager.webpubsub.models.ServiceKind;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubRequestType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
@@ -149,7 +160,7 @@ import java.util.Map;
 /** Samples for WebPubSub CreateOrUpdate. */
 public final class WebPubSubCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSub_CreateOrUpdate.
@@ -162,8 +173,9 @@ public final class WebPubSubCreateOrUpdateSamples {
             .define("myWebPubSubService")
             .withRegion("eastus")
             .withExistingResourceGroup("myResourceGroup")
-            .withTags(mapOf("key1", "value1"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(1))
+            .withKind(ServiceKind.WEB_PUB_SUB)
             .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED))
             .withTls(new WebPubSubTlsSettings().withClientCertEnabled(false))
             .withLiveTraceConfiguration(
@@ -207,7 +219,7 @@ public final class WebPubSubCreateOrUpdateSamples {
 /** Samples for WebPubSub Delete. */
 public final class WebPubSubDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_Delete.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_Delete.json
      */
     /**
      * Sample code: WebPubSub_Delete.
@@ -226,7 +238,7 @@ public final class WebPubSubDeleteSamples {
 /** Samples for WebPubSub GetByResourceGroup. */
 public final class WebPubSubGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_Get.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_Get.json
      */
     /**
      * Sample code: WebPubSub_Get.
@@ -247,7 +259,7 @@ public final class WebPubSubGetByResourceGroupSamples {
 /** Samples for WebPubSub List. */
 public final class WebPubSubListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_ListBySubscription.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_ListBySubscription.json
      */
     /**
      * Sample code: WebPubSub_ListBySubscription.
@@ -266,7 +278,7 @@ public final class WebPubSubListSamples {
 /** Samples for WebPubSub ListByResourceGroup. */
 public final class WebPubSubListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_ListByResourceGroup.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_ListByResourceGroup.json
      */
     /**
      * Sample code: WebPubSub_ListByResourceGroup.
@@ -285,7 +297,7 @@ public final class WebPubSubListByResourceGroupSamples {
 /** Samples for WebPubSub ListKeys. */
 public final class WebPubSubListKeysSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_ListKeys.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_ListKeys.json
      */
     /**
      * Sample code: WebPubSub_ListKeys.
@@ -300,13 +312,35 @@ public final class WebPubSubListKeysSamples {
 }
 ```
 
+### WebPubSub_ListReplicaSkus
+
+```java
+/** Samples for WebPubSub ListReplicaSkus. */
+public final class WebPubSubListReplicaSkusSamples {
+    /*
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_ListReplicaSkus.json
+     */
+    /**
+     * Sample code: WebPubSub_ListReplicaSkus.
+     *
+     * @param manager Entry point to WebPubSubManager.
+     */
+    public static void webPubSubListReplicaSkus(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
+        manager
+            .webPubSubs()
+            .listReplicaSkusWithResponse(
+                "myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### WebPubSub_ListSkus
 
 ```java
 /** Samples for WebPubSub ListSkus. */
 public final class WebPubSubListSkusSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_ListSkus.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_ListSkus.json
      */
     /**
      * Sample code: WebPubSub_ListSkus.
@@ -330,7 +364,7 @@ import com.azure.resourcemanager.webpubsub.models.RegenerateKeyParameters;
 /** Samples for WebPubSub RegenerateKey. */
 public final class WebPubSubRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_RegenerateKey.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_RegenerateKey.json
      */
     /**
      * Sample code: WebPubSub_RegenerateKey.
@@ -355,7 +389,7 @@ public final class WebPubSubRegenerateKeySamples {
 /** Samples for WebPubSub Restart. */
 public final class WebPubSubRestartSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_Restart.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_Restart.json
      */
     /**
      * Sample code: WebPubSub_Restart.
@@ -391,7 +425,7 @@ import java.util.Map;
 /** Samples for WebPubSub Update. */
 public final class WebPubSubUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_Update.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_Update.json
      */
     /**
      * Sample code: WebPubSub_Update.
@@ -407,7 +441,7 @@ public final class WebPubSubUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "value1"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(1))
             .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED))
             .withTls(new WebPubSubTlsSettings().withClientCertEnabled(false))
@@ -452,7 +486,7 @@ public final class WebPubSubUpdateSamples {
 /** Samples for WebPubSubCustomCertificates CreateOrUpdate. */
 public final class WebPubSubCustomCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomCertificates_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubCustomCertificates_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubCustomCertificates_CreateOrUpdate.
@@ -479,7 +513,7 @@ public final class WebPubSubCustomCertificatesCreateOrUpdateSamples {
 /** Samples for WebPubSubCustomCertificates Delete. */
 public final class WebPubSubCustomCertificatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomCertificates_Delete.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubCustomCertificates_Delete.json
      */
     /**
      * Sample code: WebPubSubCustomCertificates_Delete.
@@ -500,7 +534,7 @@ public final class WebPubSubCustomCertificatesDeleteSamples {
 /** Samples for WebPubSubCustomCertificates Get. */
 public final class WebPubSubCustomCertificatesGetSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomCertificates_Get.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubCustomCertificates_Get.json
      */
     /**
      * Sample code: WebPubSubCustomCertificates_Get.
@@ -521,7 +555,7 @@ public final class WebPubSubCustomCertificatesGetSamples {
 /** Samples for WebPubSubCustomCertificates List. */
 public final class WebPubSubCustomCertificatesListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomCertificates_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubCustomCertificates_List.json
      */
     /**
      * Sample code: WebPubSubCustomCertificates_List.
@@ -544,7 +578,7 @@ import com.azure.resourcemanager.webpubsub.models.ResourceReference;
 /** Samples for WebPubSubCustomDomains CreateOrUpdate. */
 public final class WebPubSubCustomDomainsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomDomains_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubCustomDomains_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubCustomDomains_CreateOrUpdate.
@@ -573,7 +607,7 @@ public final class WebPubSubCustomDomainsCreateOrUpdateSamples {
 /** Samples for WebPubSubCustomDomains Delete. */
 public final class WebPubSubCustomDomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomDomains_Delete.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubCustomDomains_Delete.json
      */
     /**
      * Sample code: WebPubSubCustomDomains_Delete.
@@ -594,7 +628,7 @@ public final class WebPubSubCustomDomainsDeleteSamples {
 /** Samples for WebPubSubCustomDomains Get. */
 public final class WebPubSubCustomDomainsGetSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomDomains_Get.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubCustomDomains_Get.json
      */
     /**
      * Sample code: WebPubSubCustomDomains_Get.
@@ -615,7 +649,7 @@ public final class WebPubSubCustomDomainsGetSamples {
 /** Samples for WebPubSubCustomDomains List. */
 public final class WebPubSubCustomDomainsListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomDomains_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubCustomDomains_List.json
      */
     /**
      * Sample code: WebPubSubCustomDomains_List.
@@ -646,7 +680,7 @@ import java.util.Arrays;
 /** Samples for WebPubSubHubs CreateOrUpdate. */
 public final class WebPubSubHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubHubs_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubHubs_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubHubs_CreateOrUpdate.
@@ -695,7 +729,7 @@ public final class WebPubSubHubsCreateOrUpdateSamples {
 /** Samples for WebPubSubHubs Delete. */
 public final class WebPubSubHubsDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubHubs_Delete.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubHubs_Delete.json
      */
     /**
      * Sample code: WebPubSubHubs_Delete.
@@ -716,7 +750,7 @@ public final class WebPubSubHubsDeleteSamples {
 /** Samples for WebPubSubHubs Get. */
 public final class WebPubSubHubsGetSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubHubs_Get.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubHubs_Get.json
      */
     /**
      * Sample code: WebPubSubHubs_Get.
@@ -737,7 +771,7 @@ public final class WebPubSubHubsGetSamples {
 /** Samples for WebPubSubHubs List. */
 public final class WebPubSubHubsListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubHubs_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubHubs_List.json
      */
     /**
      * Sample code: WebPubSubHubs_List.
@@ -756,7 +790,7 @@ public final class WebPubSubHubsListSamples {
 /** Samples for WebPubSubPrivateEndpointConnections Delete. */
 public final class WebPubSubPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubPrivateEndpointConnections_Delete.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubPrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: WebPubSubPrivateEndpointConnections_Delete.
@@ -782,7 +816,7 @@ public final class WebPubSubPrivateEndpointConnectionsDeleteSamples {
 /** Samples for WebPubSubPrivateEndpointConnections Get. */
 public final class WebPubSubPrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubPrivateEndpointConnections_Get.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubPrivateEndpointConnections_Get.json
      */
     /**
      * Sample code: WebPubSubPrivateEndpointConnections_Get.
@@ -808,7 +842,7 @@ public final class WebPubSubPrivateEndpointConnectionsGetSamples {
 /** Samples for WebPubSubPrivateEndpointConnections List. */
 public final class WebPubSubPrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubPrivateEndpointConnections_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubPrivateEndpointConnections_List.json
      */
     /**
      * Sample code: WebPubSubPrivateEndpointConnections_List.
@@ -835,7 +869,7 @@ import com.azure.resourcemanager.webpubsub.models.PrivateLinkServiceConnectionSt
 /** Samples for WebPubSubPrivateEndpointConnections Update. */
 public final class WebPubSubPrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubPrivateEndpointConnections_Update.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubPrivateEndpointConnections_Update.json
      */
     /**
      * Sample code: WebPubSubPrivateEndpointConnections_Update.
@@ -851,10 +885,7 @@ public final class WebPubSubPrivateEndpointConnectionsUpdateSamples {
                 "myResourceGroup",
                 "myWebPubSubService",
                 new PrivateEndpointConnectionInner()
-                    .withPrivateEndpoint(
-                        new PrivateEndpoint()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"))
+                    .withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(
                         new PrivateLinkServiceConnectionState()
                             .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
@@ -870,7 +901,7 @@ public final class WebPubSubPrivateEndpointConnectionsUpdateSamples {
 /** Samples for WebPubSubPrivateLinkResources List. */
 public final class WebPubSubPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubPrivateLinkResources_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubPrivateLinkResources_List.json
      */
     /**
      * Sample code: WebPubSubPrivateLinkResources_List.
@@ -885,13 +916,189 @@ public final class WebPubSubPrivateLinkResourcesListSamples {
 }
 ```
 
+### WebPubSubReplicas_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.webpubsub.models.ResourceSku;
+import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
+import java.util.HashMap;
+import java.util.Map;
+
+/** Samples for WebPubSubReplicas CreateOrUpdate. */
+public final class WebPubSubReplicasCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: WebPubSubReplicas_CreateOrUpdate.
+     *
+     * @param manager Entry point to WebPubSubManager.
+     */
+    public static void webPubSubReplicasCreateOrUpdate(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
+        manager
+            .webPubSubReplicas()
+            .define("myWebPubSubService-eastus")
+            .withRegion("eastus")
+            .withExistingWebPubSub("myResourceGroup", "myWebPubSubService")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withSku(new ResourceSku().withName("Premium_P1").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(1))
+            .create();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### WebPubSubReplicas_Delete
+
+```java
+/** Samples for WebPubSubReplicas Delete. */
+public final class WebPubSubReplicasDeleteSamples {
+    /*
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Delete.json
+     */
+    /**
+     * Sample code: WebPubSubReplicas_Delete.
+     *
+     * @param manager Entry point to WebPubSubManager.
+     */
+    public static void webPubSubReplicasDelete(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
+        manager
+            .webPubSubReplicas()
+            .deleteWithResponse(
+                "myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WebPubSubReplicas_Get
+
+```java
+/** Samples for WebPubSubReplicas Get. */
+public final class WebPubSubReplicasGetSamples {
+    /*
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Get.json
+     */
+    /**
+     * Sample code: WebPubSubReplicas_Get.
+     *
+     * @param manager Entry point to WebPubSubManager.
+     */
+    public static void webPubSubReplicasGet(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
+        manager
+            .webPubSubReplicas()
+            .getWithResponse(
+                "myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WebPubSubReplicas_List
+
+```java
+/** Samples for WebPubSubReplicas List. */
+public final class WebPubSubReplicasListSamples {
+    /*
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_List.json
+     */
+    /**
+     * Sample code: WebPubSubReplicas_List.
+     *
+     * @param manager Entry point to WebPubSubManager.
+     */
+    public static void webPubSubReplicasList(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
+        manager.webPubSubReplicas().list("myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WebPubSubReplicas_Restart
+
+```java
+/** Samples for WebPubSubReplicas Restart. */
+public final class WebPubSubReplicasRestartSamples {
+    /*
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Restart.json
+     */
+    /**
+     * Sample code: WebPubSubReplicas_Restart.
+     *
+     * @param manager Entry point to WebPubSubManager.
+     */
+    public static void webPubSubReplicasRestart(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
+        manager
+            .webPubSubReplicas()
+            .restart(
+                "myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WebPubSubReplicas_Update
+
+```java
+import com.azure.resourcemanager.webpubsub.models.Replica;
+import com.azure.resourcemanager.webpubsub.models.ResourceSku;
+import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
+import java.util.HashMap;
+import java.util.Map;
+
+/** Samples for WebPubSubReplicas Update. */
+public final class WebPubSubReplicasUpdateSamples {
+    /*
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Update.json
+     */
+    /**
+     * Sample code: WebPubSubReplicas_Update.
+     *
+     * @param manager Entry point to WebPubSubManager.
+     */
+    public static void webPubSubReplicasUpdate(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
+        Replica resource =
+            manager
+                .webPubSubReplicas()
+                .getWithResponse(
+                    "myResourceGroup",
+                    "myWebPubSubService",
+                    "myWebPubSubService-eastus",
+                    com.azure.core.util.Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withSku(new ResourceSku().withName("Premium_P1").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(1))
+            .apply();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
 ### WebPubSubSharedPrivateLinkResources_CreateOrUpdate
 
 ```java
 /** Samples for WebPubSubSharedPrivateLinkResources CreateOrUpdate. */
 public final class WebPubSubSharedPrivateLinkResourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubSharedPrivateLinkResources_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubSharedPrivateLinkResources_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubSharedPrivateLinkResources_CreateOrUpdate.
@@ -919,7 +1126,7 @@ public final class WebPubSubSharedPrivateLinkResourcesCreateOrUpdateSamples {
 /** Samples for WebPubSubSharedPrivateLinkResources Delete. */
 public final class WebPubSubSharedPrivateLinkResourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubSharedPrivateLinkResources_Delete.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubSharedPrivateLinkResources_Delete.json
      */
     /**
      * Sample code: WebPubSubSharedPrivateLinkResources_Delete.
@@ -941,7 +1148,7 @@ public final class WebPubSubSharedPrivateLinkResourcesDeleteSamples {
 /** Samples for WebPubSubSharedPrivateLinkResources Get. */
 public final class WebPubSubSharedPrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubSharedPrivateLinkResources_Get.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubSharedPrivateLinkResources_Get.json
      */
     /**
      * Sample code: WebPubSubSharedPrivateLinkResources_Get.
@@ -963,7 +1170,7 @@ public final class WebPubSubSharedPrivateLinkResourcesGetSamples {
 /** Samples for WebPubSubSharedPrivateLinkResources List. */
 public final class WebPubSubSharedPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubSharedPrivateLinkResources_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubSharedPrivateLinkResources_List.json
      */
     /**
      * Sample code: WebPubSubSharedPrivateLinkResources_List.

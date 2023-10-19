@@ -7,6 +7,7 @@ package com.azure.resourcemanager.kubernetesconfiguration.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.kubernetesconfiguration.models.AzureBlobDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.BucketDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.FluxComplianceState;
 import com.azure.resourcemanager.kubernetesconfiguration.models.GitRepositoryDefinition;
@@ -35,6 +36,10 @@ public final class FluxConfigurationInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of FluxConfigurationInner class. */
+    public FluxConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties to create a Flux Configuration resource.
@@ -198,6 +203,29 @@ public final class FluxConfigurationInner extends ProxyResource {
     }
 
     /**
+     * Get the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
+     *
+     * @return the azureBlob value.
+     */
+    public AzureBlobDefinition azureBlob() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureBlob();
+    }
+
+    /**
+     * Set the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
+     *
+     * @param azureBlob the azureBlob value to set.
+     * @return the FluxConfigurationInner object itself.
+     */
+    public FluxConfigurationInner withAzureBlob(AzureBlobDefinition azureBlob) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FluxConfigurationProperties();
+        }
+        this.innerProperties().withAzureBlob(azureBlob);
+        return this;
+    }
+
+    /**
      * Get the kustomizations property: Array of kustomizations used to reconcile the artifact pulled by the source type
      * on the cluster.
      *
@@ -293,6 +321,56 @@ public final class FluxConfigurationInner extends ProxyResource {
      */
     public OffsetDateTime statusUpdatedAt() {
         return this.innerProperties() == null ? null : this.innerProperties().statusUpdatedAt();
+    }
+
+    /**
+     * Get the waitForReconciliation property: Whether flux configuration deployment should wait for cluster to
+     * reconcile the kustomizations.
+     *
+     * @return the waitForReconciliation value.
+     */
+    public Boolean waitForReconciliation() {
+        return this.innerProperties() == null ? null : this.innerProperties().waitForReconciliation();
+    }
+
+    /**
+     * Set the waitForReconciliation property: Whether flux configuration deployment should wait for cluster to
+     * reconcile the kustomizations.
+     *
+     * @param waitForReconciliation the waitForReconciliation value to set.
+     * @return the FluxConfigurationInner object itself.
+     */
+    public FluxConfigurationInner withWaitForReconciliation(Boolean waitForReconciliation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FluxConfigurationProperties();
+        }
+        this.innerProperties().withWaitForReconciliation(waitForReconciliation);
+        return this;
+    }
+
+    /**
+     * Get the reconciliationWaitDuration property: Maximum duration to wait for flux configuration reconciliation. E.g
+     * PT1H, PT5M, P1D.
+     *
+     * @return the reconciliationWaitDuration value.
+     */
+    public String reconciliationWaitDuration() {
+        return this.innerProperties() == null ? null : this.innerProperties().reconciliationWaitDuration();
+    }
+
+    /**
+     * Set the reconciliationWaitDuration property: Maximum duration to wait for flux configuration reconciliation. E.g
+     * PT1H, PT5M, P1D.
+     *
+     * @param reconciliationWaitDuration the reconciliationWaitDuration value to set.
+     * @return the FluxConfigurationInner object itself.
+     */
+    public FluxConfigurationInner withReconciliationWaitDuration(String reconciliationWaitDuration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FluxConfigurationProperties();
+        }
+        this.innerProperties().withReconciliationWaitDuration(reconciliationWaitDuration);
+        return this;
     }
 
     /**

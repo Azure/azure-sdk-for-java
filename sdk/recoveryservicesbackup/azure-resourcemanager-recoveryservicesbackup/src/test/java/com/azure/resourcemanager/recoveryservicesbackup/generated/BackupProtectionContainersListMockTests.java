@@ -33,7 +33,7 @@ public final class BackupProtectionContainersListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"zg\",\"backupManagementType\":\"Invalid\",\"registrationStatus\":\"bjgmnzj\",\"healthStatus\":\"vmrxkhlobvvjbh\",\"protectableObjectType\":\"diqayfl\"},\"eTag\":\"yu\",\"location\":\"snuudtelvhyibdr\",\"tags\":{\"y\":\"whbuub\"},\"id\":\"owtjo\",\"name\":\"ztfwfqchvcz\",\"type\":\"vjnn\"}]}";
+            "{\"value\":[{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"buwq\",\"backupManagementType\":\"DPM\",\"registrationStatus\":\"llmqiyne\",\"healthStatus\":\"ellnkkii\",\"protectableObjectType\":\"mtum\"},\"eTag\":\"ymdjfua\",\"location\":\"roqvqpilrgu\",\"tags\":{\"aqklxy\":\"nlduwzorxsbm\",\"qvfqepdxc\":\"x\",\"wcpjqduqgi\":\"tuubwyvpjb\"},\"id\":\"exkydfb\",\"name\":\"lj\",\"type\":\"vhuerkjddvrglieg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,16 +64,16 @@ public final class BackupProtectionContainersListMockTests {
         PagedIterable<ProtectionContainerResource> response =
             manager
                 .backupProtectionContainers()
-                .list("efgmwdhcebuv", "zldbglzoutbaaqg", "ekaj", com.azure.core.util.Context.NONE);
+                .list("pjxljtxb", "sqtbxxniu", "sdzhgbdgzpagsec", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("snuudtelvhyibdr", response.iterator().next().location());
-        Assertions.assertEquals("whbuub", response.iterator().next().tags().get("y"));
-        Assertions.assertEquals("zg", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("roqvqpilrgu", response.iterator().next().location());
+        Assertions.assertEquals("nlduwzorxsbm", response.iterator().next().tags().get("aqklxy"));
+        Assertions.assertEquals("buwq", response.iterator().next().properties().friendlyName());
         Assertions
-            .assertEquals(BackupManagementType.INVALID, response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("bjgmnzj", response.iterator().next().properties().registrationStatus());
-        Assertions.assertEquals("vmrxkhlobvvjbh", response.iterator().next().properties().healthStatus());
-        Assertions.assertEquals("diqayfl", response.iterator().next().properties().protectableObjectType());
-        Assertions.assertEquals("yu", response.iterator().next().etag());
+            .assertEquals(BackupManagementType.DPM, response.iterator().next().properties().backupManagementType());
+        Assertions.assertEquals("llmqiyne", response.iterator().next().properties().registrationStatus());
+        Assertions.assertEquals("ellnkkii", response.iterator().next().properties().healthStatus());
+        Assertions.assertEquals("mtum", response.iterator().next().properties().protectableObjectType());
+        Assertions.assertEquals("ymdjfua", response.iterator().next().etag());
     }
 }

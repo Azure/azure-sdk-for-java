@@ -18,9 +18,9 @@ the MIT License. See License.txt in the project root for license information. --
   <name>Microsoft Azure SDK for Key Vault</name>
   <description>
     This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure Key Vault service are:
-    (1) https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys.
-    (2) https://search.maven.org/artifact/com.azure/azure-security-keyvault-secrets.
-    (3) https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates.
+    (1) https://central.sonatype.com/artifact/com.azure/azure-security-keyvault-keys.
+    (2) https://central.sonatype.com/artifact/com.azure/azure-security-keyvault-secrets.
+    (3) https://central.sonatype.com/artifact/com.azure/azure-security-keyvault-certificates.
     It is recommended that you move to the new package.
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -185,7 +185,7 @@ the MIT License. See License.txt in the project root for license information. --
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifest>
@@ -205,7 +205,7 @@ the MIT License. See License.txt in the project root for license information. --
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
         <configuration>
           <additionalClasspathElements>
             <additionalClasspathElement>${basedir}/azure-keyvault/target/azure-keyvault-${project.version}.jar

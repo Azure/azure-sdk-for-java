@@ -52,13 +52,6 @@ public interface GraphServices {
     AccountsClient getAccounts();
 
     /**
-     * Gets the AccountOperationsClient object to access its operations.
-     *
-     * @return the AccountOperationsClient object.
-     */
-    AccountOperationsClient getAccountOperations();
-
-    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.

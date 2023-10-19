@@ -22,6 +22,10 @@ public final class TopicSharedAccessKeysInner {
     @JsonProperty(value = "key2")
     private String key2;
 
+    /** Creates an instance of TopicSharedAccessKeysInner class. */
+    public TopicSharedAccessKeysInner() {
+    }
+
     /**
      * Get the key1 property: Shared access key1 for the topic.
      *

@@ -55,6 +55,10 @@ public final class LocalUserProperties {
     @JsonProperty(value = "hasSshPassword")
     private Boolean hasSshPassword;
 
+    /** Creates an instance of LocalUserProperties class. */
+    public LocalUserProperties() {
+    }
+
     /**
      * Get the permissionScopes property: The permission scopes of the local user.
      *

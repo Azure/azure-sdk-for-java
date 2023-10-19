@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.models.DevBoxDefinition;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
 
 /** Samples for DevBoxDefinitions Update. */
 public final class DevBoxDefinitionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevBoxDefinitions_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevBoxDefinitions_Patch.json
      */
     /**
      * Sample code: DevBoxDefinitions_Patch.
@@ -20,7 +19,10 @@ public final class DevBoxDefinitionsUpdateSamples {
      */
     public static void devBoxDefinitionsPatch(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         DevBoxDefinition resource =
-            manager.devBoxDefinitions().getWithResponse("rg1", "Contoso", "WebDevBox", Context.NONE).getValue();
+            manager
+                .devBoxDefinitions()
+                .getWithResponse("rg1", "Contoso", "WebDevBox", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withImageReference(

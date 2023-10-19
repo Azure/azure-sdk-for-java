@@ -25,6 +25,10 @@ public final class PrivateZoneInner extends Resource {
     @JsonProperty(value = "properties")
     private PrivateZoneProperties innerProperties;
 
+    /** Creates an instance of PrivateZoneInner class. */
+    public PrivateZoneInner() {
+    }
+
     /**
      * Get the etag property: The ETag of the zone.
      *

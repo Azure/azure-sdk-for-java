@@ -21,16 +21,16 @@ public final class ListResourceSkusResultTests {
         ListResourceSkusResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"resourceType\":\"lmuzy\",\"sku\":{\"name\":\"Standard_E16as_v5+4TB_PS\",\"capacity\":699182053,\"tier\":\"Standard\"},\"capacity\":{\"scaleType\":\"none\",\"minimum\":1101011494,\"maximum\":2111181142,\"default\":104874824}}]}")
+                    "{\"value\":[{\"resourceType\":\"z\",\"sku\":{\"name\":\"Standard_E8s_v4+2TB_PS\",\"capacity\":11356345,\"tier\":\"Standard\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":302712597,\"maximum\":830056892,\"default\":834529223}},{\"resourceType\":\"ebwpucwwfvo\",\"sku\":{\"name\":\"Standard_E2a_v4\",\"capacity\":1386132644,\"tier\":\"Basic\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":1911093580,\"maximum\":1542315989,\"default\":783632971}}]}")
                 .toObject(ListResourceSkusResult.class);
-        Assertions.assertEquals("lmuzy", model.value().get(0).resourceType());
-        Assertions.assertEquals(AzureSkuName.STANDARD_E16AS_V5_4TB_PS, model.value().get(0).sku().name());
-        Assertions.assertEquals(699182053, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("z", model.value().get(0).resourceType());
+        Assertions.assertEquals(AzureSkuName.STANDARD_E8S_V4_2TB_PS, model.value().get(0).sku().name());
+        Assertions.assertEquals(11356345, model.value().get(0).sku().capacity());
         Assertions.assertEquals(AzureSkuTier.STANDARD, model.value().get(0).sku().tier());
-        Assertions.assertEquals(AzureScaleType.NONE, model.value().get(0).capacity().scaleType());
-        Assertions.assertEquals(1101011494, model.value().get(0).capacity().minimum());
-        Assertions.assertEquals(2111181142, model.value().get(0).capacity().maximum());
-        Assertions.assertEquals(104874824, model.value().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(AzureScaleType.MANUAL, model.value().get(0).capacity().scaleType());
+        Assertions.assertEquals(302712597, model.value().get(0).capacity().minimum());
+        Assertions.assertEquals(830056892, model.value().get(0).capacity().maximum());
+        Assertions.assertEquals(834529223, model.value().get(0).capacity().defaultProperty());
     }
 
     @org.junit.jupiter.api.Test
@@ -41,26 +41,39 @@ public final class ListResourceSkusResultTests {
                     Arrays
                         .asList(
                             new AzureResourceSkuInner()
-                                .withResourceType("lmuzy")
+                                .withResourceType("z")
                                 .withSku(
                                     new AzureSku()
-                                        .withName(AzureSkuName.STANDARD_E16AS_V5_4TB_PS)
-                                        .withCapacity(699182053)
+                                        .withName(AzureSkuName.STANDARD_E8S_V4_2TB_PS)
+                                        .withCapacity(11356345)
                                         .withTier(AzureSkuTier.STANDARD))
                                 .withCapacity(
                                     new AzureCapacity()
-                                        .withScaleType(AzureScaleType.NONE)
-                                        .withMinimum(1101011494)
-                                        .withMaximum(2111181142)
-                                        .withDefaultProperty(104874824))));
+                                        .withScaleType(AzureScaleType.MANUAL)
+                                        .withMinimum(302712597)
+                                        .withMaximum(830056892)
+                                        .withDefaultProperty(834529223)),
+                            new AzureResourceSkuInner()
+                                .withResourceType("ebwpucwwfvo")
+                                .withSku(
+                                    new AzureSku()
+                                        .withName(AzureSkuName.STANDARD_E2A_V4)
+                                        .withCapacity(1386132644)
+                                        .withTier(AzureSkuTier.BASIC))
+                                .withCapacity(
+                                    new AzureCapacity()
+                                        .withScaleType(AzureScaleType.MANUAL)
+                                        .withMinimum(1911093580)
+                                        .withMaximum(1542315989)
+                                        .withDefaultProperty(783632971))));
         model = BinaryData.fromObject(model).toObject(ListResourceSkusResult.class);
-        Assertions.assertEquals("lmuzy", model.value().get(0).resourceType());
-        Assertions.assertEquals(AzureSkuName.STANDARD_E16AS_V5_4TB_PS, model.value().get(0).sku().name());
-        Assertions.assertEquals(699182053, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("z", model.value().get(0).resourceType());
+        Assertions.assertEquals(AzureSkuName.STANDARD_E8S_V4_2TB_PS, model.value().get(0).sku().name());
+        Assertions.assertEquals(11356345, model.value().get(0).sku().capacity());
         Assertions.assertEquals(AzureSkuTier.STANDARD, model.value().get(0).sku().tier());
-        Assertions.assertEquals(AzureScaleType.NONE, model.value().get(0).capacity().scaleType());
-        Assertions.assertEquals(1101011494, model.value().get(0).capacity().minimum());
-        Assertions.assertEquals(2111181142, model.value().get(0).capacity().maximum());
-        Assertions.assertEquals(104874824, model.value().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(AzureScaleType.MANUAL, model.value().get(0).capacity().scaleType());
+        Assertions.assertEquals(302712597, model.value().get(0).capacity().minimum());
+        Assertions.assertEquals(830056892, model.value().get(0).capacity().maximum());
+        Assertions.assertEquals(834529223, model.value().get(0).capacity().defaultProperty());
     }
 }

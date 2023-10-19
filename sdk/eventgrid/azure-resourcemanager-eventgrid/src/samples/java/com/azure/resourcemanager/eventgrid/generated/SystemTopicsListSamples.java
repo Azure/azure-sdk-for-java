@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SystemTopics List. */
 public final class SystemTopicsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/SystemTopics_ListBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/SystemTopics_ListBySubscription.json
      */
     /**
      * Sample code: SystemTopics_ListBySubscription.
@@ -17,6 +15,6 @@ public final class SystemTopicsListSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void systemTopicsListBySubscription(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.systemTopics().list(null, null, Context.NONE);
+        manager.systemTopics().list(null, null, com.azure.core.util.Context.NONE);
     }
 }

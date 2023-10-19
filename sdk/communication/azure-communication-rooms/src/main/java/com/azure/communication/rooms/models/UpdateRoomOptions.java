@@ -5,9 +5,12 @@ package com.azure.communication.rooms.models;
 
 import java.time.OffsetDateTime;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * The options for updating a room.
  */
+@Fluent
 public final class UpdateRoomOptions {
 
     /*
@@ -21,6 +24,12 @@ public final class UpdateRoomOptions {
      * `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      */
     private OffsetDateTime validUntil;
+
+    /*
+     * Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By
+     * default, this flag is set to false.
+     */
+    private Boolean pstnDialOutEnabled;
 
     /**
      * The default constructor of CreateRoomOptions
@@ -53,6 +62,18 @@ public final class UpdateRoomOptions {
     }
 
     /**
+     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
+     * is enabled in a particular room. By default, this flag is set to false.
+     *
+     * @param pstnDialOutEnabled the pstnDialOutEnabled value to set.
+     * @return the CreateRoomRequest object itself.
+     */
+    public UpdateRoomOptions setPstnDialOutEnabled(Boolean pstnDialOutEnabled) {
+        this.pstnDialOutEnabled = pstnDialOutEnabled;
+        return this;
+    }
+
+    /**
      * Get the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
      * format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
      *
@@ -70,5 +91,15 @@ public final class UpdateRoomOptions {
      */
     public OffsetDateTime getValidUntil() {
         return validUntil;
+    }
+
+    /**
+     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
+     * is enabled in a particular room. By default, this flag is set to false.
+     *
+     * @return the pstnDialOutEnabled value.
+     */
+    public Boolean isPstnDialOutEnabled() {
+        return this.pstnDialOutEnabled;
     }
 }

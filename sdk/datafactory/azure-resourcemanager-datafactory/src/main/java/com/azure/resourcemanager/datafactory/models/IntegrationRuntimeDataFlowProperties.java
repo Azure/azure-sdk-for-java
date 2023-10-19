@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** Data flow properties for managed integration runtime. */
@@ -40,6 +41,12 @@ public final class IntegrationRuntimeDataFlowProperties {
      */
     @JsonProperty(value = "cleanup")
     private Boolean cleanup;
+
+    /*
+     * Custom properties are used to tune the data flow runtime performance.
+     */
+    @JsonProperty(value = "customProperties")
+    private List<IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem> customProperties;
 
     /*
      * Data flow properties for managed integration runtime.
@@ -135,6 +142,27 @@ public final class IntegrationRuntimeDataFlowProperties {
     }
 
     /**
+     * Get the customProperties property: Custom properties are used to tune the data flow runtime performance.
+     *
+     * @return the customProperties value.
+     */
+    public List<IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem> customProperties() {
+        return this.customProperties;
+    }
+
+    /**
+     * Set the customProperties property: Custom properties are used to tune the data flow runtime performance.
+     *
+     * @param customProperties the customProperties value to set.
+     * @return the IntegrationRuntimeDataFlowProperties object itself.
+     */
+    public IntegrationRuntimeDataFlowProperties withCustomProperties(
+        List<IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem> customProperties) {
+        this.customProperties = customProperties;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: Data flow properties for managed integration runtime.
      *
      * @return the additionalProperties value.
@@ -169,5 +197,8 @@ public final class IntegrationRuntimeDataFlowProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (customProperties() != null) {
+            customProperties().forEach(e -> e.validate());
+        }
     }
 }

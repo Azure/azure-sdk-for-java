@@ -36,7 +36,7 @@ public final class DatabasesRemovePrincipalsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"role\":\"Monitor\",\"name\":\"yue\",\"type\":\"Group\",\"fqn\":\"ynsqyrpfoobr\",\"email\":\"tyms\",\"appId\":\"ygqdnfwqzdz\",\"tenantName\":\"ilaxhn\"},{\"role\":\"Viewer\",\"name\":\"qlyvijo\",\"type\":\"User\",\"fqn\":\"vk\",\"email\":\"yzunbixxrtikv\",\"appId\":\"wpgclrcivt\",\"tenantName\":\"xfrk\"},{\"role\":\"Monitor\",\"name\":\"xpmyyefrpmpdnq\",\"type\":\"User\",\"fqn\":\"awaoqvmmbnpqfrt\",\"email\":\"kzmegnitgvkxlz\",\"appId\":\"drf\",\"tenantName\":\"cealzxwh\"}]}";
+            "{\"value\":[{\"role\":\"Viewer\",\"name\":\"aqutdewemxswvruu\",\"type\":\"App\",\"fqn\":\"jgehkf\",\"email\":\"m\",\"appId\":\"ixokffqyin\",\"tenantName\":\"qepqwhixmon\"},{\"role\":\"Admin\",\"name\":\"shiy\",\"type\":\"App\",\"fqn\":\"elfclducc\",\"email\":\"rds\",\"appId\":\"wcobie\",\"tenantName\":\"tmninw\"},{\"role\":\"Ingestor\",\"name\":\"zcilnghg\",\"type\":\"Group\",\"fqn\":\"jjtbxqmuluxlxqz\",\"email\":\"ers\",\"appId\":\"cucrwnamikze\",\"tenantName\":\"qbsms\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,35 +68,42 @@ public final class DatabasesRemovePrincipalsWithResponseMockTests {
             manager
                 .databases()
                 .removePrincipalsWithResponse(
-                    "vyi",
-                    "zqodfvpgshox",
-                    "sgbpfgzdjtx",
+                    "jed",
+                    "st",
+                    "vnlvxbcuiiznktwf",
                     new DatabasePrincipalListRequest()
                         .withValue(
                             Arrays
                                 .asList(
                                     new DatabasePrincipalInner()
-                                        .withRole(DatabasePrincipalRole.USER)
-                                        .withName("bqvgaqv")
-                                        .withType(DatabasePrincipalType.GROUP)
-                                        .withFqn("fcq")
-                                        .withEmail("rdve")
-                                        .withAppId("wsdtutnwl"),
-                                    new DatabasePrincipalInner()
                                         .withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
-                                        .withName("dxukuqgsjjxundxg")
+                                        .withName("v")
+                                        .withType(DatabasePrincipalType.USER)
+                                        .withFqn("bmikost")
+                                        .withEmail("bkiw")
+                                        .withAppId("qnyophzfyls"),
+                                    new DatabasePrincipalInner()
+                                        .withRole(DatabasePrincipalRole.ADMIN)
+                                        .withName("zelfwyfwl")
                                         .withType(DatabasePrincipalType.APP)
-                                        .withFqn("wzhhzjhfjmhvvmuv")
-                                        .withEmail("mun")
-                                        .withAppId("sx"))),
+                                        .withFqn("wetnpsihc")
+                                        .withEmail("fzvaylptr")
+                                        .withAppId("qwztcmwqkc"),
+                                    new DatabasePrincipalInner()
+                                        .withRole(DatabasePrincipalRole.ADMIN)
+                                        .withName("fdeqvhpsyl")
+                                        .withType(DatabasePrincipalType.GROUP)
+                                        .withFqn("hkbffmbm")
+                                        .withEmail("jrgywwpgjxsn")
+                                        .withAppId("fujg"))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(DatabasePrincipalRole.MONITOR, response.value().get(0).role());
-        Assertions.assertEquals("yue", response.value().get(0).name());
-        Assertions.assertEquals(DatabasePrincipalType.GROUP, response.value().get(0).type());
-        Assertions.assertEquals("ynsqyrpfoobr", response.value().get(0).fqn());
-        Assertions.assertEquals("tyms", response.value().get(0).email());
-        Assertions.assertEquals("ygqdnfwqzdz", response.value().get(0).appId());
+        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, response.value().get(0).role());
+        Assertions.assertEquals("aqutdewemxswvruu", response.value().get(0).name());
+        Assertions.assertEquals(DatabasePrincipalType.APP, response.value().get(0).type());
+        Assertions.assertEquals("jgehkf", response.value().get(0).fqn());
+        Assertions.assertEquals("m", response.value().get(0).email());
+        Assertions.assertEquals("ixokffqyin", response.value().get(0).appId());
     }
 }

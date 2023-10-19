@@ -49,7 +49,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DeveloperHubServiceC")
-    private interface OperationsService {
+    public interface OperationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.DevHub/operations")
         @ExpectedResponses({200})
@@ -131,20 +131,6 @@ public final class OperationsClientImpl implements OperationsClient {
      *
      * <p>Returns list of operations.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationListResultInner list() {
-        return listAsync().block();
-    }
-
-    /**
-     * Gets a list of operations.
-     *
-     * <p>Returns list of operations.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -154,5 +140,19 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationListResultInner> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
+    }
+
+    /**
+     * Gets a list of operations.
+     *
+     * <p>Returns list of operations.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of REST API operations supported by an Azure Resource Provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationListResultInner list() {
+        return listWithResponse(Context.NONE).getValue();
     }
 }

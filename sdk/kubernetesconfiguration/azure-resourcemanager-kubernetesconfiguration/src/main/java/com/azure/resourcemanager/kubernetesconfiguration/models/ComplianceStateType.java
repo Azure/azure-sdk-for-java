@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ComplianceStateType. */
+/** The compliance state of the configuration. */
 public final class ComplianceStateType extends ExpandableStringEnum<ComplianceStateType> {
     /** Static value Pending for ComplianceStateType. */
     public static final ComplianceStateType PENDING = fromString("Pending");
@@ -26,6 +26,15 @@ public final class ComplianceStateType extends ExpandableStringEnum<ComplianceSt
     public static final ComplianceStateType FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of ComplianceStateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComplianceStateType() {
+    }
+
+    /**
      * Creates or finds a ComplianceStateType from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class ComplianceStateType extends ExpandableStringEnum<ComplianceSt
         return fromString(name, ComplianceStateType.class);
     }
 
-    /** @return known ComplianceStateType values. */
+    /**
+     * Gets known ComplianceStateType values.
+     *
+     * @return known ComplianceStateType values.
+     */
     public static Collection<ComplianceStateType> values() {
         return values(ComplianceStateType.class);
     }

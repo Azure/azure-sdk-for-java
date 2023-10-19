@@ -7,7 +7,7 @@ package com.azure.resourcemanager.frontdoor.generated;
 /** Samples for FrontDoors ListByResourceGroup. */
 public final class FrontDoorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-05-01/examples/FrontdoorList.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorList.json
      */
     /**
      * Sample code: List Front Doors in a Resource Group.

@@ -6,44 +6,29 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
-import com.azure.resourcemanager.servicenetworking.models.FrontendPropertiesIpAddress;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FrontendInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         FrontendInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"mode\":\"public\",\"ipAddressVersion\":\"IPv6\",\"publicIPAddress\":{\"id\":\"qabnmoc\"},\"provisioningState\":\"Canceled\"},\"location\":\"hurzafblj\",\"tags\":{\"qajzyulpkudjkr\":\"btoqcjmkljavbqid\",\"e\":\"khbzhfepgzg\",\"scpai\":\"zloc\"},\"id\":\"rhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}")
+                    "{\"properties\":{\"fqdn\":\"tqxln\",\"provisioningState\":\"Deleting\"},\"location\":\"fgugnxkrxdqmid\",\"tags\":{\"bhj\":\"zrvqdr\",\"h\":\"big\"},\"id\":\"qfbow\",\"name\":\"kanyktzlcuiywg\",\"type\":\"ywgndrv\"}")
                 .toObject(FrontendInner.class);
-        Assertions.assertEquals("hurzafblj", model.location());
-        Assertions.assertEquals("btoqcjmkljavbqid", model.tags().get("qajzyulpkudjkr"));
-        Assertions.assertEquals(FrontendMode.PUBLIC, model.mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV6, model.ipAddressVersion());
-        Assertions.assertEquals("qabnmoc", model.publicIpAddress().id());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.location());
+        Assertions.assertEquals("zrvqdr", model.tags().get("bhj"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         FrontendInner model =
-            new FrontendInner()
-                .withLocation("hurzafblj")
-                .withTags(mapOf("qajzyulpkudjkr", "btoqcjmkljavbqid", "e", "khbzhfepgzg", "scpai", "zloc"))
-                .withMode(FrontendMode.PUBLIC)
-                .withIpAddressVersion(FrontendIpAddressVersion.IPV6)
-                .withPublicIpAddress(new FrontendPropertiesIpAddress().withId("qabnmoc"));
+            new FrontendInner().withLocation("fgugnxkrxdqmid").withTags(mapOf("bhj", "zrvqdr", "h", "big"));
         model = BinaryData.fromObject(model).toObject(FrontendInner.class);
-        Assertions.assertEquals("hurzafblj", model.location());
-        Assertions.assertEquals("btoqcjmkljavbqid", model.tags().get("qajzyulpkudjkr"));
-        Assertions.assertEquals(FrontendMode.PUBLIC, model.mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV6, model.ipAddressVersion());
-        Assertions.assertEquals("qabnmoc", model.publicIpAddress().id());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.location());
+        Assertions.assertEquals("zrvqdr", model.tags().get("bhj"));
     }
 
     @SuppressWarnings("unchecked")

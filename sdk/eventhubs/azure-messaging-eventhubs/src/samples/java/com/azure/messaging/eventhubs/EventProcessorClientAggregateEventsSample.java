@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.ErrorContext;
@@ -43,7 +45,7 @@ import java.util.function.Consumer;
  *
  * A manufacturer has several machines on their assembly lines that emit temperature data. The manufacturer can use
  * {@link EventProcessorClient} to aggregate the temperature data to look for anomalies. For example, the temperature
- * data can say if a machine is over heating, or if no temperature data for a machine has been collected for a while, it
+ * data can say if a machine is overheating, or if no temperature data for a machine has been collected for a while, it
  * may be offline.
  *
  * The partition key for each produced event is the name of the machine. This ensures that the temperature data for that
@@ -54,21 +56,34 @@ import java.util.function.Consumer;
  */
 public class EventProcessorClientAggregateEventsSample {
     private static final Duration REPORTING_INTERVAL = Duration.ofSeconds(5);
-    private static final String EH_CONNECTION_STRING = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-        + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
     /**
      * Main method to demonstrate starting and stopping a {@link EventProcessorClient}.
      *
      * @param args The input arguments to this executable.
+     *
      * @throws Exception If there are any errors while running the {@link EventProcessorClient}.
      */
     public static void main(String[] args) throws Exception {
         final MachineEventsProcessor aggregator = new MachineEventsProcessor(REPORTING_INTERVAL);
 
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        final String fullyQualifiedNamespace = "<<fully-qualified-namespace>>";
+        final String eventHubName = "<<event-hub-name>>";
+
+        // Create an event processor.
+        //
+        // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
+        // instance you are connecting to, and selecting the "Consumer groups" page.
+        //
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         final EventProcessorClient client = new EventProcessorClientBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .connectionString(EH_CONNECTION_STRING)
+            .credential(fullyQualifiedNamespace, eventHubName, tokenCredential)
             .processPartitionInitialization(context -> aggregator.onInitialize(context))
             .processPartitionClose(context -> aggregator.onClose(context))
             .processEvent(event -> aggregator.onEvent(event))
@@ -82,10 +97,10 @@ public class EventProcessorClientAggregateEventsSample {
 
         // Continue to perform other tasks while the processor is running in the background. In this sample, we are
         // randomly generating fake machine events.
-        generateEvents(isRunning).subscribe();
+        generateEvents(fullyQualifiedNamespace, eventHubName, tokenCredential, isRunning).subscribe();
 
         System.out.println("Sleeping...");
-        Thread.sleep(TimeUnit.SECONDS.toMillis(30));
+        Thread.sleep(TimeUnit.MINUTES.toMillis(10));
         isRunning.set(false);
 
         System.out.println("Stopping event processor");
@@ -96,44 +111,49 @@ public class EventProcessorClientAggregateEventsSample {
     /**
      * Helper method that generates events for machines "2A", "9B", and "6C" and sends them to the service.
      */
-    private static Mono<Void> generateEvents(AtomicBoolean isRunning) {
+    private static Mono<Void> generateEvents(String fullyQualifiedNamespace, String eventHubName, TokenCredential tokenCredential, AtomicBoolean isRunning) {
         final Logger logger = LoggerFactory.getLogger("Producer");
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration operationTimeout = Duration.ofSeconds(5);
         final String[] machineIds = new String[]{"2A", "9B", "6C"};
         final Random random = new Random();
-        final EventHubProducerAsyncClient client = new EventHubClientBuilder()
-            .connectionString(EH_CONNECTION_STRING)
-            .buildAsyncProducerClient();
 
-        return Mono.<Void>fromRunnable(() -> {
-            while (isRunning.get()) {
-                int milliseconds = random.nextInt(1000);
+        return Mono.using(() -> {
+            final EventHubProducerAsyncClient client = new EventHubClientBuilder()
+                .credential(fullyQualifiedNamespace, eventHubName, tokenCredential)
+                .buildAsyncProducerClient();
 
-                try {
-                    TimeUnit.MILLISECONDS.sleep(milliseconds);
-                } catch (InterruptedException ignored) {
+            return client;
+
+        }, client -> {
+            return Mono.<Void>fromRunnable(() -> {
+                while (isRunning.get()) {
+                    int milliseconds = random.nextInt(1000);
+
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(milliseconds);
+                    } catch (InterruptedException ignored) {
+                    }
+
+                    final String machineId = machineIds[random.nextInt(machineIds.length)];
+                    // We want a temperature between 0 - 100.
+                    final int temperature = Math.abs(random.nextInt() % 101);
+
+                    logger.info("[{}] Temperature: {}C", machineId, temperature);
+
+                    final EventData event = new EventData(String.valueOf(temperature));
+                    final CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey(machineId);
+
+                    client.createBatch(batchOptions).flatMap(batch -> {
+                        batch.tryAdd(event);
+                        return client.send(batch);
+                    }).block(operationTimeout);
                 }
-
-                final String machineId = machineIds[random.nextInt(machineIds.length)];
-                // We want a temperature between 0 - 100.
-                final int temperature = Math.abs(random.nextInt() % 101);
-
-                logger.info("[{}] Temperature: {}C", machineId, temperature);
-
-                final EventData event = new EventData(String.valueOf(temperature));
-                final CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey(machineId);
-
-                client.createBatch(batchOptions).flatMap(batch -> {
-                    batch.tryAdd(event);
-                    return client.send(batch);
-                }).block(operationTimeout);
-            }
-        }).subscribeOn(scheduler)
-            .doFinally(signal -> {
-                logger.info("Disposing of producer.");
-                client.close();
             });
+        }, client -> {
+            logger.info("Disposing of producer.");
+            client.close();
+        }).subscribeOn(scheduler);
     }
 }
 
@@ -146,15 +166,13 @@ class MachineEventsProcessor implements AutoCloseable {
     private final Duration reportingInterval;
 
     /**
-     * Holds information about what machines this instance is processing temperature data for.
-     * Key: Machine id.
-     * Value: Temperature information for that machine.
+     * Holds information about what machines this instance is processing temperature data for. Key: Machine id. Value:
+     * Temperature information for that machine.
      */
     private final ConcurrentHashMap<String, MachineInformation> machineInformation = new ConcurrentHashMap<>();
     /**
-     * Holds information about what partitions this instance is processing and its associated machines.
-     * Key: Partition id.
-     * Value: List of machine ids in that partition.
+     * Holds information about what partitions this instance is processing and its associated machines. Key: Partition
+     * id. Value: List of machine ids in that partition.
      */
     private final ConcurrentHashMap<String, Set<String>> partitionsProcessing = new ConcurrentHashMap<>();
 

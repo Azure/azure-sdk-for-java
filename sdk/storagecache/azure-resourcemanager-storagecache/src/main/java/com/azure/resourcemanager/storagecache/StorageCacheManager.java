@@ -53,11 +53,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to StorageCacheManager. A Storage Cache provides scalable caching service for NAS clients, serving data
- * from either NFSv3 or Blob at-rest storage (referred to as "Storage Targets"). These operations allow you to manage
- * Caches.
+ * Entry point to StorageCacheManager. Azure Managed Lustre provides a fully managed Lustre® file system, integrated
+ * with Blob storage, for use on demand. These operations create and manage Azure Managed Lustre file systems.
  */
 public final class StorageCacheManager {
+    private AmlFilesystems amlFilesystems;
+
+    private ResourceProviders resourceProviders;
+
     private Operations operations;
 
     private Skus skus;
@@ -73,10 +76,6 @@ public final class StorageCacheManager {
     private StorageTargets storageTargets;
 
     private StorageTargetOperations storageTargetOperations;
-
-    private AmlFilesystems amlFilesystems;
-
-    private ResourceProviders resourceProviders;
 
     private final StorageCacheManagementClient clientObject;
 
@@ -243,7 +242,7 @@ public final class StorageCacheManager {
                 .append("-")
                 .append("com.azure.resourcemanager.storagecache")
                 .append("/")
-                .append("1.0.0-beta.8");
+                .append("1.0.0-beta.9");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -298,6 +297,30 @@ public final class StorageCacheManager {
                     .build();
             return new StorageCacheManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /**
+     * Gets the resource collection API of AmlFilesystems. It manages AmlFilesystem.
+     *
+     * @return Resource collection API of AmlFilesystems.
+     */
+    public AmlFilesystems amlFilesystems() {
+        if (this.amlFilesystems == null) {
+            this.amlFilesystems = new AmlFilesystemsImpl(clientObject.getAmlFilesystems(), this);
+        }
+        return amlFilesystems;
+    }
+
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
+    public ResourceProviders resourceProviders() {
+        if (this.resourceProviders == null) {
+            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
+        }
+        return resourceProviders;
     }
 
     /**
@@ -395,30 +418,6 @@ public final class StorageCacheManager {
                 new StorageTargetOperationsImpl(clientObject.getStorageTargetOperations(), this);
         }
         return storageTargetOperations;
-    }
-
-    /**
-     * Gets the resource collection API of AmlFilesystems. It manages AmlFilesystem.
-     *
-     * @return Resource collection API of AmlFilesystems.
-     */
-    public AmlFilesystems amlFilesystems() {
-        if (this.amlFilesystems == null) {
-            this.amlFilesystems = new AmlFilesystemsImpl(clientObject.getAmlFilesystems(), this);
-        }
-        return amlFilesystems;
-    }
-
-    /**
-     * Gets the resource collection API of ResourceProviders.
-     *
-     * @return Resource collection API of ResourceProviders.
-     */
-    public ResourceProviders resourceProviders() {
-        if (this.resourceProviders == null) {
-            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
-        }
-        return resourceProviders;
     }
 
     /**

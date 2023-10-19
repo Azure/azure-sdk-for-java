@@ -13,7 +13,7 @@ public final class VaultPropertiesRedundancySettingsTests {
         VaultPropertiesRedundancySettings model =
             BinaryData
                 .fromString(
-                    "{\"standardTierStorageRedundancy\":\"LocallyRedundant\",\"crossRegionRestore\":\"Disabled\"}")
+                    "{\"standardTierStorageRedundancy\":\"LocallyRedundant\",\"crossRegionRestore\":\"Enabled\"}")
                 .toObject(VaultPropertiesRedundancySettings.class);
     }
 

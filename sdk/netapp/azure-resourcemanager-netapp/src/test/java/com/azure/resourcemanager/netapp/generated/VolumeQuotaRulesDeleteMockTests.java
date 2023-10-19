@@ -58,7 +58,6 @@ public final class VolumeQuotaRulesDeleteMockTests {
 
         manager
             .volumeQuotaRules()
-            .delete(
-                "haivm", "yasflvgsgzwy", "akoi", "knsmjblmljhlnymz", "tqyryuzcbmqqv", com.azure.core.util.Context.NONE);
+            .delete("kfvxcnq", "xqpswok", "vkhlggdhbemz", "kzsz", "wiwtglxxhl", com.azure.core.util.Context.NONE);
     }
 }

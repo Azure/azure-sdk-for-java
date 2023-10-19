@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appcontainers.models.Secret;
+import com.azure.resourcemanager.appcontainers.models.DaprSecret;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,7 +17,7 @@ public final class DaprSecretsCollectionInner {
      * Collection of secrets used by a Dapr component
      */
     @JsonProperty(value = "value", required = true)
-    private List<Secret> value;
+    private List<DaprSecret> value;
 
     /** Creates an instance of DaprSecretsCollectionInner class. */
     public DaprSecretsCollectionInner() {
@@ -28,7 +28,7 @@ public final class DaprSecretsCollectionInner {
      *
      * @return the value value.
      */
-    public List<Secret> value() {
+    public List<DaprSecret> value() {
         return this.value;
     }
 
@@ -38,7 +38,7 @@ public final class DaprSecretsCollectionInner {
      * @param value the value value to set.
      * @return the DaprSecretsCollectionInner object itself.
      */
-    public DaprSecretsCollectionInner withValue(List<Secret> value) {
+    public DaprSecretsCollectionInner withValue(List<DaprSecret> value) {
         this.value = value;
         return this;
     }

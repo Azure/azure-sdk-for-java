@@ -51,6 +51,10 @@ public class AdvancedFilter {
     @JsonProperty(value = "key")
     private String key;
 
+    /** Creates an instance of AdvancedFilter class. */
+    public AdvancedFilter() {
+    }
+
     /**
      * Get the key property: The field/property in the event based on which you want to filter.
      *

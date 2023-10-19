@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resourcehealth.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AvailabilityStatuses List. */
 public final class AvailabilityStatusesListSamples {
     /*
-     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2020-05-01/examples/AvailabilityStatuses_List.json
+     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatuses_List.json
      */
     /**
      * Sample code: GetHealthHistoryByResource.
@@ -18,6 +16,6 @@ public final class AvailabilityStatusesListSamples {
      */
     public static void getHealthHistoryByResource(
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager manager) {
-        manager.availabilityStatuses().list("resourceUri", null, null, Context.NONE);
+        manager.availabilityStatuses().list("resourceUri", null, null, com.azure.core.util.Context.NONE);
     }
 }

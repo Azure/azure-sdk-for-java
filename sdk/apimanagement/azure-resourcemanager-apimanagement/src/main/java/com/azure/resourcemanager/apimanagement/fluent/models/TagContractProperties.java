@@ -17,6 +17,10 @@ public final class TagContractProperties {
     @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
+    /** Creates an instance of TagContractProperties class. */
+    public TagContractProperties() {
+    }
+
     /**
      * Get the displayName property: Tag name.
      *

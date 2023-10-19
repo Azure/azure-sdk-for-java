@@ -75,7 +75,7 @@ public class KubernetesClusterUpdateTests extends ContainerServiceManagementTest
         String agentPoolName1 = generateRandomResourceName("ap1", 10);
 
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
-            .withRegion(Region.US_CENTRAL)
+            .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withSystemAssignedManagedServiceIdentity()

@@ -29,23 +29,6 @@ public final class FluxConfigurationsImpl implements FluxConfigurations {
         this.serviceManager = serviceManager;
     }
 
-    public FluxConfiguration get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName) {
-        FluxConfigurationInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName);
-        if (inner != null) {
-            return new FluxConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<FluxConfiguration> getWithResponse(
         String resourceGroupName,
         String clusterRp,
@@ -64,6 +47,23 @@ public final class FluxConfigurationsImpl implements FluxConfigurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new FluxConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public FluxConfiguration get(
+        String resourceGroupName,
+        String clusterRp,
+        String clusterResourceName,
+        String clusterName,
+        String fluxConfigurationName) {
+        FluxConfigurationInner inner =
+            this
+                .serviceClient()
+                .get(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName);
+        if (inner != null) {
+            return new FluxConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -167,18 +167,6 @@ public final class FluxConfigurationsImpl implements FluxConfigurations {
         } else {
             return null;
         }
-    }
-
-    public void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        Boolean forceDelete) {
-        this
-            .serviceClient()
-            .delete(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, forceDelete);
     }
 
     public void delete(

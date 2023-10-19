@@ -7,25 +7,24 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProbeTcpSocket;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ContainerAppProbeTcpSocketTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ContainerAppProbeTcpSocket model =
             BinaryData
-                .fromString("{\"host\":\"jhdgqggebdunyga\",\"port\":2021053825}")
+                .fromString("{\"host\":\"zdtmhrkwofy\",\"port\":1026914225}")
                 .toObject(ContainerAppProbeTcpSocket.class);
-        Assertions.assertEquals("jhdgqggebdunyga", model.host());
-        Assertions.assertEquals(2021053825, model.port());
+        Assertions.assertEquals("zdtmhrkwofy", model.host());
+        Assertions.assertEquals(1026914225, model.port());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ContainerAppProbeTcpSocket model =
-            new ContainerAppProbeTcpSocket().withHost("jhdgqggebdunyga").withPort(2021053825);
+            new ContainerAppProbeTcpSocket().withHost("zdtmhrkwofy").withPort(1026914225);
         model = BinaryData.fromObject(model).toObject(ContainerAppProbeTcpSocket.class);
-        Assertions.assertEquals("jhdgqggebdunyga", model.host());
-        Assertions.assertEquals(2021053825, model.port());
+        Assertions.assertEquals("zdtmhrkwofy", model.host());
+        Assertions.assertEquals(1026914225, model.port());
     }
 }

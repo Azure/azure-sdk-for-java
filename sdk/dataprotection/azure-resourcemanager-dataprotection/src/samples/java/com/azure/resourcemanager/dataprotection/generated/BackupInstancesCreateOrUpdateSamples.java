@@ -22,7 +22,7 @@ import java.util.Map;
 /** Samples for BackupInstances CreateOrUpdate. */
 public final class BackupInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/BackupInstanceOperations/PutBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/PutBackupInstance.json
      */
     /**
      * Sample code: Create BackupInstance.
@@ -34,7 +34,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
             .backupInstances()
             .define("testInstance1")
             .withExistingBackupVault("000pikumar", "PratikPrivatePreviewVault1")
-            .withTags(mapOf("key1", "val1"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withProperties(
                 new BackupInstance()
                     .withFriendlyName("harshitbi2")

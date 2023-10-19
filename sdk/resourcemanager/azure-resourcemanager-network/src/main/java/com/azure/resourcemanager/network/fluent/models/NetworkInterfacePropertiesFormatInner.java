@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliaryMode;
+import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
@@ -143,6 +144,12 @@ public final class NetworkInterfacePropertiesFormatInner {
      */
     @JsonProperty(value = "auxiliaryMode")
     private NetworkInterfaceAuxiliaryMode auxiliaryMode;
+
+    /*
+     * Auxiliary sku of Network Interface resource.
+     */
+    @JsonProperty(value = "auxiliarySku")
+    private NetworkInterfaceAuxiliarySku auxiliarySku;
 
     /** Creates an instance of NetworkInterfacePropertiesFormatInner class. */
     public NetworkInterfacePropertiesFormatInner() {
@@ -461,6 +468,26 @@ public final class NetworkInterfacePropertiesFormatInner {
      */
     public NetworkInterfacePropertiesFormatInner withAuxiliaryMode(NetworkInterfaceAuxiliaryMode auxiliaryMode) {
         this.auxiliaryMode = auxiliaryMode;
+        return this;
+    }
+
+    /**
+     * Get the auxiliarySku property: Auxiliary sku of Network Interface resource.
+     *
+     * @return the auxiliarySku value.
+     */
+    public NetworkInterfaceAuxiliarySku auxiliarySku() {
+        return this.auxiliarySku;
+    }
+
+    /**
+     * Set the auxiliarySku property: Auxiliary sku of Network Interface resource.
+     *
+     * @param auxiliarySku the auxiliarySku value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withAuxiliarySku(NetworkInterfaceAuxiliarySku auxiliarySku) {
+        this.auxiliarySku = auxiliarySku;
         return this;
     }
 

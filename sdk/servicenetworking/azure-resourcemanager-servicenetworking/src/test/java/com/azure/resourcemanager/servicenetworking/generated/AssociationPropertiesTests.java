@@ -9,28 +9,27 @@ import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationProp
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssociationPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AssociationProperties model =
             BinaryData
                 .fromString(
-                    "{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"umkdosvqwhbmd\"},\"provisioningState\":\"Updating\"}")
+                    "{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"ckyfih\"},\"provisioningState\":\"Accepted\"}")
                 .toObject(AssociationProperties.class);
         Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("umkdosvqwhbmd", model.subnet().id());
+        Assertions.assertEquals("ckyfih", model.subnet().id());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AssociationProperties model =
             new AssociationProperties()
                 .withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnet().withId("umkdosvqwhbmd"));
+                .withSubnet(new AssociationSubnet().withId("ckyfih"));
         model = BinaryData.fromObject(model).toObject(AssociationProperties.class);
         Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("umkdosvqwhbmd", model.subnet().id());
+        Assertions.assertEquals("ckyfih", model.subnet().id());
     }
 }

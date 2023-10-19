@@ -7,20 +7,19 @@ package com.azure.resourcemanager.devhub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devhub.fluent.models.DeleteWorkflowResponseInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DeleteWorkflowResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DeleteWorkflowResponseInner model =
-            BinaryData.fromString("{\"status\":\"bkbfkgukdkex\"}").toObject(DeleteWorkflowResponseInner.class);
-        Assertions.assertEquals("bkbfkgukdkex", model.status());
+            BinaryData.fromString("{\"status\":\"thz\"}").toObject(DeleteWorkflowResponseInner.class);
+        Assertions.assertEquals("thz", model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        DeleteWorkflowResponseInner model = new DeleteWorkflowResponseInner().withStatus("bkbfkgukdkex");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DeleteWorkflowResponseInner model = new DeleteWorkflowResponseInner().withStatus("thz");
         model = BinaryData.fromObject(model).toObject(DeleteWorkflowResponseInner.class);
-        Assertions.assertEquals("bkbfkgukdkex", model.status());
+        Assertions.assertEquals("thz", model.status());
     }
 }

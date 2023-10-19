@@ -7,9 +7,9 @@ package com.azure.resourcemanager.devcenter.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.Schedule;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
@@ -56,7 +56,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
         return this.innerModel().timeZone();
     }
 
-    public EnableStatus state() {
+    public ScheduleEnableStatus state() {
         return this.innerModel().state();
     }
 
@@ -210,7 +210,7 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
         }
     }
 
-    public ScheduleImpl withState(EnableStatus state) {
+    public ScheduleImpl withState(ScheduleEnableStatus state) {
         if (isInCreateMode()) {
             this.innerModel().withState(state);
             return this;

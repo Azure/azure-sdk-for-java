@@ -105,6 +105,8 @@ import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -126,8 +128,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
 public class BlobAsyncClientBase {
-
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClientBase.class);
+
+    private static final Set<OpenOption> DEFAULT_OPEN_OPTIONS_SET = Collections.unmodifiableSet(new HashSet<>(
+        Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.READ, StandardOpenOption.WRITE)));
 
     /**
      * Backing REST client for the blob client.
@@ -1533,10 +1537,7 @@ public class BlobAsyncClientBase {
         // Default behavior is not to overwrite
         Set<OpenOption> openOptions = options.getOpenOptions();
         if (openOptions == null) {
-            openOptions = new HashSet<>();
-            openOptions.add(StandardOpenOption.CREATE_NEW);
-            openOptions.add(StandardOpenOption.WRITE);
-            openOptions.add(StandardOpenOption.READ);
+            openOptions = DEFAULT_OPEN_OPTIONS_SET;
         }
 
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
@@ -1587,8 +1588,8 @@ public class BlobAsyncClientBase {
                     .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
                         finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
                         response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
-                            progressReporter == null ? null : progressReporter.createChild()
-                        ).flux()), finalParallelTransferOptions.getMaxConcurrency())
+                            progressReporter == null ? null : progressReporter.createChild()).flux()),
+                        finalParallelTransferOptions.getMaxConcurrency())
 
                     // Only the first download call returns a value.
                     .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));

@@ -31,6 +31,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.AiSemanticAttributes.IS_SYNTHETIC;
+import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.EMPTY_MAPPINGS;
 import static io.opentelemetry.api.internal.Utils.checkArgument;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
@@ -45,20 +46,18 @@ public class MetricDataMapper {
     private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
     private static final List<String> EXCLUDED_METRIC_NAMES = new ArrayList<>();
 
-    private static final Mappings MAPPINGS;
-
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
 
     static {
         EXCLUDED_METRIC_NAMES.add("http.server.active_requests"); // Servlet
+        EXCLUDED_METRIC_NAMES.add("http.server.response.size");
+        EXCLUDED_METRIC_NAMES.add("http.client.response.size");
 
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.duration"); // Servlet
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.duration"); // HttpClient
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.client.duration"); // gRPC
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.server.duration"); // gRPC
-
-        MAPPINGS = new MappingsBuilder().build();
     }
 
     public MetricDataMapper(
@@ -187,7 +186,7 @@ public class MetricDataMapper {
                     metricTelemetryBuilder, statusCode, success, dependencyType, target, isSynthetic);
             }
         } else {
-            MAPPINGS.map(attributes, metricTelemetryBuilder);
+            EMPTY_MAPPINGS.map(attributes, metricTelemetryBuilder);
         }
     }
 

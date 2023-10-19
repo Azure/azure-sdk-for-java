@@ -24,10 +24,12 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.devhub.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.devhub.fluent.models.ArtifactGenerationProperties;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthInfoResponseInner;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthListResponseInner;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthResponseInner;
 import com.azure.resourcemanager.devhub.models.GitHubOAuthCallRequest;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
@@ -55,11 +57,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "DeveloperHubServiceC")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/locations/{location}/githuboauth/default"
-                + "/getGitHubOAuthInfo")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/locations/{location}/githuboauth/default/getGitHubOAuthInfo")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GitHubOAuthInfoResponseInner>> gitHubOAuth(
@@ -94,6 +95,20 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/locations/{location}/generatePreviewArtifacts")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Map<String, String>>> generatePreviewArtifacts(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location,
+            @BodyParam("application/json") ArtifactGenerationProperties parameters,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -196,22 +211,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
      *
      * @param location The name of Azure region.
-     * @param parameters GitHubOAuth request object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHubOAuth info used to authenticate users with the Developer Hub GitHub App on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GitHubOAuthInfoResponseInner> gitHubOAuthAsync(String location, GitHubOAuthCallRequest parameters) {
-        return gitHubOAuthWithResponseAsync(location, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
-     *
-     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -222,21 +221,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<GitHubOAuthInfoResponseInner> gitHubOAuthAsync(String location) {
         final GitHubOAuthCallRequest parameters = null;
         return gitHubOAuthWithResponseAsync(location, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
-     *
-     * @param location The name of Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubOAuthInfoResponseInner gitHubOAuth(String location) {
-        final GitHubOAuthCallRequest parameters = null;
-        return gitHubOAuthAsync(location, parameters).block();
     }
 
     /**
@@ -255,6 +239,21 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public Response<GitHubOAuthInfoResponseInner> gitHubOAuthWithResponse(
         String location, GitHubOAuthCallRequest parameters, Context context) {
         return gitHubOAuthWithResponseAsync(location, parameters, context).block();
+    }
+
+    /**
+     * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GitHubOAuthInfoResponseInner gitHubOAuth(String location) {
+        final GitHubOAuthCallRequest parameters = null;
+        return gitHubOAuthWithResponse(location, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -384,22 +383,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param location The name of Azure region.
      * @param code The code response from authenticating the GitHub App.
      * @param state The state response from authenticating the GitHub App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return singleton response of GitHubOAuth containing.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubOAuthResponseInner gitHubOAuthCallback(String location, String code, String state) {
-        return gitHubOAuthCallbackAsync(location, code, state).block();
-    }
-
-    /**
-     * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
-     * @param location The name of Azure region.
-     * @param code The code response from authenticating the GitHub App.
-     * @param state The state response from authenticating the GitHub App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -410,6 +393,22 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public Response<GitHubOAuthResponseInner> gitHubOAuthCallbackWithResponse(
         String location, String code, String state, Context context) {
         return gitHubOAuthCallbackWithResponseAsync(location, code, state, context).block();
+    }
+
+    /**
+     * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
+     *
+     * @param location The name of Azure region.
+     * @param code The code response from authenticating the GitHub App.
+     * @param state The state response from authenticating the GitHub App.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return singleton response of GitHubOAuth containing.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GitHubOAuthResponseInner gitHubOAuthCallback(String location, String code, String state) {
+        return gitHubOAuthCallbackWithResponse(location, code, state, Context.NONE).getValue();
     }
 
     /**
@@ -513,20 +512,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
      *
      * @param location The name of Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from List GitHubOAuth operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubOAuthListResponseInner listGitHubOAuth(String location) {
-        return listGitHubOAuthAsync(location).block();
-    }
-
-    /**
-     * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
-     *
-     * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -536,5 +521,169 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitHubOAuthListResponseInner> listGitHubOAuthWithResponse(String location, Context context) {
         return listGitHubOAuthWithResponseAsync(location, context).block();
+    }
+
+    /**
+     * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from List GitHubOAuth operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GitHubOAuthListResponseInner listGitHubOAuth(String location) {
+        return listGitHubOAuthWithResponse(location, Context.NONE).getValue();
+    }
+
+    /**
+     * Generate preview dockerfile and manifests.
+     *
+     * @param location The name of Azure region.
+     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
+     *     string&gt; along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Map<String, String>>> generatePreviewArtifactsWithResponseAsync(
+        String location, ArtifactGenerationProperties parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .generatePreviewArtifacts(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            location,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Generate preview dockerfile and manifests.
+     *
+     * @param location The name of Azure region.
+     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
+     *     string&gt; along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Map<String, String>>> generatePreviewArtifactsWithResponseAsync(
+        String location, ArtifactGenerationProperties parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .generatePreviewArtifacts(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                location,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Generate preview dockerfile and manifests.
+     *
+     * @param location The name of Azure region.
+     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
+     *     string&gt; on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Map<String, String>> generatePreviewArtifactsAsync(
+        String location, ArtifactGenerationProperties parameters) {
+        return generatePreviewArtifactsWithResponseAsync(location, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Generate preview dockerfile and manifests.
+     *
+     * @param location The name of Azure region.
+     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
+     *     string&gt; along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Map<String, String>> generatePreviewArtifactsWithResponse(
+        String location, ArtifactGenerationProperties parameters, Context context) {
+        return generatePreviewArtifactsWithResponseAsync(location, parameters, context).block();
+    }
+
+    /**
+     * Generate preview dockerfile and manifests.
+     *
+     * @param location The name of Azure region.
+     * @param parameters Properties used for generating artifacts such as Dockerfiles and manifests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dockerfile and manifest artifacts generated as a preview are returned as a map&lt;path string,content
+     *     string&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Map<String, String> generatePreviewArtifacts(String location, ArtifactGenerationProperties parameters) {
+        return generatePreviewArtifactsWithResponse(location, parameters, Context.NONE).getValue();
     }
 }

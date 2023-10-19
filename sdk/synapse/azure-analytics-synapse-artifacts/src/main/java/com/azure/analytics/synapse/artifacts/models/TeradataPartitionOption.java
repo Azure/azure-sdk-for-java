@@ -20,6 +20,14 @@ public final class TeradataPartitionOption extends ExpandableStringEnum<Teradata
     public static final TeradataPartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
+     * Creates a new instance of TeradataPartitionOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TeradataPartitionOption() {}
+
+    /**
      * Creates or finds a TeradataPartitionOption from its string representation.
      *
      * @param name a name to look for.

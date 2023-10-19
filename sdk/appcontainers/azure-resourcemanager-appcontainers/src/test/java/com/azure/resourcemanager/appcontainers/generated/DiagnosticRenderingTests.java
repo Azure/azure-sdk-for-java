@@ -7,34 +7,33 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticRendering;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticRenderingTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DiagnosticRendering model =
             BinaryData
                 .fromString(
-                    "{\"type\":1644045294,\"title\":\"lmywwtkgkxnyed\",\"description\":\"gyvudtjuewbc\",\"isVisible\":false}")
+                    "{\"type\":631157488,\"title\":\"qactxtgzukxitmmq\",\"description\":\"qqqxhrnxrx\",\"isVisible\":true}")
                 .toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(1644045294, model.type());
-        Assertions.assertEquals("lmywwtkgkxnyed", model.title());
-        Assertions.assertEquals("gyvudtjuewbc", model.description());
-        Assertions.assertEquals(false, model.isVisible());
+        Assertions.assertEquals(631157488, model.type());
+        Assertions.assertEquals("qactxtgzukxitmmq", model.title());
+        Assertions.assertEquals("qqqxhrnxrx", model.description());
+        Assertions.assertEquals(true, model.isVisible());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DiagnosticRendering model =
             new DiagnosticRendering()
-                .withType(1644045294)
-                .withTitle("lmywwtkgkxnyed")
-                .withDescription("gyvudtjuewbc")
-                .withIsVisible(false);
+                .withType(631157488)
+                .withTitle("qactxtgzukxitmmq")
+                .withDescription("qqqxhrnxrx")
+                .withIsVisible(true);
         model = BinaryData.fromObject(model).toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(1644045294, model.type());
-        Assertions.assertEquals("lmywwtkgkxnyed", model.title());
-        Assertions.assertEquals("gyvudtjuewbc", model.description());
-        Assertions.assertEquals(false, model.isVisible());
+        Assertions.assertEquals(631157488, model.type());
+        Assertions.assertEquals("qactxtgzukxitmmq", model.title());
+        Assertions.assertEquals("qqqxhrnxrx", model.description());
+        Assertions.assertEquals(true, model.isVisible());
     }
 }

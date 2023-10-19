@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus;
@@ -34,7 +33,7 @@ public final class PrivateEndpointConnectionsListByBatchAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"sgogczhonnxk\"},\"groupIds\":[\"nyhmossxkkgthr\",\"gh\",\"jbdhqxvc\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"pdso\",\"actionsRequired\":\"shrnsvbuswdvz\"}},\"etag\":\"bycnunvjsrtkf\",\"id\":\"wnopqgikyzirtx\",\"name\":\"yuxzejntpsewgi\",\"type\":\"ilqu\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{\"id\":\"ejwcwwqiok\"},\"groupIds\":[\"xmojmsvpkjp\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"cfzq\",\"actionsRequired\":\"yxgtczh\"}},\"etag\":\"dbsdshm\",\"id\":\"xmaehvbbxu\",\"name\":\"iplt\",\"type\":\"n\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +62,14 @@ public final class PrivateEndpointConnectionsListByBatchAccountMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpointConnection> response =
-            manager.privateEndpointConnections().listByBatchAccount("zronasxift", "zq", 418200584, Context.NONE);
+            manager
+                .privateEndpointConnections()
+                .listByBatchAccount("mjdftu", "jltduceam", 1206189386, com.azure.core.util.Context.NONE);
 
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.DISCONNECTED,
+                PrivateLinkServiceConnectionStatus.APPROVED,
                 response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("pdso", response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("cfzq", response.iterator().next().privateLinkServiceConnectionState().description());
     }
 }

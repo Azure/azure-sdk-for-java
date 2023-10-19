@@ -7,38 +7,36 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.BillingMeter;
 import com.azure.resourcemanager.appcontainers.models.BillingMeterProperties;
-import com.azure.resourcemanager.appcontainers.models.Category;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BillingMeterTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BillingMeter model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"lm\",\"properties\":{\"category\":\"PremiumSkuComputeOptimized\",\"meterType\":\"cvhd\",\"displayName\":\"v\"},\"id\":\"qxeysko\",\"name\":\"qzinkfkbg\",\"type\":\"z\"}")
+                    "{\"location\":\"gidyjrrf\",\"properties\":{\"category\":\"osvexcsonpclhoc\",\"meterType\":\"slkevle\",\"displayName\":\"zfbuhf\"},\"id\":\"vfaxkffeiith\",\"name\":\"vmezy\",\"type\":\"shxmzsbbzoggigrx\"}")
                 .toObject(BillingMeter.class);
-        Assertions.assertEquals("lm", model.location());
-        Assertions.assertEquals(Category.PREMIUM_SKU_COMPUTE_OPTIMIZED, model.properties().category());
-        Assertions.assertEquals("cvhd", model.properties().meterType());
-        Assertions.assertEquals("v", model.properties().displayName());
+        Assertions.assertEquals("gidyjrrf", model.location());
+        Assertions.assertEquals("osvexcsonpclhoc", model.properties().category());
+        Assertions.assertEquals("slkevle", model.properties().meterType());
+        Assertions.assertEquals("zfbuhf", model.properties().displayName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BillingMeter model =
             new BillingMeter()
-                .withLocation("lm")
+                .withLocation("gidyjrrf")
                 .withProperties(
                     new BillingMeterProperties()
-                        .withCategory(Category.PREMIUM_SKU_COMPUTE_OPTIMIZED)
-                        .withMeterType("cvhd")
-                        .withDisplayName("v"));
+                        .withCategory("osvexcsonpclhoc")
+                        .withMeterType("slkevle")
+                        .withDisplayName("zfbuhf"));
         model = BinaryData.fromObject(model).toObject(BillingMeter.class);
-        Assertions.assertEquals("lm", model.location());
-        Assertions.assertEquals(Category.PREMIUM_SKU_COMPUTE_OPTIMIZED, model.properties().category());
-        Assertions.assertEquals("cvhd", model.properties().meterType());
-        Assertions.assertEquals("v", model.properties().displayName());
+        Assertions.assertEquals("gidyjrrf", model.location());
+        Assertions.assertEquals("osvexcsonpclhoc", model.properties().category());
+        Assertions.assertEquals("slkevle", model.properties().meterType());
+        Assertions.assertEquals("zfbuhf", model.properties().displayName());
     }
 }

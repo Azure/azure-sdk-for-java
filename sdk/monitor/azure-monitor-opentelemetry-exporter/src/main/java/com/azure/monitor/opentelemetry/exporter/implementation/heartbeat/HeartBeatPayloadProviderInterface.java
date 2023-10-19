@@ -4,9 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.heartbeat;
 
 /**
- * <h1>Interface for setting default properties</h1>
- *
- * <p>This interface is used to set the default payload of a provider and defines implementation for
+ * This interface is used to set the default payload of a provider and defines implementation for
  * some helper methods to assist it.
  *
  * <p>The default concrete implementations are {@link DefaultHeartBeatPropertyProvider} and {@link

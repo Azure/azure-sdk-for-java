@@ -5,40 +5,39 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.elastic.models.UserApiKeyResponseProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The User Api Key created for the Organization associated with the User Email Id that was passed in the request. */
 @Fluent
 public final class UserApiKeyResponseInner {
     /*
-     * The User Api Key Generated based on ReturnApiKey flag. This is applicable for non-Portal clients only.
+     * The properties property.
      */
-    @JsonProperty(value = "apiKey")
-    private String apiKey;
+    @JsonProperty(value = "properties")
+    private UserApiKeyResponseProperties properties;
 
     /** Creates an instance of UserApiKeyResponseInner class. */
     public UserApiKeyResponseInner() {
     }
 
     /**
-     * Get the apiKey property: The User Api Key Generated based on ReturnApiKey flag. This is applicable for non-Portal
-     * clients only.
+     * Get the properties property: The properties property.
      *
-     * @return the apiKey value.
+     * @return the properties value.
      */
-    public String apiKey() {
-        return this.apiKey;
+    public UserApiKeyResponseProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Set the apiKey property: The User Api Key Generated based on ReturnApiKey flag. This is applicable for non-Portal
-     * clients only.
+     * Set the properties property: The properties property.
      *
-     * @param apiKey the apiKey value to set.
+     * @param properties the properties value to set.
      * @return the UserApiKeyResponseInner object itself.
      */
-    public UserApiKeyResponseInner withApiKey(String apiKey) {
-        this.apiKey = apiKey;
+    public UserApiKeyResponseInner withProperties(UserApiKeyResponseProperties properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -48,5 +47,8 @@ public final class UserApiKeyResponseInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

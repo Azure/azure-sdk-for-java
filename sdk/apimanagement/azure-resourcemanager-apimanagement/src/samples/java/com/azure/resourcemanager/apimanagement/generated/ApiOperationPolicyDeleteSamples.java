@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 
 /** Samples for ApiOperationPolicy Delete. */
 public final class ApiOperationPolicyDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteApiOperationPolicy.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteApiOperationPolicy.json
      */
     /**
      * Sample code: ApiManagementDeleteApiOperationPolicy.
@@ -22,6 +21,12 @@ public final class ApiOperationPolicyDeleteSamples {
         manager
             .apiOperationPolicies()
             .deleteWithResponse(
-                "rg1", "apimService1", "testapi", "testoperation", PolicyIdName.POLICY, "*", Context.NONE);
+                "rg1",
+                "apimService1",
+                "testapi",
+                "testoperation",
+                PolicyIdName.POLICY,
+                "*",
+                com.azure.core.util.Context.NONE);
     }
 }

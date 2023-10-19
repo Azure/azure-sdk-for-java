@@ -66,8 +66,7 @@ public final class GalleriesClientImpl implements GalleriesClient {
     public interface GalleriesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/galleries")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GalleryListResult>> listByDevCenter(
@@ -82,8 +81,7 @@ public final class GalleriesClientImpl implements GalleriesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/galleries/{galleryName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GalleryInner>> get(
@@ -98,8 +96,7 @@ public final class GalleriesClientImpl implements GalleriesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/galleries/{galleryName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -115,8 +112,7 @@ public final class GalleriesClientImpl implements GalleriesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/galleries/{galleryName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -684,7 +680,7 @@ public final class GalleriesClientImpl implements GalleriesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
         String resourceGroupName, String devCenterName, String galleryName, GalleryInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, galleryName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, devCenterName, galleryName, body).getSyncPoller();
     }
 
     /**
@@ -703,7 +699,9 @@ public final class GalleriesClientImpl implements GalleriesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
         String resourceGroupName, String devCenterName, String galleryName, GalleryInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, galleryName, body, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, devCenterName, galleryName, body, context)
+            .getSyncPoller();
     }
 
     /**
@@ -946,7 +944,7 @@ public final class GalleriesClientImpl implements GalleriesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String devCenterName, String galleryName) {
-        return beginDeleteAsync(resourceGroupName, devCenterName, galleryName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, devCenterName, galleryName).getSyncPoller();
     }
 
     /**
@@ -964,7 +962,7 @@ public final class GalleriesClientImpl implements GalleriesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String devCenterName, String galleryName, Context context) {
-        return beginDeleteAsync(resourceGroupName, devCenterName, galleryName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, devCenterName, galleryName, context).getSyncPoller();
     }
 
     /**

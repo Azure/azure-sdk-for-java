@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -13,7 +13,7 @@ import java.net.URI;
 
 /**
  * The type Operation cancelled exception. This is thrown when the operation is cancelled
- * by the {@link CosmosE2EOperationRetryPolicyConfig}
+ * by the {@link CosmosEndToEndOperationLatencyPolicyConfig}
  */
 public final class OperationCancelledException extends CosmosException {
 

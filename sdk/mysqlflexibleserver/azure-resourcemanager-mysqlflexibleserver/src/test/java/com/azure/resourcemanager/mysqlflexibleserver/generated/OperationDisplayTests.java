@@ -14,26 +14,26 @@ public final class OperationDisplayTests {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"cvpnazzmhjrunmpx\",\"resource\":\"dbhrbnlankxm\",\"operation\":\"k\",\"description\":\"henbtkcxywnytn\"}")
+                    "{\"provider\":\"vplwzbhv\",\"resource\":\"u\",\"operation\":\"osvmk\",\"description\":\"sxqu\"}")
                 .toObject(OperationDisplay.class);
-        Assertions.assertEquals("cvpnazzmhjrunmpx", model.provider());
-        Assertions.assertEquals("dbhrbnlankxm", model.resource());
-        Assertions.assertEquals("k", model.operation());
-        Assertions.assertEquals("henbtkcxywnytn", model.description());
+        Assertions.assertEquals("vplwzbhv", model.provider());
+        Assertions.assertEquals("u", model.resource());
+        Assertions.assertEquals("osvmk", model.operation());
+        Assertions.assertEquals("sxqu", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationDisplay model =
             new OperationDisplay()
-                .withProvider("cvpnazzmhjrunmpx")
-                .withResource("dbhrbnlankxm")
-                .withOperation("k")
-                .withDescription("henbtkcxywnytn");
+                .withProvider("vplwzbhv")
+                .withResource("u")
+                .withOperation("osvmk")
+                .withDescription("sxqu");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("cvpnazzmhjrunmpx", model.provider());
-        Assertions.assertEquals("dbhrbnlankxm", model.resource());
-        Assertions.assertEquals("k", model.operation());
-        Assertions.assertEquals("henbtkcxywnytn", model.description());
+        Assertions.assertEquals("vplwzbhv", model.provider());
+        Assertions.assertEquals("u", model.resource());
+        Assertions.assertEquals("osvmk", model.operation());
+        Assertions.assertEquals("sxqu", model.description());
     }
 }

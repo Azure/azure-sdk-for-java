@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /** The type of entities the namespace can contain. */

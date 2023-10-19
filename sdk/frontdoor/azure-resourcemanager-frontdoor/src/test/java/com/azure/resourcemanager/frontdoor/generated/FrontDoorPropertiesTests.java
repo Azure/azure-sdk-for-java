@@ -28,74 +28,74 @@ public final class FrontDoorPropertiesTests {
         FrontDoorProperties model =
             BinaryData
                 .fromString(
-                    "{\"resourceState\":\"Creating\",\"provisioningState\":\"aex\",\"cname\":\"vfadmws\",\"frontdoorId\":\"r\",\"rulesEngines\":[{\"properties\":{\"resourceState\":\"Disabling\",\"rules\":[]},\"id\":\"mzlfmisgwb\",\"name\":\"b\",\"type\":\"e\"},{\"properties\":{\"resourceState\":\"Disabled\",\"rules\":[]},\"id\":\"zbaliourqha\",\"name\":\"auhashsfwx\",\"type\":\"sowzxcugi\"}],\"friendlyName\":\"ooxdjebwpuc\",\"routingRules\":[{\"properties\":{\"resourceState\":\"Creating\",\"frontendEndpoints\":[],\"acceptedProtocols\":[],\"patternsToMatch\":[],\"enabledState\":\"Enabled\"},\"name\":\"yhz\",\"type\":\"uojgj\",\"id\":\"jueiotwmcdytd\"},{\"properties\":{\"resourceState\":\"Disabled\",\"frontendEndpoints\":[],\"acceptedProtocols\":[],\"patternsToMatch\":[],\"enabledState\":\"Disabled\"},\"name\":\"gxhnisk\",\"type\":\"bkpyc\",\"id\":\"lwn\"},{\"properties\":{\"resourceState\":\"Disabling\",\"frontendEndpoints\":[],\"acceptedProtocols\":[],\"patternsToMatch\":[],\"enabledState\":\"Enabled\"},\"name\":\"zbtd\",\"type\":\"ujznb\",\"id\":\"ow\"},{\"properties\":{\"resourceState\":\"Deleting\",\"frontendEndpoints\":[],\"acceptedProtocols\":[],\"patternsToMatch\":[],\"enabledState\":\"Disabled\"},\"name\":\"pjmkhfxobbc\",\"type\":\"s\",\"id\":\"jriplrbpbewtghf\"}],\"loadBalancingSettings\":[{\"properties\":{\"resourceState\":\"Creating\",\"sampleSize\":1261477123,\"successfulSamplesRequired\":1623747079,\"additionalLatencyMilliseconds\":932562427},\"name\":\"jkbegibtnmxiebww\",\"type\":\"oayqc\",\"id\":\"rtzju\"},{\"properties\":{\"resourceState\":\"Creating\",\"sampleSize\":1773507503,\"successfulSamplesRequired\":957944639,\"additionalLatencyMilliseconds\":1672254683},\"name\":\"gmtsavjcbpwxqpsr\",\"type\":\"ftguv\",\"id\":\"uhprwmdyvxqt\"},{\"properties\":{\"resourceState\":\"Enabling\",\"sampleSize\":1013122573,\"successfulSamplesRequired\":724820131,\"additionalLatencyMilliseconds\":997642669},\"name\":\"exrmcqibycnojvk\",\"type\":\"e\",\"id\":\"sgzvahapjyzhpv\"}],\"healthProbeSettings\":[{\"properties\":{\"resourceState\":\"Enabling\",\"path\":\"xdjzlmwlxk\",\"protocol\":\"Https\",\"intervalInSeconds\":1476273747,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Disabled\"},\"name\":\"jvzunluthnnp\",\"type\":\"xipeilpjzuaejx\",\"id\":\"ltskzbbtd\"},{\"properties\":{\"resourceState\":\"Creating\",\"path\":\"ekg\",\"protocol\":\"Http\",\"intervalInSeconds\":311434030,\"healthProbeMethod\":\"GET\",\"enabledState\":\"Enabled\"},\"name\":\"sjyofdx\",\"type\":\"us\",\"id\":\"touwaboekqv\"},{\"properties\":{\"resourceState\":\"Enabling\",\"path\":\"mvb\",\"protocol\":\"Https\",\"intervalInSeconds\":1739794958,\"healthProbeMethod\":\"GET\",\"enabledState\":\"Disabled\"},\"name\":\"aalnjixi\",\"type\":\"yaw\",\"id\":\"yaqcslyjpkiidz\"},{\"properties\":{\"resourceState\":\"Disabling\",\"path\":\"eli\",\"protocol\":\"Http\",\"intervalInSeconds\":417791826,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Enabled\"},\"name\":\"bnxknalaulppg\",\"type\":\"tpnapnyiropuhpig\",\"id\":\"gylgqgitxmedjvcs\"}],\"backendPools\":[{\"properties\":{\"resourceState\":\"Disabled\",\"backends\":[]},\"name\":\"zhxgktrmgucn\",\"type\":\"kteo\",\"id\":\"lwptfdy\"}],\"frontendEndpoints\":[{\"properties\":{\"resourceState\":\"Deleting\",\"customHttpsProvisioningState\":\"Disabled\",\"customHttpsProvisioningSubstate\":\"SubmittingDomainControlValidationRequest\",\"hostName\":\"fqrhhuaopppc\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":472962562},\"name\":\"dahzxctobg\",\"type\":\"dmoizpostmg\",\"id\":\"fbunrmfqjhhk\"},{\"properties\":{\"resourceState\":\"Disabling\",\"customHttpsProvisioningState\":\"Enabled\",\"customHttpsProvisioningSubstate\":\"DeletingCertificate\",\"hostName\":\"xjyngudivk\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":1042702068},\"name\":\"zvszj\",\"type\":\"uvjfdxxive\",\"id\":\"t\"},{\"properties\":{\"resourceState\":\"Disabled\",\"customHttpsProvisioningState\":\"Failed\",\"customHttpsProvisioningSubstate\":\"DomainControlValidationRequestTimedOut\",\"hostName\":\"bxvwv\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":45805707},\"name\":\"sfxobl\",\"type\":\"k\",\"id\":\"mpew\"}],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Disabled\",\"sendRecvTimeoutSeconds\":1359376561},\"enabledState\":\"Enabled\"}")
+                    "{\"resourceState\":\"Disabling\",\"provisioningState\":\"shxmzsbbzoggigrx\",\"cname\":\"ur\",\"frontdoorId\":\"xxjnspydptk\",\"rulesEngines\":[{\"properties\":{\"resourceState\":\"Disabled\",\"rules\":[]},\"id\":\"nvudwtiukb\",\"name\":\"dng\",\"type\":\"pocipazyxoegu\"},{\"properties\":{\"resourceState\":\"Migrated\",\"rules\":[]},\"id\":\"iucgygevqzn\",\"name\":\"yp\",\"type\":\"rbpizc\"}],\"extendedProperties\":{\"dpydn\":\"j\",\"sjttgzfbish\":\"yhxdeoejzicwi\",\"jdeyeamdpha\":\"bkh\",\"wkgshwa\":\"alpbuxwgipwhon\"},\"friendlyName\":\"ixzbinjeputtmryw\",\"routingRules\":[{\"properties\":{\"resourceState\":\"Deleting\",\"frontendEndpoints\":[],\"acceptedProtocols\":[],\"patternsToMatch\":[],\"enabledState\":\"Disabled\"},\"name\":\"qvyxlwhzlsicoho\",\"type\":\"nwvlryavwhheunmm\",\"id\":\"gyxzk\"},{\"properties\":{\"resourceState\":\"Migrating\",\"frontendEndpoints\":[],\"acceptedProtocols\":[],\"patternsToMatch\":[],\"enabledState\":\"Enabled\"},\"name\":\"conuqszfkbeype\",\"type\":\"mjmwvvjektcx\",\"id\":\"nhwlrsffrzpwvl\"},{\"properties\":{\"resourceState\":\"Deleting\",\"frontendEndpoints\":[],\"acceptedProtocols\":[],\"patternsToMatch\":[],\"enabledState\":\"Disabled\"},\"name\":\"etcktvfcivfsnk\",\"type\":\"uctqhjfbe\",\"id\":\"jcxerfuwu\"},{\"properties\":{\"resourceState\":\"Disabled\",\"frontendEndpoints\":[],\"acceptedProtocols\":[],\"patternsToMatch\":[],\"enabledState\":\"Disabled\"},\"name\":\"xepcyvahfn\",\"type\":\"kyqxjvuujqgidokg\",\"id\":\"jyoxgvclt\"}],\"loadBalancingSettings\":[{\"properties\":{\"resourceState\":\"Deleting\",\"sampleSize\":1435851366,\"successfulSamplesRequired\":630804167,\"additionalLatencyMilliseconds\":331647248},\"name\":\"hbijhtxfvgxb\",\"type\":\"mxnehmp\",\"id\":\"cxgod\"},{\"properties\":{\"resourceState\":\"Enabled\",\"sampleSize\":898595537,\"successfulSamplesRequired\":897407586,\"additionalLatencyMilliseconds\":1123544345},\"name\":\"kgriwflzlfbx\",\"type\":\"uzycispnqza\",\"id\":\"gkbrpyyd\"},{\"properties\":{\"resourceState\":\"Migrating\",\"sampleSize\":312010573,\"successfulSamplesRequired\":486608625,\"additionalLatencyMilliseconds\":500953055},\"name\":\"a\",\"type\":\"gvtqagnbuynh\",\"id\":\"gg\"}],\"healthProbeSettings\":[{\"properties\":{\"resourceState\":\"Deleting\",\"path\":\"rbu\",\"protocol\":\"Https\",\"intervalInSeconds\":1477198207,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Disabled\"},\"name\":\"hj\",\"type\":\"nmpxttdb\",\"id\":\"bnlankxmyskpb\"}],\"backendPools\":[{\"properties\":{\"resourceState\":\"Disabling\",\"backends\":[]},\"name\":\"ny\",\"type\":\"rsyn\",\"id\":\"idybyxczf\"},{\"properties\":{\"resourceState\":\"Migrating\",\"backends\":[]},\"name\":\"abphlw\",\"type\":\"lfktsths\",\"id\":\"ocmnyyazttbtwwrq\"},{\"properties\":{\"resourceState\":\"Deleting\",\"backends\":[]},\"name\":\"wbiexzfey\",\"type\":\"axibxujw\",\"id\":\"qwalmuzyoxaepd\"},{\"properties\":{\"resourceState\":\"Disabling\",\"backends\":[]},\"name\":\"rhdwbavxbniw\",\"type\":\"swzts\",\"id\":\"pgn\"}],\"frontendEndpoints\":[{\"properties\":{\"resourceState\":\"Enabled\",\"customHttpsProvisioningState\":\"Enabling\",\"customHttpsProvisioningSubstate\":\"CertificateDeleted\",\"hostName\":\"zabglcuhxwt\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":228169976},\"name\":\"bbovplwzbhvgyugu\",\"type\":\"vmkfssxqu\",\"id\":\"fpl\"}],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Disabled\",\"sendRecvTimeoutSeconds\":1462188439},\"enabledState\":\"Disabled\"}")
                 .toObject(FrontDoorProperties.class);
-        Assertions.assertEquals("ooxdjebwpuc", model.friendlyName());
-        Assertions.assertEquals("jueiotwmcdytd", model.routingRules().get(0).id());
-        Assertions.assertEquals("yhz", model.routingRules().get(0).name());
-        Assertions.assertEquals(RoutingRuleEnabledState.ENABLED, model.routingRules().get(0).enabledState());
-        Assertions.assertEquals("rtzju", model.loadBalancingSettings().get(0).id());
-        Assertions.assertEquals("jkbegibtnmxiebww", model.loadBalancingSettings().get(0).name());
-        Assertions.assertEquals(1261477123, model.loadBalancingSettings().get(0).sampleSize());
-        Assertions.assertEquals(1623747079, model.loadBalancingSettings().get(0).successfulSamplesRequired());
-        Assertions.assertEquals(932562427, model.loadBalancingSettings().get(0).additionalLatencyMilliseconds());
-        Assertions.assertEquals("ltskzbbtd", model.healthProbeSettings().get(0).id());
-        Assertions.assertEquals("jvzunluthnnp", model.healthProbeSettings().get(0).name());
-        Assertions.assertEquals("xdjzlmwlxk", model.healthProbeSettings().get(0).path());
+        Assertions.assertEquals("ixzbinjeputtmryw", model.friendlyName());
+        Assertions.assertEquals("gyxzk", model.routingRules().get(0).id());
+        Assertions.assertEquals("qvyxlwhzlsicoho", model.routingRules().get(0).name());
+        Assertions.assertEquals(RoutingRuleEnabledState.DISABLED, model.routingRules().get(0).enabledState());
+        Assertions.assertEquals("cxgod", model.loadBalancingSettings().get(0).id());
+        Assertions.assertEquals("hbijhtxfvgxb", model.loadBalancingSettings().get(0).name());
+        Assertions.assertEquals(1435851366, model.loadBalancingSettings().get(0).sampleSize());
+        Assertions.assertEquals(630804167, model.loadBalancingSettings().get(0).successfulSamplesRequired());
+        Assertions.assertEquals(331647248, model.loadBalancingSettings().get(0).additionalLatencyMilliseconds());
+        Assertions.assertEquals("bnlankxmyskpb", model.healthProbeSettings().get(0).id());
+        Assertions.assertEquals("hj", model.healthProbeSettings().get(0).name());
+        Assertions.assertEquals("rbu", model.healthProbeSettings().get(0).path());
         Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.healthProbeSettings().get(0).protocol());
-        Assertions.assertEquals(1476273747, model.healthProbeSettings().get(0).intervalInSeconds());
+        Assertions.assertEquals(1477198207, model.healthProbeSettings().get(0).intervalInSeconds());
         Assertions
             .assertEquals(FrontDoorHealthProbeMethod.HEAD, model.healthProbeSettings().get(0).healthProbeMethod());
         Assertions.assertEquals(HealthProbeEnabled.DISABLED, model.healthProbeSettings().get(0).enabledState());
-        Assertions.assertEquals("lwptfdy", model.backendPools().get(0).id());
-        Assertions.assertEquals("zhxgktrmgucn", model.backendPools().get(0).name());
-        Assertions.assertEquals("fbunrmfqjhhk", model.frontendEndpoints().get(0).id());
-        Assertions.assertEquals("dahzxctobg", model.frontendEndpoints().get(0).name());
-        Assertions.assertEquals("fqrhhuaopppc", model.frontendEndpoints().get(0).hostname());
+        Assertions.assertEquals("idybyxczf", model.backendPools().get(0).id());
+        Assertions.assertEquals("ny", model.backendPools().get(0).name());
+        Assertions.assertEquals("fpl", model.frontendEndpoints().get(0).id());
+        Assertions.assertEquals("bbovplwzbhvgyugu", model.frontendEndpoints().get(0).name());
+        Assertions.assertEquals("zabglcuhxwt", model.frontendEndpoints().get(0).hostname());
         Assertions
             .assertEquals(
                 SessionAffinityEnabledState.DISABLED, model.frontendEndpoints().get(0).sessionAffinityEnabledState());
-        Assertions.assertEquals(472962562, model.frontendEndpoints().get(0).sessionAffinityTtlSeconds());
+        Assertions.assertEquals(228169976, model.frontendEndpoints().get(0).sessionAffinityTtlSeconds());
         Assertions
             .assertEquals(
                 EnforceCertificateNameCheckEnabledState.DISABLED,
                 model.backendPoolsSettings().enforceCertificateNameCheck());
-        Assertions.assertEquals(1359376561, model.backendPoolsSettings().sendRecvTimeoutSeconds());
-        Assertions.assertEquals(FrontDoorEnabledState.ENABLED, model.enabledState());
+        Assertions.assertEquals(1462188439, model.backendPoolsSettings().sendRecvTimeoutSeconds());
+        Assertions.assertEquals(FrontDoorEnabledState.DISABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FrontDoorProperties model =
             new FrontDoorProperties()
-                .withFriendlyName("ooxdjebwpuc")
+                .withFriendlyName("ixzbinjeputtmryw")
                 .withRoutingRules(
                     Arrays
                         .asList(
                             new RoutingRule()
-                                .withId("jueiotwmcdytd")
-                                .withName("yhz")
-                                .withFrontendEndpoints(Arrays.asList())
-                                .withAcceptedProtocols(Arrays.asList())
-                                .withPatternsToMatch(Arrays.asList())
-                                .withEnabledState(RoutingRuleEnabledState.ENABLED),
-                            new RoutingRule()
-                                .withId("lwn")
-                                .withName("gxhnisk")
+                                .withId("gyxzk")
+                                .withName("qvyxlwhzlsicoho")
                                 .withFrontendEndpoints(Arrays.asList())
                                 .withAcceptedProtocols(Arrays.asList())
                                 .withPatternsToMatch(Arrays.asList())
                                 .withEnabledState(RoutingRuleEnabledState.DISABLED),
                             new RoutingRule()
-                                .withId("ow")
-                                .withName("zbtd")
+                                .withId("nhwlrsffrzpwvl")
+                                .withName("conuqszfkbeype")
                                 .withFrontendEndpoints(Arrays.asList())
                                 .withAcceptedProtocols(Arrays.asList())
                                 .withPatternsToMatch(Arrays.asList())
                                 .withEnabledState(RoutingRuleEnabledState.ENABLED),
                             new RoutingRule()
-                                .withId("jriplrbpbewtghf")
-                                .withName("pjmkhfxobbc")
+                                .withId("jcxerfuwu")
+                                .withName("etcktvfcivfsnk")
+                                .withFrontendEndpoints(Arrays.asList())
+                                .withAcceptedProtocols(Arrays.asList())
+                                .withPatternsToMatch(Arrays.asList())
+                                .withEnabledState(RoutingRuleEnabledState.DISABLED),
+                            new RoutingRule()
+                                .withId("jyoxgvclt")
+                                .withName("xepcyvahfn")
                                 .withFrontendEndpoints(Arrays.asList())
                                 .withAcceptedProtocols(Arrays.asList())
                                 .withPatternsToMatch(Arrays.asList())
@@ -104,120 +104,93 @@ public final class FrontDoorPropertiesTests {
                     Arrays
                         .asList(
                             new LoadBalancingSettingsModel()
-                                .withId("rtzju")
-                                .withName("jkbegibtnmxiebww")
-                                .withSampleSize(1261477123)
-                                .withSuccessfulSamplesRequired(1623747079)
-                                .withAdditionalLatencyMilliseconds(932562427),
+                                .withId("cxgod")
+                                .withName("hbijhtxfvgxb")
+                                .withSampleSize(1435851366)
+                                .withSuccessfulSamplesRequired(630804167)
+                                .withAdditionalLatencyMilliseconds(331647248),
                             new LoadBalancingSettingsModel()
-                                .withId("uhprwmdyvxqt")
-                                .withName("gmtsavjcbpwxqpsr")
-                                .withSampleSize(1773507503)
-                                .withSuccessfulSamplesRequired(957944639)
-                                .withAdditionalLatencyMilliseconds(1672254683),
+                                .withId("gkbrpyyd")
+                                .withName("kgriwflzlfbx")
+                                .withSampleSize(898595537)
+                                .withSuccessfulSamplesRequired(897407586)
+                                .withAdditionalLatencyMilliseconds(1123544345),
                             new LoadBalancingSettingsModel()
-                                .withId("sgzvahapjyzhpv")
-                                .withName("exrmcqibycnojvk")
-                                .withSampleSize(1013122573)
-                                .withSuccessfulSamplesRequired(724820131)
-                                .withAdditionalLatencyMilliseconds(997642669)))
+                                .withId("gg")
+                                .withName("a")
+                                .withSampleSize(312010573)
+                                .withSuccessfulSamplesRequired(486608625)
+                                .withAdditionalLatencyMilliseconds(500953055)))
                 .withHealthProbeSettings(
                     Arrays
                         .asList(
                             new HealthProbeSettingsModel()
-                                .withId("ltskzbbtd")
-                                .withName("jvzunluthnnp")
-                                .withPath("xdjzlmwlxk")
+                                .withId("bnlankxmyskpb")
+                                .withName("hj")
+                                .withPath("rbu")
                                 .withProtocol(FrontDoorProtocol.HTTPS)
-                                .withIntervalInSeconds(1476273747)
+                                .withIntervalInSeconds(1477198207)
                                 .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
-                                .withEnabledState(HealthProbeEnabled.DISABLED),
-                            new HealthProbeSettingsModel()
-                                .withId("touwaboekqv")
-                                .withName("sjyofdx")
-                                .withPath("ekg")
-                                .withProtocol(FrontDoorProtocol.HTTP)
-                                .withIntervalInSeconds(311434030)
-                                .withHealthProbeMethod(FrontDoorHealthProbeMethod.GET)
-                                .withEnabledState(HealthProbeEnabled.ENABLED),
-                            new HealthProbeSettingsModel()
-                                .withId("yaqcslyjpkiidz")
-                                .withName("aalnjixi")
-                                .withPath("mvb")
-                                .withProtocol(FrontDoorProtocol.HTTPS)
-                                .withIntervalInSeconds(1739794958)
-                                .withHealthProbeMethod(FrontDoorHealthProbeMethod.GET)
-                                .withEnabledState(HealthProbeEnabled.DISABLED),
-                            new HealthProbeSettingsModel()
-                                .withId("gylgqgitxmedjvcs")
-                                .withName("bnxknalaulppg")
-                                .withPath("eli")
-                                .withProtocol(FrontDoorProtocol.HTTP)
-                                .withIntervalInSeconds(417791826)
-                                .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
-                                .withEnabledState(HealthProbeEnabled.ENABLED)))
+                                .withEnabledState(HealthProbeEnabled.DISABLED)))
                 .withBackendPools(
                     Arrays
                         .asList(
-                            new BackendPool().withId("lwptfdy").withName("zhxgktrmgucn").withBackends(Arrays.asList())))
+                            new BackendPool().withId("idybyxczf").withName("ny").withBackends(Arrays.asList()),
+                            new BackendPool()
+                                .withId("ocmnyyazttbtwwrq")
+                                .withName("abphlw")
+                                .withBackends(Arrays.asList()),
+                            new BackendPool()
+                                .withId("qwalmuzyoxaepd")
+                                .withName("wbiexzfey")
+                                .withBackends(Arrays.asList()),
+                            new BackendPool().withId("pgn").withName("rhdwbavxbniw").withBackends(Arrays.asList())))
                 .withFrontendEndpoints(
                     Arrays
                         .asList(
                             new FrontendEndpointInner()
-                                .withId("fbunrmfqjhhk")
-                                .withName("dahzxctobg")
-                                .withHostname("fqrhhuaopppc")
+                                .withId("fpl")
+                                .withName("bbovplwzbhvgyugu")
+                                .withHostname("zabglcuhxwt")
                                 .withSessionAffinityEnabledState(SessionAffinityEnabledState.DISABLED)
-                                .withSessionAffinityTtlSeconds(472962562),
-                            new FrontendEndpointInner()
-                                .withId("t")
-                                .withName("zvszj")
-                                .withHostname("xjyngudivk")
-                                .withSessionAffinityEnabledState(SessionAffinityEnabledState.ENABLED)
-                                .withSessionAffinityTtlSeconds(1042702068),
-                            new FrontendEndpointInner()
-                                .withId("mpew")
-                                .withName("sfxobl")
-                                .withHostname("bxvwv")
-                                .withSessionAffinityEnabledState(SessionAffinityEnabledState.ENABLED)
-                                .withSessionAffinityTtlSeconds(45805707)))
+                                .withSessionAffinityTtlSeconds(228169976)))
                 .withBackendPoolsSettings(
                     new BackendPoolsSettings()
                         .withEnforceCertificateNameCheck(EnforceCertificateNameCheckEnabledState.DISABLED)
-                        .withSendRecvTimeoutSeconds(1359376561))
-                .withEnabledState(FrontDoorEnabledState.ENABLED);
+                        .withSendRecvTimeoutSeconds(1462188439))
+                .withEnabledState(FrontDoorEnabledState.DISABLED);
         model = BinaryData.fromObject(model).toObject(FrontDoorProperties.class);
-        Assertions.assertEquals("ooxdjebwpuc", model.friendlyName());
-        Assertions.assertEquals("jueiotwmcdytd", model.routingRules().get(0).id());
-        Assertions.assertEquals("yhz", model.routingRules().get(0).name());
-        Assertions.assertEquals(RoutingRuleEnabledState.ENABLED, model.routingRules().get(0).enabledState());
-        Assertions.assertEquals("rtzju", model.loadBalancingSettings().get(0).id());
-        Assertions.assertEquals("jkbegibtnmxiebww", model.loadBalancingSettings().get(0).name());
-        Assertions.assertEquals(1261477123, model.loadBalancingSettings().get(0).sampleSize());
-        Assertions.assertEquals(1623747079, model.loadBalancingSettings().get(0).successfulSamplesRequired());
-        Assertions.assertEquals(932562427, model.loadBalancingSettings().get(0).additionalLatencyMilliseconds());
-        Assertions.assertEquals("ltskzbbtd", model.healthProbeSettings().get(0).id());
-        Assertions.assertEquals("jvzunluthnnp", model.healthProbeSettings().get(0).name());
-        Assertions.assertEquals("xdjzlmwlxk", model.healthProbeSettings().get(0).path());
+        Assertions.assertEquals("ixzbinjeputtmryw", model.friendlyName());
+        Assertions.assertEquals("gyxzk", model.routingRules().get(0).id());
+        Assertions.assertEquals("qvyxlwhzlsicoho", model.routingRules().get(0).name());
+        Assertions.assertEquals(RoutingRuleEnabledState.DISABLED, model.routingRules().get(0).enabledState());
+        Assertions.assertEquals("cxgod", model.loadBalancingSettings().get(0).id());
+        Assertions.assertEquals("hbijhtxfvgxb", model.loadBalancingSettings().get(0).name());
+        Assertions.assertEquals(1435851366, model.loadBalancingSettings().get(0).sampleSize());
+        Assertions.assertEquals(630804167, model.loadBalancingSettings().get(0).successfulSamplesRequired());
+        Assertions.assertEquals(331647248, model.loadBalancingSettings().get(0).additionalLatencyMilliseconds());
+        Assertions.assertEquals("bnlankxmyskpb", model.healthProbeSettings().get(0).id());
+        Assertions.assertEquals("hj", model.healthProbeSettings().get(0).name());
+        Assertions.assertEquals("rbu", model.healthProbeSettings().get(0).path());
         Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.healthProbeSettings().get(0).protocol());
-        Assertions.assertEquals(1476273747, model.healthProbeSettings().get(0).intervalInSeconds());
+        Assertions.assertEquals(1477198207, model.healthProbeSettings().get(0).intervalInSeconds());
         Assertions
             .assertEquals(FrontDoorHealthProbeMethod.HEAD, model.healthProbeSettings().get(0).healthProbeMethod());
         Assertions.assertEquals(HealthProbeEnabled.DISABLED, model.healthProbeSettings().get(0).enabledState());
-        Assertions.assertEquals("lwptfdy", model.backendPools().get(0).id());
-        Assertions.assertEquals("zhxgktrmgucn", model.backendPools().get(0).name());
-        Assertions.assertEquals("fbunrmfqjhhk", model.frontendEndpoints().get(0).id());
-        Assertions.assertEquals("dahzxctobg", model.frontendEndpoints().get(0).name());
-        Assertions.assertEquals("fqrhhuaopppc", model.frontendEndpoints().get(0).hostname());
+        Assertions.assertEquals("idybyxczf", model.backendPools().get(0).id());
+        Assertions.assertEquals("ny", model.backendPools().get(0).name());
+        Assertions.assertEquals("fpl", model.frontendEndpoints().get(0).id());
+        Assertions.assertEquals("bbovplwzbhvgyugu", model.frontendEndpoints().get(0).name());
+        Assertions.assertEquals("zabglcuhxwt", model.frontendEndpoints().get(0).hostname());
         Assertions
             .assertEquals(
                 SessionAffinityEnabledState.DISABLED, model.frontendEndpoints().get(0).sessionAffinityEnabledState());
-        Assertions.assertEquals(472962562, model.frontendEndpoints().get(0).sessionAffinityTtlSeconds());
+        Assertions.assertEquals(228169976, model.frontendEndpoints().get(0).sessionAffinityTtlSeconds());
         Assertions
             .assertEquals(
                 EnforceCertificateNameCheckEnabledState.DISABLED,
                 model.backendPoolsSettings().enforceCertificateNameCheck());
-        Assertions.assertEquals(1359376561, model.backendPoolsSettings().sendRecvTimeoutSeconds());
-        Assertions.assertEquals(FrontDoorEnabledState.ENABLED, model.enabledState());
+        Assertions.assertEquals(1462188439, model.backendPoolsSettings().sendRecvTimeoutSeconds());
+        Assertions.assertEquals(FrontDoorEnabledState.DISABLED, model.enabledState());
     }
 }

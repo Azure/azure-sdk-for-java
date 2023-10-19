@@ -98,6 +98,11 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     private SemanticSettings semanticSettings;
 
     /*
+     * Contains configuration options related to vector search.
+     */
+    private VectorSearch vectorSearch;
+
+    /*
      * The ETag of the index.
      */
     private String eTag;
@@ -412,6 +417,26 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
+     * Get the vectorSearch property: Contains configuration options related to vector search.
+     *
+     * @return the vectorSearch value.
+     */
+    public VectorSearch getVectorSearch() {
+        return this.vectorSearch;
+    }
+
+    /**
+     * Set the vectorSearch property: Contains configuration options related to vector search.
+     *
+     * @param vectorSearch the vectorSearch value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setVectorSearch(VectorSearch vectorSearch) {
+        this.vectorSearch = vectorSearch;
+        return this;
+    }
+
+    /**
      * Get the eTag property: The ETag of the index.
      *
      * @return the eTag value.
@@ -449,6 +474,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
         jsonWriter.writeJsonField("similarity", this.similarity);
         jsonWriter.writeJsonField("semantic", this.semanticSettings);
+        jsonWriter.writeJsonField("vectorSearch", this.vectorSearch);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
     }
@@ -480,6 +506,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     SearchResourceEncryptionKey encryptionKey = null;
                     SimilarityAlgorithm similarity = null;
                     SemanticSettings semanticSettings = null;
+                    VectorSearch vectorSearch = null;
                     String eTag = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
@@ -514,6 +541,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                             similarity = SimilarityAlgorithm.fromJson(reader);
                         } else if ("semantic".equals(fieldName)) {
                             semanticSettings = SemanticSettings.fromJson(reader);
+                        } else if ("vectorSearch".equals(fieldName)) {
+                            vectorSearch = VectorSearch.fromJson(reader);
                         } else if ("@odata.etag".equals(fieldName)) {
                             eTag = reader.getString();
                         } else {
@@ -535,6 +564,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                         deserializedSearchIndex.encryptionKey = encryptionKey;
                         deserializedSearchIndex.similarity = similarity;
                         deserializedSearchIndex.semanticSettings = semanticSettings;
+                        deserializedSearchIndex.vectorSearch = vectorSearch;
                         deserializedSearchIndex.eTag = eTag;
 
                         return deserializedSearchIndex;

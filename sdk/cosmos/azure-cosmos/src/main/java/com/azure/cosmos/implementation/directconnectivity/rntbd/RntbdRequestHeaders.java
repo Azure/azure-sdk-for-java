@@ -8,6 +8,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.ContentSerializationFormat;
 import com.azure.cosmos.implementation.EnumerationDirection;
 import com.azure.cosmos.implementation.FanoutOperationState;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.MigrateCollectionDirective;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RMResources;
@@ -757,9 +758,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = headers.get(HttpHeaders.PRIORITY_LEVEL);
 
         if (StringUtils.isNotEmpty(value)) {
-            final PriorityLevel priorityLevel = EnumUtils.getEnumIgnoreCase(
-                PriorityLevel.class,
-                value);
+            final PriorityLevel priorityLevel = PriorityLevel.fromString(value);
 
             if (priorityLevel == null) {
                 final String reason = String.format(Locale.ROOT, RMResources.InvalidRequestHeaderValue,
@@ -768,16 +767,12 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                 throw new IllegalStateException(reason);
             }
 
-            switch (priorityLevel) {
-                case High:
-                    this.getPriorityLevel().setValue(RntbdConstants.RntbdPriorityLevel.High.id());
-                    break;
-                case Low:
-                    this.getPriorityLevel().setValue(RntbdConstants.RntbdPriorityLevel.Low.id());
-                    break;
-                default:
-                    assert false;
-            }
+            this.getPriorityLevel().setValue(
+                ImplementationBridgeHelpers
+                    .PriorityLevelHelper
+                    .getPriorityLevelAccessor()
+                    .getPriorityValue(priorityLevel)
+            );
         }
     }
 

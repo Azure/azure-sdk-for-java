@@ -9,6 +9,7 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
@@ -64,6 +65,12 @@ public final class ServerPropertiesForUpdate {
      */
     @JsonProperty(value = "dataEncryption")
     private DataEncryption dataEncryption;
+
+    /*
+     * Network related properties of a server
+     */
+    @JsonProperty(value = "network")
+    private Network network;
 
     /** Creates an instance of ServerPropertiesForUpdate class. */
     public ServerPropertiesForUpdate() {
@@ -230,6 +237,26 @@ public final class ServerPropertiesForUpdate {
     }
 
     /**
+     * Get the network property: Network related properties of a server.
+     *
+     * @return the network value.
+     */
+    public Network network() {
+        return this.network;
+    }
+
+    /**
+     * Set the network property: Network related properties of a server.
+     *
+     * @param network the network value to set.
+     * @return the ServerPropertiesForUpdate object itself.
+     */
+    public ServerPropertiesForUpdate withNetwork(Network network) {
+        this.network = network;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -249,6 +276,9 @@ public final class ServerPropertiesForUpdate {
         }
         if (dataEncryption() != null) {
             dataEncryption().validate();
+        }
+        if (network() != null) {
+            network().validate();
         }
     }
 }

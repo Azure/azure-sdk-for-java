@@ -29,6 +29,10 @@ public final class HttpMessageDiagnostic {
     @JsonProperty(value = "dataMasking")
     private DataMasking dataMasking;
 
+    /** Creates an instance of HttpMessageDiagnostic class. */
+    public HttpMessageDiagnostic() {
+    }
+
     /**
      * Get the headers property: Array of HTTP Headers to log.
      *

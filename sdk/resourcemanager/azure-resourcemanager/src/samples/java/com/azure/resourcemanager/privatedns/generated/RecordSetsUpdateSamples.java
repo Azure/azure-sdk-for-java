@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 import java.util.HashMap;
@@ -31,9 +30,9 @@ public final class RecordSetsUpdateSamples {
                 "privatezone1.com",
                 RecordType.TXT,
                 "recordTXT",
-                new RecordSetInner().withMetadata(mapOf("key2", "value2")),
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -55,9 +54,9 @@ public final class RecordSetsUpdateSamples {
                 "privatezone1.com",
                 RecordType.SOA,
                 "@",
-                new RecordSetInner().withMetadata(mapOf("key2", "value2")),
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -79,9 +78,9 @@ public final class RecordSetsUpdateSamples {
                 "privatezone1.com",
                 RecordType.A,
                 "recordA",
-                new RecordSetInner().withMetadata(mapOf("key2", "value2")),
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -103,9 +102,9 @@ public final class RecordSetsUpdateSamples {
                 "privatezone1.com",
                 RecordType.CNAME,
                 "recordCNAME",
-                new RecordSetInner().withMetadata(mapOf("key2", "value2")),
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -127,9 +126,9 @@ public final class RecordSetsUpdateSamples {
                 "0.0.127.in-addr.arpa",
                 RecordType.PTR,
                 "1",
-                new RecordSetInner().withMetadata(mapOf("key2", "value2")),
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -151,9 +150,9 @@ public final class RecordSetsUpdateSamples {
                 "privatezone1.com",
                 RecordType.SRV,
                 "recordSRV",
-                new RecordSetInner().withMetadata(mapOf("key2", "value2")),
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -175,9 +174,9 @@ public final class RecordSetsUpdateSamples {
                 "privatezone1.com",
                 RecordType.AAAA,
                 "recordAAAA",
-                new RecordSetInner().withMetadata(mapOf("key2", "value2")),
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -199,9 +198,9 @@ public final class RecordSetsUpdateSamples {
                 "privatezone1.com",
                 RecordType.MX,
                 "recordMX",
-                new RecordSetInner().withMetadata(mapOf("key2", "value2")),
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

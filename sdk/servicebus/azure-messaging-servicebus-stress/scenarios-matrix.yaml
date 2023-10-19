@@ -1,3 +1,32 @@
 matrix:
-    scenarios:
-        - longrunning
+  scenarios:
+    composite:
+      testDurationMin: 15
+      processingConcurrency: 50
+      sendRate: 160
+      receiverTestClass: MessageProcessor
+      senderTestClass: MessageSenderAsync
+      abandonRatio: 0.002
+      noDispositionRatio: 0.001
+      lockRenewalNeededRatio: 0.01
+      processCallbackDurationMaxInMs: 10
+      autoRenewLock: "true"
+      prefetchCount: 0
+      lockDurationInMs: 5000
+      chaos: "false"
+      tryTimeout: 60
+      delayStartMin: 0
+      azureSdkLogLevel: 3
+      azureSdkTracingEnabled: true
+      applicationInsightsSamplingRate: 100
+      applicationInsightsLogLevel: "INFO"
+      imageBuildDir: ..\..\..\
+    happy-case:
+      testDurationMin: 15
+      processingConcurrency: 64
+      sendRate: 900
+      receiverTestClass: MessageProcessor
+      senderTestClass: MessageSenderAsync
+      lockDurationInMs: 5000
+      processCallbackDurationMaxInMs: 10
+      imageBuildDir: ..\..\..\

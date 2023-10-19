@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.CatalogListResult;
-import org.junit.jupiter.api.Test;
 
 public final class CatalogListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CatalogListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"syncState\":\"Failed\",\"lastSyncTime\":\"2021-07-19T22:57:03Z\"},\"id\":\"tynnaamdectehfi\",\"name\":\"scjeypv\",\"type\":\"ezrkgqhcjrefo\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"syncState\":\"Succeeded\",\"lastSyncTime\":\"2021-09-05T10:33:45Z\"},\"id\":\"xyqj\",\"name\":\"k\",\"type\":\"attpngjcrcczsq\"},{\"properties\":{\"provisioningState\":\"Failed\",\"syncState\":\"Succeeded\",\"lastSyncTime\":\"2021-03-30T22:07:42Z\"},\"id\":\"sounqecanoaeu\",\"name\":\"fhyhltrpmopjmcma\",\"type\":\"u\"},{\"properties\":{\"provisioningState\":\"Failed\",\"syncState\":\"Canceled\",\"lastSyncTime\":\"2021-07-12T12:37:48Z\"},\"id\":\"sfcpkvxodpuozm\",\"name\":\"zydagfuaxbezyiuo\",\"type\":\"ktwh\"}],\"nextLink\":\"xw\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"syncState\":\"Canceled\",\"lastSyncTime\":\"2021-10-22T08:49:49Z\"},\"id\":\"ohctbqvudwx\",\"name\":\"ndnvo\",\"type\":\"gujjugwdkcglh\"}],\"nextLink\":\"azjdyggd\"}")
                 .toObject(CatalogListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CatalogListResult model = new CatalogListResult();
         model = BinaryData.fromObject(model).toObject(CatalogListResult.class);
     }

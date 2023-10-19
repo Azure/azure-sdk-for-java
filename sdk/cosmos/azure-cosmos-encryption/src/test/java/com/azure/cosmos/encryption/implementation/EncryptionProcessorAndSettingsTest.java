@@ -18,7 +18,10 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
@@ -44,6 +47,10 @@ public class EncryptionProcessorAndSettingsTest {
         ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.getCosmosContainerPropertiesAccessor();
     private final static EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor cosmosEncryptionAsyncClientAccessor =
         EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.getCosmosEncryptionAsyncClientAccessor();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(
+        JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(),
+        true
+    );
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void initializeEncryptionSettingsAsync() throws Exception {
@@ -229,5 +236,38 @@ public class EncryptionProcessorAndSettingsTest {
             "key1", "tempmetadata1", "RSA-OAEP");
         return new CosmosClientEncryptionKeyProperties("key1",
             CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), key, metadata);
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void encryptEmptyArray()  throws Exception {
+        CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
+        String json = "{\"id\":\"idValue\",\"sensitiveString\":{\"arr\":[]}}";
+
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
+        Mockito.when(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolver()).thenReturn(keyEncryptionKeyResolver);
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getContainerPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateContainerWithCosmosEncryptionPolicy()));
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.anyString(),
+            Mockito.anyString(),
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.nullable(String.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
+        EncryptionKeyStoreProviderImpl encryptionKeyStoreProvider = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, "TEST_KEY_RESOLVER");
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient)).thenReturn(encryptionKeyStoreProvider);
+
+        EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
+            cosmosEncryptionAsyncClient);
+
+        ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
+        includedPath.setClientEncryptionKeyId("a");
+        includedPath.setPath("/sensitiveString");
+        includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+        paths.add(includedPath);
+        encryptionProcessor.setClientEncryptionPolicy(new ClientEncryptionPolicy(paths));
+
+        JsonNode document = OBJECT_MAPPER.readValue(json, ObjectNode.class);
+        String output = new String(encryptionProcessor.decrypt(encryptionProcessor.encryptObjectNode(document).block()).block());
+        assertThat(output).isEqualTo(json);
     }
 }

@@ -14,7 +14,7 @@ public interface Databases {
     /**
      * Checks that the databases resource name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -29,7 +29,7 @@ public interface Databases {
     /**
      * Checks that the databases resource name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,7 +42,7 @@ public interface Databases {
     /**
      * Returns the list of databases of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,20 +54,25 @@ public interface Databases {
     /**
      * Returns the list of databases of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
+     * @param top limit the number of results.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName, Context context);
+    PagedIterable<Database> listByCluster(
+        String resourceGroupName, String clusterName, Integer top, String skiptoken, Context context);
 
     /**
      * Returns a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -82,7 +87,7 @@ public interface Databases {
     /**
      * Returns a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,7 +100,7 @@ public interface Databases {
     /**
      * Creates or updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -110,7 +115,7 @@ public interface Databases {
     /**
      * Creates or updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
@@ -133,7 +138,7 @@ public interface Databases {
     /**
      * Updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
@@ -147,7 +152,7 @@ public interface Databases {
     /**
      * Updates a database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
@@ -170,7 +175,7 @@ public interface Databases {
     /**
      * Deletes the database with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +187,7 @@ public interface Databases {
     /**
      * Deletes the database with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -195,7 +200,7 @@ public interface Databases {
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +213,7 @@ public interface Databases {
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -223,7 +228,7 @@ public interface Databases {
     /**
      * Add Database principals permissions.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param databasePrincipalsToAdd List of database principals to add.
@@ -243,7 +248,7 @@ public interface Databases {
     /**
      * Add Database principals permissions.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param databasePrincipalsToAdd List of database principals to add.
@@ -261,7 +266,7 @@ public interface Databases {
     /**
      * Remove Database principals permissions.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param databasePrincipalsToRemove List of database principals to remove.
@@ -281,7 +286,7 @@ public interface Databases {
     /**
      * Remove Database principals permissions.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param databasePrincipalsToRemove List of database principals to remove.

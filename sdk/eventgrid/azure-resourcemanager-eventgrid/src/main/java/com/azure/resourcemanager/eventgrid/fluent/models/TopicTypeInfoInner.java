@@ -21,6 +21,10 @@ public final class TopicTypeInfoInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private TopicTypeProperties innerProperties;
 
+    /** Creates an instance of TopicTypeInfoInner class. */
+    public TopicTypeInfoInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the topic type info.
      *
@@ -211,6 +215,31 @@ public final class TopicTypeInfoInner extends ProxyResource {
             this.innerProperties = new TopicTypeProperties();
         }
         this.innerProperties().withSupportedScopesForSource(supportedScopesForSource);
+        return this;
+    }
+
+    /**
+     * Get the areRegionalAndGlobalSourcesSupported property: Flag to indicate that a topic type can support both
+     * regional or global system topics.
+     *
+     * @return the areRegionalAndGlobalSourcesSupported value.
+     */
+    public Boolean areRegionalAndGlobalSourcesSupported() {
+        return this.innerProperties() == null ? null : this.innerProperties().areRegionalAndGlobalSourcesSupported();
+    }
+
+    /**
+     * Set the areRegionalAndGlobalSourcesSupported property: Flag to indicate that a topic type can support both
+     * regional or global system topics.
+     *
+     * @param areRegionalAndGlobalSourcesSupported the areRegionalAndGlobalSourcesSupported value to set.
+     * @return the TopicTypeInfoInner object itself.
+     */
+    public TopicTypeInfoInner withAreRegionalAndGlobalSourcesSupported(Boolean areRegionalAndGlobalSourcesSupported) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicTypeProperties();
+        }
+        this.innerProperties().withAreRegionalAndGlobalSourcesSupported(areRegionalAndGlobalSourcesSupported);
         return this;
     }
 

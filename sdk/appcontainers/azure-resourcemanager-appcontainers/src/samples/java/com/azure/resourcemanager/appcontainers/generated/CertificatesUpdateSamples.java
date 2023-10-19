@@ -4,15 +4,14 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-import com.azure.resourcemanager.appcontainers.models.Certificate;
+import com.azure.resourcemanager.appcontainers.models.CertificatePatch;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Certificates Update. */
 public final class CertificatesUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Certificates_Patch.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/Certificates_Patch.json
      */
     /**
      * Sample code: Patch Certificate.
@@ -20,14 +19,17 @@ public final class CertificatesUpdateSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void patchCertificate(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        Certificate resource =
-            manager
-                .certificates()
-                .getWithResponse("examplerg", "testcontainerenv", "certificate-firendly-name", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
+        manager
+            .certificates()
+            .updateWithResponse(
+                "examplerg",
+                "testcontainerenv",
+                "certificate-firendly-name",
+                new CertificatePatch().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

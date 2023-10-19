@@ -124,20 +124,25 @@ public final class ServiceBusTracer {
      */
     public void endSpan(Throwable throwable, Context span, AutoCloseable scope) {
         if (isEnabled()) {
+            closeScope(scope);
+
             String errorCondition = null;
             if (throwable instanceof AmqpException) {
                 AmqpException exception = (AmqpException) throwable;
-                errorCondition = exception.getErrorCondition().getErrorCondition();
-            }
-
-            try {
-                if (scope != null) {
-                    scope.close();
+                if (exception.getErrorCondition() != null) {
+                    errorCondition = exception.getErrorCondition().getErrorCondition();
                 }
+            }
+            tracer.end(errorCondition, throwable, span);
+        }
+    }
+
+    public void closeScope(AutoCloseable scope) {
+        if (scope != null) {
+            try {
+                scope.close();
             } catch (Exception e) {
                 LOGGER.warning("Can't close scope", e);
-            } finally {
-                tracer.end(errorCondition, throwable, span);
             }
         }
     }
@@ -289,9 +294,7 @@ public final class ServiceBusTracer {
                 startOptions.setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, message.getEnqueuedTime().toEpochSecond());
             }
 
-            Context span = tracer.start(spanName, startOptions, parent);
-            ContextAccessor.setContext(message, span);
-            return span;
+            return tracer.start(spanName, startOptions, parent);
         }
 
         return parent;

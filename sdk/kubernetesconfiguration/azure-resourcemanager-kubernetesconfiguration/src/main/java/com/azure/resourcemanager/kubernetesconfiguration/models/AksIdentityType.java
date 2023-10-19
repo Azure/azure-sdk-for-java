@@ -7,7 +7,7 @@ package com.azure.resourcemanager.kubernetesconfiguration.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AksIdentityType. */
+/** The identity type. */
 public enum AksIdentityType {
     /** Enum value SystemAssigned. */
     SYSTEM_ASSIGNED("SystemAssigned"),
@@ -30,6 +30,9 @@ public enum AksIdentityType {
      */
     @JsonCreator
     public static AksIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AksIdentityType[] items = AksIdentityType.values();
         for (AksIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum AksIdentityType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

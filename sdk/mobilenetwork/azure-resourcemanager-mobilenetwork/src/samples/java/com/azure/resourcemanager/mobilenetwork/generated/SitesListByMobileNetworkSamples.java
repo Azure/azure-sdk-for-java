@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 /** Samples for Sites ListByMobileNetwork. */
 public final class SitesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SiteListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SiteListByMobileNetwork.json
      */
     /**
      * Sample code: List mobile network sites in a mobile network.

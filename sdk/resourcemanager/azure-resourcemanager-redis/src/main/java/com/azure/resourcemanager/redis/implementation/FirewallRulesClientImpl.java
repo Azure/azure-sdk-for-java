@@ -61,8 +61,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     public interface FirewallRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/firewallRules")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisFirewallRuleListResult>> list(
@@ -76,8 +75,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/firewallRules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules/{ruleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisFirewallRuleInner>> createOrUpdate(
@@ -93,8 +91,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/firewallRules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisFirewallRuleInner>> get(
@@ -109,8 +106,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/firewallRules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules/{ruleName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -137,7 +133,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets all firewall rules in the specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -195,7 +191,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets all firewall rules in the specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,7 +247,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets all firewall rules in the specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -267,7 +263,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets all firewall rules in the specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,7 +281,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets all firewall rules in the specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -300,7 +296,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets all firewall rules in the specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,7 +312,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Create or update a redis cache firewall rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param parameters Parameters supplied to the create or update redis firewall rule operation.
@@ -377,7 +373,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Create or update a redis cache firewall rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param parameters Parameters supplied to the create or update redis firewall rule operation.
@@ -440,7 +436,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Create or update a redis cache firewall rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param parameters Parameters supplied to the create or update redis firewall rule operation.
@@ -460,7 +456,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Create or update a redis cache firewall rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param parameters Parameters supplied to the create or update redis firewall rule operation.
@@ -484,7 +480,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Create or update a redis cache firewall rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param parameters Parameters supplied to the create or update redis firewall rule operation.
@@ -503,7 +499,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -557,7 +553,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param context The context to associate with this operation.
@@ -609,7 +605,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -626,7 +622,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param context The context to associate with this operation.
@@ -644,7 +640,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Gets a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -660,7 +656,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Deletes a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -712,7 +708,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Deletes a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param context The context to associate with this operation.
@@ -763,7 +759,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Deletes a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -779,7 +775,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Deletes a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @param context The context to associate with this operation.
@@ -797,7 +793,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     /**
      * Deletes a single firewall rule in a specified redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

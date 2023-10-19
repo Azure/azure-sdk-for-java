@@ -30,11 +30,11 @@ public class UtilityMethodTests {
             Arguments.of(new SearchOptions(), null),
 
             // Only QueryAnswer provided returns the string value of QueryAnswer.
-            Arguments.of(new SearchOptions().setAnswers(QueryAnswerType.EXTRACTIVE),
+            Arguments.of(new SearchOptions().setQueryAnswer(QueryAnswerType.EXTRACTIVE),
                 QueryAnswerType.EXTRACTIVE.toString()),
 
             // Both QueryAnswer and count provided returns the concatenated string mentioned in docs.
-            Arguments.of(new SearchOptions().setAnswers(QueryAnswerType.EXTRACTIVE).setAnswersCount(5),
+            Arguments.of(new SearchOptions().setQueryAnswer(QueryAnswerType.EXTRACTIVE).setAnswersCount(5),
                 QueryAnswerType.EXTRACTIVE + "|count-5")
         );
     }

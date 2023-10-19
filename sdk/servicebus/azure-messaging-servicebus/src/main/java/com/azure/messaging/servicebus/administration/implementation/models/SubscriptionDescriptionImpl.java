@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 

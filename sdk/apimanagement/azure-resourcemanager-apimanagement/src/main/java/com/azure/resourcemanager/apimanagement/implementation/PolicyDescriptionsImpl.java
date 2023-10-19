@@ -28,15 +28,6 @@ public final class PolicyDescriptionsImpl implements PolicyDescriptions {
         this.serviceManager = serviceManager;
     }
 
-    public PolicyDescriptionCollection listByService(String resourceGroupName, String serviceName) {
-        PolicyDescriptionCollectionInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new PolicyDescriptionCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PolicyDescriptionCollection> listByServiceWithResponse(
         String resourceGroupName, String serviceName, PolicyScopeContract scope, Context context) {
         Response<PolicyDescriptionCollectionInner> inner =
@@ -47,6 +38,15 @@ public final class PolicyDescriptionsImpl implements PolicyDescriptions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PolicyDescriptionCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PolicyDescriptionCollection listByService(String resourceGroupName, String serviceName) {
+        PolicyDescriptionCollectionInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
+        if (inner != null) {
+            return new PolicyDescriptionCollectionImpl(inner, this.manager());
         } else {
             return null;
         }

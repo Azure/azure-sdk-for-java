@@ -12,14 +12,14 @@ public final class DataConnectionCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataConnectionCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"xiilivpdtiirqt\"}").toObject(DataConnectionCheckNameRequest.class);
-        Assertions.assertEquals("xiilivpdtiirqt", model.name());
+            BinaryData.fromString("{\"name\":\"wjchrdg\"}").toObject(DataConnectionCheckNameRequest.class);
+        Assertions.assertEquals("wjchrdg", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataConnectionCheckNameRequest model = new DataConnectionCheckNameRequest().withName("xiilivpdtiirqt");
+        DataConnectionCheckNameRequest model = new DataConnectionCheckNameRequest().withName("wjchrdg");
         model = BinaryData.fromObject(model).toObject(DataConnectionCheckNameRequest.class);
-        Assertions.assertEquals("xiilivpdtiirqt", model.name());
+        Assertions.assertEquals("wjchrdg", model.name());
     }
 }

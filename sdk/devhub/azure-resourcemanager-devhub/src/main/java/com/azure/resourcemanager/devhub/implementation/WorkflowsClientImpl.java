@@ -61,7 +61,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DeveloperHubServiceC")
-    private interface WorkflowsService {
+    public interface WorkflowsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows")
         @ExpectedResponses({200})
@@ -88,8 +88,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows"
-                + "/{workflowName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows/{workflowName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowInner>> getByResourceGroup(
@@ -103,8 +102,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows"
-                + "/{workflowName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows/{workflowName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowInner>> createOrUpdate(
@@ -119,8 +117,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows"
-                + "/{workflowName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows/{workflowName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeleteWorkflowResponseInner>> delete(
@@ -134,8 +131,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows"
-                + "/{workflowName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevHub/workflows/{workflowName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowInner>> updateTags(
@@ -623,21 +619,6 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowInner getByResourceGroup(String resourceGroupName, String workflowName) {
-        return getByResourceGroupAsync(resourceGroupName, workflowName).block();
-    }
-
-    /**
-     * Gets a workflow.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -648,6 +629,21 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     public Response<WorkflowInner> getByResourceGroupWithResponse(
         String resourceGroupName, String workflowName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, workflowName, context).block();
+    }
+
+    /**
+     * Gets a workflow.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workflowName The name of the workflow resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkflowInner getByResourceGroup(String resourceGroupName, String workflowName) {
+        return getByResourceGroupWithResponse(resourceGroupName, workflowName, Context.NONE).getValue();
     }
 
     /**
@@ -782,22 +778,6 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param parameters Resource representation of a workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowInner createOrUpdate(String resourceGroupName, String workflowName, WorkflowInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, workflowName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a workflow.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workflowName The name of the workflow resource.
-     * @param parameters Resource representation of a workflow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -808,6 +788,22 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     public Response<WorkflowInner> createOrUpdateWithResponse(
         String resourceGroupName, String workflowName, WorkflowInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workflowName, parameters, context).block();
+    }
+
+    /**
+     * Creates or updates a workflow.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workflowName The name of the workflow resource.
+     * @param parameters Resource representation of a workflow.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workflow.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkflowInner createOrUpdate(String resourceGroupName, String workflowName, WorkflowInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, workflowName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -927,21 +923,6 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delete response if content must be provided on delete operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteWorkflowResponseInner delete(String resourceGroupName, String workflowName) {
-        return deleteAsync(resourceGroupName, workflowName).block();
-    }
-
-    /**
-     * Deletes a workflow.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -952,6 +933,21 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     public Response<DeleteWorkflowResponseInner> deleteWithResponse(
         String resourceGroupName, String workflowName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, workflowName, context).block();
+    }
+
+    /**
+     * Deletes a workflow.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workflowName The name of the workflow resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delete response if content must be provided on delete operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeleteWorkflowResponseInner delete(String resourceGroupName, String workflowName) {
+        return deleteWithResponse(resourceGroupName, workflowName, Context.NONE).getValue();
     }
 
     /**
@@ -1085,22 +1081,6 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param parameters Parameters supplied to the Update Workflow Tags operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowInner updateTags(String resourceGroupName, String workflowName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, workflowName, parameters).block();
-    }
-
-    /**
-     * Updates tags on a workflow.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workflowName The name of the workflow resource.
-     * @param parameters Parameters supplied to the Update Workflow Tags operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1111,6 +1091,22 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     public Response<WorkflowInner> updateTagsWithResponse(
         String resourceGroupName, String workflowName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, workflowName, parameters, context).block();
+    }
+
+    /**
+     * Updates tags on a workflow.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workflowName The name of the workflow resource.
+     * @param parameters Parameters supplied to the Update Workflow Tags operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workflow.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkflowInner updateTags(String resourceGroupName, String workflowName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, workflowName, parameters, Context.NONE).getValue();
     }
 
     /**

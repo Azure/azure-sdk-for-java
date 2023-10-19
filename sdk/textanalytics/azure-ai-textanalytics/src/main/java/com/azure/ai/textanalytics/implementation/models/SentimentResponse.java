@@ -42,7 +42,7 @@ public final class SentimentResponse extends PreBuiltResult {
 
     /** {@inheritDoc} */
     @Override
-    public SentimentResponse setErrors(List<InputError> errors) {
+    public SentimentResponse setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }

@@ -87,6 +87,14 @@ public interface TopicTypeInfo {
     List<TopicTypeSourceScope> supportedScopesForSource();
 
     /**
+     * Gets the areRegionalAndGlobalSourcesSupported property: Flag to indicate that a topic type can support both
+     * regional or global system topics.
+     *
+     * @return the areRegionalAndGlobalSourcesSupported value.
+     */
+    Boolean areRegionalAndGlobalSourcesSupported();
+
+    /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.TopicTypeInfoInner object.
      *
      * @return the inner object.

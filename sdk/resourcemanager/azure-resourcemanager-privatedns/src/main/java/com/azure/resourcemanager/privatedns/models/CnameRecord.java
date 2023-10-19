@@ -16,6 +16,10 @@ public final class CnameRecord {
     @JsonProperty(value = "cname")
     private String cname;
 
+    /** Creates an instance of CnameRecord class. */
+    public CnameRecord() {
+    }
+
     /**
      * Get the cname property: The canonical name for this CNAME record.
      *

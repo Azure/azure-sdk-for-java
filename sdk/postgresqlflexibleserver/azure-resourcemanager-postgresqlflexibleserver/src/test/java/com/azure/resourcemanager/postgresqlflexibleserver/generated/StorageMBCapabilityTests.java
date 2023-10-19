@@ -13,7 +13,7 @@ public final class StorageMBCapabilityTests {
         StorageMBCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"gzjaoyfhrtxilne\",\"supportedIops\":7928784198213019505,\"storageSizeMB\":186603150154642680,\"supportedUpgradableTierList\":[{\"name\":\"uvfqawrlyxwj\",\"tierName\":\"prbnwbxgjvtbv\",\"iops\":7661305214436261701,\"isBaseline\":true,\"status\":\"rujqg\"}],\"status\":\"muouqfp\"}")
+                    "{\"name\":\"bbaumnyquped\",\"supportedIops\":2245881351334058994,\"storageSizeMB\":3205247320582775463,\"supportedUpgradableTierList\":[{\"name\":\"mtxpsiebtfh\",\"tierName\":\"esap\",\"iops\":8858985212786310258,\"isBaseline\":true,\"status\":\"jjdhtld\"},{\"name\":\"yzxuutkncw\",\"tierName\":\"wsvlxotogtwrupqs\",\"iops\":3534987396424038530,\"isBaseline\":false,\"status\":\"kvceoveilovnotyf\"},{\"name\":\"cnjbkcnxdhbt\",\"tierName\":\"phywpnvj\",\"iops\":7014692184557191333,\"isBaseline\":true,\"status\":\"clfp\"},{\"name\":\"hoxus\",\"tierName\":\"pabgyeps\",\"iops\":8481136103419413526,\"isBaseline\":true,\"status\":\"gxywpmue\"}],\"status\":\"jzwf\"}")
                 .toObject(StorageMBCapability.class);
     }
 

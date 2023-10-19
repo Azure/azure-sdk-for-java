@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /** Availability status of the entity. */

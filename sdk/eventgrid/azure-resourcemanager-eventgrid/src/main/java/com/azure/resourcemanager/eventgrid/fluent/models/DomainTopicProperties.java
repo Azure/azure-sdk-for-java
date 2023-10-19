@@ -17,6 +17,10 @@ public final class DomainTopicProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DomainTopicProvisioningState provisioningState;
 
+    /** Creates an instance of DomainTopicProperties class. */
+    public DomainTopicProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the domain topic.
      *

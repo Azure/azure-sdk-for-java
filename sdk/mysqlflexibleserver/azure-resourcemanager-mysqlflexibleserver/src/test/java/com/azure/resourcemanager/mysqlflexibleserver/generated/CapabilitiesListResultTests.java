@@ -13,7 +13,7 @@ public final class CapabilitiesListResultTests {
         CapabilitiesListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"zone\":\"wxrjfeallnwsub\",\"supportedHAMode\":[\"jampmngnzscxaqw\",\"ochcbonqvpkvl\"],\"supportedGeoBackupRegions\":[\"jease\",\"pheoflokeyy\",\"enjbdlwtgrhp\",\"jp\"],\"supportedFlexibleServerEditions\":[]}],\"nextLink\":\"sxazjpq\"}")
+                    "{\"value\":[{\"zone\":\"jcrcczsqpjhvmda\",\"supportedHAMode\":[\"ysou\",\"q\"],\"supportedGeoBackupRegions\":[\"noae\"],\"supportedFlexibleServerEditions\":[]}],\"nextLink\":\"yhltrpmopjmcm\"}")
                 .toObject(CapabilitiesListResult.class);
     }
 

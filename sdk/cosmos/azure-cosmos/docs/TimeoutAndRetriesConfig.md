@@ -3,7 +3,7 @@
 ### Timeout config - Gateway
 
 | OperationType      | Network Request Timeout | Connection Timeout |
-| -----------------  |------------------------ |------------------- |
+| -----------------  |-------------------------|------------------- |
 | QueryPlan          | .5s, 5s, 10s            | 45s                |
 | AddressRefresh     | .5s, 5s, 10s            | 45s                |
 | Database Account   | 5s, 10s, 20s            | 45s                |

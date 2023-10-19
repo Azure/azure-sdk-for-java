@@ -68,8 +68,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public interface PrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/privateEndpointConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionListResult>> list(
@@ -83,8 +82,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionInner>> get(
@@ -99,8 +97,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> put(
@@ -116,8 +113,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis"
-                + "/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -134,7 +130,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * List all the private endpoint connections associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -187,7 +183,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * List all the private endpoint connections associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,7 +234,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * List all the private endpoint connections associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -254,7 +250,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * List all the private endpoint connections associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,7 +268,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * List all the private endpoint connections associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -288,7 +284,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * List all the private endpoint connections associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,7 +302,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -364,7 +360,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -420,7 +416,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -440,7 +436,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -459,7 +455,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Gets the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -477,7 +473,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -545,7 +541,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -612,7 +608,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -643,7 +639,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -677,7 +673,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -693,13 +689,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         String cacheName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties) {
-        return beginPutAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties).getSyncPoller();
+        return this
+            .beginPutAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties)
+            .getSyncPoller();
     }
 
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -717,14 +715,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties,
         Context context) {
-        return beginPutAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties, context)
+        return this
+            .beginPutAsync(resourceGroupName, cacheName, privateEndpointConnectionName, properties, context)
             .getSyncPoller();
     }
 
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -748,7 +747,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -774,7 +773,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -796,7 +795,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Update the state of specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -820,7 +819,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -877,7 +876,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -932,7 +931,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -950,7 +949,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
@@ -969,7 +968,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes the specified private endpoint connection associated with the redis cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.

@@ -4,31 +4,29 @@
 
 package com.azure.analytics.purview.sharing.models;
 
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
-import java.util.UUID;
 
-/** An service invitation kind. */
+/**
+ * An service invitation kind.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "invitationKind")
 @JsonTypeName("Service")
 @JsonFlatten
 @Fluent
 public class ServiceInvitation extends SentShareInvitation {
     /*
-     * The time at which the invitation will expire.
+     * The time at which the invitation will expire. Represented in the standard date-time format as defined by [RFC
+     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
      */
     @JsonProperty(value = "properties.expirationDate")
     private OffsetDateTime expirationDate;
-
-    /*
-     * Provisioning status of the resource
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
 
     /*
      * Email address of the sender.
@@ -49,7 +47,8 @@ public class ServiceInvitation extends SentShareInvitation {
     private String senderTenantName;
 
     /*
-     * Gets the time at which the invitation was sent.
+     * Gets the time at which the invitation was sent. Represented in the standard date-time format as defined by [RFC
+     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
      */
     @JsonProperty(value = "properties.sentAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime sentAt;
@@ -57,8 +56,14 @@ public class ServiceInvitation extends SentShareInvitation {
     /*
      * Share status.
      */
-    @JsonProperty(value = "properties.shareStatus", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.shareStatus")
     private ShareStatus shareStatus;
+
+    /*
+     * State of the resource
+     */
+    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
+    private State state;
 
     /*
      * The target azure active directory id the invitation is sent to.
@@ -72,12 +77,16 @@ public class ServiceInvitation extends SentShareInvitation {
     @JsonProperty(value = "properties.targetObjectId", required = true)
     private UUID targetObjectId;
 
-    /** Creates an instance of ServiceInvitation class. */
-    public ServiceInvitation() {}
+    /**
+     * Creates an instance of ServiceInvitation class.
+     */
+    public ServiceInvitation() {
+    }
 
     /**
-     * Get the expirationDate property: The time at which the invitation will expire.
-     *
+     * Get the expirationDate property: The time at which the invitation will expire. Represented in the standard
+     * date-time format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime getExpirationDate() {
@@ -85,8 +94,9 @@ public class ServiceInvitation extends SentShareInvitation {
     }
 
     /**
-     * Set the expirationDate property: The time at which the invitation will expire.
-     *
+     * Set the expirationDate property: The time at which the invitation will expire. Represented in the standard
+     * date-time format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the ServiceInvitation object itself.
      */
@@ -96,17 +106,8 @@ public class ServiceInvitation extends SentShareInvitation {
     }
 
     /**
-     * Get the provisioningState property: Provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState getProvisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
      * Get the senderEmail property: Email address of the sender.
-     *
+     * 
      * @return the senderEmail value.
      */
     public String getSenderEmail() {
@@ -115,7 +116,7 @@ public class ServiceInvitation extends SentShareInvitation {
 
     /**
      * Get the senderName property: Name of the sender.
-     *
+     * 
      * @return the senderName value.
      */
     public String getSenderName() {
@@ -124,7 +125,7 @@ public class ServiceInvitation extends SentShareInvitation {
 
     /**
      * Get the senderTenantName property: Tenant name of the sender.
-     *
+     * 
      * @return the senderTenantName value.
      */
     public String getSenderTenantName() {
@@ -132,8 +133,9 @@ public class ServiceInvitation extends SentShareInvitation {
     }
 
     /**
-     * Get the sentAt property: Gets the time at which the invitation was sent.
-     *
+     * Get the sentAt property: Gets the time at which the invitation was sent. Represented in the standard date-time
+     * format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
+     * 
      * @return the sentAt value.
      */
     public OffsetDateTime getSentAt() {
@@ -142,7 +144,7 @@ public class ServiceInvitation extends SentShareInvitation {
 
     /**
      * Get the shareStatus property: Share status.
-     *
+     * 
      * @return the shareStatus value.
      */
     public ShareStatus getShareStatus() {
@@ -151,7 +153,7 @@ public class ServiceInvitation extends SentShareInvitation {
 
     /**
      * Set the shareStatus property: Share status.
-     *
+     * 
      * @param shareStatus the shareStatus value to set.
      * @return the ServiceInvitation object itself.
      */
@@ -161,8 +163,17 @@ public class ServiceInvitation extends SentShareInvitation {
     }
 
     /**
+     * Get the state property: State of the resource.
+     * 
+     * @return the state value.
+     */
+    public State getState() {
+        return this.state;
+    }
+
+    /**
      * Get the targetActiveDirectoryId property: The target azure active directory id the invitation is sent to.
-     *
+     * 
      * @return the targetActiveDirectoryId value.
      */
     public UUID getTargetActiveDirectoryId() {
@@ -171,7 +182,7 @@ public class ServiceInvitation extends SentShareInvitation {
 
     /**
      * Set the targetActiveDirectoryId property: The target azure active directory id the invitation is sent to.
-     *
+     * 
      * @param targetActiveDirectoryId the targetActiveDirectoryId value to set.
      * @return the ServiceInvitation object itself.
      */
@@ -182,7 +193,7 @@ public class ServiceInvitation extends SentShareInvitation {
 
     /**
      * Get the targetObjectId property: The target object id in the azure active directory the invitation is sent to.
-     *
+     * 
      * @return the targetObjectId value.
      */
     public UUID getTargetObjectId() {
@@ -191,7 +202,7 @@ public class ServiceInvitation extends SentShareInvitation {
 
     /**
      * Set the targetObjectId property: The target object id in the azure active directory the invitation is sent to.
-     *
+     * 
      * @param targetObjectId the targetObjectId value to set.
      * @return the ServiceInvitation object itself.
      */

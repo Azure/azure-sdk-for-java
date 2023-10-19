@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /**
- * Options that may be passed to build document models.
+ * The configurable options to pass when building document models.
  */
 @Fluent
 public final class BuildDocumentModelOptions {
@@ -17,6 +17,12 @@ public final class BuildDocumentModelOptions {
     private Map<String, String> tags;
 
     private String modelId;
+
+    /**
+     * Create a BuildDocumentModelOptions instance.
+     */
+    public BuildDocumentModelOptions() {
+    }
 
     /**
      * Get the model description.

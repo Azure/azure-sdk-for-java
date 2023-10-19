@@ -1,6 +1,48 @@
 # Release History
 
-## 2.27.0-beta.1 (Unreleased)
+## 2.32.0-beta.1 (Unreleased)
+
+### Breaking Changes
+
+- Removed unused classes `ActionType`, `Origin`.
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.30.0 (2023-08-25)
+
+### Bugs Fixed
+
+- Fixed a bug that `GenericResources.deleteById` might select the wrong default api-version for resources whose child 
+  resource type collides with other resources.
+
+## 2.30.0-beta.1 (2023-08-18)
+
+### Features Added
+
+- Supported Deployment Stack as preview. See https://learn.microsoft.com/azure/azure-resource-manager/bicep/deployment-stacks
+
+## 2.29.0 (2023-07-28)
+
+### Bugs Fixed
+
+- Fixed a bug that methods in `GenericResources`, `PolicyAssignments` and `TagOperations` fails when get or delete a 
+  resource, if the resource name contains space.
+
+## 2.28.0 (2023-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.27.0 (2023-05-25)
 
 ### Other Changes
 

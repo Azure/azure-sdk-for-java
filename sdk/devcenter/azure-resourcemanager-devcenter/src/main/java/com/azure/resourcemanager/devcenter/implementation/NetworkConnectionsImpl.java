@@ -12,9 +12,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devcenter.fluent.NetworkConnectionsClient;
 import com.azure.resourcemanager.devcenter.fluent.models.HealthCheckStatusDetailsInner;
 import com.azure.resourcemanager.devcenter.fluent.models.NetworkConnectionInner;
+import com.azure.resourcemanager.devcenter.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatusDetails;
 import com.azure.resourcemanager.devcenter.models.NetworkConnection;
 import com.azure.resourcemanager.devcenter.models.NetworkConnections;
+import com.azure.resourcemanager.devcenter.models.OutboundEnvironmentEndpoint;
 
 public final class NetworkConnectionsImpl implements NetworkConnections {
     private static final ClientLogger LOGGER = new ClientLogger(NetworkConnectionsImpl.class);
@@ -129,6 +131,22 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
 
     public void runHealthChecks(String resourceGroupName, String networkConnectionName, Context context) {
         this.serviceClient().runHealthChecks(resourceGroupName, networkConnectionName, context);
+    }
+
+    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String networkConnectionName) {
+        PagedIterable<OutboundEnvironmentEndpointInner> inner =
+            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, networkConnectionName);
+        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String networkConnectionName, Integer top, Context context) {
+        PagedIterable<OutboundEnvironmentEndpointInner> inner =
+            this
+                .serviceClient()
+                .listOutboundNetworkDependenciesEndpoints(resourceGroupName, networkConnectionName, top, context);
+        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
     }
 
     public NetworkConnection getById(String id) {

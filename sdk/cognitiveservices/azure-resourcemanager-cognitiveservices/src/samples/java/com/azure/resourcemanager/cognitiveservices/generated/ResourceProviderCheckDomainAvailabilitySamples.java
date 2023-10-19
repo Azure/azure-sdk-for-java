@@ -9,7 +9,7 @@ import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilit
 /** Samples for ResourceProvider CheckDomainAvailability. */
 public final class ResourceProviderCheckDomainAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/CheckDomainAvailability.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/CheckDomainAvailability.json
      */
     /**
      * Sample code: Check SKU Availability.

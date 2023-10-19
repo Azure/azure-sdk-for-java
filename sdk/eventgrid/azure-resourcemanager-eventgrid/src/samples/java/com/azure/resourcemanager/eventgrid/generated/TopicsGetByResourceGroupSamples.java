@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Topics GetByResourceGroup. */
 public final class TopicsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Topics_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Topics_Get.json
      */
     /**
      * Sample code: Topics_Get.
@@ -17,6 +15,6 @@ public final class TopicsGetByResourceGroupSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topics().getByResourceGroupWithResponse("examplerg", "exampletopic2", Context.NONE);
+        manager.topics().getByResourceGroupWithResponse("examplerg", "exampletopic2", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,15 +4,14 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-import com.azure.resourcemanager.appcontainers.models.CertificatePatch;
+import com.azure.resourcemanager.appcontainers.models.Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for ConnectedEnvironmentsCertificates Update. */
 public final class ConnectedEnvironmentsCertificatesUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ConnectedEnvironmentsCertificates_Patch.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ConnectedEnvironmentsCertificates_Patch.json
      */
     /**
      * Sample code: Patch Certificate.
@@ -20,16 +19,16 @@ public final class ConnectedEnvironmentsCertificatesUpdateSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void patchCertificate(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager
-            .connectedEnvironmentsCertificates()
-            .updateWithResponse(
-                "examplerg",
-                "testcontainerenv",
-                "certificate-firendly-name",
-                new CertificatePatch().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                Context.NONE);
+        Certificate resource =
+            manager
+                .connectedEnvironmentsCertificates()
+                .getWithResponse(
+                    "examplerg", "testcontainerenv", "certificate-firendly-name", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

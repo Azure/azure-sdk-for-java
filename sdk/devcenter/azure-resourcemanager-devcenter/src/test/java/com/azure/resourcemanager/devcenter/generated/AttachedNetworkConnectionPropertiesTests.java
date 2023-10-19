@@ -7,24 +7,23 @@ package com.azure.resourcemanager.devcenter.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.AttachedNetworkConnectionProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AttachedNetworkConnectionPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AttachedNetworkConnectionProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Running\",\"networkConnectionId\":\"jbznorc\",\"networkConnectionLocation\":\"vsnb\",\"healthCheckStatus\":\"Failed\",\"domainJoinType\":\"HybridAzureADJoin\"}")
+                    "{\"provisioningState\":\"RolloutInProgress\",\"networkConnectionId\":\"ifiyipjxsqwpgrj\",\"networkConnectionLocation\":\"norcjxvsnbyxqab\",\"healthCheckStatus\":\"Running\",\"domainJoinType\":\"HybridAzureADJoin\"}")
                 .toObject(AttachedNetworkConnectionProperties.class);
-        Assertions.assertEquals("jbznorc", model.networkConnectionId());
+        Assertions.assertEquals("ifiyipjxsqwpgrj", model.networkConnectionId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AttachedNetworkConnectionProperties model =
-            new AttachedNetworkConnectionProperties().withNetworkConnectionId("jbznorc");
+            new AttachedNetworkConnectionProperties().withNetworkConnectionId("ifiyipjxsqwpgrj");
         model = BinaryData.fromObject(model).toObject(AttachedNetworkConnectionProperties.class);
-        Assertions.assertEquals("jbznorc", model.networkConnectionId());
+        Assertions.assertEquals("ifiyipjxsqwpgrj", model.networkConnectionId());
     }
 }

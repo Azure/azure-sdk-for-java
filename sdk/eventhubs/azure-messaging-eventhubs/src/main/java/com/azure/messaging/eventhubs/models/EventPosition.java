@@ -12,8 +12,10 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Defines a position of an {@link EventData} in the Event Hub partition. The position can be an offset, sequence
- * number, or enqueued time.
+ * Defines a position of an {@link EventData} in the Event Hub partition stream. The position can be an offset,
+ * sequence number, or enqueued time in UTC.
+ *
+ * @see <a href="https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-features#event-consumers">Event consumers</a>
  */
 @Immutable
 public final class EventPosition {

@@ -22,6 +22,10 @@ public final class RetryPolicy {
     @JsonProperty(value = "eventTimeToLiveInMinutes")
     private Integer eventTimeToLiveInMinutes;
 
+    /** Creates an instance of RetryPolicy class. */
+    public RetryPolicy() {
+    }
+
     /**
      * Get the maxDeliveryAttempts property: Maximum number of delivery retry attempts for events.
      *

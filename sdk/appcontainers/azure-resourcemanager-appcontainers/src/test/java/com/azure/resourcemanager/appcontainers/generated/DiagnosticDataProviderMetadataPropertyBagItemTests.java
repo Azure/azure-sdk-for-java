@@ -7,25 +7,24 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticDataProviderMetadataPropertyBagItem;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticDataProviderMetadataPropertyBagItemTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DiagnosticDataProviderMetadataPropertyBagItem model =
             BinaryData
-                .fromString("{\"name\":\"egfnmntfpmvmemfn\",\"value\":\"dwvvba\"}")
+                .fromString("{\"name\":\"r\",\"value\":\"lmywwtkgkxnyed\"}")
                 .toObject(DiagnosticDataProviderMetadataPropertyBagItem.class);
-        Assertions.assertEquals("egfnmntfpmvmemfn", model.name());
-        Assertions.assertEquals("dwvvba", model.value());
+        Assertions.assertEquals("r", model.name());
+        Assertions.assertEquals("lmywwtkgkxnyed", model.value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DiagnosticDataProviderMetadataPropertyBagItem model =
-            new DiagnosticDataProviderMetadataPropertyBagItem().withName("egfnmntfpmvmemfn").withValue("dwvvba");
+            new DiagnosticDataProviderMetadataPropertyBagItem().withName("r").withValue("lmywwtkgkxnyed");
         model = BinaryData.fromObject(model).toObject(DiagnosticDataProviderMetadataPropertyBagItem.class);
-        Assertions.assertEquals("egfnmntfpmvmemfn", model.name());
-        Assertions.assertEquals("dwvvba", model.value());
+        Assertions.assertEquals("r", model.name());
+        Assertions.assertEquals("lmywwtkgkxnyed", model.value());
     }
 }

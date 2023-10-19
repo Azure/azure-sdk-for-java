@@ -11,35 +11,34 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssociationInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AssociationInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"dgak\"},\"provisioningState\":\"Succeeded\"},\"location\":\"xybz\",\"tags\":{\"kzsmodm\":\"dqytbciqfouflmm\"},\"id\":\"lougpbkw\",\"name\":\"mutduqktaps\",\"type\":\"wgcu\"}")
+                    "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"eju\"},\"provisioningState\":\"Canceled\"},\"location\":\"wrlyxwjkcprb\",\"tags\":{\"ysszdnrujqguh\":\"xgjvtbv\"},\"id\":\"uouq\",\"name\":\"prwzwbnguitnwui\",\"type\":\"gazxuf\"}")
                 .toObject(AssociationInner.class);
-        Assertions.assertEquals("xybz", model.location());
-        Assertions.assertEquals("dqytbciqfouflmm", model.tags().get("kzsmodm"));
+        Assertions.assertEquals("wrlyxwjkcprb", model.location());
+        Assertions.assertEquals("xgjvtbv", model.tags().get("ysszdnrujqguh"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("dgak", model.subnet().id());
+        Assertions.assertEquals("eju", model.subnet().id());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AssociationInner model =
             new AssociationInner()
-                .withLocation("xybz")
-                .withTags(mapOf("kzsmodm", "dqytbciqfouflmm"))
+                .withLocation("wrlyxwjkcprb")
+                .withTags(mapOf("ysszdnrujqguh", "xgjvtbv"))
                 .withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnet().withId("dgak"));
+                .withSubnet(new AssociationSubnet().withId("eju"));
         model = BinaryData.fromObject(model).toObject(AssociationInner.class);
-        Assertions.assertEquals("xybz", model.location());
-        Assertions.assertEquals("dqytbciqfouflmm", model.tags().get("kzsmodm"));
+        Assertions.assertEquals("wrlyxwjkcprb", model.location());
+        Assertions.assertEquals("xgjvtbv", model.tags().get("ysszdnrujqguh"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("dgak", model.subnet().id());
+        Assertions.assertEquals("eju", model.subnet().id());
     }
 
     @SuppressWarnings("unchecked")

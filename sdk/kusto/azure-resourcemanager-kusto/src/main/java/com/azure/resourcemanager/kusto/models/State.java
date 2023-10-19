@@ -37,6 +37,9 @@ public final class State extends ExpandableStringEnum<State> {
     /** Static value Updating for State. */
     public static final State UPDATING = fromString("Updating");
 
+    /** Static value Migrated for State. */
+    public static final State MIGRATED = fromString("Migrated");
+
     /**
      * Creates a new instance of State value.
      *

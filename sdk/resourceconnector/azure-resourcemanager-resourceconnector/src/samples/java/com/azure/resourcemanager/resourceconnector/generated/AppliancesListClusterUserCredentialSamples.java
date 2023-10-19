@@ -12,10 +12,10 @@ public final class AppliancesListClusterUserCredentialSamples {
     /**
      * Sample code: ListClusterUserCredentialAppliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
     public static void listClusterUserCredentialAppliance(
-        com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
         manager
             .appliances()
             .listClusterUserCredentialWithResponse(

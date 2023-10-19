@@ -18,7 +18,7 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"e31ae00e-0204-4a6c-941e-3f635cb71af7\",\"tenantId\":\"79f46e37-1724-4988-a5e2-eb178989adf2\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fpdvhpfxxypi\":{\"principalId\":\"3cde3f34-8b1d-4a0c-829d-4450eae7739a\",\"clientId\":\"56289dcd-5df4-4593-becd-c23a0ef5e4af\"},\"mayhuybbkpodepoo\":{\"principalId\":\"ef5f73ab-8d2b-4d30-9448-259e1b98f63b\",\"clientId\":\"4aff1a50-a97a-4d7c-b7ee-0ee5fcca57ab\"},\"uvamiheognarxzxt\":{\"principalId\":\"f5ef7c76-ecf5-42dc-959d-b5489d6cdfd5\",\"clientId\":\"9b4794e7-c50f-4eb8-a3b5-722b4eada61d\"},\"tusivyevcciqihn\":{\"principalId\":\"4f12ebb3-876d-4dbd-859f-e00aff0e7219\",\"clientId\":\"772324aa-52fa-47cc-9539-c1fd3e9ac675\"}}}")
+                    "{\"principalId\":\"83de2ea8-8542-43d9-a907-a00211abdbfe\",\"tenantId\":\"4b2188b7-c684-4c74-9fc4-2df05b30c14a\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fpdvhpfxxypi\":{\"principalId\":\"a0e35755-20b1-4850-9bfd-cd3083e2e836\",\"clientId\":\"7f84c311-8d93-4e07-8020-39728cfae1e4\"},\"mayhuybbkpodepoo\":{\"principalId\":\"4d13f40a-1fa2-48d6-9da5-bbaf1f658af4\",\"clientId\":\"7941f42d-b74d-48df-8269-f526231aee29\"},\"uvamiheognarxzxt\":{\"principalId\":\"211fdbde-e8ba-46fc-8855-d109a2ec3583\",\"clientId\":\"3d1a0a98-5e3a-4e7e-9f14-4e6c3a8eb69a\"},\"tusivyevcciqihn\":{\"principalId\":\"a73dec3a-1164-4d12-80c7-5835d230b59f\",\"clientId\":\"3f282d24-7210-48d0-b603-3d7d16907894\"}}}")
                 .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }

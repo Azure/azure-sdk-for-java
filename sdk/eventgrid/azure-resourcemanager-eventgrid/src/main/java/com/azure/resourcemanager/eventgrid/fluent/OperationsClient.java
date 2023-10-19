@@ -13,7 +13,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.OperationInner;
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
     /**
-     * List the available operations supported by the Microsoft.EventGrid resource provider.
+     * List available operations.
+     *
+     * <p>List the available operations supported by the Microsoft.EventGrid resource provider.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,7 +25,9 @@ public interface OperationsClient {
     PagedIterable<OperationInner> list();
 
     /**
-     * List the available operations supported by the Microsoft.EventGrid resource provider.
+     * List available operations.
+     *
+     * <p>List the available operations supported by the Microsoft.EventGrid resource provider.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

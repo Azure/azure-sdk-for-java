@@ -24,8 +24,7 @@ public interface AssociationsInterfacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AssociationInner> listByTrafficController(String resourceGroupName, String trafficControllerName);
@@ -39,15 +38,14 @@ public interface AssociationsInterfacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AssociationInner> listByTrafficController(
         String resourceGroupName, String trafficControllerName, Context context);
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -56,14 +54,14 @@ public interface AssociationsInterfacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association along with {@link Response}.
+     * @return a Association along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AssociationInner> getWithResponse(
         String resourceGroupName, String trafficControllerName, String associationName, Context context);
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -71,13 +69,13 @@ public interface AssociationsInterfacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association.
+     * @return a Association.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AssociationInner get(String resourceGroupName, String trafficControllerName, String associationName);
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -93,7 +91,7 @@ public interface AssociationsInterfacesClient {
         String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource);
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -114,7 +112,7 @@ public interface AssociationsInterfacesClient {
         Context context);
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -130,7 +128,7 @@ public interface AssociationsInterfacesClient {
         String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource);
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -151,7 +149,7 @@ public interface AssociationsInterfacesClient {
         Context context);
 
     /**
-     * Update a Traffic Controller Association.
+     * Update a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -172,7 +170,7 @@ public interface AssociationsInterfacesClient {
         Context context);
 
     /**
-     * Update a Traffic Controller Association.
+     * Update a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -188,7 +186,7 @@ public interface AssociationsInterfacesClient {
         String resourceGroupName, String trafficControllerName, String associationName, AssociationUpdate properties);
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -203,7 +201,7 @@ public interface AssociationsInterfacesClient {
         String resourceGroupName, String trafficControllerName, String associationName);
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -219,7 +217,7 @@ public interface AssociationsInterfacesClient {
         String resourceGroupName, String trafficControllerName, String associationName, Context context);
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -232,7 +230,7 @@ public interface AssociationsInterfacesClient {
     void delete(String resourceGroupName, String trafficControllerName, String associationName);
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.

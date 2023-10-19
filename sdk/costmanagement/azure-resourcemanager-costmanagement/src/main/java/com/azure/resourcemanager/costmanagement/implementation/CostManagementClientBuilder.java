@@ -18,22 +18,6 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {CostManagementClientImpl.class})
 public final class CostManagementClientBuilder {
     /*
-     * ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     */
-    private String ifMatch;
-
-    /**
-     * Sets ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     *
-     * @param ifMatch the ifMatch value.
-     * @return the CostManagementClientBuilder.
-     */
-    public CostManagementClientBuilder ifMatch(String ifMatch) {
-        this.ifMatch = ifMatch;
-        return this;
-    }
-
-    /*
      * server parameter
      */
     private String endpoint;
@@ -133,12 +117,7 @@ public final class CostManagementClientBuilder {
                 : SerializerFactory.createDefaultManagementSerializerAdapter();
         CostManagementClientImpl client =
             new CostManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                ifMatch,
-                localEndpoint);
+                localPipeline, localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint);
         return client;
     }
 }

@@ -10,10 +10,15 @@ module com.azure.core.test {
     requires reactor.test;
     requires java.management;
     requires java.net.http;
+    requires javax.servlet.api;
     requires reactor.netty.http;
     requires reactor.netty.core;
     requires io.netty.codec.http;
     requires org.apache.commons.compress;
+    requires org.eclipse.jetty.server;
+    requires org.eclipse.jetty.servlet;
+    requires org.eclipse.jetty.util;
+    requires org.eclipse.jetty.security;
 
     exports com.azure.core.test;
     exports com.azure.core.test.annotation;
@@ -21,9 +26,6 @@ module com.azure.core.test {
     exports com.azure.core.test.models;
     exports com.azure.core.test.policy;
     exports com.azure.core.test.utils;
-
-    exports com.azure.core.test.implementation to com.azure.http.netty, com.azure.core.http.jdk.httpclient,
-        com.azure.core.http.okhttp, org.junit.platform.commons;
 
     opens com.azure.core.test to com.fasterxml.jackson.databind, org.junit.platform.commons;
     opens com.azure.core.test.models to com.fasterxml.jackson.databind;

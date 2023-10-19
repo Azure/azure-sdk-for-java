@@ -10,7 +10,7 @@ import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a Traffic Controller Association list operation. */
+/** The response of a Association list operation. */
 @Fluent
 public final class AssociationListResult {
     /*

@@ -22,6 +22,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import reactor.core.publisher.Mono;
 
@@ -53,7 +54,7 @@ public final class RulesImpl {
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> get(
+        Mono<Response<RuleDescriptionEntryImpl>> get(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("topicName") String topicName,
                 @PathParam("subscriptionName") String subscriptionName,
@@ -66,7 +67,7 @@ public final class RulesImpl {
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> getSync(
+        Response<RuleDescriptionEntryImpl> getSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("topicName") String topicName,
                 @PathParam("subscriptionName") String subscriptionName,
@@ -79,7 +80,7 @@ public final class RulesImpl {
         @Put("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> put(
+        Mono<Response<RuleDescriptionEntryImpl>> put(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("topicName") String topicName,
                 @PathParam("subscriptionName") String subscriptionName,
@@ -93,7 +94,7 @@ public final class RulesImpl {
         @Put("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> putSync(
+        Response<RuleDescriptionEntryImpl> putSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("topicName") String topicName,
                 @PathParam("subscriptionName") String subscriptionName,
@@ -107,7 +108,7 @@ public final class RulesImpl {
         @Delete("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> delete(
+        Mono<Response<RuleDescriptionEntryImpl>> delete(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("topicName") String topicName,
                 @PathParam("subscriptionName") String subscriptionName,
@@ -119,7 +120,7 @@ public final class RulesImpl {
         @Delete("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> deleteSync(
+        Response<RuleDescriptionEntryImpl> deleteSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("topicName") String topicName,
                 @PathParam("subscriptionName") String subscriptionName,
@@ -145,7 +146,7 @@ public final class RulesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(
+    public Mono<Response<RuleDescriptionEntryImpl>> getWithResponseAsync(
             String topicName, String subscriptionName, String ruleName, Boolean enrich) {
         final String accept = "application/xml, application/atom+xml";
         return FluxUtil.withContext(
@@ -178,7 +179,7 @@ public final class RulesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(
+    public Mono<Response<RuleDescriptionEntryImpl>> getWithResponseAsync(
             String topicName, String subscriptionName, String ruleName, Boolean enrich, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.get(
@@ -207,7 +208,8 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(String topicName, String subscriptionName, String ruleName, Boolean enrich) {
+    public Mono<RuleDescriptionEntryImpl> getAsync(
+            String topicName, String subscriptionName, String ruleName, Boolean enrich) {
         return getWithResponseAsync(topicName, subscriptionName, ruleName, enrich)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -228,7 +230,7 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(
+    public Mono<RuleDescriptionEntryImpl> getAsync(
             String topicName, String subscriptionName, String ruleName, Boolean enrich, Context context) {
         return getWithResponseAsync(topicName, subscriptionName, ruleName, enrich, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -250,7 +252,7 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> getWithResponse(
+    public Response<RuleDescriptionEntryImpl> getWithResponse(
             String topicName, String subscriptionName, String ruleName, Boolean enrich, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.getSync(
@@ -279,7 +281,7 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object get(String topicName, String subscriptionName, String ruleName, Boolean enrich) {
+    public RuleDescriptionEntryImpl get(String topicName, String subscriptionName, String ruleName, Boolean enrich) {
         return getWithResponse(topicName, subscriptionName, ruleName, enrich, Context.NONE).getValue();
     }
 
@@ -297,10 +299,11 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> putWithResponseAsync(
+    public Mono<Response<RuleDescriptionEntryImpl>> putWithResponseAsync(
             String topicName, String subscriptionName, String ruleName, Object requestBody, String ifMatch) {
         final String accept = "application/xml, application/atom+xml";
         return FluxUtil.withContext(
@@ -332,10 +335,11 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> putWithResponseAsync(
+    public Mono<Response<RuleDescriptionEntryImpl>> putWithResponseAsync(
             String topicName,
             String subscriptionName,
             String ruleName,
@@ -369,10 +373,10 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> putAsync(
+    public Mono<RuleDescriptionEntryImpl> putAsync(
             String topicName, String subscriptionName, String ruleName, Object requestBody, String ifMatch) {
         return putWithResponseAsync(topicName, subscriptionName, ruleName, requestBody, ifMatch)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -393,10 +397,10 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> putAsync(
+    public Mono<RuleDescriptionEntryImpl> putAsync(
             String topicName,
             String subscriptionName,
             String ruleName,
@@ -422,10 +426,10 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
+     * @return represents an entry in the feed when querying rules along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> putWithResponse(
+    public Response<RuleDescriptionEntryImpl> putWithResponse(
             String topicName,
             String subscriptionName,
             String ruleName,
@@ -459,10 +463,11 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return represents an entry in the feed when querying rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object put(String topicName, String subscriptionName, String ruleName, Object requestBody, String ifMatch) {
+    public RuleDescriptionEntryImpl put(
+            String topicName, String subscriptionName, String ruleName, Object requestBody, String ifMatch) {
         return putWithResponse(topicName, subscriptionName, ruleName, requestBody, ifMatch, Context.NONE).getValue();
     }
 
@@ -477,10 +482,12 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> deleteWithResponseAsync(String topicName, String subscriptionName, String ruleName) {
+    public Mono<Response<RuleDescriptionEntryImpl>> deleteWithResponseAsync(
+            String topicName, String subscriptionName, String ruleName) {
         final String accept = "application/xml, application/atom+xml";
         return FluxUtil.withContext(
                 context ->
@@ -506,10 +513,11 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> deleteWithResponseAsync(
+    public Mono<Response<RuleDescriptionEntryImpl>> deleteWithResponseAsync(
             String topicName, String subscriptionName, String ruleName, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.delete(
@@ -533,10 +541,10 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> deleteAsync(String topicName, String subscriptionName, String ruleName) {
+    public Mono<RuleDescriptionEntryImpl> deleteAsync(String topicName, String subscriptionName, String ruleName) {
         return deleteWithResponseAsync(topicName, subscriptionName, ruleName)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -553,10 +561,11 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> deleteAsync(String topicName, String subscriptionName, String ruleName, Context context) {
+    public Mono<RuleDescriptionEntryImpl> deleteAsync(
+            String topicName, String subscriptionName, String ruleName, Context context) {
         return deleteWithResponseAsync(topicName, subscriptionName, ruleName, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -573,10 +582,10 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
+     * @return represents an entry in the feed when querying rules along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> deleteWithResponse(
+    public Response<RuleDescriptionEntryImpl> deleteWithResponse(
             String topicName, String subscriptionName, String ruleName, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.deleteSync(
@@ -600,10 +609,10 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return represents an entry in the feed when querying rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object delete(String topicName, String subscriptionName, String ruleName) {
+    public RuleDescriptionEntryImpl delete(String topicName, String subscriptionName, String ruleName) {
         return deleteWithResponse(topicName, subscriptionName, ruleName, Context.NONE).getValue();
     }
 }

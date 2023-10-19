@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Storage model = BinaryData.fromString("{\"storageSizeGB\":1146165631}").toObject(Storage.class);
-        Assertions.assertEquals(1146165631, model.storageSizeGB());
+        Storage model = BinaryData.fromString("{\"storageSizeGB\":1847154217}").toObject(Storage.class);
+        Assertions.assertEquals(1847154217, model.storageSizeGB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Storage model = new Storage().withStorageSizeGB(1146165631);
+        Storage model = new Storage().withStorageSizeGB(1847154217);
         model = BinaryData.fromObject(model).toObject(Storage.class);
-        Assertions.assertEquals(1146165631, model.storageSizeGB());
+        Assertions.assertEquals(1847154217, model.storageSizeGB());
     }
 }

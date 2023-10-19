@@ -66,8 +66,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
     public interface FrontendEndpointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/frontendEndpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FrontendEndpointsListResult>> listByFrontDoor(
@@ -81,8 +80,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/frontendEndpoints/{frontendEndpointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FrontendEndpointInner>> get(
@@ -97,8 +95,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/enableHttps")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/enableHttps")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> enableHttps(
@@ -114,8 +111,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/disableHttps")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/disableHttps")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disableHttps(
@@ -172,7 +168,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
         if (frontDoorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter frontDoorName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -232,7 +228,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
         if (frontDoorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter frontDoorName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -361,7 +357,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter frontendEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -418,7 +414,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter frontendEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -534,7 +530,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
         } else {
             customHttpsConfiguration.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -603,7 +599,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
         } else {
             customHttpsConfiguration.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -853,7 +849,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter frontendEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -909,7 +905,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter frontendEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
