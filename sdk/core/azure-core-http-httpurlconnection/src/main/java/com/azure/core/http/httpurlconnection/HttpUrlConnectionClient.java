@@ -155,7 +155,7 @@ public class HttpUrlConnectionClient implements HttpClient {
                             try {
                                 messageDigest = MessageDigest.getInstance("SHA-256");
                             } catch (NoSuchAlgorithmException e) {
-                                e.printStackTrace();
+                                throw LOGGER.logExceptionAsError(new RuntimeException(e));
                             }
                             String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
                             assert messageDigest != null;
