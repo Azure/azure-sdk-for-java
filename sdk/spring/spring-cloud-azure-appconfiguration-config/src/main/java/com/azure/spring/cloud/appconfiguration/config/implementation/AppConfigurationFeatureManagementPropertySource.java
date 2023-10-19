@@ -97,7 +97,7 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
         for (String label : labels) {
             settingSelector.setLabelFilter(label);
 
-            List<ConfigurationSetting> features = replicaClient.listSettings(settingSelector);
+            List<ConfigurationSetting> features = replicaClient.listSettings(settingSelector).collectList().block();
             TracingInfo tracing = replicaClient.getTracingInfo();
 
             // Reading In Features

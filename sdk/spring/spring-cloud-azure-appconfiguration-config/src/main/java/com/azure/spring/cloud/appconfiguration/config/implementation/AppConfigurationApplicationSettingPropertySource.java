@@ -65,7 +65,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                     .setLabelFilter(label);
 
             // * for wildcard match
-            List<ConfigurationSetting> settings = replicaClient.listSettings(settingSelector);
+            List<ConfigurationSetting> settings = replicaClient.listSettings(settingSelector).collectList().block();
 
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(keyFilter.length())

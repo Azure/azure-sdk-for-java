@@ -192,7 +192,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         List<AppConfigurationStoreTrigger> triggers) {
         List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
         for (AppConfigurationStoreTrigger trigger : triggers) {
-            ConfigurationSetting watchKey = client.getWatchKey(trigger.getKey(), trigger.getLabel());
+            ConfigurationSetting watchKey = client.getWatchKey(trigger.getKey(), trigger.getLabel()).block();
             if (watchKey != null) {
                 watchKeysSettings.add(watchKey);
             } else {

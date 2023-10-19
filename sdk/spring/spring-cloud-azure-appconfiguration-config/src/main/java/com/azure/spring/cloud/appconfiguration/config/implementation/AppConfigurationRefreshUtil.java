@@ -189,7 +189,7 @@ class AppConfigurationRefreshUtil {
     private static void refreshWithoutTime(AppConfigurationReplicaClient client,
         List<ConfigurationSetting> watchKeys, RefreshEventData eventData) throws AppConfigurationStatusException {
         for (ConfigurationSetting watchKey : watchKeys) {
-            ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel());
+            ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel()).block();
 
             // If there is no result, etag will be considered empty.
             // A refresh will trigger once the selector returns a value.
@@ -219,7 +219,7 @@ class AppConfigurationRefreshUtil {
 
                 SettingSelector selector = new SettingSelector().setKeyFilter(keyFilter)
                     .setLabelFilter(watchKey.getLabelFilterText(profiles));
-                List<ConfigurationSetting> currentKeys = client.listSettings(selector);
+                List<ConfigurationSetting> currentKeys = client.listSettings(selector).collectList().block();
 
                 watchedKeySize += checkFeatureFlags(currentKeys, state, client, eventData);
             }
@@ -276,7 +276,7 @@ class AppConfigurationRefreshUtil {
 
             SettingSelector selector = new SettingSelector().setKeyFilter(keyFilter)
                 .setLabelFilter(watchKey.getLabelFilterText(profiles));            
-            List<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector);
+            List<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector).collectList().block();
 
             int watchedKeySize = 0;
 

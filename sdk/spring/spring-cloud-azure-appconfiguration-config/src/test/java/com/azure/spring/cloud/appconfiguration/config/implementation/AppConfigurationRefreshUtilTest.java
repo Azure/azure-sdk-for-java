@@ -14,7 +14,6 @@ import static org.mockito.Mockito.when;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +35,9 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 public class AppConfigurationRefreshUtilTest {
 
     private static final String KEY_FILTER = "/application/*";
@@ -47,7 +49,7 @@ public class AppConfigurationRefreshUtilTest {
     private AppConfigurationReplicaClientFactory clientFactoryMock;
 
     @Mock
-    private List<ConfigurationSetting> watchKeyListMock;
+    private Flux<ConfigurationSetting> watchKeyListMock;
 
     @Mock
     private AppConfigurationReplicaClient clientOriginMock;
@@ -97,7 +99,7 @@ public class AppConfigurationRefreshUtilTest {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
-        when(clientMock.getWatchKey(Mockito.eq(KEY_FILTER), Mockito.eq(EMPTY_LABEL))).thenReturn(watchKeys.get(0));
+        when(clientMock.getWatchKey(Mockito.eq(KEY_FILTER), Mockito.eq(EMPTY_LABEL))).thenReturn(Mono.just(watchKeys.get(0)));
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(false);
 
@@ -115,7 +117,7 @@ public class AppConfigurationRefreshUtilTest {
         State newState = new State(watchKeys, Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
 
         // Config Store doesn't return a watch key change.
-        when(clientMock.getWatchKey(Mockito.eq(KEY_FILTER), Mockito.eq(EMPTY_LABEL))).thenReturn(watchKeys.get(0));
+        when(clientMock.getWatchKey(Mockito.eq(KEY_FILTER), Mockito.eq(EMPTY_LABEL))).thenReturn(Mono.just(watchKeys.get(0)));
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(true);
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
@@ -141,9 +143,9 @@ public class AppConfigurationRefreshUtilTest {
         listedKeys.add(watchKeysFeatureFlags.get(0));
 
         // Config Store does return a watch key change.
-        when(clientMock.getWatchKey(Mockito.eq(KEY_FILTER), Mockito.eq(EMPTY_LABEL))).thenReturn(updatedWatchKey);
+        when(clientMock.getWatchKey(Mockito.eq(KEY_FILTER), Mockito.eq(EMPTY_LABEL))).thenReturn(Mono.just(updatedWatchKey));
         when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(watchKeyListMock);
-        when(watchKeyListMock.iterator()).thenReturn(listedKeys.iterator());
+        when(watchKeyListMock.collectList()).thenReturn(Mono.just(listedKeys));
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getLoadStateFeatureFlag(endpoint)).thenReturn(true);
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
@@ -202,7 +204,7 @@ public class AppConfigurationRefreshUtilTest {
 
         // Config Store doesn't return a watch key change.
         when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(watchKeyListMock);
-        when(watchKeyListMock.iterator()).thenReturn(listedKeys.iterator());
+        when(watchKeyListMock.collectList()).thenReturn(Mono.just(listedKeys));
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getLoadStateFeatureFlag(endpoint)).thenReturn(true);
@@ -232,7 +234,7 @@ public class AppConfigurationRefreshUtilTest {
 
         // Config Store does return a watch key change.
         when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(watchKeyListMock);
-        when(watchKeyListMock.iterator()).thenReturn(listedKeys.iterator());
+        when(watchKeyListMock.collectList()).thenReturn(Mono.just(listedKeys));
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getLoadStateFeatureFlag(endpoint)).thenReturn(true);
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
@@ -251,7 +253,7 @@ public class AppConfigurationRefreshUtilTest {
 
         // Config Store doesn't return a value, Feature Flag was deleted
         when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(watchKeyListMock);
-        when(watchKeyListMock.iterator()).thenReturn(Collections.emptyIterator());
+        when(watchKeyListMock.collectList()).thenReturn(Mono.just(new ArrayList<>()));
 
         State newState = new State(watchKeysFeatureFlags, Math.toIntExact(Duration.ofMinutes(10).getSeconds()),
             endpoint);
@@ -282,7 +284,7 @@ public class AppConfigurationRefreshUtilTest {
 
         // Config Store returns a new feature flag
         when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(watchKeyListMock);
-        when(watchKeyListMock.iterator()).thenReturn(listedKeys.iterator());
+        when(watchKeyListMock.collectList()).thenReturn(Mono.just(listedKeys));
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getLoadStateFeatureFlag(endpoint)).thenReturn(true);
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
@@ -403,6 +405,8 @@ public class AppConfigurationRefreshUtilTest {
 
         // Refresh Time, but failed watch request
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
+        when(clientOriginMock.getWatchKey(Mockito.anyString(), Mockito.anyString()))
+        .thenReturn(Mono.just(generateWatchKeys().get(0)));
 
         State newState = new State(generateWatchKeys(), Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
 
@@ -435,7 +439,7 @@ public class AppConfigurationRefreshUtilTest {
         // Refresh Time, but no change
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
         when(clientOriginMock.getWatchKey(Mockito.anyString(), Mockito.anyString()))
-            .thenReturn(generateWatchKeys().get(0));
+            .thenReturn(Mono.just(generateWatchKeys().get(0)));
 
         State newState = new State(generateWatchKeys(), Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
 
@@ -471,7 +475,7 @@ public class AppConfigurationRefreshUtilTest {
         ConfigurationSetting refreshKey = new ConfigurationSetting().setKey(KEY_FILTER).setLabel(EMPTY_LABEL)
             .setETag("new");
 
-        when(clientOriginMock.getWatchKey(Mockito.anyString(), Mockito.anyString())).thenReturn(refreshKey);
+        when(clientOriginMock.getWatchKey(Mockito.anyString(), Mockito.anyString())).thenReturn(Mono.just(refreshKey));
 
         State newState = new State(generateWatchKeys(), Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
 
@@ -577,7 +581,7 @@ public class AppConfigurationRefreshUtilTest {
 
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
         when(clientOriginMock.listSettings(Mockito.any())).thenReturn(watchKeyListMock);
-        when(watchKeyListMock.iterator()).thenReturn(listedKeys.iterator());
+        when(watchKeyListMock.collectList()).thenReturn(Mono.just(listedKeys));
 
         State newState = new State(generateFeatureFlagWatchKeys(), Math.toIntExact(Duration.ofMinutes(-1).getSeconds()),
             endpoint);
@@ -622,7 +626,7 @@ public class AppConfigurationRefreshUtilTest {
 
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
         when(clientOriginMock.listSettings(Mockito.any())).thenReturn(watchKeyListMock);
-        when(watchKeyListMock.iterator()).thenReturn(listedKeys.iterator());
+        when(watchKeyListMock.collectList()).thenReturn(Mono.just(listedKeys));
 
         State newState = new State(generateFeatureFlagWatchKeys(), Math.toIntExact(Duration.ofMinutes(-1).getSeconds()),
             endpoint);

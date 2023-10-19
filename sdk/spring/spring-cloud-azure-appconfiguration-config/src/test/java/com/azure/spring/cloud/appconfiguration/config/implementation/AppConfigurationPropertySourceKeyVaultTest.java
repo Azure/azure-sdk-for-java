@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -44,6 +43,9 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.stores.AppConfigurationSecretClientManager;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 public class AppConfigurationPropertySourceKeyVaultTest {
 
     public static final List<ConfigurationSetting> TEST_ITEMS = new ArrayList<>();
@@ -54,18 +56,17 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
     private static final String KEY_FILTER = "/foo/";
 
-    private static final ConfigurationSetting ITEM_1 = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
-        EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_1 =
+        createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1, EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_2 = createItem(KEY_FILTER, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2,
-        EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_2 =
+        createItem(KEY_FILTER, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2, EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_3 = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
-        EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_3 =
+        createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, EMPTY_CONTENT_TYPE);
 
     private static final SecretReferenceConfigurationSetting KEY_VAULT_ITEM = createSecretReference(KEY_FILTER,
-        TEST_KEY_VAULT_1,
-        TEST_URI_VAULT_1, TEST_LABEL_VAULT_1, KEY_VAULT_CONTENT_TYPE);
+        TEST_KEY_VAULT_1, TEST_URI_VAULT_1, TEST_LABEL_VAULT_1, KEY_VAULT_CONTENT_TYPE);
 
     private AppConfigurationApplicationSettingPropertySource propertySource;
 
@@ -85,7 +86,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private SecretAsyncClient clientMock;
 
     @Mock
-    private List<ConfigurationSetting> keyVaultSecretListMock;
+    private Flux<ConfigurationSetting> keyVaultSecretListMock;
 
     @BeforeEach
     public void init() {
@@ -95,7 +96,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         MockitoAnnotations.openMocks(this);
 
-        String[] labelFilter = { "\0" };
+        String[] labelFilter = {"\0"};
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock,
             keyVaultClientFactory, KEY_FILTER, labelFilter, 60);
 
@@ -112,8 +113,8 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     @Test
     public void testKeyVaultTest() {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
-        when(keyVaultSecretListMock.iterator()).thenReturn(TEST_ITEMS.iterator())
-            .thenReturn(Collections.emptyIterator());
+        when(keyVaultSecretListMock.collectList()).thenReturn(Mono.just(TEST_ITEMS))
+            .thenReturn(Mono.just(new ArrayList<ConfigurationSetting>()));
         when(replicaClientMock.listSettings(Mockito.any())).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
 
@@ -130,8 +131,8 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         }
 
         String[] keyNames = propertySource.getPropertyNames();
-        String[] expectedKeyNames = TEST_ITEMS.stream()
-            .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
+        String[] expectedKeyNames =
+            TEST_ITEMS.stream().map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
 
