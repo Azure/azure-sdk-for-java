@@ -567,8 +567,10 @@ public class MaxRetryCountTests extends TestSuiteBase {
     public Object[][] testConfigs_readMaxRetryCount_readSessionNotAvailable() {
         final Integer MAX_LOCAL_RETRY_COUNT_DEFAULT = null;
         final Integer MAX_LOCAL_RETRY_COUNT_ONE = 1;
+        final Integer MAX_LOCAL_RETRY_COUNT_TWO = 2;
         final Integer MAX_LOCAL_RETRY_COUNT_ZERO = 0;
         final Integer MAX_LOCAL_RETRY_COUNT_THREE = 3;
+        final Integer MAX_LOCAL_RETRY_COUNT_FOUR = 4;
 
         final Integer SESSION_TOKEN_MISMATCH_WAIT_TIME_DEFAULT = null;
         final Integer SESSION_TOKEN_MISMATCH_WAIT_TIME_FIVE_SECONDS = 5000;
@@ -606,7 +608,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 injectReadSessionNotAvailableIntoAllRegions,
                 validateStatusCodeIsReadSessionNotAvailableError,
                 (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isEqualTo(
-                    Math.max(1, MAX_LOCAL_RETRY_COUNT_ONE) * (1 + (4 * writeableRegions.size()))
+                    Math.max(1, MAX_LOCAL_RETRY_COUNT_TWO) * (1 + (4 * writeableRegions.size()))
                 ),
                 MAX_LOCAL_RETRY_COUNT_DEFAULT, // DEFAULT is 1
                 SESSION_TOKEN_MISMATCH_WAIT_TIME_DEFAULT, // DEFAULT is 5 seconds,
@@ -622,7 +624,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 injectReadSessionNotAvailableIntoAllRegions,
                 validateStatusCodeIsReadSessionNotAvailableError,
                 (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isEqualTo(
-                    Math.max(1, MAX_LOCAL_RETRY_COUNT_ZERO) * (1 + (4 * writeableRegions.size()))
+                    // even though maxRetryCount is being set to 0, but internally MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED will be used
+                    Math.max(1, MAX_LOCAL_RETRY_COUNT_TWO) * (1 + (4 * writeableRegions.size()))
                 ),
                 MAX_LOCAL_RETRY_COUNT_ZERO,
                 SESSION_TOKEN_MISMATCH_WAIT_TIME_DEFAULT, // DEFAULT is 5 seconds
@@ -638,7 +641,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 injectReadSessionNotAvailableIntoAllRegions,
                 validateStatusCodeIsReadSessionNotAvailableError,
                 (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isEqualTo(
-                    Math.max(1, MAX_LOCAL_RETRY_COUNT_THREE) * (1 + (4 * writeableRegions.size()))
+                    Math.max(1, MAX_LOCAL_RETRY_COUNT_FOUR) * (1 + (4 * writeableRegions.size()))
                 ),
                 MAX_LOCAL_RETRY_COUNT_THREE,
                 SESSION_TOKEN_MISMATCH_WAIT_TIME_DEFAULT, // DEFAULT is 5 seconds
@@ -1126,7 +1129,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                     assertThat(requestCount).isLessThanOrEqualTo(
                         expectedMaxNumberOfRetriesForServerServiceUnavailable(
                             consistencyLevel,
-                            operationType))
+                            operationType) * (1 + this.writeableRegions.size()))
             },
             new Object[] {
                 "503-0_AllRegions_Create",
