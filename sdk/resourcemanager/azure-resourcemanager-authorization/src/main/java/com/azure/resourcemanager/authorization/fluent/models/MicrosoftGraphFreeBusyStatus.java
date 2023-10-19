@@ -29,6 +29,15 @@ public final class MicrosoftGraphFreeBusyStatus extends ExpandableStringEnum<Mic
     public static final MicrosoftGraphFreeBusyStatus WORKING_ELSEWHERE = fromString("workingElsewhere");
 
     /**
+     * Creates a new instance of MicrosoftGraphFreeBusyStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphFreeBusyStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphFreeBusyStatus from its string representation.
      *
      * @param name a name to look for.

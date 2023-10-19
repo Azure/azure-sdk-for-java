@@ -24,6 +24,10 @@ public final class DeepCreatedOrigin {
     @JsonProperty(value = "properties")
     private DeepCreatedOriginProperties innerProperties;
 
+    /** Creates an instance of DeepCreatedOrigin class. */
+    public DeepCreatedOrigin() {
+    }
+
     /**
      * Get the name property: Origin name which must be unique within the endpoint.
      *

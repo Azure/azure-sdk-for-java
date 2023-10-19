@@ -21,6 +21,10 @@ public final class OriginGroupOverrideAction extends DeliveryRuleAction {
     @JsonProperty(value = "parameters", required = true)
     private OriginGroupOverrideActionParameters parameters;
 
+    /** Creates an instance of OriginGroupOverrideAction class. */
+    public OriginGroupOverrideAction() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the action.
      *

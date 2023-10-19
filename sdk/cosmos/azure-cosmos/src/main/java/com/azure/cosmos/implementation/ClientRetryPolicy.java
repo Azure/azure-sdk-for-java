@@ -126,12 +126,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 WebExceptionUtility.isReadTimeoutException(clientException) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
 
-                boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(request);
-
-                //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
-                if(canFailoverOnTimeout) {
-                    return shouldRetryOnEndpointFailureAsync(this.isReadRequest, true, true);
-                }
+                return shouldRetryOnGatewayTimeout();
             }
         }
 
@@ -246,7 +241,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return this.rxCollectionCache.refreshAsync(null, this.request).then(Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO)));
     }
 
-    private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh, boolean usePreferredLocations) {
+    private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest, boolean forceRefresh, boolean usePreferredLocations) {
         if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
             logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
@@ -269,6 +264,25 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
         }
         return refreshLocationCompletable.then(Mono.just(ShouldRetryResult.retryAfter(retryDelay)));
+    }
+
+    private Mono<ShouldRetryResult> shouldRetryOnGatewayTimeout() {
+        boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(request);
+
+        //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
+        if(canFailoverOnTimeout) {
+            if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
+                logger.warn("shouldRetryOnHttpTimeout() Not retrying. Retry count = {}", this.failoverRetryCount);
+                return Mono.just(ShouldRetryResult.noRetry());
+            }
+
+            this.failoverRetryCount++;
+            this.retryContext = new RetryContext(this.failoverRetryCount, true);
+            Duration retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
+            return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
+        }
+
+        return Mono.just(ShouldRetryResult.NO_RETRY);
     }
 
     private Mono<ShouldRetryResult> shouldNotRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh, boolean usePreferredLocations) {

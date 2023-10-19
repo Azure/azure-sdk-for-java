@@ -137,7 +137,6 @@ public class TelemetryItemExporter {
     CompletableResultCode internalSendByBatch(TelemetryItemBatchKey telemetryItemBatchKey,
                                               List<TelemetryItem> telemetryItems) {
         List<ByteBuffer> byteBuffers;
-
         // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
         // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
         // insert _OTELRESOURCE_ at the beginning of each batch

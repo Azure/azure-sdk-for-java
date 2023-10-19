@@ -20,6 +20,15 @@ public final class NotificationLevel extends ExpandableStringEnum<NotificationLe
     public static final NotificationLevel ALL = fromString("All");
 
     /**
+     * Creates a new instance of NotificationLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotificationLevel() {
+    }
+
+    /**
      * Creates or finds a NotificationLevel from its string representation.
      *
      * @param name a name to look for.

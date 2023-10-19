@@ -11,7 +11,7 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 /**
  * Resource manager for Event Hubs namespace.
  */
-public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespace, String> {
+public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespace, String, Object> {
 
     /**
      * Creates a new instance of {@link EventHubNamespaceCrud}.
