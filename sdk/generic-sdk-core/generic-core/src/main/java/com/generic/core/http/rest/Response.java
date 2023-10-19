@@ -40,6 +40,7 @@ public interface Response<T> {
      */
     T getValue();
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     static Response createResponse(HttpRequest request, int statusCode, Headers headers, Object value) {
         return new SimpleResponse(request, statusCode, headers, value);
     }
