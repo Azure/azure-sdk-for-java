@@ -1104,8 +1104,8 @@ public final class SearchAsyncClient {
 
     static String createSearchRequestAnswers(SearchOptions searchOptions) {
         QueryAnswerType answer = searchOptions.getQueryAnswer();
-        Integer answersCount = searchOptions.getAnswersCount();
-        Double answerThreshold = searchOptions.getAnswerThreshold();
+        Integer answersCount = searchOptions.getQueryAnswerCount();
+        Double answerThreshold = searchOptions.getQueryAnswerThreshold();
 
         // No answer has been defined.
         if (answer == null) {

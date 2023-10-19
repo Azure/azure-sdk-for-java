@@ -93,13 +93,6 @@ public final class SearchOptions {
     private String scoringProfile;
 
     /*
-     * Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and
-     * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
-     * retrieval and ranking phase, and the L2 semantic phase.
-     */
-    private String semanticQuery;
-
-    /*
      * The name of the semantic configuration that lists which fields should be
      * used for semantic ranking, captions, highlights, and answers
      */
@@ -495,30 +488,6 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
-     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
-     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
-     *
-     * @return the semanticQuery value.
-     */
-    public String getSemanticQuery() {
-        return this.semanticQuery;
-    }
-
-    /**
-     * Set the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
-     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
-     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
-     *
-     * @param semanticQuery the semanticQuery value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSemanticQuery(String semanticQuery) {
-        this.semanticQuery = semanticQuery;
-        return this;
-    }
-
-    /**
      * Get the semanticConfigurationName property: The name of the semantic configuration that lists which fields should
      * be used for semantic ranking, captions, highlights, and answers.
      *
@@ -646,7 +615,7 @@ public final class SearchOptions {
      *
      * @return the answers count value.
      */
-    public Integer getAnswersCount() {
+    public Integer getQueryAnswerCount() {
         return this.answersCount;
     }
 
@@ -659,7 +628,7 @@ public final class SearchOptions {
      * @param answersCount the answers count value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setAnswersCount(Integer answersCount) {
+    public SearchOptions setQueryAnswerCount(Integer answersCount) {
         this.answersCount = answersCount;
         return this;
     }
@@ -673,7 +642,7 @@ public final class SearchOptions {
      *
      * @return the answer threshold value.
      */
-    public Double getAnswerThreshold() {
+    public Double getQueryAnswerThreshold() {
         return this.answerThreshold;
     }
 
@@ -686,7 +655,7 @@ public final class SearchOptions {
      * @param answerThreshold the answer threshold value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setAnswerThreshold(Double answerThreshold) {
+    public SearchOptions setQueryAnswerThreshold(Double answerThreshold) {
         this.answerThreshold = answerThreshold;
         return this;
     }
