@@ -104,12 +104,12 @@ For details on contributing to this repository, see the [contributing guide](htt
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
-[discovery_runs_sample]: https://github.com/thang-bit/azure-sdk-for-java/blob/easm-java-sdk/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoveryRunsSample.java
-[disco_template_sample]: https://github.com/thang-bit/azure-sdk-for-java/blob/easm-java-sdk/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoTemplateSample.java
-[saved_filter_sample]: https://github.com/thang-bit/azure-sdk-for-java/blob/easm-java-sdk/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/SavedFilterSample.java
-[external_ids_sample]: https://github.com/thang-bit/azure-sdk-for-java/blob/easm-java-sdk/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/ManagingExternalIdsSample.java
+[discovery_runs_sample]: https://github.com/Azure/azure-sdk-for-java/blob/easm-java-sdk/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoveryRunsSample.java
+[disco_template_sample]: https://github.com/Azure/azure-sdk-for-java/blob/easm-java-sdk/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoTemplateSample.java
+[saved_filter_sample]: https://github.com/Azure/azure-sdk-for-java/blob/easm-java-sdk/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/SavedFilterSample.java
+[external_ids_sample]: https://github.com/Azure/azure-sdk-for-java/blob/easm-java-sdk/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/ManagingExternalIdsSample.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[samples]: https://github.com/thang-bit/azure-sdk-for-java/tree/easm-java-sdk/samples
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/easm-java-sdk/samples
 [assets_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/understanding-inventory-assets
 [discovery_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/what-is-discovery
 [discovery_groups_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/using-and-managing-discovery#discovery-groups
