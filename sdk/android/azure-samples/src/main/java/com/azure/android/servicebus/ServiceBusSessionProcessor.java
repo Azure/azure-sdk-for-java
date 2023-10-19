@@ -11,8 +11,6 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 
-import org.junit.jupiter.api.Test;
-
 import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
@@ -40,15 +38,15 @@ public class ServiceBusSessionProcessor {
         Log.i(TAG, "Starting the processor");
         processorClient.start();
 
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.SECONDS.sleep(1);
         Log.i(TAG, "Stopping the processor");
         processorClient.stop();
 
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.SECONDS.sleep(1);
         Log.i(TAG, "Resuming the processor");
         processorClient.start();
 
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.SECONDS.sleep(1);
         Log.i(TAG, "Closing the processor");
         processorClient.close();
     }

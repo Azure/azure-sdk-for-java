@@ -6,11 +6,9 @@ package com.azure.android.servicebus;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
-import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 
 import android.util.Log;
 
-import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -37,7 +35,7 @@ public class PeekMessageAsync {
         receiver.peekMessage().subscribe(
             message -> {
                 Log.i(TAG, "Received Message Id: " + message.getMessageId());
-                Log.i(TAG, "Received Message: " + message.getBody().toString());
+                Log.i(TAG, "Received Message: " + message.getBody());
             },
             error -> Log.e(TAG, "Error occurred while receiving message: " + error),
             () -> {

@@ -10,11 +10,9 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
-import org.junit.jupiter.api.Test;
 
 import android.util.Log;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,7 +24,6 @@ public class SendMessageBatch {
 
     private static final String TAG = "ServiceBusSendMessageBatchOutput";
 
-    @Test
     public static void main(String queueName, ClientSecretCredential credential) {
         List<ServiceBusMessage> testMessages = Arrays.asList(
             new ServiceBusMessage(BinaryData.fromString("Green")),

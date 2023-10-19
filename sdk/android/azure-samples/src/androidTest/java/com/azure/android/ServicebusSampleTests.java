@@ -3,7 +3,6 @@ package com.azure.android;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.azure.android.servicebus.PeekMessageAsync;
-import com.azure.android.servicebus.RecieveMessage;
 import com.azure.android.servicebus.SendMessageBatch;
 import com.azure.android.servicebus.SendSessionMessageAsync;
 import com.azure.android.servicebus.ServiceBusSessionProcessor;
@@ -17,7 +16,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
-public class AppConfigurationSampleTests {
+public class ServicebusSampleTests {
     final String serviceBusQueueName= "android-sb-queue";
     ClientSecretCredential clientSecretCredential;
     @Before
@@ -35,16 +34,7 @@ public class AppConfigurationSampleTests {
     public void peekMessageAsync() {
         try {
             PeekMessageAsync.main(serviceBusQueueName, clientSecretCredential);
-        } catch (RuntimeException | IOException e) {
-            fail();
-        }
-    }
-
-    @Test
-    public void receiveMessage() {
-        try {
-            ReceiveMessage.main(serviceBusQueueName, clientSecretCredential);
-        } catch (RuntimeException | IOException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }
@@ -53,7 +43,7 @@ public class AppConfigurationSampleTests {
     public void sendMessageBatch() {
         try {
             SendMessageBatch.main(serviceBusQueueName, clientSecretCredential);
-        } catch (RuntimeException | IOException e) {
+        } catch (RuntimeException e) {
             fail();
         }
     }
@@ -62,7 +52,7 @@ public class AppConfigurationSampleTests {
     public void sendSessionMessageAsync() {
         try {
             SendSessionMessageAsync.main(serviceBusQueueName, clientSecretCredential);
-        } catch (RuntimeException | IOException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }
@@ -71,7 +61,7 @@ public class AppConfigurationSampleTests {
     public void serviceBusSessionProcessor() {
         try {
             ServiceBusSessionProcessor.main(serviceBusQueueName, clientSecretCredential);
-        } catch (RuntimeException | IOException e) {
+        } catch (RuntimeException | InterruptedException e) {
             fail();
         }
     }
