@@ -3,8 +3,8 @@
 ## 12.21.0-beta.1 (2023-10-19)
 
 ### Features Added
-- Added support for ShareAudience
-- Added support for service versions 2023-11-03
+- Added support for service versions 2023-11-03.
+- Added support for ShareAudience.
 
 ## 12.20.0 (2023-09-12)
 

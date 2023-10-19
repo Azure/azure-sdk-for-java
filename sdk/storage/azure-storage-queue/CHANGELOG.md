@@ -3,8 +3,8 @@
 ## 12.20.0-beta.1 (2023-10-19)
 
 ### Features Added
-- Added support for QueueAudience
-- Added support for service versions 2023-11-03
+- Added support for service versions 2023-11-03.
+- Added support for QueueAudience.
 
 ## 12.19.0 (2023-09-12)
 
