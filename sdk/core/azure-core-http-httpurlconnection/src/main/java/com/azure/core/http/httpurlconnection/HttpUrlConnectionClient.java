@@ -240,8 +240,8 @@ public class HttpUrlConnectionClient implements HttpClient {
 
                                             sink.next(1); // Dummy value to propagate to trigger timeout reset on data being sent.
                                         }
-                                    } catch (IOException ex) {
-                                        sink.error(ex); // Error during sending the request; terminate the stream.
+                                    } catch (IOException e) {
+                                        sink.error(e); // Error during sending the request; terminate the stream.
                                     }
                                     return network;
                                 }
@@ -269,7 +269,6 @@ public class HttpUrlConnectionClient implements HttpClient {
             }
         }
     }
-
 
     /**
      * Synchronously sends the content of an HttpRequest via an HttpUrlConnection instance.
