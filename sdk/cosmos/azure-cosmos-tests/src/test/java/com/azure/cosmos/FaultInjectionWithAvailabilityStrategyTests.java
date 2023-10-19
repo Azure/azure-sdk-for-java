@@ -1631,6 +1631,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                ConnectionMode.DIRECT,
                 NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
@@ -1693,6 +1694,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                ConnectionMode.DIRECT,
                 Duration.ofMillis(600),
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
@@ -1753,6 +1755,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 noAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                ConnectionMode.DIRECT,
                 Duration.ofMillis(1100),
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
@@ -1837,6 +1840,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.GATEWAY,
+                NO_CUSTOM_MIN_RETRY_TIME_IN_REGION_FOR_WRITES,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -4349,9 +4353,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         CosmosAsyncClient clientWithPreferredRegions = buildCosmosClient(
             this.writeableRegions,
             regionSwitchHint,
-            nonIdempotentWriteRetriesEnabled,
-            connectionMode);
-
+            connectionMode,
             customMinRetryTimeInLocalRegionForWrites,
             nonIdempotentWriteRetriesEnabled);
         try {
@@ -4494,8 +4496,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     private static CosmosAsyncClient buildCosmosClient(
         List<String> preferredRegions,
         CosmosRegionSwitchHint regionSwitchHint,
-        Boolean nonIdempotentWriteRetriesEnabled,
-        ConnectionMode connectionMode) {
+        ConnectionMode connectionMode,
         Duration customMinRetryTimeInLocalRegionForWrites,
         Boolean nonIdempotentWriteRetriesEnabled) {
 
