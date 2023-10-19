@@ -26,6 +26,15 @@ public final class CustomHttpsProvisioningState extends ExpandableStringEnum<Cus
     public static final CustomHttpsProvisioningState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of CustomHttpsProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomHttpsProvisioningState() {
+    }
+
+    /**
      * Creates or finds a CustomHttpsProvisioningState from its string representation.
      *
      * @param name a name to look for.

@@ -51,6 +51,11 @@
       <artifactId>azure-storage-queue</artifactId>
       <version>12.19.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.44.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
 
     <dependency>
       <groupId>org.mockito</groupId>
@@ -79,13 +84,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.4.5</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.4.6</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.44.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.44.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
   </dependencies>
 

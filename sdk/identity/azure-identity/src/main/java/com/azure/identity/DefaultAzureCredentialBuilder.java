@@ -43,8 +43,8 @@ import java.util.concurrent.ForkJoinPool;
  * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
  *
  * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a> that is associated with one or more Azure resources. This identity can then be used to authenticate and
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> that is
+ * associated with one or more Azure resources. This identity can then be used to authenticate and
  * authorize access to various Azure services and resources. The following code sample demonstrates the creation of
  * a {@link DefaultAzureCredential} to target a user assigned managed identity, using the DefaultAzureCredentialBuilder
  * to configure it. Once this credential is created, it may be passed into the builder of many of the
@@ -94,8 +94,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param authorityHost the Microsoft Entra endpoint
      * @return An updated instance of this builder with the authority host set as specified.
      */
     public DefaultAzureCredentialBuilder authorityHost(String authorityHost) {
@@ -143,7 +143,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
-     * Specifies the client ID of Azure AD app to be used for AKS workload identity authentication.
+     * Specifies the client ID of Microsoft Entra app to be used for AKS workload identity authentication.
      * if unset, {@link DefaultAzureCredentialBuilder#managedIdentityClientId(String)} will be used.
      * If both values are unset, the value in the AZURE_CLIENT_ID environment variable
      * will be used. If none are set, the default value is null and Workload Identity authentication will not be attempted.

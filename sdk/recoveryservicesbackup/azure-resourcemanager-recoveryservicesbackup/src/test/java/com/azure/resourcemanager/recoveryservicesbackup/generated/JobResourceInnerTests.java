@@ -19,49 +19,50 @@ public final class JobResourceInnerTests {
         JobResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"anuzbpzkafkuw\",\"backupManagementType\":\"AzureIaasVM\",\"operation\":\"wbme\",\"status\":\"seyvj\",\"startTime\":\"2021-09-13T12:12:28Z\",\"endTime\":\"2021-06-01T12:34:05Z\",\"activityId\":\"hspkdeemao\"},\"eTag\":\"xagkvtmelmqkrh\",\"location\":\"hvljuahaquh\",\"tags\":{\"aex\":\"mdua\",\"vxpvgomz\":\"pvfadmwsrcr\"},\"id\":\"fmisg\",\"name\":\"bnbbeldawkz\",\"type\":\"ali\"}")
+                    "{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"nwbmeh\",\"backupManagementType\":\"MAB\",\"operation\":\"v\",\"status\":\"srtslhspkdeem\",\"startTime\":\"2021-02-20T10:46:34Z\",\"endTime\":\"2021-10-29T03:55:40Z\",\"activityId\":\"gkvtmelmqkrhah\"},\"eTag\":\"juahaquhcdhmdual\",\"location\":\"exq\",\"tags\":{\"sr\":\"adm\",\"vxpvgomz\":\"r\"},\"id\":\"fmisg\",\"name\":\"bnbbeldawkz\",\"type\":\"ali\"}")
                 .toObject(JobResourceInner.class);
-        Assertions.assertEquals("hvljuahaquh", model.location());
-        Assertions.assertEquals("mdua", model.tags().get("aex"));
-        Assertions.assertEquals("anuzbpzkafkuw", model.properties().entityFriendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.properties().backupManagementType());
-        Assertions.assertEquals("wbme", model.properties().operation());
-        Assertions.assertEquals("seyvj", model.properties().status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T12:12:28Z"), model.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-01T12:34:05Z"), model.properties().endTime());
-        Assertions.assertEquals("hspkdeemao", model.properties().activityId());
-        Assertions.assertEquals("xagkvtmelmqkrh", model.etag());
+        Assertions.assertEquals("exq", model.location());
+        Assertions.assertEquals("adm", model.tags().get("sr"));
+        Assertions.assertEquals("nwbmeh", model.properties().entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.properties().backupManagementType());
+        Assertions.assertEquals("v", model.properties().operation());
+        Assertions.assertEquals("srtslhspkdeem", model.properties().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T10:46:34Z"), model.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T03:55:40Z"), model.properties().endTime());
+        Assertions.assertEquals("gkvtmelmqkrhah", model.properties().activityId());
+        Assertions.assertEquals("juahaquhcdhmdual", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobResourceInner model =
             new JobResourceInner()
-                .withLocation("hvljuahaquh")
-                .withTags(mapOf("aex", "mdua", "vxpvgomz", "pvfadmwsrcr"))
+                .withLocation("exq")
+                .withTags(mapOf("sr", "adm", "vxpvgomz", "r"))
                 .withProperties(
                     new Job()
-                        .withEntityFriendlyName("anuzbpzkafkuw")
-                        .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
-                        .withOperation("wbme")
-                        .withStatus("seyvj")
-                        .withStartTime(OffsetDateTime.parse("2021-09-13T12:12:28Z"))
-                        .withEndTime(OffsetDateTime.parse("2021-06-01T12:34:05Z"))
-                        .withActivityId("hspkdeemao"))
-                .withEtag("xagkvtmelmqkrh");
+                        .withEntityFriendlyName("nwbmeh")
+                        .withBackupManagementType(BackupManagementType.MAB)
+                        .withOperation("v")
+                        .withStatus("srtslhspkdeem")
+                        .withStartTime(OffsetDateTime.parse("2021-02-20T10:46:34Z"))
+                        .withEndTime(OffsetDateTime.parse("2021-10-29T03:55:40Z"))
+                        .withActivityId("gkvtmelmqkrhah"))
+                .withEtag("juahaquhcdhmdual");
         model = BinaryData.fromObject(model).toObject(JobResourceInner.class);
-        Assertions.assertEquals("hvljuahaquh", model.location());
-        Assertions.assertEquals("mdua", model.tags().get("aex"));
-        Assertions.assertEquals("anuzbpzkafkuw", model.properties().entityFriendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.properties().backupManagementType());
-        Assertions.assertEquals("wbme", model.properties().operation());
-        Assertions.assertEquals("seyvj", model.properties().status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T12:12:28Z"), model.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-01T12:34:05Z"), model.properties().endTime());
-        Assertions.assertEquals("hspkdeemao", model.properties().activityId());
-        Assertions.assertEquals("xagkvtmelmqkrh", model.etag());
+        Assertions.assertEquals("exq", model.location());
+        Assertions.assertEquals("adm", model.tags().get("sr"));
+        Assertions.assertEquals("nwbmeh", model.properties().entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.properties().backupManagementType());
+        Assertions.assertEquals("v", model.properties().operation());
+        Assertions.assertEquals("srtslhspkdeem", model.properties().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T10:46:34Z"), model.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T03:55:40Z"), model.properties().endTime());
+        Assertions.assertEquals("gkvtmelmqkrhah", model.properties().activityId());
+        Assertions.assertEquals("juahaquhcdhmdual", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

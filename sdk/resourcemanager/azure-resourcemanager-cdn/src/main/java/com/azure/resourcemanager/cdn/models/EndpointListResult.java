@@ -27,6 +27,10 @@ public final class EndpointListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of EndpointListResult class. */
+    public EndpointListResult() {
+    }
+
     /**
      * Get the value property: List of CDN endpoints within a profile.
      *

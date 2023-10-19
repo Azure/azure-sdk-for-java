@@ -139,7 +139,8 @@ public class CpkTests extends DataLakeTestBase {
             .fileSystemName("fileSystem")
             .pathName("path")
             .customerProvidedKey(newCpk)
-            .buildFileClient();
+            .buildFileClient()
+            .getCustomerProvidedKeyClient(newCpk);
 
         assertNotEquals(cpkFile.getCustomerProvidedKey(), newCpkPathClient.getCustomerProvidedKey());
     }
