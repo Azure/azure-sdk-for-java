@@ -487,7 +487,8 @@
         "easm",
         "asns",
         "nxdomain",
-        "cnames"
+        "cnames",
+        "riskiq"
       ]
     },
     {
