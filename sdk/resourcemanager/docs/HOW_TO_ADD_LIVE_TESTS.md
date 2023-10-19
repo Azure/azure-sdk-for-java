@@ -66,7 +66,7 @@ Add a [bicep](https://github.com/Azure/bicep) script at `sdk/<service>/test-reso
 
 No change to the bicep script is required.
 
-- It adds [Contributor role](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor) of the resource group to the service principal.
+- It adds [Contributor role](https://learn.microsoft.com/azure/role-based-access-control/built-in-roles#contributor) of the resource group to the service principal.
 - It provides the name of the resource group, as well as credentials for the live tests.
 
 ## Add Live Tests
@@ -83,7 +83,7 @@ All the environment variables are provided in live tests pipeline.
 
 To verify your tests locally, one need to set these environment variables in local.
 
-For credentials, please refer to [guide on authentication](https://docs.microsoft.com/azure/developer/java/sdk/get-started#set-up-authentication).
+For credentials, please refer to [guide on authentication](https://learn.microsoft.com/azure/developer/java/sdk/get-started#set-up-authentication).
 
 For the resource group, one can create a resource group, and set its name to `AZURE_RESOURCE_GROUP_NAME` environment variable.
 Make sure your service principal above has Contributor role on the resource group.

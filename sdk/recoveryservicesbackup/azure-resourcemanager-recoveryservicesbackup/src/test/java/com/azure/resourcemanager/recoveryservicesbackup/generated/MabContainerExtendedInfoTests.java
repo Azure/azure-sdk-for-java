@@ -17,29 +17,29 @@ public final class MabContainerExtendedInfoTests {
         MabContainerExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"lastRefreshedAt\":\"2021-10-22T17:25:28Z\",\"backupItemType\":\"FileFolder\",\"backupItems\":[\"bcdsziryrandoyp\",\"blto\",\"rmkfqlwxldykals\"],\"policyName\":\"aolnjpnnbmjk\",\"lastBackupStatus\":\"bjgsjjxxahmrn\"}")
+                    "{\"lastRefreshedAt\":\"2021-11-22T17:01:16Z\",\"backupItemType\":\"SQLDB\",\"backupItems\":[\"zstacsjvhrweft\"],\"policyName\":\"qejpmvssehaepwa\",\"lastBackupStatus\":\"xtczhupeuknijd\"}")
                 .toObject(MabContainerExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T17:25:28Z"), model.lastRefreshedAt());
-        Assertions.assertEquals(BackupItemType.FILE_FOLDER, model.backupItemType());
-        Assertions.assertEquals("bcdsziryrandoyp", model.backupItems().get(0));
-        Assertions.assertEquals("aolnjpnnbmjk", model.policyName());
-        Assertions.assertEquals("bjgsjjxxahmrn", model.lastBackupStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T17:01:16Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(BackupItemType.SQLDB, model.backupItemType());
+        Assertions.assertEquals("zstacsjvhrweft", model.backupItems().get(0));
+        Assertions.assertEquals("qejpmvssehaepwa", model.policyName());
+        Assertions.assertEquals("xtczhupeuknijd", model.lastBackupStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MabContainerExtendedInfo model =
             new MabContainerExtendedInfo()
-                .withLastRefreshedAt(OffsetDateTime.parse("2021-10-22T17:25:28Z"))
-                .withBackupItemType(BackupItemType.FILE_FOLDER)
-                .withBackupItems(Arrays.asList("bcdsziryrandoyp", "blto", "rmkfqlwxldykals"))
-                .withPolicyName("aolnjpnnbmjk")
-                .withLastBackupStatus("bjgsjjxxahmrn");
+                .withLastRefreshedAt(OffsetDateTime.parse("2021-11-22T17:01:16Z"))
+                .withBackupItemType(BackupItemType.SQLDB)
+                .withBackupItems(Arrays.asList("zstacsjvhrweft"))
+                .withPolicyName("qejpmvssehaepwa")
+                .withLastBackupStatus("xtczhupeuknijd");
         model = BinaryData.fromObject(model).toObject(MabContainerExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T17:25:28Z"), model.lastRefreshedAt());
-        Assertions.assertEquals(BackupItemType.FILE_FOLDER, model.backupItemType());
-        Assertions.assertEquals("bcdsziryrandoyp", model.backupItems().get(0));
-        Assertions.assertEquals("aolnjpnnbmjk", model.policyName());
-        Assertions.assertEquals("bjgsjjxxahmrn", model.lastBackupStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T17:01:16Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(BackupItemType.SQLDB, model.backupItemType());
+        Assertions.assertEquals("zstacsjvhrweft", model.backupItems().get(0));
+        Assertions.assertEquals("qejpmvssehaepwa", model.policyName());
+        Assertions.assertEquals("xtczhupeuknijd", model.lastBackupStatus());
     }
 }

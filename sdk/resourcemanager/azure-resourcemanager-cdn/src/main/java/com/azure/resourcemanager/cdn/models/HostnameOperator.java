@@ -41,6 +41,15 @@ public final class HostnameOperator extends ExpandableStringEnum<HostnameOperato
     public static final HostnameOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of HostnameOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HostnameOperator() {
+    }
+
+    /**
      * Creates or finds a HostnameOperator from its string representation.
      *
      * @param name a name to look for.

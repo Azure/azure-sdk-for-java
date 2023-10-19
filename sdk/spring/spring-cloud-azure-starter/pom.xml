@@ -88,7 +88,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>2.7.14</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>2.7.16</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -102,7 +102,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.7.3.6</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <configuration>
           <skip>true</skip>
         </configuration>

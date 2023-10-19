@@ -4,20 +4,30 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RouterWorkerState. */
+/** Enums for worker status. */
 public final class RouterWorkerState extends ExpandableStringEnum<RouterWorkerState> {
-    /** Static value active for RouterWorkerState. */
-    public static final RouterWorkerState ACTIVE = fromString("active");
+    /** Worker is active and available to take offers. */
+    @Generated public static final RouterWorkerState ACTIVE = fromString("active");
 
-    /** Static value draining for RouterWorkerState. */
-    public static final RouterWorkerState DRAINING = fromString("draining");
+    /** Worker is not active, if there are existing offers they are being revoked. No new offers are sent. */
+    @Generated public static final RouterWorkerState DRAINING = fromString("draining");
 
-    /** Static value inactive for RouterWorkerState. */
-    public static final RouterWorkerState INACTIVE = fromString("inactive");
+    /** Worker is not active. No new offers are sent. */
+    @Generated public static final RouterWorkerState INACTIVE = fromString("inactive");
+
+    /**
+     * Creates a new instance of RouterWorkerState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Generated
+    @Deprecated
+    public RouterWorkerState() {}
 
     /**
      * Creates or finds a RouterWorkerState from its string representation.
@@ -25,6 +35,7 @@ public final class RouterWorkerState extends ExpandableStringEnum<RouterWorkerSt
      * @param name a name to look for.
      * @return the corresponding RouterWorkerState.
      */
+    @Generated
     @JsonCreator
     public static RouterWorkerState fromString(String name) {
         return fromString(name, RouterWorkerState.class);
@@ -35,6 +46,7 @@ public final class RouterWorkerState extends ExpandableStringEnum<RouterWorkerSt
      *
      * @return known RouterWorkerState values.
      */
+    @Generated
     public static Collection<RouterWorkerState> values() {
         return values(RouterWorkerState.class);
     }

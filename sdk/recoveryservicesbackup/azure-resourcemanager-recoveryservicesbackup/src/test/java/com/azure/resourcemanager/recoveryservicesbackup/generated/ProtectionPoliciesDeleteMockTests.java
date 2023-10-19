@@ -56,6 +56,6 @@ public final class ProtectionPoliciesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.protectionPolicies().delete("g", "rquv", "ygg", com.azure.core.util.Context.NONE);
+        manager.protectionPolicies().delete("i", "bs", "hajqfuk", com.azure.core.util.Context.NONE);
     }
 }

@@ -17,6 +17,10 @@ public final class AfdOriginUpdateParameters {
     @JsonProperty(value = "properties")
     private AfdOriginUpdatePropertiesParameters innerProperties;
 
+    /** Creates an instance of AfdOriginUpdateParameters class. */
+    public AfdOriginUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin.
      *
@@ -131,9 +135,9 @@ public final class AfdOriginUpdateParameters {
 
     /**
      * Get the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default. This overrides the host header
-     * defined at Endpoint.
+     * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
+     * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
+     * header defined at Endpoint.
      *
      * @return the originHostHeader value.
      */
@@ -143,9 +147,9 @@ public final class AfdOriginUpdateParameters {
 
     /**
      * Set the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default. This overrides the host header
-     * defined at Endpoint.
+     * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
+     * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
+     * header defined at Endpoint.
      *
      * @param originHostHeader the originHostHeader value to set.
      * @return the AfdOriginUpdateParameters object itself.

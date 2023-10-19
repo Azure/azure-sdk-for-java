@@ -102,6 +102,13 @@ public final class AzureVmWorkloadSapAseDatabaseProtectedItem extends AzureVmWor
 
     /** {@inheritDoc} */
     @Override
+    public AzureVmWorkloadSapAseDatabaseProtectedItem withNodesList(List<DistributedNodesInfo> nodesList) {
+        super.withNodesList(nodesList);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;

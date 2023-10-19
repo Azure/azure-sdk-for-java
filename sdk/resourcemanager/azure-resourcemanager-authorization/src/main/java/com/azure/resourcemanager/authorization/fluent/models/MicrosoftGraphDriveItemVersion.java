@@ -18,6 +18,8 @@ import java.util.Map;
 /** driveItemVersion. */
 @Fluent
 public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItemVersion {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * The content stream for this version of the item.
      */
@@ -46,7 +48,7 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
      */
     public byte[] content() {
         if (this.content == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.content.decodedBytes();
     }
