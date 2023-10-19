@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.rest;
+package com.generic.core.http.models;
 
 import com.generic.core.annotation.QueryParam;
-import com.generic.core.http.models.HttpHeaderName;
-import com.generic.core.http.models.HttpRequest;
 import com.generic.core.models.Context;
 import com.generic.core.models.BinaryData;
 import com.generic.core.util.logging.ClientLogger;
@@ -14,11 +12,11 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * This class contains the options to customize an HTTP request. {@link RequestOptions} can be used to configure the
+ * This class contains the options to customize an HTTP request. {@link HttpRequestOptions} can be used to configure the
  * request headers, query params, the request body, or add a callback to modify all aspects of the HTTP request.
  *
  * <p>
- * An instance of fully configured {@link RequestOptions} can be passed to a service method that preconfigures known
+ * An instance of fully configured {@link HttpRequestOptions} can be passed to a service method that preconfigures known
  * components of the request like URL, path params etc, further modifying both un-configured, or preconfigured
  * components.
  * </p>
@@ -71,8 +69,8 @@ import java.util.function.Consumer;
  * <!-- src_embed com.azure.core.http.rest.requestoptions.postrequest -->
  * <!-- end com.azure.core.http.rest.requestoptions.postrequest -->
  */
-public final class RequestOptions {
-    private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
+public final class HttpRequestOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpRequestOptions.class);
 
     // private static final EnumSet<ErrorOptions> DEFAULT = EnumSet.of(ErrorOptions.THROW);
 
@@ -82,9 +80,9 @@ public final class RequestOptions {
     private Context context;
 
     /**
-     * Creates a new instance of {@link RequestOptions}.
+     * Creates a new instance of {@link HttpRequestOptions}.
      */
-    public RequestOptions() {
+    public HttpRequestOptions() {
     }
 
     /**
@@ -127,7 +125,7 @@ public final class RequestOptions {
      * @param value the header value
      * @return the modified RequestOptions object
      */
-    public RequestOptions addHeader(HttpHeaderName header, String value) {
+    public HttpRequestOptions addHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
         return this;
     }
@@ -141,7 +139,7 @@ public final class RequestOptions {
      * @param value the header value
      * @return the modified RequestOptions object
      */
-    public RequestOptions setHeader(HttpHeaderName header, String value) {
+    public HttpRequestOptions setHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
         return this;
     }
@@ -154,7 +152,7 @@ public final class RequestOptions {
      * @param value the value of the query parameter
      * @return the modified RequestOptions object
      */
-    public RequestOptions addQueryParam(String parameterName, String value) {
+    public HttpRequestOptions addQueryParam(String parameterName, String value) {
         return addQueryParam(parameterName, value, false);
     }
 
@@ -168,7 +166,7 @@ public final class RequestOptions {
      * @param encoded whether this query parameter is already encoded
      * @return the modified RequestOptions object
      */
-    public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
+    public HttpRequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
         this.requestCallback = this.requestCallback.andThen(request -> {
             String url = request.getUrl().toString();
             // String encodedParameterName = encoded ? parameterName : UrlEscapers.QUERY_ESCAPER.escape(parameterName);
@@ -186,7 +184,7 @@ public final class RequestOptions {
      * @return the modified RequestOptions object
      * @throws NullPointerException If {@code requestCallback} is null.
      */
-    public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
+    public HttpRequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(requestCallback);
         return this;
@@ -199,7 +197,7 @@ public final class RequestOptions {
      * @return the modified RequestOptions object
      * @throws NullPointerException If {@code requestBody} is null.
      */
-    public RequestOptions setBody(BinaryData requestBody) {
+    public HttpRequestOptions setBody(BinaryData requestBody) {
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
         return this;
@@ -237,7 +235,7 @@ public final class RequestOptions {
      * @param context Additional context that is passed during the service call.
      * @return the modified RequestOptions object
      */
-    public RequestOptions setContext(Context context) {
+    public HttpRequestOptions setContext(Context context) {
         this.context = context;
         return this;
     }
