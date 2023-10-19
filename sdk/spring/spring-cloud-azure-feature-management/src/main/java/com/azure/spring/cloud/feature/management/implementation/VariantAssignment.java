@@ -42,7 +42,7 @@ public final class VariantAssignment {
     /**
      * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
      * 
-     * @param contextAccessor Context for evaluating the users/groups.
+     * @param contextAccessor Context for evaluating the users/groups. 
      * @param options enables customization of the filter.
      */
     public VariantAssignment(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options,

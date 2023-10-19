@@ -167,7 +167,7 @@ public class FeatureManager {
             return Mono.just(false);
         }
 
-        return evaulateFeatureFlagResults(featureItem, results);
+        return evaluateFeatureFlagResults(featureItem, results);
     }
 
     private Mono<Variant> generateVariant(String featureName, Object featureContext) {
@@ -206,7 +206,7 @@ public class FeatureManager {
             }
         }
 
-        return evaulateFeatureFlagResults(feature, results).flatMap(enabled -> {
+        return evaluateFeatureFlagResults(feature, results).flatMap(enabled -> {
             if (!enabled && StringUtils.hasText(defaultDisabledVariant)) {
                 return variantAssignment.getVariant(feature.getVariants().values(), defaultDisabledVariant).single();
             } else if (!enabled) {
@@ -217,7 +217,7 @@ public class FeatureManager {
         });
     }
     
-    private Mono<Boolean> evaulateFeatureFlagResults(Feature feature, List<Mono<Boolean>> results) {
+    private Mono<Boolean> evaluateFeatureFlagResults(Feature feature, List<Mono<Boolean>> results) {
         // All Filters must be true
         if (ALL_REQUIREMENT_TYPE.equals(feature.getRequirementType())) {
             return Flux.merge(results).reduce((a, b) -> a && b).single();
