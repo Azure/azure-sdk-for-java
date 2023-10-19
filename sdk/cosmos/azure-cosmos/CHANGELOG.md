@@ -3,6 +3,7 @@
 ### 4.52.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added an option to configure the minimum retry duration for 404/1002 session not available. - See [PR 37143](https://github.com/Azure/azure-sdk-for-java/pull/37143) and [PR 37239(https://github.com/Azure/azure-sdk-for-java/pull/37239)
 
 #### Breaking Changes
 
