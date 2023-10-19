@@ -212,47 +212,64 @@ public class HttpUrlConnectionClient implements HttpClient {
                 connection.setDoOutput(true);
 
                 Flux<BinaryData> requestBody;
-                BinaryData binaryBodyData = httpRequest.getBodyAsBinaryData();
+                BinaryData binaryDataBody = httpRequest.getBodyAsBinaryData();
 
-                if (binaryBodyData == null) {
-                    requestBody = Flux.just(BinaryData.fromByteBuffer(ByteBuffer.wrap(new byte[0])));
-                } else {
-                    requestBody = Flux.just(binaryBodyData);
-                }
+                if (binaryDataBody != null) {
+                    requestBody = Flux.just(binaryDataBody);
+                    return requestBody.flatMap(body -> {
+                        byte[] buffer = new byte[8192]; // 8KB is a common default, this can be investigated for better options later.
+                        InputStream bodyStream = binaryDataBody.toStream();
+                        return Flux.using(
+                            () -> new DataOutputStream(new BufferedOutputStream(connection.getOutputStream())),
+                            os -> Flux.generate(
+                                () -> os,
+                                (network, sink) -> {
+                                    try {
+                                        int read = bodyStream.read(buffer);
 
-                return requestBody
-                    .flatMap(body -> {
-                        if (progressReporter != null) {
-                            progressReporter.reportProgress(body.toBytes().length);
-                        }
+                                        // Consuming the request body is complete; signal completion.
+                                        if (read == -1) {
+                                            sink.complete();
+                                        } else {
+                                            if (progressReporter != null) {
+                                                progressReporter.reportProgress(read);
+                                            }
 
-                        return Mono.fromCallable(() -> {
-                            try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
-                                byte[] bytes = body.toBytes();
-                                os.write(bytes);
-                                os.flush();
-                                return Mono.just(body);
-                            } catch (IOException e) {
-                                return FluxUtil.monoError(LOGGER, new RuntimeException(e));
+                                            network.write(buffer, 0, read);
+                                            network.flush();
+
+                                            sink.next(1); // Dummy value to propagate to trigger timeout reset on data being sent.
+                                        }
+                                    } catch (IOException ex) {
+                                        sink.error(ex); // Error during sending the request; terminate the stream.
+                                    }
+                                    return network;
+                                }
+                            ).timeout(writeTimeout),
+                            os -> {
+                                try {
+                                    os.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }).timeout(writeTimeout);
-                    })
-                    .then();
+                        );
+                    }).then();
+                }
             }
             case GET:
             case HEAD:
             case OPTIONS:
             case TRACE:
             case CONNECT: {
-                break;
+                return Mono.empty();
             }
             default: {
-                return FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:"
-                    + httpRequest.getHttpMethod()));
+                return FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:" + httpRequest.getHttpMethod()));
             }
         }
-        return Mono.empty();
     }
+
 
     /**
      * Synchronously sends the content of an HttpRequest via an HttpUrlConnection instance.
