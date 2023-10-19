@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
-
 import com.azure.analytics.defender.easm.models.CountPagedIterable;
 import com.azure.analytics.defender.easm.models.Task;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
 import com.azure.analytics.defender.easm.models.Task;
 import com.azure.core.http.rest.PagedFlux;
 import org.junit.jupiter.api.Test;

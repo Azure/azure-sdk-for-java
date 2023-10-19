@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
 import com.azure.analytics.defender.easm.models.ReportAssetSnapshotRequest;
 import com.azure.analytics.defender.easm.models.ReportAssetSnapshotResult;
 import com.azure.analytics.defender.easm.models.ReportBillableAssetSummaryResult;
