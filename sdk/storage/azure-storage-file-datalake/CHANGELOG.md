@@ -4,12 +4,7 @@
 
 ### Features Added
 - Added support for DataLakeAudience
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service versions 2023-11-03
 
 ## 12.17.0 (2023-09-12)
 
