@@ -12,10 +12,7 @@ import com.azure.identity.InteractiveBrowserCredentialBuilder;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * This sample demonstrates how to create and manage discovery runs in a workspace
