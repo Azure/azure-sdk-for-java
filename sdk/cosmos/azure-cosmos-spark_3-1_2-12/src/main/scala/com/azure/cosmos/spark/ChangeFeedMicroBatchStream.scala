@@ -35,7 +35,9 @@ private class ChangeFeedMicroBatchStream
 
   private val defaultParallelism = session.sparkContext.defaultParallelism
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-  private val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
+  private val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
+  private val clientConfiguration = CosmosClientConfiguration.apply(
+    config, readConfig.forceEventualConsistency, sparkEnvironmentInfo)
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
@@ -48,7 +50,8 @@ private class ChangeFeedMicroBatchStream
     ThroughputControlHelper.getThroughputControlClientCacheItem(
       config,
       clientCacheItem.context,
-      Some(cosmosClientStateHandles))
+      Some(cosmosClientStateHandles),
+      sparkEnvironmentInfo)
 
   private val container =
     ThroughputControlHelper.getContainer(
@@ -119,7 +122,8 @@ private class ChangeFeedMicroBatchStream
       schema,
       DiagnosticsContext(correlationActivityId, checkpointLocation),
       cosmosClientStateHandles,
-      diagnosticsConfig)
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
   }
 
   /**

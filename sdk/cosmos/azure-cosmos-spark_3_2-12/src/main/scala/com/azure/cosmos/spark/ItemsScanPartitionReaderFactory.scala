@@ -17,7 +17,8 @@ private case class ItemsScanPartitionReaderFactory
   cosmosQuery: CosmosParameterizedQuery,
   diagnosticsOperationContext: DiagnosticsContext,
   cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-  diagnosticsConfig: DiagnosticsConfig
+  diagnosticsConfig: DiagnosticsConfig,
+  sparkEnvironmentInfo: String
 ) extends PartitionReaderFactory {
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
@@ -33,7 +34,8 @@ private case class ItemsScanPartitionReaderFactory
       cosmosQuery,
       diagnosticsOperationContext,
       cosmosClientStateHandles,
-      diagnosticsConfig
+      diagnosticsConfig,
+      sparkEnvironmentInfo
     )
   }
 }
