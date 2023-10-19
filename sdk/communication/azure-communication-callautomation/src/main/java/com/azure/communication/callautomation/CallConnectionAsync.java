@@ -570,7 +570,7 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMediaAsync getCallMediaAsync() {
-        return new CallMediaAsync(callConnectionId, callMediasInternal, eventProcessor);
+        return new CallMediaAsync(callConnectionId, callMediasInternal);
     }
 
     /***

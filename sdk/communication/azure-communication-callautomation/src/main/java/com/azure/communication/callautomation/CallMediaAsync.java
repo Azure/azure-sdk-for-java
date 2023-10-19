@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.eventprocessor.CallAutomationEventProcessor;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
@@ -11,7 +10,12 @@ import com.azure.communication.callautomation.implementation.models.DtmfOptionsI
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
 import com.azure.communication.callautomation.implementation.models.GenderTypeInternal;
+import com.azure.communication.callautomation.implementation.models.StartHoldMusicRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
+import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
+import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
@@ -20,38 +24,28 @@ import com.azure.communication.callautomation.implementation.models.RecognizeInp
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
-import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
-import com.azure.communication.callautomation.implementation.models.StartHoldMusicRequestInternal;
-import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
-import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
-import com.azure.communication.callautomation.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
-import com.azure.communication.callautomation.models.PlayResult;
 import com.azure.communication.callautomation.models.PlaySource;
-import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognizeChoice;
-import com.azure.communication.callautomation.models.SendDtmfResult;
-import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.StartHoldMusicOptions;
-import com.azure.communication.callautomation.models.StartRecognizingCallMediaResult;
 import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.models.SsmlSource;
+import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.exception.HttpResponseException;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -67,13 +61,11 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class CallMediaAsync {
     private final CallMediasImpl contentsInternal;
     private final String callConnectionId;
-    private final CallAutomationEventProcessor eventProcessor;
     private final ClientLogger logger;
 
-    CallMediaAsync(String callConnectionId, CallMediasImpl contentsInternal, CallAutomationEventProcessor eventProcessor) {
+    CallMediaAsync(String callConnectionId, CallMediasImpl contentsInternal) {
         this.callConnectionId = callConnectionId;
         this.contentsInternal = contentsInternal;
-        this.eventProcessor = eventProcessor;
         this.logger = new ClientLogger(CallMediaAsync.class);
     }
 
@@ -84,10 +76,10 @@ public final class CallMediaAsync {
      * @param playTo the targets to play to
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Result for successful play request.
+     * @return Void for successful play request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayResult> play(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
+    public Mono<Void> play(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
         PlayOptions options = new PlayOptions(playSources.get(0), playTo);
         return playWithResponse(options).flatMap(FluxUtil::toMono);
     }
@@ -99,10 +91,10 @@ public final class CallMediaAsync {
      * @param playTo the targets to play to
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Result for successful play request.
+     * @return Void for successful play request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayResult> play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+    public Mono<Void> play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
         PlayOptions options = new PlayOptions(playSource, playTo);
         return playWithResponse(options).flatMap(FluxUtil::toMono);
     }
@@ -113,10 +105,10 @@ public final class CallMediaAsync {
      * @param playSources A List of {@link PlaySource} representing the sources to play.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Result for successful playAll request.
+     * @return Void for successful playAll request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayResult> playToAll(List<PlaySource> playSources) {
+    public Mono<Void> playToAll(List<PlaySource> playSources) {
         PlayToAllOptions options = new PlayToAllOptions(playSources.get(0));
         return playToAllWithResponse(options).flatMap(FluxUtil::toMono);
     }
@@ -126,10 +118,10 @@ public final class CallMediaAsync {
      * @param playSource A {@link PlaySource} representing the source to play.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Result for successful playAll request.
+     * @return Void for successful playAll request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayResult> playToAll(PlaySource playSource) {
+    public Mono<Void> playToAll(PlaySource playSource) {
         PlayToAllOptions options = new PlayToAllOptions(playSource);
         return playToAllWithResponse(options).flatMap(FluxUtil::toMono);
     }
@@ -138,12 +130,12 @@ public final class CallMediaAsync {
      * Play
      *
      * @param options play options.
-     * @return Result for successful play request.
+     * @return Response for successful play request.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayResult>> playWithResponse(PlayOptions options) {
+    public Mono<Response<Void>> playWithResponse(PlayOptions options) {
         return playWithResponseInternal(options, null);
     }
 
@@ -151,69 +143,49 @@ public final class CallMediaAsync {
      * Play to all participants
      *
      * @param options play to all options.
-     * @return Result for successful playAll request.
+     * @return Response for successful playAll request.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayResult>> playToAllWithResponse(PlayToAllOptions options) {
+    public Mono<Response<Void>> playToAllWithResponse(PlayToAllOptions options) {
         return playToAllWithResponseInternal(options, null);
     }
 
     /**
      * Recognize operation.
      * @param recognizeOptions Different attributes for recognize.
-     * @return Result for successful recognize request.
+     * @return Response for successful recognize request.
      */
-    public Mono<StartRecognizingCallMediaResult> startRecognizing(CallMediaRecognizeOptions recognizeOptions) {
-        return startRecognizingWithResponse(recognizeOptions).flatMap(FluxUtil::toMono);
+    public Mono<Void> startRecognizing(CallMediaRecognizeOptions recognizeOptions) {
+        return startRecognizingWithResponse(recognizeOptions).then();
     }
 
     /**
      * Recognize operation
      * @param recognizeOptions Different attributes for recognize.
-     * @return Result for successful recognize request.
+     * @return Response for successful recognize request.
      */
-    public Mono<Response<StartRecognizingCallMediaResult>> startRecognizingWithResponse(CallMediaRecognizeOptions recognizeOptions) {
+    public Mono<Response<Void>> startRecognizingWithResponse(CallMediaRecognizeOptions recognizeOptions) {
         return withContext(context -> recognizeWithResponseInternal(recognizeOptions, context));
     }
 
-    Mono<Response<StartRecognizingCallMediaResult>> recognizeWithResponseInternal(CallMediaRecognizeOptions recognizeOptions, Context context) {
+    Mono<Response<Void>> recognizeWithResponseInternal(CallMediaRecognizeOptions recognizeOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             if (recognizeOptions instanceof CallMediaRecognizeDtmfOptions) {
                 RecognizeRequest recognizeRequest = getRecognizeRequestFromDtmfConfiguration(recognizeOptions);
-                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context)
-                    .map(response -> {
-                        StartRecognizingCallMediaResult startRecognizingCallMediaResult = new StartRecognizingCallMediaResult();
-                        startRecognizingCallMediaResult.setEventProcessor(eventProcessor, callConnectionId, recognizeOptions.getOperationContext());
-                        return new SimpleResponse<>(response, startRecognizingCallMediaResult);
-                    });
+                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
             } else if (recognizeOptions instanceof CallMediaRecognizeChoiceOptions) {
                 RecognizeRequest recognizeRequest = getRecognizeRequestFromChoiceConfiguration(recognizeOptions);
-                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context)
-                    .map(response -> {
-                        StartRecognizingCallMediaResult startRecognizingCallMediaResult = new StartRecognizingCallMediaResult();
-                        startRecognizingCallMediaResult.setEventProcessor(eventProcessor, callConnectionId, recognizeOptions.getOperationContext());
-                        return new SimpleResponse<>(response, startRecognizingCallMediaResult);
-                    });
+                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
             } else if (recognizeOptions instanceof CallMediaRecognizeSpeechOptions) {
                 RecognizeRequest recognizeRequest = getRecognizeRequestFromSpeechConfiguration(recognizeOptions);
-                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context)
-                    .map(response -> {
-                        StartRecognizingCallMediaResult startRecognizingCallMediaResult = new StartRecognizingCallMediaResult();
-                        startRecognizingCallMediaResult.setEventProcessor(eventProcessor, callConnectionId, recognizeOptions.getOperationContext());
-                        return new SimpleResponse<>(response, startRecognizingCallMediaResult);
-                    });
+                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
             } else if (recognizeOptions instanceof CallMediaRecognizeSpeechOrDtmfOptions) {
                 RecognizeRequest recognizeRequest = getRecognizeRequestFromSpeechOrDtmfConfiguration(recognizeOptions);
-                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context)
-                    .map(response -> {
-                        StartRecognizingCallMediaResult startRecognizingCallMediaResult = new StartRecognizingCallMediaResult();
-                        startRecognizingCallMediaResult.setEventProcessor(eventProcessor, callConnectionId, recognizeOptions.getOperationContext());
-                        return new SimpleResponse<>(response, startRecognizingCallMediaResult);
-                    });
+                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
             } else {
                 return monoError(logger, new UnsupportedOperationException(recognizeOptions.getClass().getName()));
             }
@@ -225,32 +197,27 @@ public final class CallMediaAsync {
 
     /**
      * Cancels all the queued media operations.
-     * @return Result for successful cancelAllMediaOperations request.
+     * @return Void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelAllMediaOperationsResult> cancelAllMediaOperations() {
-        return cancelAllMediaOperationsWithResponse().flatMap(FluxUtil::toMono);
+    public Mono<Void> cancelAllMediaOperations() {
+        return cancelAllMediaOperationsWithResponse().then();
     }
 
     /**
      * Cancels all the queued media operations
-     * @return Result for successful cancelAllMediaOperations request.
+     * @return Response for successful playAll request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse() {
+    public Mono<Response<Void>> cancelAllMediaOperationsWithResponse() {
         return cancelAllMediaOperationsWithResponseInternal(null);
     }
 
-    Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponseInternal(Context context) {
+    Mono<Response<Void>> cancelAllMediaOperationsWithResponseInternal(Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return contentsInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, contextValue)
-                    .map(response -> {
-                        CancelAllMediaOperationsResult cancelAllMediaOperationsResult = new CancelAllMediaOperationsResult();
-                        cancelAllMediaOperationsResult.setEventProcessor(eventProcessor, callConnectionId, null);
-                        return new SimpleResponse<>(response, cancelAllMediaOperationsResult);
-                    });
+                return contentsInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, contextValue);
             });
 
         } catch (RuntimeException ex) {
@@ -258,17 +225,12 @@ public final class CallMediaAsync {
         }
     }
 
-    Mono<Response<PlayResult>> playWithResponseInternal(PlayOptions options, Context context) {
+    Mono<Response<Void>> playWithResponseInternal(PlayOptions options, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 PlayRequest request = getPlayRequest(options);
-                return contentsInternal.playWithResponseAsync(callConnectionId, request, contextValue)
-                    .map(response -> {
-                        PlayResult playResult = new PlayResult();
-                        playResult.setEventProcessor(eventProcessor, callConnectionId, options.getOperationContext());
-                        return new SimpleResponse<>(response, playResult);
-                    });
+                return contentsInternal.playWithResponseAsync(callConnectionId, request, contextValue);
             });
 
         } catch (RuntimeException ex) {
@@ -276,7 +238,7 @@ public final class CallMediaAsync {
         }
     }
 
-    Mono<Response<PlayResult>> playToAllWithResponseInternal(PlayToAllOptions options, Context context) {
+    Mono<Response<Void>> playToAllWithResponseInternal(PlayToAllOptions options, Context context) {
         try {
             PlayOptions playOptions = new PlayOptions(options.getPlaySource(), Collections.emptyList());
             playOptions.setLoop(options.isLoop());
@@ -550,10 +512,10 @@ public final class CallMediaAsync {
      *
      * @param tones tones to be sent
      * @param targetParticipant the target participant
-     * @return Result for successful sendDtmf request.
+     * @return Response for successful sendDtmf request.
      */
-    public Mono<SendDtmfResult> sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        return sendDtmfWithResponse(tones, targetParticipant, null, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        return sendDtmfWithResponse(tones, targetParticipant, null, null).then();
     }
 
     /**
@@ -563,13 +525,13 @@ public final class CallMediaAsync {
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
      * @param callbackUrl the call back URI override to set (pass null if not applicable)
-     * @return Result for successful sendDtmf request.
+     * @return Response for successful sendDtmf request.
      */
-    public Mono<Response<SendDtmfResult>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext, String callbackUrl) {
+    public Mono<Response<Void>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext, String callbackUrl) {
         return withContext(context -> sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, callbackUrl, context));
     }
 
-    Mono<Response<SendDtmfResult>> sendDtmfWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, String callbackUrl, Context context) {
+    Mono<Response<Void>> sendDtmfWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, String callbackUrl, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             SendDtmfRequestInternal requestInternal = new SendDtmfRequestInternal()
@@ -580,12 +542,7 @@ public final class CallMediaAsync {
                 .setOperationContext(operationContext)
                 .setCallbackUri(callbackUrl);
 
-            return contentsInternal.sendDtmfWithResponseAsync(callConnectionId, requestInternal, context)
-                .map(response -> {
-                    SendDtmfResult sendDtmfResult = new SendDtmfResult();
-                    sendDtmfResult.setEventProcessor(eventProcessor, callConnectionId, operationContext);
-                    return new SimpleResponse<>(response, sendDtmfResult);
-                });
+            return contentsInternal.sendDtmfWithResponseAsync(callConnectionId, requestInternal, context);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

@@ -3,20 +3,7 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
-import com.azure.communication.callautomation.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callautomation.models.DtmfTone;
-import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.GenderType;
-import com.azure.communication.callautomation.models.PlayOptions;
-import com.azure.communication.callautomation.models.PlayResult;
-import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.RecognizeChoice;
-import com.azure.communication.callautomation.models.SendDtmfResult;
-import com.azure.communication.callautomation.models.StartHoldMusicOptions;
-import com.azure.communication.callautomation.models.StartRecognizingCallMediaResult;
-import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.models.*;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -66,7 +53,7 @@ public class CallMediaUnitTests {
         playOptions = new PlayOptions(playFileSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
             .setOperationContext("operationContext");
-        Response<PlayResult> response = callMedia.playWithResponse(playOptions, Context.NONE);
+        Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
@@ -75,7 +62,7 @@ public class CallMediaUnitTests {
         playToAllOptions = new PlayToAllOptions(playFileSource)
             .setLoop(false)
             .setOperationContext("operationContext");
-        Response<PlayResult> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
+        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
@@ -84,7 +71,7 @@ public class CallMediaUnitTests {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
             .setOperationContext("operationContext");
-        Response<PlayResult> response = callMedia.playWithResponse(playOptions, Context.NONE);
+        Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
@@ -93,20 +80,20 @@ public class CallMediaUnitTests {
         playToAllOptions = new PlayToAllOptions(playTextSource)
             .setLoop(false)
             .setOperationContext("operationContext");
-        Response<PlayResult> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
+        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
     public void cancelAllOperationsWithResponse() {
-        Response<CancelAllMediaOperationsResult> response = callMedia.cancelAllMediaOperationsWithResponse(Context.NONE);
+        Response<Void> response = callMedia.cancelAllMediaOperationsWithResponse(Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
     public void recognizeWithDtmfResponseTest() {
         CallMediaRecognizeDtmfOptions callMediaRecognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
-        Response<StartRecognizingCallMediaResult> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
+        Response<Void> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
@@ -118,7 +105,7 @@ public class CallMediaUnitTests {
             Arrays.asList(recognizeChoice1, recognizeChoice2)
         );
         CallMediaRecognizeChoiceOptions callMediaRecognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
-        Response<StartRecognizingCallMediaResult> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
+        Response<Void> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
@@ -154,7 +141,7 @@ public class CallMediaUnitTests {
 
     @Test
     public void sendDtmfWithResponseTest() {
-        Response<SendDtmfResult> response = callMedia.sendDtmfWithResponse(
+        Response<Void> response = callMedia.sendDtmfWithResponse(
             Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
             "ctx", null, Context.NONE
         );
