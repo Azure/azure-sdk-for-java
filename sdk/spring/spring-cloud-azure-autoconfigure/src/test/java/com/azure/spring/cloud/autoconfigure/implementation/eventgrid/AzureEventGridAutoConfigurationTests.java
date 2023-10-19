@@ -133,6 +133,7 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void clientCanOverride() {
         EventGridPublisherClient<BinaryData> myCustomClient = new EventGridPublisherClientBuilder()
             .endpoint(String.format(ENDPOINT, "myeg"))
