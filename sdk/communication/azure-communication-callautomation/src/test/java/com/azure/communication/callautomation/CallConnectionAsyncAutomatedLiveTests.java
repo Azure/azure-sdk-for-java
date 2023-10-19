@@ -255,13 +255,6 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             AddParticipantSucceeded addParticipantSucceeded = waitForEvent(AddParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(addParticipantSucceeded);
 
-/*            // check participant number in the call
-            List<CallParticipant> listParticipantsResult = createCallResult.getCallConnectionAsync().listParticipants().log().collectList().block();
-            assertNotNull(listParticipantsResult);
-            assertEquals(3, listParticipantsResult.size());*/
-
-            //sleepIfRunningAgainstService(2000);
-
             // mute the participant
             Response<MuteParticipantResult> muteResponse = createCallResult.getCallConnectionAsync()
                 .muteParticipantWithResponse(new MuteParticipantOptions(receiver).setOperationContext(CALL_OPERATION_CONTEXT)).block();
@@ -271,21 +264,19 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             assertEquals(CALL_OPERATION_CONTEXT, muteParticipantResult.getOperationContext());
             assertEquals(HttpStatus.OK_200, muteResponse.getStatusCode());
 
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException ex) {
-                // ignore
-            }
+            sleepIfRunningAgainstService(4000);
 
             // verify that the participant got successfully muted
+            boolean isMuted = false;
             List<CallParticipant> listParticipantsResult = createCallResult.getCallConnectionAsync().listParticipants().log().collectList().block();
             if (listParticipantsResult != null) {
                 for (CallParticipant participant : listParticipantsResult) {
-                    if (participant.getIdentifier().equals(receiver)) {
-                        assertTrue(participant.isMuted(), "Failed to mute participant");
+                    if (participant.getIdentifier().equals(receiver) && participant.isMuted()) {
+                        isMuted = true;
                     }
                 }
             }
+            assertTrue(isMuted, "Failed to mute participant");
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {
