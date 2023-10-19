@@ -29,10 +29,11 @@ To learn more about the BOM, see
 the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
 
 ```xml
+
 <dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>com.azure</groupId>
+            <groupId>com.genericcom.generic</groupId>
             <artifactId>azure-sdk-bom</artifactId>
             <version>{bom_version_to_target}</version>
             <type>pom</type>
