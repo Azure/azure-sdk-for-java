@@ -21,7 +21,7 @@ public final class TransferCallToParticipantOptions {
     private String operationCallbackUrl;
 
     /**
-     *  Participant being transferred away
+     *  Transferee is the participant who is transferred away
      */
     private CommunicationIdentifier transferee;
 
