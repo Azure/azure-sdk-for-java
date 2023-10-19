@@ -165,6 +165,8 @@ import com.azure.messaging.eventgrid.systemevents.ResourceActionSuccessEventData
 import com.azure.messaging.eventgrid.systemevents.ResourceDeleteCancelEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceDeleteFailureEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsHealthResourcesAnnotatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessEventData;
@@ -921,6 +923,20 @@ public final class SystemEventNames {
     public static final String RESOURCE_DELETE_SUCCESS = "Microsoft.Resources.ResourceDeleteSuccess";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.ResourceNotifications.HealthResources.ResourceAnnotated event.
+     */
+    public static final String RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_ANNOTATED =
+            "Microsoft.ResourceNotifications.HealthResources.ResourceAnnotated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.ResourceNotifications.HealthResources.AvailabilityStatusChanged event.
+     */
+    public static final String RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_AVAILABILITY_STATUS_CHANGED =
+            "Microsoft.ResourceNotifications.HealthResources.AvailabilityStatusChanged";
+
+    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteCancel event. This is
      * raised when a resource create or update operation is canceled.
      */
@@ -1290,6 +1306,12 @@ public final class SystemEventNames {
                     put(RESOURCE_DELETE_CANCEL, ResourceDeleteCancelEventData.class);
                     put(RESOURCE_DELETE_FAILURE, ResourceDeleteFailureEventData.class);
                     put(RESOURCE_DELETE_SUCCESS, ResourceDeleteSuccessEventData.class);
+                    put(
+                            RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_ANNOTATED,
+                            ResourceNotificationsHealthResourcesAnnotatedEventData.class);
+                    put(
+                            RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_AVAILABILITY_STATUS_CHANGED,
+                            ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData.class);
                     put(RESOURCE_WRITE_CANCEL, ResourceWriteCancelEventData.class);
                     put(RESOURCE_WRITE_FAILURE, ResourceWriteFailureEventData.class);
                     put(RESOURCE_WRITE_SUCCESS, ResourceWriteSuccessEventData.class);

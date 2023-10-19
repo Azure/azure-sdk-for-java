@@ -98,6 +98,8 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b6ae2ea162efb468a1de6742615e6c655c06e87/specification/eventgrid/data-plane/Microsoft.ApiManagement/stable/2018-01-01/APIManagement.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b6ae2ea162efb468a1de6742615e6c655c06e87/specification/eventgrid/data-plane/Microsoft.HealthcareApis/stable/2018-01-01/HealthcareApis.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b6ae2ea162efb468a1de6742615e6c655c06e87/specification/eventgrid/data-plane/Microsoft.DataBox/stable/2018-01-01/DataBox.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b6ae2ea162efb468a1de6742615e6c655c06e87/specification/eventgrid/data-plane/Microsoft.ResourceNotifications/stable/2018-01-01/common.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b6ae2ea162efb468a1de6742615e6c655c06e87/specification/eventgrid/data-plane/Microsoft.ResourceNotifications/stable/2018-01-01/HealthResources.json
 ```
 
 ### KeyVault updates
