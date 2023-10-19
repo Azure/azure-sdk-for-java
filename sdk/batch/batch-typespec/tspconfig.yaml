@@ -12,6 +12,8 @@ options:
     namer: false
     generate-samples: false
     generate-tests: false
+    skip-special-headers:
+      - "ocp-date"
   "@azure-tools/typespec-autorest":
     "output-file": "BatchService.json"
 

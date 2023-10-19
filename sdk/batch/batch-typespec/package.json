@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@azure-tools/typespec-java": "latest",
+    "@typespec/compiler": "latest",
     "@typespec/openapi": "latest",
     "@azure-tools/typespec-autorest": "latest"
   },

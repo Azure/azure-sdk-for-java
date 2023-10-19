@@ -105,18 +105,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -160,18 +148,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -229,18 +205,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -282,18 +246,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -565,18 +517,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -925,9 +865,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -977,9 +914,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1036,9 +970,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1399,9 +1330,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1520,18 +1448,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1570,9 +1486,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1630,18 +1543,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1712,9 +1613,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1782,9 +1680,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1832,18 +1727,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1956,9 +1839,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -2020,18 +1900,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2085,18 +1953,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2162,9 +2018,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -2216,9 +2069,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -2659,9 +2509,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -2973,9 +2820,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -3421,9 +3265,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -3487,9 +3328,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -3545,9 +3383,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -3606,18 +3441,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -3999,18 +3822,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -4432,18 +4243,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -4872,18 +4671,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -4965,18 +4752,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -5026,18 +4801,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -5100,18 +4863,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -5173,18 +4924,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate being deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5224,18 +4963,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5266,18 +4993,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -5343,9 +5058,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -5405,9 +5117,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -5459,9 +5168,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -5908,9 +5614,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -6324,9 +6027,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -6771,9 +6471,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -6823,9 +6520,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -6875,9 +6569,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -6921,18 +6612,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -7326,18 +7005,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -7760,18 +7427,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -7936,18 +7591,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -8170,18 +7813,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -8382,9 +8013,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -8440,9 +8068,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -8678,9 +8303,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -8913,18 +8535,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -9009,9 +8619,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -9068,9 +8675,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -9120,18 +8724,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
@@ -9168,9 +8760,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
@@ -9225,9 +8814,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
@@ -9275,18 +8861,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -9337,18 +8911,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -9394,18 +8956,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
@@ -9440,18 +8990,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -9495,18 +9033,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -9696,18 +9222,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -9748,18 +9262,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -9798,18 +9300,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -9851,18 +9341,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -9896,18 +9374,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -9953,18 +9419,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -10004,18 +9458,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -10075,18 +9517,6 @@ public final class BatchAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -10273,18 +9703,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -10360,18 +9778,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -10445,18 +9851,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
@@ -10493,9 +9887,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
@@ -10550,9 +9941,6 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
@@ -10600,18 +9988,6 @@ public final class BatchAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -10643,69 +10019,6 @@ public final class BatchAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listNodeFiles(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.listNodeFilesAsync(poolId, nodeId, requestOptions);
-    }
-
-    /**
-     * Lists all of the applications available in the specified Account.
-     *
-     * <p>This operation returns only Applications and versions that are available for use on Compute Nodes; that is,
-     * that can be used in an Package reference. For administrator information about applications and versions that are
-     * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the applications available in an Account as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchApplication> listApplications(
-            Integer maxresults, OffsetDateTime ocpDate, Integer timeOutInSeconds) {
-        // Generated convenience method for listApplications
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listApplications(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BatchApplication>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    BatchApplication.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -10761,45 +10074,6 @@ public final class BatchAsyncClient {
      * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in an Azure Batch Account on successful completion of {@link
-     *     Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchApplication> getApplication(
-            String applicationId, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for getApplicationWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return getApplicationWithResponse(applicationId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(BatchApplication.class));
-    }
-
-    /**
-     * Gets information about the specified Application.
-     *
-     * <p>This operation returns only Applications and versions that are available for use on Compute Nodes; that is,
-     * that can be used in an Package reference. For administrator information about Applications and versions that are
-     * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param applicationId The ID of the Application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -10817,90 +10091,6 @@ public final class BatchAsyncClient {
         return getApplicationWithResponse(applicationId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(BatchApplication.class));
-    }
-
-    /**
-     * Lists the usage metrics, aggregated by Pool across individual time intervals, for the specified Account.
-     *
-     * <p>If you do not specify a $filter clause including a poolId, the response includes all Pools that existed in the
-     * Account in the time range of the returned aggregation intervals. If you do not specify a $filter clause including
-     * a startTime or endTime these filters default to the start and end times of the last aggregation interval
-     * currently available; that is, only the last aggregation interval is returned.
-     *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param starttime The earliest time from which to include metrics. This must be at least two and a half hours
-     *     before the current time. If not specified this defaults to the start time of the last aggregation interval
-     *     currently available.
-     * @param endtime The latest time from which to include metrics. This must be at least two hours before the current
-     *     time. If not specified this defaults to the end time of the last aggregation interval currently available.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PoolUsageMetrics> listPoolUsageMetrics(
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            OffsetDateTime starttime,
-            OffsetDateTime endtime,
-            String filter) {
-        // Generated convenience method for listPoolUsageMetrics
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (starttime != null) {
-            requestOptions.addQueryParam("starttime", String.valueOf(starttime), false);
-        }
-        if (endtime != null) {
-            requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listPoolUsageMetrics(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, PoolUsageMetrics>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    PoolUsageMetrics.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -10955,40 +10145,6 @@ public final class BatchAsyncClient {
      * information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param body The Pool to be created.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createPool(BatchPoolCreateOptions body, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for createPoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return createPoolWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a Pool to the specified Account.
-     *
-     * <p>When naming Pools, avoid including sensitive information such as user names or secret project names. This
-     * information may appear in telemetry logs accessible to Microsoft Support engineers.
-     *
-     * @param body The Pool to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11003,92 +10159,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for createPoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createPoolWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all of the Pools in the specified Account.
-     *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Pools in an Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchPool> listPools(
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            String filter,
-            List<String> select,
-            List<String> expand) {
-        // Generated convenience method for listPools
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam(
-                    "$expand",
-                    expand.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listPools(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BatchPool>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    BatchPool.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -11144,66 +10214,6 @@ public final class BatchAsyncClient {
      * on a Pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
      *
      * @param poolId The ID of the Pool to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deletePool(
-            String poolId, Integer timeOutInSeconds, OffsetDateTime ocpDate, RequestConditions requestConditions) {
-        // Generated convenience method for deletePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return deletePoolWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Pool from the specified Account.
-     *
-     * <p>When you request that a Pool be deleted, the following actions occur: the Pool state is set to deleting; any
-     * ongoing resize operation on the Pool are stopped; the Batch service starts resizing the Pool to zero Compute
-     * Nodes; any Tasks running on existing Compute Nodes are terminated and requeued (as if a resize Pool operation had
-     * been requested with the default requeue option); finally, the Pool is removed from the system. Because running
-     * Tasks are requeued, the user can rerun these Tasks by updating their Job to target a different Pool. The Tasks
-     * can then run on the new Pool. If you want to override the requeue behavior, then you should call resize Pool
-     * explicitly to shrink the Pool to zero size before deleting the Pool. If you call an Update, Patch or Delete API
-     * on a Pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
-     *
-     * @param poolId The ID of the Pool to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11224,56 +10234,6 @@ public final class BatchAsyncClient {
      * Gets basic properties of a Pool.
      *
      * @param poolId The ID of the Pool to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return basic properties of a Pool on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> poolExists(
-            String poolId, Integer timeOutInSeconds, OffsetDateTime ocpDate, RequestConditions requestConditions) {
-        // Generated convenience method for poolExistsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return poolExistsWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets basic properties of a Pool.
-     *
-     * @param poolId The ID of the Pool to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11287,82 +10247,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for poolExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return poolExistsWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets information about the specified Pool.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Pool on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchPool> getPool(
-            String poolId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            List<String> select,
-            List<String> expand,
-            RequestConditions requestConditions) {
-        // Generated convenience method for getPoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam(
-                    "$expand",
-                    expand.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return getPoolWithResponse(poolId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(BatchPool.class));
     }
 
     /**
@@ -11396,66 +10280,6 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The pool properties to update.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePool(
-            String poolId,
-            BatchPoolUpdateOptions body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for updatePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return updatePoolWithResponse(poolId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
-     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
-     * StartTask.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param body The pool properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11470,37 +10294,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for updatePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return updatePoolWithResponse(poolId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Disables automatic scaling for a Pool.
-     *
-     * @param poolId The ID of the Pool on which to disable automatic scaling.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disablePoolAutoScale(String poolId, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for disablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return disablePoolAutoScaleWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -11533,68 +10326,6 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The options to use for enabling automatic scaling.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enablePoolAutoScale(
-            String poolId,
-            BatchPoolEnableAutoScaleOptions body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Enables automatic scaling for a Pool.
-     *
-     * <p>You cannot enable automatic scaling on a Pool if a resize operation is in progress on the Pool. If automatic
-     * scaling of the Pool is currently disabled, you must specify a valid autoscale formula as part of the request. If
-     * automatic scaling of the Pool is already enabled, you may specify a new autoscale formula and/or a new evaluation
-     * interval. You cannot call this API for the same Pool more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param body The options to use for enabling automatic scaling.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11610,45 +10341,6 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(body), requestOptions)
                 .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * <p>This API is primarily for validating an autoscale formula, as it simply returns the result without applying
-     * the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
-     *
-     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param body The options to use for evaluating the automatic scaling formula.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results and errors from an execution of a Pool autoscale formula on successful completion of {@link
-     *     Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AutoScaleRun> evaluatePoolAutoScale(
-            String poolId, BatchPoolEvaluateAutoScaleOptions body, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for evaluatePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
     }
 
     /**
@@ -11689,68 +10381,6 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The options to use for resizing the pool.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resizePool(
-            String poolId,
-            BatchPoolResizeOptions body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for resizePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return resizePoolWithResponse(poolId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Changes the number of Compute Nodes that are assigned to a Pool.
-     *
-     * <p>You can only resize a Pool when its allocation state is steady. If the Pool is already resizing, the request
-     * fails with status code 409. When you resize a Pool, the Pool's allocation state changes from steady to resizing.
-     * You cannot resize Pools which are configured for automatic scaling. If you try to do this, the Batch service
-     * returns an error 409. If you resize a Pool downwards, the Batch service chooses which Compute Nodes to remove. To
-     * remove specific Compute Nodes, use the Pool remove Compute Nodes API instead.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param body The options to use for resizing the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11765,63 +10395,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for resizePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return resizePoolWithResponse(poolId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Stops an ongoing resize operation on the Pool.
-     *
-     * <p>This does not restore the Pool to its previous state before the resize operation: it only stops any further
-     * changes being made, and the Pool maintains its current state. After stopping, the Pool stabilizes at the number
-     * of Compute Nodes it was at when the stop operation was done. During the stop operation, the Pool allocation state
-     * changes first to stopping and then to steady. A resize operation need not be an explicit resize Pool request;
-     * this API can also be used to halt the initial sizing of the Pool when it is created.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopPoolResize(
-            String poolId, Integer timeOutInSeconds, OffsetDateTime ocpDate, RequestConditions requestConditions) {
-        // Generated convenience method for stopPoolResizeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return stopPoolResizeWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -11859,44 +10432,6 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to update.
      * @param body The options to use for replacing properties on the pool.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replacePoolProperties(
-            String poolId, BatchPoolReplaceOptions body, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for replacePoolPropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * <p>This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask
-     * associated with it and if StartTask is not specified with this request, then the Batch service will remove the
-     * existing StartTask.
-     *
-     * @param poolId The ID of the Pool to update.
-     * @param body The options to use for replacing properties on the pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11922,65 +10457,6 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The options to use for removing the node.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeNodes(
-            String poolId,
-            NodeRemoveOptions body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for removeNodesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return removeNodesWithResponse(poolId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Removes Compute Nodes from the specified Pool.
-     *
-     * <p>This operation can only run when the allocation state of the Pool is steady. When this operation runs, the
-     * allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param body The options to use for removing the node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11995,69 +10471,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return removeNodesWithResponse(poolId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all Virtual Machine Images supported by the Azure Batch service.
-     *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ImageInformation> listSupportedImages(
-            Integer maxresults, OffsetDateTime ocpDate, Integer timeOutInSeconds, String filter) {
-        // Generated convenience method for listSupportedImages
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listSupportedImages(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, ImageInformation>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    ImageInformation.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -12094,70 +10507,6 @@ public final class BatchAsyncClient {
                                                                     protocolMethodData ->
                                                                             protocolMethodData.toObject(
                                                                                     ImageInformation.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
-    }
-
-    /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be
-     * up to date. If you need exact node counts, use a list query.
-     *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PoolNodeCounts> listPoolNodeCounts(
-            Integer maxresults, OffsetDateTime ocpDate, Integer timeOutInSeconds, String filter) {
-        // Generated convenience method for listPoolNodeCounts
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listPoolNodeCounts(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, PoolNodeCounts>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    PoolNodeCounts.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
                                                     null));
@@ -12216,64 +10565,6 @@ public final class BatchAsyncClient {
      * being deleted.
      *
      * @param jobId The ID of the Job to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteJob(
-            String jobId, Integer timeOutInSeconds, OffsetDateTime ocpDate, RequestConditions requestConditions) {
-        // Generated convenience method for deleteJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return deleteJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Job.
-     *
-     * <p>Deleting a Job also deletes all Tasks that are part of that Job, and all Job statistics. This also overrides
-     * the retention period for Task data; that is, if the Job contains Tasks which are still retained on Compute Nodes,
-     * the Batch services deletes those Tasks' working directories and all their contents. When a Delete Job request is
-     * received, the Batch service sets the Job to the deleting state. All update operations on a Job that is in
-     * deleting state will fail with status code 409 (Conflict), with additional information indicating that the Job is
-     * being deleted.
-     *
-     * @param jobId The ID of the Job to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12288,82 +10579,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets information about the specified Job.
-     *
-     * @param jobId The ID of the Job.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Job on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchJob> getJob(
-            String jobId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            List<String> select,
-            List<String> expand,
-            RequestConditions requestConditions) {
-        // Generated convenience method for getJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam(
-                    "$expand",
-                    expand.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return getJobWithResponse(jobId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(BatchJob.class));
     }
 
     /**
@@ -12396,65 +10611,6 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param body The options to use for updating the Job.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateJob(
-            String jobId,
-            BatchJobUpdateOptions body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for updateJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return updateJobWithResponse(jobId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Job.
-     *
-     * <p>This replaces only the Job properties specified in the request. For example, if the Job has constraints, and a
-     * request does not specify the constraints element, then the Job keeps the existing constraints.
-     *
-     * @param jobId The ID of the Job whose properties you want to update.
-     * @param body The options to use for updating the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12469,66 +10625,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for updateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return updateJobWithResponse(jobId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Job.
-     *
-     * <p>This fully replaces all the updatable properties of the Job. For example, if the Job has constraints
-     * associated with it and if constraints is not specified with this request, then the Batch service will remove the
-     * existing constraints.
-     *
-     * @param jobId The ID of the Job whose properties you want to update.
-     * @param body A job with updated properties.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replaceJob(
-            String jobId,
-            BatchJob body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for replaceJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return replaceJobWithResponse(jobId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -12568,69 +10664,6 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job to disable.
      * @param body The options to use for disabling the Job.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableJob(
-            String jobId,
-            BatchJobDisableOptions body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for disableJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return disableJobWithResponse(jobId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Disables the specified Job, preventing new Tasks from running.
-     *
-     * <p>The Batch Service immediately moves the Job to the disabling state. Batch then uses the disableTasks parameter
-     * to determine what to do with the currently running Tasks of the Job. The Job remains in the disabling state until
-     * the disable operation is completed and all Tasks have been dealt with according to the disableTasks option; the
-     * Job then moves to the disabled state. No new Tasks are started under the Job until it moves back to active state.
-     * If you try to disable a Job that is in any state other than active, disabling, or disabled, the request fails
-     * with status code 409.
-     *
-     * @param jobId The ID of the Job to disable.
-     * @param body The options to use for disabling the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12656,62 +10689,6 @@ public final class BatchAsyncClient {
      * Job containing active Tasks which were added more than 180 days ago, those Tasks will not run.
      *
      * @param jobId The ID of the Job to enable.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enableJob(
-            String jobId, Integer timeOutInSeconds, OffsetDateTime ocpDate, RequestConditions requestConditions) {
-        // Generated convenience method for enableJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return enableJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Enables the specified Job, allowing new Tasks to run.
-     *
-     * <p>When you call this API, the Batch service sets a disabled Job to the enabling state. After the this operation
-     * is completed, the Job moves to the active state, and scheduling of new Tasks under the Job resumes. The Batch
-     * service does not allow a Task to remain in the active state for more than 180 days. Therefore, if you enable a
-     * Job containing active Tasks which were added more than 180 days ago, those Tasks will not run.
-     *
-     * @param jobId The ID of the Job to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12726,71 +10703,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for enableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return enableJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Terminates the specified Job, marking it as completed.
-     *
-     * <p>When a Terminate Job request is received, the Batch service sets the Job to the terminating state. The Batch
-     * service then terminates any running Tasks associated with the Job and runs any required Job release Tasks. Then
-     * the Job moves into the completed state. If there are any Tasks in the Job in the active state, they will remain
-     * in the active state. Once a Job is terminated, new Tasks cannot be added and any remaining active Tasks will not
-     * be scheduled.
-     *
-     * @param jobId The ID of the Job to terminate.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param body The options to use for terminating the Job.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminateJob(
-            String jobId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            BatchJobTerminateOptions body,
-            RequestConditions requestConditions) {
-        // Generated convenience method for terminateJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (body != null) {
-            requestOptions.setBody(BinaryData.fromObject(body));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return terminateJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -12830,44 +10742,6 @@ public final class BatchAsyncClient {
      * may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param body The Job to be created.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createJob(BatchJobCreateOptions body, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for createJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return createJobWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a Job to the specified Account.
-     *
-     * <p>The Batch service supports two ways to control the work done as part of a Job. In the first approach, the user
-     * specifies a Job Manager Task. The Batch service launches this Task when it is ready to start the Job. The Job
-     * Manager Task controls all other Tasks that run under this Job, by using the Task APIs. In the second approach,
-     * the user directly controls the execution of Tasks under an active Job, by using the Task APIs. Also note: when
-     * naming Jobs, avoid including sensitive information such as user names or secret project names. This information
-     * may appear in telemetry logs accessible to Microsoft Support engineers.
-     *
-     * @param body The Job to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12887,91 +10761,6 @@ public final class BatchAsyncClient {
     /**
      * Lists all of the Jobs in the specified Account.
      *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchJob> listJobs(
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            String filter,
-            List<String> select,
-            List<String> expand) {
-        // Generated convenience method for listJobs
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam(
-                    "$expand",
-                    expand.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BatchJob>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(BatchJob.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
-    }
-
-    /**
-     * Lists all of the Jobs in the specified Account.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -12985,93 +10774,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BatchJob>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(BatchJob.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
-    }
-
-    /**
-     * Lists the Jobs that have been created under the specified Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchJob> listJobsFromSchedule(
-            String jobScheduleId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            String filter,
-            List<String> select,
-            List<String> expand) {
-        // Generated convenience method for listJobsFromSchedule
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam(
-                    "$expand",
-                    expand.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listJobsFromSchedule(jobScheduleId, requestOptions);
         return PagedFlux.create(
                 () ->
                         (continuationToken, pageSize) -> {
@@ -13146,93 +10848,6 @@ public final class BatchAsyncClient {
      * code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
      *
      * @param jobId The ID of the Job.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job as paginated
-     *     response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobPreparationAndReleaseTaskExecutionInformation> listJobPreparationAndReleaseTaskStatus(
-            String jobId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            String filter,
-            List<String> select) {
-        // Generated convenience method for listJobPreparationAndReleaseTaskStatus
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listJobPreparationAndReleaseTaskStatus(jobId, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<
-                                                    Void, JobPreparationAndReleaseTaskExecutionInformation>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    JobPreparationAndReleaseTaskExecutionInformation
-                                                                                            .class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
-    }
-
-    /**
-     * Lists the execution status of the Job Preparation and Job Release Task for the specified Job across the Compute
-     * Nodes where the Job has run.
-     *
-     * <p>This API returns the Job Preparation and Job Release Task status on all Compute Nodes that have run the Job
-     * Preparation or Job Release Task. This includes Compute Nodes which have since been removed from the Pool. If this
-     * API is invoked on a Job which has no Job Preparation or Job Release Task, the Batch service returns HTTP status
-     * code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
-     *
-     * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13283,43 +10898,6 @@ public final class BatchAsyncClient {
      * may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Task and TaskSlot counts for a Job on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskCountsResult> getJobTaskCounts(String jobId, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for getJobTaskCountsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return getJobTaskCountsWithResponse(jobId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TaskCountsResult.class));
-    }
-
-    /**
-     * Gets the Task counts for the specified Job.
-     *
-     * <p>Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks
-     * which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned
-     * may not always be up to date. If you need exact task counts, use a list query.
-     *
-     * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13342,37 +10920,6 @@ public final class BatchAsyncClient {
      * Creates a Certificate to the specified Account.
      *
      * @param body The Certificate to be created.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createCertificate(BatchCertificate body, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for createCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return createCertificateWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a Certificate to the specified Account.
-     *
-     * @param body The Certificate to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13387,78 +10934,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for createCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createCertificateWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchCertificate> listCertificates(
-            Integer maxresults, OffsetDateTime ocpDate, Integer timeOutInSeconds, String filter, List<String> select) {
-        // Generated convenience method for listCertificates
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listCertificates(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BatchCertificate>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    BatchCertificate.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -13512,46 +10987,6 @@ public final class BatchAsyncClient {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelCertificateDeletion(
-            String thumbprintAlgorithm, String thumbprint, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for cancelCertificateDeletionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return cancelCertificateDeletionWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Cancels a failed deletion of a Certificate from the specified Account.
-     *
-     * <p>If you try to delete a Certificate that is being used by a Pool or Compute Node, the status of the Certificate
-     * changes to deleteFailed. If you decide that you want to continue using the Certificate, you can use this
-     * operation to set the status of the Certificate back to active. If you intend to delete the Certificate, you do
-     * not need to run this operation after the deletion failed. You must make sure that the Certificate is not being
-     * used by any resources, and then you can try again to delete the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13567,47 +11002,6 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return cancelCertificateDeletionWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
                 .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * <p>You cannot delete a Certificate if a resource (Pool or Compute Node) is using it. Before you can delete a
-     * Certificate, you must therefore make sure that the Certificate is not associated with any existing Pools, the
-     * Certificate is not installed on any Nodes (even if you remove a Certificate from a Pool, it is not removed from
-     * existing Compute Nodes in that Pool until they restart), and no running Tasks depend on the Certificate. If you
-     * try to delete a Certificate that is in use, the deletion fails. The Certificate status changes to deleteFailed.
-     * You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue
-     * using the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteCertificate(
-            String thumbprintAlgorithm, String thumbprint, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for deleteCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -13644,54 +11038,6 @@ public final class BatchAsyncClient {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Certificate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchCertificate> getCertificate(
-            String thumbprintAlgorithm,
-            String thumbprint,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            List<String> select) {
-        // Generated convenience method for getCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class));
-    }
-
-    /**
-     * Gets information about the specified Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13714,59 +11060,6 @@ public final class BatchAsyncClient {
      * Checks the specified Job Schedule exists.
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> jobScheduleExists(
-            String jobScheduleId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for jobScheduleExistsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return jobScheduleExistsWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Checks the specified Job Schedule exists.
-     *
-     * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13780,65 +11073,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for jobScheduleExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return jobScheduleExistsWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Job Schedule from the specified Account.
-     *
-     * <p>When you delete a Job Schedule, this also deletes all Jobs and Tasks under that schedule. When Tasks are
-     * deleted, all the files in their working directories on the Compute Nodes are also deleted (the retention period
-     * is ignored). The Job Schedule statistics are no longer accessible once the Job Schedule is deleted, though they
-     * are still counted towards Account lifetime statistics.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteJobSchedule(
-            String jobScheduleId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for deleteJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return deleteJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -13870,82 +11104,6 @@ public final class BatchAsyncClient {
      * Gets information about the specified Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Job Schedule on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchJobSchedule> getJobSchedule(
-            String jobScheduleId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            List<String> select,
-            List<String> expand,
-            RequestConditions requestConditions) {
-        // Generated convenience method for getJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam(
-                    "$expand",
-                    expand.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return getJobScheduleWithResponse(jobScheduleId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(BatchJobSchedule.class));
-    }
-
-    /**
-     * Gets information about the specified Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13962,68 +11120,6 @@ public final class BatchAsyncClient {
         return getJobScheduleWithResponse(jobScheduleId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(BatchJobSchedule.class));
-    }
-
-    /**
-     * Updates the properties of the specified Job Schedule.
-     *
-     * <p>This replaces only the Job Schedule properties specified in the request. For example, if the schedule property
-     * is not specified with this request, then the Batch service will keep the existing schedule. Changes to a Job
-     * Schedule only impact Jobs created by the schedule after the update has taken place; currently running Jobs are
-     * unaffected.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param body The options to use for updating the Job Schedule.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateJobSchedule(
-            String jobScheduleId,
-            BatchJobScheduleUpdateOptions body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for updateJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -14063,68 +11159,6 @@ public final class BatchAsyncClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param body A Job Schedule with updated properties.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replaceJobSchedule(
-            String jobScheduleId,
-            BatchJobSchedule body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for replaceJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return replaceJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Job Schedule.
-     *
-     * <p>This fully replaces all the updatable properties of the Job Schedule. For example, if the schedule property is
-     * not specified with this request, then the Batch service will remove the existing schedule. Changes to a Job
-     * Schedule only impact Jobs created by the schedule after the update has taken place; currently running Jobs are
-     * unaffected.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param body A Job Schedule with updated properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14140,62 +11174,6 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return replaceJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(body), requestOptions)
                 .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Disables a Job Schedule.
-     *
-     * <p>No new Jobs will be created until the Job Schedule is enabled again.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to disable.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableJobSchedule(
-            String jobScheduleId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for disableJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return disableJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -14224,60 +11202,6 @@ public final class BatchAsyncClient {
      * Enables a Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to enable.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enableJobSchedule(
-            String jobScheduleId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for enableJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return enableJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Enables a Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14292,60 +11216,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for enableJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return enableJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Terminates a Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to terminates.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminateJobSchedule(
-            String jobScheduleId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for terminateJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return terminateJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -14372,38 +11242,6 @@ public final class BatchAsyncClient {
      * Creates a Job Schedule to the specified Account.
      *
      * @param body The Job Schedule to be created.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createJobSchedule(
-            BatchJobScheduleCreateOptions body, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for createJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return createJobScheduleWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a Job Schedule to the specified Account.
-     *
-     * @param body The Job Schedule to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14418,92 +11256,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for createJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createJobScheduleWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all of the Job Schedules in the specified Account.
-     *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchJobSchedule> listJobSchedules(
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            String filter,
-            List<String> select,
-            List<String> expand) {
-        // Generated convenience method for listJobSchedules
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam(
-                    "$expand",
-                    expand.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listJobSchedules(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BatchJobSchedule>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    BatchJobSchedule.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -14554,42 +11306,6 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param body The Task to be created.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createTask(
-            String jobId, BatchTaskCreateOptions body, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for createTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return createTaskWithResponse(jobId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a Task to the specified Job.
-     *
-     * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
-     * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
-     *
-     * @param jobId The ID of the Job to which the Task is to be created.
-     * @param body The Task to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14604,97 +11320,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for createTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createTaskWithResponse(jobId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all of the Tasks that are associated with the specified Job.
-     *
-     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
-     * Task. Use the list subtasks API to retrieve information about subtasks.
-     *
-     * @param jobId The ID of the Job.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchTask> listTasks(
-            String jobId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            String filter,
-            List<String> select,
-            List<String> expand) {
-        // Generated convenience method for listTasks
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam(
-                    "$expand",
-                    expand.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listTasks(jobId, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BatchTask>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    BatchTask.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -14758,52 +11383,6 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param collection The Tasks to be added.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of adding a collection of Tasks to a Job on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskAddCollectionResult> createTaskCollection(
-            String jobId, BatchTaskCollection collection, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for createTaskCollectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(collection), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TaskAddCollectionResult.class));
-    }
-
-    /**
-     * Adds a collection of Tasks to the specified Job.
-     *
-     * <p>Note that each Task must have a unique ID. The Batch service may not return the results for each Task in the
-     * same order the Tasks were submitted in this request. If the server times out or the connection is closed during
-     * the request, the request may have been partially or fully processed, or not at all. In such cases, the user
-     * should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a
-     * request. For example, you should use the same Task IDs during a retry so that if the prior operation succeeded,
-     * the retry will not create extra Tasks unexpectedly. If the response contains any Tasks which failed to add, a
-     * client can retry the request. In a retry, it is most efficient to resubmit only Tasks that failed to add, and to
-     * omit Tasks that were successfully added on the first attempt. The maximum lifetime of a Task from addition to
-     * completion is 180 days. If a Task has not completed within 180 days of being added it will be terminated by the
-     * Batch service and left in whatever state it was in at that time.
-     *
-     * @param jobId The ID of the Job to which the Task collection is to be added.
-     * @param collection The Tasks to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14831,66 +11410,6 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteTask(
-            String jobId,
-            String taskId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for deleteTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return deleteTaskWithResponse(jobId, taskId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Task from the specified Job.
-     *
-     * <p>When a Task is deleted, all of the files in its directory on the Compute Node where it ran are also deleted
-     * (regardless of the retention time). For multi-instance Tasks, the delete Task operation applies synchronously to
-     * the primary task; subtasks and their files are then deleted asynchronously in the background.
-     *
-     * @param jobId The ID of the Job from which to delete the Task.
-     * @param taskId The ID of the Task to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14905,90 +11424,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for deleteTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteTaskWithResponse(jobId, taskId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets information about the specified Task.
-     *
-     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
-     * Task. Use the list subtasks API to retrieve information about subtasks.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task to get information about.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery operations
-     *     include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared due to host
-     *     failure. Retries due to recovery operations are independent of and are not counted against the
-     *     maxTaskRetryCount on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchTask> getTask(
-            String jobId,
-            String taskId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            List<String> select,
-            List<String> expand,
-            RequestConditions requestConditions) {
-        // Generated convenience method for getTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam(
-                    "$expand",
-                    expand.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return getTaskWithResponse(jobId, taskId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(BatchTask.class));
     }
 
     /**
@@ -15026,65 +11461,6 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
      * @param body The Task to update.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replaceTask(
-            String jobId,
-            String taskId,
-            BatchTask body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for replaceTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return replaceTaskWithResponse(jobId, taskId, BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the properties of the specified Task.
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to update.
-     * @param body The Task to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15100,52 +11476,6 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return replaceTaskWithResponse(jobId, taskId, BinaryData.fromObject(body), requestOptions)
                 .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all of the subtasks that are associated with the specified multi-instance Task.
-     *
-     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
-     *
-     * @param jobId The ID of the Job.
-     * @param taskId The ID of the Task.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the subtasks of a Task on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchTaskListSubtasksResult> listSubTasks(
-            String jobId, String taskId, Integer timeOutInSeconds, OffsetDateTime ocpDate, List<String> select) {
-        // Generated convenience method for listSubTasksWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        return listSubTasksWithResponse(jobId, taskId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(BatchTaskListSubtasksResult.class));
     }
 
     /**
@@ -15171,66 +11501,6 @@ public final class BatchAsyncClient {
         return listSubTasksWithResponse(jobId, taskId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(BatchTaskListSubtasksResult.class));
-    }
-
-    /**
-     * Terminates the specified Task.
-     *
-     * <p>When the Task has been terminated, it moves to the completed state. For multi-instance Tasks, the terminate
-     * Task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the
-     * background.
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to terminate.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminateTask(
-            String jobId,
-            String taskId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for terminateTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return terminateTaskWithResponse(jobId, taskId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -15269,68 +11539,6 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reactivateTask(
-            String jobId,
-            String taskId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for reactivateTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return reactivateTaskWithResponse(jobId, taskId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Reactivates a Task, allowing it to run again even if its retry count has been exhausted.
-     *
-     * <p>Reactivation makes a Task eligible to be retried again up to its maximum retry count. The Task's state is
-     * changed to active. As the Task is no longer in the completed state, any previous exit code or failure information
-     * is no longer available after reactivation. Each time a Task is reactivated, its retry count is reset to 0.
-     * Reactivation will fail for Tasks that are not completed or that previously completed successfully (with an exit
-     * code of 0). Additionally, it will fail if the Job has completed (or is terminating or deleting).
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to reactivate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15345,51 +11553,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for reactivateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return reactivateTaskWithResponse(jobId, taskId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes the specified Task file from the Compute Node where the Task ran.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
-     *     instead of a file, you can set recursive to true to delete the directory and all of the files and
-     *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteTaskFile(
-            String jobId,
-            String taskId,
-            String filePath,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            Boolean recursive) {
-        // Generated convenience method for deleteTaskFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (recursive != null) {
-            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
-        }
-        return deleteTaskFileWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -15420,65 +11583,6 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @param ocpRange The byte range to be retrieved. The default is to retrieve the entire file. The format is
-     *     bytes=startRange-endRange.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getTaskFile(
-            String jobId,
-            String taskId,
-            String filePath,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince,
-            String ocpRange) {
-        // Generated convenience method for getTaskFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ocpRange != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
-        }
-        return getTaskFileWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns the content of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15501,59 +11605,6 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified Task file on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getTaskFileProperties(
-            String jobId,
-            String taskId,
-            String filePath,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince) {
-        // Generated convenience method for getTaskFilePropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets the properties of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15568,82 +11619,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for getTaskFilePropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists the files in a Task's directory on its Compute Node.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose files you want to list.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
-     * @param recursive Whether to list children of the Task directory. This parameter can be used in combination with
-     *     the filter parameter to list specific type of files.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
-     *     as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NodeFile> listTaskFiles(
-            String jobId,
-            String taskId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            String filter,
-            Boolean recursive) {
-        // Generated convenience method for listTaskFiles
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (recursive != null) {
-            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listTaskFiles(jobId, taskId, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, NodeFile>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(NodeFile.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -15697,47 +11672,6 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param body The options to use for creating the user.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createNodeUser(
-            String poolId,
-            String nodeId,
-            BatchNodeUserCreateOptions body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate) {
-        // Generated convenience method for createNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Adds a user Account to the specified Compute Node.
-     *
-     * <p>You can add a user Account to a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to create a user Account.
-     * @param body The options to use for creating the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15753,42 +11687,6 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(body), requestOptions)
                 .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a user Account from the specified Compute Node.
-     *
-     * <p>You can delete a user Account to a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteNodeUser(
-            String poolId, String nodeId, String userName, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for deleteNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -15826,51 +11724,6 @@ public final class BatchAsyncClient {
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
      * @param body The options to use for updating the user.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replaceNodeUser(
-            String poolId,
-            String nodeId,
-            String userName,
-            BatchNodeUserUpdateOptions body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate) {
-        // Generated convenience method for replaceNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Updates the password and expiration time of a user Account on the specified Compute Node.
-     *
-     * <p>This operation replaces of all the updatable properties of the Account. For example, if the expiryTime element
-     * is not specified, the current value is replaced with the default value, not left unmodified. You can update a
-     * user Account on a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
-     * @param body The options to use for updating the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15886,50 +11739,6 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(body), requestOptions)
                 .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets information about the specified Compute Node.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to get information about.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Compute Node on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchNode> getNode(
-            String poolId, String nodeId, Integer timeOutInSeconds, OffsetDateTime ocpDate, List<String> select) {
-        // Generated convenience method for getNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        return getNodeWithResponse(poolId, nodeId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(BatchNode.class));
     }
 
     /**
@@ -15953,45 +11762,6 @@ public final class BatchAsyncClient {
         return getNodeWithResponse(poolId, nodeId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(BatchNode.class));
-    }
-
-    /**
-     * Restarts the specified Compute Node.
-     *
-     * <p>You can restart a Compute Node only if it is in an idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param body The options to use for rebooting the Compute Node.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rebootNode(
-            String poolId, String nodeId, Integer timeOutInSeconds, OffsetDateTime ocpDate, NodeRebootOptions body) {
-        // Generated convenience method for rebootNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (body != null) {
-            requestOptions.setBody(BinaryData.fromObject(body));
-        }
-        return rebootNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -16025,46 +11795,6 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param body The options to use for reimaging the Compute Node.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reimageNode(
-            String poolId, String nodeId, Integer timeOutInSeconds, OffsetDateTime ocpDate, NodeReimageOptions body) {
-        // Generated convenience method for reimageNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (body != null) {
-            requestOptions.setBody(BinaryData.fromObject(body));
-        }
-        return reimageNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Reinstalls the operating system on the specified Compute Node.
-     *
-     * <p>You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API
-     * can be invoked only on Pools created with the cloud service configuration property.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to restart.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16088,49 +11818,6 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param body The options to use for disabling scheduling on the Compute Node.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableNodeScheduling(
-            String poolId,
-            String nodeId,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            NodeDisableSchedulingOptions body) {
-        // Generated convenience method for disableNodeSchedulingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (body != null) {
-            requestOptions.setBody(BinaryData.fromObject(body));
-        }
-        return disableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Disables Task scheduling on the specified Compute Node.
-     *
-     * <p>You can disable Task scheduling on a Compute Node only if its current scheduling state is enabled.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16145,41 +11832,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for disableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return disableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Enables Task scheduling on the specified Compute Node.
-     *
-     * <p>You can enable Task scheduling on a Compute Node only if its current scheduling state is disabled.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enableNodeScheduling(
-            String poolId, String nodeId, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for enableNodeSchedulingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return enableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -16214,45 +11866,6 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the remote login settings for a Compute Node on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchNodeRemoteLoginSettingsResult> getNodeRemoteLoginSettings(
-            String poolId, String nodeId, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for getNodeRemoteLoginSettingsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(BatchNodeRemoteLoginSettingsResult.class));
-    }
-
-    /**
-     * Gets the settings required for remote login to a Compute Node.
-     *
-     * <p>Before you can remotely login to a Compute Node using the remote login settings, you must create a user
-     * Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration
-     * property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16269,45 +11882,6 @@ public final class BatchAsyncClient {
         return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(BatchNodeRemoteLoginSettingsResult.class));
-    }
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     *
-     * <p>Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute
-     * Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a
-     * virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getNodeRemoteDesktopFile(
-            String poolId, String nodeId, Integer timeOutInSeconds, OffsetDateTime ocpDate) {
-        // Generated convenience method for getNodeRemoteDesktopFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return getNodeRemoteDesktopFileWithResponse(poolId, nodeId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
     }
 
     /**
@@ -16347,51 +11921,6 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
      * @param body The Azure Batch service log files upload options.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
-     *     {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(
-            String poolId,
-            String nodeId,
-            UploadBatchServiceLogsOptions body,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate) {
-        // Generated convenience method for uploadNodeLogsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(UploadBatchServiceLogsResult.class));
-    }
-
-    /**
-     * Upload Azure Batch service log files from the specified Compute Node to Azure Blob Storage.
-     *
-     * <p>This is for gathering Azure Batch service log files in an automated fashion from Compute Nodes if you are
-     * experiencing an error and wish to escalate to Azure support. The Azure Batch service log files should be shared
-     * with Azure support to aid in debugging issues with the Batch service.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param body The Azure Batch service log files upload options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16410,84 +11939,6 @@ public final class BatchAsyncClient {
         return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(body), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(UploadBatchServiceLogsResult.class));
-    }
-
-    /**
-     * Lists the Compute Nodes in the specified Pool.
-     *
-     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchNode> listNodes(
-            String poolId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            String filter,
-            List<String> select) {
-        // Generated convenience method for listNodes
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listNodes(poolId, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, BatchNode>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    BatchNode.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -16538,56 +11989,6 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the of the Compute Node Extension that you want to get information about.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Compute Node Extension on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NodeVMExtension> getNodeExtension(
-            String poolId,
-            String nodeId,
-            String extensionName,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            List<String> select) {
-        // Generated convenience method for getNodeExtensionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        return getNodeExtensionWithResponse(poolId, nodeId, extensionName, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(NodeVMExtension.class));
-    }
-
-    /**
-     * Gets information about the specified Compute Node Extension.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that contains the extensions.
-     * @param extensionName The name of the of the Compute Node Extension that you want to get information about.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16604,80 +12005,6 @@ public final class BatchAsyncClient {
         return getNodeExtensionWithResponse(poolId, nodeId, extensionName, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(NodeVMExtension.class));
-    }
-
-    /**
-     * Lists the Compute Nodes Extensions in the specified Pool.
-     *
-     * @param poolId The ID of the Pool that contains Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to list extensions.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NodeVMExtension> listNodeExtensions(
-            String poolId,
-            String nodeId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            List<String> select) {
-        // Generated convenience method for listNodeExtensions
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam(
-                    "$select",
-                    select.stream()
-                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                            .collect(Collectors.joining(",")),
-                    false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listNodeExtensions(poolId, nodeId, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, NodeVMExtension>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    NodeVMExtension.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 
     /**
@@ -16729,51 +12056,6 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
-     *     instead of a file, you can set recursive to true to delete the directory and all of the files and
-     *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteNodeFile(
-            String poolId,
-            String nodeId,
-            String filePath,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            Boolean recursive) {
-        // Generated convenience method for deleteNodeFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (recursive != null) {
-            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
-        }
-        return deleteNodeFileWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes the specified file from the Compute Node.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16788,67 +12070,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for deleteNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteNodeFileWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns the content of the specified Compute Node file.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @param ocpRange The byte range to be retrieved. The default is to retrieve the entire file. The format is
-     *     bytes=startRange-endRange.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getNodeFile(
-            String poolId,
-            String nodeId,
-            String filePath,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince,
-            String ocpRange) {
-        // Generated convenience method for getNodeFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ocpRange != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
-        }
-        return getNodeFileWithResponse(poolId, nodeId, filePath, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
     }
 
     /**
@@ -16881,59 +12102,6 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getNodeFileProperties(
-            String poolId,
-            String nodeId,
-            String filePath,
-            Integer timeOutInSeconds,
-            OffsetDateTime ocpDate,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince) {
-        // Generated convenience method for getNodeFilePropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets the properties of the specified Compute Node file.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node from which you want to delete the file.
-     * @param filePath The path to the file or directory that you want to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16955,15 +12123,6 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
-     * @param recursive Whether to list children of a directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16975,32 +12134,9 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NodeFile> listNodeFiles(
-            String poolId,
-            String nodeId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOutInSeconds,
-            String filter,
-            Boolean recursive) {
+    public PagedFlux<NodeFile> listNodeFiles(String poolId, String nodeId) {
         // Generated convenience method for listNodeFiles
         RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (recursive != null) {
-            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
-        }
         PagedFlux<BinaryData> pagedFluxResponse = listNodeFiles(poolId, nodeId, requestOptions);
         return PagedFlux.create(
                 () ->
@@ -17026,10 +12162,2895 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Lists all of the files in Task directories on the specified Compute Node.
+     * Lists all of the applications available in the specified Account.
      *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * <p>This operation returns only Applications and versions that are available for use on Compute Nodes; that is,
+     * that can be used in an Package reference. For administrator information about applications and versions that are
+     * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the applications available in an Account as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchApplication> listApplications(Integer maxresults, Integer timeOutInSeconds) {
+        // Generated convenience method for listApplications
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listApplications(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BatchApplication>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    BatchApplication.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Gets information about the specified Application.
+     *
+     * <p>This operation returns only Applications and versions that are available for use on Compute Nodes; that is,
+     * that can be used in an Package reference. For administrator information about Applications and versions that are
+     * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param applicationId The ID of the Application.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about an application in an Azure Batch Account on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BatchApplication> getApplication(String applicationId, Integer timeOutInSeconds) {
+        // Generated convenience method for getApplicationWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return getApplicationWithResponse(applicationId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BatchApplication.class));
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by Pool across individual time intervals, for the specified Account.
+     *
+     * <p>If you do not specify a $filter clause including a poolId, the response includes all Pools that existed in the
+     * Account in the time range of the returned aggregation intervals. If you do not specify a $filter clause including
+     * a startTime or endTime these filters default to the start and end times of the last aggregation interval
+     * currently available; that is, only the last aggregation interval is returned.
+     *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param starttime The earliest time from which to include metrics. This must be at least two and a half hours
+     *     before the current time. If not specified this defaults to the start time of the last aggregation interval
+     *     currently available.
+     * @param endtime The latest time from which to include metrics. This must be at least two hours before the current
+     *     time. If not specified this defaults to the end time of the last aggregation interval currently available.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PoolUsageMetrics> listPoolUsageMetrics(
+            Integer maxresults,
+            Integer timeOutInSeconds,
+            OffsetDateTime starttime,
+            OffsetDateTime endtime,
+            String filter) {
+        // Generated convenience method for listPoolUsageMetrics
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (starttime != null) {
+            requestOptions.addQueryParam("starttime", String.valueOf(starttime), false);
+        }
+        if (endtime != null) {
+            requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listPoolUsageMetrics(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, PoolUsageMetrics>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    PoolUsageMetrics.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Creates a Pool to the specified Account.
+     *
+     * <p>When naming Pools, avoid including sensitive information such as user names or secret project names. This
+     * information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param body The Pool to be created.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createPool(BatchPoolCreateOptions body, Integer timeOutInSeconds) {
+        // Generated convenience method for createPoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return createPoolWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all of the Pools in the specified Account.
+     *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Pools in an Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchPool> listPools(
+            Integer maxresults, Integer timeOutInSeconds, String filter, List<String> select, List<String> expand) {
+        // Generated convenience method for listPools
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam(
+                    "$expand",
+                    expand.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listPools(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BatchPool>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    BatchPool.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Deletes a Pool from the specified Account.
+     *
+     * <p>When you request that a Pool be deleted, the following actions occur: the Pool state is set to deleting; any
+     * ongoing resize operation on the Pool are stopped; the Batch service starts resizing the Pool to zero Compute
+     * Nodes; any Tasks running on existing Compute Nodes are terminated and requeued (as if a resize Pool operation had
+     * been requested with the default requeue option); finally, the Pool is removed from the system. Because running
+     * Tasks are requeued, the user can rerun these Tasks by updating their Job to target a different Pool. The Tasks
+     * can then run on the new Pool. If you want to override the requeue behavior, then you should call resize Pool
+     * explicitly to shrink the Pool to zero size before deleting the Pool. If you call an Update, Patch or Delete API
+     * on a Pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deletePool(String poolId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for deletePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return deletePoolWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets basic properties of a Pool.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return basic properties of a Pool on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> poolExists(String poolId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for poolExistsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return poolExistsWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets information about the specified Pool.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Pool on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BatchPool> getPool(
+            String poolId,
+            Integer timeOutInSeconds,
+            List<String> select,
+            List<String> expand,
+            RequestConditions requestConditions) {
+        // Generated convenience method for getPoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam(
+                    "$expand",
+                    expand.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return getPoolWithResponse(poolId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BatchPool.class));
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
+     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
+     * StartTask.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param body The pool properties to update.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updatePool(
+            String poolId, BatchPoolUpdateOptions body, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for updatePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return updatePoolWithResponse(poolId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Disables automatic scaling for a Pool.
+     *
+     * @param poolId The ID of the Pool on which to disable automatic scaling.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> disablePoolAutoScale(String poolId, Integer timeOutInSeconds) {
+        // Generated convenience method for disablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return disablePoolAutoScaleWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * <p>You cannot enable automatic scaling on a Pool if a resize operation is in progress on the Pool. If automatic
+     * scaling of the Pool is currently disabled, you must specify a valid autoscale formula as part of the request. If
+     * automatic scaling of the Pool is already enabled, you may specify a new autoscale formula and/or a new evaluation
+     * interval. You cannot call this API for the same Pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param body The options to use for enabling automatic scaling.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enablePoolAutoScale(
+            String poolId,
+            BatchPoolEnableAutoScaleOptions body,
+            Integer timeOutInSeconds,
+            RequestConditions requestConditions) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(body), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * <p>This API is primarily for validating an autoscale formula, as it simply returns the result without applying
+     * the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
+     *
+     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
+     * @param body The options to use for evaluating the automatic scaling formula.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the results and errors from an execution of a Pool autoscale formula on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AutoScaleRun> evaluatePoolAutoScale(
+            String poolId, BatchPoolEvaluateAutoScaleOptions body, Integer timeOutInSeconds) {
+        // Generated convenience method for evaluatePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(body), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AutoScaleRun.class));
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * <p>You can only resize a Pool when its allocation state is steady. If the Pool is already resizing, the request
+     * fails with status code 409. When you resize a Pool, the Pool's allocation state changes from steady to resizing.
+     * You cannot resize Pools which are configured for automatic scaling. If you try to do this, the Batch service
+     * returns an error 409. If you resize a Pool downwards, the Batch service chooses which Compute Nodes to remove. To
+     * remove specific Compute Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param body The options to use for resizing the pool.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resizePool(
+            String poolId, BatchPoolResizeOptions body, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for resizePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return resizePoolWithResponse(poolId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Stops an ongoing resize operation on the Pool.
+     *
+     * <p>This does not restore the Pool to its previous state before the resize operation: it only stops any further
+     * changes being made, and the Pool maintains its current state. After stopping, the Pool stabilizes at the number
+     * of Compute Nodes it was at when the stop operation was done. During the stop operation, the Pool allocation state
+     * changes first to stopping and then to steady. A resize operation need not be an explicit resize Pool request;
+     * this API can also be used to halt the initial sizing of the Pool when it is created.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopPoolResize(String poolId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for stopPoolResizeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return stopPoolResizeWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * <p>This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask
+     * associated with it and if StartTask is not specified with this request, then the Batch service will remove the
+     * existing StartTask.
+     *
+     * @param poolId The ID of the Pool to update.
+     * @param body The options to use for replacing properties on the pool.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceOptions body, Integer timeOutInSeconds) {
+        // Generated convenience method for replacePoolPropertiesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(body), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * <p>This operation can only run when the allocation state of the Pool is steady. When this operation runs, the
+     * allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param body The options to use for removing the node.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeNodes(
+            String poolId, NodeRemoveOptions body, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for removeNodesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return removeNodesWithResponse(poolId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all Virtual Machine Images supported by the Azure Batch service.
+     *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ImageInformation> listSupportedImages(
+            Integer maxresults, Integer timeOutInSeconds, String filter) {
+        // Generated convenience method for listSupportedImages
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listSupportedImages(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, ImageInformation>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    ImageInformation.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be
+     * up to date. If you need exact node counts, use a list query.
+     *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PoolNodeCounts> listPoolNodeCounts(Integer maxresults, Integer timeOutInSeconds, String filter) {
+        // Generated convenience method for listPoolNodeCounts
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listPoolNodeCounts(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, PoolNodeCounts>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    PoolNodeCounts.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Deletes a Job.
+     *
+     * <p>Deleting a Job also deletes all Tasks that are part of that Job, and all Job statistics. This also overrides
+     * the retention period for Task data; that is, if the Job contains Tasks which are still retained on Compute Nodes,
+     * the Batch services deletes those Tasks' working directories and all their contents. When a Delete Job request is
+     * received, the Batch service sets the Job to the deleting state. All update operations on a Job that is in
+     * deleting state will fail with status code 409 (Conflict), with additional information indicating that the Job is
+     * being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteJob(String jobId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for deleteJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return deleteJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets information about the specified Job.
+     *
+     * @param jobId The ID of the Job.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Job on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BatchJob> getJob(
+            String jobId,
+            Integer timeOutInSeconds,
+            List<String> select,
+            List<String> expand,
+            RequestConditions requestConditions) {
+        // Generated convenience method for getJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam(
+                    "$expand",
+                    expand.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return getJobWithResponse(jobId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BatchJob.class));
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
+     * <p>This replaces only the Job properties specified in the request. For example, if the Job has constraints, and a
+     * request does not specify the constraints element, then the Job keeps the existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param body The options to use for updating the Job.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateJob(
+            String jobId, BatchJobUpdateOptions body, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for updateJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return updateJobWithResponse(jobId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
+     * <p>This fully replaces all the updatable properties of the Job. For example, if the Job has constraints
+     * associated with it and if constraints is not specified with this request, then the Batch service will remove the
+     * existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param body A job with updated properties.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> replaceJob(
+            String jobId, BatchJob body, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for replaceJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return replaceJobWithResponse(jobId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * <p>The Batch Service immediately moves the Job to the disabling state. Batch then uses the disableTasks parameter
+     * to determine what to do with the currently running Tasks of the Job. The Job remains in the disabling state until
+     * the disable operation is completed and all Tasks have been dealt with according to the disableTasks option; the
+     * Job then moves to the disabled state. No new Tasks are started under the Job until it moves back to active state.
+     * If you try to disable a Job that is in any state other than active, disabling, or disabled, the request fails
+     * with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param body The options to use for disabling the Job.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> disableJob(
+            String jobId, BatchJobDisableOptions body, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for disableJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return disableJobWithResponse(jobId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * <p>When you call this API, the Batch service sets a disabled Job to the enabling state. After the this operation
+     * is completed, the Job moves to the active state, and scheduling of new Tasks under the Job resumes. The Batch
+     * service does not allow a Task to remain in the active state for more than 180 days. Therefore, if you enable a
+     * Job containing active Tasks which were added more than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enableJob(String jobId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for enableJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return enableJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Terminates the specified Job, marking it as completed.
+     *
+     * <p>When a Terminate Job request is received, the Batch service sets the Job to the terminating state. The Batch
+     * service then terminates any running Tasks associated with the Job and runs any required Job release Tasks. Then
+     * the Job moves into the completed state. If there are any Tasks in the Job in the active state, they will remain
+     * in the active state. Once a Job is terminated, new Tasks cannot be added and any remaining active Tasks will not
+     * be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param body The options to use for terminating the Job.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> terminateJob(
+            String jobId,
+            Integer timeOutInSeconds,
+            BatchJobTerminateOptions body,
+            RequestConditions requestConditions) {
+        // Generated convenience method for terminateJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return terminateJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Job to the specified Account.
+     *
+     * <p>The Batch service supports two ways to control the work done as part of a Job. In the first approach, the user
+     * specifies a Job Manager Task. The Batch service launches this Task when it is ready to start the Job. The Job
+     * Manager Task controls all other Tasks that run under this Job, by using the Task APIs. In the second approach,
+     * the user directly controls the execution of Tasks under an active Job, by using the Task APIs. Also note: when
+     * naming Jobs, avoid including sensitive information such as user names or secret project names. This information
+     * may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param body The Job to be created.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createJob(BatchJobCreateOptions body, Integer timeOutInSeconds) {
+        // Generated convenience method for createJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return createJobWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all of the Jobs in the specified Account.
+     *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchJob> listJobs(
+            Integer maxresults, Integer timeOutInSeconds, String filter, List<String> select, List<String> expand) {
+        // Generated convenience method for listJobs
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam(
+                    "$expand",
+                    expand.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BatchJob>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(BatchJob.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Lists the Jobs that have been created under the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchJob> listJobsFromSchedule(
+            String jobScheduleId,
+            Integer maxresults,
+            Integer timeOutInSeconds,
+            String filter,
+            List<String> select,
+            List<String> expand) {
+        // Generated convenience method for listJobsFromSchedule
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam(
+                    "$expand",
+                    expand.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listJobsFromSchedule(jobScheduleId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BatchJob>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(BatchJob.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release Task for the specified Job across the Compute
+     * Nodes where the Job has run.
+     *
+     * <p>This API returns the Job Preparation and Job Release Task status on all Compute Nodes that have run the Job
+     * Preparation or Job Release Task. This includes Compute Nodes which have since been removed from the Pool. If this
+     * API is invoked on a Job which has no Job Preparation or Job Release Task, the Batch service returns HTTP status
+     * code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
+     *
+     * @param jobId The ID of the Job.
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job as paginated
+     *     response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<JobPreparationAndReleaseTaskExecutionInformation> listJobPreparationAndReleaseTaskStatus(
+            String jobId, Integer maxresults, Integer timeOutInSeconds, String filter, List<String> select) {
+        // Generated convenience method for listJobPreparationAndReleaseTaskStatus
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listJobPreparationAndReleaseTaskStatus(jobId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<
+                                                    Void, JobPreparationAndReleaseTaskExecutionInformation>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    JobPreparationAndReleaseTaskExecutionInformation
+                                                                                            .class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Gets the Task counts for the specified Job.
+     *
+     * <p>Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks
+     * which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned
+     * may not always be up to date. If you need exact task counts, use a list query.
+     *
+     * @param jobId The ID of the Job.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Task and TaskSlot counts for a Job on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskCountsResult> getJobTaskCounts(String jobId, Integer timeOutInSeconds) {
+        // Generated convenience method for getJobTaskCountsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return getJobTaskCountsWithResponse(jobId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TaskCountsResult.class));
+    }
+
+    /**
+     * Creates a Certificate to the specified Account.
+     *
+     * @param body The Certificate to be created.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createCertificate(BatchCertificate body, Integer timeOutInSeconds) {
+        // Generated convenience method for createCertificateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return createCertificateWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchCertificate> listCertificates(
+            Integer maxresults, Integer timeOutInSeconds, String filter, List<String> select) {
+        // Generated convenience method for listCertificates
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listCertificates(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BatchCertificate>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    BatchCertificate.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Cancels a failed deletion of a Certificate from the specified Account.
+     *
+     * <p>If you try to delete a Certificate that is being used by a Pool or Compute Node, the status of the Certificate
+     * changes to deleteFailed. If you decide that you want to continue using the Certificate, you can use this
+     * operation to set the status of the Certificate back to active. If you intend to delete the Certificate, you do
+     * not need to run this operation after the deletion failed. You must make sure that the Certificate is not being
+     * used by any resources, and then you can try again to delete the Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate being deleted.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelCertificateDeletion(
+            String thumbprintAlgorithm, String thumbprint, Integer timeOutInSeconds) {
+        // Generated convenience method for cancelCertificateDeletionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return cancelCertificateDeletionWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes a Certificate from the specified Account.
+     *
+     * <p>You cannot delete a Certificate if a resource (Pool or Compute Node) is using it. Before you can delete a
+     * Certificate, you must therefore make sure that the Certificate is not associated with any existing Pools, the
+     * Certificate is not installed on any Nodes (even if you remove a Certificate from a Pool, it is not removed from
+     * existing Compute Nodes in that Pool until they restart), and no running Tasks depend on the Certificate. If you
+     * try to delete a Certificate that is in use, the deletion fails. The Certificate status changes to deleteFailed.
+     * You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue
+     * using the Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint, Integer timeOutInSeconds) {
+        // Generated convenience method for deleteCertificateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets information about the specified Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to get.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Certificate on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BatchCertificate> getCertificate(
+            String thumbprintAlgorithm, String thumbprint, Integer timeOutInSeconds, List<String> select) {
+        // Generated convenience method for getCertificateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class));
+    }
+
+    /**
+     * Checks the specified Job Schedule exists.
+     *
+     * @param jobScheduleId The ID of the Job Schedule which you want to check.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> jobScheduleExists(
+            String jobScheduleId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for jobScheduleExistsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return jobScheduleExistsWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes a Job Schedule from the specified Account.
+     *
+     * <p>When you delete a Job Schedule, this also deletes all Jobs and Tasks under that schedule. When Tasks are
+     * deleted, all the files in their working directories on the Compute Nodes are also deleted (the retention period
+     * is ignored). The Job Schedule statistics are no longer accessible once the Job Schedule is deleted, though they
+     * are still counted towards Account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to delete.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteJobSchedule(
+            String jobScheduleId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for deleteJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return deleteJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets information about the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to get.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Job Schedule on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BatchJobSchedule> getJobSchedule(
+            String jobScheduleId,
+            Integer timeOutInSeconds,
+            List<String> select,
+            List<String> expand,
+            RequestConditions requestConditions) {
+        // Generated convenience method for getJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam(
+                    "$expand",
+                    expand.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return getJobScheduleWithResponse(jobScheduleId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BatchJobSchedule.class));
+    }
+
+    /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * <p>This replaces only the Job Schedule properties specified in the request. For example, if the schedule property
+     * is not specified with this request, then the Batch service will keep the existing schedule. Changes to a Job
+     * Schedule only impact Jobs created by the schedule after the update has taken place; currently running Jobs are
+     * unaffected.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param body The options to use for updating the Job Schedule.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateJobSchedule(
+            String jobScheduleId,
+            BatchJobScheduleUpdateOptions body,
+            Integer timeOutInSeconds,
+            RequestConditions requestConditions) {
+        // Generated convenience method for updateJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(body), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * <p>This fully replaces all the updatable properties of the Job Schedule. For example, if the schedule property is
+     * not specified with this request, then the Batch service will remove the existing schedule. Changes to a Job
+     * Schedule only impact Jobs created by the schedule after the update has taken place; currently running Jobs are
+     * unaffected.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param body A Job Schedule with updated properties.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> replaceJobSchedule(
+            String jobScheduleId,
+            BatchJobSchedule body,
+            Integer timeOutInSeconds,
+            RequestConditions requestConditions) {
+        // Generated convenience method for replaceJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return replaceJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(body), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Disables a Job Schedule.
+     *
+     * <p>No new Jobs will be created until the Job Schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to disable.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> disableJobSchedule(
+            String jobScheduleId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for disableJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return disableJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to enable.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enableJobSchedule(
+            String jobScheduleId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for enableJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return enableJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Terminates a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to terminates.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> terminateJobSchedule(
+            String jobScheduleId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for terminateJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return terminateJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a Job Schedule to the specified Account.
+     *
+     * @param body The Job Schedule to be created.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createJobSchedule(BatchJobScheduleCreateOptions body, Integer timeOutInSeconds) {
+        // Generated convenience method for createJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return createJobScheduleWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all of the Job Schedules in the specified Account.
+     *
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchJobSchedule> listJobSchedules(
+            Integer maxresults, Integer timeOutInSeconds, String filter, List<String> select, List<String> expand) {
+        // Generated convenience method for listJobSchedules
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam(
+                    "$expand",
+                    expand.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listJobSchedules(requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BatchJobSchedule>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    BatchJobSchedule.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Creates a Task to the specified Job.
+     *
+     * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
+     * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task is to be created.
+     * @param body The Task to be created.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createTask(String jobId, BatchTaskCreateOptions body, Integer timeOutInSeconds) {
+        // Generated convenience method for createTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return createTaskWithResponse(jobId, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all of the Tasks that are associated with the specified Job.
+     *
+     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
+     * Task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the Job.
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchTask> listTasks(
+            String jobId,
+            Integer maxresults,
+            Integer timeOutInSeconds,
+            String filter,
+            List<String> select,
+            List<String> expand) {
+        // Generated convenience method for listTasks
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam(
+                    "$expand",
+                    expand.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listTasks(jobId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BatchTask>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    BatchTask.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Adds a collection of Tasks to the specified Job.
+     *
+     * <p>Note that each Task must have a unique ID. The Batch service may not return the results for each Task in the
+     * same order the Tasks were submitted in this request. If the server times out or the connection is closed during
+     * the request, the request may have been partially or fully processed, or not at all. In such cases, the user
+     * should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a
+     * request. For example, you should use the same Task IDs during a retry so that if the prior operation succeeded,
+     * the retry will not create extra Tasks unexpectedly. If the response contains any Tasks which failed to add, a
+     * client can retry the request. In a retry, it is most efficient to resubmit only Tasks that failed to add, and to
+     * omit Tasks that were successfully added on the first attempt. The maximum lifetime of a Task from addition to
+     * completion is 180 days. If a Task has not completed within 180 days of being added it will be terminated by the
+     * Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task collection is to be added.
+     * @param collection The Tasks to be added.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of adding a collection of Tasks to a Job on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskAddCollectionResult> createTaskCollection(
+            String jobId, BatchTaskCollection collection, Integer timeOutInSeconds) {
+        // Generated convenience method for createTaskCollectionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(collection), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TaskAddCollectionResult.class));
+    }
+
+    /**
+     * Deletes a Task from the specified Job.
+     *
+     * <p>When a Task is deleted, all of the files in its directory on the Compute Node where it ran are also deleted
+     * (regardless of the retention time). For multi-instance Tasks, the delete Task operation applies synchronously to
+     * the primary task; subtasks and their files are then deleted asynchronously in the background.
+     *
+     * @param jobId The ID of the Job from which to delete the Task.
+     * @param taskId The ID of the Task to delete.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteTask(
+            String jobId, String taskId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for deleteTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return deleteTaskWithResponse(jobId, taskId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets information about the specified Task.
+     *
+     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
+     * Task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task to get information about.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery operations
+     *     include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared due to host
+     *     failure. Retries due to recovery operations are independent of and are not counted against the
+     *     maxTaskRetryCount on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BatchTask> getTask(
+            String jobId,
+            String taskId,
+            Integer timeOutInSeconds,
+            List<String> select,
+            List<String> expand,
+            RequestConditions requestConditions) {
+        // Generated convenience method for getTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam(
+                    "$expand",
+                    expand.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return getTaskWithResponse(jobId, taskId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BatchTask.class));
+    }
+
+    /**
+     * Updates the properties of the specified Task.
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to update.
+     * @param body The Task to update.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> replaceTask(
+            String jobId,
+            String taskId,
+            BatchTask body,
+            Integer timeOutInSeconds,
+            RequestConditions requestConditions) {
+        // Generated convenience method for replaceTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return replaceTaskWithResponse(jobId, taskId, BinaryData.fromObject(body), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance Task.
+     *
+     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
+     *
+     * @param jobId The ID of the Job.
+     * @param taskId The ID of the Task.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the subtasks of a Task on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BatchTaskListSubtasksResult> listSubTasks(
+            String jobId, String taskId, Integer timeOutInSeconds, List<String> select) {
+        // Generated convenience method for listSubTasksWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        return listSubTasksWithResponse(jobId, taskId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BatchTaskListSubtasksResult.class));
+    }
+
+    /**
+     * Terminates the specified Task.
+     *
+     * <p>When the Task has been terminated, it moves to the completed state. For multi-instance Tasks, the terminate
+     * Task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the
+     * background.
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to terminate.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> terminateTask(
+            String jobId, String taskId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for terminateTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return terminateTaskWithResponse(jobId, taskId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Reactivates a Task, allowing it to run again even if its retry count has been exhausted.
+     *
+     * <p>Reactivation makes a Task eligible to be retried again up to its maximum retry count. The Task's state is
+     * changed to active. As the Task is no longer in the completed state, any previous exit code or failure information
+     * is no longer available after reactivation. Each time a Task is reactivated, its retry count is reset to 0.
+     * Reactivation will fail for Tasks that are not completed or that previously completed successfully (with an exit
+     * code of 0). Additionally, it will fail if the Job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to reactivate.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> reactivateTask(
+            String jobId, String taskId, Integer timeOutInSeconds, RequestConditions requestConditions) {
+        // Generated convenience method for reactivateTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return reactivateTaskWithResponse(jobId, taskId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the specified Task file from the Compute Node where the Task ran.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
+     *     instead of a file, you can set recursive to true to delete the directory and all of the files and
+     *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteTaskFile(
+            String jobId, String taskId, String filePath, Integer timeOutInSeconds, Boolean recursive) {
+        // Generated convenience method for deleteTaskFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        return deleteTaskFileWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Returns the content of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has been modified since the specified time.
+     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has not been modified since the specified
+     *     time.
+     * @param ocpRange The byte range to be retrieved. The default is to retrieve the entire file. The format is
+     *     bytes=startRange-endRange.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getTaskFile(
+            String jobId,
+            String taskId,
+            String filePath,
+            Integer timeOutInSeconds,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ocpRange) {
+        // Generated convenience method for getTaskFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ocpRange != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
+        }
+        return getTaskFileWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has been modified since the specified time.
+     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has not been modified since the specified
+     *     time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified Task file on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getTaskFileProperties(
+            String jobId,
+            String taskId,
+            String filePath,
+            Integer timeOutInSeconds,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for getTaskFilePropertiesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+     * @param recursive Whether to list children of the Task directory. This parameter can be used in combination with
+     *     the filter parameter to list specific type of files.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -17041,9 +15062,755 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NodeFile> listNodeFiles(String poolId, String nodeId) {
+    public PagedFlux<NodeFile> listTaskFiles(
+            String jobId,
+            String taskId,
+            Integer maxresults,
+            Integer timeOutInSeconds,
+            String filter,
+            Boolean recursive) {
+        // Generated convenience method for listTaskFiles
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listTaskFiles(jobId, taskId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, NodeFile>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(NodeFile.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Adds a user Account to the specified Compute Node.
+     *
+     * <p>You can add a user Account to a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to create a user Account.
+     * @param body The options to use for creating the user.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createNodeUser(
+            String poolId, String nodeId, BatchNodeUserCreateOptions body, Integer timeOutInSeconds) {
+        // Generated convenience method for createNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(body), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes a user Account from the specified Compute Node.
+     *
+     * <p>You can delete a user Account to a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to delete a user Account.
+     * @param userName The name of the user Account to delete.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName, Integer timeOutInSeconds) {
+        // Generated convenience method for deleteNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Updates the password and expiration time of a user Account on the specified Compute Node.
+     *
+     * <p>This operation replaces of all the updatable properties of the Account. For example, if the expiryTime element
+     * is not specified, the current value is replaced with the default value, not left unmodified. You can update a
+     * user Account on a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to update a user Account.
+     * @param userName The name of the user Account to update.
+     * @param body The options to use for updating the user.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> replaceNodeUser(
+            String poolId, String nodeId, String userName, BatchNodeUserUpdateOptions body, Integer timeOutInSeconds) {
+        // Generated convenience method for replaceNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(body), requestOptions)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets information about the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to get information about.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Compute Node on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BatchNode> getNode(String poolId, String nodeId, Integer timeOutInSeconds, List<String> select) {
+        // Generated convenience method for getNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        return getNodeWithResponse(poolId, nodeId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BatchNode.class));
+    }
+
+    /**
+     * Restarts the specified Compute Node.
+     *
+     * <p>You can restart a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param body The options to use for rebooting the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> rebootNode(String poolId, String nodeId, Integer timeOutInSeconds, NodeRebootOptions body) {
+        // Generated convenience method for rebootNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        return rebootNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * <p>You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API
+     * can be invoked only on Pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param body The options to use for reimaging the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> reimageNode(String poolId, String nodeId, Integer timeOutInSeconds, NodeReimageOptions body) {
+        // Generated convenience method for reimageNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        return reimageNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Disables Task scheduling on the specified Compute Node.
+     *
+     * <p>You can disable Task scheduling on a Compute Node only if its current scheduling state is enabled.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param body The options to use for disabling scheduling on the Compute Node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> disableNodeScheduling(
+            String poolId, String nodeId, Integer timeOutInSeconds, NodeDisableSchedulingOptions body) {
+        // Generated convenience method for disableNodeSchedulingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (body != null) {
+            requestOptions.setBody(BinaryData.fromObject(body));
+        }
+        return disableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables Task scheduling on the specified Compute Node.
+     *
+     * <p>You can enable Task scheduling on a Compute Node only if its current scheduling state is disabled.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enableNodeScheduling(String poolId, String nodeId, Integer timeOutInSeconds) {
+        // Generated convenience method for enableNodeSchedulingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return enableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the settings required for remote login to a Compute Node.
+     *
+     * <p>Before you can remotely login to a Compute Node using the remote login settings, you must create a user
+     * Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration
+     * property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remote login settings for a Compute Node on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BatchNodeRemoteLoginSettingsResult> getNodeRemoteLoginSettings(
+            String poolId, String nodeId, Integer timeOutInSeconds) {
+        // Generated convenience method for getNodeRemoteLoginSettingsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(BatchNodeRemoteLoginSettingsResult.class));
+    }
+
+    /**
+     * Gets the Remote Desktop Protocol file for the specified Compute Node.
+     *
+     * <p>Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute
+     * Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a
+     * virtual machine configuration, see the GetRemoteLoginSettings API.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represent a byte array on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<byte[]> getNodeRemoteDesktopFile(String poolId, String nodeId, Integer timeOutInSeconds) {
+        // Generated convenience method for getNodeRemoteDesktopFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return getNodeRemoteDesktopFileWithResponse(poolId, nodeId, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
+    }
+
+    /**
+     * Upload Azure Batch service log files from the specified Compute Node to Azure Blob Storage.
+     *
+     * <p>This is for gathering Azure Batch service log files in an automated fashion from Compute Nodes if you are
+     * experiencing an error and wish to escalate to Azure support. The Azure Batch service log files should be shared
+     * with Azure support to aid in debugging issues with the Batch service.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
+     * @param body The Azure Batch service log files upload options.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
+     *     {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(
+            String poolId, String nodeId, UploadBatchServiceLogsOptions body, Integer timeOutInSeconds) {
+        // Generated convenience method for uploadNodeLogsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(body), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(UploadBatchServiceLogsResult.class));
+    }
+
+    /**
+     * Lists the Compute Nodes in the specified Pool.
+     *
+     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BatchNode> listNodes(
+            String poolId, Integer maxresults, Integer timeOutInSeconds, String filter, List<String> select) {
+        // Generated convenience method for listNodes
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listNodes(poolId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BatchNode>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    BatchNode.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Gets information about the specified Compute Node Extension.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that contains the extensions.
+     * @param extensionName The name of the of the Compute Node Extension that you want to get information about.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Compute Node Extension on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NodeVMExtension> getNodeExtension(
+            String poolId, String nodeId, String extensionName, Integer timeOutInSeconds, List<String> select) {
+        // Generated convenience method for getNodeExtensionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        return getNodeExtensionWithResponse(poolId, nodeId, extensionName, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(NodeVMExtension.class));
+    }
+
+    /**
+     * Lists the Compute Nodes Extensions in the specified Pool.
+     *
+     * @param poolId The ID of the Pool that contains Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to list extensions.
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NodeVMExtension> listNodeExtensions(
+            String poolId, String nodeId, Integer maxresults, Integer timeOutInSeconds, List<String> select) {
+        // Generated convenience method for listNodeExtensions
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam(
+                    "$select",
+                    select.stream()
+                            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                            .collect(Collectors.joining(",")),
+                    false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listNodeExtensions(poolId, nodeId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, NodeVMExtension>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(
+                                                                                    NodeVMExtension.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Deletes the specified file from the Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
+     *     instead of a file, you can set recursive to true to delete the directory and all of the files and
+     *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteNodeFile(
+            String poolId, String nodeId, String filePath, Integer timeOutInSeconds, Boolean recursive) {
+        // Generated convenience method for deleteNodeFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        return deleteNodeFileWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Returns the content of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has been modified since the specified time.
+     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has not been modified since the specified
+     *     time.
+     * @param ocpRange The byte range to be retrieved. The default is to retrieve the entire file. The format is
+     *     bytes=startRange-endRange.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represent a byte array on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<byte[]> getNodeFile(
+            String poolId,
+            String nodeId,
+            String filePath,
+            Integer timeOutInSeconds,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ocpRange) {
+        // Generated convenience method for getNodeFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ocpRange != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
+        }
+        return getNodeFileWithResponse(poolId, nodeId, filePath, requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
+    }
+
+    /**
+     * Gets the properties of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has been modified since the specified time.
+     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has not been modified since the specified
+     *     time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getNodeFileProperties(
+            String poolId,
+            String nodeId,
+            String filePath,
+            Integer timeOutInSeconds,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for getNodeFilePropertiesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
+     *     be returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * @param recursive Whether to list children of a directory.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NodeFile> listNodeFiles(
+            String poolId,
+            String nodeId,
+            Integer maxresults,
+            Integer timeOutInSeconds,
+            String filter,
+            Boolean recursive) {
         // Generated convenience method for listNodeFiles
         RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
         PagedFlux<BinaryData> pagedFluxResponse = listNodeFiles(poolId, nodeId, requestOptions);
         return PagedFlux.create(
                 () ->

@@ -51,7 +51,7 @@ public class PoolTests extends BatchServiceClientTestBase {
         // Will be enabled back soon.
         //Assertions.assertNotNull(pool.stats());
 
-        PagedIterable<BatchPool> pools = batchClient.listPools(null, null, null, null, Arrays.asList("id", "state"), null);
+        PagedIterable<BatchPool> pools = batchClient.listPools(null, null, null, Arrays.asList("id", "state"), null);
         Assertions.assertNotNull(pools);
         BatchPool pool = null;
 
@@ -68,7 +68,7 @@ public class PoolTests extends BatchServiceClientTestBase {
 
 
         // When tests are being ran in parallel, there may be a previous pool delete still in progress
-        pools = batchClient.listPools(null, null, null, "state eq 'deleting'", null, null);
+        pools = batchClient.listPools(null, null, "state eq 'deleting'", null, null);
         Assertions.assertNotNull(pools);
 
     }
