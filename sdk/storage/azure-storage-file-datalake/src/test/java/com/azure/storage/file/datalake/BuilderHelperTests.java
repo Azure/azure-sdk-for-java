@@ -454,7 +454,7 @@ public class BuilderHelperTests extends DataLakeTestBase{
     public void miscFileSystemClientBuilderParameterTests() {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
             null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new FreshDateTestClient(),
-            new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         //testing pipeline
         DataLakeFileSystemClient client = new DataLakeFileSystemClientBuilder()
@@ -525,7 +525,7 @@ public class BuilderHelperTests extends DataLakeTestBase{
     public void miscServiceClientBuilderParameterTests() {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
             null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new FreshDateTestClient(),
-            new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         //testing pipeline
         DataLakeServiceClient client = new DataLakeServiceClientBuilder()
@@ -587,7 +587,7 @@ public class BuilderHelperTests extends DataLakeTestBase{
     public void miscPathClientBuilderParameterTests() {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
             null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new FreshDateTestClient(),
-            new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         //testing pipeline
         DataLakePathClient client = new DataLakePathClientBuilder()

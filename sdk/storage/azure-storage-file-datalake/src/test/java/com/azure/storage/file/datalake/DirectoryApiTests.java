@@ -492,7 +492,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
             Arguments.of(CoreUtils.randomUuid().toString(), null, null),
             Arguments.of(CoreUtils.randomUuid().toString(), 15, null),
             Arguments.of(CoreUtils.randomUuid().toString(), null, new DataLakePathScheduleDeletionOptions(OffsetDateTime.now())),
-            Arguments.of(CoreUtils.randomUuid().toString(), null, new DataLakePathScheduleDeletionOptions(Duration.ofDays(6)))
+            Arguments.of(CoreUtils.randomUuid().toString(), null, new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))),
+            Arguments.of(null, 15, null)
         );
     }
 
@@ -3459,6 +3460,22 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .buildDirectoryClient();
 
         assertTrue(aadDirClient.exists());
+    }
+
+    private static DataLakePathClient getPathClient() {
+        return new DataLakePathClientBuilder()
+            .endpoint("https://account.blob.core.windows.net")
+            .credential(new StorageSharedKeyCredential("accountName",
+                "accountKey"))
+            .fileSystemName("fileSystem")
+            .pathName("path")
+            .buildFileClient();
+    }
+
+    @Test
+    public void getAccountUrlMinPathClient() {
+        String accUrl = getPathClient().getAccountUrl();
+        assertEquals(accUrl, "https://account.dfs.core.windows.net");
     }
 
 }

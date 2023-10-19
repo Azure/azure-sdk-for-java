@@ -2386,17 +2386,4 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         String accUrl = dataLakeFileSystemAsyncClient.getAccountUrl();
         assertEquals(accUrl, account.getDataLakeEndpoint());
     }
-
-    @Test
-    public void prepareBuilderReplacePath() { //todo isbr: get right
-        String fileSystem = generateFileSystemName();
-        dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.createFileSystem(fileSystem).block();
-        String accUrl = primaryDataLakeServiceAsyncClient.getAccountUrl();
-
-        BlobContainerClient client = dataLakeFileSystemAsyncClient.prepareBuilderReplacePath(fileSystem).buildClient();
-        String url2 = client.getAccountUrl();
-        assertNotEquals(accUrl, client.getAccountUrl());
-
-
-    }
 }

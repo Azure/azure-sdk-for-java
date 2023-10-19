@@ -2284,6 +2284,14 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertTrue(aadFsClient.exists());
     }
 
+    @Test
+    public void getAccountUrlMin() {
+        dataLakeFileSystemClient = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName());
+        TestAccount account = ENVIRONMENT.getDataLakeAccount();
+        String accUrl = dataLakeFileSystemClient.getAccountUrl();
+        assertEquals(accUrl, account.getDataLakeEndpoint());
+    }
+
 //    @Test
 //    public void rename() {
 //        DataLakeFileSystemClient renamedContainer = dataLakeFileSystemClient.rename(generateFileSystemName());

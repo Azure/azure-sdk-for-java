@@ -523,7 +523,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             Arguments.of(CoreUtils.randomUuid().toString(), null,
                 new DataLakePathScheduleDeletionOptions(OffsetDateTime.now())),
             Arguments.of(CoreUtils.randomUuid().toString(), null,
-                new DataLakePathScheduleDeletionOptions(Duration.ofDays(6)))
+                new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))),
+            Arguments.of(null, 15, null)
         );
     }
 

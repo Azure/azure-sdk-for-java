@@ -364,7 +364,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void createOptionsWithNullOwnerAndGroup() {
-        fc.createWithResponse(null, null);
+        fc.createWithResponse(null, null).block();
 
         StepVerifier.create(fc.getAccessControl())
             .assertNext(r -> {
@@ -2082,6 +2082,14 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(fc.renameWithResponse(null, generatePathName(), null,
             null, null))
             .verifyError(DataLakeStorageException.class);
+    }
+
+    @Test
+    public void renameErrorDestinationPath() {
+        fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+
+        assertThrows(IllegalArgumentException.class, () -> fc.renameWithResponse(null, null,
+            null, null, null).block());
     }
 
     @ParameterizedTest
