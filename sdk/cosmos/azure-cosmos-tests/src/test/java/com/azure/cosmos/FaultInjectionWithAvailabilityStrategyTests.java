@@ -4181,7 +4181,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             .regionSwitchHint(effectiveRegionSwitchHint);
 
         if (customMinRetryTimeInLocalRegionForWrites != null) {
-            retryOptionsBuilder.minInRegionRetryTime(customMinRetryTimeInLocalRegionForWrites);
+            retryOptionsBuilder.minTimeoutPerRegion(customMinRetryTimeInLocalRegionForWrites);
         }
 
         CosmosClientBuilder builder = new CosmosClientBuilder()

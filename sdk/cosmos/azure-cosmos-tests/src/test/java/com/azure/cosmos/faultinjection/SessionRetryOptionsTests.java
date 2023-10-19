@@ -129,8 +129,8 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     public void SessionRetryOptionsBuilder_customValues() {
         SessionRetryOptions optionsWithDefaultValues = new SessionRetryOptionsBuilder()
             .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
-            .minInRegionRetryTime(Duration.ofSeconds(1))
-            .maxInRegionRetryCount(3)
+            .minTimeoutPerRegion(Duration.ofSeconds(1))
+            .maxRetriesPerRegion(3)
             .build();
 
         assertThat(sessionRetryOptionsAccessor.getMaxInRegionRetryCount(optionsWithDefaultValues))
@@ -144,7 +144,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     public void SessionRetryOptionsBuilder_minimum_maxRetryCountEnforced() {
         SessionRetryOptionsBuilder builder = new SessionRetryOptionsBuilder()
             .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
-            .maxInRegionRetryCount(0);
+            .maxRetriesPerRegion(0);
 
         try {
             builder.build();
@@ -159,7 +159,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     public void SessionRetryOptionsBuilder_minimum_minRetryTimeEnforced() {
         SessionRetryOptionsBuilder builder = new SessionRetryOptionsBuilder()
             .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
-            .minInRegionRetryTime(Duration.ofMillis(99));
+            .minTimeoutPerRegion(Duration.ofMillis(99));
 
         try {
             builder.build();
@@ -174,7 +174,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     public void SessionRetryOptionsBuilder_minRetryTimeRequired() {
         SessionRetryOptionsBuilder builder = new SessionRetryOptionsBuilder()
             .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
-            .minInRegionRetryTime(null);
+            .minTimeoutPerRegion(null);
 
         try {
             builder.build();

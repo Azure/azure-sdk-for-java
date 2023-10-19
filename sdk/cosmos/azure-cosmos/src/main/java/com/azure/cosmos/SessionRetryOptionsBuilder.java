@@ -44,11 +44,11 @@ public final class SessionRetryOptionsBuilder {
      *  value is 100ms - this minimum is enforced to provide a way for the local region to catch-up on replication lag.
      *  The default value is 500ms - as a recommendation ensure that this value is higher than the steady-state
      *  replication latency between the regions you chose.
-     * @param minRetryTime the min retry time to be used with-in each region
+     * @param minTimeoutPerRegion the min retry time to be used with-in each region
      * @return This instance of {@link SessionRetryOptionsBuilder}
      */
-    public SessionRetryOptionsBuilder minInRegionRetryTime(Duration minRetryTime) {
-        this.minInRegionRetryTime = minRetryTime;
+    public SessionRetryOptionsBuilder minTimeoutPerRegion(Duration minTimeoutPerRegion) {
+        this.minInRegionRetryTime = minTimeoutPerRegion;
         return this;
     }
 
@@ -56,11 +56,11 @@ public final class SessionRetryOptionsBuilder {
      * Sets the maximum number of retries within each region for read and write operations. The minimum
      *  value is 1 - the backoff time for the last in-region retry will ensure that the total retry time within the
      *  region is at least the min. in-region retry time.
-     * @param maxInRegionRetryCount the max. number of retries with-in each region
+     * @param maxRetriesPerRegion the max. number of retries with-in each region
      * @return This instance of {@link SessionRetryOptionsBuilder}
      */
-    public SessionRetryOptionsBuilder maxInRegionRetryCount(int maxInRegionRetryCount) {
-        this.maxInRegionRetryCount = maxInRegionRetryCount;
+    public SessionRetryOptionsBuilder maxRetriesPerRegion(int maxRetriesPerRegion) {
+        this.maxInRegionRetryCount = maxRetriesPerRegion;
         return this;
     }
 
