@@ -98,6 +98,7 @@ public final class CallInvite {
 
     /**
      * set PhoneNumberIdentifier for PSTN caller
+     * @param sourceCallerIdNumber PhoneNumberIdentifier for PSTN caller
      * @return the CallInvite object itself
      */
     public CallInvite setSourceCallerIdNumber(PhoneNumberIdentifier sourceCallerIdNumber) {
