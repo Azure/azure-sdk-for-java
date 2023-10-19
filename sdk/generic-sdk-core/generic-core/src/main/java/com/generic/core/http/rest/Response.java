@@ -9,7 +9,6 @@ import com.generic.core.models.Headers;
  * REST response with a strongly-typed content specified.
  *
  * @param <T> The deserialized type of the response content, available from {@link #getValue()}.
- * @see ResponseBase
  */
 public interface Response<T> {
 
@@ -40,4 +39,8 @@ public interface Response<T> {
      * @return The deserialized value of the HTTP response.
      */
     T getValue();
+
+    static Response createResponse(HttpRequest request, int statusCode, Headers headers, Object value) {
+        return new SimpleResponse(request, statusCode, headers, value);
+    }
 }

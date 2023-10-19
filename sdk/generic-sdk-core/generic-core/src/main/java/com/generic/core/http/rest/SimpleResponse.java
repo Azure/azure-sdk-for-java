@@ -10,7 +10,7 @@ import com.generic.core.models.Headers;
  *
  * @param <T> The deserialized type of the response content.
  */
-public class SimpleResponse<T> implements Response<T> {
+class SimpleResponse<T> implements Response<T> {
     private final HttpRequest request;
     private final int statusCode;
     private final Headers headers;
