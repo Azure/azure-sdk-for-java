@@ -114,7 +114,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 
 public class FileApiTest extends DataLakeTestBase {
     private static final PathPermissions PERMISSIONS = new PathPermissions()
@@ -1964,7 +1965,7 @@ public class FileApiTest extends DataLakeTestBase {
         InputStream mockedData = mock(InputStream.class);
         doThrow(UncheckedIOException.class).when(mockedData).read();
 
-        assertThrows(UncheckedIOException.class, () -> fc.appendWithResponse(mockedData, 0,0, new DataLakeFileAppendOptions(),
+        assertThrows(UncheckedIOException.class, () -> fc.appendWithResponse(mockedData, 0, 0, new DataLakeFileAppendOptions(),
             null, null));
     }
 

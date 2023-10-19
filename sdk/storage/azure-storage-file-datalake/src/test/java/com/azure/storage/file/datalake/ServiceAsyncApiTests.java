@@ -7,7 +7,6 @@ import com.azure.core.test.TestMode;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
@@ -647,7 +646,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     @Test
     public void nullFileSystemName() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(null);
-        cc1.create().block();
+        cc1.createIfNotExists().block();
 
         StepVerifier.create(cc1.exists())
             .expectNext(true)

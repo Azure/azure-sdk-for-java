@@ -15,7 +15,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -163,14 +162,6 @@ public class ModelTests {
     }
 
     @Test
-    public void pathPermissionsSetExtendedInfo() {
-        PathPermissions notExtended = PathPermissions.parseSymbolic("r---w---x");
-        assertFalse(notExtended.isExtendedInfoInAcl());
-        notExtended.setExtendedInfoInAcl(true);
-        assertTrue(notExtended.isExtendedInfoInAcl());
-    }
-
-    @Test
     public void setFileReadHeadersNull() {
         FileReadHeaders headers = new FileReadHeaders();
         headers.setCopyCompletionTime(null);
@@ -217,7 +208,7 @@ public class ModelTests {
     }
 
     @Test
-    public void PathAccessControlEntryEquals() {
+    public void pathAccessControlEntryEquals() {
         PathAccessControlEntry perm1 = PathAccessControlEntry.parse("default:group:a:---");
         PathAccessControlEntry scope = PathAccessControlEntry.parse("group:a:---");
         PathAccessControlEntry accessControlType = PathAccessControlEntry.parse("default:user:a:---");
