@@ -19,7 +19,8 @@ private case class ItemsScanBuilder(session: SparkSession,
                                     config: CaseInsensitiveStringMap,
                                     inputSchema: StructType,
                                     cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-                                    diagnosticsConfig: DiagnosticsConfig)
+                                    diagnosticsConfig: DiagnosticsConfig,
+                                    sparkEnvironmentInfo: String)
   extends ScanBuilder
     with SupportsPushDownFilters
     with SupportsPushDownRequiredColumns {
@@ -66,7 +67,8 @@ private case class ItemsScanBuilder(session: SparkSession,
       this.readConfig,
       this.processedPredicates.get.cosmosParametrizedQuery,
       cosmosClientStateHandles,
-      diagnosticsConfig)
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
   }
 
   /**

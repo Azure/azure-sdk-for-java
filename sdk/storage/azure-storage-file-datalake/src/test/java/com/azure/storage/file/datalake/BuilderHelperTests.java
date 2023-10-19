@@ -72,7 +72,7 @@ public class BuilderHelperTests {
     public void freshDateAppliedOnRetry() {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
             null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new FreshDateTestClient(),
-            new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
@@ -160,7 +160,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, ENDPOINT,
             new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
             new ClientOptions().setApplicationId(clientOptionsUA), new ApplicationIdUAStringTestClient(expectedUA),
-            new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
