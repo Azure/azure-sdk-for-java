@@ -478,24 +478,22 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @param <S> type class of domain type
      * @return Flux of result
      */
-    public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities) {
+    public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities) {
         Assert.notNull(entities, "entities to be inserted should not be null");
 
         String containerName = entityInformation.getContainerName();
         Class<T> domainType = entityInformation.getJavaType();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-        entities.forEach(entity -> {
-            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
-            PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
-            cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(originalItem,
-                partitionKey));
+        //List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        Flux<CosmosItemOperation> cosmosItemOperations = entities.map(entity -> {
+            return CosmosBulkOperations.getUpsertItemOperation(mappingCosmosConverter.writeJsonNode(entity),
+                new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity)));
         });
 
         return (Flux<S>) this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .executeBulkOperations(Flux.fromIterable(cosmosItemOperations))
+            .executeBulkOperations(cosmosItemOperations)
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,

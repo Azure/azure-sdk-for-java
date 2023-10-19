@@ -157,7 +157,7 @@ public interface ReactiveCosmosOperations {
      * @param <S> type class of domain type
      * @return Flux of result
      */
-    <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities);
+    <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities);
 
     /**
      * patches item
