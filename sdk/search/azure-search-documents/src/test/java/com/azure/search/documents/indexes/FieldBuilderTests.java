@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
@@ -19,8 +18,6 @@ import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynony
 import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields;
 import com.azure.search.documents.test.environment.models.HotelWithUnsupportedField;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -275,43 +272,6 @@ public class FieldBuilderTests {
     }
 
     @Test
-    public void validNormalizerField() {
-        List<SearchField> fields = SearchIndexClient.buildSearchFields(ValidNormalizer.class, null);
-
-        assertEquals(1, fields.size());
-
-        SearchField normalizerField = fields.get(0);
-        assertEquals(LexicalNormalizerName.STANDARD, normalizerField.getNormalizerName());
-    }
-
-    @SuppressWarnings("unused")
-    public static final class ValidNormalizer {
-        @SimpleField(normalizerName = "standard", isFilterable = true)
-        public String validNormalizer;
-    }
-
-    @ParameterizedTest
-    @ValueSource(classes = { NonStringNormalizer.class, MissingFunctionalityNormalizer.class })
-    public void invalidNormalizerField(Class<?> type) {
-        RuntimeException ex = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(type, null));
-
-        assertTrue(ex.getMessage().contains("A field with a normalizer name"));
-    }
-
-    @SuppressWarnings("unused")
-    public static final class NonStringNormalizer {
-        @SimpleField(normalizerName = "standard")
-        public int wrongTypeForNormalizer;
-    }
-
-    @SuppressWarnings("unused")
-    public static final class MissingFunctionalityNormalizer {
-        @SimpleField(normalizerName = "standard")
-        public String rightTypeWrongFunctionality;
-    }
-
-    @Test
     public void onlyAnalyzerNameSetsOnlyAnalyzerName() {
         List<SearchField> fields = SearchIndexClient.buildSearchFields(OnlyAnalyzerName.class, null);
 
@@ -345,6 +305,51 @@ public class FieldBuilderTests {
     public static final class IndexAndSearchAnalyzerNames {
         @SearchableField(indexAnalyzerName = "indexAnalyzer", searchAnalyzerName = "searchAnalyzer")
         public String indexAndSearchAnalyzer;
+    }
+
+    @Test
+    public void vectorSearchField() {
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(VectorSearchField.class, null);
+
+        assertEquals(1, fields.size());
+
+        SearchField field = fields.get(0);
+        assertEquals(1536, field.getVectorSearchDimensions());
+        assertEquals("myprofile", field.getVectorSearchProfile());
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorSearchField {
+        @SearchableField(vectorSearchDimensions = 1536, vectorSearchProfile = "myprofile")
+        public List<Float> vectorSearchField;
+    }
+
+    @Test
+    public void vectorFieldMissingDimensions() {
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            SearchIndexClient.buildSearchFields(VectorFieldMissingDimensions.class, null));
+
+        assertTrue(ex.getMessage().contains("Please specify both vectorSearchDimensions and vectorSearchProfile"));
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorFieldMissingDimensions {
+        @SearchableField(vectorSearchProfile = "myprofile")
+        public List<Float> vectorSearchField;
+    }
+
+    @Test
+    public void vectorFieldMissingProfile() {
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            SearchIndexClient.buildSearchFields(VectorFieldMissingProfile.class, null));
+
+        assertTrue(ex.getMessage().contains("Please specify both vectorSearchDimensions and vectorSearchProfile"));
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorFieldMissingProfile {
+        @SearchableField(vectorSearchDimensions = 1536)
+        public List<Float> vectorSearchField;
     }
 
     private void assertListFieldEquals(List<SearchField> expected, List<SearchField> actual) {

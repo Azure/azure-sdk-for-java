@@ -16,7 +16,6 @@ import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
 import com.azure.search.documents.indexes.models.HnswVectorSearchAlgorithmConfiguration;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.PrioritizedFields;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
 import com.azure.search.documents.indexes.models.ScoringProfile;
@@ -31,7 +30,6 @@ import com.azure.search.documents.indexes.models.VectorSearch;
 import com.azure.search.documents.indexes.models.VectorSearchProfile;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaptionType;
-import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RawVectorQuery;
 import com.azure.search.documents.models.SearchOptions;
@@ -86,7 +84,7 @@ public class VectorSearchTests extends SearchTestBase {
 
         searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .serviceVersion(SearchServiceVersion.V2023_10_01_PREVIEW)
+            .serviceVersion(SearchServiceVersion.V2023_11_01)
             .credential(new AzureKeyCredential(API_KEY))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .buildClient();
@@ -242,7 +240,6 @@ public class VectorSearchTests extends SearchTestBase {
                 .setFields("DescriptionVector"))
             .setSelect("HotelId", "HotelName", "Description", "Category")
             .setQueryType(QueryType.SEMANTIC)
-            .setQueryLanguage(QueryLanguage.EN_US)
             .setSemanticConfigurationName("my-semantic-config")
             .setQueryCaption(QueryCaptionType.EXTRACTIVE)
             .setQueryAnswer(QueryAnswerType.EXTRACTIVE);
@@ -287,7 +284,6 @@ public class VectorSearchTests extends SearchTestBase {
                 .setFields("DescriptionVector"))
             .setSelect("HotelId", "HotelName", "Description", "Category")
             .setQueryType(QueryType.SEMANTIC)
-            .setQueryLanguage(QueryLanguage.EN_US)
             .setSemanticConfigurationName("my-semantic-config")
             .setQueryCaption(QueryCaptionType.EXTRACTIVE)
             .setQueryAnswer(QueryAnswerType.EXTRACTIVE);
@@ -568,8 +564,7 @@ public class VectorSearchTests extends SearchTestBase {
                             .setSearchable(true)
                             .setFilterable(true)
                             .setFacetable(true)
-                            .setSortable(true)
-                            .setNormalizerName(LexicalNormalizerName.LOWERCASE),
+                            .setSortable(true),
                         new SearchField("StateProvince", SearchFieldDataType.STRING)
                             .setSearchable(true)
                             .setFilterable(true)

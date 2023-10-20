@@ -93,13 +93,6 @@ public final class SearchOptions {
     private String scoringProfile;
 
     /*
-     * Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and
-     * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
-     * retrieval and ranking phase, and the L2 semantic phase.
-     */
-    private String semanticQuery;
-
-    /*
      * The name of the semantic configuration that lists which fields should be
      * used for semantic ranking, captions, highlights, and answers
      */
@@ -117,27 +110,12 @@ public final class SearchOptions {
     private Integer semanticMaxWaitInMilliseconds;
 
     /*
-     * Enables a debugging tool that can be used to further explore your search results.
-     */
-    private QueryDebugMode debug;
-
-    /*
      * The list of field names to which to scope the full-text search. When
      * using fielded search (fieldName:searchExpression) in a full Lucene
      * query, the field names of each fielded search expression take precedence
      * over any field names listed in this parameter.
      */
     private List<String> searchFields;
-
-    /*
-     * The language of the query.
-     */
-    private QueryLanguage queryLanguage;
-
-    /*
-     * Improve search recall by spell-correcting individual search query terms.
-     */
-    private QuerySpellerType speller;
 
     /*
      * This parameter is only valid if the query type is 'semantic'. If set,
@@ -237,11 +215,6 @@ public final class SearchOptions {
      * 'extractive|highlight-true'. Defaults to 'None'.
      */
     private Boolean queryCaptionHighlightEnabled;
-
-    /*
-     * The list of field names used for semantic search.
-     */
-    private List<String> semanticFields;
 
     /*
      * The query parameters for vector and hybrid search queries.
@@ -515,30 +488,6 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
-     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
-     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
-     *
-     * @return the semanticQuery value.
-     */
-    public String getSemanticQuery() {
-        return this.semanticQuery;
-    }
-
-    /**
-     * Set the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
-     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
-     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
-     *
-     * @param semanticQuery the semanticQuery value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSemanticQuery(String semanticQuery) {
-        this.semanticQuery = semanticQuery;
-        return this;
-    }
-
-    /**
      * Get the semanticConfigurationName property: The name of the semantic configuration that lists which fields should
      * be used for semantic ranking, captions, highlights, and answers.
      *
@@ -605,26 +554,6 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
-     *
-     * @return the debug value.
-     */
-    public QueryDebugMode getDebug() {
-        return this.debug;
-    }
-
-    /**
-     * Set the debug property: Enables a debugging tool that can be used to further explore your search results.
-     *
-     * @param debug the debug value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setDebug(QueryDebugMode debug) {
-        this.debug = debug;
-        return this;
-    }
-
-    /**
      * Get the searchFields property: The list of field names to which to scope the full-text search. When using fielded
      * search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression
      * take precedence over any field names listed in this parameter.
@@ -645,46 +574,6 @@ public final class SearchOptions {
      */
     public SearchOptions setSearchFields(String... searchFields) {
         this.searchFields = (searchFields == null) ? null : java.util.Arrays.asList(searchFields);
-        return this;
-    }
-
-    /**
-     * Get the queryLanguage property: The language of the query.
-     *
-     * @return the queryLanguage value.
-     */
-    public QueryLanguage getQueryLanguage() {
-        return this.queryLanguage;
-    }
-
-    /**
-     * Set the queryLanguage property: The language of the query.
-     *
-     * @param queryLanguage the queryLanguage value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setQueryLanguage(QueryLanguage queryLanguage) {
-        this.queryLanguage = queryLanguage;
-        return this;
-    }
-
-    /**
-     * Get the speller property: Improve search recall by spell-correcting individual search query terms.
-     *
-     * @return the speller value.
-     */
-    public QuerySpellerType getSpeller() {
-        return this.speller;
-    }
-
-    /**
-     * Set the speller property: Improve search recall by spell-correcting individual search query terms.
-     *
-     * @param speller the speller value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSpeller(QuerySpellerType speller) {
-        this.speller = speller;
         return this;
     }
 
@@ -726,7 +615,7 @@ public final class SearchOptions {
      *
      * @return the answers count value.
      */
-    public Integer getAnswersCount() {
+    public Integer getQueryAnswerCount() {
         return this.answersCount;
     }
 
@@ -739,7 +628,7 @@ public final class SearchOptions {
      * @param answersCount the answers count value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setAnswersCount(Integer answersCount) {
+    public SearchOptions setQueryAnswerCount(Integer answersCount) {
         this.answersCount = answersCount;
         return this;
     }
@@ -753,7 +642,7 @@ public final class SearchOptions {
      *
      * @return the answer threshold value.
      */
-    public Double getAnswerThreshold() {
+    public Double getQueryAnswerThreshold() {
         return this.answerThreshold;
     }
 
@@ -766,7 +655,7 @@ public final class SearchOptions {
      * @param answerThreshold the answer threshold value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setAnswerThreshold(Double answerThreshold) {
+    public SearchOptions setQueryAnswerThreshold(Double answerThreshold) {
         this.answerThreshold = answerThreshold;
         return this;
     }
@@ -962,26 +851,6 @@ public final class SearchOptions {
      */
     public SearchOptions setQueryCaptionHighlightEnabled(Boolean queryCaptionHighlightEnabled) {
         this.queryCaptionHighlightEnabled = queryCaptionHighlightEnabled;
-        return this;
-    }
-
-    /**
-     * Get the semanticFields property: The list of field names used for semantic search.
-     *
-     * @return the semanticFields value.
-     */
-    public List<String> getSemanticFields() {
-        return this.semanticFields;
-    }
-
-    /**
-     * Set the semanticFields property: The list of field names used for semantic search.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSemanticFields(List<String> semanticFields) {
-        this.semanticFields = semanticFields;
         return this;
     }
 

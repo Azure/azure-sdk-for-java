@@ -414,7 +414,6 @@ public final class TestHelpers {
             .setTokenizers(baseIndex.getTokenizers())
             .setTokenFilters(baseIndex.getTokenFilters())
             .setCharFilters(baseIndex.getCharFilters())
-            .setNormalizers(baseIndex.getNormalizers())
             .setEncryptionKey(baseIndex.getEncryptionKey())
             .setSimilarity(baseIndex.getSimilarity())
             .setSemanticSettings(baseIndex.getSemanticSettings())

@@ -13,8 +13,6 @@ public class CreateOrUpdateIndexerOptions {
     private final SearchIndexer indexer;
 
     private boolean onlyIfUnchanged;
-    private Boolean cacheReprocessingChangeDetectionDisabled;
-    private Boolean cacheResetRequirementsIgnored;
 
     /**
      * Creates the property bag used to create or update an {@link SearchIndexer indexer}.
@@ -57,53 +55,5 @@ public class CreateOrUpdateIndexerOptions {
      */
     public boolean isOnlyIfUnchanged() {
         return onlyIfUnchanged;
-    }
-
-    /**
-     * Sets an optional flag that determines whether the created or updated {@link SearchIndexer indexer} disables cache
-     * reprocessing change detection.
-     *
-     * @param cacheReprocessingChangeDetectionDisabled An optional flag that determines whether the created or updated
-     * {@link SearchIndexer indexer} disables cache reprocessing change detection.
-     * @return The updated CreateOrUpdateIndexerOptions object.
-     */
-    public CreateOrUpdateIndexerOptions setCacheReprocessingChangeDetectionDisabled(
-        Boolean cacheReprocessingChangeDetectionDisabled) {
-        this.cacheReprocessingChangeDetectionDisabled = cacheReprocessingChangeDetectionDisabled;
-        return this;
-    }
-
-    /**
-     * Gets an optional flag that determines whether the created or updated {@link SearchIndexer indexer} disables cache
-     * reprocessing change detection.
-     *
-     * @return Whether the created or updated {@link SearchIndexer indexer} disables cache reprocessing change
-     * detection.
-     */
-    public Boolean isCacheReprocessingChangeDetectionDisabled() {
-        return cacheReprocessingChangeDetectionDisabled;
-    }
-
-    /**
-     * Sets an optional flag that determines whether the created or updated {@link SearchIndexer indexer} ignores cache
-     * reset requirements.
-     *
-     * @param cacheResetRequirementsIgnored An optional flag that determines whether the created or updated {@link
-     * SearchIndexer indexer} ignores cache reset requirements.
-     * @return The updated CreateOrUpdateIndexerOptions object.
-     */
-    public CreateOrUpdateIndexerOptions setCacheResetRequirementsIgnored(Boolean cacheResetRequirementsIgnored) {
-        this.cacheResetRequirementsIgnored = cacheResetRequirementsIgnored;
-        return this;
-    }
-
-    /**
-     * Gets an optional flag that determines whether the created or updated {@link SearchIndexer indexer} ignores cache
-     * reset requirements.
-     *
-     * @return Whether the created or updated {@link SearchIndexer indexer} ignores cache reset requirements.
-     */
-    public Boolean isCacheResetRequirementsIgnored() {
-        return cacheResetRequirementsIgnored;
     }
 }

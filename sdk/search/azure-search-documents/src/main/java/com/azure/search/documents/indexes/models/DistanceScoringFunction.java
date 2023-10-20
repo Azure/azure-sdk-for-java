@@ -22,8 +22,6 @@ public final class DistanceScoringFunction extends ScoringFunction {
      * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The
      * function type must be lower case.
      */
-    private static final String TYPE = "distance";
-
     /*
      * Parameter values for the distance scoring function.
      */
@@ -60,7 +58,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", TYPE);
+        jsonWriter.writeStringField("type", "distance");
         jsonWriter.writeStringField("fieldName", getFieldName());
         jsonWriter.writeDoubleField("boost", getBoost());
         jsonWriter.writeStringField("interpolation", Objects.toString(getInterpolation(), null));
@@ -94,11 +92,9 @@ public final class DistanceScoringFunction extends ScoringFunction {
 
                         if ("type".equals(jsonFieldName)) {
                             String type = reader.getString();
-                            if (!TYPE.equals(type)) {
+                            if (!"distance".equals(type)) {
                                 throw new IllegalStateException(
-                                        "'type' was expected to be non-null and equal to '"
-                                                + TYPE
-                                                + "'. The found 'type' was '"
+                                        "'type' was expected to be non-null and equal to 'distance'. The found 'type' was '"
                                                 + type
                                                 + "'.");
                             }

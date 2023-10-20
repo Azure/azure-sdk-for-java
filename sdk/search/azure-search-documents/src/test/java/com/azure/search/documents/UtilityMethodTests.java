@@ -34,7 +34,7 @@ public class UtilityMethodTests {
                 QueryAnswerType.EXTRACTIVE.toString()),
 
             // Both QueryAnswer and count provided returns the concatenated string mentioned in docs.
-            Arguments.of(new SearchOptions().setQueryAnswer(QueryAnswerType.EXTRACTIVE).setAnswersCount(5),
+            Arguments.of(new SearchOptions().setQueryAnswer(QueryAnswerType.EXTRACTIVE).setQueryAnswerCount(5),
                 QueryAnswerType.EXTRACTIVE + "|count-5")
         );
     }

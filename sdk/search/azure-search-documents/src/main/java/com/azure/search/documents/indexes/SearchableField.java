@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
@@ -81,14 +80,6 @@ public @interface SearchableField {
     String indexAnalyzerName() default "";
 
     /**
-     * A {@link LexicalNormalizerName} to associate as the normalizer for the {@link SearchField field}.
-     *
-     * @return The {@link LexicalNormalizerName} that will be associated as the normalizer for the
-     * {@link SearchField field}.
-     */
-    String normalizerName() default "";
-
-    /**
      * A list of {@link SynonymMap} names to be associated with the {@link SearchField field}.
      * <p>
      * Assigning a synonym map to a field ensures that query terms targeting that field are expanded at query-time using
@@ -99,4 +90,23 @@ public @interface SearchableField {
      * @return The {@link SynonymMap} names that will be associated with the {@link SearchField field}.
      */
     String[] synonymMapNames() default {};
+
+    /**
+     * The dimensionality of the vector field.
+     * <p>
+     * If the value is negative or 0, the field won't have a {@link SearchField#getVectorSearchDimensions()} value.
+     *
+     * @return The dimensionality of the vector {@link SearchField field}.
+     */
+    int vectorSearchDimensions() default -1;
+
+    /**
+     * The name of the vector search profile that specifies the parameters for searching the vector field.
+     * <p>
+     * If the value is empty, the field won't have a {@link SearchField#getVectorSearchProfile()} value.
+     *
+     * @return The name of the vector search profile that specifies the parameters for searching the vector
+     * {@link SearchField field}.
+     */
+    String vectorSearchProfile() default "";
 }

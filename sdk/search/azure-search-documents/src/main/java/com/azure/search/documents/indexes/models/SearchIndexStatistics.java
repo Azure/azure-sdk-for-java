@@ -76,9 +76,6 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeLongField("documentCount", this.documentCount);
-        jsonWriter.writeLongField("storageSize", this.storageSize);
-        jsonWriter.writeNumberField("vectorIndexSize", this.vectorIndexSize);
         return jsonWriter.writeEndObject();
     }
 

@@ -44,7 +44,6 @@ public final class IndexDocumentsResult implements JsonSerializable<IndexDocumen
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.results, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 

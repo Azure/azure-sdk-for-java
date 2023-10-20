@@ -73,7 +73,6 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@search.text", this.text);
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

@@ -58,14 +58,9 @@ public abstract class DataDeletionDetectionPolicy implements JsonSerializable<Da
                     // Use the discriminator value to determine which subtype should be deserialized.
                     if ("#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy".equals(discriminatorValue)) {
                         return SoftDeleteColumnDeletionDetectionPolicy.fromJson(readerToUse);
-                    } else if ("#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy"
-                            .equals(discriminatorValue)) {
-                        return NativeBlobSoftDeleteDeletionDetectionPolicy.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy', or '#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy'. It was: '"
-                                        + discriminatorValue
-                                        + "'.");
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy'");
                     }
                 });
     }

@@ -21,8 +21,6 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer";
-
     /*
      * The maximum token length. Tokens longer than the maximum length are split. Maximum token length that can be used
      * is 300 characters. Tokens longer than 300 characters are first split into tokens of length 300 and then each of
@@ -119,7 +117,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeNumberField("maxTokenLength", this.maxTokenLength);
         jsonWriter.writeBooleanField("isSearchTokenizer", this.isSearchTokenizerUsed);
@@ -151,11 +149,9 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

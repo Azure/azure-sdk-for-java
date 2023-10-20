@@ -976,13 +976,6 @@ public final class SearchAsyncClient {
         return new SuggestPagedFlux(() -> withContext(context -> suggest(suggestRequest, context)));
     }
 
-    SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions, Context context) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText,
-            suggesterName, Utility.ensureSuggestOptions(suggestOptions));
-
-        return new SuggestPagedFlux(() -> suggest(suggestRequest, context));
-    }
-
     private Mono<SuggestPagedResponse> suggest(SuggestRequest suggestRequest, Context context) {
         return restClient.getDocuments().suggestPostWithResponseAsync(suggestRequest, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
@@ -1096,8 +1089,6 @@ public final class SearchAsyncClient {
             .setScoringProfile(options.getScoringProfile())
             .setSemanticConfiguration(options.getSemanticConfigurationName())
             .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
-            .setQueryLanguage(options.getQueryLanguage())
-            .setSpeller(options.getSpeller())
             .setAnswers(createSearchRequestAnswers(options))
             .setSearchMode(options.getSearchMode())
             .setScoringStatistics(options.getScoringStatistics())
@@ -1106,18 +1097,15 @@ public final class SearchAsyncClient {
             .setSkip(options.getSkip())
             .setTop(options.getTop())
             .setCaptions(createSearchRequestCaptions(options))
-            .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()))
             .setSemanticErrorHandling(options.getSemanticErrorHandling())
             .setSemanticMaxWaitInMilliseconds(options.getSemanticMaxWaitInMilliseconds())
-            .setDebug(options.getDebug())
-            .setVectorQueries(options.getVectorQueries())
-            .setSemanticQuery(options.getSemanticQuery());
+            .setVectorQueries(options.getVectorQueries());
     }
 
     static String createSearchRequestAnswers(SearchOptions searchOptions) {
         QueryAnswerType answer = searchOptions.getQueryAnswer();
-        Integer answersCount = searchOptions.getAnswersCount();
-        Double answerThreshold = searchOptions.getAnswerThreshold();
+        Integer answersCount = searchOptions.getQueryAnswerCount();
+        Double answerThreshold = searchOptions.getQueryAnswerThreshold();
 
         // No answer has been defined.
         if (answer == null) {
@@ -1128,9 +1116,9 @@ public final class SearchAsyncClient {
 
         if (answersCount != null && answerThreshold != null) {
             return answerString + "|count-" + answersCount + ",threshold-" + answerThreshold;
-        } else if (answersCount != null && answerThreshold == null) {
+        } else if (answersCount != null) {
             return answerString + "|count-" + answersCount;
-        } else if (answersCount == null && answerThreshold != null) {
+        } else if (answerThreshold != null) {
             return answerString + "|threshold-" + answerThreshold;
         } else {
             return answerString;

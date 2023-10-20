@@ -13,8 +13,6 @@ public final class CreateOrUpdateSkillsetOptions {
     private final SearchIndexerSkillset skillset;
 
     private boolean onlyIfUnchanged;
-    private Boolean cacheReprocessingChangeDetectionDisabled;
-    private Boolean cacheResetRequirementsIgnored;
 
     /**
      * Creates the property bag used to create or update a {@link SearchIndexerSkillset skillset}.
@@ -57,53 +55,5 @@ public final class CreateOrUpdateSkillsetOptions {
      */
     public boolean isOnlyIfUnchanged() {
         return onlyIfUnchanged;
-    }
-
-    /**
-     * Sets an optional flag that determines whether the created or updated {@link SearchIndexerSkillset skillset}
-     * disables cache reprocessing change detection.
-     *
-     * @param cacheReprocessingChangeDetectionDisabled An optional flag that determines whether the created or updated
-     * {@link SearchIndexerSkillset skillset} disables cache reprocessing change detection.
-     * @return The updated CreateOrUpdateSkillsetOptions object.
-     */
-    public CreateOrUpdateSkillsetOptions setCacheReprocessingChangeDetectionDisabled(
-        Boolean cacheReprocessingChangeDetectionDisabled) {
-        this.cacheReprocessingChangeDetectionDisabled = cacheReprocessingChangeDetectionDisabled;
-        return this;
-    }
-
-    /**
-     * Gets an optional flag that determines whether the created or updated {@link SearchIndexerSkillset skillset}
-     * disables cache reprocessing change detection.
-     *
-     * @return Whether the created or updated {@link SearchIndexerSkillset skillset} disables cache reprocessing change
-     * detection.
-     */
-    public Boolean isCacheReprocessingChangeDetectionDisabled() {
-        return cacheReprocessingChangeDetectionDisabled;
-    }
-
-    /**
-     * Sets an optional flag that determines whether the created or updated {@link SearchIndexerSkillset skillset}
-     * ignores cache reset requirements.
-     *
-     * @param cacheResetRequirementsIgnored An optional flag that determines whether the created or updated {@link
-     * SearchIndexerSkillset skillset} ignores cache reset requirements.
-     * @return The updated CreateOrUpdateSkillsetOptions object.
-     */
-    public CreateOrUpdateSkillsetOptions setCacheResetRequirementsIgnored(Boolean cacheResetRequirementsIgnored) {
-        this.cacheResetRequirementsIgnored = cacheResetRequirementsIgnored;
-        return this;
-    }
-
-    /**
-     * Gets an optional flag that determines whether the created or updated {@link SearchIndexerSkillset skillset}
-     * ignores cache reset requirements.
-     *
-     * @return Whether the created or updated {@link SearchIndexerSkillset skillset} ignores cache reset requirements.
-     */
-    public Boolean isCacheResetRequirementsIgnored() {
-        return cacheResetRequirementsIgnored;
     }
 }

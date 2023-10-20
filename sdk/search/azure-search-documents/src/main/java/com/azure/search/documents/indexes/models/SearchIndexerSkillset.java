@@ -44,11 +44,6 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     private SearchIndexerKnowledgeStore knowledgeStore;
 
     /*
-     * Definition of additional projections to secondary search index(es).
-     */
-    private SearchIndexerIndexProjections indexProjections;
-
-    /*
      * The ETag of the skillset.
      */
     private String eTag;
@@ -176,26 +171,6 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     }
 
     /**
-     * Get the indexProjections property: Definition of additional projections to secondary search index(es).
-     *
-     * @return the indexProjections value.
-     */
-    public SearchIndexerIndexProjections getIndexProjections() {
-        return this.indexProjections;
-    }
-
-    /**
-     * Set the indexProjections property: Definition of additional projections to secondary search index(es).
-     *
-     * @param indexProjections the indexProjections value to set.
-     * @return the SearchIndexerSkillset object itself.
-     */
-    public SearchIndexerSkillset setIndexProjections(SearchIndexerIndexProjections indexProjections) {
-        this.indexProjections = indexProjections;
-        return this;
-    }
-
-    /**
      * Get the eTag property: The ETag of the skillset.
      *
      * @return the eTag value.
@@ -255,7 +230,6 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
         jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("cognitiveServices", this.cognitiveServicesAccount);
         jsonWriter.writeJsonField("knowledgeStore", this.knowledgeStore);
-        jsonWriter.writeJsonField("indexProjections", this.indexProjections);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
         return jsonWriter.writeEndObject();
@@ -279,7 +253,6 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
                     List<SearchIndexerSkill> skills = null;
                     CognitiveServicesAccount cognitiveServicesAccount = null;
                     SearchIndexerKnowledgeStore knowledgeStore = null;
-                    SearchIndexerIndexProjections indexProjections = null;
                     String eTag = null;
                     SearchResourceEncryptionKey encryptionKey = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -297,8 +270,6 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
                             cognitiveServicesAccount = CognitiveServicesAccount.fromJson(reader);
                         } else if ("knowledgeStore".equals(fieldName)) {
                             knowledgeStore = SearchIndexerKnowledgeStore.fromJson(reader);
-                        } else if ("indexProjections".equals(fieldName)) {
-                            indexProjections = SearchIndexerIndexProjections.fromJson(reader);
                         } else if ("@odata.etag".equals(fieldName)) {
                             eTag = reader.getString();
                         } else if ("encryptionKey".equals(fieldName)) {
@@ -313,7 +284,6 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
                         deserializedSearchIndexerSkillset.skills = skills;
                         deserializedSearchIndexerSkillset.cognitiveServicesAccount = cognitiveServicesAccount;
                         deserializedSearchIndexerSkillset.knowledgeStore = knowledgeStore;
-                        deserializedSearchIndexerSkillset.indexProjections = indexProjections;
                         deserializedSearchIndexerSkillset.eTag = eTag;
                         deserializedSearchIndexerSkillset.encryptionKey = encryptionKey;
 

@@ -24,8 +24,6 @@ public final class ExhaustiveKnnVectorSearchAlgorithmConfiguration extends Vecto
     /*
      * The name of the kind of algorithm being configured for use with vector search.
      */
-    private static final VectorSearchAlgorithmKind KIND = VectorSearchAlgorithmKind.EXHAUSTIVE_KNN;
-
     /*
      * Contains the parameters specific to exhaustive KNN algorithm.
      */
@@ -63,7 +61,7 @@ public final class ExhaustiveKnnVectorSearchAlgorithmConfiguration extends Vecto
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
+        jsonWriter.writeStringField("kind", Objects.toString(VectorSearchAlgorithmKind.EXHAUSTIVE_KNN, null));
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeJsonField("exhaustiveKnnParameters", this.parameters);
         return jsonWriter.writeEndObject();
@@ -91,11 +89,9 @@ public final class ExhaustiveKnnVectorSearchAlgorithmConfiguration extends Vecto
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!KIND.toString().equals(kind)) {
+                            if (!"exhaustiveKnn".equals(kind)) {
                                 throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to '"
-                                                + KIND
-                                                + "'. The found 'kind' was '"
+                                        "'kind' was expected to be non-null and equal to 'exhaustiveKnn'. The found 'kind' was '"
                                                 + kind
                                                 + "'.");
                             }
