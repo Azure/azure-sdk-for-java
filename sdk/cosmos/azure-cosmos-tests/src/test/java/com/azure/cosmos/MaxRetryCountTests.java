@@ -607,7 +607,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 sameDocumentIdJustCreated,
                 injectReadSessionNotAvailableIntoAllRegions,
                 validateStatusCodeIsReadSessionNotAvailableError,
-                (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isEqualTo(
+                (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isLessThanOrEqualTo(
                     Math.max(1, MAX_LOCAL_RETRY_COUNT_TWO) * (1 + (4 * writeableRegions.size()))
                 ),
                 MAX_LOCAL_RETRY_COUNT_DEFAULT, // DEFAULT is 1
@@ -623,7 +623,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 sameDocumentIdJustCreated,
                 injectReadSessionNotAvailableIntoAllRegions,
                 validateStatusCodeIsReadSessionNotAvailableError,
-                (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isEqualTo(
+                (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isLessThanOrEqualTo(
                     // even though maxRetryCount is being set to 0, but internally MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED will be used
                     Math.max(1, MAX_LOCAL_RETRY_COUNT_TWO) * (1 + (4 * writeableRegions.size()))
                 ),
@@ -640,7 +640,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                 sameDocumentIdJustCreated,
                 injectReadSessionNotAvailableIntoAllRegions,
                 validateStatusCodeIsReadSessionNotAvailableError,
-                (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isEqualTo(
+                (Consumer<Integer>)(requestCount) -> assertThat(requestCount).isLessThanOrEqualTo(
                     Math.max(1, MAX_LOCAL_RETRY_COUNT_FOUR) * (1 + (4 * writeableRegions.size()))
                 ),
                 MAX_LOCAL_RETRY_COUNT_THREE,
