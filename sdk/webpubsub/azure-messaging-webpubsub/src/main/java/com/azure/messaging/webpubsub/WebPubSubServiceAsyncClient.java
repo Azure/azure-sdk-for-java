@@ -114,6 +114,7 @@ public final class WebPubSubServiceAsyncClient {
         return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions);
     }
 
+
     /**
      * Broadcast content inside request body to all the connected client connections.
      * @param message The payload body.
