@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/78f3a4e7-fe53-4a05-9f4d-d724ab6c23a7/anomalies/dimension/query?$maxpagesize=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6b1ae994-f4d6-4096-87b9-54643ac18c7e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "588d8568-8468-4013-8305-33d5a6a1a5d5",
+      "content-length" : "27",
+      "x-envoy-upstream-service-time" : "244",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "588d8568-8468-4013-8305-33d5a6a1a5d5",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"__SUM__\",\"JPN\"]}",
+      "Date" : "Fri, 08 Apr 2022 23:50:07 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

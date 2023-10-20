@@ -12,15 +12,17 @@ import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -29,6 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
@@ -38,17 +41,27 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     private MetricsAdvisorAdministrationClient client;
 
+    @BeforeAll
+    static void beforeAll() {
+        TestBase.setupClass();
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
+
     /**
      * Verifies the result of the list anomaly alert configuration method when no options specified.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled
-    public void testListAnomalyAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        AtomicReference<List<String>> expectedAnomalyAlertIdList = new AtomicReference<>();
+    void testListAnomalyAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        AtomicReference<List<String>> expectedAnomalyAlertIdList = new AtomicReference<List<String>>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
             listAnomalyAlertRunner(inputAnomalyAlertList -> {
                 List<AnomalyAlertConfiguration> actualAnomalyAlertList = new ArrayList<>();
@@ -95,11 +108,11 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     /**
      * Verifies that an exception is thrown for null detection configuration Id parameter.
      */
-    @Test
-    @DoNotRecord
-    public void getAnomalyAlertNullId() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    public void getAnomalyAlertNullId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getNonRecordAdminClient().buildClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
         // Act & Assert
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.getAlertConfig(null));
@@ -109,11 +122,11 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     /**
      * Verifies that an exception is thrown for invalid alert configuration Id.
      */
-    @Test
-    @DoNotRecord
-    public void getAnomalyAlertInvalidId() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    public void getAnomalyAlertInvalidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getNonRecordAdminClient().buildClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
@@ -126,12 +139,11 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled
     public void getAnomalyAlertValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
             listAnomalyAlertRunner(anomalyAlertConfigurationList -> {
                 final AnomalyAlertConfiguration inputAnomalyAlertConfiguration = anomalyAlertConfigurationList.get(0);
@@ -159,12 +171,11 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled
     public void createAnomalyAlertConfiguration(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatAnomalyAlertRunner(inputAnomalyAlertConfig -> {
                 // Act & Assert
                 AnomalyAlertConfiguration createdAnomalyAlertConfig =
@@ -185,10 +196,9 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled
     public void deleteAnomalyAlertWithResponse(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
         creatAnomalyAlertRunner(inputAnomalyAlertConfig -> {
             final AnomalyAlertConfiguration createdAnomalyAlert =
                 client.createAlertConfig(inputAnomalyAlertConfig);
@@ -198,9 +208,11 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
             assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
 
             // Act & Assert
-            MetricsAdvisorResponseException exception = assertThrows(MetricsAdvisorResponseException.class,
-                () -> client.getAlertConfig(createdAnomalyAlert.getId()));
-            assertEquals(HttpResponseStatus.NOT_FOUND.code(), exception.getResponse().getStatusCode());
+            Exception exception = assertThrows(MetricsAdvisorResponseException.class, () ->
+                client.getAlertConfig(createdAnomalyAlert.getId()));
+            assertEquals(MetricsAdvisorResponseException.class, exception.getClass());
+            final MetricsAdvisorResponseException errorCodeException = ((MetricsAdvisorResponseException) exception);
+            assertEquals(HttpResponseStatus.NOT_FOUND.code(), errorCodeException.getResponse().getStatusCode());
         });
     }
 
@@ -212,12 +224,11 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled
     public void updateAnomalyAlertHappyPath(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             final AtomicReference<String> inputAnomalyAlertConfigId = new AtomicReference<>();
             creatAnomalyAlertRunner(inputAnomalyAlert -> {
                 // Arrange
@@ -266,7 +277,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     // @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     // public void updateAnomalyAlertConfigDescription(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
     //     // Arrange
-    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
+    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
     //     final AtomicReference<String> inputAnomalyAlertConfigId = new AtomicReference<>();
     //     creatAnomalyAlertRunner(inputAnomalyAlert -> {
     //         // Arrange
@@ -297,12 +308,11 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled
     public void updateAnomalyAlertRemoveHooks(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatAnomalyAlertRunner(inputAnomalyAlert -> {
                 // Arrange
                 final AnomalyAlertConfiguration createdAnomalyAlert =
