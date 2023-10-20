@@ -185,7 +185,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      * @param functions the functions value to set.
      * @return the ScoringProfile object itself.
      */
-    public void setFunctions(ScoringFunction... functions) {
+    public ScoringProfile setFunctions(ScoringFunction... functions) {
         this.functions = (functions == null) ? null : java.util.Arrays.asList(functions);
         return this;
     }

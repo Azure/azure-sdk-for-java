@@ -18,9 +18,6 @@ import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
-import com.azure.search.documents.indexes.models.CreateOrUpdateDataSourceConnectionOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateIndexerOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateSkillsetOptions;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -146,53 +143,6 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged) {
-        return withContext(context ->
-            createOrUpdateDataSourceConnectionWithResponse(dataSource, onlyIfUnchanged, null, context));
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create or update search indexer data source connection named "dataSource". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions -->
-     * <pre>
-     * SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;
-     *     .flatMap&#40;dataSource -&gt; &#123;
-     *         dataSource.setContainer&#40;new SearchIndexerDataContainer&#40;&quot;updatecontainer&quot;&#41;&#41;;
-     *         return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateDataSourceConnectionWithResponse&#40;
-     *             new CreateOrUpdateDataSourceConnectionOptions&#40;dataSource&#41;
-     *                 .setOnlyIfUnchanged&#40;true&#41;
-     *                 .setCacheResetRequirementsIgnored&#40;true&#41;&#41;;
-     *     &#125;&#41;
-     *     .subscribe&#40;updateDataSource -&gt;
-     *         System.out.printf&#40;&quot;The status code of the response is %s.%nThe dataSource name is %s. &quot;
-     *                 + &quot;The container name of dataSource is %s.%n&quot;, updateDataSource.getStatusCode&#40;&#41;,
-     *             updateDataSource.getValue&#40;&#41;.getName&#40;&#41;, updateDataSource.getValue&#40;&#41;.getContainer&#40;&#41;.getName&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions -->
-     *
-     * @param options The options used to create or update the {@link SearchIndexerDataSourceConnection data source
-     * connection}.
-     * @return a data source response.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
-        CreateOrUpdateDataSourceConnectionOptions options) {
-        if (options == null) {
-            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
-        }
-
-        return withContext(context -> createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
-            options.isOnlyIfUnchanged(), options.isCacheResetRequirementsIgnored(), context));
-    }
-
-    Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
-        SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, Boolean ignoreResetRequirements,
-        Context context) {
         if (dataSource == null) {
             return monoError(LOGGER, new NullPointerException("'dataSource' cannot be null."));
         }
@@ -201,8 +151,8 @@ public class SearchIndexerAsyncClient {
             dataSource.setConnectionString("<unchanged>");
         }
         try {
-            return restClient.getDataSources()
-                .createOrUpdateWithResponseAsync(dataSource.getName(), dataSource, ifMatch, null, null, context)
+            return withContext(context -> restClient.getDataSources()
+                .createOrUpdateWithResponseAsync(dataSource.getName(), dataSource, ifMatch, null, null, context))
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -588,45 +538,6 @@ public class SearchIndexerAsyncClient {
     public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer,
         boolean onlyIfUnchanged) {
         return withContext(context -> createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, context));
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create or update search indexer named "searchIndexer". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions -->
-     * <pre>
-     * SEARCH_INDEXER_ASYNC_CLIENT.getIndexer&#40;&quot;searchIndexer&quot;&#41;
-     *     .flatMap&#40;searchIndexerFromService -&gt; &#123;
-     *         searchIndexerFromService.setFieldMappings&#40;Collections.singletonList&#40;
-     *             new FieldMapping&#40;&quot;hotelName&quot;&#41;.setTargetFieldName&#40;&quot;HotelName&quot;&#41;&#41;&#41;;
-     *         return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateIndexerWithResponse&#40;
-     *             new CreateOrUpdateIndexerOptions&#40;searchIndexerFromService&#41;
-     *                 .setOnlyIfUnchanged&#40;true&#41;&#41;;
-     *     &#125;&#41;
-     *     .subscribe&#40;indexerFromService -&gt;
-     *         System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer name is %s. &quot;
-     *                 + &quot;The target field name of indexer is %s.%n&quot;, indexerFromService.getStatusCode&#40;&#41;,
-     *             indexerFromService.getValue&#40;&#41;.getName&#40;&#41;,
-     *             indexerFromService.getValue&#40;&#41;.getFieldMappings&#40;&#41;.get&#40;0&#41;.getTargetFieldName&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions -->
-     *
-     * @param options The options used to create or update the {@link SearchIndexer indexer}.
-     * @return a response containing the created Indexer.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions options) {
-        if (options == null) {
-            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
-        }
-
-        return withContext(context -> createOrUpdateIndexerWithResponse(options.getIndexer(),
-            options.isOnlyIfUnchanged(), context));
     }
 
     Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
@@ -1280,45 +1191,6 @@ public class SearchIndexerAsyncClient {
     public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged) {
         return withContext(context -> createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, context));
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions -->
-     * <pre>
-     * SEARCH_INDEXER_ASYNC_CLIENT.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
-     *     .flatMap&#40;indexerSkillset -&gt; &#123;
-     *         indexerSkillset.setDescription&#40;&quot;This is new description!&quot;&#41;;
-     *         return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateSkillsetWithResponse&#40;
-     *             new CreateOrUpdateSkillsetOptions&#40;indexerSkillset&#41;
-     *                 .setOnlyIfUnchanged&#40;true&#41;&#41;;
-     *     &#125;&#41;
-     *     .subscribe&#40;updateSkillsetResponse -&gt;
-     *         System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer skillset name is %s. &quot;
-     *             + &quot;The description of indexer skillset is %s.%n&quot;, updateSkillsetResponse.getStatusCode&#40;&#41;,
-     *             updateSkillsetResponse.getValue&#40;&#41;.getName&#40;&#41;,
-     *             updateSkillsetResponse.getValue&#40;&#41;.getDescription&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions -->
-     *
-     * @param options The options used to create or update the {@link SearchIndexerSkillset skillset}.
-     * @return a response containing the skillset that was created or updated.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(
-        CreateOrUpdateSkillsetOptions options) {
-        if (options == null) {
-            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
-        }
-
-        return withContext(context -> createOrUpdateSkillsetWithResponse(options.getSkillset(),
-            options.isOnlyIfUnchanged(), context));
     }
 
     Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,

@@ -13,7 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.indexes.models.HnswVectorSearchAlgorithmConfiguration;
+import com.azure.search.documents.indexes.models.HnswVectorConfiguration;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -21,14 +21,17 @@ import com.azure.search.documents.indexes.models.VectorSearch;
 import com.azure.search.documents.indexes.models.VectorSearchProfile;
 import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.CaptionResult;
+import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
+import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionType;
-import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RawVectorQuery;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticSearchOptions;
 import com.azure.search.documents.models.VectorFilterMode;
 import com.azure.search.documents.models.VectorQuery;
+import com.azure.search.documents.models.VectorSearchOptions;
 import com.azure.search.documents.util.SearchPagedIterable;
 
 import java.io.IOException;
@@ -109,7 +112,7 @@ public class VectorSearchExample {
                     .setSearchable(true)
                     .setVectorSearchDimensions(1536)
                     // This must match a vector search configuration name.
-                    .setVectorSearchProfile("my-vector-profile"),
+                    .setVectorSearchProfileName("my-vector-profile"),
                 new SearchField("Category", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
@@ -122,7 +125,7 @@ public class VectorSearchExample {
                 .setProfiles(Collections.singletonList(
                     new VectorSearchProfile("my-vector-profile", "my-vector-config")))
                 .setAlgorithms(Collections.singletonList(
-                    new HnswVectorSearchAlgorithmConfiguration("my-vector-config"))));
+                    new HnswVectorConfiguration("my-vector-config"))));
 
         // Semantic search configuration is disabled due to limited availability.
         // If you know you have access to this feature, you can uncomment the following lines and uncomment the line
@@ -158,7 +161,8 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search(null,
-                new SearchOptions().setVectorQueries(vectorQuery), Context.NONE);
+            new SearchOptions().setVectorSearchOptions(new VectorSearchOptions().setVectorQueries(vectorQuery)),
+            Context.NONE);
 
         int count = 0;
         System.out.println("Single Vector Search Results:");
@@ -185,8 +189,9 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search(null, new SearchOptions()
-            .setVectorQueries(searchQueryVector)
-            .setVectorFilterMode(VectorFilterMode.POST_FILTER)
+            .setVectorSearchOptions(new VectorSearchOptions()
+                .setVectorQueries(searchQueryVector)
+                .setFilterMode(VectorFilterMode.POST_FILTER))
             .setFilter("Category eq 'Luxury'"), Context.NONE);
 
         int count = 0;
@@ -214,7 +219,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search("Top hotels in town", new SearchOptions()
-            .setVectorQueries(searchQueryVector), Context.NONE);
+            .setVectorSearchOptions(new VectorSearchOptions().setVectorQueries(searchQueryVector)), Context.NONE);
 
         int count = 0;
         System.out.println("Simple Hybrid Search Results:");
@@ -244,11 +249,12 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVectorQueries(searchQueryVector)
-            .setQueryType(QueryType.SEMANTIC)
-            .setSemanticConfigurationName("my-semantic-config")
-            .setQueryCaption(QueryCaptionType.EXTRACTIVE)
-            .setQueryAnswer(QueryAnswerType.EXTRACTIVE);
+            .setVectorSearchOptions(new VectorSearchOptions()
+                .setVectorQueries(searchQueryVector))
+            .setSemanticSearchOptions(new SemanticSearchOptions()
+                .setSemanticConfigurationName("my-semantic-config")
+                .setQueryAnswer(new QueryAnswer().setAnswerType(QueryAnswerType.EXTRACTIVE))
+                .setQueryCaption(new QueryCaption().setCaptionType(QueryCaptionType.EXTRACTIVE)));
 
         SearchPagedIterable results = searchClient.search(
             "Is there any hotel located on the main commercial artery of the city in the heart of New York?",
@@ -304,9 +310,9 @@ public class VectorSearchExample {
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
-        SearchPagedIterable searchResults = searchClient.search(null,
-                new SearchOptions()
-                    .setVectorQueries(searchQueryVector, secondSearchQueryVector, thirdQueryVector), Context.NONE);
+        SearchPagedIterable searchResults = searchClient.search(null, new SearchOptions()
+            .setVectorSearchOptions(new VectorSearchOptions()
+                .setVectorQueries(searchQueryVector, secondSearchQueryVector, thirdQueryVector)), Context.NONE);
 
         int count = 0;
         System.out.println("Multi Vector Search Results:");

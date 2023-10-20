@@ -33,13 +33,17 @@ import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
+import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticSearchOptions;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
+import com.azure.search.documents.models.VectorSearchOptions;
 import com.azure.search.documents.util.AutocompletePagedFlux;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 import com.azure.search.documents.util.SearchPagedFlux;
@@ -1076,7 +1080,8 @@ public final class SearchAsyncClient {
             ? null
             : options.getScoringParameters().stream().map(ScoringParameter::toString).collect(Collectors.toList());
 
-        return request.setIncludeTotalResultCount(options.isTotalCountIncluded())
+        request.setQueryType(options.getQueryType())
+            .setIncludeTotalResultCount(options.isTotalCountIncluded())
             .setFacets(options.getFacets())
             .setFilter(options.getFilter())
             .setHighlightFields(nullSafeStringJoin(options.getHighlightFields()))
@@ -1084,35 +1089,51 @@ public final class SearchAsyncClient {
             .setHighlightPreTag(options.getHighlightPreTag())
             .setMinimumCoverage(options.getMinimumCoverage())
             .setOrderBy(nullSafeStringJoin(options.getOrderBy()))
-            .setQueryType(options.getQueryType())
             .setScoringParameters(scoringParameters)
             .setScoringProfile(options.getScoringProfile())
-            .setSemanticConfiguration(options.getSemanticConfigurationName())
             .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
-            .setAnswers(createSearchRequestAnswers(options))
             .setSearchMode(options.getSearchMode())
             .setScoringStatistics(options.getScoringStatistics())
             .setSessionId(options.getSessionId())
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
-            .setTop(options.getTop())
-            .setCaptions(createSearchRequestCaptions(options))
-            .setSemanticErrorHandling(options.getSemanticErrorHandling())
-            .setSemanticMaxWaitInMilliseconds(options.getSemanticMaxWaitInMilliseconds())
-            .setVectorQueries(options.getVectorQueries());
+            .setTop(options.getTop());
+
+        SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
+        if (semanticSearchOptions != null) {
+            Integer waitInMillis = semanticSearchOptions.getSemanticMaxWaitDuration() == null ? null
+                : (int) semanticSearchOptions.getSemanticMaxWaitDuration().toMillis();
+            request.setSemanticConfiguration(semanticSearchOptions.getSemanticConfigurationName())
+                .setSemanticErrorHandling(semanticSearchOptions.getSemanticErrorHandling())
+                .setSemanticMaxWaitInMilliseconds(waitInMillis)
+                .setAnswers(createSearchRequestAnswers(semanticSearchOptions.getQueryAnswer()))
+                .setCaptions(createSearchRequestCaptions(semanticSearchOptions.getQueryCaption()));
+        }
+
+        VectorSearchOptions vectorSearchOptions = options.getVectorSearchOptions();
+        if (vectorSearchOptions != null) {
+            request.setVectorFilterMode(vectorSearchOptions.getFilterMode())
+                .setVectorQueries(vectorSearchOptions.getVectorQueries());
+        }
+
+        return request;
     }
 
-    static String createSearchRequestAnswers(SearchOptions searchOptions) {
-        QueryAnswerType answer = searchOptions.getQueryAnswer();
-        Integer answersCount = searchOptions.getQueryAnswerCount();
-        Double answerThreshold = searchOptions.getQueryAnswerThreshold();
-
-        // No answer has been defined.
-        if (answer == null) {
+    static String createSearchRequestAnswers(QueryAnswer queryAnswer) {
+        if (queryAnswer == null) {
             return null;
         }
 
-        String answerString = answer.toString();
+        QueryAnswerType queryAnswerType = queryAnswer.getAnswerType();
+        Integer answersCount = queryAnswer.getCount();
+        Double answerThreshold = queryAnswer.getThreshold();
+
+        // No answer has been defined.
+        if (queryAnswerType == null) {
+            return null;
+        }
+
+        String answerString = queryAnswerType.toString();
 
         if (answersCount != null && answerThreshold != null) {
             return answerString + "|count-" + answersCount + ",threshold-" + answerThreshold;
@@ -1125,22 +1146,22 @@ public final class SearchAsyncClient {
         }
     }
 
-    static String createSearchRequestCaptions(SearchOptions searchOptions) {
-        QueryCaptionType queryCaption = searchOptions.getQueryCaption();
-        Boolean queryCaptionHighlight = searchOptions.getQueryCaptionHighlightEnabled();
-
-        // No caption has been defined.
+    static String createSearchRequestCaptions(QueryCaption queryCaption) {
         if (queryCaption == null) {
             return null;
         }
 
-        // No highlight, just send the Caption.
-        if (queryCaptionHighlight == null) {
-            return queryCaption.toString();
+        QueryCaptionType queryCaptionType = queryCaption.getCaptionType();
+        Boolean highlightEnabled = queryCaption.isHighlightEnabled();
+
+        // No caption has been defined.
+        if (queryCaptionType == null) {
+            return null;
         }
 
-        // Caption and highlight, format it as the service expects.
-        return queryCaption + "|highlight-" + queryCaptionHighlight;
+        return highlightEnabled == null
+            ? queryCaptionType.toString()
+            : queryCaptionType + "|highlight-" + highlightEnabled;
     }
 
     /**

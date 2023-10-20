@@ -181,7 +181,7 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
      * @param inputs the inputs value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    public void setInputs(InputFieldMappingEntry... inputs) {
+    public InputFieldMappingEntry setInputs(InputFieldMappingEntry... inputs) {
         this.inputs = (inputs == null) ? null : java.util.Arrays.asList(inputs);
         return this;
     }

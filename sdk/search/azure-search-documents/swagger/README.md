@@ -158,6 +158,9 @@ directive:
     - rename-model:
         from: SemanticSettings
         to: SemanticSearch
+    - rename-model:
+        from: PrioritizedFields
+        to: SemanticPrioritizedFields
 ```
 
 ---
@@ -468,4 +471,32 @@ directive:
   where: $.definitions.VectorSearchProfile.properties.algorithm
   transform: >
     $["x-ms-client-name"] = "algorithmConfigurationName";
+```
+
+### Rename SearchIndex.semanticSettings to SearchIndex.semanticSearch
+
+```yaml $(tag) == 'searchservice'
+- from: swagger-document
+  where: $.definitions.SearchIndex.properties.semantic
+  transform: >
+    $["x-ms-client-name"] = "SemanticSearch";
+```
+
+### Rename VectorSearchProfile.algorithm to VectorSearchProfile.algorithmConfigurationName
+
+```yaml $(tag) == 'searchservice'
+- from: swagger-document
+  where: $.definitions.VectorSearchProfile.properties.algorithm
+  transform: >
+    $["x-ms-client-name"] = "algorithmConfigurationName";
+```
+
+### Rename SemanticPrioritizedFields properties to drop redundant prioritized
+
+```yaml $(tag) == 'searchservice'
+- from: swagger-document
+  where: $.definitions.SemanticPrioritizedFields
+  transform: >
+    $.prioritizedContentFields["x-ms-client-name"] = "contentFields";
+    $.prioritizedKeywordsFields["x-ms-client-name"] = "keywordsFields";
 ```

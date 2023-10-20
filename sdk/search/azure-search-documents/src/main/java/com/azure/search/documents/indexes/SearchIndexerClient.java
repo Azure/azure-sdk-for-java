@@ -18,15 +18,10 @@ import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
-import com.azure.search.documents.indexes.models.CreateOrUpdateDataSourceConnectionOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateIndexerOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateSkillsetOptions;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-
-import java.util.Objects;
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting data
@@ -140,61 +135,16 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSourceConnection, boolean onlyIfUnchanged, Context context) {
-        return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged, null,
-            context);
-    }
-
-    Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
-        SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, Boolean ignoreResetRequirements,
-        Context context) {
-        if (dataSource == null) {
+        if (dataSourceConnection == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'dataSource' cannot be null."));
         }
-        String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
-        if (dataSource.getConnectionString() == null) {
-            dataSource.setConnectionString("<unchanged>");
+        String ifMatch = onlyIfUnchanged ? dataSourceConnection.getETag() : null;
+        if (dataSourceConnection.getConnectionString() == null) {
+            dataSourceConnection.setConnectionString("<unchanged>");
         }
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-                .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null, null,
+                .createOrUpdateWithResponse(dataSourceConnection.getName(), dataSourceConnection, ifMatch, null, null,
                     Utility.enableSyncRestProxy(context)));
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create or update search indexer data source connection named "dataSource". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context -->
-     * <pre>
-     * SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;;
-     * dataSource.setContainer&#40;new SearchIndexerDataContainer&#40;&quot;updatecontainer&quot;&#41;&#41;;
-     * CreateOrUpdateDataSourceConnectionOptions options = new CreateOrUpdateDataSourceConnectionOptions&#40;dataSource&#41;
-     *     .setOnlyIfUnchanged&#40;true&#41;
-     *     .setCacheResetRequirementsIgnored&#40;true&#41;;
-     *
-     * Response&lt;SearchIndexerDataSourceConnection&gt; updateDataSource = SEARCH_INDEXER_CLIENT
-     *     .createOrUpdateDataSourceConnectionWithResponse&#40;options, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;The status code of the response is %s.%nThe dataSource name is %s. &quot;
-     *         + &quot;The container name of dataSource is %s.%n&quot;, updateDataSource.getStatusCode&#40;&#41;,
-     *     updateDataSource.getValue&#40;&#41;.getName&#40;&#41;, updateDataSource.getValue&#40;&#41;.getContainer&#40;&#41;.getName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context -->
-     *
-     * @param options The options used to create or update the {@link SearchIndexerDataSourceConnection data source
-     * connection}.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a data source response.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
-        CreateOrUpdateDataSourceConnectionOptions options, Context context) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-
-        return createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
-            options.isOnlyIfUnchanged(), options.isCacheResetRequirementsIgnored(), context);
     }
 
     /**
@@ -594,41 +544,6 @@ public class SearchIndexerClient {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
             .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null, null,
                 Utility.enableSyncRestProxy(context)));
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create or update search indexer named "searchIndexer". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context -->
-     * <pre>
-     * SearchIndexer searchIndexerFromService = SEARCH_INDEXER_CLIENT.getIndexer&#40;&quot;searchIndexer&quot;&#41;;
-     * searchIndexerFromService.setFieldMappings&#40;Collections.singletonList&#40;
-     *     new FieldMapping&#40;&quot;hotelName&quot;&#41;.setTargetFieldName&#40;&quot;HotelName&quot;&#41;&#41;&#41;;
-     * CreateOrUpdateIndexerOptions options = new CreateOrUpdateIndexerOptions&#40;searchIndexerFromService&#41;
-     *     .setOnlyIfUnchanged&#40;true&#41;;
-     * Response&lt;SearchIndexer&gt; indexerFromService = SEARCH_INDEXER_CLIENT.createOrUpdateIndexerWithResponse&#40;
-     *     options, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer name is %s. &quot;
-     *         + &quot;The target field name of indexer is %s.%n&quot;, indexerFromService.getStatusCode&#40;&#41;,
-     *     indexerFromService.getValue&#40;&#41;.getName&#40;&#41;,
-     *     indexerFromService.getValue&#40;&#41;.getFieldMappings&#40;&#41;.get&#40;0&#41;.getTargetFieldName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context -->
-     *
-     * @param options The options used to create or update the {@link SearchIndexer indexer}.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return A response object containing the Indexer.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexer> createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions options,
-        Context context) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        return createOrUpdateIndexerWithResponse(options.getIndexer(), options.isOnlyIfUnchanged(), context);
     }
 
     /**
@@ -1299,40 +1214,6 @@ public class SearchIndexerClient {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
             .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null, null,
                 Utility.enableSyncRestProxy(context)));
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context -->
-     * <pre>
-     * SearchIndexerSkillset indexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;;
-     * indexerSkillset.setDescription&#40;&quot;This is new description!&quot;&#41;;
-     * CreateOrUpdateSkillsetOptions options = new CreateOrUpdateSkillsetOptions&#40;indexerSkillset&#41;
-     *     .setOnlyIfUnchanged&#40;true&#41;;
-     * Response&lt;SearchIndexerSkillset&gt; updateSkillsetResponse = SEARCH_INDEXER_CLIENT.createOrUpdateSkillsetWithResponse&#40;
-     *     options, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer skillset name is %s. &quot;
-     *         + &quot;The description of indexer skillset is %s.%n&quot;, updateSkillsetResponse.getStatusCode&#40;&#41;,
-     *     updateSkillsetResponse.getValue&#40;&#41;.getName&#40;&#41;,
-     *     updateSkillsetResponse.getValue&#40;&#41;.getDescription&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context -->
-     *
-     * @param options The options used to create or update the {@link SearchIndexerSkillset skillset}.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a response containing the skillset that was created or updated.
-     * @throws NullPointerException If {@code options} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions options,
-        Context context) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        return createOrUpdateSkillsetWithResponse(options.getSkillset(), options.isOnlyIfUnchanged(), context);
     }
 
     /**
