@@ -11,14 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointDetail model = BinaryData.fromString("{\"port\":611015935}").toObject(EndpointDetail.class);
-        Assertions.assertEquals(611015935, model.port());
+        EndpointDetail model =
+            BinaryData.fromString("{\"port\":1300337109,\"ipAddress\":\"jnalghf\"}").toObject(EndpointDetail.class);
+        Assertions.assertEquals(1300337109, model.port());
+        Assertions.assertEquals("jnalghf", model.ipAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDetail model = new EndpointDetail().withPort(611015935);
+        EndpointDetail model = new EndpointDetail().withPort(1300337109).withIpAddress("jnalghf");
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
-        Assertions.assertEquals(611015935, model.port());
+        Assertions.assertEquals(1300337109, model.port());
+        Assertions.assertEquals("jnalghf", model.ipAddress());
     }
 }
