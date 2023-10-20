@@ -15,6 +15,7 @@ import com.generic.core.util.serializer.JsonSerializerProvider;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -362,5 +363,56 @@ public final class BinaryData {
      */
     public InputStream toStream() {
         return content.toStream();
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link ByteBuffer}.
+     * <p>
+     * If the {@link ByteBuffer} is zero length an empty {@link BinaryData} will be returned. Note that the input
+     * {@link ByteBuffer} is used as a reference by this instance of {@link BinaryData} and any changes to the
+     * {@link ByteBuffer} outside of this instance will result in the contents of this BinaryData instance being updated
+     * as well. To safely update the {@link ByteBuffer} without impacting the BinaryData instance, perform an array copy
+     * first.
+     * </p>
+     *
+     * <p><strong>Create an instance from a ByteBuffer</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
+     * <pre>
+     * final ByteBuffer data = ByteBuffer.wrap&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * BinaryData binaryData = BinaryData.fromByteBuffer&#40;data&#41;;
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
+     *
+     * @param data The {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the {@link ByteBuffer}.
+     * @throws NullPointerException If {@code data} is null.
+     */
+    public static BinaryData fromByteBuffer(ByteBuffer data) {
+        return null;
+    }
+
+    /**
+     * Returns a read-only {@link ByteBuffer} representation of this {@link BinaryData}.
+     * <p>
+     * Attempting to mutate the returned {@link ByteBuffer} will throw a {@link ReadOnlyBufferException}.
+     *
+     * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
+     *
+     * <!-- src_embed com.azure.util.BinaryData.toByteBuffer -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
+     * final byte[] bytes = new byte[data.length];
+     * binaryData.toByteBuffer&#40;&#41;.get&#40;bytes, 0, data.length&#41;;
+     * System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.util.BinaryData.toByteBuffer -->
+     *
+     * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
+     */
+    public ByteBuffer toByteBuffer() {
+        return null;
     }
 }

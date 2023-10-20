@@ -4,7 +4,7 @@
 package com.generic.core.implementation.http.policy;
 
 import com.generic.core.http.models.HttpHeaderName;
-import com.generic.core.http.HttpPipelineNextPolicy;
+import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;

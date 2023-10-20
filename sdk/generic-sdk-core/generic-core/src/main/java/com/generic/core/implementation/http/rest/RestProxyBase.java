@@ -10,7 +10,7 @@ import com.generic.core.exception.ResourceExistsException;
 import com.generic.core.exception.ResourceModifiedException;
 import com.generic.core.exception.ResourceNotFoundException;
 import com.generic.core.exception.TooManyRedirectsException;
-import com.generic.core.http.HttpPipeline;
+import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;

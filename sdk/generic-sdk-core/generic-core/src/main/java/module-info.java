@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.generic.core.http.client.jdk.JdkHttpClientProvider;
-
 module com.generic.core {
 
     requires transitive org.slf4j;
@@ -21,12 +19,13 @@ module com.generic.core {
     exports com.generic.core.http.models;
     exports com.generic.core.http.client;
     exports com.generic.core.models;
+    exports com.generic.core.http.pipeline;
 
     // Service Provider Interfaces
     uses com.generic.core.http.client.HttpClientProvider;
     uses com.generic.core.util.serializer.JsonSerializerProvider;
 
     provides com.generic.core.http.client.HttpClientProvider
-        with JdkHttpClientProvider;
+        with com.generic.core.http.client.urlconnection.UrlConnectionClientProvider;
 
 }

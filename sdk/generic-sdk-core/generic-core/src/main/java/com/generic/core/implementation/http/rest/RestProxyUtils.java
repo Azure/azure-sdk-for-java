@@ -4,8 +4,8 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.exception.UnexpectedLengthException;
-import com.generic.core.http.HttpPipeline;
-import com.generic.core.http.HttpPipelineBuilder;
+import com.generic.core.http.pipeline.HttpPipeline;
+import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;

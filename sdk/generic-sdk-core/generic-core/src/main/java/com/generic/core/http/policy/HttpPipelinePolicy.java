@@ -3,8 +3,8 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.HttpPipeline;
-import com.generic.core.http.HttpPipelineNextPolicy;
+import com.generic.core.http.pipeline.HttpPipeline;
+import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpResponse;
 

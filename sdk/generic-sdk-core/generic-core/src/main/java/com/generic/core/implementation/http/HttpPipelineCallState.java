@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http;
 
-import com.generic.core.http.HttpPipeline;
+import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.models.HttpPipelineCallContext;
 import com.generic.core.http.policy.HttpPipelinePolicy;
 import com.generic.core.util.logging.ClientLogger;

@@ -86,7 +86,7 @@ public class Configuration implements Cloneable {
      * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct instances of
      * {@link HttpClient}.
      * <p>
-     * The name must be the full class name, ex {@code com.generic.core.http.HttpPipeline} and not {@code HttpPipeline},
+     * The name must be the full class name, ex {@code com.generic.core.http.pipeline.HttpPipeline} and not {@code HttpPipeline},
      * to disambiguate multiple providers with the same name but from different packages.
      * <p>
      * If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by
