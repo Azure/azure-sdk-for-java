@@ -26,13 +26,13 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
     private final ResultInformation resultInformation;
 
     /**
-     * Transferee is the participant who is transferred away
+     * The participant who is being transferred away.
      */
     @JsonIgnore
     private final CommunicationIdentifier transferee;
 
     /**
-     * Target who the call is transferred to
+     * Target to whom the call is transferred.
      */
     @JsonIgnore
     private final CommunicationIdentifier transferTarget;
@@ -59,7 +59,7 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
     }
 
     /**
-     * Transferee is the participant who is transferred away
+     * The participant who is being transferred away
      * @return the transferee value
      */
     public CommunicationIdentifier getTransferee() {
@@ -67,8 +67,8 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
     }
 
     /**
-     * Target who the call is transferred to
-     * @return the tansferTarget value
+     * Target to whom the call is transferred.
+     * @return the transferTarget value
      */
     public CommunicationIdentifier getTransferTarget() {
         return this.transferTarget;
