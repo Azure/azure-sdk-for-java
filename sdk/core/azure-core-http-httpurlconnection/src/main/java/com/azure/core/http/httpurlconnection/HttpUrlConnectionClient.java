@@ -205,16 +205,24 @@ public class HttpUrlConnectionClient implements HttpClient {
      * @return A Mono that represents the completion of the request sending process
      */
     private Mono<Void> sendBodyAsync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
-        switch (httpRequest.getHttpMethod()) {
-            case POST:
-            case PUT:
-            case DELETE: {
-                connection.setDoOutput(true);
+        BinaryData binaryDataBody = httpRequest.getBodyAsBinaryData();
 
-                Flux<BinaryData> requestBody;
-                BinaryData binaryDataBody = httpRequest.getBodyAsBinaryData();
+        if (binaryDataBody != null) {
+            switch (httpRequest.getHttpMethod()) {
+                case GET:
+                case HEAD: {
+                    break;
+                }
+                case OPTIONS:
+                case TRACE:
+                case CONNECT:
+                case POST:
+                case PUT:
+                case DELETE: {
+                    connection.setDoOutput(true);
 
-                if (binaryDataBody != null) {
+                    Flux<BinaryData> requestBody;
+
                     requestBody = Flux.just(binaryDataBody);
                     return requestBody.flatMap(body -> {
                         byte[] buffer = new byte[8192]; // 8KB is a common default, this can be investigated for better options later.
@@ -256,18 +264,12 @@ public class HttpUrlConnectionClient implements HttpClient {
                         );
                     }).then();
                 }
-            }
-            case GET:
-            case HEAD:
-            case OPTIONS:
-            case TRACE:
-            case CONNECT: {
-                return Mono.empty();
-            }
-            default: {
-                return FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:" + httpRequest.getHttpMethod()));
+                default: {
+                    return FluxUtil.monoError(LOGGER, new IllegalStateException("Unknown HTTP Method:" + httpRequest.getHttpMethod()));
+                }
             }
         }
+        return Mono.empty();
     }
 
     /**
@@ -279,15 +281,22 @@ public class HttpUrlConnectionClient implements HttpClient {
      * @return This method does not return any value
      */
     private void sendBodySync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
-        switch (httpRequest.getHttpMethod()) {
-            case POST:
-            case PUT:
-            case DELETE: {
-                connection.setDoOutput(true);
-                BinaryData binaryBodyData = httpRequest.getBodyAsBinaryData();
+        BinaryData binaryDataBody = httpRequest.getBodyAsBinaryData();
 
-                if (binaryBodyData != null) {
-                    byte[] bytes = binaryBodyData.toBytes();
+        if (binaryDataBody != null) {
+            switch (httpRequest.getHttpMethod()) {
+                case GET:
+                case HEAD: {
+                    return;
+                }
+                case OPTIONS:
+                case TRACE:
+                case CONNECT:
+                case POST:
+                case PUT:
+                case DELETE: {
+                    connection.setDoOutput(true);
+                    byte[] bytes = binaryDataBody.toBytes();
                     if (progressReporter != null) {
                         progressReporter.reportProgress(bytes.length);
                     }
@@ -297,18 +306,12 @@ public class HttpUrlConnectionClient implements HttpClient {
                     } catch (IOException e) {
                         throw LOGGER.logExceptionAsError(new RuntimeException(e));
                     }
+                    return;
                 }
-            }
-            case GET:
-            case HEAD:
-            case OPTIONS:
-            case TRACE:
-            case CONNECT: {
-                break;
-            }
-            default: {
-                throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown HTTP Method:"
-                    + httpRequest.getHttpMethod()));
+                default: {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown HTTP Method:"
+                        + httpRequest.getHttpMethod()));
+                }
             }
         }
     }
