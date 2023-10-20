@@ -13,9 +13,9 @@ import com.generic.core.exception.TooManyRedirectsException;
 import com.generic.core.http.HttpPipeline;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpRequestOptions;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.rest.Response;
+import com.generic.core.http.Response;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
@@ -63,7 +63,7 @@ public abstract class RestProxyBase {
         this.decoder = new HttpResponseDecoder(this.serializer);
     }
 
-    public final Object invoke(Object proxy, final Method method, HttpRequestOptions options,
+    public final Object invoke(Object proxy, final Method method, RequestOptions options,
         EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser,
         boolean isAsync, Object[] args) {
 
@@ -94,7 +94,7 @@ public abstract class RestProxyBase {
         }
     }
 
-    protected abstract Object invoke(Object proxy, Method method, HttpRequestOptions options,
+    protected abstract Object invoke(Object proxy, Method method, RequestOptions options,
         EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
         HttpRequest request, Context context);
 

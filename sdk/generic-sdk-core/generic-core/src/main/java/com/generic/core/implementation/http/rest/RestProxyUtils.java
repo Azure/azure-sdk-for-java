@@ -8,7 +8,7 @@ import com.generic.core.http.HttpPipeline;
 import com.generic.core.http.HttpPipelineBuilder;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpRequestOptions;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.policy.HttpPipelinePolicy;
 import com.generic.core.implementation.http.policy.RetryPolicy;
 import com.generic.core.implementation.util.BinaryDataContent;
@@ -89,7 +89,7 @@ public final class RestProxyUtils {
      * @param options the options holding the context to merge with
      * @return the merged context.
      */
-    public static Context mergeRequestOptionsContext(Context context, HttpRequestOptions options) {
+    public static Context mergeRequestOptionsContext(Context context, RequestOptions options) {
         if (options == null) {
             return context;
         }

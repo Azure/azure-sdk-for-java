@@ -10,6 +10,7 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.policy.HttpPipelinePolicy;
 import com.generic.core.implementation.http.HttpPipelineCallState;
 import com.generic.core.models.Context;
+import com.generic.core.models.Headers;
 
 import java.util.List;
 import java.util.Objects;

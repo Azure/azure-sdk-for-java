@@ -11,8 +11,8 @@ import com.generic.core.annotation.Patch;
 import com.generic.core.annotation.Post;
 import com.generic.core.annotation.Put;
 import com.generic.core.http.models.HttpMethod;
-import com.generic.core.http.models.HttpRequestOptions;
-import com.generic.core.http.rest.RestProxy;
+import com.generic.core.http.models.RequestOptions;
+import com.generic.core.http.RestProxy;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
@@ -146,12 +146,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link HttpRequestOptions} passed into the proxy method.
+     * Get the {@link RequestOptions} passed into the proxy method.
      *
      * @param swaggerMethodArguments the arguments passed to the proxy method
      * @return the request options
      */
-    public HttpRequestOptions setRequestOptions(Object[] swaggerMethodArguments) {
+    public RequestOptions setRequestOptions(Object[] swaggerMethodArguments) {
         return null;
     }
 

@@ -5,7 +5,7 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.rest.Response;
+import com.generic.core.http.Response;
 import com.generic.core.implementation.ReflectionUtils;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;

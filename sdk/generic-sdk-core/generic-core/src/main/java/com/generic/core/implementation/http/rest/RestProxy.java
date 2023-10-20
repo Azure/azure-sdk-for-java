@@ -5,8 +5,8 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.HttpPipeline;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpRequestOptions;
-import com.generic.core.http.rest.Response;
+import com.generic.core.http.models.RequestOptions;
+import com.generic.core.http.Response;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.models.BinaryData;
@@ -34,7 +34,7 @@ public class RestProxy extends RestProxyBase {
 
     @SuppressWarnings({"try", "unused"})
     @Override
-    public Object invoke(Object proxy, Method method, HttpRequestOptions options, EnumSet<ErrorOptions> errorOptions,
+    public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
                          Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
         try {
@@ -59,7 +59,7 @@ public class RestProxy extends RestProxyBase {
      */
     private HttpResponseDecoder.HttpDecodedResponse ensureExpectedStatus(
         HttpResponseDecoder.HttpDecodedResponse decodedResponse, SwaggerMethodParser methodParser,
-        HttpRequestOptions options, EnumSet<ErrorOptions> errorOptions) {
+        RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
         int responseStatusCode = 0;
 
         // If the response was success or configured to not return an error status when the request fails, return the
@@ -121,7 +121,7 @@ public class RestProxy extends RestProxyBase {
      * @return the deserialized result
      */
     private Object handleRestReturnType(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
-        SwaggerMethodParser methodParser, Type returnType, Context context, HttpRequestOptions options,
+        SwaggerMethodParser methodParser, Type returnType, Context context, RequestOptions options,
         EnumSet<ErrorOptions> errorOptions) {
         final HttpResponseDecoder.HttpDecodedResponse expectedResponse =
             ensureExpectedStatus(httpDecodedResponse, methodParser, options, errorOptions);

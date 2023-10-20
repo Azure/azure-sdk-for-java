@@ -3,10 +3,10 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.models.HttpRequestOptions;
+import com.generic.core.http.models.RequestOptions;
 
 /**
- * Determines how errors are handled by requests using {@link HttpRequestOptions}.
+ * Determines how errors are handled by requests using {@link RequestOptions}.
  */
 public enum ErrorOptions {
     /**
