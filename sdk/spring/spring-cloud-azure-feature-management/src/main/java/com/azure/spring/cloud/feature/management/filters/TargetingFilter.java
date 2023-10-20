@@ -228,12 +228,23 @@ public class TargetingFilter implements FeatureFilter {
 
         return (!hasUserDefined && !(hasGroupsDefined && hasAtLeastOneGroup));
     }
+    
+    /**
+     * Computes the percentage that the contextId falls into.
+     * 
+     * @param contextId Id of the context being targeted
+     * @return the bucket value of the context id
+     * @throws TargetingException Unable to create hash of target context
+     */
+    protected double isTargetedPercentage(String contextId) {
+        return TargetingUtils.isTargetedPercentage(contextId);
+    }
 
     private boolean isTargeted(String contextId, double percentage) {
         if (percentage == 100) {
             return true;
         }
-        return TargetingUtils.isTargetedPercentage(contextId) < percentage;
+        return isTargetedPercentage(contextId) < percentage;
     }
 
     /**
