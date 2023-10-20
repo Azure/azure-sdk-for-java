@@ -18,9 +18,6 @@ import java.io.IOException;
  */
 @Immutable
 public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetectionPolicy {
-    /*
-     * Identifies the concrete type of the data change detection policy.
-     */
     /** Creates an instance of SqlIntegratedChangeTrackingPolicy class. */
     public SqlIntegratedChangeTrackingPolicy() {}
 

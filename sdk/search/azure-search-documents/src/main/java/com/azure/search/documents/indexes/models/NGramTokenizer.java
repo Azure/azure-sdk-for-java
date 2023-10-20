@@ -19,9 +19,6 @@ import java.util.Objects;
 @Fluent
 public final class NGramTokenizer extends LexicalTokenizer {
     /*
-     * Identifies the concrete type of the tokenizer.
-     */
-    /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of maxGram.
      */
     private Integer minGram;

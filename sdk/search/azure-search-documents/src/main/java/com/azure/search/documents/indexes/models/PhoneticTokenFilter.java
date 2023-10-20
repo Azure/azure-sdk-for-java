@@ -19,9 +19,6 @@ import java.util.Objects;
 @Fluent
 public final class PhoneticTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The phonetic encoder to use. Default is "metaphone".
      */
     private PhoneticEncoder encoder;

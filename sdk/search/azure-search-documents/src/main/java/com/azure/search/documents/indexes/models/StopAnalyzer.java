@@ -21,9 +21,6 @@ import java.util.List;
 @Fluent
 public final class StopAnalyzer extends LexicalAnalyzer {
     /*
-     * Identifies the concrete type of the analyzer.
-     */
-    /*
      * A list of stopwords.
      */
     private List<String> stopwords;

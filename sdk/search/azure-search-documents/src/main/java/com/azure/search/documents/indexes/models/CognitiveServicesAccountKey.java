@@ -18,9 +18,6 @@ import java.util.List;
 @Fluent
 public final class CognitiveServicesAccountKey extends CognitiveServicesAccount {
     /*
-     * Identifies the concrete type of the cognitive service resource attached to a skillset.
-     */
-    /*
      * The key used to provision the cognitive service resource attached to a skillset.
      */
     private String key;

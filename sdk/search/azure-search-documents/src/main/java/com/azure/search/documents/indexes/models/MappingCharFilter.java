@@ -22,9 +22,6 @@ import java.util.List;
 @Immutable
 public final class MappingCharFilter extends CharFilter {
     /*
-     * Identifies the concrete type of the char filter.
-     */
-    /*
      * A list of mappings of the following format: "a=>b" (all occurrences of the character "a" will be replaced with
      * character "b").
      */

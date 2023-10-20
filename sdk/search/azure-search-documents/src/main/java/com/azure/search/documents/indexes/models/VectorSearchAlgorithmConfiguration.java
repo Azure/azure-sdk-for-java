@@ -78,13 +78,13 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
                         readerToUse = readerToUse.reset();
                     }
                     // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("hnsw".equals(discriminatorValue)) {
-                        return HnswVectorSearchAlgorithmConfiguration.fromJson(readerToUse);
-                    } else if ("exhaustiveKnn".equals(discriminatorValue)) {
-                        return ExhaustiveKnnVectorSearchAlgorithmConfiguration.fromJson(readerToUse);
+                    if ("exhaustiveKnn".equals(discriminatorValue)) {
+                        return ExhaustiveKnnAlgorithmConfiguration.fromJson(readerToUse);
+                    } else if ("hnsw".equals(discriminatorValue)) {
+                        return HnswVectorConfiguration.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field 'kind' didn't match one of the expected values 'hnsw', or 'exhaustiveKnn'. It was: '"
+                                "Discriminator field 'kind' didn't match one of the expected values 'exhaustiveKnn', or 'hnsw'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

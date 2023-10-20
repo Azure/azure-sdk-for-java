@@ -19,9 +19,6 @@ import java.util.Objects;
 @Fluent
 public final class TextTranslationSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    /*
      * The language code to translate documents into for documents that don't specify the to language explicitly.
      */
     private final TextTranslationSkillLanguage defaultToLanguageCode;

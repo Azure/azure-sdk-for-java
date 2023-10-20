@@ -20,9 +20,6 @@ import java.util.List;
  */
 @Fluent
 public final class ShaperSkill extends SearchIndexerSkill {
-    /*
-     * Identifies the concrete type of the skill.
-     */
     /**
      * Creates an instance of ShaperSkill class.
      *

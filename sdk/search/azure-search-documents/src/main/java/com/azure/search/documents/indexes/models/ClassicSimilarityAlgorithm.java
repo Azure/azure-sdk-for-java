@@ -19,9 +19,6 @@ import java.io.IOException;
  */
 @Immutable
 public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
-    /*
-     * The @odata.type property.
-     */
     /** Creates an instance of ClassicSimilarityAlgorithm class. */
     public ClassicSimilarityAlgorithm() {}
 

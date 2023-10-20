@@ -20,9 +20,6 @@ import java.io.IOException;
 @Fluent
 public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     /*
-     * The @odata.type property.
-     */
-    /*
      * This property controls the scaling function between the term frequency of each matching terms and the final
      * relevance score of a document-query pair. By default, a value of 1.2 is used. A value of 0.0 means the score
      * does not scale with an increase in term frequency.

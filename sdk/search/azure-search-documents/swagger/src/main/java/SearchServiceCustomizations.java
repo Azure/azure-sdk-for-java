@@ -7,6 +7,10 @@ import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
@@ -24,6 +28,13 @@ public class SearchServiceCustomizations extends Customization {
         "    this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);",
         "    return this;",
         "}");
+
+    private static final String VARARG_METHOD_BLOCK_TEMPLATE = joinWithNewline(
+        "{",
+        "    this.%1$s = (%1$s == null) ? null : java.util.Arrays.asList(%1$s);",
+        "    return this;",
+        "}"
+    );
 
     // Packages
     private static final String IMPLEMENTATION_MODELS = "com.azure.search.documents.indexes.implementation.models";
@@ -44,8 +55,10 @@ public class SearchServiceCustomizations extends Customization {
             "SearchIndexerKnowledgeStoreBlobProjectionSelector"); //, "SearchIndexerDataIdentity");
 
         // Add vararg overloads to list setters.
-        addVarArgsOverload(publicCustomization.getClass("InputFieldMappingEntry"), "inputs", "InputFieldMappingEntry");
-        addVarArgsOverload(publicCustomization.getClass("ScoringProfile"), "functions", "ScoringFunction");
+        publicCustomization.getClass("InputFieldMappingEntry").customizeAst(ast ->
+            addVarArgsOverload(ast.getClassByName("InputFieldMappingEntry").get(), "inputs", "InputFieldMappingEntry"));
+        publicCustomization.getClass("ScoringProfile").customizeAst(ast ->
+            addVarArgsOverload(ast.getClassByName("ScoringProfile").get(), "functions", "ScoringFunction"));
 
         // More complex customizations.
         customizeSearchIndex(publicCustomization.getClass("SearchIndex"));
@@ -93,26 +106,34 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSearchIndex(ClassCustomization classCustomization) {
-        classCustomization.addConstructor(joinWithNewline(
-            "/**",
-            " * Constructor of {@link SearchIndex}.",
-            " * @param name The name of the index.",
-            " * @param fields The fields of the index.",
-            " */",
-            "public SearchIndex(String name, List<SearchField> fields) {",
-            "    this.name = name;",
-            "    this.fields = fields;",
-            "}"
-        ));
+        classCustomization.customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
 
-        addVarArgsOverload(classCustomization, "fields", "SearchField");
-        addVarArgsOverload(classCustomization, "scoringProfiles", "ScoringProfile");
-        addVarArgsOverload(classCustomization, "suggesters", "SearchSuggester");
-        addVarArgsOverload(classCustomization, "analyzers", "LexicalAnalyzer");
-        addVarArgsOverload(classCustomization, "tokenizers", "LexicalTokenizer");
-        addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilter");
-        addVarArgsOverload(classCustomization, "charFilters", "CharFilter");
-        // addVarArgsOverload(classCustomization, "normalizers", "LexicalNormalizer");
+            clazz.addConstructor(com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+                .addParameter("String", "name")
+                .addParameter("List<SearchField>", "fields")
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "    this.name = name;",
+                    "    this.fields = fields;",
+                    "}"
+                )))
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "/**",
+                    " * Constructor of {@link SearchIndex}.",
+                    " * @param name The name of the index.",
+                    " * @param fields The fields of the index.",
+                    " */"
+                )));
+
+            addVarArgsOverload(clazz, "fields", "SearchField");
+            addVarArgsOverload(clazz, "scoringProfiles", "ScoringProfile");
+            addVarArgsOverload(clazz, "suggesters", "SearchSuggester");
+            addVarArgsOverload(clazz, "analyzers", "LexicalAnalyzer");
+            addVarArgsOverload(clazz, "tokenizers", "LexicalTokenizer");
+            addVarArgsOverload(clazz, "tokenFilters", "TokenFilter");
+            addVarArgsOverload(clazz, "charFilters", "CharFilter");
+        });
     }
 
     private void customizeSearchIndexer(ClassCustomization classCustomization) {
@@ -262,42 +283,65 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSynonymMap(ClassCustomization classCustomization) {
-        classCustomization.removeMethod("getFormat");
-        classCustomization.removeMethod("setFormat");
-        classCustomization.removeMethod("setName");
+        classCustomization.customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName())
+                .orElseThrow(() -> new RuntimeException("Class not found."));
 
-        classCustomization.addConstructor(joinWithNewline(
-                "public SynonymMap(String name) {",
-                "    this(name, null);",
-                "}"))
-            .getJavadoc()
-            .setDescription("Constructor of {@link SynonymMap}.")
-            .setParam("name", "The name of the synonym map.");
+            clazz.getMethodsByName("getFormat").forEach(MethodDeclaration::remove);
+            clazz.getMethodsByName("setFormat").forEach(MethodDeclaration::remove);
+            clazz.getMethodsByName("setName").forEach(MethodDeclaration::remove);
 
-        classCustomization.addConstructor(joinWithNewline(
-                "public SynonymMap(String name, String synonyms) {",
-                "    this.format = \"solr\";",
-                "    this.name = name;",
-                "    this.synonyms = synonyms;",
-                "}"))
-            .getJavadoc()
-            .setDescription("Constructor of {@link SynonymMap}.")
-            .setParam("name", "The name of the synonym map.")
-            .setParam("synonyms", "A series of synonym rules in the specified synonym map format. The rules must be separated by newlines.");
 
-        classCustomization.addMethod(joinWithNewline(
-            "/**",
-            " * Creates a new instance of SynonymMap with synonyms read from the passed file.",
-            " *",
-            " * @param name The name of the synonym map.",
-            " * @param filePath The path to the file where the formatted synonyms are read.",
-            " * @return A SynonymMap.",
-            " * @throws java.io.UncheckedIOException If reading {@code filePath} fails.",
-            " */",
-            "public static SynonymMap createFromFile(String name, java.nio.file.Path filePath) {",
-            "    String synonyms = com.azure.search.documents.implementation.util.Utility.readSynonymsFromFile(filePath);",
-            "    return new SynonymMap(name, synonyms);",
-            "}"));
+            clazz.addConstructor(com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "/**",
+                    " * Constructor of {@link SynonymMap}.",
+                    " * @param name The name of the synonym map.",
+                    " */"
+                )))
+                .addParameter("String", "name")
+                .getBody()
+                .addStatement(StaticJavaParser.parseExplicitConstructorInvocationStmt("this(name,null);"));
+
+            clazz.addConstructor(com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+                .addParameter("String", "name")
+                .addParameter("String", "synonyms")
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "    this.format = \"solr\";",
+                    "    this.name = name;",
+                    "    this.synonyms = synonyms;",
+                    "}"
+                )))
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "/**",
+                    " * Constructor of {@link SynonymMap}.",
+                    " * @param name The name of the synonym map.",
+                    " * @param synonyms A series of synonym rules in the specified synonym map format. The rules must be separated by newlines.",
+                    " */"
+                )));
+
+            clazz.addMethod("createFromFile", com.github.javaparser.ast.Modifier.Keyword.PUBLIC, com.github.javaparser.ast.Modifier.Keyword.STATIC)
+                .setType("SynonymMap")
+                .addParameter("String", "name")
+                .addParameter("java.nio.file.Path", "filePath")
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "    String synonyms = com.azure.search.documents.implementation.util.Utility.readSynonymsFromFile(filePath);",
+                    "    return new SynonymMap(name, synonyms);",
+                    "}"
+                )))
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "/**",
+                    " * Creates a new instance of SynonymMap with synonyms read from the passed file.",
+                    " *",
+                    " * @param name The name of the synonym map.",
+                    " * @param filePath The path to the file where the formatted synonyms are read.",
+                    " * @return A SynonymMap.",
+                    " * @throws java.io.UncheckedIOException If reading {@code filePath} fails.",
+                    " */"
+                )));
+        });
     }
 
     private void customizeSearchResourceEncryptionKey(ClassCustomization keyCustomization,
@@ -630,6 +674,18 @@ public class SearchServiceCustomizations extends Customization {
 
         classCustomization.addMethod(varargMethod).getJavadoc()
             .replace(classCustomization.getMethod(methodName).getJavadoc());
+    }
+
+    private static void addVarArgsOverload(ClassOrInterfaceDeclaration clazz, String parameterName,
+        String parameterType) {
+        String methodName = "set" + parameterName.substring(0, 1).toUpperCase(Locale.ROOT) + parameterName.substring(1);
+
+        MethodDeclaration nonVarArgOverload = clazz.getMethodsByName(methodName).get(0);
+
+        clazz.addMethod(methodName, com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            .addParameter(new Parameter().setType(parameterType).setName(parameterName).setVarArgs(true))
+            .setBody(StaticJavaParser.parseBlock(String.format(VARARG_METHOD_BLOCK_TEMPLATE, parameterName)))
+            .setJavadocComment(nonVarArgOverload.getJavadoc().get());
     }
 
     private static String joinWithNewline(String... lines) {

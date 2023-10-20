@@ -19,9 +19,6 @@ import java.util.Objects;
 @Fluent
 public final class StopwordsTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The list of stopwords. This property and the stopwords list property cannot both be set.
      */
     private List<String> stopwords;

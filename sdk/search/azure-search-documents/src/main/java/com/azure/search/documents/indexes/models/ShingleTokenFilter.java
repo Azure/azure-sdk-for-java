@@ -18,9 +18,6 @@ import java.util.List;
 @Fluent
 public final class ShingleTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The maximum shingle size. Default and minimum value is 2.
      */
     private Integer maxShingleSize;

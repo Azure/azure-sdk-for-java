@@ -24,9 +24,6 @@ import java.util.Objects;
 @Fluent
 public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    /*
      * A list of entity categories that should be extracted.
      */
     private List<EntityCategory> categories;

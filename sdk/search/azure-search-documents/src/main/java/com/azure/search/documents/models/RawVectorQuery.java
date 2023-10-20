@@ -18,9 +18,6 @@ import java.util.Objects;
 @Fluent
 public final class RawVectorQuery extends VectorQuery {
     /*
-     * The kind of vector query being performed.
-     */
-    /*
      * The vector representation of a search query.
      */
     private List<Float> vector;

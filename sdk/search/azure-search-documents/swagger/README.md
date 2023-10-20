@@ -149,6 +149,15 @@ directive:
     - rename-model:
         from: SearchIndexerDataSource
         to: SearchIndexerDataSourceConnection
+    - rename-model:
+        from: ExhaustiveKnnVectorSearchAlgorithmConfiguration
+        to: ExhaustiveKnnAlgorithmConfiguration
+    - rename-model:
+        from: HnswVectorSearchAlgorithmConfiguration
+        to: HnswVectorConfiguration
+    - rename-model:
+        from: SemanticSettings
+        to: SemanticSearch
 ```
 
 ---
@@ -163,7 +172,7 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.21'
+use: '@autorest/java@4.1.22'
 enable-sync-stack: true
 generate-client-interfaces: false
 context-client-method-parameter: true
@@ -256,8 +265,8 @@ directive:
       $.discriminator = "@odata.type";
 ```
 
-### Change SearchField retrievable to hidden
-``` yaml $(java)
+### Change SearchField retrievable to hidden, dimensions to vectorSearchDimensions, and vectorSearchProfile to vectorSearchProfileName
+```yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions.SearchField.properties
@@ -268,6 +277,10 @@ directive:
       $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
+
+      $.dimensions["x-ms-client-name"] = "vectorSearchDimensions";
+
+      $.vectorSearchProfile["x-ms-client-name"] = "vectorSearchProfileName";
 ```
 
 ### Rename includeTotalResultCount to includeTotalCount
@@ -280,16 +293,7 @@ directive:
       param["x-ms-client-name"] = "includeTotalCount";
 ```
 
-### Rename Speller to QuerySpellerType
-``` yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.paths["/docs"].get.parameters
-    transform: >
-      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
-```
-
-### Rename Answers to QueryAnswerType, Captions to QueryCaptionType, and Speller to QuerySpellerType
+### Rename Answers to QueryAnswerType and Captions to QueryCaptionType
 ``` yaml $(tag) == 'searchindex'
 directive:
   - from: swagger-document
@@ -297,7 +301,6 @@ directive:
     transform: >
       $.Answers["x-ms-enum"].name = "QueryAnswerType";
       $.Captions["x-ms-enum"].name = "QueryCaptionType";
-      $.Speller["x-ms-enum"].name = "QuerySpellerType";
 ```
 
 ### Change Answers and Captions to a string in SearchOptions and SearchRequest
@@ -361,12 +364,21 @@ directive:
 ```
 
 ### Rename PIIDetectionSkillMaskingMode to PiiDetectionSkillMaskingMode
-``` yaml $(java)
+```yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions.PIIDetectionSkillMaskingMode
     transform: >
       $["x-ms-enum"].name = "PiiDetectionSkillMaskingMode";
+```
+
+### Rename PiiDetectionSkill.maskingCharacter to PiiDetectionSkill.mask
+```yaml $(tag) == 'searchservice'
+directive:
+  - from: swagger-document
+    where: $.definitions.PiiDetectionSkill.properties.maskingCharacter
+    transform: >
+      $["x-ms-client-name"] = "mask";
 ```
 
 ### Rename client parameter names
@@ -388,17 +400,6 @@ directive:
       $.SynonymTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
       $.WordDelimiterTokenFilter.properties.catenateWords["x-ms-client-name"] = "wordsCatenated";
       $.WordDelimiterTokenFilter.properties.catenateNumbers["x-ms-client-name"] = "numbersCatenated";
-```
-
-### Rename Dimensions
-
-To ensure alignment with `VectorSearchConfiguration`, rename the `Dimensions` to `VectorSearchDimensions`.
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.SearchField.properties.dimensions
-  transform: $["x-ms-client-name"] = "vectorSearchDimensions";
 ```
 
 ### Add `arm-id` format for `AuthResourceId`
@@ -449,4 +450,22 @@ directive:
       "name": "Single",
       "description": "Indicates that a field contains a single-precision floating point number. This is only valid when used with Collection(Edm.Single)."
     });  
+```
+
+### Make SemanticField.fieldName required
+
+```yaml $(tag) == 'searchservice'
+- from: swagger-document
+  where: $.definitions.SemanticField
+  transform: >
+    $.required = ["fieldName"];
+```
+
+### Rename VectorSearchProfile.algorithm to VectorSearchProfile.algorithmConfigurationName
+
+```yaml $(tag) == 'searchservice'
+- from: swagger-document
+  where: $.definitions.VectorSearchProfile.properties.algorithm
+  transform: >
+    $["x-ms-client-name"] = "algorithmConfigurationName";
 ```

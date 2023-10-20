@@ -22,9 +22,6 @@ import java.util.Objects;
 @Fluent
 public final class CjkBigramTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The scripts to ignore.
      */
     private List<CjkBigramTokenFilterScripts> ignoreScripts;

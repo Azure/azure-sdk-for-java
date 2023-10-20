@@ -119,7 +119,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
     /*
      * The name of the vector search profile that specifies the algorithm to use when searching the vector field.
      */
-    private String vectorSearchProfile;
+    private String vectorSearchProfileName;
 
     /*
      * A list of the names of synonym maps to associate with this field. This option can be used only with searchable
@@ -444,24 +444,24 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
-     * Get the vectorSearchProfile property: The name of the vector search profile that specifies the algorithm to use
-     * when searching the vector field.
+     * Get the vectorSearchProfileName property: The name of the vector search profile that specifies the algorithm to
+     * use when searching the vector field.
      *
-     * @return the vectorSearchProfile value.
+     * @return the vectorSearchProfileName value.
      */
-    public String getVectorSearchProfile() {
-        return this.vectorSearchProfile;
+    public String getVectorSearchProfileName() {
+        return this.vectorSearchProfileName;
     }
 
     /**
-     * Set the vectorSearchProfile property: The name of the vector search profile that specifies the algorithm to use
-     * when searching the vector field.
+     * Set the vectorSearchProfileName property: The name of the vector search profile that specifies the algorithm to
+     * use when searching the vector field.
      *
-     * @param vectorSearchProfile the vectorSearchProfile value to set.
+     * @param vectorSearchProfileName the vectorSearchProfileName value to set.
      * @return the SearchField object itself.
      */
-    public SearchField setVectorSearchProfile(String vectorSearchProfile) {
-        this.vectorSearchProfile = vectorSearchProfile;
+    public SearchField setVectorSearchProfileName(String vectorSearchProfileName) {
+        this.vectorSearchProfileName = vectorSearchProfileName;
         return this;
     }
 
@@ -530,7 +530,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeStringField("searchAnalyzer", Objects.toString(this.searchAnalyzerName, null));
         jsonWriter.writeStringField("indexAnalyzer", Objects.toString(this.indexAnalyzerName, null));
         jsonWriter.writeNumberField("dimensions", this.vectorSearchDimensions);
-        jsonWriter.writeStringField("vectorSearchProfile", this.vectorSearchProfile);
+        jsonWriter.writeStringField("vectorSearchProfile", this.vectorSearchProfileName);
         jsonWriter.writeArrayField(
                 "synonymMaps", this.synonymMapNames, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
@@ -563,7 +563,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     LexicalAnalyzerName searchAnalyzerName = null;
                     LexicalAnalyzerName indexAnalyzerName = null;
                     Integer vectorSearchDimensions = null;
-                    String vectorSearchProfile = null;
+                    String vectorSearchProfileName = null;
                     List<String> synonymMapNames = null;
                     List<SearchField> fields = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -597,7 +597,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                         } else if ("dimensions".equals(fieldName)) {
                             vectorSearchDimensions = reader.getNullable(JsonReader::getInt);
                         } else if ("vectorSearchProfile".equals(fieldName)) {
-                            vectorSearchProfile = reader.getString();
+                            vectorSearchProfileName = reader.getString();
                         } else if ("synonymMaps".equals(fieldName)) {
                             synonymMapNames = reader.readArray(reader1 -> reader1.getString());
                         } else if ("fields".equals(fieldName)) {
@@ -618,7 +618,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                         deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
                         deserializedSearchField.indexAnalyzerName = indexAnalyzerName;
                         deserializedSearchField.vectorSearchDimensions = vectorSearchDimensions;
-                        deserializedSearchField.vectorSearchProfile = vectorSearchProfile;
+                        deserializedSearchField.vectorSearchProfileName = vectorSearchProfileName;
                         deserializedSearchField.synonymMapNames = synonymMapNames;
                         deserializedSearchField.fields = fields;
 

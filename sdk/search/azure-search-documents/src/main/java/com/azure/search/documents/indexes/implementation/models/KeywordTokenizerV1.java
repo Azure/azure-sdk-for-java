@@ -19,9 +19,6 @@ import java.util.List;
 @Fluent
 public final class KeywordTokenizerV1 extends LexicalTokenizer {
     /*
-     * Identifies the concrete type of the tokenizer.
-     */
-    /*
      * The read buffer size in bytes. Default is 256.
      */
     private Integer bufferSize;

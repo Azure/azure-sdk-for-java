@@ -23,9 +23,6 @@ import java.util.stream.Collectors;
 @Fluent
 public final class PatternAnalyzer extends LexicalAnalyzer {
     /*
-     * Identifies the concrete type of the analyzer.
-     */
-    /*
      * A value indicating whether terms should be lower-cased. Default is true.
      */
     private Boolean lowerCaseTerms;

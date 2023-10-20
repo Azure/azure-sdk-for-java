@@ -21,9 +21,6 @@ import java.util.List;
 @Fluent
 public final class KeepTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The list of words to keep.
      */
     private final List<String> keepWords;

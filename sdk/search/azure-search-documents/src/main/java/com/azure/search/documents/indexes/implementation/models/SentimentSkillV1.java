@@ -23,9 +23,6 @@ import java.util.Objects;
 @Fluent
 public final class SentimentSkillV1 extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    /*
      * A value indicating which language code to use. Default is en.
      */
     private SentimentSkillLanguage defaultLanguageCode;

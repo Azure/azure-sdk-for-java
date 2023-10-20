@@ -19,9 +19,6 @@ import java.util.Objects;
 @Immutable
 public final class StemmerTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The language to use.
      */
     private final StemmerTokenFilterLanguage language;

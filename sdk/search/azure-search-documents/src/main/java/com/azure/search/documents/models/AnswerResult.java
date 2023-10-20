@@ -101,19 +101,6 @@ public final class AnswerResult implements JsonSerializable<AnswerResult> {
         return this.additionalProperties;
     }
 
-    /**
-     * Set the additionalProperties property: An answer is a text passage extracted from the contents of the most
-     * relevant documents that matched the query. Answers are extracted from the top search results. Answer candidates
-     * are scored and the top answers are selected.
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the AnswerResult object itself.
-     */
-    public AnswerResult setAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

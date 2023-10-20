@@ -18,9 +18,6 @@ import java.util.List;
 @Fluent
 public final class UniqueTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * A value indicating whether to remove duplicates only at the same position. Default is false.
      */
     private Boolean onlyOnSamePosition;

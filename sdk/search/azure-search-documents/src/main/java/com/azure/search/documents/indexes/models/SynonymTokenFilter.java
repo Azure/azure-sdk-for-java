@@ -18,9 +18,6 @@ import java.util.List;
 @Fluent
 public final class SynonymTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * A list of synonyms in following one of two formats: 1. incredible, unbelievable, fabulous => amazing - all terms
      * on the left side of => symbol will be replaced with all terms on its right side; 2. incredible, unbelievable,
      * fabulous, amazing - comma separated list of equivalent words. Set the expand option to change how this list is

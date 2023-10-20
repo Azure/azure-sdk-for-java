@@ -21,9 +21,6 @@ import java.util.List;
 @Fluent
 public final class ElisionTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The set of articles to remove.
      */
     private List<String> articles;

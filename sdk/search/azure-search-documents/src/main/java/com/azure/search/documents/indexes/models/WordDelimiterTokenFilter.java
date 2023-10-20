@@ -21,9 +21,6 @@ import java.util.List;
 @Fluent
 public final class WordDelimiterTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * A value indicating whether to generate part words. If set, causes parts of words to be generated; for example
      * "AzureSearch" becomes "Azure" "Search". Default is true.
      */

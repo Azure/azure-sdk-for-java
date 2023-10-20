@@ -19,10 +19,6 @@ import java.util.Objects;
 @Fluent
 public final class TagScoringFunction extends ScoringFunction {
     /*
-     * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The
-     * function type must be lower case.
-     */
-    /*
      * Parameter values for the tag scoring function.
      */
     private final TagScoringParameters parameters;

@@ -23,9 +23,6 @@ import java.util.Objects;
 @Fluent
 public final class CustomAnalyzer extends LexicalAnalyzer {
     /*
-     * Identifies the concrete type of the analyzer.
-     */
-    /*
      * The name of the tokenizer to use to divide continuous text into a sequence of tokens, such as breaking a
      * sentence into words.
      */

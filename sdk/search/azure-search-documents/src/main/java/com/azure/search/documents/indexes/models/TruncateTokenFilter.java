@@ -18,9 +18,6 @@ import java.util.List;
 @Fluent
 public final class TruncateTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The length at which terms will be truncated. Default and maximum is 300.
      */
     private Integer length;

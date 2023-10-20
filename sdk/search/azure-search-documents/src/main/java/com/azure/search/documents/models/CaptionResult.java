@@ -71,19 +71,6 @@ public final class CaptionResult implements JsonSerializable<CaptionResult> {
         return this.additionalProperties;
     }
 
-    /**
-     * Set the additionalProperties property: Captions are the most representative passages from the document relatively
-     * to the search query. They are often used as document summary. Captions are only returned for queries of type
-     * 'semantic'..
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the CaptionResult object itself.
-     */
-    public CaptionResult setAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

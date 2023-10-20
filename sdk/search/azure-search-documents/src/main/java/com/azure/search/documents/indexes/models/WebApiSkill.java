@@ -21,9 +21,6 @@ import java.util.Objects;
 @Fluent
 public final class WebApiSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    /*
      * The url for the Web API.
      */
     private final String uri;

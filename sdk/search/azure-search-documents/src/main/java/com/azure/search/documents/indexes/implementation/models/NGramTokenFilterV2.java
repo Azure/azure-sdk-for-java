@@ -19,9 +19,6 @@ import java.util.List;
 @Fluent
 public final class NGramTokenFilterV2 extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of maxGram.
      */
     private Integer minGram;

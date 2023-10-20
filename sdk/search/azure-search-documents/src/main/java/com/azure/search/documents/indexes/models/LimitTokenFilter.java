@@ -18,9 +18,6 @@ import java.util.List;
 @Fluent
 public final class LimitTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The maximum number of tokens to produce. Default is 1.
      */
     private Integer maxTokenCount;
