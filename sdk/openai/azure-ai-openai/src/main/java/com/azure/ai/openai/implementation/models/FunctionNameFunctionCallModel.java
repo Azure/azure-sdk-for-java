@@ -4,6 +4,7 @@
 
 package com.azure.ai.openai.implementation.models;
 
+import com.azure.ai.openai.models.FunctionName;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonValue;
 
