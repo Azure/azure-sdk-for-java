@@ -7,6 +7,7 @@ module com.generic.core {
 
     requires transitive org.slf4j;
     requires java.net.http;
+    requires com.generic.json;
 
     // public API surface area
     exports com.generic.core.annotation;

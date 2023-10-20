@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * definition.</a>
  * </p>
  *
- * <p><strong>Creating an instance of RequestOptions</strong></p>
+ * <p><strong>Creating an instance of HttpRequestOptions</strong></p>
  * <!-- src_embed com.azure.core.http.rest.requestoptions.instantiation -->
  * <!-- end com.azure.core.http.rest.requestoptions.instantiation -->
  *
@@ -64,7 +64,7 @@ import java.util.function.Consumer;
  * <!-- src_embed com.azure.core.http.rest.requestoptions.createjsonrequest -->
  * <!-- end com.azure.core.http.rest.requestoptions.createjsonrequest -->
  *
- * Now, this string representation of the JSON request can be set as body of RequestOptions
+ * Now, this string representation of the JSON request can be set as body of HttpRequestOptions
  *
  * <!-- src_embed com.azure.core.http.rest.requestoptions.postrequest -->
  * <!-- end com.azure.core.http.rest.requestoptions.postrequest -->
@@ -86,7 +86,7 @@ public final class HttpRequestOptions {
     }
 
     /**
-     * Gets the request callback, applying all the configurations set on this RequestOptions.
+     * Gets the request callback, applying all the configurations set on this HttpRequestOptions.
      *
      * @return the request callback
      */
@@ -123,7 +123,7 @@ public final class HttpRequestOptions {
      *
      * @param header the header key
      * @param value the header value
-     * @return the modified RequestOptions object
+     * @return the modified HttpRequestOptions object
      */
     public HttpRequestOptions addHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
@@ -137,7 +137,7 @@ public final class HttpRequestOptions {
      *
      * @param header the header key
      * @param value the header value
-     * @return the modified RequestOptions object
+     * @return the modified HttpRequestOptions object
      */
     public HttpRequestOptions setHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
@@ -150,7 +150,7 @@ public final class HttpRequestOptions {
      *
      * @param parameterName the name of the query parameter
      * @param value the value of the query parameter
-     * @return the modified RequestOptions object
+     * @return the modified HttpRequestOptions object
      */
     public HttpRequestOptions addQueryParam(String parameterName, String value) {
         return addQueryParam(parameterName, value, false);
@@ -164,7 +164,7 @@ public final class HttpRequestOptions {
      * @param parameterName the name of the query parameter
      * @param value the value of the query parameter
      * @param encoded whether this query parameter is already encoded
-     * @return the modified RequestOptions object
+     * @return the modified HttpRequestOptions object
      */
     public HttpRequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
         this.requestCallback = this.requestCallback.andThen(request -> {
@@ -178,10 +178,10 @@ public final class HttpRequestOptions {
 
     /**
      * Adds a custom request callback to modify the HTTP request before it's sent by the HttpClient. The modifications
-     * made on a RequestOptions object is applied in order on the request.
+     * made on a HttpRequestOptions object is applied in order on the request.
      *
      * @param requestCallback the request callback
-     * @return the modified RequestOptions object
+     * @return the modified HttpRequestOptions object
      * @throws NullPointerException If {@code requestCallback} is null.
      */
     public HttpRequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
@@ -194,7 +194,7 @@ public final class HttpRequestOptions {
      * Sets the body to send as part of the HTTP request.
      *
      * @param requestBody the request body data
-     * @return the modified RequestOptions object
+     * @return the modified HttpRequestOptions object
      * @throws NullPointerException If {@code requestBody} is null.
      */
     public HttpRequestOptions setBody(BinaryData requestBody) {
@@ -212,12 +212,12 @@ public final class HttpRequestOptions {
     //  * an exception will be thrown as they aren't compatible with each other.
     //  *
     //  * @param errorOptions The {@link ErrorOptions} that determines how error responses (400 or above) are handled.
-    //  * @return the modified RequestOptions object
+    //  * @return the modified HttpRequestOptions object
     //  * @throws NullPointerException If {@code errorOptions} is null.
     //  * @throws IllegalArgumentException If both {@link ErrorOptions#THROW} and {@link ErrorOptions#NO_THROW} are
     //  * included in {@code errorOptions}.
     //  */
-    // RequestOptions setErrorOptions(EnumSet<ErrorOptions> errorOptions) {
+    // HttpRequestOptions setErrorOptions(EnumSet<ErrorOptions> errorOptions) {
     //     Objects.requireNonNull(errorOptions, "'errorOptions' cannot be null.");
     //
     //     if (errorOptions.contains(ErrorOptions.THROW) && errorOptions.contains(ErrorOptions.NO_THROW)) {
@@ -233,7 +233,7 @@ public final class HttpRequestOptions {
      * Sets the additional context on the request that is passed during the service call.
      *
      * @param context Additional context that is passed during the service call.
-     * @return the modified RequestOptions object
+     * @return the modified HttpRequestOptions object
      */
     public HttpRequestOptions setContext(Context context) {
         this.context = context;

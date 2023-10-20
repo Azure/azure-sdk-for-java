@@ -3,15 +3,15 @@
 
 package com.generic.core.http.client.jdk;
 
-import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.models.Context;
+import java.net.http.HttpClient;
 
 import java.util.Set;
 
-public class JdkHttpClient implements HttpClient {
-    JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders) {
+public class JdkHttpClient implements com.generic.core.http.client.HttpClient {
+    JdkHttpClient(HttpClient httpClient, Set<String> restrictedHeaders) {
     }
 
     @Override
