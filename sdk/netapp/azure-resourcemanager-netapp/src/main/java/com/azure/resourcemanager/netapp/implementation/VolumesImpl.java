@@ -88,6 +88,30 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, forceDelete, context);
     }
 
+    public Volume populateAvailabilityZone(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        VolumeInner inner =
+            this.serviceClient().populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName);
+        if (inner != null) {
+            return new VolumeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Volume populateAvailabilityZone(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        VolumeInner inner =
+            this
+                .serviceClient()
+                .populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName, context);
+        if (inner != null) {
+            return new VolumeImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void revert(
         String resourceGroupName, String accountName, String poolName, String volumeName, VolumeRevert body) {
         this.serviceClient().revert(resourceGroupName, accountName, poolName, volumeName, body);
