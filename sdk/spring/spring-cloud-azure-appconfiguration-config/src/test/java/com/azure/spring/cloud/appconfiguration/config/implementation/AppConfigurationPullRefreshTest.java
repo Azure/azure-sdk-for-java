@@ -20,6 +20,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 
 import net.jcip.annotations.NotThreadSafe;
+import reactor.core.publisher.Mono;
 
 @NotThreadSafe
 public class AppConfigurationPullRefreshTest {
@@ -52,7 +53,7 @@ public class AppConfigurationPullRefreshTest {
             refreshUtils
                 .when(() -> AppConfigurationRefreshUtil.refreshStoresCheck(Mockito.eq(clientFactoryMock),
                     Mockito.eq(refreshInterval), Mockito.any(), Mockito.any()))
-                .thenReturn(eventData);
+                .thenReturn(Mono.just(eventData));
 
             AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
                 (long) 0);
@@ -68,7 +69,7 @@ public class AppConfigurationPullRefreshTest {
             refreshUtils
                 .when(() -> AppConfigurationRefreshUtil.refreshStoresCheck(Mockito.eq(clientFactoryMock),
                     Mockito.eq(refreshInterval), Mockito.any(), Mockito.any()))
-                .thenReturn(eventData);
+                .thenReturn(Mono.just(eventData));
 
             AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
                 (long) 0);

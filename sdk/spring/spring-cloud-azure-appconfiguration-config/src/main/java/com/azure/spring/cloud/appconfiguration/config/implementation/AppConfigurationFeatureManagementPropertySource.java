@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import org.springframework.util.StringUtils;
@@ -97,16 +98,11 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
         for (String label : labels) {
             settingSelector.setLabelFilter(label);
 
-            List<ConfigurationSetting> features = replicaClient.listSettings(settingSelector).collectList().block();
-            
-            if (features == null) {
-                return;
-            }
-            
+            Optional<List<ConfigurationSetting>> features = replicaClient.listSettings(settingSelector).collectList().blockOptional();
             TracingInfo tracing = replicaClient.getTracingInfo();
 
             // Reading In Features
-            for (ConfigurationSetting setting : features) {
+            for (ConfigurationSetting setting : features.orElseGet(() -> List.of())) {
                 if (setting instanceof FeatureFlagConfigurationSetting
                     && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                     featureConfigurationSettings.add(setting);

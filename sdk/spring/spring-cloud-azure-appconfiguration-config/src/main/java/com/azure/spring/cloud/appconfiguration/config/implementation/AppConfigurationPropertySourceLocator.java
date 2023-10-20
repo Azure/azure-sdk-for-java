@@ -103,8 +103,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             if (configStore.isEnabled() && loadNewPropertySources) {
                 // There is only one Feature Set for all AppConfigurationPropertySources
 
-                List<AppConfigurationReplicaClient> clients = clientFactory
-                    .getAvailableClients(configStore.getEndpoint(), true);
+                List<AppConfigurationReplicaClient> clients =
+                    clientFactory.getAvailableClients(configStore.getEndpoint(), true);
 
                 boolean generatedPropertySources = false;
 
@@ -114,9 +114,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 for (AppConfigurationReplicaClient client : clients) {
                     sourceList = new ArrayList<>();
 
-                    if (!STARTUP.get() && reloadFailed
-                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(client, clientFactory,
-                            configStore.getFeatureFlags(), profiles)) {
+                    if (!STARTUP.get() && reloadFailed && !AppConfigurationRefreshUtil
+                        .checkStoreAfterRefreshFailed(client, clientFactory, configStore.getFeatureFlags(), profiles)
+                        .block().getDoRefresh()) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
                     }
@@ -192,14 +192,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         List<AppConfigurationStoreTrigger> triggers) {
         List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
         for (AppConfigurationStoreTrigger trigger : triggers) {
-            ConfigurationSetting watchKey = client.getWatchKey(trigger.getKey(), trigger.getLabel()).block();
-            if (watchKey != null) {
-                watchKeysSettings.add(watchKey);
-            } else {
-                watchKeysSettings
-                    .add(new ConfigurationSetting().setKey(trigger.getKey())
-                        .setLabel(trigger.getLabel()));
-            }
+            watchKeysSettings.add(client.getWatchKey(trigger.getKey(), trigger.getLabel()).blockOptional()
+                .orElseGet(() -> new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel())));
         }
         return watchKeysSettings;
     }
@@ -210,7 +204,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         if (configStore.getFeatureFlags().getEnabled()) {
             for (AppConfigurationPropertySource propertySource : sources) {
                 if (propertySource instanceof AppConfigurationFeatureManagementPropertySource) {
-                    watchKeysFeatures.addAll(((AppConfigurationFeatureManagementPropertySource) propertySource).getFeatureFlagSettings());
+                    watchKeysFeatures.addAll(
+                        ((AppConfigurationFeatureManagementPropertySource) propertySource).getFeatureFlagSettings());
                 }
             }
         }
@@ -259,9 +254,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
         if (store.getFeatureFlags().getEnabled()) {
             for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
-                AppConfigurationFeatureManagementPropertySource propertySource = new AppConfigurationFeatureManagementPropertySource(
-                    store.getEndpoint(), client, selectedKeys.getKeyFilter(),
-                    selectedKeys.getLabelFilter(profiles));
+                AppConfigurationFeatureManagementPropertySource propertySource =
+                    new AppConfigurationFeatureManagementPropertySource(store.getEndpoint(), client,
+                        selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
 
                 propertySource.initProperties();
                 sourceList.add(propertySource);
@@ -269,9 +264,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
-            AppConfigurationApplicationSettingPropertySource propertySource = new AppConfigurationApplicationSettingPropertySource(
-                store.getEndpoint(), client, keyVaultClientFactory, selectedKeys.getKeyFilter(),
-                selectedKeys.getLabelFilter(profiles), appProperties.getMaxRetryTime());
+            AppConfigurationApplicationSettingPropertySource propertySource =
+                new AppConfigurationApplicationSettingPropertySource(store.getEndpoint(), client, keyVaultClientFactory,
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
+                    appProperties.getMaxRetryTime());
             propertySource.initProperties();
             sourceList.add(propertySource);
         }

@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,13 +66,9 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                     .setLabelFilter(label);
 
             // * for wildcard match
-            List<ConfigurationSetting> settings = replicaClient.listSettings(settingSelector).collectList().block();
-            
-            if (settings == null) {
-                return;
-            }
+            Optional<List<ConfigurationSetting>> settings = replicaClient.listSettings(settingSelector).collectList().blockOptional();
 
-            for (ConfigurationSetting setting : settings) {
+            for (ConfigurationSetting setting : settings.orElseGet(() -> List.of())) {
                 String key = setting.getKey().trim().substring(keyFilter.length())
                         .replace('/', '.');
                 if (setting instanceof SecretReferenceConfigurationSetting) {
