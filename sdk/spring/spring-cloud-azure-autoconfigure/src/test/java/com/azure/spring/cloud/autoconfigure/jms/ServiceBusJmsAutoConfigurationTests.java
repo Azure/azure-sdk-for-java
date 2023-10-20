@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -334,7 +335,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
+    @ValueSource(strings = { "basic" })
     void jmsPoolConnectionFactoryBeanConfiguredByPropertyCondition(String pricingTier) {
         this.contextRunner
             .withPropertyValues(

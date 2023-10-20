@@ -8,8 +8,10 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
+import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -70,7 +72,8 @@ public class ServiceBusJmsAutoConfiguration {
                 properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
             }
             //set user agent
-            factory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
+            JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
+            jmsFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
                 (connection, uri) -> properties);
         };
     }

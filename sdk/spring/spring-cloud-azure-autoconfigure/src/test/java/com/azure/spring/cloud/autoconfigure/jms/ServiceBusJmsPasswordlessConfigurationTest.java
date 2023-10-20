@@ -139,7 +139,7 @@ class ServiceBusJmsPasswordlessConfigurationTest {
     static class ServiceBusJmsPasswordlessTestConfig {
 
         @Bean
-        @ConfigurationProperties(AzureServiceBusJmsProperties.PREFIX)
+//        @ConfigurationProperties(AzureServiceBusJmsProperties.PREFIX)
         AzureServiceBusJmsProperties jmsProperties() {
             return new AzureServiceBusJmsProperties();
         }

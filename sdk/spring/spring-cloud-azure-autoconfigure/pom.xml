@@ -123,11 +123,26 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.apache.qpid</groupId>
-      <artifactId>qpid-jms-client</artifactId>
-      <version>0.53.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
-      <optional>true</optional>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-servicebus-jms</artifactId>
+      <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-identity</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.apache.qpid</groupId>-->
+<!--      <artifactId>qpid-jms-client</artifactId>-->
+<!--      <version>0.53.0</version> &lt;!&ndash; {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} &ndash;&gt;-->
+<!--      <optional>true</optional>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
@@ -177,7 +192,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.19.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-messaging-eventgrid;dependency} -->
+      <version>4.18.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
