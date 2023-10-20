@@ -58,3 +58,7 @@ $status
 Get-ChildItem -Path $Directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
     Remove-Item -Path $_.FullName -Recurse -Force
 }
+
+# Clean up generated code, so that next step will not be affected.
+git checkout $sdkPath
+git clean -fd $sdkPath
