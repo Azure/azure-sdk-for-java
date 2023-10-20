@@ -36,82 +36,8 @@ Various documentation is available to help you get started
 
 ## Key concepts
 
-## Examples
-### Dev Box Scenarios
-```java com.azure.developer.devcenter.readme.devboxes
-String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
-
-// Build our clients
-DevCenterClient devCenterClient =
-                new DevCenterClientBuilder()
-                        .endpoint(endpoint)
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .buildClient();
-
-DevBoxesClient devBoxClient =
-                new DevBoxesClientBuilder()
-                        .endpoint(endpoint)
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .buildClient();
-
-// Find available Projects and Pools
-PagedIterable<BinaryData> projectListResponse = devCenterClient.listProjects(null);
-for (BinaryData p: projectListResponse) {
-    System.out.println(p);
-}
-
-PagedIterable<BinaryData> poolListResponse = devBoxClient.listPools("myProject", null);
-for (BinaryData p: poolListResponse) {
-    System.out.println(p);
-}
-
-// Provision a Dev Box
-BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"MyPool\"}");
-SyncPoller<BinaryData, BinaryData> devBoxCreateResponse =
-        devBoxClient.beginCreateDevBox("myProject", "me", "MyDevBox", devBoxBody, null);
-devBoxCreateResponse.waitForCompletion();
 
 
-Response<BinaryData> remoteConnectionResponse =
-                devBoxClient.getRemoteConnectionWithResponse("myProject", "me", "MyDevBox", null);
-System.out.println(remoteConnectionResponse.getValue());
-
-// Tear down the Dev Box when we're finished:
-SyncPoller<BinaryData, Void> devBoxDeleteResponse =
-                devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
-devBoxDeleteResponse.waitForCompletion();        
-```
-
-### Environments Scenarios
-```java com.azure.developer.devcenter.readme.environments
-EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
-                        .endpoint(endpoint)
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .buildClient();
-
-// Fetch available catalog items and environment types
-PagedIterable<BinaryData> catalogItemListResponse = environmentsClient.listCatalogItems("myProject", null);
-for (BinaryData p: catalogItemListResponse) {
-    System.out.println(p);
-}
-
-PagedIterable<BinaryData> environmentTypesListResponse = environmentsClient.listEnvironmentTypes("myProject", null);
-for (BinaryData p: environmentTypesListResponse) {
-    System.out.println(p);
-}
-
-// Create an environment
-BinaryData environmentBody = BinaryData.fromString("{\"catalogItemName\":\"MyCatalogItem\", \"environmentType\":\"MyEnvironmentType\"}");
-SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-        environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
-environmentCreateResponse.waitForCompletion();
-
-// Delete the environment when we're finished:
-SyncPoller<BinaryData, Void> environmentDeleteResponse =
-                environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
-environmentDeleteResponse.waitForCompletion();
-```
 
 ## Troubleshooting
 
