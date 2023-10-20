@@ -6,6 +6,8 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -261,14 +263,21 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         entities.forEach(entity -> {
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
             PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
+            final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+            applyBulkVersioning(domainType, originalItem, options);
             cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(originalItem,
-                partitionKey));
+                partitionKey, options));
         });
+
+        // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+        // allows it to start at 1 and increase until it finds the appropriate batch size.
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
 
         return (Iterable<S>) this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .executeBulkOperations(Flux.fromIterable(cosmosItemOperations))
+            .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions)
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
@@ -726,18 +735,37 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Deletes the entities
      *
+     * @param information the CosmosEntityInformation
+     * @param entities the Iterable entities to be inserted
      * @param <T> type class of domain type
-     * @param containerName the container name
-     * @param cosmosItemOperations the Iterable of the CosmosItemOperation's to delete
+     * @param <S> type class of domain type
      */
     @Override
-    public <T> void deleteEntities(String containerName, Iterable<CosmosItemOperation> cosmosItemOperations) {
-        Assert.notNull(cosmosItemOperations, "entities to be deleted should not be null");
+    public <S extends T, T> void deleteEntities(CosmosEntityInformation<T, ?> information, Iterable<S> entities) {
+        Assert.notNull(entities, "entities to be deleted should not be null");
+
+        String containerName = information.getContainerName();
+        Class<T> domainType = information.getJavaType();
+
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        entities.forEach(entity -> {
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
+            final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+            applyBulkVersioning(domainType, originalItem, options);
+            cosmosItemOperations.add(CosmosBulkOperations.getDeleteItemOperation(String.valueOf(information.getId(entity)),
+                new PartitionKey(information.getPartitionKeyFieldValue(entity))));
+        });
+
+        // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+        // allows it to start at 1 and increase until it finds the appropriate batch size.
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
 
         this.getCosmosAsyncClient()
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
-                .executeBulkOperations(Flux.fromIterable(cosmosItemOperations))
+                .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions)
                 .publishOn(Schedulers.parallel())
                 .onErrorResume(throwable ->
                     CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
@@ -850,13 +878,21 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 T object = toDomainObject(domainType, item);
                 Object id = entityInfo.getId(object);
                 String idString = id != null ? id.toString() : "";
-                return CosmosBulkOperations.getDeleteItemOperation(idString, new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)));
+                final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+                applyBulkVersioning(domainType, item, options);
+                return CosmosBulkOperations.getDeleteItemOperation(idString,
+                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)), options);
             });
+
+            // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+            // allows it to start at 1 and increase until it finds the appropriate batch size.
+            CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+            cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
 
             this.getCosmosAsyncClient()
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
-                .executeBulkOperations(cosmosItemOperationFlux)
+                .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
                 .publishOn(Schedulers.parallel())
                 .onErrorResume(throwable ->
                     CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)",
@@ -1218,6 +1254,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private void applyVersioning(Class<?> domainType,
                                  JsonNode jsonNode,
                                  CosmosItemRequestOptions options) {
+        CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
+        if (entityInformation.isVersioned()) {
+            options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());
+        }
+    }
+
+    private void applyBulkVersioning(Class<?> domainType,
+                                 JsonNode jsonNode,
+                                 CosmosBulkItemRequestOptions options) {
         CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
         if (entityInformation.isVersioned()) {
             options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());

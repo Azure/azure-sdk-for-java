@@ -4,9 +4,7 @@
 package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
@@ -281,14 +279,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         Assert.notNull(entities, "Iterable entities should not be null");
 
         if (information.getPartitionKeyFieldName() != null) {
-            List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-            entities.forEach(entity -> {
-                ID id = information.getId(entity);
-                cosmosItemOperations.add(CosmosBulkOperations.getDeleteItemOperation(id != null ? id.toString() : "",
-                    new PartitionKey(information.getPartitionKeyFieldValue(entity))));
-            });
 
-            this.operation.deleteEntities(this.information.getContainerName(), cosmosItemOperations);
+            this.operation.deleteEntities(this.information, entities);
         } else {
             StreamSupport.stream(entities.spliterator(), true).forEach(this::delete);
         }

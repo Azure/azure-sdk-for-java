@@ -4,7 +4,6 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
@@ -229,10 +228,11 @@ public interface CosmosOperations {
      * Delete using a list of entities with bulk
      *
      * @param <T> type class of domain type
-     * @param containerName the container name
-     * @param cosmosItemOperations the Iterable of the CosmosItemOperation's to delete
+     * @param <S> type class of domain type
+     * @param information must not be {@literal null}
+     * @param entities must not be {@literal null}
      */
-    <T> void deleteEntities(String containerName, Iterable<CosmosItemOperation> cosmosItemOperations);
+    <S extends T, T> void deleteEntities(CosmosEntityInformation<T, ?> information, Iterable<S> entities);
 
     /**
      * Delete all items in a container

@@ -3,10 +3,8 @@
 package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
@@ -255,13 +253,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         Assert.notNull(entities, "The given Iterable of entities must not be null!");
 
         if (entityInformation.getPartitionKeyFieldName() != null) {
-            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity -> {
-                K id = entityInformation.getId(entity);
-                return CosmosBulkOperations.getDeleteItemOperation(id != null ? id.toString() : "",
-                    new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity)));
-            });
-
-            return cosmosOperations.deleteEntities(entityInformation.getContainerName(), cosmosItemOperationFlux);
+            return cosmosOperations.deleteEntities(this.entityInformation, Flux.fromIterable(entities));
         } else {
             return Flux.fromIterable(entities).flatMap(this::delete).then();
         }
@@ -273,13 +265,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         Assert.notNull(entityStream, "The given Publisher of entities must not be null!");
 
         if (entityInformation.getPartitionKeyFieldName() != null) {
-            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.from(entityStream).map(entity -> {
-                K id = entityInformation.getId(entity);
-                return CosmosBulkOperations.getDeleteItemOperation(id != null ? id.toString() : "",
-                    new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity)));
-            });
-
-            return cosmosOperations.deleteEntities(entityInformation.getContainerName(), cosmosItemOperationFlux);
+            return cosmosOperations.deleteEntities(this.entityInformation, Flux.from(entityStream));
         } else {
             return Flux.from(entityStream)//
                 .map(entityInformation::getRequiredId)//

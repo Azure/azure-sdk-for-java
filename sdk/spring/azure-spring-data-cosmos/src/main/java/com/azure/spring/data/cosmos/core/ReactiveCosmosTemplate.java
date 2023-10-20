@@ -5,6 +5,8 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -482,16 +484,23 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         String containerName = entityInformation.getContainerName();
         Class<T> domainType = entityInformation.getJavaType();
 
-        //List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-        Flux<CosmosItemOperation> cosmosItemOperations = entities.map(entity -> {
-            return CosmosBulkOperations.getUpsertItemOperation(mappingCosmosConverter.writeJsonNode(entity),
-                new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity)));
+        Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
+            final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+            applyBulkVersioning(domainType, originalItem, options);
+            return CosmosBulkOperations.getUpsertItemOperation(originalItem, partitionKey, options);
         });
+
+        // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+        // allows it to start at 1 and increase until it finds the appropriate batch size.
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
 
         return (Flux<S>) this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .executeBulkOperations(cosmosItemOperations)
+            .executeBulkOperations(cosmosItemOperationsFlux, cosmosBulkExecutionOptions)
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
@@ -667,17 +676,36 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Delete all items with bulk.
      *
-     * @param containerName the container name
-     * @param cosmosItemOperations the Iterable of the CosmosItemOperation's to delete
+     * @param entityInformation the CosmosEntityInformation
+     * @param entities the Iterable entities to be deleted
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
      * @return void Mono
      */
-    public Mono<Void> deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations) {
-        Assert.notNull(cosmosItemOperations, "entities to be deleted should not be null");
+    public <S extends T, T> Mono<Void> deleteEntities(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities) {
+        Assert.notNull(entities, "entities to be deleted should not be null");
+
+        String containerName = entityInformation.getContainerName();
+        Class<T> domainType = entityInformation.getJavaType();
+
+        Flux<CosmosItemOperation> cosmosItemOperationFlux = entities.map(entity -> {
+            JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+            PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
+            final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+            applyBulkVersioning(domainType, originalItem, options);
+            return CosmosBulkOperations.getDeleteItemOperation(String.valueOf(entityInformation.getId(entity)),
+                partitionKey, options);
+        });
+
+        // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+        // allows it to start at 1 and increase until it finds the appropriate batch size.
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
 
         return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .executeBulkOperations(cosmosItemOperations)
+            .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
@@ -725,13 +753,21 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 T object = toDomainObject(domainType, item);
                 Object id = entityInfo.getId(object);
                 String idString = id != null ? id.toString() : "";
-                return CosmosBulkOperations.getDeleteItemOperation(idString, new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)));
+                final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
+                applyBulkVersioning(domainType, item, options);
+                return CosmosBulkOperations.getDeleteItemOperation(idString,
+                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)), options);
             });
+
+            // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
+            // allows it to start at 1 and increase until it finds the appropriate batch size.
+            CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+            cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
 
             this.getCosmosAsyncClient()
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
-                .executeBulkOperations(cosmosItemOperationFlux)
+                .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
                 .publishOn(Schedulers.parallel())
                 .onErrorResume(throwable ->
                     CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
@@ -1004,6 +1040,15 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private void applyVersioning(Class<?> domainType,
                                  JsonNode jsonNode,
                                  CosmosItemRequestOptions options) {
+        CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
+        if (entityInformation.isVersioned()) {
+            options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());
+        }
+    }
+
+    private void applyBulkVersioning(Class<?> domainType,
+                                     JsonNode jsonNode,
+                                     CosmosBulkItemRequestOptions options) {
         CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
         if (entityInformation.isVersioned()) {
             options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());

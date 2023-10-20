@@ -5,7 +5,6 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
@@ -224,11 +223,13 @@ public interface ReactiveCosmosOperations {
     /**
      * Delete all items with bulk.
      *
-     * @param containerName must not be {@literal null}
-     * @param cosmosItemOperations must not be {@literal null}
+     * @param entityInformation must not be {@literal null}
+     * @param entities must not be {@literal null}
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
      * @return void Mono
      */
-    Mono<Void> deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations);
+    <S extends T, T> Mono<Void> deleteEntities(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities);
 
     /**
      * Delete all items in a container
