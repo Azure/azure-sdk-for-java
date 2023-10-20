@@ -7,86 +7,79 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Deprecated. The language codes supported for input text by EntityRecognitionSkill. */
+/** Defines values for EntityRecognitionSkillLanguage. */
 public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<EntityRecognitionSkillLanguage> {
-    /** Arabic. */
+    /** Static value ar for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage AR = fromString("ar");
 
-    /** Czech. */
+    /** Static value cs for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage CS = fromString("cs");
 
-    /** Chinese-Simplified. */
+    /** Static value zh-Hans for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage ZH_HANS = fromString("zh-Hans");
 
-    /** Chinese-Traditional. */
+    /** Static value zh-Hant for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage ZH_HANT = fromString("zh-Hant");
 
-    /** Danish. */
+    /** Static value da for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage DA = fromString("da");
 
-    /** Dutch. */
+    /** Static value nl for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage NL = fromString("nl");
 
-    /** English. */
+    /** Static value en for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage EN = fromString("en");
 
-    /** Finnish. */
+    /** Static value fi for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage FI = fromString("fi");
 
-    /** French. */
+    /** Static value fr for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage FR = fromString("fr");
 
-    /** German. */
+    /** Static value de for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage DE = fromString("de");
 
-    /** Greek. */
+    /** Static value el for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage EL = fromString("el");
 
-    /** Hungarian. */
+    /** Static value hu for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage HU = fromString("hu");
 
-    /** Italian. */
+    /** Static value it for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage IT = fromString("it");
 
-    /** Japanese. */
+    /** Static value ja for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage JA = fromString("ja");
 
-    /** Korean. */
+    /** Static value ko for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage KO = fromString("ko");
 
-    /** Norwegian (Bokmaal). */
+    /** Static value no for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage NO = fromString("no");
 
-    /** Polish. */
+    /** Static value pl for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage PL = fromString("pl");
 
-    /** Portuguese (Portugal). */
+    /** Static value pt-PT for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage PT_PT = fromString("pt-PT");
 
-    /** Portuguese (Brazil). */
+    /** Static value pt-BR for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage PT_BR = fromString("pt-BR");
 
-    /** Russian. */
+    /** Static value ru for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage RU = fromString("ru");
 
-    /** Spanish. */
+    /** Static value es for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage ES = fromString("es");
 
-    /** Swedish. */
+    /** Static value sv for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage SV = fromString("sv");
 
-    /** Turkish. */
+    /** Static value tr for EntityRecognitionSkillLanguage. */
     public static final EntityRecognitionSkillLanguage TR = fromString("tr");
-
-    /**
-     * Creates a new instance of EntityRecognitionSkillLanguage value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public EntityRecognitionSkillLanguage() {}
 
     /**
      * Creates or finds a EntityRecognitionSkillLanguage from its string representation.
@@ -94,6 +87,7 @@ public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<E
      * @param name a name to look for.
      * @return the corresponding EntityRecognitionSkillLanguage.
      */
+    @JsonCreator
     public static EntityRecognitionSkillLanguage fromString(String name) {
         return fromString(name, EntityRecognitionSkillLanguage.class);
     }
