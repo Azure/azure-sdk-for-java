@@ -206,10 +206,6 @@ public class HttpUrlConnectionClient implements HttpClient {
      */
     private Mono<Void> sendBodyAsync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
         switch (httpRequest.getHttpMethod()) {
-            case HEAD:
-            case OPTIONS:
-            case TRACE:
-            case CONNECT:
             case POST:
             case PUT:
             case DELETE: {
@@ -260,9 +256,12 @@ public class HttpUrlConnectionClient implements HttpClient {
                         );
                     }).then();
                 }
-                return Mono.empty();
             }
-            case GET: {
+            case GET:
+            case HEAD:
+            case OPTIONS:
+            case TRACE:
+            case CONNECT: {
                 return Mono.empty();
             }
             default: {
@@ -281,10 +280,6 @@ public class HttpUrlConnectionClient implements HttpClient {
      */
     private void sendBodySync(HttpRequest httpRequest, ProgressReporter progressReporter, HttpURLConnection connection) {
         switch (httpRequest.getHttpMethod()) {
-            case CONNECT:
-            case HEAD:
-            case OPTIONS:
-            case TRACE:
             case POST:
             case PUT:
             case DELETE: {
@@ -303,9 +298,12 @@ public class HttpUrlConnectionClient implements HttpClient {
                         throw LOGGER.logExceptionAsError(new RuntimeException(e));
                     }
                 }
-                break;
             }
-            case GET: {
+            case GET:
+            case HEAD:
+            case OPTIONS:
+            case TRACE:
+            case CONNECT: {
                 break;
             }
             default: {
