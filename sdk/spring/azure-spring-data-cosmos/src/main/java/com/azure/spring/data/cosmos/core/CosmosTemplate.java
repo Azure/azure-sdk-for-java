@@ -285,7 +285,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .flatMap(r -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     r.getResponse().getCosmosDiagnostics(), null);
-                return Flux.just(toDomainObject(domainType, r.getResponse().getItem(JsonNode.class)));
+                JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
+                return responseItem != null ? Flux.just(toDomainObject(domainType, responseItem)) : Flux.empty();
             })
             .collectList().block();
     }
@@ -754,7 +755,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
             applyBulkVersioning(domainType, originalItem, options);
             cosmosItemOperations.add(CosmosBulkOperations.getDeleteItemOperation(String.valueOf(information.getId(entity)),
-                new PartitionKey(information.getPartitionKeyFieldValue(entity))));
+                new PartitionKey(information.getPartitionKeyFieldValue(entity)), options));
         });
 
         // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
@@ -773,7 +774,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 .flatMap(response -> {
                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                         response.getResponse().getCosmosDiagnostics(), null);
-                    return null;
+                    return Flux.empty();
                 }).blockLast();
     }
 

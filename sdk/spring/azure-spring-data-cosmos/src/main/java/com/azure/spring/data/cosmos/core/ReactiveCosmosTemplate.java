@@ -508,7 +508,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .flatMap(r -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     r.getResponse().getCosmosDiagnostics(), null);
-                return Flux.just(toDomainObject(domainType, r.getResponse().getItem(JsonNode.class)));
+                JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
+                return responseItem != null ? Flux.just(toDomainObject(domainType, responseItem)) : Flux.empty();
             });
     }
 
