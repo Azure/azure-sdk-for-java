@@ -10,6 +10,7 @@ import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
+import com.azure.communication.callautomation.models.MuteParticipantOptions;
 import com.azure.communication.callautomation.models.MuteParticipantResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
@@ -233,14 +234,13 @@ public final class CallConnection {
     /**
      * Mutes a participant in the call.
      *
-     * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
-     * @param operationContext operationContext (pass null if not applicable)
+     * @param options -  MuteParticipantOptions configuration options.
      * @param context Context
      * @return Response with result of muting a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantResult> muteParticipantWithResponse(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
-        return callConnectionAsync.muteParticipantWithResponseInternal(targetParticipant, operationContext, context).block();
+    public Response<MuteParticipantResult> muteParticipantWithResponse(MuteParticipantOptions options, Context context) {
+        return callConnectionAsync.muteParticipantWithResponseInternal(options, context).block();
     }
 
 
