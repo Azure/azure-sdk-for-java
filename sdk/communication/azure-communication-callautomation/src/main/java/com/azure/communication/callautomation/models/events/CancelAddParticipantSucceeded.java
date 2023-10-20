@@ -4,17 +4,9 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import java.util.Map;
-
-import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /** The CancelAddParticipantSucceeded model. */
 @Immutable
@@ -25,28 +17,9 @@ public final class CancelAddParticipantSucceeded extends CallAutomationEventBase
     @JsonProperty(value = "invitationId")
     private final String invitationId;
 
-    /*
-     * Participant who's invitation was cancelled
-     */
-    @JsonIgnore
-    private final CommunicationIdentifier participant;
-
     @JsonCreator
-    private CancelAddParticipantSucceeded(@JsonProperty("participant") Map<String, Object> participant) {
+    private CancelAddParticipantSucceeded() {
         invitationId = null;
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        this.participant = CommunicationIdentifierConverter
-                .convert(mapper.convertValue(participant, CommunicationIdentifierModel.class));
-    }
-
-    /**
-     * Get the participant property: Participant who's invitation was cancelled.
-     *
-     * @return the participant value.
-     */
-    public CommunicationIdentifier getParticipant() {
-        return this.participant;
     }
 
     /**

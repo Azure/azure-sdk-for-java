@@ -7,14 +7,36 @@ import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
-import com.azure.communication.callautomation.models.events.*;
+import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.CallTransferAccepted;
+import com.azure.communication.callautomation.models.events.CancelAddParticipantFailed;
+import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
+import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
+import com.azure.communication.callautomation.models.events.PlayCanceled;
+import com.azure.communication.callautomation.models.events.PlayCompleted;
+import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.ReasonCode;
 import com.azure.communication.callautomation.models.events.ReasonCode.Recognize;
+import com.azure.communication.callautomation.models.events.RecognizeCanceled;
+import com.azure.communication.callautomation.models.events.RecognizeCompleted;
+import com.azure.communication.callautomation.models.events.RecognizeFailed;
+import com.azure.communication.callautomation.models.events.RecordingStateChanged;
+import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
+import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
+import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CallAutomationEventParserUnitTests {
     static final String EVENT_PARTICIPANT_UPDATED = "{\"id\":\"61069ef9-5ca9-457f-ac36-e2bb5e8400ca\",\"source\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\",\"type\":\"Microsoft.Communication.ParticipantsUpdated\",\"data\":{\"participants\":[{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\"}}, \"isMuted\": false},{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\"}}, \"isMuted\": false}],\"type\":\"participantsUpdated\",\"callConnectionId\":\"401f3500-62bd-46a9-8c09-9e1b06caca01\",\"correlationId\":\"ebd8bf1f-0794-494f-bdda-913042c06ef7\"},\"time\":\"2022-08-12T03:35:07.9129474+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\"}";
@@ -190,7 +212,7 @@ public class CallAutomationEventParserUnitTests {
         assertNotNull(recognizeCompleted);
         assertEquals("serverCallId", recognizeCompleted.getServerCallId());
         assertEquals(200, recognizeCompleted.getResultInformation().getCode());
-        assertEquals(Recognize.DTMF_OPTION_MATCHED, recognizeCompleted.getReasonCode());
+        assertEquals(Recognize.DMTF_OPTION_MATCHED, recognizeCompleted.getReasonCode());
     }
 
     @Test
@@ -607,12 +629,6 @@ public class CallAutomationEventParserUnitTests {
                 + "\"type\": \"Microsoft.Communication.CancelAddParticipantSucceeded\",\n"
                 + "\"data\": {\n"
                 + "\"operationContext\": \"context\",\n"
-                + "\"participant\": {\n"
-                + "\"rawId\": \"rawId\",\n"
-                + "\"phoneNumber\": {\n"
-                + "\"value\": \"value\"\n"
-                + "}\n"
-                + "},\n"
                 + "\"callConnectionId\": \"callConnectionId\",\n"
                 + "\"serverCallId\": \"serverCallId\",\n"
                 + "\"invitationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\",\n"

@@ -5,13 +5,13 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.util.HashMap;
-
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
+
+import java.util.HashMap;
 
 /**
  *  Call invitee details.
@@ -19,7 +19,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class CallInvite {
     private final CommunicationIdentifier targetParticipant;
-    private final PhoneNumberIdentifier sourceCallerIdNumber;
+    private PhoneNumberIdentifier sourceCallerIdNumber;
     private String sourceDisplayName;
     private final CustomContext customContext;
 
@@ -94,5 +94,15 @@ public final class CallInvite {
      */
     public PhoneNumberIdentifier getSourceCallerIdNumber() {
         return sourceCallerIdNumber;
+    }
+
+    /**
+     * set PhoneNumberIdentifier for PSTN caller
+     * @param sourceCallerIdNumber PhoneNumberIdentifier for PSTN caller
+     * @return the CallInvite object itself
+     */
+    public CallInvite setSourceCallerIdNumber(PhoneNumberIdentifier sourceCallerIdNumber) {
+        this.sourceCallerIdNumber = sourceCallerIdNumber;
+        return this;
     }
 }
