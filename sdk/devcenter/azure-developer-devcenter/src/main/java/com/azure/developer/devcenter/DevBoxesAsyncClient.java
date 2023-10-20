@@ -877,9 +877,9 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listActions(
+    public PagedFlux<BinaryData> listDevBoxActions(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.serviceClient.listActionsAsync(projectName, userId, devBoxName, requestOptions);
+        return this.serviceClient.listDevBoxActionsAsync(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
@@ -913,9 +913,9 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getActionWithResponse(
+    public Mono<Response<BinaryData>> getDevBoxActionWithResponse(
             String projectName, String userId, String devBoxName, String actionName, RequestOptions requestOptions) {
-        return this.serviceClient.getActionWithResponseAsync(
+        return this.serviceClient.getDevBoxActionWithResponseAsync(
                 projectName, userId, devBoxName, actionName, requestOptions);
     }
 
@@ -964,7 +964,7 @@ public final class DevBoxesAsyncClient {
      *     context.
      * @param devBoxName The name of a Dev Box.
      * @param actionName The name of an action that will take place on a Dev Box.
-     * @param until The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -980,10 +980,10 @@ public final class DevBoxesAsyncClient {
             String userId,
             String devBoxName,
             String actionName,
-            OffsetDateTime until,
+            OffsetDateTime delayUntil,
             RequestOptions requestOptions) {
         return this.serviceClient.delayActionWithResponseAsync(
-                projectName, userId, devBoxName, actionName, until, requestOptions);
+                projectName, userId, devBoxName, actionName, delayUntil, requestOptions);
     }
 
     /**
@@ -1023,7 +1023,7 @@ public final class DevBoxesAsyncClient {
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
      * @param devBoxName The name of a Dev Box.
-     * @param until The time to delay the Dev Box action or actions until.
+     * @param delayUntil The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1034,7 +1034,11 @@ public final class DevBoxesAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> delayAllActions(
-            String projectName, String userId, String devBoxName, OffsetDateTime until, RequestOptions requestOptions) {
-        return this.serviceClient.delayAllActionsAsync(projectName, userId, devBoxName, until, requestOptions);
+            String projectName,
+            String userId,
+            String devBoxName,
+            OffsetDateTime delayUntil,
+            RequestOptions requestOptions) {
+        return this.serviceClient.delayAllActionsAsync(projectName, userId, devBoxName, delayUntil, requestOptions);
     }
 }

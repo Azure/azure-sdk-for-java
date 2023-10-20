@@ -47,15 +47,15 @@ public final class DevCenterClientImpl {
     private final DevCenterClientService service;
 
     /** The DevCenter-specific URI to operate on. */
-    private final String endpoint;
+    private final String devCenterEndpoint;
 
     /**
      * Gets The DevCenter-specific URI to operate on.
      *
-     * @return the endpoint value.
+     * @return the devCenterEndpoint value.
      */
-    public String getEndpoint() {
-        return this.endpoint;
+    public String getDevCenterEndpoint() {
+        return this.devCenterEndpoint;
     }
 
     /** Service version. */
@@ -97,14 +97,14 @@ public final class DevCenterClientImpl {
     /**
      * Initializes an instance of DevCenterClient client.
      *
-     * @param endpoint The DevCenter-specific URI to operate on.
+     * @param devCenterEndpoint The DevCenter-specific URI to operate on.
      * @param serviceVersion Service version.
      */
-    public DevCenterClientImpl(String endpoint, DevCenterServiceVersion serviceVersion) {
+    public DevCenterClientImpl(String devCenterEndpoint, DevCenterServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
+                devCenterEndpoint,
                 serviceVersion);
     }
 
@@ -112,11 +112,12 @@ public final class DevCenterClientImpl {
      * Initializes an instance of DevCenterClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint The DevCenter-specific URI to operate on.
+     * @param devCenterEndpoint The DevCenter-specific URI to operate on.
      * @param serviceVersion Service version.
      */
-    public DevCenterClientImpl(HttpPipeline httpPipeline, String endpoint, DevCenterServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    public DevCenterClientImpl(
+            HttpPipeline httpPipeline, String devCenterEndpoint, DevCenterServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), devCenterEndpoint, serviceVersion);
     }
 
     /**
@@ -124,17 +125,17 @@ public final class DevCenterClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint The DevCenter-specific URI to operate on.
+     * @param devCenterEndpoint The DevCenter-specific URI to operate on.
      * @param serviceVersion Service version.
      */
     public DevCenterClientImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
-            String endpoint,
+            String devCenterEndpoint,
             DevCenterServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.endpoint = endpoint;
+        this.devCenterEndpoint = devCenterEndpoint;
         this.serviceVersion = serviceVersion;
         this.service = RestProxy.create(DevCenterClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -143,7 +144,7 @@ public final class DevCenterClientImpl {
      * The interface defining all the services for DevCenterClient to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("{endpoint}")
+    @Host("{devCenterEndpoint}")
     @ServiceInterface(name = "DevCenterClient")
     public interface DevCenterClientService {
         @Get("/projects")
@@ -159,7 +160,7 @@ public final class DevCenterClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listProjects(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("devCenterEndpoint") String devCenterEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
@@ -178,7 +179,7 @@ public final class DevCenterClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listProjectsSync(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("devCenterEndpoint") String devCenterEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
@@ -197,7 +198,7 @@ public final class DevCenterClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getProject(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("devCenterEndpoint") String devCenterEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @HeaderParam("accept") String accept,
@@ -217,7 +218,7 @@ public final class DevCenterClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getProjectSync(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("devCenterEndpoint") String devCenterEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
                 @HeaderParam("accept") String accept,
@@ -238,7 +239,7 @@ public final class DevCenterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listProjectsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
+                @HostParam("devCenterEndpoint") String devCenterEndpoint,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -257,7 +258,7 @@ public final class DevCenterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listProjectsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
+                @HostParam("devCenterEndpoint") String devCenterEndpoint,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -301,7 +302,7 @@ public final class DevCenterClientImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listProjects(
-                                        this.getEndpoint(),
+                                        this.getDevCenterEndpoint(),
                                         this.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -396,7 +397,7 @@ public final class DevCenterClientImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listProjectsSync(
-                        this.getEndpoint(),
+                        this.getDevCenterEndpoint(),
                         this.getServiceVersion().getVersion(),
                         accept,
                         requestOptions,
@@ -480,7 +481,7 @@ public final class DevCenterClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getProject(
-                                this.getEndpoint(),
+                                this.getDevCenterEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 projectName,
                                 accept,
@@ -513,7 +514,7 @@ public final class DevCenterClientImpl {
     public Response<BinaryData> getProjectWithResponse(String projectName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getProjectSync(
-                this.getEndpoint(),
+                this.getDevCenterEndpoint(),
                 this.getServiceVersion().getVersion(),
                 projectName,
                 accept,
@@ -550,7 +551,8 @@ public final class DevCenterClientImpl {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listProjectsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+                                service.listProjectsNext(
+                                        nextLink, this.getDevCenterEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -588,7 +590,8 @@ public final class DevCenterClientImpl {
     private PagedResponse<BinaryData> listProjectsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res =
-                service.listProjectsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+                service.listProjectsNextSync(
+                        nextLink, this.getDevCenterEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),

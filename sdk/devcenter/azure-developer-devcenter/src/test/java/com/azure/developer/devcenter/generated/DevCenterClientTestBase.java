@@ -36,7 +36,8 @@ class DevCenterClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         DevCenterClientBuilder devCenterClientbuilder =
                 new DevCenterClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .devCenterEndpoint(
+                                Configuration.getGlobalConfiguration().get("DEVCENTERENDPOINT", "devcenterendpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -54,7 +55,8 @@ class DevCenterClientTestBase extends TestProxyTestBase {
 
         DevBoxesClientBuilder devBoxesClientbuilder =
                 new DevBoxesClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .devCenterEndpoint(
+                                Configuration.getGlobalConfiguration().get("DEVCENTERENDPOINT", "devcenterendpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -72,7 +74,8 @@ class DevCenterClientTestBase extends TestProxyTestBase {
 
         DeploymentEnvironmentsClientBuilder deploymentEnvironmentsClientbuilder =
                 new DeploymentEnvironmentsClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .devCenterEndpoint(
+                                Configuration.getGlobalConfiguration().get("DEVCENTERENDPOINT", "devcenterendpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {

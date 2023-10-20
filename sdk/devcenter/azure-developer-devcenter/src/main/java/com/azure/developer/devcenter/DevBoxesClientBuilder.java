@@ -7,7 +7,6 @@ package com.azure.developer.devcenter;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
-import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -46,8 +45,7 @@ import java.util.Objects;
 public final class DevBoxesClientBuilder
         implements HttpTrait<DevBoxesClientBuilder>,
                 ConfigurationTrait<DevBoxesClientBuilder>,
-                TokenCredentialTrait<DevBoxesClientBuilder>,
-                EndpointTrait<DevBoxesClientBuilder> {
+                TokenCredentialTrait<DevBoxesClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -170,15 +168,19 @@ public final class DevBoxesClientBuilder
     }
 
     /*
-     * The service endpoint
+     * The DevCenter-specific URI to operate on.
      */
-    @Generated private String endpoint;
+    @Generated private String devCenterEndpoint;
 
-    /** {@inheritDoc}. */
+    /**
+     * Sets The DevCenter-specific URI to operate on.
+     *
+     * @param devCenterEndpoint the devCenterEndpoint value.
+     * @return the DevBoxesClientBuilder.
+     */
     @Generated
-    @Override
-    public DevBoxesClientBuilder endpoint(String endpoint) {
-        this.endpoint = endpoint;
+    public DevBoxesClientBuilder devCenterEndpoint(String devCenterEndpoint) {
+        this.devCenterEndpoint = devCenterEndpoint;
         return this;
     }
 
@@ -230,7 +232,7 @@ public final class DevBoxesClientBuilder
                 new DevBoxesClientImpl(
                         localPipeline,
                         JacksonAdapter.createDefaultSerializerAdapter(),
-                        this.endpoint,
+                        this.devCenterEndpoint,
                         localServiceVersion);
         return client;
     }
