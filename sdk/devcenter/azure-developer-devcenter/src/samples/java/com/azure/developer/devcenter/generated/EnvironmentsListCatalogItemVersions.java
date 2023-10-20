@@ -7,8 +7,8 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.developer.devcenter.EnvironmentsClient;
-import com.azure.developer.devcenter.EnvironmentsClientBuilder;
+import com.azure.developer.devcenter.DeploymentEnvironmentsClient;
+import com.azure.developer.devcenter.DeploymentEnvironmentsClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EnvironmentsListCatalogItemVersions {
