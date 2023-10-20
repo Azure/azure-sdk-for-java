@@ -29,6 +29,16 @@ public class FeatureFlagSettingUnitTest {
     static final String UPDATED_DISPLAY_NAME_VALUE = "updatedDisplayName";
     static final boolean UPDATED_IS_ENABLED = true;
 
+    String getFeatureFlagConfigurationSettingValue(String id, String description, String displayName,
+        boolean isEnabled) {
+        return String.format("{\"id\":\"%s\",\"description\":\"%s\",\"display_name\":\"%s\","
+                          + "\"enabled\":%s,"
+                          + "\"conditions\":{\"client_filters\":"
+                          + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                                 + "}}",
+            id, description, displayName, isEnabled);
+    }
+
     @Test
     public void accessingStronglyTypedPropertiesAfterSettingDifferentFeatureFlagJSON() {
         // Create a new feature flag configuration setting,
@@ -54,12 +64,16 @@ public class FeatureFlagSettingUnitTest {
 
     @Test
     public void accessingValueAfterChangingStronglyTypedProperties() {
-        FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
+        // Create a new feature flag configuration setting,
+        final List<FeatureFlagFilter> featureFlagFilters = Arrays.asList(
+            getFlagFilter(FILTER_NAME, getFilterParameters()));
+        FeatureFlagConfigurationSetting setting = getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
+            DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
+
         String expectedNewSettingValue = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE,
             DISPLAY_NAME_VALUE, IS_ENABLED);
-        // Test getValue()
         assertEquals(expectedNewSettingValue, setting.getValue());
-        // Update strongly-type properties.
+        // Change  strongly-type properties.
         setting.setFeatureId(UPDATED_KEY);
         setting.setDescription(UPDATED_DESCRIPTION_VALUE);
         setting.setDisplayName(UPDATED_DISPLAY_NAME_VALUE);
@@ -74,34 +88,14 @@ public class FeatureFlagSettingUnitTest {
 
     @Test
     public void throwExceptionWhenInvalidNonJsonFeatureFlagValue() {
-        FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
-        String expectedValue = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE,
-            DISPLAY_NAME_VALUE, IS_ENABLED);
+        // Create a new feature flag configuration setting,
+        final List<FeatureFlagFilter> featureFlagFilters = Arrays.asList(
+            getFlagFilter(FILTER_NAME, getFilterParameters()));
+        FeatureFlagConfigurationSetting setting = getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
+            DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
 
-        String originalValue = setting.getValue();
-        assertEquals(expectedValue, originalValue);
-
-        assertThrows(IllegalArgumentException.class, () -> setting.setValue("invalidValueForFeatureFlagSetting"));
-        assertEquals(expectedValue, setting.getValue());
-        assertThrows(IllegalArgumentException.class, () -> setting.getFeatureId());
-        assertThrows(IllegalArgumentException.class, () -> setting.getDescription());
-        assertThrows(IllegalArgumentException.class, () -> setting.getDisplayName());
-        assertThrows(IllegalArgumentException.class, () -> setting.isEnabled());
-        assertThrows(IllegalArgumentException.class, () -> setting.getClientFilters());
-    }
-
-    @Test
-    public void reserveUnknownPropertiesTest() {
-        FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
-        String newSettingValueJSON = getUnknownPropertiesFeatureFlagConfigurationSettingValue(
-            UPDATED_KEY, UPDATED_DESCRIPTION_VALUE, UPDATED_DISPLAY_NAME_VALUE, UPDATED_IS_ENABLED);
-
-        setting.setValue(newSettingValueJSON);
-        assertEquals(newSettingValueJSON, setting.getValue());
-        assertEquals(UPDATED_KEY, setting.getFeatureId());
-        assertEquals(UPDATED_DESCRIPTION_VALUE, setting.getDescription());
-        assertEquals(UPDATED_DISPLAY_NAME_VALUE, setting.getDisplayName());
-        assertEquals(UPDATED_IS_ENABLED, setting.isEnabled());
+        // Throws IllegalStateException when setting value to non-JSON
+        assertThrows(IllegalStateException.class, () -> setting.setValue("Hello World"));
     }
 
     @Test
@@ -110,34 +104,6 @@ public class FeatureFlagSettingUnitTest {
         assertEquals(0, setting.getClientFilters().size());
         setting.addClientFilter(new FeatureFlagFilter("filterName"));
         assertEquals(1, setting.getClientFilters().size());
-    }
-
-    private FeatureFlagConfigurationSetting createFeatureFlagConfigurationSetting() {
-        // Create a new feature flag configuration setting,
-        final List<FeatureFlagFilter> featureFlagFilters = Arrays.asList(
-            getFlagFilter(FILTER_NAME, getFilterParameters()));
-        return getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
-            DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
-    }
-
-    private String getFeatureFlagConfigurationSettingValue(String id, String description, String displayName,
-                                                           boolean isEnabled) {
-        return String.format("{\"id\":\"%s\",\"description\":\"%s\",\"display_name\":\"%s\","
-                + "\"enabled\":%s,"
-                + "\"conditions\":{\"client_filters\":"
-                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
-                + "}}",
-            id, description, displayName, isEnabled);
-    }
-
-    private String getUnknownPropertiesFeatureFlagConfigurationSettingValue(String id, String description,
-        String displayName, boolean isEnabled) {
-        return String.format("{\"id\":\"%s\",\"additional_field_1\":\"additional_value_1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
-                + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
-                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
-                + "},\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
-                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}",
-            id, description, displayName, isEnabled);
     }
 
     private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String id, String description,
