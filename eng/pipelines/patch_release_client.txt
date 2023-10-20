@@ -31,17 +31,11 @@ com.azure:azure-communication-sms # Tests owner: besh2014, DimaKolomiiets
 com.azure:azure-communication-rooms # Tests owner: minnieliu, Mrayyan
 com.azure:azure-containers-containerregistry # Tests owner: lmolkova
 com.azure:azure-data-appconfiguration # Tests owner: mssfang
-com.azure:azure-data-schemaregistry # Tests owner: conniey
-com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
 com.azure:azure-data-tables # Tests owner: jairmyree
 com.azure:azure-developer-loadtesting # Tests owner: Harshan01, prativen
 com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
 com.azure:azure-identity-extensions # Tests owner: saragluna, backwind1233
 com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan
-com.azure:azure-messaging-eventgrid # Tests owner: billwert
-com.azure:azure-messaging-eventhubs # Tests owner: conniey
-com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
-com.azure:azure-messaging-servicebus # Tests owner: ki1729
 com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
 com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, RamonArguelles
 com.azure:azure-mixedreality-remoterendering # Tests owner: FlorianBorn71, MichaelZp0, jloehr
@@ -53,13 +47,4 @@ com.azure:azure-security-keyvault-administration # Tests owner: vcolin7
 com.azure:azure-security-keyvault-certificates # Tests owner: vcolin7
 com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
-com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree
-com.azure:azure-storage-blob # Tests owner: ibrahimrabab, jaschrep-msft
-com.azure:azure-storage-blob-batch # Tests owner: ibrahimrabab, jaschrep-msft
-com.azure:azure-storage-blob-cryptography # Tests owner: ibrahimrabab, jaschrep-msft
-com.azure:azure-storage-common # Tests owner: ibrahimrabab, jaschrep-msft
-com.azure:azure-storage-file-datalake # Tests owner: ibrahimrabab, jaschrep-msft
-com.azure:azure-storage-file-share # Tests owner: ibrahimrabab, jaschrep-msft
-com.azure:azure-storage-internal-avro # Tests owner: ibrahimrabab, jaschrep-msft
-com.azure:azure-storage-queue # Tests owner: ibrahimrabab, jaschrep-msft
