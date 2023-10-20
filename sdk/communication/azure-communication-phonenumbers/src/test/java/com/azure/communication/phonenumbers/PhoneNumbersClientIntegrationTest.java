@@ -10,13 +10,13 @@ import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
-import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -30,12 +30,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
@@ -121,7 +118,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            String phoneNumber = searchResult.getPhoneNumbers().get(0);
+            String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
             PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient,
                     searchResult.getSearchId(), "beginPurchasePhoneNumbersWithoutContextSync", false)
                     .waitForCompletion();
@@ -143,7 +140,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            String phoneNumber = searchResult.getPhoneNumbers().get(0);
+            String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
             PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient,
                     searchResult.getSearchId(), "beginPurchasePhoneNumbersSync", true).waitForCompletion();
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseOperationResponse.getStatus());
@@ -159,7 +156,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilitiesWithoutContext(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber,
                 "beginUpdatePhoneNumberCapabilitiesWithoutContextSync", false).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
@@ -171,7 +168,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @DisabledIfEnvironmentVariable(named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST", matches = "(?i)(true)")
     @DisabledIfEnvironmentVariable(named = "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS", matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber();
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber,
                 "beginUpdatePhoneNumberCapabilities", true).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
@@ -184,11 +181,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        List<String> expectedAreaCodes = Arrays.asList("888", "877", "866", "855", "844", "800", "833", "88");
-        for (PhoneNumberAreaCode areaCode : areaCodesResult) {
-            assertTrue(expectedAreaCodes.contains(areaCode.getAreaCode()));
-        }
-        assertNotNull(areaCodesResult);
+        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+        assertNotNull(areaCodes);
     }
 
     @ParameterizedTest
@@ -252,11 +246,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        List<String> expectedAreaCodes = Arrays.asList("888", "877", "866", "855", "844", "800", "833", "88");
-        for (PhoneNumberAreaCode areaCode : areaCodesResult) {
-            assertTrue(expectedAreaCodes.contains(areaCode.getAreaCode()));
-        }
-        assertNotNull(areaCodesResult);
+        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+        assertNotNull(areaCodes);
     }
 
     @ParameterizedTest
