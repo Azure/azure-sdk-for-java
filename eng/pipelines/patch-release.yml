@@ -108,4 +108,7 @@ extends:
       groupId: com.azure
       safeName: azuredeveloperloadtesting
       ServiceDirectory: loadtesting
-
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity

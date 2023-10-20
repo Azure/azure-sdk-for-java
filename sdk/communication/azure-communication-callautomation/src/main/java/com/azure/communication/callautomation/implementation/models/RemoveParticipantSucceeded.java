@@ -37,7 +37,7 @@ public final class RemoveParticipantSucceeded {
     private String operationContext;
 
     /*
-     * Contains the resulting SIP code/sub-code and message from NGC services.
+     * Contains the resulting SIP code, sub-code and message.
      */
     @JsonProperty(value = "resultInformation")
     private ResultInformation resultInformation;
@@ -133,7 +133,7 @@ public final class RemoveParticipantSucceeded {
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
      *
      * @return the resultInformation value.
      */
@@ -142,7 +142,7 @@ public final class RemoveParticipantSucceeded {
     }
 
     /**
-     * Set the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
+     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
      *
      * @param resultInformation the resultInformation value to set.
      * @return the RemoveParticipantSucceeded object itself.

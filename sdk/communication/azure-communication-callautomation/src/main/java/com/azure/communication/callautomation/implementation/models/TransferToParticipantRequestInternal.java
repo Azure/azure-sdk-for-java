@@ -17,29 +17,11 @@ public final class TransferToParticipantRequestInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
-     * Used by customer to send custom context to targets
-     */
-    @JsonProperty(value = "customContext")
-    private CustomContext customContext;
-
-    /*
      * Used by customers when calling mid-call actions to correlate the request
      * to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
-
-    /*
-     * Transferee is the participant who is transferring the call.
-     */
-    @JsonProperty(value = "transferee")
-    private CommunicationIdentifierModel transferee;
-
-    /*
-     * The callback URI to override the main callback URI.
-     */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
 
     /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.
@@ -62,26 +44,6 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-     * Get the customContext property: Used by customer to send custom context to targets.
-     *
-     * @return the customContext value.
-     */
-    public CustomContext getCustomContext() {
-        return this.customContext;
-    }
-
-    /**
-     * Set the customContext property: Used by customer to send custom context to targets.
-     *
-     * @param customContext the customContext value to set.
-     * @return the TransferToParticipantRequestInternal object itself.
-     */
-    public TransferToParticipantRequestInternal setCustomContext(CustomContext customContext) {
-        this.customContext = customContext;
-        return this;
-    }
-
-    /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
      *
@@ -100,46 +62,6 @@ public final class TransferToParticipantRequestInternal {
      */
     public TransferToParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Get the transferee property: Transferee is the participant who is transferring the call.
-     *
-     * @return the transferee value.
-     */
-    public CommunicationIdentifierModel getTransferee() {
-        return this.transferee;
-    }
-
-    /**
-     * Set the transferee property: Transferee is the participant who is transferring the call.
-     *
-     * @param transferee the transferee value to set.
-     * @return the TransferToParticipantRequestInternal object itself.
-     */
-    public TransferToParticipantRequestInternal setTransferee(CommunicationIdentifierModel transferee) {
-        this.transferee = transferee;
-        return this;
-    }
-
-    /**
-     * Get the callbackUri property: The callback URI to override the main callback URI.
-     *
-     * @return the callbackUri value.
-     */
-    public String getCallbackUri() {
-        return this.callbackUri;
-    }
-
-    /**
-     * Set the callbackUri property: The callback URI to override the main callback URI.
-     *
-     * @param callbackUri the callbackUri value to set.
-     * @return the TransferToParticipantRequestInternal object itself.
-     */
-    public TransferToParticipantRequestInternal setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
         return this;
     }
 }
