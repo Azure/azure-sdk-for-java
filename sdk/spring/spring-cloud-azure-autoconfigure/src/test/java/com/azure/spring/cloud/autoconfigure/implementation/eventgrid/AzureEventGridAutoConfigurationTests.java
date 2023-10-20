@@ -15,7 +15,6 @@ import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceC
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.eventgrid.properties.AzureEventGridProperties;
-import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.azure.spring.cloud.service.implementation.eventgrid.factory.EventGridPublisherClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -23,7 +22,9 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
     EventGridPublisherClientBuilderFactory, AzureEventGridProperties> {
@@ -136,6 +137,7 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void clientCanOverride() {
         EventGridPublisherClient<BinaryData> myCustomClient = new EventGridPublisherClientBuilder()
             .endpoint(String.format(ENDPOINT, "myeg"))
@@ -155,11 +157,11 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
 
                 assertThat(context).hasBean("myCustomClient");
 
-                Object eventClassOfAsyncClient = ReflectionUtils.getField(EventGridPublisherAsyncClient.class, "eventClass", context.getBean(EventGridPublisherAsyncClient.class));
-                Object eventGridPublisherAsyncClient = ReflectionUtils.getField(EventGridPublisherClient.class, "asyncClient", context.getBean(EventGridPublisherClient.class));
-                Object eventClassOfSyncClient = ReflectionUtils.getField(EventGridPublisherAsyncClient.class, "eventClass", eventGridPublisherAsyncClient);
-                assertEquals(EventGridEvent.class, eventClassOfAsyncClient);
-                assertEquals(BinaryData.class, eventClassOfSyncClient);
+                EventGridEvent eventGridEvent = new EventGridEvent("test", "Example.EventType",
+                    BinaryData.fromObject(String.class), "0.1");
+                assertDoesNotThrow(() -> context.getBean(EventGridPublisherAsyncClient.class).sendEvent(eventGridEvent));
+                assertThrows(ClassCastException.class,
+                    () -> context.getBean(EventGridPublisherClient.class).sendEvent(eventGridEvent));
             });
     }
 
