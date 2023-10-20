@@ -60,9 +60,9 @@ public final class ClustersMigrateMockTests {
         manager
             .clusters()
             .migrate(
-                "xqvkjlmxhomdyn",
-                "dwdigumb",
-                new ClusterMigrateRequest().withClusterResourceId("raauzzpt"),
+                "kgfmocwahpq",
+                "atjeaahh",
+                new ClusterMigrateRequest().withClusterResourceId("jhhn"),
                 com.azure.core.util.Context.NONE);
     }
 }

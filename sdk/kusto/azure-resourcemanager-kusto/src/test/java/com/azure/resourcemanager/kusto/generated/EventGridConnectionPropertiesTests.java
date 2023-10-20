@@ -17,47 +17,47 @@ public final class EventGridConnectionPropertiesTests {
         EventGridConnectionProperties model =
             BinaryData
                 .fromString(
-                    "{\"storageAccountResourceId\":\"goo\",\"eventGridResourceId\":\"kqfqjbvl\",\"eventHubResourceId\":\"orfmluiqt\",\"consumerGroup\":\"zf\",\"tableName\":\"yvnqqybaryeuay\",\"mappingRuleName\":\"qabqgzslesjcb\",\"dataFormat\":\"AVRO\",\"ignoreFirstRecord\":false,\"blobStorageEventType\":\"Microsoft.Storage.BlobCreated\",\"managedIdentityResourceId\":\"w\",\"managedIdentityObjectId\":\"cv\",\"databaseRouting\":\"Multi\",\"provisioningState\":\"Succeeded\"}")
+                    "{\"storageAccountResourceId\":\"zvfvaawz\",\"eventGridResourceId\":\"dflgzuri\",\"eventHubResourceId\":\"laecxndticok\",\"consumerGroup\":\"vzm\",\"tableName\":\"t\",\"mappingRuleName\":\"dgxobfircl\",\"dataFormat\":\"TXT\",\"ignoreFirstRecord\":false,\"blobStorageEventType\":\"Microsoft.Storage.BlobCreated\",\"managedIdentityResourceId\":\"riykhyawfvjlbox\",\"managedIdentityObjectId\":\"kjlmx\",\"databaseRouting\":\"Single\",\"provisioningState\":\"Succeeded\"}")
                 .toObject(EventGridConnectionProperties.class);
-        Assertions.assertEquals("goo", model.storageAccountResourceId());
-        Assertions.assertEquals("kqfqjbvl", model.eventGridResourceId());
-        Assertions.assertEquals("orfmluiqt", model.eventHubResourceId());
-        Assertions.assertEquals("zf", model.consumerGroup());
-        Assertions.assertEquals("yvnqqybaryeuay", model.tableName());
-        Assertions.assertEquals("qabqgzslesjcb", model.mappingRuleName());
-        Assertions.assertEquals(EventGridDataFormat.AVRO, model.dataFormat());
+        Assertions.assertEquals("zvfvaawz", model.storageAccountResourceId());
+        Assertions.assertEquals("dflgzuri", model.eventGridResourceId());
+        Assertions.assertEquals("laecxndticok", model.eventHubResourceId());
+        Assertions.assertEquals("vzm", model.consumerGroup());
+        Assertions.assertEquals("t", model.tableName());
+        Assertions.assertEquals("dgxobfircl", model.mappingRuleName());
+        Assertions.assertEquals(EventGridDataFormat.TXT, model.dataFormat());
         Assertions.assertEquals(false, model.ignoreFirstRecord());
         Assertions.assertEquals(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED, model.blobStorageEventType());
-        Assertions.assertEquals("w", model.managedIdentityResourceId());
-        Assertions.assertEquals(DatabaseRouting.MULTI, model.databaseRouting());
+        Assertions.assertEquals("riykhyawfvjlbox", model.managedIdentityResourceId());
+        Assertions.assertEquals(DatabaseRouting.SINGLE, model.databaseRouting());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventGridConnectionProperties model =
             new EventGridConnectionProperties()
-                .withStorageAccountResourceId("goo")
-                .withEventGridResourceId("kqfqjbvl")
-                .withEventHubResourceId("orfmluiqt")
-                .withConsumerGroup("zf")
-                .withTableName("yvnqqybaryeuay")
-                .withMappingRuleName("qabqgzslesjcb")
-                .withDataFormat(EventGridDataFormat.AVRO)
+                .withStorageAccountResourceId("zvfvaawz")
+                .withEventGridResourceId("dflgzuri")
+                .withEventHubResourceId("laecxndticok")
+                .withConsumerGroup("vzm")
+                .withTableName("t")
+                .withMappingRuleName("dgxobfircl")
+                .withDataFormat(EventGridDataFormat.TXT)
                 .withIgnoreFirstRecord(false)
                 .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
-                .withManagedIdentityResourceId("w")
-                .withDatabaseRouting(DatabaseRouting.MULTI);
+                .withManagedIdentityResourceId("riykhyawfvjlbox")
+                .withDatabaseRouting(DatabaseRouting.SINGLE);
         model = BinaryData.fromObject(model).toObject(EventGridConnectionProperties.class);
-        Assertions.assertEquals("goo", model.storageAccountResourceId());
-        Assertions.assertEquals("kqfqjbvl", model.eventGridResourceId());
-        Assertions.assertEquals("orfmluiqt", model.eventHubResourceId());
-        Assertions.assertEquals("zf", model.consumerGroup());
-        Assertions.assertEquals("yvnqqybaryeuay", model.tableName());
-        Assertions.assertEquals("qabqgzslesjcb", model.mappingRuleName());
-        Assertions.assertEquals(EventGridDataFormat.AVRO, model.dataFormat());
+        Assertions.assertEquals("zvfvaawz", model.storageAccountResourceId());
+        Assertions.assertEquals("dflgzuri", model.eventGridResourceId());
+        Assertions.assertEquals("laecxndticok", model.eventHubResourceId());
+        Assertions.assertEquals("vzm", model.consumerGroup());
+        Assertions.assertEquals("t", model.tableName());
+        Assertions.assertEquals("dgxobfircl", model.mappingRuleName());
+        Assertions.assertEquals(EventGridDataFormat.TXT, model.dataFormat());
         Assertions.assertEquals(false, model.ignoreFirstRecord());
         Assertions.assertEquals(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED, model.blobStorageEventType());
-        Assertions.assertEquals("w", model.managedIdentityResourceId());
-        Assertions.assertEquals(DatabaseRouting.MULTI, model.databaseRouting());
+        Assertions.assertEquals("riykhyawfvjlbox", model.managedIdentityResourceId());
+        Assertions.assertEquals(DatabaseRouting.SINGLE, model.databaseRouting());
     }
 }

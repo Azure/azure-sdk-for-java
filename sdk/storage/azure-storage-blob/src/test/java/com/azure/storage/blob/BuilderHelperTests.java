@@ -72,7 +72,7 @@ public class BuilderHelperTests {
     public void freshDateAppliedOnRetry() {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
             ENDPOINT, REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(),
-            new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null,
+            new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, null,
             new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
@@ -178,7 +178,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
             ENDPOINT, new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
             new ClientOptions().setApplicationId(clientOptionsUA), new ApplicationIdUAStringTestClient(expectedUA),
-            new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -311,7 +311,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
             ENDPOINT, new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
             new ClientOptions().setHeaders(headers),
-            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), null,
+            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), null, null,
             new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
