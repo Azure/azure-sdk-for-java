@@ -3,8 +3,7 @@
 
 package com.azure.android.servicebus;
 
-import com.azure.identity.ClientSecretCredential;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
@@ -12,8 +11,6 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 
 import android.util.Log;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Sample to demonstrate the creation of a session-enabled {@link ServiceBusProcessorClient} and starting the processor
@@ -23,44 +20,12 @@ public class ServiceBusSessionProcessor {
 
     private static final String TAG = "ServiceBusSessionProcessorOutput";
 
-    public static void main(String queueName, ClientSecretCredential credential) throws InterruptedException {
-
-        ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-            .fullyQualifiedNamespace("android-service-bus.servicebus.windows.net")
-            .credential(credential)
-            .sessionProcessor()
-            .queueName(queueName)
-            .maxConcurrentSessions(2)
-            .processMessage(ServiceBusSessionProcessor::processMessage)
-            .processError(ServiceBusSessionProcessor::processError)
-            .buildProcessorClient();
-
-        if (processorClient.equals(null)) {
-            throw new RuntimeException("Sample was not successful: processorClient equals null");
-        }
-
-        Log.i(TAG, "Starting the processor");
-        processorClient.start();
-
-        TimeUnit.SECONDS.sleep(1);
-        Log.i(TAG, "Stopping the processor");
-        processorClient.stop();
-
-        TimeUnit.SECONDS.sleep(1);
-        Log.i(TAG, "Resuming the processor");
-        processorClient.start();
-
-        TimeUnit.SECONDS.sleep(1);
-        Log.i(TAG, "Closing the processor");
-        processorClient.close();
-    }
-
     /**
      * Processes each message from the Service Bus entity.
      *
      * @param context Received message context.
      */
-    private static void processMessage(ServiceBusReceivedMessageContext context) {
+    public static void processMessage(ServiceBusReceivedMessageContext context) {
         ServiceBusReceivedMessage message = context.getMessage();
         Log.i(TAG, String.format("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
             message.getSequenceNumber(), message.getBody()));
@@ -76,7 +41,7 @@ public class ServiceBusSessionProcessor {
      *
      * @param context Context around the exception that occurred.
      */
-    private static void processError(ServiceBusErrorContext context) {
+    public static void processError(ServiceBusErrorContext context) {
         Log.e(TAG, String.format("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
             context.getFullyQualifiedNamespace(), context.getEntityPath()));
 
