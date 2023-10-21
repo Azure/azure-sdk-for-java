@@ -378,6 +378,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Cosmos sdk suppressions -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-encryption[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-kafka-connect[/\\]src[/\\]test[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*"
             files=".*[/\\]azure-cosmos[/\\]((?!(BridgeInternal|CosmosBridgeInternal|CommonsBridgeInternal)).*)"/>
   <suppress checks="[a-zA-Z0-9]*"
