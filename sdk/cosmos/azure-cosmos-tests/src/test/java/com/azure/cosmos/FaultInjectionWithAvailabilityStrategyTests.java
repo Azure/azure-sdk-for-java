@@ -4354,8 +4354,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             this.writeableRegions,
             regionSwitchHint,
             customMinRetryTimeInLocalRegionForWrites,
-            nonIdempotentWriteRetriesEnabled,
-            connectionMode);
+            nonIdempotentWriteRetriesEnabled);
         try {
 
             if (clearContainerBeforeExecution) {
@@ -4497,8 +4496,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         List<String> preferredRegions,
         CosmosRegionSwitchHint regionSwitchHint,
         Duration customMinRetryTimeInLocalRegionForWrites,
-        Boolean nonIdempotentWriteRetriesEnabled,
-        ConnectionMode connectionMode) {
+        Boolean nonIdempotentWriteRetriesEnabled) {
 
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
             .diagnosticsHandler(new CosmosDiagnosticsLogger());

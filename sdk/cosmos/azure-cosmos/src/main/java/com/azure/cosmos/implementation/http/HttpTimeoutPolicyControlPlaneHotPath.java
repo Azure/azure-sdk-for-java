@@ -17,8 +17,10 @@ public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy {
     }
 
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
-        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofMillis(500), 0),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 1),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 0)));
+        return Collections.unmodifiableList(
+            Arrays.asList(
+                new ResponseTimeoutAndDelays(Duration.ofMillis(500), 0),
+                new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 1),
+                new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 0)));
     }
 }
