@@ -9,6 +9,7 @@
 
 #### Bugs Fixed
 * Fixed an issue where `emptyPageDiagnosticsEnabled` in `CosmosQueryRequestOptions` was being overridden. This caused empty page diagnostics to be logged (with INFO level) even when the flag was set to false - See [PR 37199](https://github.com/Azure/azure-sdk-for-java/pull/37199)
+* Fixed an issue where the HttpTimeoutPolicy was not being used correctly - See [PR 37188](https://github.com/Azure/azure-sdk-for-java/pull/37188) 
 * Fixed an issue where SDK mark region unavailable on http timeout - See [PR 37163](https://github.com/Azure/azure-sdk-for-java/pull/37163)
 * Fixed an issue where SDK do `A, B, C, A` retry pattern for `404/1002` - See [PR 37040](https://github.com/Azure/azure-sdk-for-java/pull/37040)
 * Fixed an issue where SDK do aggressive retry on `449` - See [PR 37040](https://github.com/Azure/azure-sdk-for-java/pull/37040)
