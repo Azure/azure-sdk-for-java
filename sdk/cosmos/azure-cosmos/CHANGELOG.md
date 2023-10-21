@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added an option to configure the minimum retry duration for 404/1002 session not available. - See [PR 37143](https://github.com/Azure/azure-sdk-for-java/pull/37143) and [PR 37240](https://github.com/Azure/azure-sdk-for-java/pull/37240)
+* Fixed an issue where SDK does not do retry for `AddressRefresh` on `HttpTimeout` for write operations - See [PR 37286](https://github.com/Azure/azure-sdk-for-java/pull/37286)
 
 #### Breaking Changes
 
