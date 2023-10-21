@@ -377,6 +377,11 @@ cosmos_org.scalamock:scalamock_2.12;5.0.0
 cosmos_com.globalmentor:hadoop-bare-naked-local-fs;0.1.0
 cosmos_org.mockito:mockito-core;4.8.1
 
+## Cosmos Kafka connector under sdk\cosmos\azure-cosmos-kafka-connect\pom.xml
+# Cosmos Kafka connector runtime dependencies
+cosmos_org.apache.kafka:connect-api;3.6.0
+# Cosmos Kafka connector tests only
+
 # Maven Tools for Cosmos Spark connector only
 cosmos_org.scalatest:scalatest-maven-plugin;2.0.2
 cosmos_net.alchim31.maven:scala-maven-plugin;4.8.1
