@@ -32,6 +32,10 @@ public class PeekMessageAsync {
             .queueName(queueName)
             .buildAsyncClient();
 
+        if (receiver.getFullyQualifiedNamespace().isEmpty()) {
+            throw new RuntimeException("Sample was not successful: fullyQualifiedNamespace is empty");
+        }
+
         receiver.peekMessage().subscribe(
             message -> {
                 Log.i(TAG, "Received Message Id: " + message.getMessageId());
@@ -49,6 +53,11 @@ public class PeekMessageAsync {
 
         // Close the receiver.
         receiver.close();
+
+        // If sampleSuccessful is false then fail the sample
+        if (!sampleSuccessful.get()) {
+            throw new RuntimeException("Sample was not successful: Did not receive message");
+        }
 
     }
 }

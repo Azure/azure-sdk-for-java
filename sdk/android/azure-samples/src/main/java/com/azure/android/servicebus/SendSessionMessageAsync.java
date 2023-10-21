@@ -42,6 +42,10 @@ public class SendSessionMessageAsync {
             .queueName(queueName)
             .buildAsyncClient();
 
+        if (sender.getFullyQualifiedNamespace().isEmpty()) {
+            throw new RuntimeException("Sample was not successful: fullyQualifiedNamespace is empty");
+        }
+
         // Setting the sessionId parameter ensures all messages end up in the same session and are received in order.
         List<ServiceBusMessage> messages = Arrays.asList(
             new ServiceBusMessage(BinaryData.fromBytes("Hello".getBytes(UTF_8))).setSessionId(sessionId),
@@ -64,6 +68,11 @@ public class SendSessionMessageAsync {
 
         // Close the sender.
         sender.close();
+
+        // If sampleSuccessful is false then fail the sample
+        if (!sampleSuccessful.get()) {
+            throw new RuntimeException("Sample was not successful: Batch send did not complete");
+        }
 
     }
 }

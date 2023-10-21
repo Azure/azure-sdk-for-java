@@ -35,6 +35,10 @@ public class ServiceBusSessionProcessor {
             .processError(ServiceBusSessionProcessor::processError)
             .buildProcessorClient();
 
+        if (processorClient.equals(null)) {
+            throw new RuntimeException("Sample was not successful: processorClient equals null");
+        }
+
         Log.i(TAG, "Starting the processor");
         processorClient.start();
 

@@ -39,6 +39,10 @@ public class SendMessageBatch {
             .queueName(queueName)
             .buildClient();
 
+        if (sender.getFullyQualifiedNamespace().isEmpty()) {
+            throw new RuntimeException("Sample was not successful: fullyQualifiedNamespace is empty");
+        }
+
         // Creates an ServiceBusMessageBatch where the ServiceBus.
         // If no maximumSizeInBatch is set, the maximum message size is used.
         ServiceBusMessageBatch currentBatch = sender.createMessageBatch(
