@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.siprouting.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Map;
 
 /** Represents a SIP configuration update. */
 @Fluent
-@Generated
 public final class SipConfigurationUpdate {
     /*
      * SIP trunks for routing calls.

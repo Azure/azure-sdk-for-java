@@ -34,9 +34,6 @@ public final class AzureApplicationInsightsParameter {
     @JsonProperty(value = "query", required = true)
     private String query;
 
-    /** Creates an instance of AzureApplicationInsightsParameter class. */
-    public AzureApplicationInsightsParameter() {}
-
     /**
      * Get the azureCloud property: The Azure cloud that this Azure Application Insights in.
      *

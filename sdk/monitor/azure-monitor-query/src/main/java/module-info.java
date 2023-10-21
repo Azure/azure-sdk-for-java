@@ -13,5 +13,4 @@ module com.azure.monitor.query {
     opens com.azure.monitor.query.implementation.metrics.models to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.monitor.query.implementation.metricsdefinitions.models to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.monitor.query.implementation.metricsnamespaces.models to com.fasterxml.jackson.databind, com.azure.core;
-    opens com.azure.monitor.query.implementation.metricsbatch.models to com.fasterxml.jackson.databind, com.azure.core;
 }

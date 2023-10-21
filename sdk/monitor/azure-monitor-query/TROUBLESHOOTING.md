@@ -44,14 +44,14 @@ MetricsQueryClient can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-    .credential(credential)
-    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-    .buildClient();
+        .credential(credential)
+        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+        .buildClient();
 // or
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-    .credential(credential)
-    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-    .buildClient();
+        .credential(credential)
+        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+        .buildClient();
 ```
 
 Alternatively, you can configure logging HTTP requests and responses for your entire application by setting the
@@ -149,9 +149,9 @@ following.
 
 ```java readme-sample-responsetimeout
 LogsQueryClient client = new LogsQueryClientBuilder()
-    .credential(credential)
-    .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
-    .buildClient();
+        .credential(credential)
+        .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
+        .buildClient();
 ```
 
 The above code will create a LogsQueryClient with a Netty HTTP client that waits for a response for up to 120 seconds.
@@ -170,11 +170,11 @@ previous section.
 
 ```java readme-sample-servertimeout
 LogsQueryClient client = new LogsQueryClientBuilder()
-    .credential(credential)
-    .buildClient();
+        .credential(credential)
+        .buildClient();
 
 client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
-    new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
+        new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
 ```
 
 ### Troubleshooting server timeouts on OkHTTP client
@@ -185,9 +185,9 @@ below. The downside to doing this is that every request from this client will ha
 
 ```java readme-sample-okhttpresponsetimeout
 LogsQueryClient client = new LogsQueryClientBuilder()
-    .credential(credential)
-    .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
-    .buildClient();
+        .credential(credential)
+        .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
+        .buildClient();
 ```
 
 ### Troubleshooting partially successful logs query requests
@@ -199,7 +199,7 @@ in `LogsQueryOptions` as shown below:
 
 ```java readme-sample-allowpartialerrors
 client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
-    new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
+        new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
 ```
 
 ## Troubleshooting Metrics Query

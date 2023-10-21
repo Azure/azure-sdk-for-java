@@ -23,9 +23,6 @@ public final class DataSourceCredentialList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataSourceCredential> value;
 
-    /** Creates an instance of DataSourceCredentialList class. */
-    public DataSourceCredentialList() {}
-
     /**
      * Get the nextLink property: The @nextLink property.
      *

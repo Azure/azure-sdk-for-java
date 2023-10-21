@@ -21,16 +21,6 @@ public final class AnswerCallOptions {
     private final String callbackUrl;
 
     /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-    /*
-     * The endpoint URL of the Azure Cognitive Services resource attached
-     */
-    private String azureCognitiveServicesUrl;
-    
-    /**
      * The operational context
      */
     private String operationContext;
@@ -65,25 +55,6 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @return the azureCognitiveServicesEndpointUrl value.
-     */
-    public String getAzureCognitiveServicesUrl() {
-        return this.azureCognitiveServicesUrl;
-    }
-
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-    
-    /**
      * Get the operationContext.
      *
      * @return the operationContext
@@ -92,29 +63,6 @@ public final class AnswerCallOptions {
         return operationContext;
     }
 
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
-        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
-        return this;
-    }
-    
      /**
      * Set the operationContext.
      *

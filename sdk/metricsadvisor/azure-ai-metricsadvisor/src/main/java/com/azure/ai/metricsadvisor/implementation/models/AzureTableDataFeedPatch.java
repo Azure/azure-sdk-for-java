@@ -8,8 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 /** The AzureTableDataFeedPatch model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
@@ -21,9 +19,6 @@ public final class AzureTableDataFeedPatch extends DataFeedDetailPatch {
      */
     @JsonProperty(value = "dataSourceParameter")
     private AzureTableParameterPatch dataSourceParameter;
-
-    /** Creates an instance of AzureTableDataFeedPatch class. */
-    public AzureTableDataFeedPatch() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
@@ -42,153 +37,6 @@ public final class AzureTableDataFeedPatch extends DataFeedDetailPatch {
      */
     public AzureTableDataFeedPatch setDataSourceParameter(AzureTableParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setDataFeedName(String dataFeedName) {
-        super.setDataFeedName(dataFeedName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
-        super.setDataFeedDescription(dataFeedDescription);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setTimestampColumn(String timestampColumn) {
-        super.setTimestampColumn(timestampColumn);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
-        super.setDataStartFrom(dataStartFrom);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
-        super.setStartOffsetInSeconds(startOffsetInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
-        super.setMaxConcurrency(maxConcurrency);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
-        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
-        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
-        super.setNeedRollup(needRollup);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
-        super.setRollUpMethod(rollUpMethod);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
-        super.setRollUpColumns(rollUpColumns);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setAllUpIdentification(String allUpIdentification) {
-        super.setAllUpIdentification(allUpIdentification);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
-        super.setFillMissingPointType(fillMissingPointType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
-        super.setFillMissingPointValue(fillMissingPointValue);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setViewMode(ViewMode viewMode) {
-        super.setViewMode(viewMode);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setAdmins(List<String> admins) {
-        super.setAdmins(admins);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setViewers(List<String> viewers) {
-        super.setViewers(viewers);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setStatus(EntityStatus status) {
-        super.setStatus(status);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
-        super.setActionLinkTemplate(actionLinkTemplate);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
-        super.setAuthenticationType(authenticationType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureTableDataFeedPatch setCredentialId(String credentialId) {
-        super.setCredentialId(credentialId);
         return this;
     }
 }

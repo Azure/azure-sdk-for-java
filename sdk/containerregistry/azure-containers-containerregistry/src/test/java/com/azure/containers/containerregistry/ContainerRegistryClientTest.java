@@ -20,6 +20,7 @@ import java.util.Collections;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HTTP_STATUS_CODE_202;
+import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -34,21 +35,23 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
             .assertSync()
             .build();
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
             .assertAsync()
             .build();
     }
     private ContainerRegistryClient getContainerRegistryClient(HttpClient client) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : client)).buildClient();
+        return getContainerRegistryBuilder(buildSyncAssertingClient(client == null ? interceptorManager.getPlaybackClient() : client)).buildClient();
     }
 
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient(HttpClient client) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : client)).buildAsyncClient();
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(client == null ? interceptorManager.getPlaybackClient() : client)).buildAsyncClient();
     }
 
     @BeforeEach
@@ -111,6 +114,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
         Response<Void> response = registryClient.deleteRepositoryWithResponse(HELLO_WORLD_SEATTLE_REPOSITORY_NAME, Context.NONE);
         assertEquals(HTTP_STATUS_CODE_202, response.getStatusCode());
     }
+
 
     @Test
     public void deleteRepositoryByRegistryClient() {

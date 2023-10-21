@@ -1,14 +1,14 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.2.13 (2023-10-20)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
 
 ## 1.2.12 (2023-09-22)
 
@@ -26,6 +26,7 @@
 
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
 - Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
 
 ## 1.2.10 (2023-07-13)
 
@@ -45,14 +46,6 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
-## 2.0.0-beta.1 (2023-03-24)
-
-### Features Added
-- Added support for a new communication identifier `MicrosoftBotIdentifier`.
-
-### Breaking Changes
-- Introduction of `MicrosoftBotIdentifier` is a breaking change. It will affect code that relied on using `UnknownIdentifier` with a rawID starting with `28:`
-
 ## 1.2.8 (2023-05-12)
 
 ### Other Changes
@@ -70,6 +63,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
 
 ## 1.2.6 (2023-03-07)
 

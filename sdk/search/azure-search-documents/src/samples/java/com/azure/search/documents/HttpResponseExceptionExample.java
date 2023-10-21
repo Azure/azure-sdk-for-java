@@ -17,7 +17,7 @@ import com.azure.search.documents.util.SearchPagedFlux;
  * returns a non-successful response
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
- * See https://docs.microsoft.com/azure/search/search-get-started-portal
+ * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
  * </p>
  */
 public class HttpResponseExceptionExample {
@@ -80,7 +80,7 @@ public class HttpResponseExceptionExample {
         SearchOptions searchOptions = new SearchOptions()
             .setFilter("Non_Existent_Field eq 'Luxury'");
 
-        SearchPagedFlux results = client.search("hotel", searchOptions);
+        SearchPagedFlux results = client.search("hotel", searchOptions, null);
         results
             .subscribe(
                 foo -> {

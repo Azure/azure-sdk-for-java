@@ -7,23 +7,16 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A string indicating which domain-specific details to return. */
+/** Defines values for ImageDetail. */
 public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
-    /** Details recognized as celebrities. */
+    /** Static value celebrities for ImageDetail. */
     public static final ImageDetail CELEBRITIES = fromString("celebrities");
 
-    /** Details recognized as landmarks. */
+    /** Static value landmarks for ImageDetail. */
     public static final ImageDetail LANDMARKS = fromString("landmarks");
-
-    /**
-     * Creates a new instance of ImageDetail value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public ImageDetail() {}
 
     /**
      * Creates or finds a ImageDetail from its string representation.
@@ -31,6 +24,7 @@ public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
      * @param name a name to look for.
      * @return the corresponding ImageDetail.
      */
+    @JsonCreator
     public static ImageDetail fromString(String name) {
         return fromString(name, ImageDetail.class);
     }

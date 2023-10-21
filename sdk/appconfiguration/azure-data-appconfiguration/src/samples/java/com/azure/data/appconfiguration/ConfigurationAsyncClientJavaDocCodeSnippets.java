@@ -3,23 +3,12 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.http.MatchConditions;
-import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
-import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
-import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.data.appconfiguration.models.SnapshotFields;
-import com.azure.data.appconfiguration.models.SnapshotSelector;
 import reactor.util.context.Context;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Code snippets for {@link ConfigurationAsyncClient}
@@ -44,10 +33,8 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // END: com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSetting#string-string-string
 
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSetting#ConfigurationSetting
-        client.addConfigurationSetting(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS")
-                .setValue("db_connection"))
+        client.addConfigurationSetting(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"))
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSetting#ConfigurationSetting
@@ -56,10 +43,8 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * Code snippets for {@link ConfigurationAsyncClient#addConfigurationSettingWithResponse(ConfigurationSetting)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSettingWithResponse#ConfigurationSetting
-        client.addConfigurationSettingWithResponse(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS")
-                .setValue("db_connection"))
+        client.addConfigurationSettingWithResponse(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"))
             .subscribe(response -> {
                 ConfigurationSetting responseSetting = response.getValue();
                 System.out.printf("Key: %s, Label: %s, Value: %s",
@@ -84,16 +69,12 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // END: com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSetting#string-string-string
 
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSetting#ConfigurationSetting
-        client.setConfigurationSetting(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS"))
+        client.setConfigurationSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // Update the value of the setting to "updated_db_connection"
-        client.setConfigurationSetting(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS")
-                .setValue("updated_db_connection"))
+        client.setConfigurationSetting(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("updated_db_connection"))
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSetting#ConfigurationSetting
@@ -103,22 +84,16 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * {@link ConfigurationAsyncClient#setConfigurationSettingWithResponse(ConfigurationSetting, boolean)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean
-        client.setConfigurationSettingWithResponse(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS")
-                .setValue("db_connection"),
-                false)
+        client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS")
+            .setValue("db_connection"), false)
             .subscribe(response -> {
                 final ConfigurationSetting result = response.getValue();
                 System.out.printf("Key: %s, Label: %s, Value: %s",
                     result.getKey(), result.getLabel(), result.getValue());
             });
         // Update the value of the setting to "updated_db_connection"
-        client.setConfigurationSettingWithResponse(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS")
-                .setValue("updated_db_connection"),
-                false)
+        client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS")
+            .setValue("updated_db_connection"), false)
             .subscribe(response -> {
                 final ConfigurationSetting responseSetting = response.getValue();
                 System.out.printf("Key: %s, Label: %s, Value: %s",
@@ -134,7 +109,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         ConfigurationAsyncClient client = getAsyncClient();
 
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string
-        client.getConfigurationSetting("prodDBConnection", "westUS")
+        client.getConfigurationSetting("prodDBConnection", null)
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string
@@ -144,15 +119,13 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string-OffsetDateTime
         client.getConfigurationSetting(
-            "prodDBConnection", "westUS", OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1))
+            "prodDBConnection", null, OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1))
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string-OffsetDateTime
 
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#ConfigurationSetting
-        client.getConfigurationSetting(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS"))
+        client.getConfigurationSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#ConfigurationSetting
@@ -162,14 +135,11 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * ConfigurationSetting, OffsetDateTime, boolean)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean
-        client.getConfigurationSettingWithResponse(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS"),
-                null,
-                false)
+        client.getConfigurationSettingWithResponse(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), null, false)
             .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
-                ConfigurationSetting result = response.getValue();
+                final ConfigurationSetting result = response.getValue();
                 System.out.printf("Key: %s, Label: %s, Value: %s",
                     result.getKey(), result.getLabel(), result.getValue());
             });
@@ -182,15 +152,13 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     public void deleteConfigurationSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#string-string
-        client.deleteConfigurationSetting("prodDBConnection", "westUS")
+        client.deleteConfigurationSetting("prodDBConnection", null)
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#string-string
 
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#ConfigurationSetting
-        client.deleteConfigurationSetting(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS"))
+        client.deleteConfigurationSetting(new ConfigurationSetting().setKey("prodDBConnection"))
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#ConfigurationSetting
@@ -200,13 +168,11 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * {@link ConfigurationAsyncClient#deleteConfigurationSettingWithResponse(ConfigurationSetting, boolean)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean
-        client.deleteConfigurationSettingWithResponse(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS"),
-                false)
+        client.deleteConfigurationSettingWithResponse(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false)
             .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
-                ConfigurationSetting responseSetting = response.getValue();
+                final ConfigurationSetting responseSetting = response.getValue();
                 System.out.printf("Key: %s, Label: %s, Value: %s",
                     responseSetting.getKey(), responseSetting.getLabel(), responseSetting.getValue());
             });
@@ -225,10 +191,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean
 
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#ConfigurationSetting-boolean
-        client.setReadOnly(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS"),
-                true)
+        client.setReadOnly(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), true)
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#ConfigurationSetting-boolean
@@ -237,12 +200,9 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * Code snippets for {@link ConfigurationAsyncClient#setReadOnlyWithResponse(ConfigurationSetting, Boolean)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean
-        client.setReadOnlyWithResponse(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS"),
-                true)
+        client.setReadOnlyWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), true)
             .subscribe(response -> {
-                ConfigurationSetting result = response.getValue();
+                final ConfigurationSetting result = response.getValue();
                 System.out.printf("Key: %s, Label: %s, Value: %s",
                     result.getKey(), result.getLabel(), result.getValue());
             });
@@ -261,10 +221,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean-clearReadOnly
 
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly
-        client.setReadOnly(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS"),
-                false)
+        client.setReadOnly(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false)
             .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly
 
@@ -272,10 +229,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * Code snippets for {@link ConfigurationAsyncClient#setReadOnlyWithResponse(ConfigurationSetting, Boolean)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-clearReadOnly
-        client.setReadOnlyWithResponse(new ConfigurationSetting()
-                .setKey("prodDBConnection")
-                .setLabel("westUS"),
-                false)
+        client.setReadOnlyWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false)
             .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 ConfigurationSetting result = response.getValue();
@@ -299,33 +253,6 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#listConfigurationSettingsForSnapshot(String)}
-     */
-    public void listConfigurationSettingsForSnapshot() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshot
-        String snapshotName = "{snapshotName}";
-        client.listConfigurationSettingsForSnapshot(snapshotName)
-            .subscribe(setting ->
-                System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
-        // END: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshot
-    }
-
-    /**
-     * Code snippets for {@link ConfigurationAsyncClient#listConfigurationSettingsForSnapshot(String, List)}
-     */
-    public void listConfigurationSettingsForSnapshotMaxOverload() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload
-        String snapshotName = "{snapshotName}";
-        List<SettingFields> fields = Arrays.asList(SettingFields.KEY);
-        client.listConfigurationSettingsForSnapshot(snapshotName, fields)
-            .subscribe(setting ->
-                System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
-        // END: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload
-    }
-
-    /**
      * Code snippets for {@link ConfigurationAsyncClient#listRevisions(SettingSelector)}
      */
     public void listRevisionsCodeSnippet() {
@@ -339,161 +266,11 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#beginCreateSnapshot(String, ConfigurationSnapshot)}}
-     */
-    public void beginCreateSnapshotMaxOverload() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotMaxOverload
-        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
-        // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new ConfigurationSettingsFilter("{keyName}"));
-        String snapshotName = "{snapshotName}";
-        client.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(Duration.ofHours(1)))
-            .flatMap(result -> result.getFinalResult())
-            .subscribe(
-                snapshot -> System.out.printf("Snapshot name=%s is created at %s%n",
-                    snapshot.getName(), snapshot.getCreatedAt()),
-                ex -> System.out.printf("Error on creating a snapshot=%s, with error=%s.%n", snapshotName,
-                    ex.getMessage()),
-                () -> System.out.println("Successfully created a snapshot."));
-        // END: com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotMaxOverload
-    }
-
-    /**
-     * Code snippets for {@link ConfigurationAsyncClient#getSnapshot(String)}
-     */
-    public void getSnapshotByName() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByName
-        String snapshotName = "{snapshotName}";
-        client.getSnapshot(snapshotName).subscribe(
-            getSnapshot -> {
-                System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
-                    getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
-            }
-        );
-        // END: com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByName
-    }
-
-    /**
-     * Code snippets for {@link ConfigurationAsyncClient#getSnapshotWithResponse(String, List)}
-     */
-    public void getSnapshotByNameMaxOverload() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByNameMaxOverload
-        String snapshotName = "{snapshotName}";
-
-        client.getSnapshotWithResponse(snapshotName, Arrays.asList(SnapshotFields.NAME, SnapshotFields.CREATED_AT,
-            SnapshotFields.STATUS, SnapshotFields.FILTERS))
-            .subscribe(
-                response -> {
-                    ConfigurationSnapshot getSnapshot = response.getValue();
-                    // Only properties `name`, `createAt`, `status` and `filters` have value, and expect null or
-                    // empty value other than the `fields` specified in the request.
-                    System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
-                        getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
-                    List<ConfigurationSettingsFilter> filters = getSnapshot.getFilters();
-                    for (ConfigurationSettingsFilter filter : filters) {
-                        System.out.printf("Snapshot filter key=%s, label=%s.%n", filter.getKey(), filter.getLabel());
-                    }
-                });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByNameMaxOverload
-    }
-
-    /**
-     * Code snippets for {@link ConfigurationAsyncClient#archiveSnapshot(String)}
-     */
-    public void archiveSnapshotByName() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotByName
-        String snapshotName = "{snapshotName}";
-        client.archiveSnapshot(snapshotName).subscribe(
-            archivedSnapshot -> {
-                System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
-                    archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
-            }
-        );
-        // END: com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotByName
-    }
-
-    /**
-     * Code snippets for {@link ConfigurationAsyncClient#archiveSnapshotWithResponse(String, MatchConditions)}
-     */
-    public void archiveSnapshotMaxOverload() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotMaxOverload
-        String snapshotName = "{snapshotName}";
-        MatchConditions matchConditions = new MatchConditions().setIfMatch("{etag}");
-        client.archiveSnapshotWithResponse(snapshotName, matchConditions)
-            .subscribe(
-                response -> {
-                    ConfigurationSnapshot archivedSnapshot = response.getValue();
-                    System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
-                        archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
-                }
-            );
-        // END: com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotMaxOverload
-    }
-
-    /**
-     * Code snippets for {@link ConfigurationAsyncClient#recoverSnapshot(String)}
-     */
-    public void recoverSnapshotByName() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotByName
-        String snapshotName = "{snapshotName}";
-        client.recoverSnapshot(snapshotName).subscribe(
-            recoveredSnapshot -> {
-                System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
-                    recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
-            }
-        );
-        // END: com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotByName
-    }
-
-    /**
-     * Code snippets for {@link ConfigurationAsyncClient#recoverSnapshotWithResponse(String, MatchConditions)}
-     */
-    public void recoverSnapshotMaxOverload() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotMaxOverload
-        String snapshotName = "{snapshotName}";
-        MatchConditions matchConditions = new MatchConditions().setIfMatch("{etag}");
-        client.recoverSnapshotWithResponse(snapshotName, matchConditions).subscribe(
-            response -> {
-                ConfigurationSnapshot recoveredSnapshot = response.getValue();
-                System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
-                    recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
-            }
-        );
-        // END: com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotMaxOverload
-    }
-
-
-    /**
-     * Code snippets for {@link ConfigurationAsyncClient#listSnapshots(SnapshotSelector)}
-     */
-    public void listSnapshots() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listSnapshots
-        String snapshotNameFilter = "{snapshotNamePrefix}*";
-        client.listSnapshots(new SnapshotSelector().setNameFilter(snapshotNameFilter))
-            .subscribe(recoveredSnapshot -> {
-                System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
-                    recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.listSnapshots
-    }
-
-    /**
      * Implementation not provided
      *
      * @return {@code null}
      */
     private ConfigurationAsyncClient getAsyncClient() {
-        return new ConfigurationClientBuilder()
-            .connectionString(Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING"))
-            .buildAsyncClient();
+        return new ConfigurationClientBuilder().connectionString("connectionString").buildAsyncClient();
     }
 }

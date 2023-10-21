@@ -7,42 +7,41 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Abstract class to share properties between concrete selectors. */
 @Fluent
-public abstract class SearchIndexerKnowledgeStoreProjectionSelector
-        implements JsonSerializable<SearchIndexerKnowledgeStoreProjectionSelector> {
+public abstract class SearchIndexerKnowledgeStoreProjectionSelector {
     /*
      * Name of reference key to different projection.
      */
+    @JsonProperty(value = "referenceKeyName")
     private String referenceKeyName;
 
     /*
      * Name of generated key to store projection under.
      */
+    @JsonProperty(value = "generatedKeyName")
     private String generatedKeyName;
 
     /*
      * Source data to project.
      */
+    @JsonProperty(value = "source")
     private String source;
 
     /*
      * Source context for complex projections.
      */
+    @JsonProperty(value = "sourceContext")
     private String sourceContext;
 
     /*
      * Nested inputs for complex projections.
      */
+    @JsonProperty(value = "inputs")
     private List<InputFieldMappingEntry> inputs;
-
-    /** Creates an instance of SearchIndexerKnowledgeStoreProjectionSelector class. */
-    public SearchIndexerKnowledgeStoreProjectionSelector() {}
 
     /**
      * Get the referenceKeyName property: Name of reference key to different projection.
@@ -142,16 +141,5 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
     public SearchIndexerKnowledgeStoreProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         this.inputs = inputs;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("referenceKeyName", this.referenceKeyName);
-        jsonWriter.writeStringField("generatedKeyName", this.generatedKeyName);
-        jsonWriter.writeStringField("source", this.source);
-        jsonWriter.writeStringField("sourceContext", this.sourceContext);
-        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
     }
 }
