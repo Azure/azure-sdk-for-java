@@ -13,12 +13,13 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
@@ -33,6 +34,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -48,7 +50,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.testng.AssertJUnit.fail;
 
-public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
+public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBase {
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private List<String> readPreferredLocations;
@@ -58,6 +60,19 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
     public FaultInjectionMetadataRequestRuleTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
+    }
+
+    @DataProvider(name = "operationTypeProvider")
+    public static Object[][] operationTypeProvider() {
+        return new Object[][]{
+            // FaultInjectionOperationType, OperationType
+            { FaultInjectionOperationType.READ_ITEM, OperationType.Read },
+            { FaultInjectionOperationType.REPLACE_ITEM, OperationType.Replace },
+            { FaultInjectionOperationType.CREATE_ITEM, OperationType.Create },
+            { FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete },
+            { FaultInjectionOperationType.QUERY_ITEM, OperationType.Query },
+            { FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch }
+        };
     }
 
     @BeforeClass(groups = { "multi-region", "multi-master" }, timeOut = TIMEOUT)
@@ -117,9 +132,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
                         .delay(Duration.ofSeconds(50)) // to simulate http connection timeout
-                        // changed from 2 to 6
-                        // 4 more address refresh request retries have been introduced by WebExceptionRetryPolicy
-                        .times(6)
+                        .times(4) // make sure to exhaust local region retries
                         .build()
                 )
                 .duration(Duration.ofMinutes(10))
@@ -155,7 +168,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                         .block()
                         .getDiagnostics();
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
-                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 6);
+                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 3);
             } catch (CosmosException e) {
                 fail("Request should be able to succeed by retrying in another region. " + e.getDiagnostics());
             }
@@ -182,11 +195,13 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "multi-region" }, timeOut = 4 * TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_AddressRefresh_ResponseDelay() throws JsonProcessingException {
+    @Test(groups = { "multi-region" }, dataProvider = "operationTypeProvider", timeOut = 4 * TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_AddressRefresh_ResponseDelay(
+        FaultInjectionOperationType faultInjectionOperationType,
+        OperationType operationType) throws JsonProcessingException {
 
         // Test to validate if there is http request timeout for address refresh,
-        // SDK will retry 2 times before fail the request
+        // SDK will retry at least 2 times, and SDK will fail the request as no cross region retry for addressRefresh on timeout
 
         // We need to create a new client because client may have marked region unavailable in other tests
         // which can impact the test result
@@ -224,7 +239,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .region(this.readPreferredLocations.get(0))
-                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .operationType(faultInjectionOperationType)
                         .build())
                 .result(
                     FaultInjectionResultBuilders
@@ -243,20 +258,21 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                     Arrays.asList(addressRefreshResponseDelayRule, dataOperationGoneRule))
                 .block();
 
-            try {
-                CosmosDiagnostics cosmosDiagnostics =
-                    container
-                        .readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), JsonNode.class)
-                        .block()
-                        .getDiagnostics();
+            CosmosDiagnostics cosmosDiagnostics =
+                this.performDocumentOperation(container, operationType, createdItem);
 
-                fail("request should have failed due to http request timeout on address resolution. " + cosmosDiagnostics);
-            } catch (CosmosException e) {
-                CosmosDiagnostics cosmosDiagnostics = e.getDiagnostics();
-                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-                assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase()))).isTrue();
-                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshResponseDelay, 3);
-            }
+            assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+            assertThat(
+                cosmosDiagnostics
+                    .getContactedRegionNames()
+                    .containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase())))
+                .isTrue();
+
+            assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode())
+                .isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+            assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode())
+                .isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+            validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshResponseDelay, 3);
         } finally {
             addressRefreshResponseDelayRule.disable();
             dataOperationGoneRule.disable();

@@ -2,13 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.faultinjection;
 
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
-import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
@@ -20,7 +13,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -158,40 +150,5 @@ public class FaultInjectionUnitTest {
         } catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("STALED_ADDRESSES exception can not be injected for rule with gateway connection type"));
         }
-    }
-
-    @Test
-    public void addressRefreshTests() {
-        CosmosAsyncClient client = new CosmosClientBuilder()
-            .key(TestConfigurations.MASTER_KEY)
-            .endpoint(TestConfigurations.HOST)
-            .buildAsyncClient();
-
-        CosmosAsyncContainer container = client.getDatabase("TestDatabase").getContainer("TestContainer");
-        FaultInjectionRule addressRefreshFailedRule =
-            new FaultInjectionRuleBuilder("addressRefresh")
-                .condition(
-                    new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
-                        .build())
-                .result(
-                    FaultInjectionResultBuilders.
-                        getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-                        .delay(Duration.ofSeconds(20))
-                        .build())
-                .build();
-
-        CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(addressRefreshFailedRule)).block();
-
-        container.createItem(TestItem.createNewItem())
-            .onErrorResume(throwable -> {
-                System.out.println("Success:" + ((CosmosException)throwable).getDiagnostics());
-                return Mono.empty();
-            })
-            .flatMap(response -> {
-                System.out.println("Failure:" + response.getDiagnostics());
-                return Mono.empty();
-            })
-            .block();
     }
 }

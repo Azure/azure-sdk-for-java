@@ -53,7 +53,9 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
 
         if (WebExceptionUtility.isNetworkFailure(e)) {
-            if (this.isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
+            if (this.isReadRequest
+                || request.isAddressRefresh()
+                || WebExceptionUtility.isWebExceptionRetriable(e)) {
                 int delayInSeconds = this.timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount).getDelayForNextRequestInSeconds();
                 // Increase the retry count after calculating the delay
                 retryCount++;
