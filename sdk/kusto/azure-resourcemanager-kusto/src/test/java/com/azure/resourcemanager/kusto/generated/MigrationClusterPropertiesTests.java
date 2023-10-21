@@ -12,7 +12,8 @@ public final class MigrationClusterPropertiesTests {
     public void testDeserialize() throws Exception {
         MigrationClusterProperties model =
             BinaryData
-                .fromString("{\"id\":\"xbnjbiksq\",\"uri\":\"lssai\",\"dataIngestionUri\":\"p\",\"role\":\"Source\"}")
+                .fromString(
+                    "{\"id\":\"fmppe\",\"uri\":\"vmgxsab\",\"dataIngestionUri\":\"qduujitcjczdz\",\"role\":\"Source\"}")
                 .toObject(MigrationClusterProperties.class);
     }
 

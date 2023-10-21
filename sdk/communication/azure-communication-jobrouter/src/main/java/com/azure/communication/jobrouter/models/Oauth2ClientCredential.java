@@ -5,9 +5,8 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 /**
  * OAuth2.0 Credentials used to Contoso's Authorization server. Reference:
@@ -15,35 +14,44 @@ import java.util.Objects;
  */
 @Fluent
 public final class Oauth2ClientCredential {
-    /**
-     * Creates an instance of Oauth2ClientCredential class.
-     *
-     * @param clientId ClientId for Contoso Authorization server.
-     * @param clientSecret Client secret for Contoso Authorization server.
-     */
-    public Oauth2ClientCredential(String clientId, String clientSecret) {
-        this.clientId = Objects.requireNonNull(clientId, "'clientId' cannot be null.");
-        this.clientSecret = Objects.requireNonNull(clientSecret, "'clientSecret' cannot be null.");
-    }
     /*
      * ClientId for Contoso Authorization server.
      */
+    @Generated
     @JsonProperty(value = "clientId")
-    private final String clientId;
+    private String clientId;
 
     /*
      * Client secret for Contoso Authorization server.
      */
+    @Generated
     @JsonProperty(value = "clientSecret")
-    private final String clientSecret;
+    private String clientSecret;
+
+    /** Creates an instance of Oauth2ClientCredential class. */
+    @Generated
+    public Oauth2ClientCredential() {}
 
     /**
      * Get the clientId property: ClientId for Contoso Authorization server.
      *
      * @return the clientId value.
      */
+    @Generated
     public String getClientId() {
         return this.clientId;
+    }
+
+    /**
+     * Set the clientId property: ClientId for Contoso Authorization server.
+     *
+     * @param clientId the clientId value to set.
+     * @return the Oauth2ClientCredential object itself.
+     */
+    @Generated
+    public Oauth2ClientCredential setClientId(String clientId) {
+        this.clientId = clientId;
+        return this;
     }
 
     /**
@@ -51,7 +59,20 @@ public final class Oauth2ClientCredential {
      *
      * @return the clientSecret value.
      */
+    @Generated
     public String getClientSecret() {
         return this.clientSecret;
+    }
+
+    /**
+     * Set the clientSecret property: Client secret for Contoso Authorization server.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the Oauth2ClientCredential object itself.
+     */
+    @Generated
+    public Oauth2ClientCredential setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+        return this;
     }
 }

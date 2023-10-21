@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleManagementPolicies ListForScope. */
 public final class RoleManagementPoliciesListForScopeSamples {
     /*
@@ -25,6 +23,7 @@ public final class RoleManagementPoliciesListForScopeSamples {
             .roleServiceClient()
             .getRoleManagementPolicies()
             .listForScope(
-                "providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368", Context.NONE);
+                "providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368",
+                com.azure.core.util.Context.NONE);
     }
 }

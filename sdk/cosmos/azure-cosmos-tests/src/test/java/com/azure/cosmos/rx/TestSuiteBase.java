@@ -341,6 +341,24 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, int throughput) {
         database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options).block();
+
+        // Creating a container is async - especially on multi-partition or multi-region accounts
+        CosmosAsyncClient client = ImplementationBridgeHelpers
+            .CosmosAsyncDatabaseHelper
+            .getCosmosAsyncDatabaseAccessor()
+            .getCosmosAsyncClient(database);
+        boolean isMultiRegional = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getPreferredRegions(client).size() > 1;
+        if (throughput > 6000 || isMultiRegional) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         return database.getContainer(cosmosContainerProperties.getId());
     }
 

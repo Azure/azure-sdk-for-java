@@ -10,7 +10,6 @@ import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.LabelOperator;
-import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueue;
@@ -52,17 +51,20 @@ class JobRouterTestBase extends TestProxyTestBase {
 
     protected JobRouterAdministrationClient getRouterAdministrationClient(HttpClient client) {
         HttpPipeline httpPipeline = buildHttpPipeline(client);
+        CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
         JobRouterAdministrationClient jobRouterAdministrationClient = new JobRouterAdministrationClientBuilder()
-            .connectionString(getConnectionString())
+            .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildClient();
         return jobRouterAdministrationClient;
     }
 
     protected JobRouterClient getRouterClient(HttpClient client) {
+        CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
+
         HttpPipeline httpPipeline = buildHttpPipeline(client);
         JobRouterClient jobRouterClient = new JobRouterClientBuilder()
-            .connectionString(getConnectionString())
+            .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildClient();
         return jobRouterClient;
@@ -109,9 +111,9 @@ class JobRouterTestBase extends TestProxyTestBase {
 
     protected RouterQueue createQueue(JobRouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
         String queueName = String.format("%s-Name", queueId);
-        Map<String, LabelValue> queueLabels = new HashMap<String, LabelValue>() {
+        Map<String, Object> queueLabels = new HashMap<String, Object>() {
             {
-                put("Label_1", new LabelValue("Value_1"));
+                put("Label_1", "Value_1");
             }
         };
 
@@ -144,7 +146,8 @@ class JobRouterTestBase extends TestProxyTestBase {
             .setRequestedWorkerSelectors(
                 new ArrayList<RouterWorkerSelector>() {
                     {
-                        new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN, new LabelValue(10));
+                        new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN)
+                            .setValue(10);
                     }
                 }
             );

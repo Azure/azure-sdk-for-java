@@ -3,7 +3,7 @@
 
 # Python version 3.4 or higher is required to run this script.
 
-# Use case: Creates an aggregate POM which contains all modules for which aggregate JavaDoc or code coverage reports are generated. 
+# Use case: Creates an aggregate POM which contains all modules for which aggregate JavaDoc or code coverage reports are generated.
 # Note: This script must be run from the root of the azure-sdk-for-java repository
 #
 # Flags
@@ -80,7 +80,7 @@ start_javadoc_build = '''
                         <doctitle>Azure SDK for Java Reference Documentation</doctitle>
                         <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
                         <detectJavaApiLink>false</detectJavaApiLink>
-                        <isOffline>true</isOffline>
+                        <offline>true</offline>
                         <linksource>false</linksource>
                         <failOnError>true</failOnError>
                         <failOnWarnings>true</failOnWarnings>
@@ -167,7 +167,7 @@ def writeJavadocConfiguration(aggregatePom: TextIOWrapper):
 
         for line in config:
             stripped_line = line.strip()
-            
+
             if not stripped_line or stripped_line.startswith('#'):
                 continue
 
@@ -237,7 +237,7 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
-        # Ignore sdk/resourcemanagerhybrid, sdk/e2e, sdk/template and azure-security-test-keyvault-jca 
+        # Ignore sdk/resourcemanagerhybrid, sdk/e2e, sdk/template and azure-security-test-keyvault-jca
         if 'resourcemanagerhybrid' in root \
             or 'e2e' in root \
             or 'azure-security-test-keyvault-jca' in root \

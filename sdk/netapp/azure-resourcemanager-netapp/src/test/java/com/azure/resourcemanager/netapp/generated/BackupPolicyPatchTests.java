@@ -16,13 +16,13 @@ public final class BackupPolicyPatchTests {
         BackupPolicyPatch model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"backupPolicyId\":\"yznkby\",\"provisioningState\":\"t\",\"dailyBackupsToKeep\":1465227251,\"weeklyBackupsToKeep\":951051183,\"monthlyBackupsToKeep\":2014772944,\"volumesAssigned\":71172193,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"nfd\",\"backupsCount\":1139028210,\"policyEnabled\":true},{\"volumeName\":\"tdlmkkzevd\",\"backupsCount\":1837577186,\"policyEnabled\":false},{\"volumeName\":\"sdsttwvog\",\"backupsCount\":1374887959,\"policyEnabled\":false},{\"volumeName\":\"cngqqmoakufgmjz\",\"backupsCount\":1463483261,\"policyEnabled\":false}]},\"location\":\"rtwaenuuzko\",\"tags\":{\"hziuiefozbhdms\":\"inrfdwoyu\",\"zqhof\":\"l\"},\"id\":\"rmaequ\",\"name\":\"ah\",\"type\":\"icslfaoq\"}")
+                    "{\"properties\":{\"backupPolicyId\":\"bminrfdwoyuhhzi\",\"provisioningState\":\"efozbhdms\",\"dailyBackupsToKeep\":1531171615,\"weeklyBackupsToKeep\":1354395459,\"monthlyBackupsToKeep\":572432734,\"volumesAssigned\":1916559931,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"u\",\"backupsCount\":674060065,\"policyEnabled\":false}]},\"location\":\"cslfaoqzpiyylha\",\"tags\":{\"hka\":\"whccs\",\"ggwoluhczb\":\"vwitqscyw\",\"i\":\"emh\"},\"id\":\"sbrgz\",\"name\":\"wmsweypqwd\",\"type\":\"ggicccnxqhue\"}")
                 .toObject(BackupPolicyPatch.class);
-        Assertions.assertEquals("rtwaenuuzko", model.location());
-        Assertions.assertEquals("inrfdwoyu", model.tags().get("hziuiefozbhdms"));
-        Assertions.assertEquals(1465227251, model.dailyBackupsToKeep());
-        Assertions.assertEquals(951051183, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(2014772944, model.monthlyBackupsToKeep());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.location());
+        Assertions.assertEquals("whccs", model.tags().get("hka"));
+        Assertions.assertEquals(1531171615, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1354395459, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(572432734, model.monthlyBackupsToKeep());
         Assertions.assertEquals(true, model.enabled());
     }
 
@@ -30,21 +30,22 @@ public final class BackupPolicyPatchTests {
     public void testSerialize() throws Exception {
         BackupPolicyPatch model =
             new BackupPolicyPatch()
-                .withLocation("rtwaenuuzko")
-                .withTags(mapOf("hziuiefozbhdms", "inrfdwoyu", "zqhof", "l"))
-                .withDailyBackupsToKeep(1465227251)
-                .withWeeklyBackupsToKeep(951051183)
-                .withMonthlyBackupsToKeep(2014772944)
+                .withLocation("cslfaoqzpiyylha")
+                .withTags(mapOf("hka", "whccs", "ggwoluhczb", "vwitqscyw", "i", "emh"))
+                .withDailyBackupsToKeep(1531171615)
+                .withWeeklyBackupsToKeep(1354395459)
+                .withMonthlyBackupsToKeep(572432734)
                 .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(BackupPolicyPatch.class);
-        Assertions.assertEquals("rtwaenuuzko", model.location());
-        Assertions.assertEquals("inrfdwoyu", model.tags().get("hziuiefozbhdms"));
-        Assertions.assertEquals(1465227251, model.dailyBackupsToKeep());
-        Assertions.assertEquals(951051183, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(2014772944, model.monthlyBackupsToKeep());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.location());
+        Assertions.assertEquals("whccs", model.tags().get("hka"));
+        Assertions.assertEquals(1531171615, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1354395459, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(572432734, model.monthlyBackupsToKeep());
         Assertions.assertEquals(true, model.enabled());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
