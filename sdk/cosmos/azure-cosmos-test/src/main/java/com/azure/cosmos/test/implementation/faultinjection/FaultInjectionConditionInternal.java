@@ -5,6 +5,7 @@ package com.azure.cosmos.test.implementation.faultinjection;
 
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestArgs;
 
@@ -147,7 +148,8 @@ public class FaultInjectionConditionInternal {
         @Override
         public boolean isApplicable(String ruleId, FaultInjectionRequestArgs requestArgs) {
             boolean isApplicable =
-                StringUtils.equals(this.containerResourceId, requestArgs.getCollectionRid());
+                isCollectionMetadataRequest(requestArgs.getServiceRequest())
+                    || StringUtils.equals(this.containerResourceId, requestArgs.getCollectionRid());
             if (!isApplicable) {
                 requestArgs.getServiceRequest().faultInjectionRequestContext
                     .recordFaultInjectionRuleEvaluation(requestArgs.getTransportRequestId(),
@@ -158,7 +160,13 @@ public class FaultInjectionConditionInternal {
                             requestArgs.getCollectionRid()));
             }
 
-            return isApplicable;        }
+            return isApplicable;
+        }
+
+        private boolean isCollectionMetadataRequest(RxDocumentServiceRequest serviceRequest) {
+            return serviceRequest.getOperationType() == OperationType.Read
+                && serviceRequest.getResourceType() == ResourceType.DocumentCollection;
+        }
     }
 
     static class AddressValidator implements IFaultInjectionConditionValidator {

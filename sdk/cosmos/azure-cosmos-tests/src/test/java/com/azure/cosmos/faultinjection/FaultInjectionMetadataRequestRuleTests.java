@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -520,7 +521,11 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
 
                 JsonNode pkRangesLookup = null;
                 for (int i = 0; i < metadataDiagnosticList.size(); i++) {
-                    if (metadataDiagnosticList.get(i).get("metaDataName").asText().equalsIgnoreCase("PARTITION_KEY_RANGE_LOOK_UP")) {
+                    if (metadataDiagnosticList
+                        .get(i)
+                        .get("metaDataName")
+                        .asText()
+                        .equalsIgnoreCase(MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP.name())) {
                         pkRangesLookup = metadataDiagnosticList.get(i);
                         break;
                     }
@@ -532,6 +537,101 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         } finally {
             pkRangesConnectionDelayRule.disable();
             dataOperationGoneRule.disable();
+            safeClose(testClient);
+        }
+    }
+
+    @Test(groups = { "multi-master" }, timeOut = 40 * TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_CollectionRead_ConnectionDelay() throws JsonProcessingException {
+
+        // We need to create a new client because client may have marked region unavailable in other tests
+        // which can impact the test result
+        CosmosAsyncClient testClient = getClientBuilder()
+            .contentResponseOnWriteEnabled(true)
+            .preferredRegions(writePreferredLocations)
+            .buildAsyncClient();
+
+        CosmosAsyncContainer container =
+            testClient
+                .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(this.cosmosAsyncContainer.getId());
+
+        // Test to validate partition key ranges request is being injected connection timeout
+        String collectionReadConnectionDelay = "CollectionRead-connectionDelay-" + UUID.randomUUID();
+        FaultInjectionRule collectionReadConnectionDelayRule =
+            new FaultInjectionRuleBuilder(collectionReadConnectionDelay)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .region(this.writePreferredLocations.get(0))
+                        .operationType(FaultInjectionOperationType.METADATA_REQUEST_CONTAINER)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                        .delay(Duration.ofSeconds(50)) // to simulate http connection timeout
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        FaultInjectionRule dataOperationStaledCacheRule =
+            new FaultInjectionRuleBuilder("DataOperation-staledCache-" + UUID.randomUUID())
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                        .region(this.writePreferredLocations.get(0))
+                        .build())
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.NAME_CACHE_IS_STALE)
+                        .times(1)// using staled cache to trigger collection cache refresh flow
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+        try {
+            // issue few requests to first populate all the necessary caches
+            // as connection delay will impact all other operations, and in this test, we want to limit the scope to only collection read
+            for (int i = 0; i < 10; i++) {
+                container.createItem(TestItem.createNewItem()).block();
+            }
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                    container,
+                    Arrays.asList(collectionReadConnectionDelayRule, dataOperationStaledCacheRule))
+                .block();
+
+            try {
+                CosmosDiagnostics cosmosDiagnostics = container.createItem(TestItem.createNewItem()).block().getDiagnostics();
+
+                // validate CONTAINER_LOOK_UP
+                ObjectNode diagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
+                JsonNode metadataDiagnosticsContext = diagnosticsNode.get("metadataDiagnosticsContext");
+                ArrayNode metadataDiagnosticList = (ArrayNode) metadataDiagnosticsContext.get("metadataDiagnosticList");
+
+                assertThat(metadataDiagnosticList.size()).isGreaterThan(0);
+
+                JsonNode containerLookup = null;
+                for (int i = 0; i < metadataDiagnosticList.size(); i++) {
+                    if (metadataDiagnosticList.get(i)
+                        .get("metaDataName")
+                        .asText()
+                        .equalsIgnoreCase(MetadataDiagnosticsContext.MetadataType.CONTAINER_LOOK_UP.name())) {
+                        containerLookup = metadataDiagnosticList.get(i);
+                        break;
+                    }
+                }
+
+                assertThat(containerLookup).isNotNull();
+                assertThat(containerLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(45000); // the duration will be at least one timeout
+            } catch (CosmosException cosmosException) {
+                fail("CreateItem should have succeeded. " + cosmosException.getDiagnostics());
+            }
+        } finally {
+            collectionReadConnectionDelayRule.disable();
+            dataOperationStaledCacheRule.disable();
             safeClose(testClient);
         }
     }
