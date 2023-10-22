@@ -155,7 +155,10 @@ public class FaultInjectionRuleProcessor {
         return Mono.just(rule)
             .flatMap(originalRule -> {
                 // get effective condition
-                FaultInjectionConditionInternal effectiveCondition = new FaultInjectionConditionInternal(documentCollection.getResourceId());
+                FaultInjectionConditionInternal effectiveCondition =
+                    new FaultInjectionConditionInternal(
+                        documentCollection.getResourceId(),
+                        documentCollection.getId());
 
                 if ((rule.getCondition().getOperationType() != null && canErrorLimitToOperation(errorType))) {
                     effectiveCondition.setOperationType(this.getEffectiveOperationType(rule.getCondition().getOperationType()));
