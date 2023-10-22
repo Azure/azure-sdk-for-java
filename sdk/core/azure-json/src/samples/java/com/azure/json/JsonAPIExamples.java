@@ -66,8 +66,7 @@ public class JsonAPIExamples {
         String path = "src/test/resources/JsonTestFileA.json";
         String content = Files.readString(Paths.get(path));
 
-        JsonBuilder builder = new JsonBuilder();
-        JsonElement result = builder.build(content);
+        JsonElement result = JsonElement.fromString(content);
         System.out.println("Result of Test 1: Getting JSON Model from file\n" + result.toJson() + "\n");
         demonstration2(result);
     }

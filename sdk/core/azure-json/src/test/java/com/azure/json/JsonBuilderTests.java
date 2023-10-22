@@ -611,7 +611,7 @@ public class JsonBuilderTests {
     public void arrayArrayStringCorrectInputType() throws IOException {
         String input = "[[\"Value1\"]]";
         JsonElement output = JsonElement.fromString(input);
-        sonElement result = ((JsonArray)output).getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertTrue(result.isArray());
     }
 
