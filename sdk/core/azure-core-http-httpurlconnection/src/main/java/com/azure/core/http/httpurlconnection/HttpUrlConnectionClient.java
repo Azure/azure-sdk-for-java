@@ -101,8 +101,11 @@ public class HttpUrlConnectionClient implements HttpClient {
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         HttpURLConnection connection = connect(httpRequest);
-        sendBodySync(httpRequest, progressReporter, connection);
-        return receiveResponse(httpRequest, connection);
+
+        return Mono.fromRunnable(() -> sendBodySync(httpRequest, progressReporter, connection))
+            .then(Mono.fromCallable(() -> receiveResponse(httpRequest, connection)))
+            .timeout(responseTimeout)
+            .block();
     }
 
     /**
