@@ -32,7 +32,8 @@ public final class ManagedPrivateEndpointsCheckNameAvailabilityWithResponseMockT
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":true,\"name\":\"dt\",\"message\":\"epu\",\"reason\":\"Invalid\"}";
+        String responseStr =
+            "{\"nameAvailable\":true,\"name\":\"tzejetjklnt\",\"message\":\"yjuzkdb\",\"reason\":\"Invalid\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +65,15 @@ public final class ManagedPrivateEndpointsCheckNameAvailabilityWithResponseMockT
             manager
                 .managedPrivateEndpoints()
                 .checkNameAvailabilityWithResponse(
-                    "sfnrdtjxt",
-                    "r",
-                    new ManagedPrivateEndpointsCheckNameRequest().withName("cq"),
+                    "vlwyzg",
+                    "blkujrllfojuidjp",
+                    new ManagedPrivateEndpointsCheckNameRequest().withName("uyjucejikzo"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("dt", response.name());
-        Assertions.assertEquals("epu", response.message());
+        Assertions.assertEquals("tzejetjklnt", response.name());
+        Assertions.assertEquals("yjuzkdb", response.message());
         Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

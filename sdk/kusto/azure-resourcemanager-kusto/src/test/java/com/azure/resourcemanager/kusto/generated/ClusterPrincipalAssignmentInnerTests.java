@@ -16,11 +16,11 @@ public final class ClusterPrincipalAssignmentInnerTests {
         ClusterPrincipalAssignmentInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"principalId\":\"fqawrlyxw\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"prbnwbxgjvtbv\",\"principalType\":\"App\",\"tenantName\":\"szdnr\",\"principalName\":\"qguhmuo\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"rwzwbng\"},\"id\":\"itnwuizgazxufi\",\"name\":\"uckyf\",\"type\":\"hr\"}")
+                    "{\"properties\":{\"principalId\":\"nwui\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"zxufiz\",\"principalType\":\"App\",\"tenantName\":\"y\",\"principalName\":\"hr\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"vzwdzuhtymwis\"},\"id\":\"kfthwxmntei\",\"name\":\"aop\",\"type\":\"km\"}")
                 .toObject(ClusterPrincipalAssignmentInner.class);
-        Assertions.assertEquals("fqawrlyxw", model.principalId());
+        Assertions.assertEquals("nwui", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.role());
-        Assertions.assertEquals("prbnwbxgjvtbv", model.tenantId());
+        Assertions.assertEquals("zxufiz", model.tenantId());
         Assertions.assertEquals(PrincipalType.APP, model.principalType());
     }
 
@@ -28,14 +28,14 @@ public final class ClusterPrincipalAssignmentInnerTests {
     public void testSerialize() throws Exception {
         ClusterPrincipalAssignmentInner model =
             new ClusterPrincipalAssignmentInner()
-                .withPrincipalId("fqawrlyxw")
+                .withPrincipalId("nwui")
                 .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
-                .withTenantId("prbnwbxgjvtbv")
+                .withTenantId("zxufiz")
                 .withPrincipalType(PrincipalType.APP);
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalAssignmentInner.class);
-        Assertions.assertEquals("fqawrlyxw", model.principalId());
+        Assertions.assertEquals("nwui", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.role());
-        Assertions.assertEquals("prbnwbxgjvtbv", model.tenantId());
+        Assertions.assertEquals("zxufiz", model.tenantId());
         Assertions.assertEquals(PrincipalType.APP, model.principalType());
     }
 }
