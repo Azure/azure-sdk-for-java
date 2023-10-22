@@ -2296,8 +2296,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
       nodeId: string;
 
       @doc("""
-The name of the of the Compute Node Extension that you want to get information
-about.
+The name of the Compute Node Extension that you want to get information about.
 """)
       @path
       extensionName: string;
