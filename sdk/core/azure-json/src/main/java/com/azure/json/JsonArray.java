@@ -146,7 +146,7 @@ public class JsonArray extends JsonElement {
 
     /**
      * Size of the JsonElement array.
-     * 
+     *
      * @return The size of the array.
      */
     public int size() {
@@ -294,8 +294,12 @@ public class JsonArray extends JsonElement {
      * invalid JsonToken indicating a improperly formed JsonArray.
      */
     private void build(JsonReader reader) throws IOException {
-        while (reader.currentToken() != JsonToken.END_ARRAY) {
-            JsonToken token = reader.nextToken();
+        JsonToken token = reader.currentToken();
+        while (true) {
+            if (token == JsonToken.END_ARRAY){
+                break;
+            }
+            token = reader.nextToken();
 
             switch (token) {
                 // Case: the currently read token is a JsonToken.FIELD_NAME token.
