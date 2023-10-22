@@ -21,19 +21,19 @@ public class JsonBooleanTests {
     @Test
     public void booleanTrue(){
         JsonBoolean test = JsonBoolean.getInstance(true);
-        assertTrue(test.getBooleanValue());
+        assertTrue(test.getValue());
     }
 
     @Test
     public void booleanFalse(){
         JsonBoolean test = JsonBoolean.getInstance(false);
-        assertFalse(test.getBooleanValue());
+        assertFalse(test.getValue());
     }
 
    @Test
     public void booleanInstanceTests(){
-        assertTrue(JsonBoolean.getInstance(true).getBooleanValue());
-        assertFalse(JsonBoolean.getInstance(false).getBooleanValue());
+        assertTrue(JsonBoolean.getInstance(true).getValue());
+        assertFalse(JsonBoolean.getInstance(false).getValue());
     }
 
     @Test

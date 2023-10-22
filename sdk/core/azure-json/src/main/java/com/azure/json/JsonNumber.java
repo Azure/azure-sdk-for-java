@@ -47,6 +47,8 @@ public class JsonNumber extends JsonElement {
         this.numberValue = value;
     }
 
+    public Number getNumberValue(){ return this.numberValue;}
+
     /**
      * Returns the String representation of the JsonNumber object
      *

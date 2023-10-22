@@ -171,6 +171,50 @@ public class JsonArray extends JsonElement {
     }
 
     /**
+     * Returns the String representation of the JsonArray object
+     * utilising the JsonWriter to abstract. It passes a StringWriter to the
+     * toWriter method and then returns the resulting String.
+     * Then it gets reformatted with line breaks and tabs for easier readability.
+     * @return String representation of the JsonArray object
+     */
+    public String toJsonPretty() throws IOException {
+        int tabCount = 0;
+        String input = toJson();
+        for(int i = 0; i < input.length(); i++){
+            if(input.charAt(i) == '{' || input.charAt(i) == '['){
+                tabCount++;
+                String firstHalf = input.substring(0, i+1);
+                String lastHalf = input.substring(i+1);
+                String tabs = "\n";
+                for(int j = 0; j < tabCount; j++){
+                    tabs += "\t";
+                }
+                input = firstHalf + tabs + lastHalf;
+            } else if (input.charAt(i) == ',') {
+                String firstHalf = input.substring(0, i+1);
+                String lastHalf = input.substring(i+1);
+                String tabs = "\n";
+                for(int j = 0; j < tabCount; j++){
+                    tabs += "\t";
+                }
+                input = firstHalf + tabs + lastHalf;
+            } else if (input.charAt(i) == ']' || input.charAt(i) == '}'){
+                tabCount--;
+                String firstHalf = input.substring(0, i);
+                String lastHalf = input.substring(i);
+                String tabs = "\n";
+                for(int j = 0; j < tabCount; j++){
+                    tabs += "\t";
+                }
+                input = firstHalf + tabs + lastHalf;
+                i = i + tabs.length();
+            }
+        }
+        input = input.replace(":", ": ");
+        return input;
+    }
+
+    /**
      * Takes a writer and uses it to serialize the JsonArray object
      * @param writer the writer to use, which is then wrapped in a JsonWriter
      * @return the writer

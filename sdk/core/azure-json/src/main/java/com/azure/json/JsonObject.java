@@ -380,6 +380,50 @@ public class JsonObject extends JsonElement {
     }
 
     /**
+     * Serializes the JsonObject to a String. This is a convenience method that
+     * utilises the toWriter method.
+     * Then it gets reformatted with line breaks and tabs for easier readability.
+     * @return the String representation of the JsonObject
+     */
+
+    public String toJsonPretty() throws IOException {
+        int tabCount = 0;
+        String input = toJson();
+        for(int i = 0; i < input.length(); i++){
+            if(input.charAt(i) == '{' || input.charAt(i) == '['){
+                tabCount++;
+                String firstHalf = input.substring(0, i+1);
+                String lastHalf = input.substring(i+1);
+                String tabs = "\n";
+                for(int j = 0; j < tabCount; j++){
+                    tabs += "\t";
+                }
+                input = firstHalf + tabs + lastHalf;
+            } else if (input.charAt(i) == ',') {
+                String firstHalf = input.substring(0, i+1);
+                String lastHalf = input.substring(i+1);
+                String tabs = "\n";
+                for(int j = 0; j < tabCount; j++){
+                    tabs += "\t";
+                }
+                input = firstHalf + tabs + lastHalf;
+            } else if (input.charAt(i) == ']' || input.charAt(i) == '}'){
+                tabCount--;
+                String firstHalf = input.substring(0, i);
+                String lastHalf = input.substring(i);
+                String tabs = "\n";
+                for(int j = 0; j < tabCount; j++){
+                    tabs += "\t";
+                }
+                input = firstHalf + tabs + lastHalf;
+                i = i + tabs.length();
+            }
+        }
+        input = input.replace(":", ": ");
+        return input;
+    }
+
+    /**
      * Serializes the JsonObject to a Writer. May need to be named better
      * than toWriter or toStream, but I'm unsure exactly what to use (as
      * toJsonWriter is confusing as JsonWriter is a class in itself.

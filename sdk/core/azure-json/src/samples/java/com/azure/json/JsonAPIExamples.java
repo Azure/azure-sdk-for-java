@@ -48,12 +48,12 @@ public class JsonAPIExamples {
     public static void main(String[] args) throws IOException {
         System.out.println("Original Library Content:\n" + library.toJson() + "\n");
 
-        JsonArray bookLog = (JsonArray)library.getProperty("books");
+        JsonArray bookLog = (JsonArray)((JsonObject)library).getProperty("books");
         JsonElement childLibrary = new JsonArray();
-        for (int i = 0; i < bookLog.arrayLength(); i++){
-            JsonBoolean getCheck = (JsonBoolean) bookLog.getElement(i).getProperty("child friendly");
-            if (getCheck.getBooleanValue()){
-                childLibrary.addElement(bookLog.getElement(i));
+        for (int i = 0; i < bookLog.size(); i++){
+            JsonBoolean getCheck = (JsonBoolean)((JsonObject)(bookLog.getElement(i))).getProperty("child friendly");
+            if (getCheck.getValue()){
+                ((JsonArray)childLibrary).addElement(bookLog.getElement(i));
                 bookLog.removeElement(i);
             }
         }
@@ -67,16 +67,16 @@ public class JsonAPIExamples {
         String content = Files.readString(Paths.get(path));
 
         JsonBuilder builder = new JsonBuilder();
-        JsonElement result = builder.deserialize(content);
+        JsonElement result = builder.build(content);
         System.out.println("Result of Test 1: Getting JSON Model from file\n" + result.toJson() + "\n");
         demonstration2(result);
     }
 
     public static void demonstration2(JsonElement element) throws IOException {
-        JsonArray database = (JsonArray)element.getProperty("movies");
+        JsonArray database = (JsonArray)((JsonObject)element).getProperty("movies");
         JsonArray validData = new JsonArray();
-        for (int i = 0; i < database.arrayLength(); i++){
-            if(Objects.equals(database.getElement(i).getProperty("release").toString(), "Oct")){
+        for (int i = 0; i < database.size(); i++){
+            if(((JsonObject)(database.getElement(i))).getProperty("release").toString().equals("Oct")){
                 validData.addElement(database.getElement(i));
             }
         }
@@ -85,13 +85,13 @@ public class JsonAPIExamples {
     }
 
     public static void demonstration3(JsonElement element) throws IOException {
-        JsonArray database = (JsonArray) element.getProperty("movies");
-        for (int i = 0; i < database.arrayLength(); i++){
-            String movieName = database.getElement(i).getProperty("name").toString();
+        JsonArray database = (JsonArray)((JsonObject)element).getProperty("movies");
+        for (int i = 0; i < database.size(); i++){
+            String movieName = ((JsonObject)(database.getElement(i))).getProperty("name").toString();
             movieName = movieName.replace("Movie", "");
             int movieNumber = Integer.parseInt(movieName);
             if(movieNumber % 2 == 0){
-                database.getElement(i).setProperty("evenNum", new JsonString("TRUE"));
+                ((JsonObject)(database.getElement(i))).setProperty("evenNum", new JsonString("TRUE"));
             }
         }
         String result = element.toJson();
@@ -101,9 +101,9 @@ public class JsonAPIExamples {
     }
 
     public static void demonstration4(JsonElement element) throws IOException {
-        JsonArray database = (JsonArray)element.getProperty("movies");
-        for (int i = 0; i < database.arrayLength(); i++){
-            int rating = Integer.parseInt(database.getElement(i).getProperty("rating").toString());
+        JsonArray database = (JsonArray)((JsonObject)element).getProperty("movies");
+        for (int i = 0; i < database.size(); i++){
+            int rating = Integer.parseInt(((JsonObject)(database.getElement(i))).getProperty("rating").toString());
             if(rating < 8){
                 database.removeElement(i);
             }

@@ -261,7 +261,7 @@ public class JsonBuilderTests {
     public void objectObjectStringCorrectInputType() throws IOException {
         String input = "{\"Key\":{\"InnerKey\":\"Value\"}}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
          assertTrue(result.isObject());
     }
 
@@ -619,7 +619,7 @@ public class JsonBuilderTests {
     public void arrayArrayStringCorrectInnerType() throws IOException {
         String input = "[[\"Value1\"]]";
         JsonElement output = builder.build(input);
-        JsonElement outerArray = output.asArray().getElement(0);
+        JsonElement outerArray = ((JsonArray)output).getElement(0);
         JsonElement result = ((JsonArray)outerArray).getElement(0);
         assertTrue(result.isString());
     }

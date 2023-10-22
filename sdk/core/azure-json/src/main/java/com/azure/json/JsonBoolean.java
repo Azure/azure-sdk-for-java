@@ -36,7 +36,7 @@ public final class JsonBoolean extends JsonElement {
      *
      * @return The boolean value.
      */
-    public boolean getBooleanValue() {
+    public boolean getValue() {
         return booleanValue;
     }
 

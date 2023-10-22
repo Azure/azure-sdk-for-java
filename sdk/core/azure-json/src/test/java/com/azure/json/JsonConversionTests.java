@@ -34,14 +34,14 @@ public class JsonConversionTests {
     public void convertStringToBooleanWord() throws IOException {
         JsonString input = new JsonString("true");
         JsonBoolean output = input.asBoolean();
-        assertTrue(output.getBooleanValue());
+        assertTrue(output.getValue());
     }
 
     @Test
     public void convertStringToBooleanNumber() throws IOException {
         JsonString input = new JsonString("0");
         JsonBoolean output = input.asBoolean();
-        assertFalse(output.getBooleanValue());
+        assertFalse(output.getValue());
     }
 
     @Test
@@ -68,14 +68,14 @@ public class JsonConversionTests {
     public void convertNumberToBooleanTrue() throws IOException {
         JsonNumber input = new JsonNumber(1);
         JsonBoolean output = input.asBoolean();
-        assertTrue(output.getBooleanValue());
+        assertTrue(output.getValue());
     }
 
     @Test
     public void convertNumberToBooleanFalse() throws IOException {
         JsonNumber input = new JsonNumber(0);
         JsonBoolean output = input.asBoolean();
-        assertFalse(output.getBooleanValue());
+        assertFalse(output.getValue());
     }
 
     @Test
@@ -158,7 +158,7 @@ public class JsonConversionTests {
         JsonBoolean input = JsonBoolean.getInstance(false);
         JsonString converted = input.asString();
         JsonBoolean output = converted.asBoolean();
-        assertEquals(input.getBooleanValue(), output.getBooleanValue());
+        assertEquals(input.getValue(), output.getValue());
     }
 
     @Test
@@ -166,7 +166,7 @@ public class JsonConversionTests {
         JsonBoolean input = JsonBoolean.getInstance(false);
         JsonString converted = input.asStringDigit();
         JsonBoolean output = converted.asBoolean();
-        assertEquals(input.getBooleanValue(), output.getBooleanValue());
+        assertEquals(input.getValue(), output.getValue());
     }
 
     @Test
@@ -174,7 +174,7 @@ public class JsonConversionTests {
         JsonBoolean input = JsonBoolean.getInstance(false);
         JsonNumber converted = input.asNumber();
         JsonBoolean output = converted.asBoolean();
-        assertEquals(input.getBooleanValue(), output.getBooleanValue());
+        assertEquals(input.getValue(), output.getValue());
 
     }
 
@@ -221,7 +221,7 @@ public class JsonConversionTests {
         JsonNumber numConvert = input.asNumber();
         JsonString stringConvert = numConvert.asString();
         JsonBoolean output = stringConvert.asBoolean();
-        assertEquals(input.getBooleanValue(), output.getBooleanValue());
+        assertEquals(input.getValue(), output.getValue());
     }
 
     @Test
@@ -230,7 +230,7 @@ public class JsonConversionTests {
         JsonString stringConvert = input.asStringDigit();
         JsonNumber numConvert = stringConvert.asNumber();
         JsonBoolean output = numConvert.asBoolean();
-        assertEquals(input.getBooleanValue(), output.getBooleanValue());
+        assertEquals(input.getValue(), output.getValue());
     }
 
 
@@ -292,7 +292,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
-        assertEquals("0", converted.toString()); 
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -336,7 +336,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonNumber(0);
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
-        assertEquals("0", converted.toString()); 
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -380,7 +380,7 @@ public class JsonConversionTests {
         JsonElement test = JsonBoolean.getInstance(true);
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
-        assertEquals("1", converted.toString()); 
+        assertEquals("1", converted.toString());
     }
 
     @Test
@@ -424,7 +424,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonString("");
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
-        assertEquals("0", converted.toString()); 
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -468,7 +468,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonArray();
         JsonNumber converted = test.asNumber();
         assertTrue(converted.isNumber());
-        assertEquals("0", converted.toString()); 
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -513,7 +513,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertFalse(converted.isBoolean());
-        assertEquals("0", converted.toString()); 
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -521,7 +521,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertFalse(converted.isString());
-        assertEquals("0", converted.toString()); 
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -529,7 +529,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertFalse(converted.isNull());
-        assertEquals("0", converted.toString()); 
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -537,7 +537,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertFalse(converted.isArray());
-        assertEquals("0", converted.toString()); 
+        assertEquals("0", converted.toString());
     }
 
     @Test
@@ -545,7 +545,7 @@ public class JsonConversionTests {
         JsonElement test = new JsonObject();
         JsonNumber converted = test.asNumber();
         assertFalse(converted.isObject());
-        assertEquals("0", converted.toString()); 
+        assertEquals("0", converted.toString());
     }
 
 
