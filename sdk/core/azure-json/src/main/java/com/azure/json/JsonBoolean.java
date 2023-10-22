@@ -7,7 +7,7 @@ import java.io.IOException;
 
 /**
  * Represents JSON boolean values.
- * 
+ *
  * @see JsonElement
  */
 public final class JsonBoolean extends JsonElement {
@@ -15,8 +15,8 @@ public final class JsonBoolean extends JsonElement {
     private static final JsonBoolean FALSE = new JsonBoolean(false);
     private final boolean booleanValue;
 
-    private JsonBoolean(boolean value) { 
-        this.booleanValue = value; 
+    private JsonBoolean(boolean value) {
+        this.booleanValue = value;
     }
 
     /**
@@ -33,7 +33,7 @@ public final class JsonBoolean extends JsonElement {
 
     /**
      * Returns boolean value from a JsonBoolean object.
-     * 
+     *
      * @return The boolean value.
      */
     public boolean getBooleanValue() {
@@ -47,69 +47,37 @@ public final class JsonBoolean extends JsonElement {
      * current state of this JsonBoolean object.
      */
     @Override
-    public String toString() { 
-        return Boolean.toString(booleanValue); 
+    public String toString() {
+        return Boolean.toString(booleanValue);
     }
 
     /**
-     * Identifies if an object is of type JsonBoolean. 
-     * 
+     * Identifies if an object is of type JsonBoolean.
+     *
      * @return boolean of whether this JsonElement object is of type JsonBoolean.
      */
     @Override
-    public boolean isBoolean() { 
-        return true; 
-    }
-    
-    /**
-     * JsonBoolean as an element in a JsonArray.
-     * <p>
-     * TODO Javadoc comment
-     * 
-     * @return A JsonArray with a JsonBoolean instance as its first element.
-     */
-    @Override
-    public JsonArray asArray() {
-        JsonArray output = new JsonArray();
-        output.addElement(this);
-        return output;
+    public boolean isBoolean() {
+        return true;
     }
 
-    /**
-     * JsonBoolean as a property in a JsonObject.
-     * <p>
-     * TODO Javadoc comment
-     * 
-     * @return The JsonObject with the JsonBoolean value as a property.
-     */
-    @Override
-    public JsonObject asObject() {
-        JsonObject output = new JsonObject();
-        output.setProperty("Value", this);
-        return output;
-    }
 
     /**
      * The current JsonBoolean object instance.
      * <p>
      * TODO Javadoc comment
-     * 
+     *
      * @return The current instance of JsonBoolean object.
      */
-    @Override
-    public JsonBoolean asBoolean() { 
-        return this; 
-    }
 
     /**
      * Represents JsonBoolean as a JsonNumber.
      * <p>
      * Truth values true and false respectively, 1 or 0.
      * TODO Javadoc comment
-     * 
+     *
      * @return The JsonNumber representation of a JsonBoolean, 0 or 1.
      */
-    @Override
     public JsonNumber asNumber() {
         if (booleanValue) {
             return new JsonNumber(1);
@@ -120,17 +88,24 @@ public final class JsonBoolean extends JsonElement {
 
     /**
      * Converts JsonBoolean value to type JsonString.
-     * 
+     *
      * @return The JsonString representation of a JsonBoolean object.
      */
-    @Override
-    public JsonString asString() { 
-        return new JsonString(Boolean.toString(booleanValue)); 
+    public JsonString asString() {
+        return new JsonString(Boolean.toString(booleanValue));
     }
-    
+
+    public JsonString asStringDigit(){
+        if (booleanValue) {
+            return new JsonString(Integer.toString(1));
+        } else {
+            return new JsonString(Integer.toString(0));
+        }
+    }
+
     /**
-     * Writes the JsonSerializable object JsonBoolean. 
-     * 
+     * Writes the JsonSerializable object JsonBoolean.
+     *
      * @param jsonWriter JsonWriter that the serialized JsonBoolean is written to.
      * @return JsonWriter state after the serialized JsonBoolean has been written to it.
      * @throws IOException Thrown when JsonWriter.writeBoolean call throws an IOException.

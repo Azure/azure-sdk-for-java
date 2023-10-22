@@ -96,15 +96,15 @@ public abstract class JsonElement {
         return null;
     }
 
-// Commented out APIs relating to JsonArray and JsonObject in JsonElement. 
-// 
+// Commented out APIs relating to JsonArray and JsonObject in JsonElement.
+//
 //     //------------------------------------------------------------------------//
 //     //------------------------ Methods for JsonArray -------------------------//
 //     // TODO: could be extracted into an interface instead of type checking in //
 //     // JsonElement. Could create JsonArrayable interface or some other more   //
 //     // appropriately named interface to be implemented by JsonArray.          //
 //     //------------------------------------------------------------------------//
-// 
+//
 //     // All throw unless isArray is true.
 //    /**
 //     *
@@ -186,7 +186,7 @@ public abstract class JsonElement {
 //     // JsonElement. Could create JsonObjectable interface or some other more  //
 //     // appropriately named interface to be implemented by JsonObject.         //
 //     //------------------------------------------------------------------------//
-// 
+//
 //    /**
 //     *
 //     * @param key
@@ -315,46 +315,5 @@ public abstract class JsonElement {
     // they will be used in their current implementation.                     //
     //------------------------------------------------------------------------//
 
-    /**
-     * @return
-     */
-    public JsonArray asArray() {
-        return new JsonArray();
-    }
-
-    /**
-     * @return
-     */
-    public JsonObject asObject() {
-        return new JsonObject();
-    }
-
-    /**
-     * @return
-     */
-    public JsonBoolean asBoolean() {
-        return JsonBoolean.getInstance(true);
-    }
-
-    /**
-     * @return
-     */
-    public JsonNull asNull() {
-        return JsonNull.getInstance();
-    }
-
-    /**
-     * @return
-     */
-    public JsonNumber asNumber() {
-        return new JsonNumber(0);
-    }
-
-    /**
-     * @return
-     */
-    public JsonString asString() {
-        return new JsonString("");
-    }
 }
 

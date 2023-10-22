@@ -45,22 +45,8 @@ public class JsonString extends JsonElement {
         return true;
     }
 
-    @Override
-    public JsonArray asArray() {
-        JsonArray output = new JsonArray();
-        output.addElement(this);
-        return output;
-    }
+    public JsonBoolean asBoolean() throws IOException {
 
-    @Override
-    public JsonObject asObject() {
-        JsonObject output = new JsonObject();
-        output.setProperty("Value", this);
-        return output;
-    }
-
-    @Override
-    public JsonBoolean asBoolean() {
         try {
             int a = Integer.parseInt(stringValue);
             if (a == 1) {
@@ -69,28 +55,30 @@ public class JsonString extends JsonElement {
                 return JsonBoolean.getInstance(false);
             }
         } catch (NumberFormatException e) {
-            return JsonBoolean.getInstance(Boolean.parseBoolean(stringValue));
+            if (stringValue.equals("true")){
+                return JsonBoolean.getInstance(true);
+            } else if (stringValue.equals("false")){
+                return JsonBoolean.getInstance(false);
+            } else {
+                throw new IOException();
+            }
         }
     }
 
-    @Override
-    public JsonNumber asNumber() {
+    public JsonNumber asNumber() throws IOException {
         try {
             return new JsonNumber(Integer.parseInt(stringValue));
-        } catch (NullPointerException e) {
-            try {
-                return new JsonNumber(Float.parseFloat(stringValue));
-            } catch (NullPointerException x) {
-                return new JsonNumber(0);
-            }
-        } catch (NumberFormatException z) {
-            return new JsonNumber(0);
-        }
-    }
+        } catch (NumberFormatException ignored) {
 
-    @Override
-    public JsonString asString() {
-        return this;
+        } catch (NullPointerException e){
+            throw new IOException("Input was null");
+        }
+        try {
+            return new JsonNumber(Float.parseFloat(stringValue));
+        } catch (NumberFormatException z) {
+            throw new IOException("Can't convert to valid number");
+        }
+
     }
 
     /**

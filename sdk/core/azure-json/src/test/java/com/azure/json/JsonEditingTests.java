@@ -76,30 +76,30 @@ public class JsonEditingTests {
     @Test
     public void editObjectPropertyVariableNullJsonNumber(){
         assertThrows(
-            IllegalArgumentException.class, 
-            () -> { 
-                Number numberTest = null; 
+            IllegalArgumentException.class,
+            () -> {
+                Number numberTest = null;
                 object.setProperty("EntryVariable", new JsonNumber(numberTest));
             }
         );
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"null", "true", "false", " 0 0 ", "0 1 2 3", "1. 2", "1 . 2", "1a1", "1-", "-1-", "abc", "-a", "0b01010101", "0B10101", "0x10", "0xFF", "0x1A", ".", "-."}) 
+    @ValueSource(strings = {"null", "true", "false", " 0 0 ", "0 1 2 3", "1. 2", "1 . 2", "1a1", "1-", "-1-", "abc", "-a", "0b01010101", "0B10101", "0x10", "0xFF", "0x1A", ".", "-."})
     public void editObjectPropertyVariableInvalidJsonNumberString(String value){
         assertThrows(
-            IllegalArgumentException.class, 
-            () -> { 
+            IllegalArgumentException.class,
+            () -> {
                 object.setProperty("EntryVariable", new JsonNumber(value));
             }
         );
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {" 123", "123 ", " -123", "-123 ", "00000", "0123", "123", "-1934234", "929.12342", "-1.2345", ".12345", "0.0", "-.12345", ".0", "-.0", " .0", ".0 ", "1000000000000000000000000000000", "-1000000000000000000000000000000"}) 
+    @ValueSource(strings = {" 123", "123 ", " -123", "-123 ", "00000", "0123", "123", "-1934234", "929.12342", "-1.2345", ".12345", "0.0", "-.12345", ".0", "-.0", " .0", ".0 ", "1000000000000000000000000000000", "-1000000000000000000000000000000"})
     public void editObjectPropertyVariableValidJsonNumberString(String value){
         assertDoesNotThrow(
-            () -> { 
+            () -> {
                 object.setProperty("EntryVariable", new JsonNumber(value));
             }
         );
@@ -143,26 +143,26 @@ public class JsonEditingTests {
 
     @Test
     public void deleteObjectPropertyObjectInner() throws IOException {
-        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we 
-        // must explicitly cast the returned JsonElement type of getElement and 
-        // getProperty to the appropriate JsonArray or JsonObject type to 
-        // chain further JsonArray or JsonObject method calls. 
+        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we
+        // must explicitly cast the returned JsonElement type of getElement and
+        // getProperty to the appropriate JsonArray or JsonObject type to
+        // chain further JsonArray or JsonObject method calls.
         ((JsonObject)object.getProperty("EntryObject")).removeProperty("InnerKey");
         assertEquals("{\"EntryVariable\":\"First\",\"EntryObject\":{},\"EntryArray\":[\"Value\",\"Value2\"]}", object.toJson());
     }
 
     @Test
     public void deleteObjectPropertyArrayInner() throws IOException {
-        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we 
-        // must explicitly cast the returned JsonElement type of getElement and 
-        // getProperty to the appropriate JsonArray or JsonObject type to 
-        // chain further JsonArray or JsonObject method calls. 
+        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we
+        // must explicitly cast the returned JsonElement type of getElement and
+        // getProperty to the appropriate JsonArray or JsonObject type to
+        // chain further JsonArray or JsonObject method calls.
         ((JsonArray)object.getProperty("EntryArray")).removeElement(0);
         assertEquals("{\"EntryVariable\":\"First\",\"EntryObject\":{\"InnerKey\":20},\"EntryArray\":[\"Value2\"]}", object.toJson());
     }
 
     @Test
-    public void deleteObjectPropertyNotExist(){
+    public void deleteObjectPropertyNotExist() throws IOException {
         assertNull(object.removeProperty("EntryFake"));
         //assertThrows(IOException.class, ()-> object.removeProperty("EntryFake"));
     }
@@ -216,20 +216,20 @@ public class JsonEditingTests {
 
     @Test
     public void deleteArrayPropertyObjectInner() throws IOException {
-        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we 
-        // must explicitly cast the returned JsonElement type of getElement and 
-        // getProperty to the appropriate JsonArray or JsonObject type to 
-        // chain further JsonArray or JsonObject method calls. 
+        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we
+        // must explicitly cast the returned JsonElement type of getElement and
+        // getProperty to the appropriate JsonArray or JsonObject type to
+        // chain further JsonArray or JsonObject method calls.
         ((JsonObject)array.getElement(1)).removeProperty("InnerKey");
         assertEquals("[\"EntryVariable\",{},[null,false]]", array.toJson());
     }
 
     @Test
     public void deleteArrayPropertyArrayInner() throws IOException {
-        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we 
-        // must explicitly cast the returned JsonElement type of getElement and 
-        // getProperty to the appropriate JsonArray or JsonObject type to 
-        // chain further JsonArray or JsonObject method calls. 
+        // NOTE: removing JsonArray and JsonObject APIs in JsonElement means we
+        // must explicitly cast the returned JsonElement type of getElement and
+        // getProperty to the appropriate JsonArray or JsonObject type to
+        // chain further JsonArray or JsonObject method calls.
         ((JsonArray)array.getElement(2)).removeElement(1);
         assertEquals("[\"EntryVariable\",{\"InnerKey\":\"Data\"},[null]]", array.toJson());
     }

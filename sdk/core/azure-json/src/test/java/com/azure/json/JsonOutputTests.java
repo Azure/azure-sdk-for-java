@@ -129,11 +129,11 @@ public class JsonOutputTests {
 //    public void complexJSONChaining() throws IOException {
 //        String expected = "{\"Mary\":\"Jones\",\"John\":\"Williams\"}";
 //        JsonObject jsonObj = new JsonObject();
-//        jsonObj.addProperty("James", new JsonString("Anderson"))
-//            .addProperty("Michael", new JsonString("Campbell"))
-//            .addProperty("Mary", new JsonString("Jones"))
+//        jsonObj.setProperty("James", new JsonString("Anderson"))
+//            .setProperty("Michael", new JsonString("Campbell"))
+//            .setProperty("Mary", new JsonString("Jones"))
 //            .removeProperty("Michael")
-//            .addProperty("John", new JsonString("Williams"))
+//            .setProperty("John", new JsonString("Williams"))
 //            .removeProperty("James");
 //        assertEquals(expected, jsonObj.toJson());
 //    }

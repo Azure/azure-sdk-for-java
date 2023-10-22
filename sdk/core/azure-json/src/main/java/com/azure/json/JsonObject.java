@@ -201,7 +201,7 @@ public class JsonObject extends JsonElement {
 //     * the new property
 //     * @throws IllegalArgumentException
 //     */
-//    public JsonObject addProperty(String key, JsonElement element) throws IllegalArgumentException {
+//    public JsonObject setProperty(String key, JsonElement element) throws IllegalArgumentException {
 //        // Adding the new property, the key with its value pair. The value is
 //        // the respective JsonElement cast/conversion of element.
 //        properties.put(key, element);
@@ -272,11 +272,11 @@ public class JsonObject extends JsonElement {
 //    }
 
     /**
-     * Sets a property to a JsonObject by key and JsonElement value. 
+     * Sets a property to a JsonObject by key and JsonElement value.
      * <p>
-     * If {@code key} or {@code element} is null a {@link NullPointerException} will be thrown. 
-     * 
-     * @return The jsonObject with the added property. 
+     * If {@code key} or {@code element} is null a {@link NullPointerException} will be thrown.
+     *
+     * @return The jsonObject with the added property.
      */
     public JsonObject setProperty(String key, JsonElement element) {
         properties.put(key, element);
@@ -297,49 +297,6 @@ public class JsonObject extends JsonElement {
     @Override
     public boolean isObject() {
         return true;
-    }
-
-    @Override
-    public JsonArray asArray() {
-        JsonArray output = new JsonArray();
-        Set<String> keys = properties.keySet();
-        for (String key: keys) {
-            output.addElement(properties.get(key));
-        }
-        return output;
-    }
-
-    @Override
-    public JsonObject asObject() {
-        return this;
-    }
-
-    @Override
-    public JsonBoolean asBoolean() {
-        if (properties.size() >= 1) {
-            return properties.get(properties.keySet().iterator().next()).asBoolean(); //Should only get the first element.
-        } else {
-            return JsonBoolean.getInstance(true);
-        }
-    }
-
-    @Override
-    public JsonNumber asNumber() {
-        if (properties.size() >= 1) {
-            return properties.get(properties.keySet().iterator().next()).asNumber(); //Should only get the first element.
-        } else {
-            return new JsonNumber(0);
-        }
-    }
-
-    @Override
-    public JsonString asString() {
-        if (properties.size() >= 1) {
-            return properties.get(properties.keySet().iterator().next()).asString(); //Should only get the first element.
-        } else {
-            //todo hacky fix for now
-            return new JsonString("");
-        }
     }
 
     /**
@@ -465,16 +422,7 @@ public class JsonObject extends JsonElement {
      * @throws IOException if the underlying writer or stream throws an exception
      */
     public JsonWriter serialize(JsonWriter writer) throws IOException {
-        writer.writeStartObject();
-
-        //for each item in the linked hashmap
-        for (Map.Entry<String, JsonElement> entry : properties.entrySet()) {
-            //write the key
-            writer.writeFieldName(entry.getKey());
-            //write the value
-            entry.getValue().serialize(writer);
-        }
-        writer.writeEndObject();
+        writer.writeMap(properties, (entryValueWriter, entryValue) -> entryValue.serialize(entryValueWriter));
         return writer;
     }
 }

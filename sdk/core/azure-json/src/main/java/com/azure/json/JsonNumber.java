@@ -13,13 +13,13 @@ public class JsonNumber extends JsonElement {
     private Number numberValue;
 
     /**
-     * Constructor used to explicitly set the number value of the JsonNumber 
-     * object via a String 
-     * 
-     * @param value specifies the String storing the number this JsonNumber 
+     * Constructor used to explicitly set the number value of the JsonNumber
+     * object via a String
+     *
+     * @param value specifies the String storing the number this JsonNumber
      * object represents
-     * @throws IllegalArgumentException Thrown when the String value does not 
-     * represent a parseable int or float value. 
+     * @throws IllegalArgumentException Thrown when the String value does not
+     * represent a parseable int or float value.
      */
     JsonNumber(String value) throws IllegalArgumentException {
         try {
@@ -28,21 +28,21 @@ public class JsonNumber extends JsonElement {
             try {
                 this.numberValue = Float.parseFloat(value);
             } catch (Exception x) {
-                throw new IllegalArgumentException("JsonNumber object must be constructed from a parseable int or float value."); 
+                throw new IllegalArgumentException("JsonNumber object must be constructed from a parseable int or float value.");
             }
         }
     }
 
     /**
-     * Constructor used to explicitly set the number value of the JsonNumber 
-     * object via a Number 
+     * Constructor used to explicitly set the number value of the JsonNumber
+     * object via a Number
      *
      * @param value Specifies the number this JsonNumber object represents
-     * @throws IllegalArgumentException Thrown when the value is null. 
+     * @throws IllegalArgumentException Thrown when the value is null.
      */
     public JsonNumber(Number value) throws IllegalArgumentException {
-        if (value == null) { 
-            throw new IllegalArgumentException("JsonNumber object cannot be constructed with a null value."); 
+        if (value == null) {
+            throw new IllegalArgumentException("JsonNumber object cannot be constructed with a null value.");
         }
         this.numberValue = value;
     }
@@ -55,7 +55,11 @@ public class JsonNumber extends JsonElement {
      */
     @Override
     public String toString() {
-        return this.numberValue.toString();
+        try {
+            return this.numberValue.toString();
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     /**
@@ -77,39 +81,16 @@ public class JsonNumber extends JsonElement {
 
     */
 
-    @Override
-    public JsonArray asArray() {
-        JsonArray output = new JsonArray();
-        output.addElement(this);
-        return output;
-    }
-
-    @Override
-    public JsonObject asObject() {
-        JsonObject output = new JsonObject();
-        output.setProperty("Value", this);
-        return output;
-    }
-
-    @Override
-    public JsonBoolean asBoolean() {
-        try {
-            if (numberValue.floatValue() == 1) {
-                return JsonBoolean.getInstance(true);
-            } else {
-                return JsonBoolean.getInstance(false);
-            }
-        } catch (NullPointerException e) {
+    public JsonBoolean asBoolean() throws IOException {
+        if (numberValue.floatValue() == 1) {
             return JsonBoolean.getInstance(true);
+        } else if (numberValue.floatValue() == 0) {
+            return JsonBoolean.getInstance(false);
+        } else {
+            throw new IOException();
         }
     }
 
-    @Override
-    public JsonNumber asNumber() {
-        return this;
-    }
-
-    @Override
     public JsonString asString() {
         try {
             return new JsonString(numberValue.toString());

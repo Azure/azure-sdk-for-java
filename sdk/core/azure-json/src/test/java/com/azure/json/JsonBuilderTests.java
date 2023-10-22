@@ -41,7 +41,7 @@ public class JsonBuilderTests {
     public void objectSingleStringCorrectInputType() throws IOException {
         String input = "{\"Key\":\"Value\"}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertTrue(result.isString());
     }
 
@@ -49,7 +49,7 @@ public class JsonBuilderTests {
     public void objectSingleStringCorrectInputValue() throws IOException {
         String input = "{\"Key\":\"Value\"}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertEquals("Value", result.toString());
     }
 
@@ -57,7 +57,7 @@ public class JsonBuilderTests {
     public void objectSingleStringCorrectToJSON() throws IOException {
         String input = "{\"Key\":\"Value\"}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
 
@@ -73,7 +73,7 @@ public class JsonBuilderTests {
     public void objectSingleNumberCorrectInputType() throws IOException {
         String input = "{\"Key\":1}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertTrue(result.isNumber());
     }
 
@@ -81,7 +81,7 @@ public class JsonBuilderTests {
     public void objectSingleNumberCorrectInputValue() throws IOException {
         String input = "{\"Key\":1}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertEquals("1", result.toString());
     }
 
@@ -89,7 +89,7 @@ public class JsonBuilderTests {
     public void objectSingleNumberCorrectToJSON() throws IOException {
         String input = "{\"Key:\":1}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
     //Section 1.2.2:Object - Decimal Number
@@ -104,7 +104,7 @@ public class JsonBuilderTests {
     public void objectSingleDecimalNumberCorrectInputType() throws IOException {
         String input = "{\"Key\":1.23}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertTrue(result.isNumber());
     }
 
@@ -112,7 +112,7 @@ public class JsonBuilderTests {
     public void objectSingleDecimalNumberCorrectInputValue() throws IOException {
         String input = "{\"Key\":1.23}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertEquals("1.23", result.toString());
     }
 
@@ -120,7 +120,7 @@ public class JsonBuilderTests {
     public void objectSingleDecimalNumberCorrectToJSON() throws IOException {
         String input = "{\"Key\":1.23}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
     //Section 1.2.3:Object - Negative Number
@@ -135,7 +135,7 @@ public class JsonBuilderTests {
     public void objectSingleNegativeNumberCorrectInputType() throws IOException {
         String input = "{\"Key\":-1}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertTrue(result.isNumber());
     }
 
@@ -143,7 +143,7 @@ public class JsonBuilderTests {
     public void objectSingleNegativeNumberCorrectInputValue() throws IOException {
         String input = "{\"Key\":-1}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertEquals("-1", result.toString());
     }
 
@@ -151,7 +151,7 @@ public class JsonBuilderTests {
     public void objectSingleNegativeNumberCorrectToJSON() throws IOException {
         String input = "{\"Key:\":-1}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
     /*Section 1.2.4:Object - Infinite Number
@@ -167,7 +167,7 @@ public class JsonBuilderTests {
     public void objectSingleInfiniteNumberCorrectInputType() throws IOException {
         String input = "{\"Key\":inf}";
         JsonElement output = builder.deserialize(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertTrue(result.isNumber());
     }
 
@@ -175,7 +175,7 @@ public class JsonBuilderTests {
     public void objectSingleInfiniteNumberCorrectInputValue() throws IOException {
         String input = "{\"Key\":inf}";
         JsonElement output = builder.deserialize(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertEquals("inf", result.toString());
     }
 
@@ -183,7 +183,7 @@ public class JsonBuilderTests {
     public void objectSingleInfiniteNumberCorrectToJSON() throws IOException {
         String input = "{\"Key\":inf}";
         JsonElement output = builder.deserialize(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
     */
 
@@ -199,7 +199,7 @@ public class JsonBuilderTests {
     public void objectSingleBooleanCorrectInputType() throws IOException {
         String input = "{\"Key\":true}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertTrue(result.isBoolean());
     }
 
@@ -207,7 +207,7 @@ public class JsonBuilderTests {
     public void objectSingleBooleanCorrectInputValue() throws IOException {
         String input = "{\"Key\":true}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertEquals("true", result.toString());
     }
 
@@ -215,7 +215,7 @@ public class JsonBuilderTests {
     public void objectSingleBooleanCorrectToJSON() throws IOException {
         String input = "{\"Key\":true}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
     //Section 1.4:Object - Single NULL
@@ -230,7 +230,7 @@ public class JsonBuilderTests {
     public void objectSingleNullCorrectInputType() throws IOException {
         String input = "{\"Key\":null}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertTrue(result.isNull());
     }
 
@@ -238,7 +238,7 @@ public class JsonBuilderTests {
     public void objectSingleNullCorrectInputValue() throws IOException {
         String input = "{\"Key\":null}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertEquals("null", result.toString());
     }
 
@@ -246,7 +246,7 @@ public class JsonBuilderTests {
     public void objectSingleNullCorrectToJSON() throws IOException {
         String input = "{\"Key\":null}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
     //Section 1.5:Object - Inner Object With String
@@ -262,15 +262,15 @@ public class JsonBuilderTests {
         String input = "{\"Key\":{\"InnerKey\":\"Value\"}}";
         JsonElement output = builder.build(input);
         JsonElement result = output.asObject().getProperty("Key");
-        assertTrue(result.isObject());
+         assertTrue(result.isObject());
     }
 
     @Test
     public void objectObjectStringCorrectInnerType() throws IOException {
         String input = "{\"Key\":{\"InnerKey\":\"Value\"}}";
         JsonElement output = builder.build(input);
-        JsonElement outerKey = output.asObject().getProperty("Key");
-        JsonElement result = outerKey.asObject().getProperty("InnerKey");
+        JsonElement outerKey = ((JsonObject)output).getProperty("Key");
+        JsonElement result = ((JsonObject)outerKey).getProperty("InnerKey");
         assertTrue(result.isString());
     }
 
@@ -278,8 +278,8 @@ public class JsonBuilderTests {
     public void objectObjectStringCorrectInputValue() throws IOException {
         String input = "{\"Key\":{\"InnerKey\":\"Value\"}}";
         JsonElement output = builder.build(input);
-        JsonElement outerKey = output.asObject().getProperty("Key");
-        JsonElement result = outerKey.asObject().getProperty("InnerKey");
+        JsonElement outerKey = ((JsonObject)output).getProperty("Key");
+        JsonElement result = ((JsonObject)outerKey).getProperty("InnerKey");
         assertEquals("Value", result.toString());
     }
 
@@ -287,7 +287,7 @@ public class JsonBuilderTests {
     public void objectObjectStringCorrectToJSON() throws IOException {
         String input = "{\"Key\":{\"InnerKey\":\"Value\"}}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
     //Section 1.6:Object - Inner Array With String
@@ -302,7 +302,7 @@ public class JsonBuilderTests {
     public void objectArrayStringCorrectInputType() throws IOException {
         String input = "{\"Key\":[\"Value\"]}";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asObject().getProperty("Key");
+        JsonElement result = ((JsonObject)output).getProperty("Key");
         assertTrue(result.isArray());
     }
 
@@ -310,8 +310,8 @@ public class JsonBuilderTests {
     public void objectArrayStringCorrectInnerType() throws IOException {
         String input = "{\"Key\":[\"Value\"]}";
         JsonElement output = builder.build(input);
-        JsonElement innerArray = output.asObject().getProperty("Key");
-        JsonElement result = innerArray.asArray().getElement(0);
+        JsonElement innerArray = ((JsonObject)output).getProperty("Key");
+        JsonElement result = ((JsonArray)innerArray).getElement(0);
         assertTrue(result.isString());
     }
 
@@ -319,8 +319,8 @@ public class JsonBuilderTests {
     public void objectArrayStringCorrectInputValue() throws IOException {
         String input = "{\"Key\":[\"Value\"]}";
         JsonElement output = builder.build(input);
-        JsonElement innerArray = output.asObject().getProperty("Key");
-        JsonElement result = innerArray.asArray().getElement(0);
+        JsonElement innerArray = ((JsonObject)output).getProperty("Key");
+        JsonElement result = ((JsonArray)innerArray).getElement(0);
         assertEquals("Value", result.toString());
     }
 
@@ -328,7 +328,7 @@ public class JsonBuilderTests {
     public void objectArrayStringCorrectToJSON() throws IOException {
         String input = "{\"Key\":[\"Value\"]}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
 
@@ -347,7 +347,7 @@ public class JsonBuilderTests {
     public void arraySingleStringCorrectInputType() throws IOException {
         String input = "[\"Value1\"]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertTrue(result.isString());
     }
 
@@ -355,7 +355,7 @@ public class JsonBuilderTests {
     public void arraySingleStringCorrectValue() throws IOException {
         String input = "[\"Value1\"]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertEquals("Value1", result.toString());
     }
 
@@ -364,7 +364,7 @@ public class JsonBuilderTests {
     public void arraySingleStringCorrectToJSON() throws IOException {
         String input = "[\"Value1\"]";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
 
     //Section 2.2: Array - Single Number
@@ -379,7 +379,7 @@ public class JsonBuilderTests {
     public void arraySingleNumberCorrectInputType() throws IOException {
         String input = "[1]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertTrue(result.isNumber());
     }
 
@@ -387,7 +387,7 @@ public class JsonBuilderTests {
     public void arraySingleNumberCorrectValue() throws IOException {
         String input = "[1]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertEquals("1", result.toString());
     }
 
@@ -395,7 +395,7 @@ public class JsonBuilderTests {
     public void arraySingleNumberCorrectToJSON() throws IOException {
         String input = "[1]";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
 
     //Section 2.2.1: Array - Number with Decimal
@@ -410,7 +410,7 @@ public class JsonBuilderTests {
     public void arraySingleDecimalNumberCorrectInputType() throws IOException {
         String input = "[1.23]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertTrue(result.isNumber());
     }
 
@@ -418,7 +418,7 @@ public class JsonBuilderTests {
     public void arraySingleDecimalNumberCorrectValue() throws IOException {
         String input = "[1.23]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertEquals("1.23", result.toString());
     }
 
@@ -426,7 +426,7 @@ public class JsonBuilderTests {
     public void arraySingleDecimalNumberCorrectToJSON() throws IOException {
         String input = "[1.23]";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
 
     //Section 2.2.2: Array - Negative number
@@ -441,7 +441,7 @@ public class JsonBuilderTests {
     public void arraySingleNegativeNumberCorrectInputType() throws IOException {
         String input = "[-1]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertTrue(result.isNumber());
     }
 
@@ -449,7 +449,7 @@ public class JsonBuilderTests {
     public void arraySingleNegativeNumberCorrectValue() throws IOException {
         String input = "[-1]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertEquals("-1", result.toString());
     }
 
@@ -457,7 +457,7 @@ public class JsonBuilderTests {
     public void arraySingleNegativeNumberCorrectToJSON() throws IOException {
         String input = "[-1]";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
 
     //Section 2.2.3: Array - Infinite number
@@ -474,7 +474,7 @@ public class JsonBuilderTests {
     public void arraySingleInfiniteNumberCorrectInputType() throws IOException {
         String input = "[nf]";
         JsonElement output = builder.deserialize(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertTrue(result.isNumber());
     }
 
@@ -482,7 +482,7 @@ public class JsonBuilderTests {
     public void arraySingleInfiniteNumberCorrectValue() throws IOException {
         String input = "[inf]";
         JsonElement output = builder.deserialize(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertEquals("inf", result.toString());
     }
 
@@ -490,7 +490,7 @@ public class JsonBuilderTests {
     public void arraySingleInfiniteNumberCorrectToJSON() throws IOException {
         String input = "[inf]";
         JsonElement output = builder.deserialize(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
     */
 
@@ -507,7 +507,7 @@ public class JsonBuilderTests {
     public void arraySingleBooleanCorrectInputType() throws IOException {
         String input = "[false]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertTrue(result.isBoolean());
     }
 
@@ -515,7 +515,7 @@ public class JsonBuilderTests {
     public void arraySingleBooleanCorrectValue() throws IOException {
         String input = "[false]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertEquals("false", result.toString());
     }
 
@@ -523,7 +523,7 @@ public class JsonBuilderTests {
     public void arraySingleBooleanCorrectToJSON() throws IOException {
         String input = "[false]";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
 
     //Section 2.4:Array - Single Null
@@ -538,7 +538,7 @@ public class JsonBuilderTests {
     public void arraySingleNullCorrectInputType() throws IOException {
         String input = "[null]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertTrue(result.isNull());
     }
 
@@ -546,7 +546,7 @@ public class JsonBuilderTests {
     public void arraySingleNullCorrectValue() throws IOException {
         String input = "[null]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertEquals("null", result.toString());
     }
 
@@ -554,7 +554,7 @@ public class JsonBuilderTests {
     public void arraySingleNullCorrectToJSON() throws IOException {
         String input = "[null]";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
 
     //Section 2.5:Array - Inner Object With String
@@ -569,7 +569,7 @@ public class JsonBuilderTests {
     public void arrayObjectStringCorrectInputType() throws IOException {
         String input = "[{\"Key\":\"Value1\"}]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertTrue(result.isObject());
     }
 
@@ -578,8 +578,8 @@ public class JsonBuilderTests {
     public void arrayObjectStringCorrectInnerType() throws IOException {
         String input = "[{\"Key\":\"Value1\"}]";
         JsonElement output = builder.build(input);
-        JsonElement innerArray = output.asArray().getElement(0);
-        JsonElement result = innerArray.asObject().getProperty("Key");
+        JsonElement innerArray = ((JsonArray)output).getElement(0);
+        JsonElement result = ((JsonObject)innerArray).getProperty("Key");
         assertTrue(result.isString());
     }
 
@@ -587,8 +587,8 @@ public class JsonBuilderTests {
     public void arrayObjectStringCorrectValue() throws IOException {
         String input = "[{\"Key\":\"Value1\"}]";
         JsonElement output = builder.build(input);
-        JsonElement innerArray = output.asArray().getElement(0);
-        JsonElement result = innerArray.asObject().getProperty("Key");
+        JsonElement innerArray = ((JsonArray)output).getElement(0);
+        JsonElement result = ((JsonObject)innerArray).getProperty("Key");
         assertEquals("Value1", result.toString());
     }
 
@@ -596,7 +596,7 @@ public class JsonBuilderTests {
     public void arrayObjectStringCorrectToJSON() throws IOException {
         String input = "[{\"Key\":\"Value1\"}]";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
 
     //Section 2.6:Array - Inner Array With String
@@ -611,7 +611,7 @@ public class JsonBuilderTests {
     public void arrayArrayStringCorrectInputType() throws IOException {
         String input = "[[\"Value1\"]]";
         JsonElement output = builder.build(input);
-        JsonElement result = output.asArray().getElement(0);
+        JsonElement result = ((JsonArray)output).getElement(0);
         assertTrue(result.isArray());
     }
 
@@ -620,7 +620,7 @@ public class JsonBuilderTests {
         String input = "[[\"Value1\"]]";
         JsonElement output = builder.build(input);
         JsonElement outerArray = output.asArray().getElement(0);
-        JsonElement result = outerArray.asArray().getElement(0);
+        JsonElement result = ((JsonArray)outerArray).getElement(0);
         assertTrue(result.isString());
     }
 
@@ -628,8 +628,8 @@ public class JsonBuilderTests {
     public void arrayArrayStringCorrectValue() throws IOException {
         String input = "[[\"Value1\"]]";
         JsonElement output = builder.build(input);
-        JsonElement outerArray = output.asArray().getElement(0);
-        JsonElement result = outerArray.asArray().getElement(0);
+        JsonElement outerArray = ((JsonArray)output).getElement(0);
+        JsonElement result = ((JsonArray)outerArray).getElement(0);
         assertEquals("Value1", result.toString());
     }
 
@@ -637,7 +637,7 @@ public class JsonBuilderTests {
     public void arrayArrayStringCorrectToJSON() throws IOException {
         String input = "[[\"Value1\"]]";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
 
     //Section 3: Longer JSON Inputs - Object
@@ -645,28 +645,28 @@ public class JsonBuilderTests {
     public void objectMultiSameType() throws IOException {
         String input = "{\"Key\":\"Value\",\"Key2\":\"Value2\"}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
     @Test
     public void objectMultiDifferentType() throws IOException {
         String input = "{\"Key\":\"Value\",\"Key2\":1}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
     @Test
     public void objectDoubleLayerObjects() throws IOException {
         String input = "{\"Key1\":{\"KeyInner1\":\"Value\"},\"Key2\":{\"InnerKey2\":1}}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
     @Test
     public void objectDoubleDoubleLayerObjects() throws IOException {
         String input = "{\"Key1\":{\"KeyInner1\":\"Value\"},\"Key2\":{\"InnerKey2\":1}}";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asObject().toJson());
+        assertEquals(input, ((JsonObject)output).toJson());
     }
 
 
@@ -675,14 +675,14 @@ public class JsonBuilderTests {
     public void arrayMultiSameType() throws IOException{
         String input = "[\"Value1\",\"Value2\"]";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
 
     @Test
     public void arrayMultiDifferentType() throws IOException{
         String input = "[\"Value1\",1]";
         JsonElement output = builder.build(input);
-        assertEquals(input, output.asArray().toJson());
+        assertEquals(input, ((JsonArray)output).toJson());
     }
 
     //Section 5: Invalid values
@@ -696,21 +696,21 @@ public class JsonBuilderTests {
     public void jsonNoKey() throws IOException {
         String input = "{\"Text\"}";
         JsonElement output = builder.build(input);
-        assertEquals("{}", output.asObject().toJson());
+        assertEquals("{}", ((JsonObject)output).toJson());
     }
 
     @Test
     public void jsonNoValue() throws IOException {
         String input = "{\"Key\":}";
         JsonElement output = builder.build(input);
-        assertEquals("{}", output.asObject().toJson());
+        assertEquals("{}", ((JsonObject)output).toJson());
     }
 
     @Test
     public void jsonInvalidEntry() throws IOException {
         String input = "{\"Key\": OHNOWHATISTHIS!!!}";
         JsonElement output = builder.build(input);
-        assertEquals("{}", output.asObject().toJson());
+        assertEquals("{}", ((JsonObject)output).toJson());
     }
 
     @Test
