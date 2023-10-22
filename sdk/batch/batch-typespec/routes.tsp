@@ -2685,8 +2685,8 @@ model BatchTaskFileClientPathParameters extends BatchClientRequestHeaders {
 @doc("The parameters for a widget status request")
 model BatchClientRequestHeaders {
   @doc("""
-The maximum number of items to return in the response. A maximum of 1000
-applications can be returned.
+Sets the maximum time that the server can spend processing the request,
+in seconds. The default is 30 seconds.
 """)
   @query
   @projectedName("client", "timeOutInSeconds")
