@@ -99,8 +99,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -143,8 +143,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -191,8 +191,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>starttime</td><td>OffsetDateTime</td><td>No</td><td>The earliest time from which to include metrics. This must be at least two and
      * a half hours before the current time. If not specified this defaults to the
      * start time of the last aggregation interval currently available.</td></tr>
@@ -241,8 +241,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -508,8 +508,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
@@ -854,8 +854,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -903,8 +903,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -957,8 +957,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
      *     <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of "," separated string.</td></tr>
      * </table>
@@ -1319,8 +1319,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1442,8 +1442,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1475,8 +1475,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1538,8 +1538,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1602,8 +1602,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1669,8 +1669,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1722,8 +1722,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1828,8 +1828,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1892,8 +1892,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
@@ -1946,8 +1946,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
@@ -2007,8 +2007,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2056,8 +2056,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
      *     <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of "," separated string.</td></tr>
      * </table>
@@ -2498,8 +2498,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2809,8 +2809,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3254,8 +3254,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3317,8 +3317,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3372,8 +3372,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3436,8 +3436,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3813,8 +3813,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
@@ -4234,8 +4234,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
@@ -4662,8 +4662,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
@@ -4746,8 +4746,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -4796,8 +4796,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -4854,8 +4854,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
@@ -4918,8 +4918,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -4957,8 +4957,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -4987,8 +4987,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
      * </table>
      *
@@ -5047,8 +5047,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -5106,8 +5106,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -5155,8 +5155,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
      *     <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of "," separated string.</td></tr>
      * </table>
@@ -5603,8 +5603,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6016,8 +6016,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6460,8 +6460,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6509,8 +6509,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6558,8 +6558,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6607,8 +6607,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6996,8 +6996,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
@@ -7421,8 +7421,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7582,8 +7582,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
@@ -7807,8 +7807,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8002,8 +8002,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8055,8 +8055,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
      *     <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of "," separated string.</td></tr>
      * </table>
@@ -8292,8 +8292,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8528,8 +8528,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
      * </table>
      *
@@ -8608,8 +8608,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8664,8 +8664,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8714,8 +8714,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath parameter represents
      * a directory instead of a file, you can set recursive to true to delete the
      * directory and all of the files and subdirectories in it. If recursive is false
@@ -8749,8 +8749,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8803,8 +8803,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8852,8 +8852,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This parameter can be used in
@@ -8905,8 +8905,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8950,8 +8950,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8985,8 +8985,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9027,8 +9027,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
      * </table>
      *
@@ -9216,8 +9216,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9256,8 +9256,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9295,8 +9295,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9335,8 +9335,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9369,8 +9369,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9413,8 +9413,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9453,8 +9453,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9509,8 +9509,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
@@ -9696,8 +9696,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
      * </table>
      *
@@ -9771,8 +9771,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of "," separated string.</td></tr>
      * </table>
      *
@@ -9841,8 +9841,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath parameter represents
      * a directory instead of a file, you can set recursive to true to delete the
      * directory and all of the files and subdirectories in it. If recursive is false
@@ -9876,8 +9876,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9930,8 +9930,8 @@ public final class BatchAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9979,8 +9979,8 @@ public final class BatchAsyncClient {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
      * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>Sets the maximum time that the server can spend processing the request,
+     * in seconds. The default is 30 seconds.</td></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
      * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
@@ -12170,8 +12170,8 @@ public final class BatchAsyncClient {
      *
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12225,8 +12225,8 @@ public final class BatchAsyncClient {
      * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12259,8 +12259,8 @@ public final class BatchAsyncClient {
      *
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param starttime The earliest time from which to include metrics. This must be at least two and a half hours
      *     before the current time. If not specified this defaults to the start time of the last aggregation interval
      *     currently available.
@@ -12333,8 +12333,8 @@ public final class BatchAsyncClient {
      * information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param body The Pool to be created.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12359,8 +12359,8 @@ public final class BatchAsyncClient {
      *
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
      * @param select An OData $select clause.
@@ -12442,8 +12442,8 @@ public final class BatchAsyncClient {
      * on a Pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
      *
      * @param poolId The ID of the Pool to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12486,8 +12486,8 @@ public final class BatchAsyncClient {
      * Gets basic properties of a Pool.
      *
      * @param poolId The ID of the Pool to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12529,8 +12529,8 @@ public final class BatchAsyncClient {
      * Gets information about the specified Pool.
      *
      * @param poolId The ID of the Pool to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
@@ -12603,8 +12603,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The pool properties to update.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12648,8 +12648,8 @@ public final class BatchAsyncClient {
      * Disables automatic scaling for a Pool.
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12679,8 +12679,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The options to use for enabling automatic scaling.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12732,8 +12732,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param body The options to use for evaluating the automatic scaling formula.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12768,8 +12768,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The options to use for resizing the pool.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12819,8 +12819,8 @@ public final class BatchAsyncClient {
      * this API can also be used to halt the initial sizing of the Pool when it is created.
      *
      * @param poolId The ID of the Pool to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12868,8 +12868,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to update.
      * @param body The options to use for replacing properties on the pool.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12898,8 +12898,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The options to use for removing the node.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12944,8 +12944,8 @@ public final class BatchAsyncClient {
      *
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13002,8 +13002,8 @@ public final class BatchAsyncClient {
      *
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13064,8 +13064,8 @@ public final class BatchAsyncClient {
      * being deleted.
      *
      * @param jobId The ID of the Job to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -13108,8 +13108,8 @@ public final class BatchAsyncClient {
      * Gets information about the specified Job.
      *
      * @param jobId The ID of the Job.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
@@ -13181,8 +13181,8 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param body The options to use for updating the Job.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -13231,8 +13231,8 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param body A job with updated properties.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -13284,8 +13284,8 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job to disable.
      * @param body The options to use for disabling the Job.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -13334,8 +13334,8 @@ public final class BatchAsyncClient {
      * Job containing active Tasks which were added more than 180 days ago, those Tasks will not run.
      *
      * @param jobId The ID of the Job to enable.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -13384,8 +13384,8 @@ public final class BatchAsyncClient {
      * be scheduled.
      *
      * @param jobId The ID of the Job to terminate.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param body The options to use for terminating the Job.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13443,8 +13443,8 @@ public final class BatchAsyncClient {
      * may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param body The Job to be created.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13469,8 +13469,8 @@ public final class BatchAsyncClient {
      *
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.
      * @param select An OData $select clause.
@@ -13544,8 +13544,8 @@ public final class BatchAsyncClient {
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
      * @param select An OData $select clause.
@@ -13630,8 +13630,8 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job.
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
      * @param select An OData $select clause.
@@ -13702,8 +13702,8 @@ public final class BatchAsyncClient {
      * may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13729,8 +13729,8 @@ public final class BatchAsyncClient {
      * Creates a Certificate to the specified Account.
      *
      * @param body The Certificate to be created.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13755,8 +13755,8 @@ public final class BatchAsyncClient {
      *
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
      * @param select An OData $select clause.
@@ -13827,8 +13827,8 @@ public final class BatchAsyncClient {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13863,8 +13863,8 @@ public final class BatchAsyncClient {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13889,8 +13889,8 @@ public final class BatchAsyncClient {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -13926,8 +13926,8 @@ public final class BatchAsyncClient {
      * Checks the specified Job Schedule exists.
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -13975,8 +13975,8 @@ public final class BatchAsyncClient {
      * are still counted towards Account lifetime statistics.
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14020,8 +14020,8 @@ public final class BatchAsyncClient {
      * Gets information about the specified Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
@@ -14095,8 +14095,8 @@ public final class BatchAsyncClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param body The options to use for updating the Job Schedule.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14150,8 +14150,8 @@ public final class BatchAsyncClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param body A Job Schedule with updated properties.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14201,8 +14201,8 @@ public final class BatchAsyncClient {
      * <p>No new Jobs will be created until the Job Schedule is enabled again.
      *
      * @param jobScheduleId The ID of the Job Schedule to disable.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14246,8 +14246,8 @@ public final class BatchAsyncClient {
      * Enables a Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to enable.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14291,8 +14291,8 @@ public final class BatchAsyncClient {
      * Terminates a Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14336,8 +14336,8 @@ public final class BatchAsyncClient {
      * Creates a Job Schedule to the specified Account.
      *
      * @param body The Job Schedule to be created.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14362,8 +14362,8 @@ public final class BatchAsyncClient {
      *
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
      * @param select An OData $select clause.
@@ -14440,8 +14440,8 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param body The Task to be created.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14470,8 +14470,8 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job.
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
      * @param select An OData $select clause.
@@ -14561,8 +14561,8 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param collection The Tasks to be added.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14594,8 +14594,8 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14643,8 +14643,8 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
@@ -14718,8 +14718,8 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
      * @param body The Task to update.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14771,8 +14771,8 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14813,8 +14813,8 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14865,8 +14865,8 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14912,8 +14912,8 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
      *     instead of a file, you can set recursive to true to delete the directory and all of the files and
      *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
@@ -14946,8 +14946,8 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
      *     operation will be performed only if the resource on the service has been modified since the specified time.
      * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
@@ -14998,8 +14998,8 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
      *     operation will be performed only if the resource on the service has been modified since the specified time.
      * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
@@ -15045,8 +15045,8 @@ public final class BatchAsyncClient {
      * @param taskId The ID of the Task whose files you want to list.
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
      * @param recursive Whether to list children of the Task directory. This parameter can be used in combination with
@@ -15115,8 +15115,8 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param body The options to use for creating the user.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15146,8 +15146,8 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15178,8 +15178,8 @@ public final class BatchAsyncClient {
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
      * @param body The options to use for updating the user.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15206,8 +15206,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -15245,8 +15245,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param body The options to use for rebooting the Compute Node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -15278,8 +15278,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param body The options to use for reimaging the Compute Node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -15310,8 +15310,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param body The options to use for disabling scheduling on the Compute Node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -15343,8 +15343,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15373,8 +15373,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15406,8 +15406,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15439,8 +15439,8 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
      * @param body The Azure Batch service log files upload options.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15470,8 +15470,8 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
      * @param select An OData $select clause.
@@ -15537,8 +15537,8 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the of the Compute Node Extension that you want to get information about.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -15577,8 +15577,8 @@ public final class BatchAsyncClient {
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -15639,8 +15639,8 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
      *     instead of a file, you can set recursive to true to delete the directory and all of the files and
      *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
@@ -15673,8 +15673,8 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
      *     operation will be performed only if the resource on the service has been modified since the specified time.
      * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
@@ -15727,8 +15727,8 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
      *     operation will be performed only if the resource on the service has been modified since the specified time.
      * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
@@ -15774,8 +15774,8 @@ public final class BatchAsyncClient {
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param timeOutInSeconds The maximum number of items to return in the response. A maximum of 1000 applications can
-     *     be returned.
+     * @param timeOutInSeconds Sets the maximum time that the server can spend processing the request, in seconds. The
+     *     default is 30 seconds.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
      *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
      * @param recursive Whether to list children of a directory.
