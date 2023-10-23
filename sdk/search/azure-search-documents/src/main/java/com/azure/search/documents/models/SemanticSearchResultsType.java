@@ -21,7 +21,7 @@ public final class SemanticSearchResultsType extends ExpandableStringEnum<Semant
     public static final SemanticSearchResultsType RERANKED_RESULTS = fromString("rerankedResults");
 
     /**
-     * Creates a new instance of SemanticPartialResponseType value.
+     * Creates a new instance of SemanticSearchResultsType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
@@ -29,19 +29,19 @@ public final class SemanticSearchResultsType extends ExpandableStringEnum<Semant
     public SemanticSearchResultsType() {}
 
     /**
-     * Creates or finds a SemanticPartialResponseType from its string representation.
+     * Creates or finds a SemanticSearchResultsType from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding SemanticPartialResponseType.
+     * @return the corresponding SemanticSearchResultsType.
      */
     public static SemanticSearchResultsType fromString(String name) {
         return fromString(name, SemanticSearchResultsType.class);
     }
 
     /**
-     * Gets known SemanticPartialResponseType values.
+     * Gets known SemanticSearchResultsType values.
      *
-     * @return known SemanticPartialResponseType values.
+     * @return known SemanticSearchResultsType values.
      */
     public static Collection<SemanticSearchResultsType> values() {
         return values(SemanticSearchResultsType.class);

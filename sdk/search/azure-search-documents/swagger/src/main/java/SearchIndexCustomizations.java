@@ -65,8 +65,6 @@ public class SearchIndexCustomizations extends Customization {
 
         packageCustomization.getClass("AnswerResult").removeMethod("setAdditionalProperties");
         packageCustomization.getClass("CaptionResult").removeMethod("setAdditionalProperties");
-        packageCustomization.getClass("SemanticPartialResponseReason").rename("SemanticErrorReason");
-        packageCustomization.getClass("SemanticPartialResponseType").rename("SemanticSearchResultsType");
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
@@ -131,26 +129,8 @@ private void customizeVectorizableQuery(ClassCustomization classCustomization) {
 }
 
     private void customizeVectorQuery(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> {
-            clazz.getDefaultConstructor().get().setModifiers(Modifier.Keyword.PRIVATE);
-
-            clazz.addConstructor(Modifier.Keyword.PUBLIC)
-                .addParameter("List<Float>", "vector")
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
-                    "{",
-                    "    this.vector = vector;",
-                    "}"
-                )))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "Creates an instance of VectorQuery class.",
-                    "@param vector The vector representation of a search query."
-                )));
-
-            clazz.getMethodsByName("setVector").forEach(MethodDeclaration::remove);
-
-            clazz.getMethodsByName("setFields").get(0).setParameters(new NodeList<>(new Parameter()
-                .setType("String").setName("fields").setVarArgs(true)));
-        });
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
+            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true))));
     }
 
     private void customizeIndexAction(ClassCustomization classCustomization) {

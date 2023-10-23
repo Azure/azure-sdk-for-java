@@ -172,12 +172,10 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Returns a collection of a specific SearchFieldDataType.",
-                    " *",
-                    " * @param dataType the corresponding SearchFieldDataType",
-                    " * @return a Collection of the corresponding SearchFieldDataType",
-                    " */"
+                    "Returns a collection of a specific SearchFieldDataType.",
+                    "",
+                    "@param dataType the corresponding SearchFieldDataType",
+                    "@return a Collection of the corresponding SearchFieldDataType"
                 )));
         });
     }
@@ -249,13 +247,10 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Set the key property: The key used to provision the cognitive service",
-                    " * resource attached to a skillset.",
-                    " *",
-                    " * @param key the key value to set.",
-                    " * @return the CognitiveServicesAccountKey object itself.",
-                    " */"
+                    "Set the key property: The key used to provision the cognitive service resource attached to a skillset.",
+                    "",
+                    "@param key the key value to set.",
+                    "@return the CognitiveServicesAccountKey object itself."
                 )));
         });
     }
@@ -271,13 +266,11 @@ public class SearchServiceCustomizations extends Customization {
                 )))
                 .addAnnotation("Deprecated")
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Get the shouldDetectOrientation property: A value indicating to turn orientation detection on or not. Default is",
-                    " * false.",
-                    " *",
-                    " * @return the shouldDetectOrientation value.",
-                    " * @deprecated Use {@link #isShouldDetectOrientation()} instead.",
-                    " */"
+                    "Get the shouldDetectOrientation property: A value indicating to turn orientation detection on or not. Default is",
+                    "false.",
+                    "",
+                    "@return the shouldDetectOrientation value.",
+                    "@deprecated Use {@link #isShouldDetectOrientation()} instead."
                 )));
         });
     }
@@ -331,10 +324,8 @@ public class SearchServiceCustomizations extends Customization {
 
             clazz.addConstructor(com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Constructor of {@link SynonymMap}.",
-                    " * @param name The name of the synonym map.",
-                    " */"
+                    "Constructor of {@link SynonymMap}.",
+                    "@param name The name of the synonym map."
                 )))
                 .addParameter("String", "name")
                 .getBody()
@@ -351,11 +342,9 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Constructor of {@link SynonymMap}.",
-                    " * @param name The name of the synonym map.",
-                    " * @param synonyms A series of synonym rules in the specified synonym map format. The rules must be separated by newlines.",
-                    " */"
+                    "Constructor of {@link SynonymMap}.",
+                    "@param name The name of the synonym map.",
+                    "@param synonyms A series of synonym rules in the specified synonym map format. The rules must be separated by newlines."
                 )));
 
             clazz.addMethod("createFromFile", com.github.javaparser.ast.Modifier.Keyword.PUBLIC, com.github.javaparser.ast.Modifier.Keyword.STATIC)
@@ -369,14 +358,12 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Creates a new instance of SynonymMap with synonyms read from the passed file.",
-                    " *",
-                    " * @param name The name of the synonym map.",
-                    " * @param filePath The path to the file where the formatted synonyms are read.",
-                    " * @return A SynonymMap.",
-                    " * @throws java.io.UncheckedIOException If reading {@code filePath} fails.",
-                    " */"
+                    "Creates a new instance of SynonymMap with synonyms read from the passed file.",
+                    "",
+                    "@param name The name of the synonym map.",
+                    "@param filePath The path to the file where the formatted synonyms are read.",
+                    "@return A SynonymMap.",
+                    "@throws java.io.UncheckedIOException If reading {@code filePath} fails."
                 )));
         });
     }
@@ -673,11 +660,9 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Get the configuration property: A dictionary of indexer-specific configuration properties. " + "Each name is the name of a specific property. Each value must be of a primitive type.",
-                    " *",
-                    " * @return the configuration value.",
-                    " */"
+                    "Get the configuration property: A dictionary of indexer-specific configuration properties. " + "Each name is the name of a specific property. Each value must be of a primitive type.",
+                    "",
+                    "@return the configuration value."
                 )));
 
             clazz.addMethod("setConfiguration", com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
@@ -691,12 +676,10 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Set the configuration property: A dictionary of indexer-specific configuration properties. " + "Each name is the name of a specific property. Each value must be of a primitive type.",
-                    " *",
-                    " * @param configuration the configuration value to set.",
-                    " * @return the IndexingParameters object itself.",
-                    " */"
+                    "Set the configuration property: A dictionary of indexer-specific configuration properties. " + "Each name is the name of a specific property. Each value must be of a primitive type.",
+                    "",
+                    "@param configuration the configuration value to set.",
+                    "@return the IndexingParameters object itself."
                 )));
         });
 
@@ -723,14 +706,12 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Constructor of {@link SearchIndexerDataSourceConnection}.",
-                    " *",
-                    " * @param name The name of the datasource.",
-                    " * @param type The type of the datasource.",
-                    " * @param connectionString The connection string for the datasource.",
-                    " * @param container The data container for the datasource.",
-                    " */"
+                    "Constructor of {@link SearchIndexerDataSourceConnection}.",
+                    "",
+                    "@param name The name of the datasource.",
+                    "@param type The type of the datasource.",
+                    "@param connectionString The connection string for the datasource.",
+                    "@param container The data container for the datasource."
                 )));
 
             clazz.getMethodsByName("getCredentials").forEach(MethodDeclaration::remove);
@@ -744,11 +725,9 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Get the connectionString property: The connection string for the datasource.",
-                    " *",
-                    " * @return the connectionString value.",
-                    " */"
+                    "Get the connectionString property: The connection string for the datasource.",
+                    "",
+                    "@return the connectionString value."
                 )));
 
             clazz.addMethod("setConnectionString", com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
@@ -767,12 +746,10 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Set the connectionString property: The connection string for the datasource.",
-                    " *",
-                    " * @param connectionString the connectionString value to set.",
-                    " * @return the SearchIndexerDataSourceConnection object itself.",
-                    " */"
+                    "Set the connectionString property: The connection string for the datasource.",
+                    "",
+                    "@param connectionString the connectionString value to set.",
+                    "@return the SearchIndexerDataSourceConnection object itself."
                 )));
         });
     }
@@ -781,77 +758,8 @@ public class SearchServiceCustomizations extends Customization {
         customizeAst(classCustomization, clazz -> {
             clazz.tryAddImportToParentCompilationUnit(Arrays.class);
 
-            clazz.getMethodsByName("setPrioritizedContentFields").get(0)
-                .setName("setContentFields")
-                .setParameters(new NodeList<>(new Parameter().setType("List<SemanticField>").setName("contentFields")))
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
-                    "{",
-                    "    this.prioritizedContentFields = contentFields;",
-                    "    return this;",
-                    "}"
-                )))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "Set the contentFields property: Defines the content fields to be used for semantic ranking, captions,",
-                    "highlights, and answers. For the best result, the selected fields should contain text in natural language form.",
-                    "The order of the fields in the array represents their priority. Fields with lower priority may get truncated if",
-                    "the content is long.",
-                    "",
-                    "@param contentFields the contentFields value to set.",
-                    "@return the SemanticSearchPrioritizedFields object itself."
-                )));
-            clazz.getMethodsByName("getPrioritizedContentFields").get(0)
-                .setName("getContentFields")
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "Get the contentFields property: Defines the content fields to be used for semantic ranking, captions,",
-                    "highlights, and answers. For the best result, the selected fields should contain text in natural language form.",
-                    "The order of the fields in the array represents their priority. Fields with lower priority may get truncated if",
-                    "the content is long.",
-                    "",
-                    "@return the contentFields value."
-                )));
-            addVarArgsOverload(clazz, "contentFields", "SemanticField")
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
-                    "{",
-                    "    this.prioritizedContentFields = (contentFields == null) ? null : Arrays.asList(contentFields);",
-                    "    return this;",
-                    "}"
-                )));
-
-            clazz.getMethodsByName("setPrioritizedKeywordsFields").get(0)
-                .setName("setKeywordsFields")
-                .setParameters(new NodeList<>(new Parameter().setType("List<SemanticField>").setName("keywordsFields")))
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
-                    "{",
-                    "    this.prioritizedKeywordsFields = keywordsFields;",
-                    "    return this;",
-                    "}"
-                )))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "Set the keywordsFields property: Defines the keyword fields to be used for semantic ranking, captions,",
-                    "highlights, and answers. For the best result, the selected fields should contain a list of keywords. The order of",
-                    "the fields in the array represents their priority. Fields with lower priority may get truncated if the content is",
-                    "long.",
-                    "",
-                    "@param keywordsFields the keywordsFields value to set.",
-                    "@return the SemanticSearchPrioritizedFields object itself."
-                )));
-            clazz.getMethodsByName("getPrioritizedKeywordsFields").get(0)
-                .setName("getKeywordsFields")
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "Get the keywordsFields property: Defines the keyword fields to be used for semantic ranking, captions,",
-                    "highlights, and answers. For the best result, the selected fields should contain a list of keywords. The order of",
-                    "the fields in the array represents their priority. Fields with lower priority may get truncated if the content is",
-                    "long.",
-                    "",
-                    "@return the keywordsFields value."
-                )));
-            addVarArgsOverload(clazz, "keywordsFields", "SemanticField")
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
-                    "{",
-                    "    this.prioritizedKeywordsFields = (keywordsFields == null) ? null : Arrays.asList(keywordsFields);",
-                    "    return this;",
-                    "}"
-                )));
+            addVarArgsOverload(clazz, "contentFields", "SemanticField");
+            addVarArgsOverload(clazz, "keywordsFields", "SemanticField");
         });
     }
 

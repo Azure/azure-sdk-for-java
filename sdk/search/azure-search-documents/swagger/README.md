@@ -465,6 +465,7 @@ directive:
 ### Make SemanticField.fieldName required
 
 ```yaml $(tag) == 'searchservice'
+directive:
 - from: swagger-document
   where: $.definitions.SemanticField
   transform: >
@@ -474,6 +475,7 @@ directive:
 ### Rename VectorSearchProfile.algorithm to VectorSearchProfile.algorithmConfigurationName
 
 ```yaml $(tag) == 'searchservice'
+directive:
 - from: swagger-document
   where: $.definitions.VectorSearchProfile.properties.algorithm
   transform: >
@@ -483,6 +485,7 @@ directive:
 ### Rename SearchIndex.semanticSettings to SearchIndex.semanticSearch
 
 ```yaml $(tag) == 'searchservice'
+directive:
 - from: swagger-document
   where: $.definitions.SearchIndex.properties.semantic
   transform: >
@@ -492,6 +495,7 @@ directive:
 ### Rename VectorSearchProfile.algorithm to VectorSearchProfile.algorithmConfigurationName
 
 ```yaml $(tag) == 'searchservice'
+directive:
 - from: swagger-document
   where: $.definitions.VectorSearchProfile.properties.algorithm
   transform: >
@@ -501,6 +505,7 @@ directive:
 ### Rename SemanticErrorHandling to SemanticErrorMode
 
 ``` yaml $(tag) == 'searchindex'
+directive:
 - from: swagger-document
   where: $.paths["/docs"].get.parameters
   transform: >
@@ -508,8 +513,50 @@ directive:
 ```
 
 ``` yaml $(tag) == 'searchindex'
+directive:
 - from: swagger-document
   where: $.definitions.SemanticErrorHandling
   transform: >
     $["x-ms-enum"].name = "SemanticErrorMode";
+```
+
+### Make VectorQuery.vector required
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.VectorQuery
+  transform: >
+    $.required = ["vector"];
+```
+
+### Rename SemanticPrioritizedFields fields to drop leading prioritized
+
+``` yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.SemanticPrioritizedFields.properties
+  transform: >
+    $.prioritizedContentFields["x-ms-client-name"] = "contentFields";
+    $.prioritizedKeywordsFields["x-ms-client-name"] = "keywordsFields";
+```
+
+### Rename SemanticPartialResponseReason to SemanticErrorReason
+
+``` yaml $(tag) == 'searchindex'
+directive:
+- from: swagger-document
+  where: $.definitions.SemanticPartialResponseReason
+  transform: >
+    $["x-ms-enum"].name = "SemanticErrorReason";
+```
+
+### Rename SemanticPartialResponseType to SemanticSearchResultsType
+
+``` yaml $(tag) == 'searchindex'
+directive:
+- from: swagger-document
+  where: $.definitions.SemanticPartialResponseType
+  transform: >
+    $["x-ms-enum"].name = "SemanticSearchResultsType";
 ```

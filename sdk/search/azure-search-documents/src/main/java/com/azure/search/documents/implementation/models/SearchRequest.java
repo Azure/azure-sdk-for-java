@@ -14,7 +14,7 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SemanticErrorHandling;
+import com.azure.search.documents.models.SemanticErrorMode;
 import com.azure.search.documents.models.VectorFilterMode;
 import com.azure.search.documents.models.VectorizableQuery;
 import java.io.IOException;
@@ -155,7 +155,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * Allows the user to choose whether a semantic call should fail completely (default / current behavior), or to
      * return partial results.
      */
-    private SemanticErrorHandling semanticErrorHandling;
+    private SemanticErrorMode semanticErrorHandling;
 
     /*
      * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish
@@ -667,7 +667,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      *
      * @return the semanticErrorHandling value.
      */
-    public SemanticErrorHandling getSemanticErrorHandling() {
+    public SemanticErrorMode getSemanticErrorHandling() {
         return this.semanticErrorHandling;
     }
 
@@ -678,7 +678,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param semanticErrorHandling the semanticErrorHandling value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setSemanticErrorHandling(SemanticErrorHandling semanticErrorHandling) {
+    public SearchRequest setSemanticErrorHandling(SemanticErrorMode semanticErrorHandling) {
         this.semanticErrorHandling = semanticErrorHandling;
         return this;
     }
@@ -898,7 +898,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                             deserializedSearchRequest.semanticConfiguration = reader.getString();
                         } else if ("semanticErrorHandling".equals(fieldName)) {
                             deserializedSearchRequest.semanticErrorHandling =
-                                    SemanticErrorHandling.fromString(reader.getString());
+                                    SemanticErrorMode.fromString(reader.getString());
                         } else if ("semanticMaxWaitInMilliseconds".equals(fieldName)) {
                             deserializedSearchRequest.semanticMaxWaitInMilliseconds =
                                     reader.getNullable(JsonReader::getInt);

@@ -180,20 +180,20 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
     }
 
     /**
-     * /** Constructor of {@link SynonymMap}.
+     * Constructor of {@link SynonymMap}.
      *
-     * @param name The name of the synonym map. /
+     * @param name The name of the synonym map.
      */
     public SynonymMap(String name) {
         this(name, null);
     }
 
     /**
-     * /** Constructor of {@link SynonymMap}.
+     * Constructor of {@link SynonymMap}.
      *
      * @param name The name of the synonym map.
      * @param synonyms A series of synonym rules in the specified synonym map format. The rules must be separated by
-     *     newlines. /
+     *     newlines.
      */
     public SynonymMap(String name, String synonyms) {
         this.format = "solr";
@@ -202,12 +202,12 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
     }
 
     /**
-     * /** Creates a new instance of SynonymMap with synonyms read from the passed file.
+     * Creates a new instance of SynonymMap with synonyms read from the passed file.
      *
      * @param name The name of the synonym map.
      * @param filePath The path to the file where the formatted synonyms are read.
      * @return A SynonymMap.
-     * @throws java.io.UncheckedIOException If reading {@code filePath} fails. /
+     * @throws java.io.UncheckedIOException If reading {@code filePath} fails.
      */
     public static SynonymMap createFromFile(String name, java.nio.file.Path filePath) {
         String synonyms = com.azure.search.documents.implementation.util.Utility.readSynonymsFromFile(filePath);

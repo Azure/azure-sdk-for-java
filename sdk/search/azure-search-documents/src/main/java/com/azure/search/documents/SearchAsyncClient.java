@@ -1104,7 +1104,7 @@ public final class SearchAsyncClient {
             Integer waitInMillis = semanticSearchOptions.getSemanticMaxWaitDuration() == null ? null
                 : (int) semanticSearchOptions.getSemanticMaxWaitDuration().toMillis();
             request.setSemanticConfiguration(semanticSearchOptions.getSemanticConfigurationName())
-                .setSemanticErrorHandling(semanticSearchOptions.getSemanticErrorHandling())
+                .setSemanticErrorHandling(semanticSearchOptions.getSemanticErrorMode())
                 .setSemanticMaxWaitInMilliseconds(waitInMillis)
                 .setAnswers(createSearchRequestAnswers(semanticSearchOptions.getQueryAnswer()))
                 .setCaptions(createSearchRequestCaptions(semanticSearchOptions.getQueryCaption()));

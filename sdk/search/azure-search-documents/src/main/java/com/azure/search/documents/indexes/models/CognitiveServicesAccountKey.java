@@ -108,10 +108,10 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
     }
 
     /**
-     * /** Set the key property: The key used to provision the cognitive service resource attached to a skillset.
+     * Set the key property: The key used to provision the cognitive service resource attached to a skillset.
      *
      * @param key the key value to set.
-     * @return the CognitiveServicesAccountKey object itself. /
+     * @return the CognitiveServicesAccountKey object itself.
      */
     public CognitiveServicesAccountKey setKey(String key) {
         this.key = key;

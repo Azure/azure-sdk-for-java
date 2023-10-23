@@ -10,43 +10,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /** Allows the user to choose whether a semantic call should fail completely, or to return partial results. */
-public final class SemanticErrorHandling extends ExpandableStringEnum<SemanticErrorHandling> {
+public final class SemanticErrorMode extends ExpandableStringEnum<SemanticErrorMode> {
     /**
      * If the semantic processing fails, partial results still return. The definition of partial results depends on what
      * semantic step failed and what was the reason for failure.
      */
-    public static final SemanticErrorHandling PARTIAL = fromString("partial");
+    public static final SemanticErrorMode PARTIAL = fromString("partial");
 
     /**
      * If there is an exception during the semantic processing step, the query will fail and return the appropriate HTTP
      * code depending on the error.
      */
-    public static final SemanticErrorHandling FAIL = fromString("fail");
+    public static final SemanticErrorMode FAIL = fromString("fail");
 
     /**
-     * Creates a new instance of SemanticErrorHandling value.
+     * Creates a new instance of SemanticErrorMode value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SemanticErrorHandling() {}
+    public SemanticErrorMode() {}
 
     /**
-     * Creates or finds a SemanticErrorHandling from its string representation.
+     * Creates or finds a SemanticErrorMode from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding SemanticErrorHandling.
+     * @return the corresponding SemanticErrorMode.
      */
-    public static SemanticErrorHandling fromString(String name) {
-        return fromString(name, SemanticErrorHandling.class);
+    public static SemanticErrorMode fromString(String name) {
+        return fromString(name, SemanticErrorMode.class);
     }
 
     /**
-     * Gets known SemanticErrorHandling values.
+     * Gets known SemanticErrorMode values.
      *
-     * @return known SemanticErrorHandling values.
+     * @return known SemanticErrorMode values.
      */
-    public static Collection<SemanticErrorHandling> values() {
-        return values(SemanticErrorHandling.class);
+    public static Collection<SemanticErrorMode> values() {
+        return values(SemanticErrorMode.class);
     }
 }

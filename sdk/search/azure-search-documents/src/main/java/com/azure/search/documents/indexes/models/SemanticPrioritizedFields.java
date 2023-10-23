@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,14 +30,14 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * result, the selected fields should contain text in natural language form. The order of the fields in the array
      * represents their priority. Fields with lower priority may get truncated if the content is long.
      */
-    private List<SemanticField> prioritizedContentFields;
+    private List<SemanticField> contentFields;
 
     /*
      * Defines the keyword fields to be used for semantic ranking, captions, highlights, and answers. For the best
      * result, the selected fields should contain a list of keywords. The order of the fields in the array represents
      * their priority. Fields with lower priority may get truncated if the content is long.
      */
-    private List<SemanticField> prioritizedKeywordsFields;
+    private List<SemanticField> keywordsFields;
 
     /** Creates an instance of SemanticPrioritizedFields class. */
     public SemanticPrioritizedFields() {}
@@ -74,7 +73,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * @return the contentFields value.
      */
     public List<SemanticField> getContentFields() {
-        return this.prioritizedContentFields;
+        return this.contentFields;
     }
 
     /**
@@ -84,10 +83,10 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * long.
      *
      * @param contentFields the contentFields value to set.
-     * @return the SemanticSearchPrioritizedFields object itself.
+     * @return the SemanticPrioritizedFields object itself.
      */
     public SemanticPrioritizedFields setContentFields(List<SemanticField> contentFields) {
-        this.prioritizedContentFields = contentFields;
+        this.contentFields = contentFields;
         return this;
     }
 
@@ -100,7 +99,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * @return the keywordsFields value.
      */
     public List<SemanticField> getKeywordsFields() {
-        return this.prioritizedKeywordsFields;
+        return this.keywordsFields;
     }
 
     /**
@@ -110,10 +109,10 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * long.
      *
      * @param keywordsFields the keywordsFields value to set.
-     * @return the SemanticSearchPrioritizedFields object itself.
+     * @return the SemanticPrioritizedFields object itself.
      */
     public SemanticPrioritizedFields setKeywordsFields(List<SemanticField> keywordsFields) {
-        this.prioritizedKeywordsFields = keywordsFields;
+        this.keywordsFields = keywordsFields;
         return this;
     }
 
@@ -122,13 +121,9 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("titleField", this.titleField);
         jsonWriter.writeArrayField(
-                "prioritizedContentFields",
-                this.prioritizedContentFields,
-                (writer, element) -> writer.writeJson(element));
+                "prioritizedContentFields", this.contentFields, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField(
-                "prioritizedKeywordsFields",
-                this.prioritizedKeywordsFields,
-                (writer, element) -> writer.writeJson(element));
+                "prioritizedKeywordsFields", this.keywordsFields, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -150,13 +145,13 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
                         if ("titleField".equals(fieldName)) {
                             deserializedSemanticPrioritizedFields.titleField = SemanticField.fromJson(reader);
                         } else if ("prioritizedContentFields".equals(fieldName)) {
-                            List<SemanticField> prioritizedContentFields =
+                            List<SemanticField> contentFields =
                                     reader.readArray(reader1 -> SemanticField.fromJson(reader1));
-                            deserializedSemanticPrioritizedFields.prioritizedContentFields = prioritizedContentFields;
+                            deserializedSemanticPrioritizedFields.contentFields = contentFields;
                         } else if ("prioritizedKeywordsFields".equals(fieldName)) {
-                            List<SemanticField> prioritizedKeywordsFields =
+                            List<SemanticField> keywordsFields =
                                     reader.readArray(reader1 -> SemanticField.fromJson(reader1));
-                            deserializedSemanticPrioritizedFields.prioritizedKeywordsFields = prioritizedKeywordsFields;
+                            deserializedSemanticPrioritizedFields.keywordsFields = keywordsFields;
                         } else {
                             reader.skipChildren();
                         }
@@ -172,10 +167,10 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * long.
      *
      * @param contentFields the contentFields value to set.
-     * @return the SemanticSearchPrioritizedFields object itself.
+     * @return the SemanticPrioritizedFields object itself.
      */
     public SemanticPrioritizedFields setContentFields(SemanticField... contentFields) {
-        this.prioritizedContentFields = (contentFields == null) ? null : Arrays.asList(contentFields);
+        this.contentFields = (contentFields == null) ? null : java.util.Arrays.asList(contentFields);
         return this;
     }
 
@@ -186,10 +181,10 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * long.
      *
      * @param keywordsFields the keywordsFields value to set.
-     * @return the SemanticSearchPrioritizedFields object itself.
+     * @return the SemanticPrioritizedFields object itself.
      */
     public SemanticPrioritizedFields setKeywordsFields(SemanticField... keywordsFields) {
-        this.prioritizedKeywordsFields = (keywordsFields == null) ? null : Arrays.asList(keywordsFields);
+        this.keywordsFields = (keywordsFields == null) ? null : java.util.Arrays.asList(keywordsFields);
         return this;
     }
 }

@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.implementation.models.VectorQueryKind;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,10 +22,16 @@ public final class VectorQuery extends VectorizableQuery {
     /*
      * The vector representation of a search query.
      */
-    private List<Float> vector;
+    private final List<Float> vector;
 
-    /** Creates an instance of VectorQuery class. */
-    private VectorQuery() {}
+    /**
+     * Creates an instance of VectorQuery class.
+     *
+     * @param vector the vector value to set.
+     */
+    public VectorQuery(List<Float> vector) {
+        this.vector = vector;
+    }
 
     /**
      * Get the vector property: The vector representation of a search query.
@@ -73,13 +80,18 @@ public final class VectorQuery extends VectorizableQuery {
      * @param jsonReader The JsonReader being read.
      * @return An instance of VectorQuery if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the VectorQuery.
      */
     public static VectorQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    VectorQuery deserializedVectorQuery = new VectorQuery();
+                    Integer kNearestNeighborsCount = null;
+                    String fields = null;
+                    Boolean exhaustive = null;
+                    boolean vectorFound = false;
+                    List<Float> vector = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -92,28 +104,31 @@ public final class VectorQuery extends VectorizableQuery {
                                                 + "'.");
                             }
                         } else if ("k".equals(fieldName)) {
-                            deserializedVectorQuery.setKNearestNeighborsCount(reader.getNullable(JsonReader::getInt));
+                            kNearestNeighborsCount = reader.getNullable(JsonReader::getInt);
                         } else if ("fields".equals(fieldName)) {
-                            deserializedVectorQuery.setFields(reader.getString());
+                            fields = reader.getString();
                         } else if ("exhaustive".equals(fieldName)) {
-                            deserializedVectorQuery.setExhaustive(reader.getNullable(JsonReader::getBoolean));
+                            exhaustive = reader.getNullable(JsonReader::getBoolean);
                         } else if ("vector".equals(fieldName)) {
-                            List<Float> vector = reader.readArray(reader1 -> reader1.getFloat());
-                            deserializedVectorQuery.vector = vector;
+                            vector = reader.readArray(reader1 -> reader1.getFloat());
+                            vectorFound = true;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    return deserializedVectorQuery;
+                    if (vectorFound) {
+                        VectorQuery deserializedVectorQuery = new VectorQuery(vector);
+                        deserializedVectorQuery.setKNearestNeighborsCount(kNearestNeighborsCount);
+                        deserializedVectorQuery.setFields(fields);
+                        deserializedVectorQuery.setExhaustive(exhaustive);
+                        return deserializedVectorQuery;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!vectorFound) {
+                        missingProperties.add("vector");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
                 });
-    }
-
-    /**
-     * Creates an instance of VectorQuery class.
-     *
-     * @param vector The vector representation of a search query.
-     */
-    public VectorQuery(List<Float> vector) {
-        this.vector = vector;
     }
 }

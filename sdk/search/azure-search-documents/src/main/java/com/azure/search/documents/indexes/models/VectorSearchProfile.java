@@ -26,17 +26,17 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     /*
      * The name of the vector search algorithm configuration that specifies the algorithm and optional parameters.
      */
-    private final String algorithm;
+    private final String algorithmConfigurationName;
 
     /**
      * Creates an instance of VectorSearchProfile class.
      *
      * @param name the name value to set.
-     * @param algorithm the algorithm value to set.
+     * @param algorithmConfigurationName the algorithmConfigurationName value to set.
      */
-    public VectorSearchProfile(String name, String algorithm) {
+    public VectorSearchProfile(String name, String algorithmConfigurationName) {
         this.name = name;
-        this.algorithm = algorithm;
+        this.algorithmConfigurationName = algorithmConfigurationName;
     }
 
     /**
@@ -49,20 +49,20 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     }
 
     /**
-     * Get the algorithm property: The name of the vector search algorithm configuration that specifies the algorithm
-     * and optional parameters.
+     * Get the algorithmConfigurationName property: The name of the vector search algorithm configuration that specifies
+     * the algorithm and optional parameters.
      *
-     * @return the algorithm value.
+     * @return the algorithmConfigurationName value.
      */
-    public String getAlgorithm() {
-        return this.algorithm;
+    public String getAlgorithmConfigurationName() {
+        return this.algorithmConfigurationName;
     }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("algorithm", this.algorithm);
+        jsonWriter.writeStringField("algorithm", this.algorithmConfigurationName);
         return jsonWriter.writeEndObject();
     }
 
@@ -80,8 +80,8 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                 reader -> {
                     boolean nameFound = false;
                     String name = null;
-                    boolean algorithmFound = false;
-                    String algorithm = null;
+                    boolean algorithmConfigurationNameFound = false;
+                    String algorithmConfigurationName = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -90,14 +90,15 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                             name = reader.getString();
                             nameFound = true;
                         } else if ("algorithm".equals(fieldName)) {
-                            algorithm = reader.getString();
-                            algorithmFound = true;
+                            algorithmConfigurationName = reader.getString();
+                            algorithmConfigurationNameFound = true;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    if (nameFound && algorithmFound) {
-                        VectorSearchProfile deserializedVectorSearchProfile = new VectorSearchProfile(name, algorithm);
+                    if (nameFound && algorithmConfigurationNameFound) {
+                        VectorSearchProfile deserializedVectorSearchProfile =
+                                new VectorSearchProfile(name, algorithmConfigurationName);
 
                         return deserializedVectorSearchProfile;
                     }
@@ -105,7 +106,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                     if (!nameFound) {
                         missingProperties.add("name");
                     }
-                    if (!algorithmFound) {
+                    if (!algorithmConfigurationNameFound) {
                         missingProperties.add("algorithm");
                     }
 

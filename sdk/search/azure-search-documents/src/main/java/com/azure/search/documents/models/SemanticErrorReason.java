@@ -24,7 +24,7 @@ public final class SemanticErrorReason extends ExpandableStringEnum<SemanticErro
     public static final SemanticErrorReason TRANSIENT = fromString("transient");
 
     /**
-     * Creates a new instance of SemanticPartialResponseReason value.
+     * Creates a new instance of SemanticErrorReason value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
@@ -32,19 +32,19 @@ public final class SemanticErrorReason extends ExpandableStringEnum<SemanticErro
     public SemanticErrorReason() {}
 
     /**
-     * Creates or finds a SemanticPartialResponseReason from its string representation.
+     * Creates or finds a SemanticErrorReason from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding SemanticPartialResponseReason.
+     * @return the corresponding SemanticErrorReason.
      */
     public static SemanticErrorReason fromString(String name) {
         return fromString(name, SemanticErrorReason.class);
     }
 
     /**
-     * Gets known SemanticPartialResponseReason values.
+     * Gets known SemanticErrorReason values.
      *
-     * @return known SemanticPartialResponseReason values.
+     * @return known SemanticErrorReason values.
      */
     public static Collection<SemanticErrorReason> values() {
         return values(SemanticErrorReason.class);

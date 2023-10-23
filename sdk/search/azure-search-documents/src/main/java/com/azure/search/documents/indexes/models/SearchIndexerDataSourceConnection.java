@@ -331,12 +331,12 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     }
 
     /**
-     * /** Constructor of {@link SearchIndexerDataSourceConnection}.
+     * Constructor of {@link SearchIndexerDataSourceConnection}.
      *
      * @param name The name of the datasource.
      * @param type The type of the datasource.
      * @param connectionString The connection string for the datasource.
-     * @param container The data container for the datasource. /
+     * @param container The data container for the datasource.
      */
     public SearchIndexerDataSourceConnection(
             String name,
@@ -351,19 +351,19 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     }
 
     /**
-     * /** Get the connectionString property: The connection string for the datasource.
+     * Get the connectionString property: The connection string for the datasource.
      *
-     * @return the connectionString value. /
+     * @return the connectionString value.
      */
     public String getConnectionString() {
         return (credentials == null) ? null : credentials.getConnectionString();
     }
 
     /**
-     * /** Set the connectionString property: The connection string for the datasource.
+     * Set the connectionString property: The connection string for the datasource.
      *
      * @param connectionString the connectionString value to set.
-     * @return the SearchIndexerDataSourceConnection object itself. /
+     * @return the SearchIndexerDataSourceConnection object itself.
      */
     public SearchIndexerDataSourceConnection setConnectionString(String connectionString) {
         if (connectionString == null) {

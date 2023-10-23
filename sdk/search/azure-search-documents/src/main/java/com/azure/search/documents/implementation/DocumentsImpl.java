@@ -36,7 +36,7 @@ import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SemanticErrorHandling;
+import com.azure.search.documents.models.SemanticErrorMode;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -122,7 +122,7 @@ public final class DocumentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("semanticConfiguration") String semanticConfiguration,
-                @QueryParam("semanticErrorHandling") SemanticErrorHandling semanticErrorHandling,
+                @QueryParam("semanticErrorHandling") SemanticErrorMode semanticErrorHandling,
                 @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
                 @QueryParam("answers") String answers,
                 @QueryParam("captions") String captions,
@@ -157,7 +157,7 @@ public final class DocumentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("semanticConfiguration") String semanticConfiguration,
-                @QueryParam("semanticErrorHandling") SemanticErrorHandling semanticErrorHandling,
+                @QueryParam("semanticErrorHandling") SemanticErrorMode semanticErrorHandling,
                 @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
                 @QueryParam("answers") String answers,
                 @QueryParam("captions") String captions,

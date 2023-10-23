@@ -17,7 +17,7 @@ public final class SemanticSearchOptions {
     /*
      * Allows the user to choose whether a semantic call should fail completely, or to return partial results.
      */
-    private SemanticErrorHandling semanticErrorHandling;
+    private SemanticErrorMode semanticErrorMode;
 
     /*
      * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish
@@ -82,19 +82,19 @@ public final class SemanticSearchOptions {
      *
      * @return the semanticErrorHandling value.
      */
-    public SemanticErrorHandling getSemanticErrorHandling() {
-        return this.semanticErrorHandling;
+    public SemanticErrorMode getSemanticErrorMode() {
+        return this.semanticErrorMode;
     }
 
     /**
      * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
      * or to return partial results.
      *
-     * @param semanticErrorHandling the semanticErrorHandling value to set.
+     * @param semanticErrorMode the semanticErrorHandling value to set.
      * @return the SemanticSearchOptions object itself.
      */
-    public SemanticSearchOptions setSemanticErrorHandling(SemanticErrorHandling semanticErrorHandling) {
-        this.semanticErrorHandling = semanticErrorHandling;
+    public SemanticSearchOptions setSemanticErrorMode(SemanticErrorMode semanticErrorMode) {
+        this.semanticErrorMode = semanticErrorMode;
         return this;
     }
 
