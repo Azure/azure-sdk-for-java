@@ -12,10 +12,10 @@ public final class WorkflowOperationStatusGetSamples {
     /**
      * Sample code: WorkflowOperationStatus_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void workflowOperationStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .workflowOperationStatus()
             .getWithResponse(

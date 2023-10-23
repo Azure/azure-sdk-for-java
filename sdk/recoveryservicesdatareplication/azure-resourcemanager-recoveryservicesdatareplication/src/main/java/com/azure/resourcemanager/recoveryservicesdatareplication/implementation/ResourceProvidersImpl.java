@@ -21,12 +21,12 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final ResourceProvidersClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
         serviceManager;
 
     public ResourceProvidersImpl(
         ResourceProvidersClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -84,7 +84,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager() {
+    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager() {
         return this.serviceManager;
     }
 }

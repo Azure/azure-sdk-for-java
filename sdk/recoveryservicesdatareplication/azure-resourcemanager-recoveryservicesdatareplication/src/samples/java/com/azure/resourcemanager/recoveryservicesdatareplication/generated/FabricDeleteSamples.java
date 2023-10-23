@@ -12,10 +12,10 @@ public final class FabricDeleteSamples {
     /**
      * Sample code: Fabric_Delete.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricDelete(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.fabrics().delete("rgrecoveryservicesdatareplication", "wPR", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,10 +12,10 @@ public final class FabricListSamples {
     /**
      * Sample code: Fabric_ListBySubscription.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricListBySubscription(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.fabrics().list("rmgqrpzucsizbyjscxzockbiyg", com.azure.core.util.Context.NONE);
     }
 }

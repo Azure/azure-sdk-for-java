@@ -12,10 +12,10 @@ public final class EmailConfigurationGetSamples {
     /**
      * Sample code: EmailConfiguration_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void emailConfigurationGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .emailConfigurations()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "0", com.azure.core.util.Context.NONE);

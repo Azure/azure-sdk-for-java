@@ -13,12 +13,12 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.PolicyMo
 public final class PolicyModelImpl implements PolicyModel, PolicyModel.Definition {
     private PolicyModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
         serviceManager;
 
     PolicyModelImpl(
         PolicyModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -48,7 +48,7 @@ public final class PolicyModelImpl implements PolicyModel, PolicyModel.Definitio
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager() {
+    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager() {
         return this.serviceManager;
     }
 
@@ -84,7 +84,7 @@ public final class PolicyModelImpl implements PolicyModel, PolicyModel.Definitio
 
     PolicyModelImpl(
         String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerObject = new PolicyModelInner();
         this.serviceManager = serviceManager;

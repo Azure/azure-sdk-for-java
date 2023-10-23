@@ -44,14 +44,14 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     private final ReplicationExtensionsService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of ReplicationExtensionsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ReplicationExtensionsClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    ReplicationExtensionsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy
                 .create(ReplicationExtensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -59,11 +59,11 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiReplicationExtensions to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientReplicationExtensions to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface ReplicationExtensionsService {
         @Headers({"Content-Type: application/json"})
         @Get(

@@ -22,7 +22,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.AzureSiteRecoveryManagementServiceApi;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.DraOperationStatusClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.DrasClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.EmailConfigurationsClient;
@@ -35,6 +34,7 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.PolicyOp
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.ProtectedItemOperationStatusClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.ProtectedItemsClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.RecoveryPointsClient;
+import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.RecoveryServicesDataReplicationMgmtClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.ReplicationExtensionOperationStatusClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.ReplicationExtensionsClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.ResourceProvidersClient;
@@ -51,9 +51,9 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the AzureSiteRecoveryManagementServiceApiImpl type. */
-@ServiceClient(builder = AzureSiteRecoveryManagementServiceApiBuilder.class)
-public final class AzureSiteRecoveryManagementServiceApiImpl implements AzureSiteRecoveryManagementServiceApi {
+/** Initializes a new instance of the RecoveryServicesDataReplicationMgmtClientImpl type. */
+@ServiceClient(builder = RecoveryServicesDataReplicationMgmtClientBuilder.class)
+public final class RecoveryServicesDataReplicationMgmtClientImpl implements RecoveryServicesDataReplicationMgmtClient {
     /** The ID of the target subscription. The value must be an UUID. */
     private final String subscriptionId;
 
@@ -355,7 +355,7 @@ public final class AzureSiteRecoveryManagementServiceApiImpl implements AzureSit
     }
 
     /**
-     * Initializes an instance of AzureSiteRecoveryManagementServiceApi client.
+     * Initializes an instance of RecoveryServicesDataReplicationMgmtClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -364,7 +364,7 @@ public final class AzureSiteRecoveryManagementServiceApiImpl implements AzureSit
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    AzureSiteRecoveryManagementServiceApiImpl(
+    RecoveryServicesDataReplicationMgmtClientImpl(
         HttpPipeline httpPipeline,
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
@@ -538,5 +538,5 @@ public final class AzureSiteRecoveryManagementServiceApiImpl implements AzureSit
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureSiteRecoveryManagementServiceApiImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecoveryServicesDataReplicationMgmtClientImpl.class);
 }

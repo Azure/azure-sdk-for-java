@@ -12,10 +12,10 @@ public final class DraGetSamples {
     /**
      * Sample code: Dra_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .dras()
             .getWithResponse("rgrecoveryservicesdatareplication", "wPR", "M", com.azure.core.util.Context.NONE);

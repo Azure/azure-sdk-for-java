@@ -18,12 +18,12 @@ public final class ProtectedItemOperationStatusImpl implements ProtectedItemOper
 
     private final ProtectedItemOperationStatusClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
         serviceManager;
 
     public ProtectedItemOperationStatusImpl(
         ProtectedItemOperationStatusClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -59,7 +59,7 @@ public final class ProtectedItemOperationStatusImpl implements ProtectedItemOper
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager() {
+    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager() {
         return this.serviceManager;
     }
 }

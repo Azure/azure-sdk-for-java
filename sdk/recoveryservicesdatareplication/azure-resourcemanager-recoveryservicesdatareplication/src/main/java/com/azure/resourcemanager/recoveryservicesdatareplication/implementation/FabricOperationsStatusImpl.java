@@ -18,12 +18,12 @@ public final class FabricOperationsStatusImpl implements FabricOperationsStatus 
 
     private final FabricOperationsStatusClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
         serviceManager;
 
     public FabricOperationsStatusImpl(
         FabricOperationsStatusClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -57,7 +57,7 @@ public final class FabricOperationsStatusImpl implements FabricOperationsStatus 
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager() {
+    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager() {
         return this.serviceManager;
     }
 }

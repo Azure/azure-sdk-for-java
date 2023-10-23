@@ -36,25 +36,25 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     private final RecoveryPointsService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of RecoveryPointsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RecoveryPointsClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    RecoveryPointsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(RecoveryPointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiRecoveryPoints to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientRecoveryPoints to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface RecoveryPointsService {
         @Headers({"Content-Type: application/json"})
         @Get(

@@ -36,24 +36,24 @@ public final class EventsClientImpl implements EventsClient {
     private final EventsService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of EventsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    EventsClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    EventsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service = RestProxy.create(EventsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiEvents to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientEvents to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface EventsService {
         @Headers({"Content-Type: application/json"})
         @Get(

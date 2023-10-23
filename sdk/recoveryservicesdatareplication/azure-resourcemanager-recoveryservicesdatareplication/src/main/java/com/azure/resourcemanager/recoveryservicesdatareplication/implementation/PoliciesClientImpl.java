@@ -44,24 +44,24 @@ public final class PoliciesClientImpl implements PoliciesClient {
     private final PoliciesService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of PoliciesClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PoliciesClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    PoliciesClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service = RestProxy.create(PoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiPolicies to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientPolicies to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface PoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(

@@ -31,25 +31,25 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
     private final DraOperationStatusService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of DraOperationStatusClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DraOperationStatusClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    DraOperationStatusClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(DraOperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiDraOperationStatus to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientDraOperationStatus to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface DraOperationStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(

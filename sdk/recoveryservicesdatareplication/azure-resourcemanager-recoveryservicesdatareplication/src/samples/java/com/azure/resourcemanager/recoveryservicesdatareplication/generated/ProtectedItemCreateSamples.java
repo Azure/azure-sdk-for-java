@@ -15,10 +15,10 @@ public final class ProtectedItemCreateSamples {
     /**
      * Sample code: ProtectedItem_Create.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemCreate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .protectedItems()
             .define("d")

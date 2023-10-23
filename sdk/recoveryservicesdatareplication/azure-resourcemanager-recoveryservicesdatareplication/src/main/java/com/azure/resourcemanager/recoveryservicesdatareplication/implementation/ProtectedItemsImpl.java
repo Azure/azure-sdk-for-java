@@ -21,12 +21,12 @@ public final class ProtectedItemsImpl implements ProtectedItems {
 
     private final ProtectedItemsClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
         serviceManager;
 
     public ProtectedItemsImpl(
         ProtectedItemsClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -221,7 +221,7 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager() {
+    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager() {
         return this.serviceManager;
     }
 

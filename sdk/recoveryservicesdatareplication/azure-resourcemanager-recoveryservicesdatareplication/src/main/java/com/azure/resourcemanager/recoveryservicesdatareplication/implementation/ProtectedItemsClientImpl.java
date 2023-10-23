@@ -46,25 +46,25 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     private final ProtectedItemsService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of ProtectedItemsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ProtectedItemsClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    ProtectedItemsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(ProtectedItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiProtectedItems to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientProtectedItems to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface ProtectedItemsService {
         @Headers({"Content-Type: application/json"})
         @Get(

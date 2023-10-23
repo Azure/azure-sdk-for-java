@@ -31,14 +31,14 @@ public final class PolicyOperationStatusClientImpl implements PolicyOperationSta
     private final PolicyOperationStatusService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of PolicyOperationStatusClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PolicyOperationStatusClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    PolicyOperationStatusClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy
                 .create(PolicyOperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -46,11 +46,11 @@ public final class PolicyOperationStatusClientImpl implements PolicyOperationSta
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiPolicyOperationStatus to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientPolicyOperationStatus to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface PolicyOperationStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(

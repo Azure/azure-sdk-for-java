@@ -18,12 +18,12 @@ public final class WorkflowOperationStatusImpl implements WorkflowOperationStatu
 
     private final WorkflowOperationStatusClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
         serviceManager;
 
     public WorkflowOperationStatusImpl(
         WorkflowOperationStatusClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -57,7 +57,7 @@ public final class WorkflowOperationStatusImpl implements WorkflowOperationStatu
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager() {
+    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager() {
         return this.serviceManager;
     }
 }

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for AzureSiteRecoveryManagementServiceApi class. */
-public interface AzureSiteRecoveryManagementServiceApi {
+/** The interface for RecoveryServicesDataReplicationMgmtClient class. */
+public interface RecoveryServicesDataReplicationMgmtClient {
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
      *

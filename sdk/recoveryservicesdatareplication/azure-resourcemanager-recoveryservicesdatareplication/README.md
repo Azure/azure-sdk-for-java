@@ -1,8 +1,8 @@
-# Azure Resource Manager recoveryservicesdatareplication client library for Java
+# Azure Resource Manager Recovery Services Data Replication client library for Java
 
-Azure Resource Manager recoveryservicesdatareplication client library for Java.
+Azure Resource Manager Recovery Services Data Replication client library for Java.
 
-This package contains Microsoft Azure SDK for recoveryservicesdatareplication Management SDK. A first party Azure service enabling the data replication. Package tag package-2021-02-16-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Recovery Services Data Replication Management SDK. A first party Azure service enabling the data replication. Package tag package-2021-02-16-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -60,7 +60,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-RecoveryservicesdatareplicationManager manager = RecoveryservicesdatareplicationManager
+RecoveryServicesDataReplicationManager manager = RecoveryServicesDataReplicationManager
     .authenticate(credential, profile);
 ```
 

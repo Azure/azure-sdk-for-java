@@ -12,10 +12,10 @@ public final class FabricOperationsStatusGetSamples {
     /**
      * Sample code: FabricOperationsStatus_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricOperationsStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .fabricOperationsStatus()
             .getWithResponse("rgrecoveryservicesdatareplication", "wPR", "dvfwerv", com.azure.core.util.Context.NONE);

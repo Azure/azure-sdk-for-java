@@ -36,25 +36,25 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     private final WorkflowsService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of WorkflowsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    WorkflowsClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    WorkflowsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(WorkflowsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiWorkflows to be used by the
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientWorkflows to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface WorkflowsService {
         @Headers({"Content-Type: application/json"})
         @Get(

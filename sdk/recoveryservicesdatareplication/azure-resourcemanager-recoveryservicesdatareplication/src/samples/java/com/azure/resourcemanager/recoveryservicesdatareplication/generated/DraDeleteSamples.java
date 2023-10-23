@@ -12,10 +12,10 @@ public final class DraDeleteSamples {
     /**
      * Sample code: Dra_Delete.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draDelete(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.dras().delete("rgrecoveryservicesdatareplication", "wPR", "M", com.azure.core.util.Context.NONE);
     }
 }

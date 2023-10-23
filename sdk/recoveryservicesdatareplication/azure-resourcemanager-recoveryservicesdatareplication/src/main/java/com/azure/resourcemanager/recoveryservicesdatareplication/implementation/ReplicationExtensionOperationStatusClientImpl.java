@@ -33,14 +33,14 @@ public final class ReplicationExtensionOperationStatusClientImpl implements Repl
     private final ReplicationExtensionOperationStatusService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of ReplicationExtensionOperationStatusClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ReplicationExtensionOperationStatusClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    ReplicationExtensionOperationStatusClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy
                 .create(
@@ -52,11 +52,11 @@ public final class ReplicationExtensionOperationStatusClientImpl implements Repl
 
     /**
      * The interface defining all the services for
-     * AzureSiteRecoveryManagementServiceApiReplicationExtensionOperationStatus to be used by the proxy service to
+     * RecoveryServicesDataReplicationMgmtClientReplicationExtensionOperationStatus to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface ReplicationExtensionOperationStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(

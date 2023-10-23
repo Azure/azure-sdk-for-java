@@ -120,10 +120,10 @@ public final class DraCreateSamples {
     /**
      * Sample code: Dra_Create.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draCreate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .dras()
             .define("M")
@@ -163,10 +163,10 @@ public final class DraDeleteSamples {
     /**
      * Sample code: Dra_Delete.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draDelete(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.dras().delete("rgrecoveryservicesdatareplication", "wPR", "M", com.azure.core.util.Context.NONE);
     }
 }
@@ -183,10 +183,10 @@ public final class DraGetSamples {
     /**
      * Sample code: Dra_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .dras()
             .getWithResponse("rgrecoveryservicesdatareplication", "wPR", "M", com.azure.core.util.Context.NONE);
@@ -205,10 +205,10 @@ public final class DraListSamples {
     /**
      * Sample code: Dra_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.dras().list("rgrecoveryservicesdatareplication", "wPR", com.azure.core.util.Context.NONE);
     }
 }
@@ -225,10 +225,10 @@ public final class DraOperationStatusGetSamples {
     /**
      * Sample code: DraOperationStatus_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draOperationStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .draOperationStatus()
             .getWithResponse(
@@ -251,10 +251,10 @@ public final class EmailConfigurationCreateSamples {
     /**
      * Sample code: EmailConfiguration_Create.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void emailConfigurationCreate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .emailConfigurations()
             .define("0")
@@ -280,10 +280,10 @@ public final class EmailConfigurationGetSamples {
     /**
      * Sample code: EmailConfiguration_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void emailConfigurationGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .emailConfigurations()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "0", com.azure.core.util.Context.NONE);
@@ -302,10 +302,10 @@ public final class EmailConfigurationListSamples {
     /**
      * Sample code: EmailConfiguration_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void emailConfigurationList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.emailConfigurations().list("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
     }
 }
@@ -322,10 +322,10 @@ public final class EventGetSamples {
     /**
      * Sample code: Event_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void eventGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .events()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "231CIG", com.azure.core.util.Context.NONE);
@@ -344,10 +344,10 @@ public final class EventListSamples {
     /**
      * Sample code: Event_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void eventList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .events()
             .list(
@@ -376,10 +376,10 @@ public final class FabricCreateSamples {
     /**
      * Sample code: Fabric_Create.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricCreate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .fabrics()
             .define("wPR")
@@ -415,10 +415,10 @@ public final class FabricDeleteSamples {
     /**
      * Sample code: Fabric_Delete.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricDelete(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.fabrics().delete("rgrecoveryservicesdatareplication", "wPR", com.azure.core.util.Context.NONE);
     }
 }
@@ -435,10 +435,10 @@ public final class FabricGetByResourceGroupSamples {
     /**
      * Sample code: Fabric_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .fabrics()
             .getByResourceGroupWithResponse(
@@ -458,10 +458,10 @@ public final class FabricListSamples {
     /**
      * Sample code: Fabric_ListBySubscription.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricListBySubscription(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.fabrics().list("rmgqrpzucsizbyjscxzockbiyg", com.azure.core.util.Context.NONE);
     }
 }
@@ -478,10 +478,10 @@ public final class FabricListByResourceGroupSamples {
     /**
      * Sample code: Fabric_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .fabrics()
             .listByResourceGroup("rgrecoveryservicesdatareplication", "mjzsxwwmtvd", com.azure.core.util.Context.NONE);
@@ -506,10 +506,10 @@ public final class FabricUpdateSamples {
     /**
      * Sample code: Fabric_Update.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricUpdate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         FabricModel resource =
             manager
                 .fabrics()
@@ -548,10 +548,10 @@ public final class FabricOperationsStatusGetSamples {
     /**
      * Sample code: FabricOperationsStatus_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricOperationsStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .fabricOperationsStatus()
             .getWithResponse("rgrecoveryservicesdatareplication", "wPR", "dvfwerv", com.azure.core.util.Context.NONE);
@@ -570,10 +570,10 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void operationsList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -593,10 +593,10 @@ public final class PolicyCreateSamples {
     /**
      * Sample code: Policy_Create.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyCreate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .policies()
             .define("fafqwc")
@@ -618,10 +618,10 @@ public final class PolicyDeleteSamples {
     /**
      * Sample code: Policy_Delete.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyDelete(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .policies()
             .delete("rgrecoveryservicesdatareplication", "4", "wqfscsdv", com.azure.core.util.Context.NONE);
@@ -640,10 +640,10 @@ public final class PolicyGetSamples {
     /**
      * Sample code: Policy_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .policies()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "wdqsacasc", com.azure.core.util.Context.NONE);
@@ -662,10 +662,10 @@ public final class PolicyListSamples {
     /**
      * Sample code: Policy_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.policies().list("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
     }
 }
@@ -682,10 +682,10 @@ public final class PolicyOperationStatusGetSamples {
     /**
      * Sample code: PolicyOperationStatus_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyOperationStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .policyOperationStatus()
             .getWithResponse(
@@ -708,10 +708,10 @@ public final class ProtectedItemCreateSamples {
     /**
      * Sample code: ProtectedItem_Create.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemCreate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .protectedItems()
             .define("d")
@@ -737,10 +737,10 @@ public final class ProtectedItemDeleteSamples {
     /**
      * Sample code: ProtectedItem_Delete.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemDelete(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .protectedItems()
             .delete("rgrecoveryservicesdatareplication", "4", "d", true, com.azure.core.util.Context.NONE);
@@ -759,10 +759,10 @@ public final class ProtectedItemGetSamples {
     /**
      * Sample code: ProtectedItem_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .protectedItems()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "d", com.azure.core.util.Context.NONE);
@@ -781,10 +781,10 @@ public final class ProtectedItemListSamples {
     /**
      * Sample code: ProtectedItem_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.protectedItems().list("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
     }
 }
@@ -805,10 +805,10 @@ public final class ProtectedItemPlannedFailoverSamples {
     /**
      * Sample code: ProtectedItem_PlannedFailover.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemPlannedFailover(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .protectedItems()
             .plannedFailover(
@@ -835,10 +835,10 @@ public final class ProtectedItemOperationStatusGetSamples {
     /**
      * Sample code: ProtectedItemOperationStatus_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemOperationStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .protectedItemOperationStatus()
             .getWithResponse(
@@ -858,10 +858,10 @@ public final class RecoveryPointsGetSamples {
     /**
      * Sample code: RecoveryPoints_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void recoveryPointsGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .recoveryPoints()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "d", "1X", com.azure.core.util.Context.NONE);
@@ -880,10 +880,10 @@ public final class RecoveryPointsListSamples {
     /**
      * Sample code: RecoveryPoints_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void recoveryPointsList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.recoveryPoints().list("rgrecoveryservicesdatareplication", "4", "d", com.azure.core.util.Context.NONE);
     }
 }
@@ -903,10 +903,10 @@ public final class ReplicationExtensionCreateSamples {
     /**
      * Sample code: ReplicationExtension_Create.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void replicationExtensionCreate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .replicationExtensions()
             .define("g16yjJ")
@@ -930,10 +930,10 @@ public final class ReplicationExtensionDeleteSamples {
     /**
      * Sample code: ReplicationExtension_Delete.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void replicationExtensionDelete(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .replicationExtensions()
             .delete("rgrecoveryservicesdatareplication", "4", "g16yjJ", com.azure.core.util.Context.NONE);
@@ -952,10 +952,10 @@ public final class ReplicationExtensionGetSamples {
     /**
      * Sample code: ReplicationExtension_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void replicationExtensionGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .replicationExtensions()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "g16yjJ", com.azure.core.util.Context.NONE);
@@ -974,10 +974,10 @@ public final class ReplicationExtensionListSamples {
     /**
      * Sample code: ReplicationExtension_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void replicationExtensionList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .replicationExtensions()
             .list("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
@@ -996,10 +996,10 @@ public final class ReplicationExtensionOperationStatusGet {
     /**
      * Sample code: ReplicationExtensionOperationStatus_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void replicationExtensionOperationStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .replicationExtensionOperationStatus()
             .getWithResponse(
@@ -1021,10 +1021,10 @@ public final class ResourceProviderCheckNameAvailabilityS {
     /**
      * Sample code: CheckNameAvailability.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void checkNameAvailability(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .resourceProviders()
             .checkNameAvailabilityWithResponse(
@@ -1050,10 +1050,10 @@ public final class ResourceProviderDeploymentPreflightSam {
     /**
      * Sample code: DeploymentPreflight.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void deploymentPreflight(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .resourceProviders()
             .deploymentPreflightWithResponse(
@@ -1089,10 +1089,10 @@ public final class VaultCreateSamples {
     /**
      * Sample code: Vault_Create.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultCreate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .vaults()
             .define("4")
@@ -1128,10 +1128,10 @@ public final class VaultDeleteSamples {
     /**
      * Sample code: Vault_Delete.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultDelete(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.vaults().delete("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
     }
 }
@@ -1148,10 +1148,10 @@ public final class VaultGetByResourceGroupSamples {
     /**
      * Sample code: Vault_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .vaults()
             .getByResourceGroupWithResponse("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
@@ -1170,10 +1170,10 @@ public final class VaultListSamples {
     /**
      * Sample code: Vault_ListBySubscription.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultListBySubscription(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.vaults().list("dqsjhseyugyexxrlrln", com.azure.core.util.Context.NONE);
     }
 }
@@ -1190,10 +1190,10 @@ public final class VaultListByResourceGroupSamples {
     /**
      * Sample code: Vault_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .vaults()
             .listByResourceGroup("rgrecoveryservicesdatareplication", "mwculdaqndp", com.azure.core.util.Context.NONE);
@@ -1218,10 +1218,10 @@ public final class VaultUpdateSamples {
     /**
      * Sample code: Vault_Update.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultUpdate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         VaultModel resource =
             manager
                 .vaults()
@@ -1260,10 +1260,10 @@ public final class VaultOperationStatusGetSamples {
     /**
      * Sample code: VaultOperationStatus_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultOperationStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .vaultOperationStatus()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "vsdvwe", com.azure.core.util.Context.NONE);
@@ -1282,10 +1282,10 @@ public final class WorkflowGetSamples {
     /**
      * Sample code: Workflow_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void workflowGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .workflows()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "ZGH4y", com.azure.core.util.Context.NONE);
@@ -1304,10 +1304,10 @@ public final class WorkflowListSamples {
     /**
      * Sample code: Workflow_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void workflowList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .workflows()
             .list(
@@ -1331,10 +1331,10 @@ public final class WorkflowOperationStatusGetSamples {
     /**
      * Sample code: WorkflowOperationStatus_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void workflowOperationStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .workflowOperationStatus()
             .getWithResponse(

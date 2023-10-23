@@ -12,10 +12,10 @@ public final class VaultListSamples {
     /**
      * Sample code: Vault_ListBySubscription.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultListBySubscription(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.vaults().list("dqsjhseyugyexxrlrln", com.azure.core.util.Context.NONE);
     }
 }

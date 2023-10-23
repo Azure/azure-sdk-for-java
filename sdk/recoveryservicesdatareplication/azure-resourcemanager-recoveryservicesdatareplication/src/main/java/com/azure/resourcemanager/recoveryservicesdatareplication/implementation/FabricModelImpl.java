@@ -17,7 +17,7 @@ import java.util.Map;
 public final class FabricModelImpl implements FabricModel, FabricModel.Definition, FabricModel.Update {
     private FabricModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
         serviceManager;
 
     public String id() {
@@ -69,7 +69,7 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager() {
+    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager() {
         return this.serviceManager;
     }
 
@@ -104,7 +104,7 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
 
     FabricModelImpl(
         String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerObject = new FabricModelInner();
         this.serviceManager = serviceManager;
@@ -130,7 +130,7 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
 
     FabricModelImpl(
         FabricModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -23,8 +23,7 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.AzureSiteRecoveryManagementServiceApi;
-import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.AzureSiteRecoveryManagementServiceApiBuilder;
+import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.RecoveryServicesDataReplicationMgmtClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.DraOperationStatusImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.DrasImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.EmailConfigurationsImpl;
@@ -37,6 +36,7 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.ProtectedItemOperationStatusImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.ProtectedItemsImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.RecoveryPointsImpl;
+import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.RecoveryServicesDataReplicationMgmtClientBuilder;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.ReplicationExtensionOperationStatusImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.ReplicationExtensionsImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.ResourceProvidersImpl;
@@ -70,8 +70,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to RecoveryservicesdatareplicationManager. A first party Azure service enabling the data replication. */
-public final class RecoveryservicesdatareplicationManager {
+/** Entry point to RecoveryServicesDataReplicationManager. A first party Azure service enabling the data replication. */
+public final class RecoveryServicesDataReplicationManager {
     private Dras dras;
 
     private DraOperationStatus draOperationStatus;
@@ -110,14 +110,14 @@ public final class RecoveryservicesdatareplicationManager {
 
     private WorkflowOperationStatus workflowOperationStatus;
 
-    private final AzureSiteRecoveryManagementServiceApi clientObject;
+    private final RecoveryServicesDataReplicationMgmtClient clientObject;
 
-    private RecoveryservicesdatareplicationManager(
+    private RecoveryServicesDataReplicationManager(
         HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
-            new AzureSiteRecoveryManagementServiceApiBuilder()
+            new RecoveryServicesDataReplicationMgmtClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
@@ -126,13 +126,13 @@ public final class RecoveryservicesdatareplicationManager {
     }
 
     /**
-     * Creates an instance of recoveryservicesdatareplication service API entry point.
+     * Creates an instance of Recovery Services Data Replication service API entry point.
      *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the recoveryservicesdatareplication service API instance.
+     * @return the Recovery Services Data Replication service API instance.
      */
-    public static RecoveryservicesdatareplicationManager authenticate(
+    public static RecoveryServicesDataReplicationManager authenticate(
         TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
@@ -140,26 +140,26 @@ public final class RecoveryservicesdatareplicationManager {
     }
 
     /**
-     * Creates an instance of recoveryservicesdatareplication service API entry point.
+     * Creates an instance of Recovery Services Data Replication service API entry point.
      *
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the recoveryservicesdatareplication service API instance.
+     * @return the Recovery Services Data Replication service API instance.
      */
-    public static RecoveryservicesdatareplicationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static RecoveryServicesDataReplicationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new RecoveryservicesdatareplicationManager(httpPipeline, profile, null);
+        return new RecoveryServicesDataReplicationManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create RecoveryservicesdatareplicationManager with optional
+     * Gets a Configurable instance that can be used to create RecoveryServicesDataReplicationManager with optional
      * configuration.
      *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new RecoveryservicesdatareplicationManager.Configurable();
+        return new RecoveryServicesDataReplicationManager.Configurable();
     }
 
     /** The Configurable allowing configurations to be set. */
@@ -262,13 +262,13 @@ public final class RecoveryservicesdatareplicationManager {
         }
 
         /**
-         * Creates an instance of recoveryservicesdatareplication service API entry point.
+         * Creates an instance of Recovery Services Data Replication service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the recoveryservicesdatareplication service API instance.
+         * @return the Recovery Services Data Replication service API instance.
          */
-        public RecoveryservicesdatareplicationManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public RecoveryServicesDataReplicationManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -331,7 +331,7 @@ public final class RecoveryservicesdatareplicationManager {
                     .httpClient(httpClient)
                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
                     .build();
-            return new RecoveryservicesdatareplicationManager(httpPipeline, profile, defaultPollInterval);
+            return new RecoveryServicesDataReplicationManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
@@ -569,12 +569,12 @@ public final class RecoveryservicesdatareplicationManager {
     }
 
     /**
-     * Gets wrapped service client AzureSiteRecoveryManagementServiceApi providing direct access to the underlying
+     * Gets wrapped service client RecoveryServicesDataReplicationMgmtClient providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API.
      *
-     * @return Wrapped service client AzureSiteRecoveryManagementServiceApi.
+     * @return Wrapped service client RecoveryServicesDataReplicationMgmtClient.
      */
-    public AzureSiteRecoveryManagementServiceApi serviceClient() {
+    public RecoveryServicesDataReplicationMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

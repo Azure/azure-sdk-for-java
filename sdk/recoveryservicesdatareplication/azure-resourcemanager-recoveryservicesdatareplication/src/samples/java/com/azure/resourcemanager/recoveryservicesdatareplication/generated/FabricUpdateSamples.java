@@ -18,10 +18,10 @@ public final class FabricUpdateSamples {
     /**
      * Sample code: Fabric_Update.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricUpdate(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         FabricModel resource =
             manager
                 .fabrics()

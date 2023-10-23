@@ -12,10 +12,10 @@ public final class VaultOperationStatusGetSamples {
     /**
      * Sample code: VaultOperationStatus_Get.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultOperationStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .vaultOperationStatus()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "vsdvwe", com.azure.core.util.Context.NONE);

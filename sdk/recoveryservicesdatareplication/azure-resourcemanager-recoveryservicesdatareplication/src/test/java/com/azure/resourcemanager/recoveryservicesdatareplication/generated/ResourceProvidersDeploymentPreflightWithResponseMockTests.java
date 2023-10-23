@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager;
+import com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.DeploymentPreflightModelInner;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.DeploymentPreflightModel;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.DeploymentPreflightResource;
@@ -54,8 +54,8 @@ public final class ResourceProvidersDeploymentPreflightWithResponseMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        RecoveryservicesdatareplicationManager manager =
-            RecoveryservicesdatareplicationManager
+        RecoveryServicesDataReplicationManager manager =
+            RecoveryServicesDataReplicationManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

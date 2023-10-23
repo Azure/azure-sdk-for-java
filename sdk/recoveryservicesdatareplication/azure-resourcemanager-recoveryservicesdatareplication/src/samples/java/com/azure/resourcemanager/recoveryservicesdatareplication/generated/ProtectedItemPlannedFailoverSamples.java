@@ -16,10 +16,10 @@ public final class ProtectedItemPlannedFailoverSamples {
     /**
      * Sample code: ProtectedItem_PlannedFailover.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemPlannedFailover(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .protectedItems()
             .plannedFailover(

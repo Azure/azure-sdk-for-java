@@ -34,25 +34,25 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private final ResourceProvidersService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ResourceProvidersClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    ResourceProvidersClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiResourceProviders to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientResourceProviders to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post(

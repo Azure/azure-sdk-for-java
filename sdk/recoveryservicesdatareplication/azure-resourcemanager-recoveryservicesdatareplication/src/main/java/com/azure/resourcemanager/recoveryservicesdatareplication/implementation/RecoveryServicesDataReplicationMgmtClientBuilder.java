@@ -14,9 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AzureSiteRecoveryManagementServiceApiImpl type. */
-@ServiceClientBuilder(serviceClients = {AzureSiteRecoveryManagementServiceApiImpl.class})
-public final class AzureSiteRecoveryManagementServiceApiBuilder {
+/** A builder for creating a new instance of the RecoveryServicesDataReplicationMgmtClientImpl type. */
+@ServiceClientBuilder(serviceClients = {RecoveryServicesDataReplicationMgmtClientImpl.class})
+public final class RecoveryServicesDataReplicationMgmtClientBuilder {
     /*
      * The ID of the target subscription. The value must be an UUID.
      */
@@ -26,9 +26,9 @@ public final class AzureSiteRecoveryManagementServiceApiBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      *
      * @param subscriptionId the subscriptionId value.
-     * @return the AzureSiteRecoveryManagementServiceApiBuilder.
+     * @return the RecoveryServicesDataReplicationMgmtClientBuilder.
      */
-    public AzureSiteRecoveryManagementServiceApiBuilder subscriptionId(String subscriptionId) {
+    public RecoveryServicesDataReplicationMgmtClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -42,9 +42,9 @@ public final class AzureSiteRecoveryManagementServiceApiBuilder {
      * Sets server parameter.
      *
      * @param endpoint the endpoint value.
-     * @return the AzureSiteRecoveryManagementServiceApiBuilder.
+     * @return the RecoveryServicesDataReplicationMgmtClientBuilder.
      */
-    public AzureSiteRecoveryManagementServiceApiBuilder endpoint(String endpoint) {
+    public RecoveryServicesDataReplicationMgmtClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -58,9 +58,9 @@ public final class AzureSiteRecoveryManagementServiceApiBuilder {
      * Sets The environment to connect to.
      *
      * @param environment the environment value.
-     * @return the AzureSiteRecoveryManagementServiceApiBuilder.
+     * @return the RecoveryServicesDataReplicationMgmtClientBuilder.
      */
-    public AzureSiteRecoveryManagementServiceApiBuilder environment(AzureEnvironment environment) {
+    public RecoveryServicesDataReplicationMgmtClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -74,9 +74,9 @@ public final class AzureSiteRecoveryManagementServiceApiBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the AzureSiteRecoveryManagementServiceApiBuilder.
+     * @return the RecoveryServicesDataReplicationMgmtClientBuilder.
      */
-    public AzureSiteRecoveryManagementServiceApiBuilder pipeline(HttpPipeline pipeline) {
+    public RecoveryServicesDataReplicationMgmtClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -90,9 +90,9 @@ public final class AzureSiteRecoveryManagementServiceApiBuilder {
      * Sets The default poll interval for long-running operation.
      *
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the AzureSiteRecoveryManagementServiceApiBuilder.
+     * @return the RecoveryServicesDataReplicationMgmtClientBuilder.
      */
-    public AzureSiteRecoveryManagementServiceApiBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public RecoveryServicesDataReplicationMgmtClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -106,19 +106,19 @@ public final class AzureSiteRecoveryManagementServiceApiBuilder {
      * Sets The serializer to serialize an object into a string.
      *
      * @param serializerAdapter the serializerAdapter value.
-     * @return the AzureSiteRecoveryManagementServiceApiBuilder.
+     * @return the RecoveryServicesDataReplicationMgmtClientBuilder.
      */
-    public AzureSiteRecoveryManagementServiceApiBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public RecoveryServicesDataReplicationMgmtClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of AzureSiteRecoveryManagementServiceApiImpl with the provided parameters.
+     * Builds an instance of RecoveryServicesDataReplicationMgmtClientImpl with the provided parameters.
      *
-     * @return an instance of AzureSiteRecoveryManagementServiceApiImpl.
+     * @return an instance of RecoveryServicesDataReplicationMgmtClientImpl.
      */
-    public AzureSiteRecoveryManagementServiceApiImpl buildClient() {
+    public RecoveryServicesDataReplicationMgmtClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline =
@@ -131,8 +131,8 @@ public final class AzureSiteRecoveryManagementServiceApiBuilder {
             (serializerAdapter != null)
                 ? serializerAdapter
                 : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AzureSiteRecoveryManagementServiceApiImpl client =
-            new AzureSiteRecoveryManagementServiceApiImpl(
+        RecoveryServicesDataReplicationMgmtClientImpl client =
+            new RecoveryServicesDataReplicationMgmtClientImpl(
                 localPipeline,
                 localSerializerAdapter,
                 localDefaultPollInterval,

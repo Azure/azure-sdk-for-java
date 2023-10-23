@@ -31,14 +31,14 @@ public final class VaultOperationStatusClientImpl implements VaultOperationStatu
     private final VaultOperationStatusService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of VaultOperationStatusClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VaultOperationStatusClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    VaultOperationStatusClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy
                 .create(VaultOperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -46,11 +46,11 @@ public final class VaultOperationStatusClientImpl implements VaultOperationStatu
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiVaultOperationStatus to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientVaultOperationStatus to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface VaultOperationStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(

@@ -17,8 +17,8 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-recoveryservicesdatareplication;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for recoveryservicesdatareplication Management</name>
-  <description>This package contains Microsoft Azure SDK for recoveryservicesdatareplication Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. A first party Azure service enabling the data replication. Package tag package-2021-02-16-preview.</description>
+  <name>Microsoft Azure SDK for Recovery Services Data Replication Management</name>
+  <description>This package contains Microsoft Azure SDK for Recovery Services Data Replication Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. A first party Azure service enabling the data replication. Package tag package-2021-02-16-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

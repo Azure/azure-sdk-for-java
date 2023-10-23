@@ -12,10 +12,10 @@ public final class EmailConfigurationListSamples {
     /**
      * Sample code: EmailConfiguration_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void emailConfigurationList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager.emailConfigurations().list("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
     }
 }

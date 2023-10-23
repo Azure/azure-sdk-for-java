@@ -46,24 +46,24 @@ public final class FabricsClientImpl implements FabricsClient {
     private final FabricsService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of FabricsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    FabricsClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    FabricsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service = RestProxy.create(FabricsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiFabrics to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientFabrics to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface FabricsService {
         @Headers({"Content-Type: application/json"})
         @Get(

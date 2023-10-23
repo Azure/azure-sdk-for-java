@@ -12,12 +12,12 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.Workflow
 public final class WorkflowModelImpl implements WorkflowModel {
     private WorkflowModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
         serviceManager;
 
     WorkflowModelImpl(
         WorkflowModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -47,7 +47,7 @@ public final class WorkflowModelImpl implements WorkflowModel {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager() {
+    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager() {
         return this.serviceManager;
     }
 }

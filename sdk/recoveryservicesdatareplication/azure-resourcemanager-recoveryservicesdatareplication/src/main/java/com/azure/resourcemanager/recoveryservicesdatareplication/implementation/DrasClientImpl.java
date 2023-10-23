@@ -44,24 +44,24 @@ public final class DrasClientImpl implements DrasClient {
     private final DrasService service;
 
     /** The service client containing this operation class. */
-    private final AzureSiteRecoveryManagementServiceApiImpl client;
+    private final RecoveryServicesDataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of DrasClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DrasClientImpl(AzureSiteRecoveryManagementServiceApiImpl client) {
+    DrasClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
         this.service = RestProxy.create(DrasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSiteRecoveryManagementServiceApiDras to be used by the proxy
+     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientDras to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSiteRecoveryMan")
+    @ServiceInterface(name = "RecoveryServicesData")
     public interface DrasService {
         @Headers({"Content-Type: application/json"})
         @Get(

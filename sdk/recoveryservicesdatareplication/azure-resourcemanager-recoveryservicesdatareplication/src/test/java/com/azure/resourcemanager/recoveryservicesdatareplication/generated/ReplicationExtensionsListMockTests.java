@@ -12,7 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager;
+import com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.ReplicationExtensionModel;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -51,8 +51,8 @@ public final class ReplicationExtensionsListMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        RecoveryservicesdatareplicationManager manager =
-            RecoveryservicesdatareplicationManager
+        RecoveryServicesDataReplicationManager manager =
+            RecoveryServicesDataReplicationManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

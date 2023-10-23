@@ -17,7 +17,7 @@ import java.util.Map;
 public final class VaultModelImpl implements VaultModel, VaultModel.Definition, VaultModel.Update {
     private VaultModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
         serviceManager;
 
     public String id() {
@@ -69,7 +69,7 @@ public final class VaultModelImpl implements VaultModel, VaultModel.Definition, 
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager() {
+    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager() {
         return this.serviceManager;
     }
 
@@ -101,7 +101,7 @@ public final class VaultModelImpl implements VaultModel, VaultModel.Definition, 
 
     VaultModelImpl(
         String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerObject = new VaultModelInner();
         this.serviceManager = serviceManager;
@@ -127,7 +127,7 @@ public final class VaultModelImpl implements VaultModel, VaultModel.Definition, 
 
     VaultModelImpl(
         VaultModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

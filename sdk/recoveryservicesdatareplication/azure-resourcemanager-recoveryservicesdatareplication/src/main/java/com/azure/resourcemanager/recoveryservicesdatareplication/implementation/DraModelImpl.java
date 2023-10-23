@@ -13,12 +13,12 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.DraModel
 public final class DraModelImpl implements DraModel, DraModel.Definition {
     private DraModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
         serviceManager;
 
     DraModelImpl(
         DraModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -48,7 +48,7 @@ public final class DraModelImpl implements DraModel, DraModel.Definition {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager() {
+    private com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager() {
         return this.serviceManager;
     }
 
@@ -84,7 +84,7 @@ public final class DraModelImpl implements DraModel, DraModel.Definition {
 
     DraModelImpl(
         String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
             serviceManager) {
         this.innerObject = new DraModelInner();
         this.serviceManager = serviceManager;

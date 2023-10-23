@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager;
+import com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.ReplicationVaultType;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.VaultModel;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.VaultModelProperties;
@@ -55,8 +55,8 @@ public final class VaultsCreateMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        RecoveryservicesdatareplicationManager manager =
-            RecoveryservicesdatareplicationManager
+        RecoveryServicesDataReplicationManager manager =
+            RecoveryServicesDataReplicationManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

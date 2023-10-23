@@ -12,10 +12,10 @@ public final class ReplicationExtensionListSamples {
     /**
      * Sample code: ReplicationExtension_List.
      *
-     * @param manager Entry point to RecoveryservicesdatareplicationManager.
+     * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void replicationExtensionList(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager manager) {
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
         manager
             .replicationExtensions()
             .list("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);

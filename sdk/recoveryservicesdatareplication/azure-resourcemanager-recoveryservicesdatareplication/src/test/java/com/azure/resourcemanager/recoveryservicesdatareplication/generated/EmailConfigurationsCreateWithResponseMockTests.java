@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryservicesdatareplicationManager;
+import com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.EmailConfigurationModel;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.EmailConfigurationModelProperties;
 import java.nio.ByteBuffer;
@@ -53,8 +53,8 @@ public final class EmailConfigurationsCreateWithResponseMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        RecoveryservicesdatareplicationManager manager =
-            RecoveryservicesdatareplicationManager
+        RecoveryServicesDataReplicationManager manager =
+            RecoveryServicesDataReplicationManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(
