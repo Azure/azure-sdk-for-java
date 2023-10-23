@@ -93,6 +93,13 @@ public final class SearchOptions {
     private String scoringProfile;
 
     /*
+     * Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and
+     * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
+     * retrieval and ranking phase, and the L2 semantic phase.
+     */
+    private String semanticQuery;
+
+    /*
      * The name of the semantic configuration that lists which fields should be
      * used for semantic ranking, captions, highlights, and answers
      */
@@ -236,10 +243,16 @@ public final class SearchOptions {
      */
     private List<String> semanticFields;
 
-    /**
+    /*
      * The query parameters for vector and hybrid search queries.
      */
-    private SearchQueryVector vector;
+    private List<VectorQuery> vectorQueries;
+
+    /*
+     * Determines whether or not filters are applied before or after the vector search is performed. Default is
+     * 'preFilter'.
+     */
+    private VectorFilterMode vectorFilterMode;
 
     /**
      * Creates an instance of {@link SearchOptions}.
@@ -498,6 +511,30 @@ public final class SearchOptions {
      */
     public SearchOptions setScoringProfile(String scoringProfile) {
         this.scoringProfile = scoringProfile;
+        return this;
+    }
+
+    /**
+     * Get the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
+     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @return the semanticQuery value.
+     */
+    public String getSemanticQuery() {
+        return this.semanticQuery;
+    }
+
+    /**
+     * Set the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
+     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @param semanticQuery the semanticQuery value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticQuery(String semanticQuery) {
+        this.semanticQuery = semanticQuery;
         return this;
     }
 
@@ -949,22 +986,55 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the vector property: The query parameters for vector and hybrid search queries.
+     * Get the vectorQueries property: The query parameters for vector and hybrid search queries.
      *
-     * @return the vector value.
+     * @return the vectorQueries value.
      */
-    public SearchQueryVector getVector() {
-        return this.vector;
+    public List<VectorQuery> getVectorQueries() {
+        return this.vectorQueries;
     }
 
     /**
-     * Set the vector property: The query parameters for vector and hybrid search queries.
+     * Set the vectorQueries property: The query parameters for vector and hybrid search queries.
      *
-     * @param vector the vector value to set.
+     * @param vectorQueries the vectorQueries value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchOptions setVector(SearchQueryVector vector) {
-        this.vector = vector;
+    public SearchOptions setVectorQueries(List<VectorQuery> vectorQueries) {
+        this.vectorQueries = vectorQueries;
+        return this;
+    }
+
+    /**
+     * Set the vectorQueries property: The query parameters for vector and hybrid search queries.
+     *
+     * @param vectorQueries the vectorQueries value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchOptions setVectorQueries(VectorQuery... vectorQueries) {
+        return setVectorQueries(Arrays.asList(vectorQueries));
+    }
+
+
+    /**
+     * Get the vectorFilterMode property: Determines whether or not filters are applied before or after the vector
+     * search is performed. Default is 'preFilter'.
+     *
+     * @return the vectorFilterMode value.
+     */
+    public VectorFilterMode getVectorFilterMode() {
+        return this.vectorFilterMode;
+    }
+
+    /**
+     * Set the vectorFilterMode property: Determines whether or not filters are applied before or after the vector
+     * search is performed. Default is 'preFilter'.
+     *
+     * @param vectorFilterMode the vectorFilterMode value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchOptions setVectorFilterMode(VectorFilterMode vectorFilterMode) {
+        this.vectorFilterMode = vectorFilterMode;
         return this;
     }
 }

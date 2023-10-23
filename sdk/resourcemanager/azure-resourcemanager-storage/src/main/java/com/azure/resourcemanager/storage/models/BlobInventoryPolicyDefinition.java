@@ -58,6 +58,10 @@ public final class BlobInventoryPolicyDefinition {
     @JsonProperty(value = "schemaFields", required = true)
     private List<String> schemaFields;
 
+    /** Creates an instance of BlobInventoryPolicyDefinition class. */
+    public BlobInventoryPolicyDefinition() {
+    }
+
     /**
      * Get the filters property: An object that defines the filter set.
      *

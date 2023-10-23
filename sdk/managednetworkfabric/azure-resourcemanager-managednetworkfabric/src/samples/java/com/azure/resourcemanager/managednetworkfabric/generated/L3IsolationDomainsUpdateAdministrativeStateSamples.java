@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import java.util.Arrays;
 
 /** Samples for L3IsolationDomains UpdateAdministrativeState. */
 public final class L3IsolationDomainsUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_updateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_updateAdministrativeState_MaximumSet_Gen.json
      */
     /**
      * Sample code: L3IsolationDomains_updateAdministrativeState_MaximumSet_Gen.
@@ -23,14 +23,9 @@ public final class L3IsolationDomainsUpdateAdministrativeStateSamples {
         manager
             .l3IsolationDomains()
             .updateAdministrativeState(
-                "resourceGroupName",
+                "example-rg",
                 "example-l3domain",
-                new UpdateAdministrativeState()
-                    .withResourceIds(
-                        Arrays
-                            .asList(
-                                "/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"))
-                    .withState(AdministrativeState.ENABLE),
+                new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
                 com.azure.core.util.Context.NONE);
     }
 }

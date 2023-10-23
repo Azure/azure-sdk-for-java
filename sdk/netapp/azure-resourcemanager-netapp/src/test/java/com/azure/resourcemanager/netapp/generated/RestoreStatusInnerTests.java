@@ -13,7 +13,7 @@ public final class RestoreStatusInnerTests {
         RestoreStatusInner model =
             BinaryData
                 .fromString(
-                    "{\"healthy\":true,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Mirrored\",\"unhealthyReason\":\"bzdopcj\",\"errorMessage\":\"nhdldwmgxcx\",\"totalTransferBytes\":7813065002361041355}")
+                    "{\"healthy\":true,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Mirrored\",\"unhealthyReason\":\"jjxd\",\"errorMessage\":\"buukzclewyhml\",\"totalTransferBytes\":4136836492530491965}")
                 .toObject(RestoreStatusInner.class);
     }
 

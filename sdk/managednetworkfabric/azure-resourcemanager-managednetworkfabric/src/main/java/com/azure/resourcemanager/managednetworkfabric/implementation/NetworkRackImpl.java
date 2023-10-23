@@ -9,8 +9,9 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkRackInner;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkRack;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
+import com.azure.resourcemanager.managednetworkfabric.models.TagsUpdate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +50,8 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
         return this.innerModel().systemData();
     }
 
-    public String networkRackSku() {
-        return this.innerModel().networkRackSku();
+    public NetworkRackType networkRackType() {
+        return this.innerModel().networkRackType();
     }
 
     public String networkFabricId() {
@@ -98,7 +99,7 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
 
     private String networkRackName;
 
-    private NetworkRackPatch updateBody;
+    private TagsUpdate updateBody;
 
     public NetworkRackImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -131,7 +132,7 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
     }
 
     public NetworkRackImpl update() {
-        this.updateBody = new NetworkRackPatch();
+        this.updateBody = new TagsUpdate();
         return this;
     }
 
@@ -192,11 +193,6 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
         return this;
     }
 
-    public NetworkRackImpl withNetworkRackSku(String networkRackSku) {
-        this.innerModel().withNetworkRackSku(networkRackSku);
-        return this;
-    }
-
     public NetworkRackImpl withNetworkFabricId(String networkFabricId) {
         this.innerModel().withNetworkFabricId(networkFabricId);
         return this;
@@ -212,13 +208,13 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
         }
     }
 
-    public NetworkRackImpl withAnnotation(String annotation) {
-        this.innerModel().withAnnotation(annotation);
+    public NetworkRackImpl withNetworkRackType(NetworkRackType networkRackType) {
+        this.innerModel().withNetworkRackType(networkRackType);
         return this;
     }
 
-    public NetworkRackImpl withProperties(Object properties) {
-        this.updateBody.withProperties(properties);
+    public NetworkRackImpl withAnnotation(String annotation) {
+        this.innerModel().withAnnotation(annotation);
         return this;
     }
 

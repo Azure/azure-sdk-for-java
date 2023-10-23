@@ -33,7 +33,7 @@ public final class AttachedDatabaseConfigurationsCheckNameAvailabilityWithRespon
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"nameAvailable\":false,\"name\":\"qvdaeyyguxakjsq\",\"message\":\"zbezkgimsidxasic\",\"reason\":\"AlreadyExists\"}";
+            "{\"nameAvailable\":true,\"name\":\"xjbaqehgpdohzjq\",\"message\":\"ucoig\",\"reason\":\"Invalid\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,15 +65,15 @@ public final class AttachedDatabaseConfigurationsCheckNameAvailabilityWithRespon
             manager
                 .attachedDatabaseConfigurations()
                 .checkNameAvailabilityWithResponse(
-                    "ansym",
-                    "yqhlwigdivbkbx",
-                    new AttachedDatabaseConfigurationsCheckNameRequest().withName("omfaj"),
+                    "ecjxe",
+                    "gtuhxuicbu",
+                    new AttachedDatabaseConfigurationsCheckNameRequest().withName("wmrswnjlxuzrh"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("qvdaeyyguxakjsq", response.name());
-        Assertions.assertEquals("zbezkgimsidxasic", response.message());
-        Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals("xjbaqehgpdohzjq", response.name());
+        Assertions.assertEquals("ucoig", response.message());
+        Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

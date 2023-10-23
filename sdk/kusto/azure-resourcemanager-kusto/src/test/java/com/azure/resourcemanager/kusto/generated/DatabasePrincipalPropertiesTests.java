@@ -16,26 +16,26 @@ public final class DatabasePrincipalPropertiesTests {
         DatabasePrincipalProperties model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"txp\",\"role\":\"Monitor\",\"tenantId\":\"btfhvpesaps\",\"principalType\":\"User\",\"tenantName\":\"qmhjjdhtld\",\"principalName\":\"yzxuutkncw\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"vlxotogtwrupqsx\"}")
+                    "{\"principalId\":\"opcjwvnhd\",\"role\":\"Ingestor\",\"tenantId\":\"mgxcxrslpm\",\"principalType\":\"App\",\"tenantName\":\"uoegrpkhjwniyqs\",\"principalName\":\"i\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"gk\"}")
                 .toObject(DatabasePrincipalProperties.class);
-        Assertions.assertEquals("txp", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.MONITOR, model.role());
-        Assertions.assertEquals("btfhvpesaps", model.tenantId());
-        Assertions.assertEquals(PrincipalType.USER, model.principalType());
+        Assertions.assertEquals("opcjwvnhd", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, model.role());
+        Assertions.assertEquals("mgxcxrslpm", model.tenantId());
+        Assertions.assertEquals(PrincipalType.APP, model.principalType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabasePrincipalProperties model =
             new DatabasePrincipalProperties()
-                .withPrincipalId("txp")
-                .withRole(DatabasePrincipalRole.MONITOR)
-                .withTenantId("btfhvpesaps")
-                .withPrincipalType(PrincipalType.USER);
+                .withPrincipalId("opcjwvnhd")
+                .withRole(DatabasePrincipalRole.INGESTOR)
+                .withTenantId("mgxcxrslpm")
+                .withPrincipalType(PrincipalType.APP);
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalProperties.class);
-        Assertions.assertEquals("txp", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.MONITOR, model.role());
-        Assertions.assertEquals("btfhvpesaps", model.tenantId());
-        Assertions.assertEquals(PrincipalType.USER, model.principalType());
+        Assertions.assertEquals("opcjwvnhd", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, model.role());
+        Assertions.assertEquals("mgxcxrslpm", model.tenantId());
+        Assertions.assertEquals(PrincipalType.APP, model.principalType());
     }
 }

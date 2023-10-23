@@ -4,7 +4,9 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -12,39 +14,45 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Attaches a queue selector where the value is passed through from the job label with the same key. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("pass-through")
-@Fluent
+@Immutable
 public final class PassThroughQueueSelectorAttachment extends QueueSelectorAttachment {
     /*
      * The label key to query against
      */
-    @JsonProperty(value = "key", required = true)
+    @Generated
+    @JsonProperty(value = "key")
     private String key;
 
     /*
-     * Describes how the value of the label is compared to the value pass
-     * through
+     * Describes how the value of the label is compared to the value pass through
      */
-    @JsonProperty(value = "labelOperator", required = true)
+    @Generated
+    @JsonProperty(value = "labelOperator")
     private LabelOperator labelOperator;
+
+    /**
+     * Creates an instance of PassThroughQueueSelectorAttachment class.
+     *
+     * @param key the key value to set.
+     * @param labelOperator the labelOperator value to set.
+     */
+    @Generated
+    @JsonCreator
+    public PassThroughQueueSelectorAttachment(
+            @JsonProperty(value = "key") String key,
+            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+        this.key = key;
+        this.labelOperator = labelOperator;
+    }
 
     /**
      * Get the key property: The label key to query against.
      *
      * @return the key value.
      */
+    @Generated
     public String getKey() {
         return this.key;
-    }
-
-    /**
-     * Set the key property: The label key to query against.
-     *
-     * @param key the key value to set.
-     * @return the PassThroughQueueSelectorAttachment object itself.
-     */
-    public PassThroughQueueSelectorAttachment setKey(String key) {
-        this.key = key;
-        return this;
     }
 
     /**
@@ -52,18 +60,8 @@ public final class PassThroughQueueSelectorAttachment extends QueueSelectorAttac
      *
      * @return the labelOperator value.
      */
+    @Generated
     public LabelOperator getLabelOperator() {
         return this.labelOperator;
-    }
-
-    /**
-     * Set the labelOperator property: Describes how the value of the label is compared to the value pass through.
-     *
-     * @param labelOperator the labelOperator value to set.
-     * @return the PassThroughQueueSelectorAttachment object itself.
-     */
-    public PassThroughQueueSelectorAttachment setLabelOperator(LabelOperator labelOperator) {
-        this.labelOperator = labelOperator;
-        return this;
     }
 }

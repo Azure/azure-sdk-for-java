@@ -14,6 +14,12 @@ import java.util.List;
 @Immutable
 public final class AnalyzeResult {
 
+    /**
+     * Creates a new instance of AnalyzeResult.
+     */
+    public AnalyzeResult() {
+    }
+
     /*
      * Model ID used to produce this result.
      */
@@ -57,6 +63,10 @@ public final class AnalyzeResult {
 
     private List<DocumentParagraph> paragraphs;
 
+    /*
+     * API version used to create this document classifier.
+     */
+    private String serviceVersion;
     /**
      * Get the paragraphs property: Extracted paragraphs.
      *
@@ -88,7 +98,6 @@ public final class AnalyzeResult {
      * Set the modelId property: Model ID used to produce this result.
      *
      * @param modelId the modelId value to set.
-     * @return the AnalyzeResult object itself.
      */
     private void setModelId(String modelId) {
         this.modelId = modelId;
@@ -107,7 +116,6 @@ public final class AnalyzeResult {
      * Set the content property: Concatenate string representation of all textual and visual elements in reading order.
      *
      * @param content the content value to set.
-     * @return the AnalyzeResult object itself.
      */
     private void setContent(String content) {
         this.content = content;
@@ -126,7 +134,6 @@ public final class AnalyzeResult {
      * Set the pages property: Analyzed pages.
      *
      * @param pages the pages value to set.
-     * @return the AnalyzeResult object itself.
      */
     private void setPages(List<DocumentPage> pages) {
         this.pages = pages;
@@ -145,7 +152,6 @@ public final class AnalyzeResult {
      * Set the tables property: Extracted tables.
      *
      * @param tables the tables value to set.
-     * @return the AnalyzeResult object itself.
      */
     private void setTables(List<DocumentTable> tables) {
         this.tables = tables;
@@ -164,7 +170,6 @@ public final class AnalyzeResult {
      * Set the keyValuePairs property: Extracted key-value pairs.
      *
      * @param keyValuePairs the keyValuePairs value to set.
-     * @return the AnalyzeResult object itself.
      */
     private void setKeyValuePairs(List<DocumentKeyValuePair> keyValuePairs) {
         this.keyValuePairs = keyValuePairs;
@@ -182,7 +187,6 @@ public final class AnalyzeResult {
      * Set the styles property: Extracted font styles.
      *
      * @param styles the styles value to set.
-     * @return the AnalyzeResult object itself.
      */
     private void setStyles(List<DocumentStyle> styles) {
         this.styles = styles;
@@ -201,7 +205,6 @@ public final class AnalyzeResult {
      * Set the documents property: Extracted documents.
      *
      * @param documents the documents value to set.
-     * @return the AnalyzeResult object itself.
      */
     private void setDocuments(List<AnalyzedDocument> documents) {
         this.documents = documents;
@@ -223,6 +226,24 @@ public final class AnalyzeResult {
      */
     private void setLanguages(List<DocumentLanguage> languages) {
         this.languages = languages;
+    }
+
+    /**
+     * Get the Service version used to create this document classifier.
+     *
+     * @return the serviceVersion value.
+     */
+    public String getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    /**
+     * Set the API version used to create this document classifier.
+     *
+     * @param serviceVersion the service version value to set.
+     */
+    void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
     }
 
     static {
@@ -270,6 +291,11 @@ public final class AnalyzeResult {
             @Override
             public void setParagraphs(AnalyzeResult analyzeResult, List<DocumentParagraph> paragraphs) {
                 analyzeResult.setParagraphs(paragraphs);
+            }
+
+            @Override
+            public void setServiceVersion(AnalyzeResult analyzeResult, String serviceVersion) {
+                analyzeResult.setServiceVersion(serviceVersion);
             }
         });
     }

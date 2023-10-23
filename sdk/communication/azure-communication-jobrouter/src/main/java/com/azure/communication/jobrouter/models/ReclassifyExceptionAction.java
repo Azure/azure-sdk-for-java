@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,18 +17,24 @@ import java.util.Map;
 @Fluent
 public final class ReclassifyExceptionAction extends ExceptionAction {
     /*
-     * (optional) The new classification policy that will determine queue,
-     * priority and worker selectors.
+     * (optional) The new classification policy that will determine queue, priority
+     * and worker selectors.
      */
+    @Generated
     @JsonProperty(value = "classificationPolicyId")
     private String classificationPolicyId;
 
     /*
-     * (optional) Dictionary containing the labels to update (or add if not
-     * existing) in key-value pairs
+     * (optional) Dictionary containing the labels to update (or add if not existing)
+     * in key-value pairs
      */
+    @Generated
     @JsonProperty(value = "labelsToUpsert")
     private Map<String, Object> labelsToUpsert;
+
+    /** Creates an instance of ReclassifyExceptionAction class. */
+    @Generated
+    public ReclassifyExceptionAction() {}
 
     /**
      * Get the classificationPolicyId property: (optional) The new classification policy that will determine queue,
@@ -35,6 +42,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      *
      * @return the classificationPolicyId value.
      */
+    @Generated
     public String getClassificationPolicyId() {
         return this.classificationPolicyId;
     }
@@ -46,6 +54,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * @param classificationPolicyId the classificationPolicyId value to set.
      * @return the ReclassifyExceptionAction object itself.
      */
+    @Generated
     public ReclassifyExceptionAction setClassificationPolicyId(String classificationPolicyId) {
         this.classificationPolicyId = classificationPolicyId;
         return this;
@@ -57,6 +66,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      *
      * @return the labelsToUpsert value.
      */
+    @Generated
     public Map<String, Object> getLabelsToUpsert() {
         return this.labelsToUpsert;
     }
@@ -68,6 +78,7 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
      * @param labelsToUpsert the labelsToUpsert value to set.
      * @return the ReclassifyExceptionAction object itself.
      */
+    @Generated
     public ReclassifyExceptionAction setLabelsToUpsert(Map<String, Object> labelsToUpsert) {
         this.labelsToUpsert = labelsToUpsert;
         return this;

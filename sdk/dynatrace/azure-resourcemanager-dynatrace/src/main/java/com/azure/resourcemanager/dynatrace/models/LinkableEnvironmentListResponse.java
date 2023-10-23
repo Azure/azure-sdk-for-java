@@ -24,6 +24,10 @@ public final class LinkableEnvironmentListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of LinkableEnvironmentListResponse class. */
+    public LinkableEnvironmentListResponse() {
+    }
+
     /**
      * Get the value property: List of environments for which user is an admin.
      *

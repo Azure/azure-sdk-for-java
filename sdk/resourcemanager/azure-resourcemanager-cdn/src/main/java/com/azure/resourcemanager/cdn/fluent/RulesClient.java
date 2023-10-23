@@ -110,22 +110,6 @@ public interface RulesClient {
      *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile.
      * @param ruleName Name of the delivery rule which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RuleInner get(String resourceGroupName, String profileName, String ruleSetName, String ruleName);
-
-    /**
-     * Gets an existing delivery rule within a rule set.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param ruleSetName Name of the rule set under the profile.
-     * @param ruleName Name of the delivery rule which is unique within the endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -135,6 +119,22 @@ public interface RulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RuleInner> getWithResponse(
         String resourceGroupName, String profileName, String ruleSetName, String ruleName, Context context);
+
+    /**
+     * Gets an existing delivery rule within a rule set.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param ruleSetName Name of the rule set under the profile.
+     * @param ruleName Name of the delivery rule which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing delivery rule within a rule set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RuleInner get(String resourceGroupName, String profileName, String ruleSetName, String ruleName);
 
     /**
      * Creates a new delivery rule within the specified rule set.

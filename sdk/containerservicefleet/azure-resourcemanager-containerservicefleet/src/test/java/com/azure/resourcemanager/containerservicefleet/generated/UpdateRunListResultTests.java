@@ -6,7 +6,14 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.UpdateRunInner;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpdate;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpgradeSpec;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpgradeType;
+import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelection;
+import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelectionType;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunListResult;
+import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
+import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,18 +23,72 @@ public final class UpdateRunListResultTests {
         UpdateRunListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"eTag\":\"ndlik\",\"id\":\"qkgfgibma\",\"name\":\"gakeqsr\",\"type\":\"yb\"},{\"properties\":{\"provisioningState\":\"Canceled\"},\"eTag\":\"tbciqfouflmm\",\"id\":\"zsm\",\"name\":\"dmgloug\",\"type\":\"b\"},{\"properties\":{\"provisioningState\":\"Failed\"},\"eTag\":\"uqktap\",\"id\":\"wgcu\",\"name\":\"rtumkdosvq\",\"type\":\"hbmdgbbjfdd\"}],\"nextLink\":\"bmbexppbhtqqro\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"updateStrategyId\":\"hbcsgl\",\"strategy\":{\"stages\":[{\"name\":\"a\"},{\"name\":\"tjaodxobnb\"}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"Full\",\"kubernetesVersion\":\"qp\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}},\"status\":{\"status\":{\"startTime\":\"2021-10-24T07:57:26Z\",\"completedTime\":\"2021-03-17T23:59:37Z\",\"state\":\"Failed\"},\"stages\":[{},{}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{}]}}},\"eTag\":\"cp\",\"id\":\"gmaajrm\",\"name\":\"djwzrlov\",\"type\":\"clwhijcoejctbz\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"updateStrategyId\":\"y\",\"strategy\":{\"stages\":[{\"name\":\"bfkgukdkex\"},{\"name\":\"ppofmxaxcfjpgdd\"}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"NodeImageOnly\",\"kubernetesVersion\":\"jjxhvpmo\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}},\"status\":{\"status\":{\"startTime\":\"2021-01-11T14:08:23Z\",\"completedTime\":\"2020-12-20T15:16:48Z\",\"state\":\"Completed\"},\"stages\":[{},{},{}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{}]}}},\"eTag\":\"vddntwn\",\"id\":\"icbtwnpzao\",\"name\":\"vuhrhcffcyddgl\",\"type\":\"jthjqkwpyei\"}],\"nextLink\":\"mqc\"}")
                 .toObject(UpdateRunListResult.class);
-        Assertions.assertEquals("bmbexppbhtqqro", model.nextLink());
+        Assertions.assertEquals("hbcsgl", model.value().get(0).updateStrategyId());
+        Assertions.assertEquals("a", model.value().get(0).strategy().stages().get(0).name());
+        Assertions
+            .assertEquals(ManagedClusterUpgradeType.FULL, model.value().get(0).managedClusterUpdate().upgrade().type());
+        Assertions.assertEquals("qp", model.value().get(0).managedClusterUpdate().upgrade().kubernetesVersion());
+        Assertions
+            .assertEquals(
+                NodeImageSelectionType.CONSISTENT,
+                model.value().get(0).managedClusterUpdate().nodeImageSelection().type());
+        Assertions.assertEquals("mqc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateRunListResult model =
             new UpdateRunListResult()
-                .withValue(Arrays.asList(new UpdateRunInner(), new UpdateRunInner(), new UpdateRunInner()))
-                .withNextLink("bmbexppbhtqqro");
+                .withValue(
+                    Arrays
+                        .asList(
+                            new UpdateRunInner()
+                                .withUpdateStrategyId("hbcsgl")
+                                .withStrategy(
+                                    new UpdateRunStrategy()
+                                        .withStages(
+                                            Arrays
+                                                .asList(
+                                                    new UpdateStage().withName("a"),
+                                                    new UpdateStage().withName("tjaodxobnb"))))
+                                .withManagedClusterUpdate(
+                                    new ManagedClusterUpdate()
+                                        .withUpgrade(
+                                            new ManagedClusterUpgradeSpec()
+                                                .withType(ManagedClusterUpgradeType.FULL)
+                                                .withKubernetesVersion("qp"))
+                                        .withNodeImageSelection(
+                                            new NodeImageSelection().withType(NodeImageSelectionType.CONSISTENT))),
+                            new UpdateRunInner()
+                                .withUpdateStrategyId("y")
+                                .withStrategy(
+                                    new UpdateRunStrategy()
+                                        .withStages(
+                                            Arrays
+                                                .asList(
+                                                    new UpdateStage().withName("bfkgukdkex"),
+                                                    new UpdateStage().withName("ppofmxaxcfjpgdd"))))
+                                .withManagedClusterUpdate(
+                                    new ManagedClusterUpdate()
+                                        .withUpgrade(
+                                            new ManagedClusterUpgradeSpec()
+                                                .withType(ManagedClusterUpgradeType.NODE_IMAGE_ONLY)
+                                                .withKubernetesVersion("jjxhvpmo"))
+                                        .withNodeImageSelection(
+                                            new NodeImageSelection().withType(NodeImageSelectionType.CONSISTENT)))))
+                .withNextLink("mqc");
         model = BinaryData.fromObject(model).toObject(UpdateRunListResult.class);
-        Assertions.assertEquals("bmbexppbhtqqro", model.nextLink());
+        Assertions.assertEquals("hbcsgl", model.value().get(0).updateStrategyId());
+        Assertions.assertEquals("a", model.value().get(0).strategy().stages().get(0).name());
+        Assertions
+            .assertEquals(ManagedClusterUpgradeType.FULL, model.value().get(0).managedClusterUpdate().upgrade().type());
+        Assertions.assertEquals("qp", model.value().get(0).managedClusterUpdate().upgrade().kubernetesVersion());
+        Assertions
+            .assertEquals(
+                NodeImageSelectionType.CONSISTENT,
+                model.value().get(0).managedClusterUpdate().nodeImageSelection().type());
+        Assertions.assertEquals("mqc", model.nextLink());
     }
 }

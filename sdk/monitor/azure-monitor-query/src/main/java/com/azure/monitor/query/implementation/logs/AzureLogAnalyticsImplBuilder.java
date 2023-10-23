@@ -252,8 +252,19 @@ public final class AzureLogAnalyticsImplBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
-            String localHost = (host != null) ? host : "https://api.loganalytics.io";
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", localHost)));
+            String localHost;
+            if (host != null) {
+                try {
+                    localHost = new java.net.URL(host).getHost();
+                } catch (java.net.MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                localHost = "api.loganalytics.io";
+            }
+            policies.add(
+                    new BearerTokenAuthenticationPolicy(
+                            tokenCredential, String.format("https://%s/.default", localHost)));
         }
         this.pipelinePolicies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)

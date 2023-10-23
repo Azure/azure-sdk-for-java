@@ -4,7 +4,9 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -13,31 +15,34 @@ import java.util.List;
 /** Describes multiple sets of worker selectors, of which one will be selected and attached according to a weighting. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("weighted-allocation-worker-selector")
-@Fluent
+@Immutable
 public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSelectorAttachment {
     /*
      * A collection of percentage based weighted allocations.
      */
-    @JsonProperty(value = "allocations", required = true)
+    @Generated
+    @JsonProperty(value = "allocations")
     private List<WorkerWeightedAllocation> allocations;
+
+    /**
+     * Creates an instance of WeightedAllocationWorkerSelectorAttachment class.
+     *
+     * @param allocations the allocations value to set.
+     */
+    @Generated
+    @JsonCreator
+    public WeightedAllocationWorkerSelectorAttachment(
+            @JsonProperty(value = "allocations") List<WorkerWeightedAllocation> allocations) {
+        this.allocations = allocations;
+    }
 
     /**
      * Get the allocations property: A collection of percentage based weighted allocations.
      *
      * @return the allocations value.
      */
+    @Generated
     public List<WorkerWeightedAllocation> getAllocations() {
         return this.allocations;
-    }
-
-    /**
-     * Set the allocations property: A collection of percentage based weighted allocations.
-     *
-     * @param allocations the allocations value to set.
-     * @return the WeightedAllocationWorkerSelectorAttachment object itself.
-     */
-    public WeightedAllocationWorkerSelectorAttachment setAllocations(List<WorkerWeightedAllocation> allocations) {
-        this.allocations = allocations;
-        return this;
     }
 }

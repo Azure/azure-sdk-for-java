@@ -23,6 +23,14 @@ public final class CellOutputType extends ExpandableStringEnum<CellOutputType> {
     public static final CellOutputType ERROR = fromString("error");
 
     /**
+     * Creates a new instance of CellOutputType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CellOutputType() {}
+
+    /**
      * Creates or finds a CellOutputType from its string representation.
      *
      * @param name a name to look for.

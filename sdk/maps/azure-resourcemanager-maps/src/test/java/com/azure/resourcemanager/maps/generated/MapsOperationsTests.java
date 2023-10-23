@@ -14,15 +14,15 @@ public final class MapsOperationsTests {
         MapsOperations model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"zk\",\"isDataAction\":true,\"display\":{\"provider\":\"hanufhfcbjysagi\",\"resource\":\"xqhabi\",\"operation\":\"ikxwc\",\"description\":\"yscnpqxu\"},\"origin\":\"vyq\",\"properties\":{}},{\"name\":\"ybrk\",\"isDataAction\":true,\"display\":{\"provider\":\"jgrtfwvukxga\",\"resource\":\"ccsnhsjc\",\"operation\":\"ejhkry\",\"description\":\"napczwlokjy\"},\"origin\":\"kkvnipjox\",\"properties\":{}},{\"name\":\"hgejspodma\",\"isDataAction\":false,\"display\":{\"provider\":\"eho\",\"resource\":\"yahux\",\"operation\":\"pmqnja\",\"description\":\"ixjsprozvcputeg\"},\"origin\":\"wmfdatscmdvpjhul\",\"properties\":{}},{\"name\":\"mkjozkrwf\",\"isDataAction\":false,\"display\":{\"provider\":\"jpslwejd\",\"resource\":\"wryoqpsoacc\",\"operation\":\"zakljlahbc\",\"description\":\"ffdfdosygexpa\"},\"origin\":\"akhmsbzjhcrz\",\"properties\":{}}],\"nextLink\":\"hlxaolthqtr\"}")
+                    "{\"value\":[{\"name\":\"krwpdap\",\"isDataAction\":false,\"display\":{\"provider\":\"kvwrwjfeu\",\"resource\":\"hutje\",\"operation\":\"mrldhu\",\"description\":\"zzd\"},\"origin\":\"qxhocdgeablgphut\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}},{\"name\":\"aozwyiftyhxhu\",\"isDataAction\":false,\"display\":{\"provider\":\"yxolniwp\",\"resource\":\"ukjfkgiawxklr\",\"operation\":\"lwckbasyypnddhs\",\"description\":\"bacphejko\"},\"origin\":\"nqgoulzndli\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{}]}}},{\"name\":\"fgibmadgakeq\",\"isDataAction\":false,\"display\":{\"provider\":\"zqqedq\",\"resource\":\"bciqfouflm\",\"operation\":\"kzsmodm\",\"description\":\"ougpbkwt\"},\"origin\":\"tduqktapspwgcuer\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}},{\"name\":\"svqwhbmdgbbjfd\",\"isDataAction\":true,\"display\":{\"provider\":\"bexppb\",\"resource\":\"q\",\"operation\":\"ol\",\"description\":\"fpsalgbqu\"},\"origin\":\"gjyjgzjaoyfhrtxi\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}}],\"nextLink\":\"jysvl\"}")
                 .toObject(MapsOperations.class);
-        Assertions.assertEquals("hlxaolthqtr", model.nextLink());
+        Assertions.assertEquals("jysvl", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MapsOperations model = new MapsOperations().withNextLink("hlxaolthqtr");
+        MapsOperations model = new MapsOperations().withNextLink("jysvl");
         model = BinaryData.fromObject(model).toObject(MapsOperations.class);
-        Assertions.assertEquals("hlxaolthqtr", model.nextLink());
+        Assertions.assertEquals("jysvl", model.nextLink());
     }
 }

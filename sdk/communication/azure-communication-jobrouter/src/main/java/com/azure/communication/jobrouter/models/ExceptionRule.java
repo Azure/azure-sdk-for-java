@@ -4,44 +4,53 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A rule that defines actions to execute upon a specific trigger. */
-@Fluent
+@Immutable
 public final class ExceptionRule {
     /*
      * The trigger for this exception rule
      */
-    @JsonProperty(value = "trigger", required = true)
+    @Generated
+    @JsonProperty(value = "trigger")
     private ExceptionTrigger trigger;
 
     /*
-     * A dictionary collection of actions to perform once the exception is
-     * triggered. Key is the Id of each exception action.
+     * A dictionary collection of actions to perform once the exception is triggered.
+     * Key is the Id of each exception action.
      */
-    @JsonProperty(value = "actions", required = true)
+    @Generated
+    @JsonProperty(value = "actions")
     private Map<String, ExceptionAction> actions;
+
+    /**
+     * Creates an instance of ExceptionRule class.
+     *
+     * @param trigger the trigger value to set.
+     * @param actions the actions value to set.
+     */
+    @Generated
+    @JsonCreator
+    public ExceptionRule(
+            @JsonProperty(value = "trigger") ExceptionTrigger trigger,
+            @JsonProperty(value = "actions") Map<String, ExceptionAction> actions) {
+        this.trigger = trigger;
+        this.actions = actions;
+    }
 
     /**
      * Get the trigger property: The trigger for this exception rule.
      *
      * @return the trigger value.
      */
+    @Generated
     public ExceptionTrigger getTrigger() {
         return this.trigger;
-    }
-
-    /**
-     * Set the trigger property: The trigger for this exception rule.
-     *
-     * @param trigger the trigger value to set.
-     * @return the ExceptionRule object itself.
-     */
-    public ExceptionRule setTrigger(ExceptionTrigger trigger) {
-        this.trigger = trigger;
-        return this;
     }
 
     /**
@@ -50,19 +59,8 @@ public final class ExceptionRule {
      *
      * @return the actions value.
      */
+    @Generated
     public Map<String, ExceptionAction> getActions() {
         return this.actions;
-    }
-
-    /**
-     * Set the actions property: A dictionary collection of actions to perform once the exception is triggered. Key is
-     * the Id of each exception action.
-     *
-     * @param actions the actions value to set.
-     * @return the ExceptionRule object itself.
-     */
-    public ExceptionRule setActions(Map<String, ExceptionAction> actions) {
-        this.actions = actions;
-        return this;
     }
 }

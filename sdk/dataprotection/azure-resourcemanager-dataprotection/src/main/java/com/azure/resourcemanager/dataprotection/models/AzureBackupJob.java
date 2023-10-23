@@ -129,6 +129,12 @@ public final class AzureBackupJob {
     private String progressUrl;
 
     /*
+     * Priority to be used for rehydration
+     */
+    @JsonProperty(value = "rehydrationPriority", access = JsonProperty.Access.WRITE_ONLY)
+    private String rehydrationPriority;
+
+    /*
      * It indicates the sub type of operation i.e. in case of Restore it can be ALR/OLR
      */
     @JsonProperty(value = "restoreType", access = JsonProperty.Access.WRITE_ONLY)
@@ -501,6 +507,15 @@ public final class AzureBackupJob {
      */
     public String progressUrl() {
         return this.progressUrl;
+    }
+
+    /**
+     * Get the rehydrationPriority property: Priority to be used for rehydration.
+     *
+     * @return the rehydrationPriority value.
+     */
+    public String rehydrationPriority() {
+        return this.rehydrationPriority;
     }
 
     /**

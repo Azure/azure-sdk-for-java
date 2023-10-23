@@ -6,48 +6,42 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
-import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** L3IsolationDomainProperties define the resource properties. */
+/** L3 Isolation Domain Properties defines the properties of the resource. */
 @Fluent
 public final class L3IsolationDomainProperties extends AnnotationResource {
     /*
-     * Network Fabric ARM resource id.
+     * ARM Resource ID of the Network Fabric.
      */
     @JsonProperty(value = "networkFabricId", required = true)
     private String networkFabricId;
 
     /*
-     * List of resources the L3 Isolation Domain is disabled on. Can be either entire NetworkFabric or NetworkRack.
+     * Configuration state of the resource.
      */
-    @JsonProperty(value = "disabledOnResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> disabledOnResources;
+    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
+    private ConfigurationState configurationState;
 
     /*
-     * Administrative state of the IsolationDomain. Example: Enabled | Disabled.
-     */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
-    private EnabledDisabledState administrativeState;
-
-    /*
-     * List of resources the OptionB is disabled on. Can be either entire NetworkFabric or NetworkRack.
-     */
-    @JsonProperty(value = "optionBDisabledOnResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> optionBDisabledOnResources;
-
-    /*
-     * Gets the provisioning state of the resource.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
 
     /*
      * Advertise Connected Subnets. Ex: "True" | "False".
@@ -62,29 +56,23 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
     private RedistributeStaticRoutes redistributeStaticRoutes;
 
     /*
-     * List of Ipv4 and Ipv6 route configurations.
+     * Aggregate route configurations.
      */
     @JsonProperty(value = "aggregateRouteConfiguration")
     private AggregateRouteConfiguration aggregateRouteConfiguration;
 
     /*
-     * L3 Isolation Domain description.
-     */
-    @JsonProperty(value = "description")
-    private String description;
-
-    /*
      * Connected Subnet RoutePolicy
      */
     @JsonProperty(value = "connectedSubnetRoutePolicy")
-    private L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy;
+    private ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy;
 
     /** Creates an instance of L3IsolationDomainProperties class. */
     public L3IsolationDomainProperties() {
     }
 
     /**
-     * Get the networkFabricId property: Network Fabric ARM resource id.
+     * Get the networkFabricId property: ARM Resource ID of the Network Fabric.
      *
      * @return the networkFabricId value.
      */
@@ -93,7 +81,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Set the networkFabricId property: Network Fabric ARM resource id.
+     * Set the networkFabricId property: ARM Resource ID of the Network Fabric.
      *
      * @param networkFabricId the networkFabricId value to set.
      * @return the L3IsolationDomainProperties object itself.
@@ -104,41 +92,30 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Get the disabledOnResources property: List of resources the L3 Isolation Domain is disabled on. Can be either
-     * entire NetworkFabric or NetworkRack.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @return the disabledOnResources value.
+     * @return the configurationState value.
      */
-    public List<String> disabledOnResources() {
-        return this.disabledOnResources;
+    public ConfigurationState configurationState() {
+        return this.configurationState;
     }
 
     /**
-     * Get the administrativeState property: Administrative state of the IsolationDomain. Example: Enabled | Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.administrativeState;
-    }
-
-    /**
-     * Get the optionBDisabledOnResources property: List of resources the OptionB is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the optionBDisabledOnResources value.
-     */
-    public List<String> optionBDisabledOnResources() {
-        return this.optionBDisabledOnResources;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
     }
 
     /**
@@ -183,7 +160,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Get the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations.
+     * Get the aggregateRouteConfiguration property: Aggregate route configurations.
      *
      * @return the aggregateRouteConfiguration value.
      */
@@ -192,7 +169,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Set the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations.
+     * Set the aggregateRouteConfiguration property: Aggregate route configurations.
      *
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainProperties object itself.
@@ -204,31 +181,11 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
     }
 
     /**
-     * Get the description property: L3 Isolation Domain description.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: L3 Isolation Domain description.
-     *
-     * @param description the description value to set.
-     * @return the L3IsolationDomainProperties object itself.
-     */
-    public L3IsolationDomainProperties withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Get the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
      *
      * @return the connectedSubnetRoutePolicy value.
      */
-    public L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
+    public ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
         return this.connectedSubnetRoutePolicy;
     }
 
@@ -239,7 +196,7 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
      * @return the L3IsolationDomainProperties object itself.
      */
     public L3IsolationDomainProperties withConnectedSubnetRoutePolicy(
-        L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
+        ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
         this.connectedSubnetRoutePolicy = connectedSubnetRoutePolicy;
         return this;
     }

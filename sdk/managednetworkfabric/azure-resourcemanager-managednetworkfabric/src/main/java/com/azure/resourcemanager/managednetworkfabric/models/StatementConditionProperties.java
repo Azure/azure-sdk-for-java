@@ -12,6 +12,12 @@ import java.util.List;
 @Fluent
 public final class StatementConditionProperties extends IpCommunityIdList {
     /*
+     * Type of the condition used.
+     */
+    @JsonProperty(value = "type")
+    private RoutePolicyConditionType type;
+
+    /*
      * Arm Resource Id of IpPrefix.
      */
     @JsonProperty(value = "ipPrefixId")
@@ -25,6 +31,26 @@ public final class StatementConditionProperties extends IpCommunityIdList {
 
     /** Creates an instance of StatementConditionProperties class. */
     public StatementConditionProperties() {
+    }
+
+    /**
+     * Get the type property: Type of the condition used.
+     *
+     * @return the type value.
+     */
+    public RoutePolicyConditionType type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Type of the condition used.
+     *
+     * @param type the type value to set.
+     * @return the StatementConditionProperties object itself.
+     */
+    public StatementConditionProperties withType(RoutePolicyConditionType type) {
+        this.type = type;
+        return this;
     }
 
     /**

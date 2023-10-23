@@ -498,6 +498,101 @@ public class ReadmeSamples {
         // END: com.azure.cosmos.CosmosDatabase.readAllUsers
     }
 
+    public void queryUsersSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.queryUsers
+        CosmosPagedIterable<CosmosUserProperties> userPropertiesList =
+            cosmosDatabase.queryUsers("SELECT * FROM DB_NAME");
+        userPropertiesList.forEach(userProperties -> {
+            System.out.println(userProperties);
+        });
+        // END: com.azure.cosmos.CosmosDatabase.queryUsers
+    }
+
+    public void replaceThroughputSample() {
+        int autoScaleMaxThroughput = 3000;
+        // BEGIN: com.azure.cosmos.CosmosDatabase.replaceThroughput
+        ThroughputProperties throughputProperties = ThroughputProperties
+            .createAutoscaledThroughput(autoScaleMaxThroughput);
+
+        ThroughputResponse throughputResponse = cosmosDatabase.replaceThroughput(throughputProperties);
+        System.out.println(throughputResponse);
+        // END: com.azure.cosmos.CosmosDatabase.replaceThroughput
+    }
+
+    public void readThroughputSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.readThroughput
+        ThroughputResponse throughputResponse = cosmosDatabase.readThroughput();
+        System.out.println(throughputResponse);
+        // END: com.azure.cosmos.CosmosDatabase.readThroughput
+    }
+
+    public void readAllClientEncryptionKeysSample() {
+        // BEGIN: com.azure.cosmos.CosmosDatabase.readAllClientEncryptionKeys
+        CosmosPagedIterable<CosmosClientEncryptionKeyProperties> clientEncryptionKeys =
+            cosmosDatabase.readAllClientEncryptionKeys();
+        clientEncryptionKeys.forEach(encryptionKeyProperties ->
+            System.out.println(clientEncryptionKeys)
+        );
+        // END: com.azure.cosmos.CosmosDatabase.readAllClientEncryptionKeys
+    }
+
+    public void createDatabaseIfNotExistsSampleThroughput() {
+        String databaseName = "dbName";
+        int autoScaleMaxThroughput = 100000;
+        // BEGIN: com.azure.cosmos.CosmosClient.createDatabaseIfNotExistsThroughput
+        ThroughputProperties throughputProperties = ThroughputProperties
+            .createAutoscaledThroughput(autoScaleMaxThroughput);
+        cosmosClient.createDatabaseIfNotExists(databaseName, throughputProperties);
+        // END: com.azure.cosmos.CosmosClient.createDatabaseIfNotExistsThroughput
+    }
+
+    public void createDatabaseIfNotExistsSample() {
+        String databaseName = "dbName";
+        // BEGIN: com.azure.cosmos.CosmosClient.createDatabaseIfNotExists
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseName);
+        cosmosClient.createDatabaseIfNotExists(databaseProperties);
+        // END: com.azure.cosmos.CosmosClient.createDatabaseIfNotExists
+    }
+
+    public void createDatabaseSample() {
+        String databaseName = "dbName";
+        // BEGIN: com.azure.cosmos.CosmosClient.createDatabase
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseName);
+        cosmosClient.createDatabase(databaseProperties);
+        // END: com.azure.cosmos.CosmosClient.createDatabase
+    }
+
+    public void createDatabaseSampleThroughput() {
+        String databaseName = "dbName";
+        int autoScaleMaxThroughput = 100000;
+        // BEGIN: com.azure.cosmos.CosmosClient.createDatabaseThroughput
+        ThroughputProperties throughputProperties = ThroughputProperties
+            .createAutoscaledThroughput(autoScaleMaxThroughput);
+        cosmosClient.createDatabase(databaseName, throughputProperties);
+        // END: com.azure.cosmos.CosmosClient.createDatabaseThroughput
+    }
+
+    public void readAllDatabasesSample() {
+        // BEGIN: com.azure.cosmos.CosmosClient.readAllDatabases
+        CosmosPagedIterable<CosmosDatabaseProperties> cosmosDatabaseProperties =
+            cosmosClient.readAllDatabases();
+        cosmosDatabaseProperties.forEach(databaseProperties -> {
+            System.out.println(databaseProperties);
+        });
+        // END: com.azure.cosmos.CosmosClient.readAllDatabases
+    }
+
+    public void queryDatabasesSample() {
+        // BEGIN: com.azure.cosmos.CosmosClient.queryDatabases
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        CosmosPagedIterable<CosmosDatabaseProperties> databaseProperties =
+            cosmosClient.queryDatabases("select * from d", options);
+        databaseProperties.forEach(properties -> {
+            System.out.println(properties.getId());
+        });
+        // END: com.azure.cosmos.CosmosClient.queryDatabases
+    }
+
     static final class Passenger {
         private final String id;
         private final String email;

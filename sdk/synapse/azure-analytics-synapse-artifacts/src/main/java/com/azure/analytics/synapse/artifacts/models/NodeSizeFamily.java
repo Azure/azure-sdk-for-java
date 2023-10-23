@@ -17,6 +17,14 @@ public final class NodeSizeFamily extends ExpandableStringEnum<NodeSizeFamily> {
     public static final NodeSizeFamily MEMORY_OPTIMIZED = fromString("MemoryOptimized");
 
     /**
+     * Creates a new instance of NodeSizeFamily value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NodeSizeFamily() {}
+
+    /**
      * Creates or finds a NodeSizeFamily from its string representation.
      *
      * @param name a name to look for.

@@ -57,7 +57,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    @Test(groups = { "query" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(Boolean qmEnabled) throws Exception {
 
         String query = "SELECT * from c where c.prop = 99";
@@ -88,7 +88,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"query"})
     public void querySinglePartitionDocuments() throws Exception {
         // Test to make sure single partition queries go to DirectMode when DirectMode is set
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -123,7 +123,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryDocuments_ParameterizedQueryWithInClause() throws Exception {
         String query = "SELECT * from c where c.prop IN (@param1, @param2)";
         List<SqlParameter> params = Lists.newArrayList(new SqlParameter("@param1", 3), new SqlParameter("@param2", 4));
@@ -150,7 +150,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryDocuments_ParameterizedQuery() throws Exception {
         String query = "SELECT * from c where c.prop = @param";
         SqlQuerySpec sqs = new SqlQuerySpec(query, Collections.singletonList(new SqlParameter("@param", 3)));
@@ -176,7 +176,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryDocuments_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
@@ -193,7 +193,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryDocumentsWithPageSize() throws Exception {
 
         String query = "SELECT * from root";
@@ -219,7 +219,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryOrderBy() throws Exception {
 
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
@@ -244,7 +244,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10)
     public void continuationToken() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -281,10 +281,10 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                 .allPagesSatisfy(new FeedResponseValidator.Builder<InternalObjectNode>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(queryObservable.byPage(page.getContinuationToken()), validator);
+        validateQuerySuccess(queryObservable.byPage(page.getContinuationToken(), maxItemCount), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -305,7 +305,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                    .getProperties(cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block());
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_SinglePartitionDocumentQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);
@@ -322,7 +322,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

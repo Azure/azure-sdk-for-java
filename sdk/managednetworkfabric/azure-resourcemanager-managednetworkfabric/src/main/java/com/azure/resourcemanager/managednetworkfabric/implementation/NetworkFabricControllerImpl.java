@@ -8,14 +8,14 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricControllerInner;
+import com.azure.resourcemanager.managednetworkfabric.models.ControllerServices;
 import com.azure.resourcemanager.managednetworkfabric.models.ExpressRouteConnectionInformation;
-import com.azure.resourcemanager.managednetworkfabric.models.InfrastructureServices;
+import com.azure.resourcemanager.managednetworkfabric.models.IsWorkloadManagementNetworkEnabled;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedResourceGroupConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricController;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricControllerOperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricControllerPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.NfcSku;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.azure.resourcemanager.managednetworkfabric.models.WorkloadServices;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -55,11 +55,11 @@ public final class NetworkFabricControllerImpl
         return this.innerModel().systemData();
     }
 
-    public InfrastructureServices infrastructureServices() {
+    public ControllerServices infrastructureServices() {
         return this.innerModel().infrastructureServices();
     }
 
-    public WorkloadServices workloadServices() {
+    public ControllerServices workloadServices() {
         return this.innerModel().workloadServices();
     }
 
@@ -80,6 +80,19 @@ public final class NetworkFabricControllerImpl
         return this.innerModel().workloadManagementNetwork();
     }
 
+    public IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled() {
+        return this.innerModel().isWorkloadManagementNetworkEnabled();
+    }
+
+    public List<String> tenantInternetGatewayIds() {
+        List<String> inner = this.innerModel().tenantInternetGatewayIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public String ipv4AddressSpace() {
         return this.innerModel().ipv4AddressSpace();
     }
@@ -88,8 +101,8 @@ public final class NetworkFabricControllerImpl
         return this.innerModel().ipv6AddressSpace();
     }
 
-    public NetworkFabricControllerOperationalState operationalState() {
-        return this.innerModel().operationalState();
+    public NfcSku nfcSku() {
+        return this.innerModel().nfcSku();
     }
 
     public ProvisioningState provisioningState() {
@@ -226,30 +239,6 @@ public final class NetworkFabricControllerImpl
         return this;
     }
 
-    public void enableWorkloadManagementNetwork() {
-        serviceManager
-            .networkFabricControllers()
-            .enableWorkloadManagementNetwork(resourceGroupName, networkFabricControllerName);
-    }
-
-    public void enableWorkloadManagementNetwork(Context context) {
-        serviceManager
-            .networkFabricControllers()
-            .enableWorkloadManagementNetwork(resourceGroupName, networkFabricControllerName, context);
-    }
-
-    public void disableWorkloadManagementNetwork() {
-        serviceManager
-            .networkFabricControllers()
-            .disableWorkloadManagementNetwork(resourceGroupName, networkFabricControllerName);
-    }
-
-    public void disableWorkloadManagementNetwork(Context context) {
-        serviceManager
-            .networkFabricControllers()
-            .disableWorkloadManagementNetwork(resourceGroupName, networkFabricControllerName, context);
-    }
-
     public NetworkFabricControllerImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -276,6 +265,12 @@ public final class NetworkFabricControllerImpl
         return this;
     }
 
+    public NetworkFabricControllerImpl withIsWorkloadManagementNetworkEnabled(
+        IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled) {
+        this.innerModel().withIsWorkloadManagementNetworkEnabled(isWorkloadManagementNetworkEnabled);
+        return this;
+    }
+
     public NetworkFabricControllerImpl withIpv4AddressSpace(String ipv4AddressSpace) {
         this.innerModel().withIpv4AddressSpace(ipv4AddressSpace);
         return this;
@@ -283,6 +278,11 @@ public final class NetworkFabricControllerImpl
 
     public NetworkFabricControllerImpl withIpv6AddressSpace(String ipv6AddressSpace) {
         this.innerModel().withIpv6AddressSpace(ipv6AddressSpace);
+        return this;
+    }
+
+    public NetworkFabricControllerImpl withNfcSku(NfcSku nfcSku) {
+        this.innerModel().withNfcSku(nfcSku);
         return this;
     }
 

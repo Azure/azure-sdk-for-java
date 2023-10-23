@@ -58,6 +58,6 @@ public final class FleetMembersDeleteMockTests {
 
         manager
             .fleetMembers()
-            .delete("lvmezyvshxmzsbbz", "ggi", "rxwburv", "xxjnspydptk", com.azure.core.util.Context.NONE);
+            .delete("gxtibqdxbxw", "kbogqxndlkzgx", "uriplbpodxunkb", "bxmubyynt", com.azure.core.util.Context.NONE);
     }
 }

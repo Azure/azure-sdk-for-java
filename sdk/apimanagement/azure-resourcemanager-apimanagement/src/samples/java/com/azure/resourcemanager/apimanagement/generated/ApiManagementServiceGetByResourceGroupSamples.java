@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiManagementService GetByResourceGroup. */
 public final class ApiManagementServiceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetMultiRegionInternalVnet.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceGetMultiRegionInternalVnet.json
      */
     /**
      * Sample code: ApiManagementServiceGetMultiRegionInternalVnet.
@@ -18,11 +16,13 @@ public final class ApiManagementServiceGetByResourceGroupSamples {
      */
     public static void apiManagementServiceGetMultiRegionInternalVnet(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices().getByResourceGroupWithResponse("rg1", "apimService1", Context.NONE);
+        manager
+            .apiManagementServices()
+            .getByResourceGroupWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetServiceHavingMsi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceGetServiceHavingMsi.json
      */
     /**
      * Sample code: ApiManagementServiceGetServiceHavingMsi.
@@ -31,11 +31,13 @@ public final class ApiManagementServiceGetByResourceGroupSamples {
      */
     public static void apiManagementServiceGetServiceHavingMsi(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices().getByResourceGroupWithResponse("rg1", "apimService1", Context.NONE);
+        manager
+            .apiManagementServices()
+            .getByResourceGroupWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetService.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceGetService.json
      */
     /**
      * Sample code: ApiManagementServiceGetService.
@@ -44,6 +46,8 @@ public final class ApiManagementServiceGetByResourceGroupSamples {
      */
     public static void apiManagementServiceGetService(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices().getByResourceGroupWithResponse("rg1", "apimService1", Context.NONE);
+        manager
+            .apiManagementServices()
+            .getByResourceGroupWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
 import com.azure.resourcemanager.cdn.models.CacheBehavior;
 import com.azure.resourcemanager.cdn.models.CacheExpirationActionParameters;
@@ -35,7 +34,7 @@ import java.util.Map;
 /** Samples for Endpoints Create. */
 public final class EndpointsCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Endpoints_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Endpoints_Create.json
      */
     /**
      * Sample code: Endpoints_Create.
@@ -54,7 +53,7 @@ public final class EndpointsCreateSamples {
                 "endpoint1",
                 new EndpointInner()
                     .withLocation("WestUs")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withOrigins(
                         Arrays
                             .asList(
@@ -153,7 +152,7 @@ public final class EndpointsCreateSamples {
                                                                     .withHeaderAction(HeaderAction.OVERWRITE)
                                                                     .withHeaderName("Accept-Encoding")
                                                                     .withValue("gzip"))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

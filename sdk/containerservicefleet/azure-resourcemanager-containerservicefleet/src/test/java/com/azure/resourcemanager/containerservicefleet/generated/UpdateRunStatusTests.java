@@ -13,7 +13,7 @@ public final class UpdateRunStatusTests {
         UpdateRunStatus model =
             BinaryData
                 .fromString(
-                    "{\"status\":{\"startTime\":\"2021-01-29T18:51:03Z\",\"completedTime\":\"2021-10-06T17:45:29Z\",\"state\":\"Stopped\"},\"stages\":[{\"status\":{\"startTime\":\"2021-03-07T01:43:41Z\",\"completedTime\":\"2021-03-18T16:28:01Z\",\"state\":\"Stopped\"},\"name\":\"dkirsoodqxhcr\",\"groups\":[],\"afterStageWaitStatus\":{\"waitDurationInSeconds\":1543175438}}]}")
+                    "{\"status\":{\"startTime\":\"2021-10-29T02:56:05Z\",\"completedTime\":\"2021-01-12T05:42:21Z\",\"state\":\"Failed\"},\"stages\":[{\"status\":{\"startTime\":\"2021-09-28T12:07:12Z\",\"completedTime\":\"2021-08-19T08:59:20Z\",\"state\":\"Failed\"},\"name\":\"wtruwiqzbqjvsovm\",\"groups\":[{\"status\":{\"startTime\":\"2021-01-06T15:04:50Z\",\"completedTime\":\"2021-10-06T11:03:39Z\",\"state\":\"Stopped\"},\"name\":\"dobpxjmflbvvn\",\"members\":[{},{},{}]},{\"status\":{\"startTime\":\"2020-12-22T17:08:24Z\",\"completedTime\":\"2021-03-23T06:31:54Z\",\"state\":\"Stopping\"},\"name\":\"qkhr\",\"members\":[{},{},{},{}]}],\"afterStageWaitStatus\":{\"status\":{\"startTime\":\"2021-10-13T04:47:14Z\",\"completedTime\":\"2021-10-06T16:40:04Z\",\"state\":\"Skipped\"},\"waitDurationInSeconds\":1433992289}}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{\"version\":\"imjm\"},{\"version\":\"ied\"},{\"version\":\"gidyjrrf\"},{\"version\":\"aos\"}]}}")
                 .toObject(UpdateRunStatus.class);
     }
 

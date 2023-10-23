@@ -13,7 +13,7 @@ public final class AddonListTests {
         AddonList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Deleting\"},\"id\":\"zikhl\",\"name\":\"fjhdg\",\"type\":\"gge\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Updating\"},\"id\":\"ygaeqidbqfatpxl\",\"name\":\"rxcyjmoad\",\"type\":\"uvarmywdmjsjq\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Updating\"},\"id\":\"yxxrwlycoduh\",\"name\":\"kxkgymareqna\",\"type\":\"xqugjhkycubedd\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Updating\"},\"id\":\"fwqmzqalkrmn\",\"name\":\"i\",\"type\":\"pxacqqudfn\"}],\"nextLink\":\"xbaaabjyv\"}")
+                    "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"gumhjglikkxws\",\"name\":\"olbq\",\"type\":\"vuzlm\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Updating\"},\"id\":\"fktgplc\",\"name\":\"pwjxezn\",\"type\":\"igbrnjw\"}],\"nextLink\":\"kpnb\"}")
                 .toObject(AddonList.class);
     }
 

@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,20 +17,27 @@ public final class Oauth2ClientCredential {
     /*
      * ClientId for Contoso Authorization server.
      */
+    @Generated
     @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * Client secret for Contoso Authorization server.
      */
+    @Generated
     @JsonProperty(value = "clientSecret")
     private String clientSecret;
+
+    /** Creates an instance of Oauth2ClientCredential class. */
+    @Generated
+    public Oauth2ClientCredential() {}
 
     /**
      * Get the clientId property: ClientId for Contoso Authorization server.
      *
      * @return the clientId value.
      */
+    @Generated
     public String getClientId() {
         return this.clientId;
     }
@@ -40,6 +48,7 @@ public final class Oauth2ClientCredential {
      * @param clientId the clientId value to set.
      * @return the Oauth2ClientCredential object itself.
      */
+    @Generated
     public Oauth2ClientCredential setClientId(String clientId) {
         this.clientId = clientId;
         return this;
@@ -50,6 +59,7 @@ public final class Oauth2ClientCredential {
      *
      * @return the clientSecret value.
      */
+    @Generated
     public String getClientSecret() {
         return this.clientSecret;
     }
@@ -60,6 +70,7 @@ public final class Oauth2ClientCredential {
      * @param clientSecret the clientSecret value to set.
      * @return the Oauth2ClientCredential object itself.
      */
+    @Generated
     public Oauth2ClientCredential setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
         return this;

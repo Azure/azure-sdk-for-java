@@ -7,14 +7,14 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link LinkedEntityCollection} model.
+ * The {@code LinkedEntityCollection} model.
  */
 @Immutable
 public final class LinkedEntityCollection extends IterableStream<LinkedEntity> {
     private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
-     * Creates a {@link LinkedEntityCollection} model that describes a linked entities collection including warnings.
+     * Creates a {@code LinkedEntityCollection} model that describes a linked entities collection including warnings.
      *
      * @param entities An {@link IterableStream} of {@link LinkedEntity linked entities}.
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.

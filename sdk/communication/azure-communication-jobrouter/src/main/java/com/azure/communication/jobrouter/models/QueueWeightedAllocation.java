@@ -4,45 +4,53 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /** Contains the weight percentage and queue selectors to be applied if selected for weighted distributions. */
-@Fluent
+@Immutable
 public final class QueueWeightedAllocation {
     /*
      * The percentage of this weight, expressed as a fraction of 1.
      */
-    @JsonProperty(value = "weight", required = true)
+    @Generated
+    @JsonProperty(value = "weight")
     private double weight;
 
     /*
-     * A collection of queue selectors that will be applied if this allocation
-     * is selected.
+     * A collection of queue selectors that will be applied if this allocation is
+     * selected.
      */
-    @JsonProperty(value = "queueSelectors", required = true)
+    @Generated
+    @JsonProperty(value = "queueSelectors")
     private List<RouterQueueSelector> queueSelectors;
+
+    /**
+     * Creates an instance of QueueWeightedAllocation class.
+     *
+     * @param weight the weight value to set.
+     * @param queueSelectors the queueSelectors value to set.
+     */
+    @Generated
+    @JsonCreator
+    public QueueWeightedAllocation(
+            @JsonProperty(value = "weight") double weight,
+            @JsonProperty(value = "queueSelectors") List<RouterQueueSelector> queueSelectors) {
+        this.weight = weight;
+        this.queueSelectors = queueSelectors;
+    }
 
     /**
      * Get the weight property: The percentage of this weight, expressed as a fraction of 1.
      *
      * @return the weight value.
      */
+    @Generated
     public double getWeight() {
         return this.weight;
-    }
-
-    /**
-     * Set the weight property: The percentage of this weight, expressed as a fraction of 1.
-     *
-     * @param weight the weight value to set.
-     * @return the QueueWeightedAllocation object itself.
-     */
-    public QueueWeightedAllocation setWeight(double weight) {
-        this.weight = weight;
-        return this;
     }
 
     /**
@@ -51,19 +59,8 @@ public final class QueueWeightedAllocation {
      *
      * @return the queueSelectors value.
      */
+    @Generated
     public List<RouterQueueSelector> getQueueSelectors() {
         return this.queueSelectors;
-    }
-
-    /**
-     * Set the queueSelectors property: A collection of queue selectors that will be applied if this allocation is
-     * selected.
-     *
-     * @param queueSelectors the queueSelectors value to set.
-     * @return the QueueWeightedAllocation object itself.
-     */
-    public QueueWeightedAllocation setQueueSelectors(List<RouterQueueSelector> queueSelectors) {
-        this.queueSelectors = queueSelectors;
-        return this;
     }
 }

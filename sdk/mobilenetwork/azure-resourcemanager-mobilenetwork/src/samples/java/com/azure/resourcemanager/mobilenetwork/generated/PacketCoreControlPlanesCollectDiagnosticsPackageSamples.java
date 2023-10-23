@@ -9,7 +9,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneColl
 /** Samples for PacketCoreControlPlanes CollectDiagnosticsPackage. */
 public final class PacketCoreControlPlanesCollectDiagnosticsPackageSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneCollectDiagnosticsPackage.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneCollectDiagnosticsPackage.json
      */
     /**
      * Sample code: Collect diagnostics package from packet core control plane.

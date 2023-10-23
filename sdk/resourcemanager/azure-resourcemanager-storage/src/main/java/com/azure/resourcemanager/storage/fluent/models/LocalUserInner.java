@@ -27,6 +27,10 @@ public final class LocalUserInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of LocalUserInner class. */
+    public LocalUserInner() {
+    }
+
     /**
      * Get the innerProperties property: Storage account local user properties.
      *

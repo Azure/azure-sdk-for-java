@@ -56,8 +56,6 @@ public final class UpdateRunsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .updateRuns()
-            .delete("jky", "xjvuujqgidokg", "ljyoxgvcltb", "sncghkjeszz", com.azure.core.util.Context.NONE);
+        manager.updateRuns().delete("n", "synljphuopxodl", "iyntorzihle", "sjswsrms", com.azure.core.util.Context.NONE);
     }
 }

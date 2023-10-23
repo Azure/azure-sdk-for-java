@@ -41,6 +41,9 @@ public final class AnalyzeResult {
     @JsonProperty(value = "errors")
     private List<ErrorInformation> errors;
 
+    /** Creates an instance of AnalyzeResult class. */
+    public AnalyzeResult() {}
+
     /**
      * Get the version property: Version of schema used for this result.
      *

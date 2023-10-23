@@ -43,6 +43,10 @@ public final class AccessInformationContractImpl
         return this.innerModel().enabled();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AccessInformationContractInner innerModel() {
         return this.innerObject;
     }
@@ -160,18 +164,14 @@ public final class AccessInformationContractImpl
         return this;
     }
 
-    public void regeneratePrimaryKey() {
-        serviceManager.tenantAccess().regeneratePrimaryKey(resourceGroupName, serviceName, accessName);
-    }
-
     public Response<Void> regeneratePrimaryKeyWithResponse(Context context) {
         return serviceManager
             .tenantAccess()
             .regeneratePrimaryKeyWithResponse(resourceGroupName, serviceName, accessName, context);
     }
 
-    public void regenerateSecondaryKey() {
-        serviceManager.tenantAccess().regenerateSecondaryKey(resourceGroupName, serviceName, accessName);
+    public void regeneratePrimaryKey() {
+        serviceManager.tenantAccess().regeneratePrimaryKey(resourceGroupName, serviceName, accessName);
     }
 
     public Response<Void> regenerateSecondaryKeyWithResponse(Context context) {
@@ -180,14 +180,18 @@ public final class AccessInformationContractImpl
             .regenerateSecondaryKeyWithResponse(resourceGroupName, serviceName, accessName, context);
     }
 
-    public AccessInformationSecretsContract listSecrets() {
-        return serviceManager.tenantAccess().listSecrets(resourceGroupName, serviceName, accessName);
+    public void regenerateSecondaryKey() {
+        serviceManager.tenantAccess().regenerateSecondaryKey(resourceGroupName, serviceName, accessName);
     }
 
     public Response<AccessInformationSecretsContract> listSecretsWithResponse(Context context) {
         return serviceManager
             .tenantAccess()
             .listSecretsWithResponse(resourceGroupName, serviceName, accessName, context);
+    }
+
+    public AccessInformationSecretsContract listSecrets() {
+        return serviceManager.tenantAccess().listSecrets(resourceGroupName, serviceName, accessName);
     }
 
     public AccessInformationContractImpl withPrincipalId(String principalId) {

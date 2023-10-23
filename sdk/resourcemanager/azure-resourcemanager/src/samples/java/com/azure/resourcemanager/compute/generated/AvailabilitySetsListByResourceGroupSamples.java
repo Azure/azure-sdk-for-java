@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for AvailabilitySets ListByResourceGroup. */
 public final class AvailabilitySetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/availabilitySetExamples/AvailabilitySet_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/availabilitySetExamples/AvailabilitySet_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvailabilitySet_List_MaximumSet_Gen.
@@ -24,7 +24,7 @@ public final class AvailabilitySetsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/availabilitySetExamples/AvailabilitySet_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/availabilitySetExamples/AvailabilitySet_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: AvailabilitySet_List_MinimumSet_Gen.

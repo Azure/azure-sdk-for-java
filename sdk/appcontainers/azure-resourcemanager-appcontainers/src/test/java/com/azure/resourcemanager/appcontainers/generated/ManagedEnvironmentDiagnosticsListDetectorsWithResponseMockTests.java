@@ -16,6 +16,7 @@ import com.azure.resourcemanager.appcontainers.models.DiagnosticsCollection;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -30,7 +31,7 @@ public final class ManagedEnvironmentDiagnosticsListDetectorsWithResponseMockTes
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"wgniipr\",\"name\":\"lvawuwzdufypivls\",\"type\":\"bjpmcubk\"}],\"nextLink\":\"foxx\"}";
+            "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"zusjsz\",\"name\":\"scmnlziji\",\"description\":\"ehgmvflnwyv\",\"author\":\"xrerlniylylyf\",\"category\":\"zutgqztwhghmupg\",\"supportTopicList\":[{},{},{},{}],\"analysisTypes\":[\"dxabbujfta\"],\"type\":\"nbbklqpxzucafed\",\"score\":51.97972},\"dataset\":[{},{}],\"status\":{\"message\":\"fwxudgnhg\",\"statusId\":1717815556},\"dataProviderMetadata\":{\"providerName\":\"alvnbwgpb\",\"propertyBag\":[{},{},{}]}},\"id\":\"luclvdjjuk\",\"name\":\"rdnqodxahhxhqf\",\"type\":\"qnvzoqgyipemch\"},{\"properties\":{\"metadata\":{\"id\":\"czuejdtxptl\",\"name\":\"wzhomewjjstl\",\"description\":\"hqawmo\",\"author\":\"ancz\",\"category\":\"odrrslblxyd\",\"supportTopicList\":[{},{}],\"analysisTypes\":[\"vbxiwkgfbqlj\",\"qkhychocok\",\"lehu\",\"qlrqffaweyurk\"],\"type\":\"y\",\"score\":15.436524},\"dataset\":[{}],\"status\":{\"message\":\"uqd\",\"statusId\":1079970798},\"dataProviderMetadata\":{\"providerName\":\"gchbapxkiy\",\"propertyBag\":[{}]}},\"id\":\"kbajbu\",\"name\":\"cgduusio\",\"type\":\"cblevpmc\"},{\"properties\":{\"metadata\":{\"id\":\"xkyxlzgs\",\"name\":\"kzzltafhbzf\",\"description\":\"vwmbjlzqsczpg\",\"author\":\"wnapfdq\",\"category\":\"wf\",\"supportTopicList\":[{},{},{}],\"analysisTypes\":[\"wjtkschgcgqyhl\",\"seyqrhvyeldotjv\"],\"type\":\"wiswskukjtasbvw\",\"score\":54.18455},\"dataset\":[{},{},{},{}],\"status\":{\"message\":\"txfkndlqvt\",\"statusId\":926574477},\"dataProviderMetadata\":{\"providerName\":\"mmbugtywatmqaq\",\"propertyBag\":[{},{},{}]}},\"id\":\"atgr\",\"name\":\"eshoygzcb\",\"type\":\"fqxkfaoyteh\"},{\"properties\":{\"metadata\":{\"id\":\"jmvqmtd\",\"name\":\"kygroejnndljdj\",\"description\":\"kb\",\"author\":\"eqy\",\"category\":\"ceysfaqeg\",\"supportTopicList\":[{},{}],\"analysisTypes\":[\"shwddkvbxgk\"],\"type\":\"sybwptdaca\",\"score\":12.566},\"dataset\":[{}],\"status\":{\"message\":\"ymtpo\",\"statusId\":1736120485},\"dataProviderMetadata\":{\"providerName\":\"zerohzrsqalsxk\",\"propertyBag\":[{},{},{}]}},\"id\":\"qapfgsdpc\",\"name\":\"essmzhhku\",\"type\":\"ip\"}],\"nextLink\":\"q\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +62,13 @@ public final class ManagedEnvironmentDiagnosticsListDetectorsWithResponseMockTes
         DiagnosticsCollection response =
             manager
                 .managedEnvironmentDiagnostics()
-                .listDetectorsWithResponse("ranblwphqlkccu", "gygqwah", com.azure.core.util.Context.NONE)
+                .listDetectorsWithResponse("w", "vcacoyv", com.azure.core.util.Context.NONE)
                 .getValue();
+
+        Assertions.assertEquals("dxabbujfta", response.value().get(0).properties().metadata().analysisTypes().get(0));
+        Assertions.assertEquals("fwxudgnhg", response.value().get(0).properties().status().message());
+        Assertions.assertEquals(1717815556, response.value().get(0).properties().status().statusId());
+        Assertions
+            .assertEquals("alvnbwgpb", response.value().get(0).properties().dataProviderMetadata().providerName());
     }
 }

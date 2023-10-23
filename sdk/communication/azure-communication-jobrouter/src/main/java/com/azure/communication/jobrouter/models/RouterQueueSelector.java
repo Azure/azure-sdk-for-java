@@ -5,6 +5,8 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a condition that must be met against a set of labels for queue selection. */
@@ -13,41 +15,48 @@ public final class RouterQueueSelector {
     /*
      * The label key to query against
      */
-    @JsonProperty(value = "key", required = true)
+    @Generated
+    @JsonProperty(value = "key")
     private String key;
 
     /*
-     * Describes how the value of the label is compared to the value defined on
-     * the label selector
+     * Describes how the value of the label is compared to the value defined on the
+     * label selector
      */
-    @JsonProperty(value = "labelOperator", required = true)
+    @Generated
+    @JsonProperty(value = "labelOperator")
     private LabelOperator labelOperator;
 
     /*
-     * The value to compare against the actual label value with the given
-     * operator
+     * The value to compare against the actual label value with the given operator
      */
+    @Generated
     @JsonProperty(value = "value")
     private Object value;
+
+    /**
+     * Creates an instance of RouterQueueSelector class.
+     *
+     * @param key the key value to set.
+     * @param labelOperator the labelOperator value to set.
+     */
+    @Generated
+    @JsonCreator
+    public RouterQueueSelector(
+            @JsonProperty(value = "key") String key,
+            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+        this.key = key;
+        this.labelOperator = labelOperator;
+    }
 
     /**
      * Get the key property: The label key to query against.
      *
      * @return the key value.
      */
+    @Generated
     public String getKey() {
         return this.key;
-    }
-
-    /**
-     * Set the key property: The label key to query against.
-     *
-     * @param key the key value to set.
-     * @return the RouterQueueSelector object itself.
-     */
-    public RouterQueueSelector setKey(String key) {
-        this.key = key;
-        return this;
     }
 
     /**
@@ -56,20 +65,9 @@ public final class RouterQueueSelector {
      *
      * @return the labelOperator value.
      */
+    @Generated
     public LabelOperator getLabelOperator() {
         return this.labelOperator;
-    }
-
-    /**
-     * Set the labelOperator property: Describes how the value of the label is compared to the value defined on the
-     * label selector.
-     *
-     * @param labelOperator the labelOperator value to set.
-     * @return the RouterQueueSelector object itself.
-     */
-    public RouterQueueSelector setLabelOperator(LabelOperator labelOperator) {
-        this.labelOperator = labelOperator;
-        return this;
     }
 
     /**
@@ -77,6 +75,7 @@ public final class RouterQueueSelector {
      *
      * @return the value value.
      */
+    @Generated
     public Object getValue() {
         return this.value;
     }
@@ -87,6 +86,7 @@ public final class RouterQueueSelector {
      * @param value the value value to set.
      * @return the RouterQueueSelector object itself.
      */
+    @Generated
     public RouterQueueSelector setValue(Object value) {
         this.value = value;
         return this;

@@ -21,8 +21,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  * It can be passed while processing bulk operations.
  */
 public final class CosmosBulkExecutionOptions {
-    private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+    private int initialMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
+
+    private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
     private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
 
@@ -71,40 +73,33 @@ public final class CosmosBulkExecutionOptions {
     }
 
     /**
-     * The maximum batching size for bulk operations. This value determines number of operations executed in one
-     * request. There is an upper limit on both number of operations and sum of size of operations. Any overflow is
-     * internally retried.
-     *
-     * Another instance is: Currently we support a max limit of 200KB, and user select batch size to be 100 and individual
-     * documents are of size 20KB, approximately 90 operations will always be retried. So it's better to choose a batch
-     * size of 10 here if user is aware of there workload. If sizes are totally unknown and user cannot put a number on it
-     * then retries are handled, so no issues as such.
-     *
-     * If the retry rate exceeds `getMaxMicroBatchInterval` the micro batch size gets dynamically reduced at runtime
-     * @return micro batch size
+     * Gets the initial size of micro batches that will be sent to the backend. The size of micro batches will
+     * be dynamically adjusted based on the throttling rate. The default value is 100 - so, it starts with relatively
+     * large micro batches and when the throttling rate is too high, it will reduce the batch size. When the
+     * short spikes of throttling before dynamically reducing the initial batch size results in side effects for other
+     * workloads the initial micro batch size can be reduced - for example set to 1 - at which point it would
+     * start with small micro batches and then increase the batch size over time.
+     * @return the initial micro batch size
      */
-    int getMaxMicroBatchSize() {
-        return maxMicroBatchSize;
+    public int getInitialMicroBatchSize() {
+        return initialMicroBatchSize;
     }
 
     /**
-     * The maximum batching size for bulk operations. This value determines number of operations executed in one
-     * request. There is an upper limit on both number of operations and sum of size of operations. Any overflow is
-     * internally retried.
-     *
-     * Another instance is: Currently we support a max limit of 200KB, and user select batch size to be 100 and individual
-     * documents are of size 20KB, approximately 90 operations will always be retried. So it's better to choose a batch
-     * size of 10 here if user is aware of there workload. If sizes are totally unknown and user cannot put a number on it
-     * then retries are handled, so no issues as such.
-     *
-     * If the retry rate exceeds `getMaxMicroBatchInterval` the micro batch size gets dynamically reduced at runtime
-     *
-     * @param maxMicroBatchSize batching size.
-     *
-     * @return the bulk processing options.
+     * Sets the initial size of micro batches that will be sent to the backend. The size of micro batches will
+     * be dynamically adjusted based on the throttling rate. The default value is 100 - so, it starts with relatively
+     * large micro batches and when the throttling rate is too high, it will reduce the batch size. When the
+     * short spikes of throttling before dynamically reducing the initial batch size results in side effects for other
+     * workloads the initial micro batch size can be reduced - for example set to 1 - at which point it would
+     * start with small micro batches and then increase the batch size over time.
+     * @param initialMicroBatchSize the initial micro batch size to be used. Must be a positive integer.
+     * @return the bulk execution options.
      */
-    CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
-        this.maxMicroBatchSize = maxMicroBatchSize;
+    public CosmosBulkExecutionOptions setInitialMicroBatchSize(int initialMicroBatchSize) {
+        checkArgument(
+            initialMicroBatchSize > 0,
+            "The argument 'initialMicroBatchSize' must be a positive integer.");
+        this.initialMicroBatchSize = initialMicroBatchSize;
         return this;
     }
 
@@ -127,6 +122,15 @@ public final class CosmosBulkExecutionOptions {
      */
     CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(int maxMicroBatchPayloadSizeInBytes) {
         this.maxMicroBatchPayloadSizeInBytes = maxMicroBatchPayloadSizeInBytes;
+        return this;
+    }
+
+    int getMaxMicroBatchSize() {
+        return maxMicroBatchSize;
+    }
+
+    CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
+        this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
     }
 
@@ -356,19 +360,6 @@ public final class CosmosBulkExecutionOptions {
                 }
 
                 @Override
-                public int getMaxMicroBatchSize(CosmosBulkExecutionOptions options) {
-                    return options.getMaxMicroBatchSize();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setMaxMicroBatchSize(
-                    CosmosBulkExecutionOptions options,
-                    int maxMicroBatchSize) {
-
-                    return options.setMaxMicroBatchSize(maxMicroBatchSize);
-                }
-
-                @Override
                 public int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options) {
                     return options.getMaxMicroBatchPayloadSizeInBytes();
                 }
@@ -430,6 +421,20 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
                     return cosmosBulkExecutionOptions.excludeRegions;
+                }
+
+                @Override
+                public int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    if (cosmosBulkExecutionOptions == null) {
+                        return BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+                    }
+
+                    return cosmosBulkExecutionOptions.getMaxMicroBatchSize();
+                }
+
+                @Override
+                public void setMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, int maxMicroBatchSize) {
+                    cosmosBulkExecutionOptions.setMaxMicroBatchSize(maxMicroBatchSize);
                 }
 
             });

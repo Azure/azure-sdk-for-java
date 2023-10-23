@@ -15,20 +15,20 @@ public final class DataConnectionValidationInnerTests {
         DataConnectionValidationInner model =
             BinaryData
                 .fromString(
-                    "{\"dataConnectionName\":\"ffimrzrtuzqogsex\",\"properties\":{\"kind\":\"DataConnection\",\"location\":\"fdnw\",\"id\":\"wmewzsyy\",\"name\":\"euzsoi\",\"type\":\"judpfrxt\"}}")
+                    "{\"dataConnectionName\":\"ybar\",\"properties\":{\"kind\":\"DataConnection\",\"location\":\"ayjkqa\",\"id\":\"qgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"}}")
                 .toObject(DataConnectionValidationInner.class);
-        Assertions.assertEquals("ffimrzrtuzqogsex", model.dataConnectionName());
-        Assertions.assertEquals("fdnw", model.properties().location());
+        Assertions.assertEquals("ybar", model.dataConnectionName());
+        Assertions.assertEquals("ayjkqa", model.properties().location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataConnectionValidationInner model =
             new DataConnectionValidationInner()
-                .withDataConnectionName("ffimrzrtuzqogsex")
-                .withProperties(new DataConnectionInner().withLocation("fdnw"));
+                .withDataConnectionName("ybar")
+                .withProperties(new DataConnectionInner().withLocation("ayjkqa"));
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationInner.class);
-        Assertions.assertEquals("ffimrzrtuzqogsex", model.dataConnectionName());
-        Assertions.assertEquals("fdnw", model.properties().location());
+        Assertions.assertEquals("ybar", model.dataConnectionName());
+        Assertions.assertEquals("ayjkqa", model.properties().location());
     }
 }

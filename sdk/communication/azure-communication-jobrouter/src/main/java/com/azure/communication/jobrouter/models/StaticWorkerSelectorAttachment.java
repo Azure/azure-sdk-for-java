@@ -4,7 +4,9 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -12,14 +14,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Describes a worker selector that will be attached to the job. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("static")
-@Fluent
+@Immutable
 public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachment {
     /*
-     * Describes a condition that must be met against a set of labels for
-     * worker selection
+     * Describes a condition that must be met against a set of labels for worker
+     * selection
      */
-    @JsonProperty(value = "workerSelector", required = true)
+    @Generated
+    @JsonProperty(value = "workerSelector")
     private RouterWorkerSelector workerSelector;
+
+    /**
+     * Creates an instance of StaticWorkerSelectorAttachment class.
+     *
+     * @param workerSelector the workerSelector value to set.
+     */
+    @Generated
+    @JsonCreator
+    public StaticWorkerSelectorAttachment(@JsonProperty(value = "workerSelector") RouterWorkerSelector workerSelector) {
+        this.workerSelector = workerSelector;
+    }
 
     /**
      * Get the workerSelector property: Describes a condition that must be met against a set of labels for worker
@@ -27,19 +41,8 @@ public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachme
      *
      * @return the workerSelector value.
      */
+    @Generated
     public RouterWorkerSelector getWorkerSelector() {
         return this.workerSelector;
-    }
-
-    /**
-     * Set the workerSelector property: Describes a condition that must be met against a set of labels for worker
-     * selection.
-     *
-     * @param workerSelector the workerSelector value to set.
-     * @return the StaticWorkerSelectorAttachment object itself.
-     */
-    public StaticWorkerSelectorAttachment setWorkerSelector(RouterWorkerSelector workerSelector) {
-        this.workerSelector = workerSelector;
-        return this;
     }
 }

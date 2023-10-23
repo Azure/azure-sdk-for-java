@@ -30,7 +30,7 @@ public final class BackupsGetVolumeRestoreStatusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"healthy\":false,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Mirrored\",\"unhealthyReason\":\"ulcdisdosf\",\"errorMessage\":\"jsvg\",\"totalTransferBytes\":4500706087685713413}";
+            "{\"healthy\":true,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Mirrored\",\"unhealthyReason\":\"rzpgep\",\"errorMessage\":\"yb\",\"totalTransferBytes\":6730843668651593065}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class BackupsGetVolumeRestoreStatusWithResponseMockTests {
             manager
                 .backups()
                 .getVolumeRestoreStatusWithResponse(
-                    "cgcckknhxkizvyt", "rzvul", "r", "aeranokqgukkjqnv", com.azure.core.util.Context.NONE)
+                    "slzkwrrwoycqu", "wyh", "hnomdrkywuh", "svfuurutlwexxwl", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

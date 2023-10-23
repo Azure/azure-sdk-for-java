@@ -8,25 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** layer2Configuration. */
+/** Common properties for Layer2 Configuration. */
 @Fluent
 public final class Layer2Configuration {
     /*
-     * Number of ports connected between PE/CE. Maximum value depends on FabricSKU.
-     */
-    @JsonProperty(value = "portCount")
-    private Integer portCount;
-
-    /*
      * MTU of the packets between PE & CE.
      */
-    @JsonProperty(value = "mtu", required = true)
-    private int mtu;
+    @JsonProperty(value = "mtu")
+    private Integer mtu;
 
     /*
      * List of network device interfaces resource IDs.
      */
-    @JsonProperty(value = "interfaces", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "interfaces")
     private List<String> interfaces;
 
     /** Creates an instance of Layer2Configuration class. */
@@ -34,31 +28,11 @@ public final class Layer2Configuration {
     }
 
     /**
-     * Get the portCount property: Number of ports connected between PE/CE. Maximum value depends on FabricSKU.
-     *
-     * @return the portCount value.
-     */
-    public Integer portCount() {
-        return this.portCount;
-    }
-
-    /**
-     * Set the portCount property: Number of ports connected between PE/CE. Maximum value depends on FabricSKU.
-     *
-     * @param portCount the portCount value to set.
-     * @return the Layer2Configuration object itself.
-     */
-    public Layer2Configuration withPortCount(Integer portCount) {
-        this.portCount = portCount;
-        return this;
-    }
-
-    /**
      * Get the mtu property: MTU of the packets between PE &amp; CE.
      *
      * @return the mtu value.
      */
-    public int mtu() {
+    public Integer mtu() {
         return this.mtu;
     }
 
@@ -68,7 +42,7 @@ public final class Layer2Configuration {
      * @param mtu the mtu value to set.
      * @return the Layer2Configuration object itself.
      */
-    public Layer2Configuration withMtu(int mtu) {
+    public Layer2Configuration withMtu(Integer mtu) {
         this.mtu = mtu;
         return this;
     }
@@ -80,6 +54,17 @@ public final class Layer2Configuration {
      */
     public List<String> interfaces() {
         return this.interfaces;
+    }
+
+    /**
+     * Set the interfaces property: List of network device interfaces resource IDs.
+     *
+     * @param interfaces the interfaces value to set.
+     * @return the Layer2Configuration object itself.
+     */
+    public Layer2Configuration withInterfaces(List<String> interfaces) {
+        this.interfaces = interfaces;
+        return this;
     }
 
     /**

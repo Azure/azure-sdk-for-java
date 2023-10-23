@@ -1,16 +1,41 @@
 # Release History
 
-## 2.29.0-beta.1 (Unreleased)
+## 2.32.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Supported `withContainerSize` for `FunctionApp`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.30.0 (2023-08-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.29.0 (2023-07-28)
+
+### Features Added
+
+- Supported `withContainerSize` for `FunctionApp`.
+
+### Bugs Fixed
+
+- Updated SKU that automatically set Function App "Always On".
+Function App on `FREE`, `SHARED`, `DYNAMIC` (consumption plan), `ELASTIC_PREMIUM` (premium plan), `ELASTIC_ISOLATED` App Service has "Always On" turned off.
 
 ## 2.28.0 (2023-06-25)
 

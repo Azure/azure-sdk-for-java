@@ -18,7 +18,7 @@ public final class CreateWorkerOptions {
     /**
      * The queue(s) that this worker can receive work from.
      */
-    private Map<String, QueueAssignment> queueAssignments;
+    private Map<String, RouterQueueAssignment> queueAssignments;
 
     /**
      * The total capacity score this worker has to manage multiple concurrent
@@ -30,7 +30,7 @@ public final class CreateWorkerOptions {
      * A set of key/value pairs that are identifying attributes used by the
      * rules engines to make decisions.
      */
-    private Map<String, LabelValue> labels;
+    private Map<String, Object> labels;
 
     /**
      * A set of non-identifying attributes attached to this worker.
@@ -64,7 +64,7 @@ public final class CreateWorkerOptions {
      * @param queueAssignments the queueAssignments value to set.
      * @return this
      */
-    public CreateWorkerOptions setQueueAssignments(Map<String, QueueAssignment> queueAssignments) {
+    public CreateWorkerOptions setQueueAssignments(Map<String, RouterQueueAssignment> queueAssignments) {
         this.queueAssignments = queueAssignments;
         return this;
     }
@@ -76,7 +76,7 @@ public final class CreateWorkerOptions {
      * @param labels the labels value to set.
      * @return this
      */
-    public CreateWorkerOptions setLabels(Map<String, LabelValue> labels) {
+    public CreateWorkerOptions setLabels(Map<String, Object> labels) {
         this.labels = labels;
         return this;
     }
@@ -127,7 +127,7 @@ public final class CreateWorkerOptions {
      * Returns queue assignments.
      * @return queueAssignments
      */
-    public Map<String, QueueAssignment> getQueueAssignments() {
+    public Map<String, RouterQueueAssignment> getQueueAssignments() {
         return this.queueAssignments;
     }
 
@@ -143,7 +143,7 @@ public final class CreateWorkerOptions {
      * Returns labels.
      * @return labels
      */
-    public Map<String, LabelValue> getLabels() {
+    public Map<String, Object> getLabels() {
         return this.labels;
     }
 

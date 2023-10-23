@@ -13,6 +13,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
+import com.azure.resourcemanager.webpubsub.models.UpstreamAuthType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHub;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +33,7 @@ public final class WebPubSubHubsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"eventHandlers\":[],\"eventListeners\":[],\"anonymousConnectPolicy\":\"zrnw\"},\"id\":\"iin\",\"name\":\"fpwpjylwbt\",\"type\":\"h\"}]}";
+            "{\"value\":[{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"rngbtcjuahokqtob\",\"userEventPattern\":\"uxofshfphwpnulai\",\"systemEvents\":[\"e\",\"ywhslwkojpllndnp\",\"wrpqafgfugsnnf\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{}}},{\"urlTemplate\":\"fypococtfjgti\",\"userEventPattern\":\"jvzuy\",\"systemEvents\":[\"mlmuowol\",\"au\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}},{\"urlTemplate\":\"ons\",\"userEventPattern\":\"nw\",\"systemEvents\":[\"ajinnixjawrtmjfj\",\"yccxlzhcox\",\"vnekhenlusfnrdtj\",\"txrdcqtjvi\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{}}},{\"urlTemplate\":\"puslvyj\",\"userEventPattern\":\"vuwkasiziesfuugh\",\"systemEvents\":[\"fecjxeygtuhx\",\"ic\",\"uewmrswnjlxuzrhw\",\"usxjbaqehg\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"tu\"},\"id\":\"o\",\"name\":\"gebx\",\"type\":\"cnwfepbnwgfmxjg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +62,20 @@ public final class WebPubSubHubsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WebPubSubHub> response =
-            manager.webPubSubHubs().list("rjqc", "rgz", com.azure.core.util.Context.NONE);
+            manager.webPubSubHubs().list("taboidvmf", "hppubowsepdfgkmt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zrnw", response.iterator().next().properties().anonymousConnectPolicy());
+        Assertions
+            .assertEquals(
+                "rngbtcjuahokqtob", response.iterator().next().properties().eventHandlers().get(0).urlTemplate());
+        Assertions
+            .assertEquals(
+                "uxofshfphwpnulai", response.iterator().next().properties().eventHandlers().get(0).userEventPattern());
+        Assertions
+            .assertEquals("e", response.iterator().next().properties().eventHandlers().get(0).systemEvents().get(0));
+        Assertions
+            .assertEquals(
+                UpstreamAuthType.MANAGED_IDENTITY,
+                response.iterator().next().properties().eventHandlers().get(0).auth().type());
+        Assertions.assertEquals("tu", response.iterator().next().properties().anonymousConnectPolicy());
     }
 }

@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInner;
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.RemoteVendorManagementFeature;
 import com.azure.resourcemanager.networkcloud.models.RemoteVendorManagementStatus;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliance;
@@ -17,7 +18,6 @@ import com.azure.resourcemanager.networkcloud.models.StorageApplianceDetailedSta
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliancePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceProvisioningState;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
 import java.util.Collections;
 import java.util.Map;
 
@@ -222,44 +222,32 @@ public final class StorageApplianceImpl
         return this;
     }
 
-    public void disableRemoteVendorManagement() {
-        serviceManager.storageAppliances().disableRemoteVendorManagement(resourceGroupName, storageApplianceName);
+    public OperationStatusResult disableRemoteVendorManagement() {
+        return serviceManager
+            .storageAppliances()
+            .disableRemoteVendorManagement(resourceGroupName, storageApplianceName);
     }
 
-    public void disableRemoteVendorManagement(Context context) {
-        serviceManager
+    public OperationStatusResult disableRemoteVendorManagement(Context context) {
+        return serviceManager
             .storageAppliances()
             .disableRemoteVendorManagement(resourceGroupName, storageApplianceName, context);
     }
 
-    public void enableRemoteVendorManagement() {
-        serviceManager.storageAppliances().enableRemoteVendorManagement(resourceGroupName, storageApplianceName);
+    public OperationStatusResult enableRemoteVendorManagement() {
+        return serviceManager.storageAppliances().enableRemoteVendorManagement(resourceGroupName, storageApplianceName);
     }
 
-    public void enableRemoteVendorManagement(
+    public OperationStatusResult enableRemoteVendorManagement(
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context) {
-        serviceManager
+        return serviceManager
             .storageAppliances()
             .enableRemoteVendorManagement(
                 resourceGroupName,
                 storageApplianceName,
                 storageApplianceEnableRemoteVendorManagementParameters,
                 context);
-    }
-
-    public void runReadCommands(StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        serviceManager
-            .storageAppliances()
-            .runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters);
-    }
-
-    public void runReadCommands(
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
-        serviceManager
-            .storageAppliances()
-            .runReadCommands(
-                resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters, context);
     }
 
     public StorageApplianceImpl withRegion(Region location) {

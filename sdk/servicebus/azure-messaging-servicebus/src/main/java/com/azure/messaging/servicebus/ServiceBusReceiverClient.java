@@ -29,25 +29,61 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.WORK_ID_KEY;
 
 /**
- * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
- * topic on Azure Service Bus.
+ * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a queue or
+ * topic/subscription on Azure Service Bus.
  *
- * <p><strong>Create an instance of receiver</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.instantiation -->
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Create a receiver and receive messages</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation and use of the synchronous client
+ * {@link com.azure.messaging.servicebus.ServiceBusReceiverClient} to receive messages from a Service Bus subscription.
+ * The receive operation returns when either 10 messages are received or 30 seconds has elapsed.  By default, messages
+ * are received using {@link com.azure.messaging.servicebus.models.ServiceBusReceiveMode#PEEK_LOCK} and customers must
+ * settle their messages using one of the settlement methods on the receiver client.
+ * "<a href="https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock">
+ *     "Settling receive operations</a>" provides additional information about message settlement.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.receiveMessages-int-duration -->
  * <pre>
- * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
- * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusReceiverClient receiver = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .receiver&#40;&#41;
- *     .queueName&#40;queueName&#41;
+ *     .topicName&#40;topicName&#41;
+ *     .subscriptionName&#40;subscriptionName&#41;
  *     .buildClient&#40;&#41;;
  *
- * &#47;&#47; Use the receiver and finally close it.
+ * &#47;&#47; Receives a batch of messages when 10 messages are received or until 30 seconds have elapsed, whichever
+ * &#47;&#47; happens first.
+ * IterableStream&lt;ServiceBusReceivedMessage&gt; messages = receiver.receiveMessages&#40;10, Duration.ofSeconds&#40;30&#41;&#41;;
+ * messages.forEach&#40;message -&gt; &#123;
+ *     System.out.printf&#40;&quot;Id: %s. Contents: %s%n&quot;, message.getMessageId&#40;&#41;, message.getBody&#40;&#41;&#41;;
+ *
+ *     &#47;&#47; If able to process message, complete it. Otherwise, abandon it and allow it to be
+ *     &#47;&#47; redelivered.
+ *     if &#40;isMessageProcessed&#41; &#123;
+ *         receiver.complete&#40;message&#41;;
+ *     &#125; else &#123;
+ *         receiver.abandon&#40;message&#41;;
+ *     &#125;
+ * &#125;&#41;;
+ *
+ * &#47;&#47; When program ends, or you're done receiving all messages, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they
+ * &#47;&#47; require resources and time to establish a connection to the service.
  * receiver.close&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.receiveMessages-int-duration -->
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverAsyncClient To communicate with a Service Bus resource using an asynchronous client.
@@ -460,7 +496,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * invocations of receiveMessages API will throw the error to the application. Once the application receives
      * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
      * and create a new client to continue receiving messages.
-     * <br/>
+     * </p>
+     * <p>
      * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
      * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
      * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
@@ -492,7 +529,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * invocations of receiveMessages API will throw the error to the application. Once the application receives
      * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
      * and create a new client to continue receiving messages.
-     * <br/>
+     * </p>
+     * <p>
      * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
      * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
      * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
@@ -695,7 +733,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along to all
      * operations that need to be in this transaction.
      *
-     * <p><strong>Creating and using a transaction</strong></p>
+     * <p><strong>Sample: Creating and using a transaction</strong></p>
      * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
      * <pre>
      * ServiceBusTransactionContext transaction = receiver.createTransaction&#40;&#41;;

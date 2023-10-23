@@ -41,6 +41,10 @@ public final class DeepCreatedOriginGroupProperties {
     @JsonProperty(value = "responseBasedOriginErrorDetectionSettings")
     private ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings;
 
+    /** Creates an instance of DeepCreatedOriginGroupProperties class. */
+    public DeepCreatedOriginGroupProperties() {
+    }
+
     /**
      * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
      * the origin.

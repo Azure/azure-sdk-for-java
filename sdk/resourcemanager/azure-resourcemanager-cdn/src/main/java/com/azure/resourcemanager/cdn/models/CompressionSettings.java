@@ -25,6 +25,10 @@ public final class CompressionSettings {
     @JsonProperty(value = "isCompressionEnabled")
     private Boolean isCompressionEnabled;
 
+    /** Creates an instance of CompressionSettings class. */
+    public CompressionSettings() {
+    }
+
     /**
      * Get the contentTypesToCompress property: List of content types on which compression applies. The value should be
      * a valid MIME type.

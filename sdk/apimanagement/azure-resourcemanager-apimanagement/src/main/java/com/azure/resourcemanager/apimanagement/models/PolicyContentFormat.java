@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyContentFormat. */
+/** Format of the policyContent. */
 public final class PolicyContentFormat extends ExpandableStringEnum<PolicyContentFormat> {
     /** Static value xml for PolicyContentFormat. */
     public static final PolicyContentFormat XML = fromString("xml");
@@ -23,6 +23,15 @@ public final class PolicyContentFormat extends ExpandableStringEnum<PolicyConten
     public static final PolicyContentFormat RAWXML_LINK = fromString("rawxml-link");
 
     /**
+     * Creates a new instance of PolicyContentFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyContentFormat() {
+    }
+
+    /**
      * Creates or finds a PolicyContentFormat from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class PolicyContentFormat extends ExpandableStringEnum<PolicyConten
         return fromString(name, PolicyContentFormat.class);
     }
 
-    /** @return known PolicyContentFormat values. */
+    /**
+     * Gets known PolicyContentFormat values.
+     *
+     * @return known PolicyContentFormat values.
+     */
     public static Collection<PolicyContentFormat> values() {
         return values(PolicyContentFormat.class);
     }

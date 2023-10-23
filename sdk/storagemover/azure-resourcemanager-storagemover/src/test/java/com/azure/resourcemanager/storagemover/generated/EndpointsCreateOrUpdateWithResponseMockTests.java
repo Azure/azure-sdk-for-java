@@ -32,7 +32,7 @@ public final class EndpointsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"xqtayriwwro\",\"provisioningState\":\"Succeeded\"},\"id\":\"xrmcqibycnojvk\",\"name\":\"mefqsgzvahapjyzh\",\"type\":\"vgqzcjrvxd\"}";
+            "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"wozuhkf\",\"provisioningState\":\"Succeeded\"},\"id\":\"yofd\",\"name\":\"luu\",\"type\":\"dttouwaboekqvkel\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class EndpointsCreateOrUpdateWithResponseMockTests {
         Endpoint response =
             manager
                 .endpoints()
-                .define("iebwwaloayqcgwrt")
-                .withExistingStorageMover("wxzvlvqhjkb", "gibtnm")
-                .withProperties(new EndpointBaseProperties().withDescription("uzgwyzmhtx"))
+                .define("zhpvgqzcjrvxd")
+                .withExistingStorageMover("e", "qsgzvahapj")
+                .withProperties(new EndpointBaseProperties().withDescription("lmwlxkvugfhzo"))
                 .create();
 
-        Assertions.assertEquals("xqtayriwwro", response.properties().description());
+        Assertions.assertEquals("wozuhkf", response.properties().description());
     }
 }

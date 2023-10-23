@@ -14,6 +14,62 @@ import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignme
 /** An instance of this class provides access to all the operations defined in ConfigurationAssignmentsClient. */
 public interface ConfigurationAssignmentsClient {
     /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource. along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConfigurationAssignmentInner> getParentWithResponse(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName,
+        Context context);
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfigurationAssignmentInner getParent(
+        String resourceGroupName,
+        String providerName,
+        String resourceParentType,
+        String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName);
+
+    /**
      * Create configuration assignment
      *
      * <p>Register configuration for resource.
@@ -125,6 +181,54 @@ public interface ConfigurationAssignmentsClient {
         String providerName,
         String resourceParentType,
         String resourceParentName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName);
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource. along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConfigurationAssignmentInner> getWithResponse(
+        String resourceGroupName,
+        String providerName,
+        String resourceType,
+        String resourceName,
+        String configurationAssignmentName,
+        Context context);
+
+    /**
+     * Get configuration assignment
+     *
+     * <p>Get configuration assignment for resource..
+     *
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param configurationAssignmentName Configuration assignment name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration assignment for resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConfigurationAssignmentInner get(
+        String resourceGroupName,
+        String providerName,
         String resourceType,
         String resourceName,
         String configurationAssignmentName);

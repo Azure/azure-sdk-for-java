@@ -18,7 +18,7 @@ public final class PolicyParametersTests {
         PolicyParameters model =
             BinaryData
                 .fromString(
-                    "{\"dataStoreParametersList\":[{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"ArchiveStore\"}],\"backupDatasourceParametersList\":[{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"}]}")
+                    "{\"dataStoreParametersList\":[{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"VaultStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"VaultStore\"}],\"backupDatasourceParametersList\":[{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"}]}")
                 .toObject(PolicyParameters.class);
         Assertions
             .assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.dataStoreParametersList().get(0).dataStoreType());
@@ -33,9 +33,14 @@ public final class PolicyParametersTests {
                         .asList(
                             new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE),
                             new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE),
-                            new DataStoreParameters().withDataStoreType(DataStoreTypes.ARCHIVE_STORE)))
+                            new DataStoreParameters().withDataStoreType(DataStoreTypes.VAULT_STORE),
+                            new DataStoreParameters().withDataStoreType(DataStoreTypes.VAULT_STORE)))
                 .withBackupDatasourceParametersList(
-                    Arrays.asList(new BackupDatasourceParameters(), new BackupDatasourceParameters()));
+                    Arrays
+                        .asList(
+                            new BackupDatasourceParameters(),
+                            new BackupDatasourceParameters(),
+                            new BackupDatasourceParameters()));
         model = BinaryData.fromObject(model).toObject(PolicyParameters.class);
         Assertions
             .assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.dataStoreParametersList().get(0).dataStoreType());

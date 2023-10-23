@@ -20,6 +20,14 @@ public final class OraclePartitionOption extends ExpandableStringEnum<OraclePart
     public static final OraclePartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
+     * Creates a new instance of OraclePartitionOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OraclePartitionOption() {}
+
+    /**
      * Creates or finds a OraclePartitionOption from its string representation.
      *
      * @param name a name to look for.

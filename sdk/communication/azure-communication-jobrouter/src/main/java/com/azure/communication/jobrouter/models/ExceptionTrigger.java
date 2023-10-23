@@ -4,6 +4,7 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,4 +22,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "wait-time", value = WaitTimeExceptionTrigger.class)
 })
 @Immutable
-public class ExceptionTrigger {}
+public class ExceptionTrigger {
+    /** Creates an instance of ExceptionTrigger class. */
+    @Generated
+    public ExceptionTrigger() {}
+}

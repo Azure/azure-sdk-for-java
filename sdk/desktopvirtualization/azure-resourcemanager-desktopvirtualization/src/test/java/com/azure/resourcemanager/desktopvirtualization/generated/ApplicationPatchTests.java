@@ -18,53 +18,54 @@ public final class ApplicationPatchTests {
         ApplicationPatch model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"yriwwroyqb\":\"prwmdyvxqt\",\"mefqsgzvahapjyzh\":\"xrmcqibycnojvk\"},\"properties\":{\"description\":\"qzcjrvxdj\",\"friendlyName\":\"mwlxk\",\"filePath\":\"gfhzovawjvzunlut\",\"commandLineSetting\":\"Allow\",\"commandLineArguments\":\"rnxipei\",\"showInPortal\":true,\"iconPath\":\"uaejxdultsk\",\"iconIndex\":618241707,\"msixPackageFamilyName\":\"dzumveekg\",\"msixPackageApplicationId\":\"ozuhkfp\",\"applicationType\":\"MsixApplication\"}}")
+                    "{\"tags\":{\"kotl\":\"wwrlkdmtncv\",\"gsyocogj\":\"xdy\"},\"properties\":{\"description\":\"tbnnha\",\"friendlyName\":\"ocrkvcikh\",\"filePath\":\"p\",\"commandLineSetting\":\"Require\",\"commandLineArguments\":\"x\",\"showInPortal\":false,\"iconPath\":\"zikywgg\",\"iconIndex\":1558005484,\"msixPackageFamilyName\":\"la\",\"msixPackageApplicationId\":\"elwuipi\",\"applicationType\":\"InBuilt\"}}")
                 .toObject(ApplicationPatch.class);
-        Assertions.assertEquals("prwmdyvxqt", model.tags().get("yriwwroyqb"));
-        Assertions.assertEquals("qzcjrvxdj", model.description());
-        Assertions.assertEquals("mwlxk", model.friendlyName());
-        Assertions.assertEquals("gfhzovawjvzunlut", model.filePath());
-        Assertions.assertEquals(CommandLineSetting.ALLOW, model.commandLineSetting());
-        Assertions.assertEquals("rnxipei", model.commandLineArguments());
-        Assertions.assertEquals(true, model.showInPortal());
-        Assertions.assertEquals("uaejxdultsk", model.iconPath());
-        Assertions.assertEquals(618241707, model.iconIndex());
-        Assertions.assertEquals("dzumveekg", model.msixPackageFamilyName());
-        Assertions.assertEquals("ozuhkfp", model.msixPackageApplicationId());
-        Assertions.assertEquals(RemoteApplicationType.MSIX_APPLICATION, model.applicationType());
+        Assertions.assertEquals("wwrlkdmtncv", model.tags().get("kotl"));
+        Assertions.assertEquals("tbnnha", model.description());
+        Assertions.assertEquals("ocrkvcikh", model.friendlyName());
+        Assertions.assertEquals("p", model.filePath());
+        Assertions.assertEquals(CommandLineSetting.REQUIRE, model.commandLineSetting());
+        Assertions.assertEquals("x", model.commandLineArguments());
+        Assertions.assertEquals(false, model.showInPortal());
+        Assertions.assertEquals("zikywgg", model.iconPath());
+        Assertions.assertEquals(1558005484, model.iconIndex());
+        Assertions.assertEquals("la", model.msixPackageFamilyName());
+        Assertions.assertEquals("elwuipi", model.msixPackageApplicationId());
+        Assertions.assertEquals(RemoteApplicationType.IN_BUILT, model.applicationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationPatch model =
             new ApplicationPatch()
-                .withTags(mapOf("yriwwroyqb", "prwmdyvxqt", "mefqsgzvahapjyzh", "xrmcqibycnojvk"))
-                .withDescription("qzcjrvxdj")
-                .withFriendlyName("mwlxk")
-                .withFilePath("gfhzovawjvzunlut")
-                .withCommandLineSetting(CommandLineSetting.ALLOW)
-                .withCommandLineArguments("rnxipei")
-                .withShowInPortal(true)
-                .withIconPath("uaejxdultsk")
-                .withIconIndex(618241707)
-                .withMsixPackageFamilyName("dzumveekg")
-                .withMsixPackageApplicationId("ozuhkfp")
-                .withApplicationType(RemoteApplicationType.MSIX_APPLICATION);
+                .withTags(mapOf("kotl", "wwrlkdmtncv", "gsyocogj", "xdy"))
+                .withDescription("tbnnha")
+                .withFriendlyName("ocrkvcikh")
+                .withFilePath("p")
+                .withCommandLineSetting(CommandLineSetting.REQUIRE)
+                .withCommandLineArguments("x")
+                .withShowInPortal(false)
+                .withIconPath("zikywgg")
+                .withIconIndex(1558005484)
+                .withMsixPackageFamilyName("la")
+                .withMsixPackageApplicationId("elwuipi")
+                .withApplicationType(RemoteApplicationType.IN_BUILT);
         model = BinaryData.fromObject(model).toObject(ApplicationPatch.class);
-        Assertions.assertEquals("prwmdyvxqt", model.tags().get("yriwwroyqb"));
-        Assertions.assertEquals("qzcjrvxdj", model.description());
-        Assertions.assertEquals("mwlxk", model.friendlyName());
-        Assertions.assertEquals("gfhzovawjvzunlut", model.filePath());
-        Assertions.assertEquals(CommandLineSetting.ALLOW, model.commandLineSetting());
-        Assertions.assertEquals("rnxipei", model.commandLineArguments());
-        Assertions.assertEquals(true, model.showInPortal());
-        Assertions.assertEquals("uaejxdultsk", model.iconPath());
-        Assertions.assertEquals(618241707, model.iconIndex());
-        Assertions.assertEquals("dzumveekg", model.msixPackageFamilyName());
-        Assertions.assertEquals("ozuhkfp", model.msixPackageApplicationId());
-        Assertions.assertEquals(RemoteApplicationType.MSIX_APPLICATION, model.applicationType());
+        Assertions.assertEquals("wwrlkdmtncv", model.tags().get("kotl"));
+        Assertions.assertEquals("tbnnha", model.description());
+        Assertions.assertEquals("ocrkvcikh", model.friendlyName());
+        Assertions.assertEquals("p", model.filePath());
+        Assertions.assertEquals(CommandLineSetting.REQUIRE, model.commandLineSetting());
+        Assertions.assertEquals("x", model.commandLineArguments());
+        Assertions.assertEquals(false, model.showInPortal());
+        Assertions.assertEquals("zikywgg", model.iconPath());
+        Assertions.assertEquals(1558005484, model.iconIndex());
+        Assertions.assertEquals("la", model.msixPackageFamilyName());
+        Assertions.assertEquals("elwuipi", model.msixPackageApplicationId());
+        Assertions.assertEquals(RemoteApplicationType.IN_BUILT, model.applicationType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

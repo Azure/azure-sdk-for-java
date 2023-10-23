@@ -30,7 +30,7 @@ public final class WebPubSubsListSkusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"dsg\"},{\"resourceType\":\"kycgrauwj\"}],\"nextLink\":\"eburu\"}";
+            "{\"value\":[{\"resourceType\":\"dbn\",\"sku\":{\"name\":\"ehol\",\"tier\":\"Premium\",\"size\":\"iuubwefqsf\",\"family\":\"aqtferr\",\"capacity\":334650465},\"capacity\":{\"minimum\":996119870,\"maximum\":1852289661,\"default\":2076529802,\"allowedValues\":[1795286214,401804668,942772485,367492569],\"scaleType\":\"Manual\"}}],\"nextLink\":\"bpudcdab\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,9 +59,6 @@ public final class WebPubSubsListSkusWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SkuList response =
-            manager
-                .webPubSubs()
-                .listSkusWithResponse("kgjubgdknnqvsazn", "n", com.azure.core.util.Context.NONE)
-                .getValue();
+            manager.webPubSubs().listSkusWithResponse("a", "zv", com.azure.core.util.Context.NONE).getValue();
     }
 }

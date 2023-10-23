@@ -22,6 +22,7 @@
 com.azure:azure-ai-formrecognizer # Tests owner: samvaity
 com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
 com.azure:azure-ai-textanalytics # Tests owner: mssfang
+com.azure:azure-communication-callautomation # Tests owner: minwoolee-msft, juntuchen-msft
 com.azure:azure-communication-chat # Tests owner: jiminwen
 com.azure:azure-communication-common # Tests owner: AikoBB, maximrytych-ms, mjafferi-msft
 com.azure:azure-communication-email # Tests owner: yogeshmo, kagbakpem
@@ -34,6 +35,7 @@ com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
 com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
 com.azure:azure-data-tables # Tests owner: jairmyree
+com.azure:azure-developer-loadtesting # Tests owner: Harshan01, prativen
 com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
 com.azure:azure-identity-extensions # Tests owner: saragluna, backwind1233
 com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan

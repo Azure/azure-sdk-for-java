@@ -32,7 +32,7 @@ public final class ClustersListOutboundNetworkDependenciesEndpointsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"category\":\"cyyysfgdot\",\"endpoints\":[],\"provisioningState\":\"Moving\"},\"etag\":\"uipwoqonmacje\",\"id\":\"nizshqvcim\",\"name\":\"ev\",\"type\":\"gmblrri\"}]}";
+            "{\"value\":[{\"properties\":{\"category\":\"tmcdzsufcohd\",\"endpoints\":[{\"domainName\":\"mcmuapc\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"evwqqxeyskonq\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"fkbg\",\"endpointDetails\":[{},{}]},{\"domainName\":\"wxeqocljmygvkzqk\",\"endpointDetails\":[{},{}]}],\"provisioningState\":\"Canceled\"},\"etag\":\"zefezrxcczurtl\",\"id\":\"ipqxbkwvzgnzv\",\"name\":\"fbzdixzmqpnoda\",\"type\":\"opqhewjptmc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,9 @@ public final class ClustersListOutboundNetworkDependenciesEndpointsMockTests {
         PagedIterable<OutboundNetworkDependenciesEndpoint> response =
             manager
                 .clusters()
-                .listOutboundNetworkDependenciesEndpoints(
-                    "xmsivfomiloxggdu", "iqndieuzaofj", com.azure.core.util.Context.NONE);
+                .listOutboundNetworkDependenciesEndpoints("ysi", "sgqcwdho", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cyyysfgdot", response.iterator().next().category());
+        Assertions.assertEquals("tmcdzsufcohd", response.iterator().next().category());
+        Assertions.assertEquals("mcmuapc", response.iterator().next().endpoints().get(0).domainName());
     }
 }

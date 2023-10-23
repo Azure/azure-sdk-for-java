@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AuthorizationServer ListByService. */
 public final class AuthorizationServerListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListAuthorizationServers.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListAuthorizationServers.json
      */
     /**
      * Sample code: ApiManagementListAuthorizationServers.
@@ -18,6 +16,8 @@ public final class AuthorizationServerListByServiceSamples {
      */
     public static void apiManagementListAuthorizationServers(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.authorizationServers().listByService("rg1", "apimService1", null, null, null, Context.NONE);
+        manager
+            .authorizationServers()
+            .listByService("rg1", "apimService1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

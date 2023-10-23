@@ -3,8 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

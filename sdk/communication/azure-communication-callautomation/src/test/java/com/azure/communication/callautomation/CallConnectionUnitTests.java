@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
@@ -12,6 +13,8 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
+import com.azure.communication.callautomation.models.CancelAddParticipantOptions;
+import com.azure.communication.callautomation.models.CancelAddParticipantResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
@@ -29,7 +32,6 @@ import java.util.ArrayList;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -174,7 +176,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
         Response<TransferCallResult> transferCallResultResponse = callConnection.transferCallToParticipantWithResponse(
-            new TransferCallToParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID), null)
+            new TransferCallToParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
                 .setOperationContext(CALL_OPERATION_CONTEXT), Context.NONE);
 
         assertNotNull(transferCallResultResponse);
@@ -208,7 +210,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )
         )).getCallConnection(CALL_CONNECTION_ID);
 
-        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID), new HashMap<String, String>());
+        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
         Response<AddParticipantResult> addParticipantsResultResponse = callConnection.addParticipantWithResponse(
             new AddParticipantOptions(callInvite)
                 .setOperationContext(CALL_OPERATION_CONTEXT),
@@ -326,5 +328,47 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(unmuteParticipantsResultResponse);
         assertEquals(202, unmuteParticipantsResultResponse.getStatusCode());
         assertNotNull(unmuteParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void cancelAddParticipant() {
+        String invitationId = "invitationId";
+
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new CancelAddParticipantResponse()
+                    .setInvitationId(invitationId)
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        CancelAddParticipantResult result = callConnection.cancelAddParticipant(invitationId);
+
+        assertNotNull(result);
+        assertEquals(CALL_OPERATION_CONTEXT, result.getOperationContext());
+        assertEquals(invitationId, result.getInvitationId());
+    }
+
+    @Test
+    public void cancelAddParticipantWithResponse() {
+        String invitationId = "invitationId";
+
+        CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(serializeObject(new CancelAddParticipantResponse()
+                    .setInvitationId(invitationId)
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnection(CALL_CONNECTION_ID);
+
+        CancelAddParticipantOptions options = new CancelAddParticipantOptions(invitationId)
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<CancelAddParticipantResult> response = callConnection.cancelAddParticipantWithResponse(
+            options, Context.NONE);
+
+
+        assertNotNull(response);
+        assertEquals(202, response.getStatusCode());
+        assertNotNull(response.getValue());
     }
 }

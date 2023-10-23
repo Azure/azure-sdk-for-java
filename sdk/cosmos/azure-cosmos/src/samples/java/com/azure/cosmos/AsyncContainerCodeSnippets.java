@@ -482,4 +482,30 @@ public class AsyncContainerCodeSnippets {
         // END: com.azure.cosmos.CosmosAsyncDatabase.readAllUsers
     }
 
+    public void databaseReplaceThroughputAsyncSample() {
+        int autoScaleMaxThroughput = 1000;
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.replaceThroughput
+        ThroughputProperties autoscaledThroughput = ThroughputProperties
+            .createAutoscaledThroughput(autoScaleMaxThroughput);
+        cosmosAsyncDatabase.replaceThroughput(autoscaledThroughput)
+            .subscribe(throughputResponse -> {
+                    System.out.println(throughputResponse);
+                },
+                throwable -> {
+                    throwable.printStackTrace();
+                });
+        // END: com.azure.cosmos.CosmosAsyncDatabase.replaceThroughput
+    }
+    public void databaseReadThroughputAsyncSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readThroughput
+        cosmosAsyncDatabase.readThroughput()
+            .subscribe(throughputResponse -> {
+                    System.out.println(throughputResponse);
+                },
+                throwable -> {
+                    throwable.printStackTrace();
+                });
+        // END: com.azure.cosmos.CosmosAsyncDatabase.readThroughput
+    }
+
 }

@@ -14,23 +14,23 @@ public final class NetworkDevicePatchParametersPropertiesTests {
         NetworkDevicePatchParametersProperties model =
             BinaryData
                 .fromString(
-                    "{\"hostName\":\"qjlihhyuspska\",\"serialNumber\":\"vlmfwdgzxulucv\",\"annotation\":\"mrsreuzvxurisjnh\"}")
+                    "{\"hostName\":\"qqzjkoxdu\",\"serialNumber\":\"amglrouig\",\"annotation\":\"fivjqterdqqigdy\"}")
                 .toObject(NetworkDevicePatchParametersProperties.class);
-        Assertions.assertEquals("mrsreuzvxurisjnh", model.annotation());
-        Assertions.assertEquals("qjlihhyuspska", model.hostname());
-        Assertions.assertEquals("vlmfwdgzxulucv", model.serialNumber());
+        Assertions.assertEquals("fivjqterdqqigdy", model.annotation());
+        Assertions.assertEquals("qqzjkoxdu", model.hostname());
+        Assertions.assertEquals("amglrouig", model.serialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkDevicePatchParametersProperties model =
             new NetworkDevicePatchParametersProperties()
-                .withAnnotation("mrsreuzvxurisjnh")
-                .withHostname("qjlihhyuspska")
-                .withSerialNumber("vlmfwdgzxulucv");
+                .withAnnotation("fivjqterdqqigdy")
+                .withHostname("qqzjkoxdu")
+                .withSerialNumber("amglrouig");
         model = BinaryData.fromObject(model).toObject(NetworkDevicePatchParametersProperties.class);
-        Assertions.assertEquals("mrsreuzvxurisjnh", model.annotation());
-        Assertions.assertEquals("qjlihhyuspska", model.hostname());
-        Assertions.assertEquals("vlmfwdgzxulucv", model.serialNumber());
+        Assertions.assertEquals("fivjqterdqqigdy", model.annotation());
+        Assertions.assertEquals("qqzjkoxdu", model.hostname());
+        Assertions.assertEquals("amglrouig", model.serialNumber());
     }
 }

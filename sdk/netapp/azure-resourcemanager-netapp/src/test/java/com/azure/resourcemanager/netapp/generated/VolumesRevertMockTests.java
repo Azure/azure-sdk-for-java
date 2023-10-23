@@ -60,11 +60,11 @@ public final class VolumesRevertMockTests {
         manager
             .volumes()
             .revert(
-                "nnrwrbiork",
-                "alywjhhgdn",
-                "xmsivfomiloxggdu",
-                "iqndieuzaofj",
-                new VolumeRevert().withSnapshotId("vcyy"),
+                "hlfkqojpy",
+                "vgtrdcnifmzzs",
+                "ymbrnysuxmpraf",
+                "g",
+                new VolumeRevert().withSnapshotId("hocxvdfffwafqrou"),
                 com.azure.core.util.Context.NONE);
     }
 }

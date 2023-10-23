@@ -4,7 +4,9 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -12,50 +14,50 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Attaches worker selectors to a job when a RouterRule is resolved. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("rule-engine")
-@Fluent
+@Immutable
 public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAttachment {
     /*
      * A rule of one of the following types:
      *
-     * StaticRule:  A rule providing static rules that always return the same
-     * result, regardless of input.
-     * DirectMapRule:  A rule that return the same labels as the input labels.
-     * ExpressionRule: A rule providing inline expression rules.
-     * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure
+     * StaticRule:  A rule
+     * providing static rules that always return the same result, regardless of
+     * input.
+     * DirectMapRule:  A rule that return the same labels as the input
+     * labels.
+     * ExpressionRule: A rule providing inline expression
+     * rules.
+     * FunctionRule: A rule providing a binding to an HTTP Triggered Azure
      * Function.
      * WebhookRule: A rule providing a binding to a webserver following
      * OAuth2.0 authentication protocol.
      */
-    @JsonProperty(value = "rule", required = true)
+    @Generated
+    @JsonProperty(value = "rule")
     private RouterRule rule;
+
+    /**
+     * Creates an instance of RuleEngineWorkerSelectorAttachment class.
+     *
+     * @param rule the rule value to set.
+     */
+    @Generated
+    @JsonCreator
+    public RuleEngineWorkerSelectorAttachment(@JsonProperty(value = "rule") RouterRule rule) {
+        this.rule = rule;
+    }
 
     /**
      * Get the rule property: A rule of one of the following types:
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
-     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
+     * expression rules. FunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule: A
+     * rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @return the rule value.
      */
+    @Generated
     public RouterRule getRule() {
         return this.rule;
-    }
-
-    /**
-     * Set the rule property: A rule of one of the following types:
-     *
-     * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
-     * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
-     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
-     *
-     * @param rule the rule value to set.
-     * @return the RuleEngineWorkerSelectorAttachment object itself.
-     */
-    public RuleEngineWorkerSelectorAttachment setRule(RouterRule rule) {
-        this.rule = rule;
-        return this;
     }
 }

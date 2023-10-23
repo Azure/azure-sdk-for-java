@@ -60,11 +60,13 @@ public final class VolumesBreakFileLocksMockTests {
         manager
             .volumes()
             .breakFileLocks(
-                "ilbywdxsm",
-                "ccwr",
-                "fscjfnynszquji",
-                "dvoqyt",
-                new BreakFileLocksRequest().withClientIp("yo").withConfirmRunningDisruptiveOperation(true),
+                "f",
+                "fcjnaeoisrvhmgor",
+                "fukiscvwmzhw",
+                "lefaxvxilcbtgn",
+                new BreakFileLocksRequest()
+                    .withClientIp("zeyqxtjjfzqlqhyc")
+                    .withConfirmRunningDisruptiveOperation(false),
                 com.azure.core.util.Context.NONE);
     }
 }

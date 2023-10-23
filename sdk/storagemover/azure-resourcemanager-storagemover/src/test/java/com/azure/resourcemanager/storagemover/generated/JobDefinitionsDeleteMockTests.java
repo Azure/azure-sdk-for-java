@@ -58,6 +58,6 @@ public final class JobDefinitionsDeleteMockTests {
 
         manager
             .jobDefinitions()
-            .delete("xssadbzmnvdf", "n", "daodvxzbncblyl", "stdbhhxsrzdzu", com.azure.core.util.Context.NONE);
+            .delete("mwabnetshhszhedp", "vwiwubmwmbesld", "k", "wtppjflcxogaoko", com.azure.core.util.Context.NONE);
     }
 }

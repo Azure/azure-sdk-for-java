@@ -59,11 +59,23 @@ public class AzureSqlMILinkedService extends LinkedService {
     private Object azureCloudType;
 
     /*
+     * Sql always encrypted properties.
+     */
+    @JsonProperty(value = "typeProperties.alwaysEncryptedSettings")
+    private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
+
+    /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
 
     /** Creates an instance of AzureSqlMILinkedService class. */
     public AzureSqlMILinkedService() {}
@@ -201,6 +213,26 @@ public class AzureSqlMILinkedService extends LinkedService {
     }
 
     /**
+     * Get the alwaysEncryptedSettings property: Sql always encrypted properties.
+     *
+     * @return the alwaysEncryptedSettings value.
+     */
+    public SqlAlwaysEncryptedProperties getAlwaysEncryptedSettings() {
+        return this.alwaysEncryptedSettings;
+    }
+
+    /**
+     * Set the alwaysEncryptedSettings property: Sql always encrypted properties.
+     *
+     * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
+     * @return the AzureSqlMILinkedService object itself.
+     */
+    public AzureSqlMILinkedService setAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
+        this.alwaysEncryptedSettings = alwaysEncryptedSettings;
+        return this;
+    }
+
+    /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      *
@@ -219,6 +251,26 @@ public class AzureSqlMILinkedService extends LinkedService {
      */
     public AzureSqlMILinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureSqlMILinkedService object itself.
+     */
+    public AzureSqlMILinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 

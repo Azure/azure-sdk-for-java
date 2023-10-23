@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for NetworkFabricControllers Delete. */
 public final class NetworkFabricControllersDeleteSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkFabricControllers_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabricControllers_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabricControllers_Delete_MaximumSet_Gen.
@@ -18,6 +18,6 @@ public final class NetworkFabricControllersDeleteSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager
             .networkFabricControllers()
-            .delete("resourceGroupName", "networkFabricControllerName", com.azure.core.util.Context.NONE);
+            .delete("example-rg", "example-networkController", com.azure.core.util.Context.NONE);
     }
 }

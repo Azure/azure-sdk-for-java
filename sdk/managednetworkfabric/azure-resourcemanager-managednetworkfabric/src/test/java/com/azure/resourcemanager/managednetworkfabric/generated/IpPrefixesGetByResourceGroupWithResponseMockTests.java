@@ -12,6 +12,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.Condition;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefix;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -31,7 +33,7 @@ public final class IpPrefixesGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"ipPrefixRules\":[],\"provisioningState\":\"Canceled\",\"annotation\":\"jgl\"},\"location\":\"cuyzlwhhmemhoocl\",\"tags\":{\"zjkmmykyujxs\":\"pqmem\"},\"id\":\"lhsrrry\",\"name\":\"jylmbkzudnigr\",\"type\":\"ihotjewlpxuzzjg\"}";
+            "{\"properties\":{\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"MAT\",\"ipPrefixRules\":[{\"action\":\"Deny\",\"sequenceNumber\":8817700520598631993,\"networkPrefix\":\"pgmncrvtp\",\"condition\":\"Range\",\"subnetMaskLength\":\"omppz\"},{\"action\":\"Permit\",\"sequenceNumber\":2044196694941419396,\"networkPrefix\":\"meuhplfcmpuaiu\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"q\"},{\"action\":\"Permit\",\"sequenceNumber\":173221501836853357,\"networkPrefix\":\"p\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"iccu\"},{\"action\":\"Deny\",\"sequenceNumber\":7374618817808870053,\"networkPrefix\":\"unlakgixhqj\",\"condition\":\"Range\",\"subnetMaskLength\":\"wb\"}],\"annotation\":\"iwtwfgoc\"},\"location\":\"lvemnnzugabk\",\"tags\":{\"bftswcd\":\"syweohlmtsnvon\",\"lgzwkopxdkb\":\"pnseptvdticca\"},\"id\":\"woqhgppwxn\",\"name\":\"kfzrxxf\",\"type\":\"duvqzjnnuww\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +64,16 @@ public final class IpPrefixesGetByResourceGroupWithResponseMockTests {
         IpPrefix response =
             manager
                 .ipPrefixes()
-                .getByResourceGroupWithResponse("uic", "hvtrrmhwrbfdpyf", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("xoyxuuco", "usyrux", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("cuyzlwhhmemhoocl", response.location());
-        Assertions.assertEquals("pqmem", response.tags().get("zjkmmykyujxs"));
-        Assertions.assertEquals("jgl", response.annotation());
+        Assertions.assertEquals("lvemnnzugabk", response.location());
+        Assertions.assertEquals("syweohlmtsnvon", response.tags().get("bftswcd"));
+        Assertions.assertEquals(CommunityActionTypes.DENY, response.ipPrefixRules().get(0).action());
+        Assertions.assertEquals(8817700520598631993L, response.ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals("pgmncrvtp", response.ipPrefixRules().get(0).networkPrefix());
+        Assertions.assertEquals(Condition.RANGE, response.ipPrefixRules().get(0).condition());
+        Assertions.assertEquals("omppz", response.ipPrefixRules().get(0).subnetMaskLength());
+        Assertions.assertEquals("iwtwfgoc", response.annotation());
     }
 }

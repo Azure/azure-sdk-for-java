@@ -16,50 +16,56 @@ import java.util.List;
 @Fluent
 public final class KubernetesClusterBackupDatasourceParameters extends BackupDatasourceParameters {
     /*
-     * Gets or sets the volume snapshot property. This property if enabled will take volume snapshots during restore.
+     * Gets or sets the volume snapshot property. This property if enabled will take volume snapshots during backup.
      */
     @JsonProperty(value = "snapshotVolumes", required = true)
     private boolean snapshotVolumes;
 
     /*
      * Gets or sets the include cluster resources property. This property if enabled will include cluster scope
-     * resources during restore.
+     * resources during backup.
      */
     @JsonProperty(value = "includeClusterScopeResources", required = true)
     private boolean includeClusterScopeResources;
 
     /*
-     * Gets or sets the include namespaces property. This property sets the namespaces to be included during restore.
+     * Gets or sets the include namespaces property. This property sets the namespaces to be included during backup.
      */
     @JsonProperty(value = "includedNamespaces")
     private List<String> includedNamespaces;
 
     /*
-     * Gets or sets the exclude namespaces property. This property sets the namespaces to be excluded during restore.
+     * Gets or sets the exclude namespaces property. This property sets the namespaces to be excluded during backup.
      */
     @JsonProperty(value = "excludedNamespaces")
     private List<String> excludedNamespaces;
 
     /*
      * Gets or sets the include resource types property. This property sets the resource types to be included during
-     * restore.
+     * backup.
      */
     @JsonProperty(value = "includedResourceTypes")
     private List<String> includedResourceTypes;
 
     /*
      * Gets or sets the exclude resource types property. This property sets the resource types to be excluded during
-     * restore.
+     * backup.
      */
     @JsonProperty(value = "excludedResourceTypes")
     private List<String> excludedResourceTypes;
 
     /*
      * Gets or sets the LabelSelectors property. This property sets the resource with such label selectors to be
-     * included during restore.
+     * included during backup.
      */
     @JsonProperty(value = "labelSelectors")
     private List<String> labelSelectors;
+
+    /*
+     * Gets or sets the backup hook references. This property sets the hook reference to be executed during backup.
+     */
+    @JsonProperty(value = "backupHookReferences")
+    private List<NamespacedNameResource> backupHookReferences;
 
     /** Creates an instance of KubernetesClusterBackupDatasourceParameters class. */
     public KubernetesClusterBackupDatasourceParameters() {
@@ -67,7 +73,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Get the snapshotVolumes property: Gets or sets the volume snapshot property. This property if enabled will take
-     * volume snapshots during restore.
+     * volume snapshots during backup.
      *
      * @return the snapshotVolumes value.
      */
@@ -77,7 +83,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Set the snapshotVolumes property: Gets or sets the volume snapshot property. This property if enabled will take
-     * volume snapshots during restore.
+     * volume snapshots during backup.
      *
      * @param snapshotVolumes the snapshotVolumes value to set.
      * @return the KubernetesClusterBackupDatasourceParameters object itself.
@@ -89,7 +95,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Get the includeClusterScopeResources property: Gets or sets the include cluster resources property. This property
-     * if enabled will include cluster scope resources during restore.
+     * if enabled will include cluster scope resources during backup.
      *
      * @return the includeClusterScopeResources value.
      */
@@ -99,7 +105,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Set the includeClusterScopeResources property: Gets or sets the include cluster resources property. This property
-     * if enabled will include cluster scope resources during restore.
+     * if enabled will include cluster scope resources during backup.
      *
      * @param includeClusterScopeResources the includeClusterScopeResources value to set.
      * @return the KubernetesClusterBackupDatasourceParameters object itself.
@@ -112,7 +118,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Get the includedNamespaces property: Gets or sets the include namespaces property. This property sets the
-     * namespaces to be included during restore.
+     * namespaces to be included during backup.
      *
      * @return the includedNamespaces value.
      */
@@ -122,7 +128,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Set the includedNamespaces property: Gets or sets the include namespaces property. This property sets the
-     * namespaces to be included during restore.
+     * namespaces to be included during backup.
      *
      * @param includedNamespaces the includedNamespaces value to set.
      * @return the KubernetesClusterBackupDatasourceParameters object itself.
@@ -134,7 +140,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Get the excludedNamespaces property: Gets or sets the exclude namespaces property. This property sets the
-     * namespaces to be excluded during restore.
+     * namespaces to be excluded during backup.
      *
      * @return the excludedNamespaces value.
      */
@@ -144,7 +150,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Set the excludedNamespaces property: Gets or sets the exclude namespaces property. This property sets the
-     * namespaces to be excluded during restore.
+     * namespaces to be excluded during backup.
      *
      * @param excludedNamespaces the excludedNamespaces value to set.
      * @return the KubernetesClusterBackupDatasourceParameters object itself.
@@ -156,7 +162,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Get the includedResourceTypes property: Gets or sets the include resource types property. This property sets the
-     * resource types to be included during restore.
+     * resource types to be included during backup.
      *
      * @return the includedResourceTypes value.
      */
@@ -166,7 +172,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Set the includedResourceTypes property: Gets or sets the include resource types property. This property sets the
-     * resource types to be included during restore.
+     * resource types to be included during backup.
      *
      * @param includedResourceTypes the includedResourceTypes value to set.
      * @return the KubernetesClusterBackupDatasourceParameters object itself.
@@ -178,7 +184,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Get the excludedResourceTypes property: Gets or sets the exclude resource types property. This property sets the
-     * resource types to be excluded during restore.
+     * resource types to be excluded during backup.
      *
      * @return the excludedResourceTypes value.
      */
@@ -188,7 +194,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Set the excludedResourceTypes property: Gets or sets the exclude resource types property. This property sets the
-     * resource types to be excluded during restore.
+     * resource types to be excluded during backup.
      *
      * @param excludedResourceTypes the excludedResourceTypes value to set.
      * @return the KubernetesClusterBackupDatasourceParameters object itself.
@@ -200,7 +206,7 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Get the labelSelectors property: Gets or sets the LabelSelectors property. This property sets the resource with
-     * such label selectors to be included during restore.
+     * such label selectors to be included during backup.
      *
      * @return the labelSelectors value.
      */
@@ -210,13 +216,36 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
 
     /**
      * Set the labelSelectors property: Gets or sets the LabelSelectors property. This property sets the resource with
-     * such label selectors to be included during restore.
+     * such label selectors to be included during backup.
      *
      * @param labelSelectors the labelSelectors value to set.
      * @return the KubernetesClusterBackupDatasourceParameters object itself.
      */
     public KubernetesClusterBackupDatasourceParameters withLabelSelectors(List<String> labelSelectors) {
         this.labelSelectors = labelSelectors;
+        return this;
+    }
+
+    /**
+     * Get the backupHookReferences property: Gets or sets the backup hook references. This property sets the hook
+     * reference to be executed during backup.
+     *
+     * @return the backupHookReferences value.
+     */
+    public List<NamespacedNameResource> backupHookReferences() {
+        return this.backupHookReferences;
+    }
+
+    /**
+     * Set the backupHookReferences property: Gets or sets the backup hook references. This property sets the hook
+     * reference to be executed during backup.
+     *
+     * @param backupHookReferences the backupHookReferences value to set.
+     * @return the KubernetesClusterBackupDatasourceParameters object itself.
+     */
+    public KubernetesClusterBackupDatasourceParameters withBackupHookReferences(
+        List<NamespacedNameResource> backupHookReferences) {
+        this.backupHookReferences = backupHookReferences;
         return this;
     }
 
@@ -228,5 +257,8 @@ public final class KubernetesClusterBackupDatasourceParameters extends BackupDat
     @Override
     public void validate() {
         super.validate();
+        if (backupHookReferences() != null) {
+            backupHookReferences().forEach(e -> e.validate());
+        }
     }
 }

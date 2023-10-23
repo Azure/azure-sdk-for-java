@@ -22,6 +22,10 @@ public final class SubscriptionKeysContractInner {
     @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
+    /** Creates an instance of SubscriptionKeysContractInner class. */
+    public SubscriptionKeysContractInner() {
+    }
+
     /**
      * Get the primaryKey property: Subscription primary key.
      *

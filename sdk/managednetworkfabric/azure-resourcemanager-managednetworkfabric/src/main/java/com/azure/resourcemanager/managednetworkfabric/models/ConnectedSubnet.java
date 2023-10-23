@@ -5,15 +5,16 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Connected Subnet properties. */
 @Fluent
 public final class ConnectedSubnet extends AnnotationResource {
     /*
-     * Prefix of the connected Subnet.
+     * Prefix of the Connected Subnet.
      */
-    @JsonProperty(value = "prefix")
+    @JsonProperty(value = "prefix", required = true)
     private String prefix;
 
     /** Creates an instance of ConnectedSubnet class. */
@@ -21,7 +22,7 @@ public final class ConnectedSubnet extends AnnotationResource {
     }
 
     /**
-     * Get the prefix property: Prefix of the connected Subnet.
+     * Get the prefix property: Prefix of the Connected Subnet.
      *
      * @return the prefix value.
      */
@@ -30,7 +31,7 @@ public final class ConnectedSubnet extends AnnotationResource {
     }
 
     /**
-     * Set the prefix property: Prefix of the connected Subnet.
+     * Set the prefix property: Prefix of the Connected Subnet.
      *
      * @param prefix the prefix value to set.
      * @return the ConnectedSubnet object itself.
@@ -55,5 +56,12 @@ public final class ConnectedSubnet extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
+        if (prefix() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property prefix in model ConnectedSubnet"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectedSubnet.class);
 }

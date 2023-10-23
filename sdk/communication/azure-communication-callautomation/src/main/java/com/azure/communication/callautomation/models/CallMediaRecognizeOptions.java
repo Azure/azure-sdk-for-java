@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;
 
@@ -13,58 +12,54 @@ public abstract class CallMediaRecognizeOptions {
     /*
      * Determines the type of the recognition.
      */
-    @JsonProperty(value = "recognizeInputType", required = true)
     private RecognizeInputType recognizeInputType;
 
     /*
      * The source of the audio to be played for recognition.
      */
-    @JsonProperty(value = "playPrompt")
     private PlaySource playPrompt;
 
     /*
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "interruptCallMediaOperation")
     private Boolean interruptCallMediaOperation;
 
     /*
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "stopCurrentOperations")
     private Boolean stopCurrentOperations;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Determines if we interrupt the prompt and start recognizing.
      */
-    @JsonProperty(value = "interruptPrompt")
     private Boolean interruptPrompt;
 
     /*
      * Time to wait for first input after prompt (if any).
      */
-    @JsonProperty(value = "initialSilenceTimeout")
     private Duration initialSilenceTimeout;
 
     /*
      * Endpoint where the custom model was deployed.
      */
-    @JsonProperty(value = "speechModelEndpointId")
     private String speechModelEndpointId;
 
     /*
      * Target participant of DTFM tone recognition.
      */
-    @JsonProperty(value = "targetParticipant")
-    private CommunicationIdentifier targetParticipant;
+    private final CommunicationIdentifier targetParticipant;
+
+    /**
+     * The call back URI override.
+     */
+    private String callbackUrl;
 
     /**
      * Initializes a CallMediaRecognizeOptions object.
@@ -248,6 +243,26 @@ public abstract class CallMediaRecognizeOptions {
      */
     public CallMediaRecognizeOptions setSpeechModelEndpointId(String speechModelEndpointId) {
         this.speechModelEndpointId = speechModelEndpointId;
+        return this;
+    }
+
+    /**
+     * Get the call back URI override.
+     *
+     * @return the callbackUriOverride
+     */
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    /**
+     * Set the call back URI override.
+     *
+     * @param callbackUrl The call back URI override to set
+     * @return the CallMediaRecognizeOptions object itself.
+     */
+    public CallMediaRecognizeOptions setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
         return this;
     }
 }

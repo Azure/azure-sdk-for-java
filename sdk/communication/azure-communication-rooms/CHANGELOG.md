@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,37 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2023-10-03)
+### Features Added
+- Added Support for PSTN Dial Out Capability in Azure Communication Services Rooms
+
+## 1.0.4 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-communication-common` from `1.2.11` to version `1.2.12`.
+
+## 1.0.3 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 1.0.2 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.2.9` to version `1.2.10`.
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
 
 ## 1.0.1 (2023-06-20)
 

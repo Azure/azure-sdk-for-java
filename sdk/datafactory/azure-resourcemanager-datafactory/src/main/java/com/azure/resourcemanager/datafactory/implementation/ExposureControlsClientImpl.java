@@ -70,8 +70,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/getFeatureValue")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getFeatureValue")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExposureControlResponseInner>> getFeatureValueByFactory(
@@ -86,8 +85,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/queryFeaturesValue")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryFeaturesValue")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExposureControlBatchResponseInner>> queryFeatureValuesByFactory(

@@ -24,6 +24,10 @@ public final class GatewayHostnameConfigurationCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of GatewayHostnameConfigurationCollection class. */
+    public GatewayHostnameConfigurationCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

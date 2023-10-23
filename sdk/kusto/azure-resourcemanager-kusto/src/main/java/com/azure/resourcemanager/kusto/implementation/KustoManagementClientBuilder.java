@@ -18,14 +18,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {KustoManagementClientImpl.class})
 public final class KustoManagementClientBuilder {
     /*
-     * Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the KustoManagementClientBuilder.
@@ -139,7 +137,7 @@ public final class KustoManagementClientBuilder {
                 localSerializerAdapter,
                 localDefaultPollInterval,
                 localEnvironment,
-                subscriptionId,
+                this.subscriptionId,
                 localEndpoint);
         return client;
     }

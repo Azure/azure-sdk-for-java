@@ -15,18 +15,18 @@ public final class FeatureValidationRequestTests {
         FeatureValidationRequest model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"FeatureValidationRequest\",\"featureType\":\"DataSourceType\",\"featureName\":\"x\"}")
+                    "{\"objectType\":\"FeatureValidationRequest\",\"featureType\":\"DataSourceType\",\"featureName\":\"m\"}")
                 .toObject(FeatureValidationRequest.class);
         Assertions.assertEquals(FeatureType.DATA_SOURCE_TYPE, model.featureType());
-        Assertions.assertEquals("x", model.featureName());
+        Assertions.assertEquals("m", model.featureName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FeatureValidationRequest model =
-            new FeatureValidationRequest().withFeatureType(FeatureType.DATA_SOURCE_TYPE).withFeatureName("x");
+            new FeatureValidationRequest().withFeatureType(FeatureType.DATA_SOURCE_TYPE).withFeatureName("m");
         model = BinaryData.fromObject(model).toObject(FeatureValidationRequest.class);
         Assertions.assertEquals(FeatureType.DATA_SOURCE_TYPE, model.featureType());
-        Assertions.assertEquals("x", model.featureName());
+        Assertions.assertEquals("m", model.featureName());
     }
 }

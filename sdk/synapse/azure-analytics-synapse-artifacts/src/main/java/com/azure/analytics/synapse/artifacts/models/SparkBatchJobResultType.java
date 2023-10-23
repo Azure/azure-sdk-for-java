@@ -23,6 +23,14 @@ public final class SparkBatchJobResultType extends ExpandableStringEnum<SparkBat
     public static final SparkBatchJobResultType CANCELLED = fromString("Cancelled");
 
     /**
+     * Creates a new instance of SparkBatchJobResultType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkBatchJobResultType() {}
+
+    /**
      * Creates or finds a SparkBatchJobResultType from its string representation.
      *
      * @param name a name to look for.

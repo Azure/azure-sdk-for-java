@@ -91,9 +91,9 @@
  *
  * <p>Let's take a look at the analysis client scenarios and their respective usage below.</p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Analyzing documents with prebuilt models</h2>
  *
@@ -204,9 +204,9 @@
  * <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/overview?view=form-recog-3.0.0#which-form-recognizer-model-should-i-use">models usage
  * documentation</a>.
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Analyzing documents with custom models</h2>
  *

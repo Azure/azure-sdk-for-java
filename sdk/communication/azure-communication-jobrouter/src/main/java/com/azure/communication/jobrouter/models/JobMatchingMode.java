@@ -4,113 +4,36 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The JobMatchingMode model. */
-@Fluent
-public final class JobMatchingMode {
-    /*
-     * The modeType property.
-     */
-    @JsonProperty(value = "modeType")
-    private JobMatchModeType modeType;
-
-    /*
-     * Any object
-     */
-    @JsonProperty(value = "queueAndMatchMode")
-    private Object queueAndMatchMode;
-
-    /*
-     * The scheduleAndSuspendMode property.
-     */
-    @JsonProperty(value = "scheduleAndSuspendMode")
-    private ScheduleAndSuspendMode scheduleAndSuspendMode;
-
-    /*
-     * Any object
-     */
-    @JsonProperty(value = "suspendMode")
-    private Object suspendMode;
-
-    /**
-     * Get the modeType property: The modeType property.
-     *
-     * @return the modeType value.
-     */
-    public JobMatchModeType getModeType() {
-        return this.modeType;
-    }
-
-    /**
-     * Set the modeType property: The modeType property.
-     *
-     * @param modeType the modeType value to set.
-     * @return the JobMatchingMode object itself.
-     */
-    public JobMatchingMode setModeType(JobMatchModeType modeType) {
-        this.modeType = modeType;
-        return this;
-    }
-
-    /**
-     * Get the queueAndMatchMode property: Any object.
-     *
-     * @return the queueAndMatchMode value.
-     */
-    public Object getQueueAndMatchMode() {
-        return this.queueAndMatchMode;
-    }
-
-    /**
-     * Set the queueAndMatchMode property: Any object.
-     *
-     * @param queueAndMatchMode the queueAndMatchMode value to set.
-     * @return the JobMatchingMode object itself.
-     */
-    public JobMatchingMode setQueueAndMatchMode(Object queueAndMatchMode) {
-        this.queueAndMatchMode = queueAndMatchMode;
-        return this;
-    }
-
-    /**
-     * Get the scheduleAndSuspendMode property: The scheduleAndSuspendMode property.
-     *
-     * @return the scheduleAndSuspendMode value.
-     */
-    public ScheduleAndSuspendMode getScheduleAndSuspendMode() {
-        return this.scheduleAndSuspendMode;
-    }
-
-    /**
-     * Set the scheduleAndSuspendMode property: The scheduleAndSuspendMode property.
-     *
-     * @param scheduleAndSuspendMode the scheduleAndSuspendMode value to set.
-     * @return the JobMatchingMode object itself.
-     */
-    public JobMatchingMode setScheduleAndSuspendMode(ScheduleAndSuspendMode scheduleAndSuspendMode) {
-        this.scheduleAndSuspendMode = scheduleAndSuspendMode;
-        return this;
-    }
-
-    /**
-     * Get the suspendMode property: Any object.
-     *
-     * @return the suspendMode value.
-     */
-    public Object getSuspendMode() {
-        return this.suspendMode;
-    }
-
-    /**
-     * Set the suspendMode property: Any object.
-     *
-     * @param suspendMode the suspendMode value to set.
-     * @return the JobMatchingMode object itself.
-     */
-    public JobMatchingMode setSuspendMode(Object suspendMode) {
-        this.suspendMode = suspendMode;
-        return this;
-    }
+/**
+ * The matching mode to be applied to this job.
+ *
+ * <p>Supported types:
+ *
+ * <p>QueueAndMatchMode: Used when matching worker to a job is required to be done right after job is queued.
+ * ScheduleAndSuspendMode: Used for scheduling jobs to be queued at a future time. At specified time, matching of a
+ * worker to the job will not start automatically. SuspendMode: Used when matching workers to a job needs to be
+ * suspended.
+ */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "kind",
+        defaultImpl = JobMatchingMode.class)
+@JsonTypeName("JobMatchingMode")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "schedule-and-suspend", value = ScheduleAndSuspendMode.class),
+    @JsonSubTypes.Type(name = "queue-and-match", value = QueueAndMatchMode.class),
+    @JsonSubTypes.Type(name = "suspend", value = SuspendMode.class)
+})
+@Immutable
+public class JobMatchingMode {
+    /** Creates an instance of JobMatchingMode class. */
+    @Generated
+    public JobMatchingMode() {}
 }

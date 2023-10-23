@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 /** Samples for ManagedCertificates Delete. */
 public final class ManagedCertificatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedCertificate_Delete.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ManagedCertificate_Delete.json
      */
     /**
      * Sample code: Delete Certificate.

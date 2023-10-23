@@ -4,12 +4,31 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.storage.models.StorageAccountExpand;
 
 /** Samples for StorageAccounts GetByResourceGroup. */
 public final class StorageAccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountGetProperties.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
+     */
+    /**
+     * Sample code: StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountGetPropertiesGeoReplicationStatscanFailoverTrue(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .getByResourceGroupWithResponse(
+                "res9407", "sto8596", StorageAccountExpand.GEO_REPLICATION_STATS, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetProperties.json
      */
     /**
      * Sample code: StorageAccountGetProperties.
@@ -22,11 +41,11 @@ public final class StorageAccountsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .getByResourceGroupWithResponse("res9407", "sto8596", null, Context.NONE);
+            .getByResourceGroupWithResponse("res9407", "sto8596", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountGetPropertiesCMKVersionExpirationTime.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetPropertiesCMKVersionExpirationTime.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesCMKVersionExpirationTime.
@@ -40,11 +59,30 @@ public final class StorageAccountsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .getByResourceGroupWithResponse("res9407", "sto8596", null, Context.NONE);
+            .getByResourceGroupWithResponse("res9407", "sto8596", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountGetAsyncSkuConversionStatus.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
+     */
+    /**
+     * Sample code: StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountGetPropertiesGeoReplicationStatscanFailoverFalse(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .storageAccounts()
+            .manager()
+            .serviceClient()
+            .getStorageAccounts()
+            .getByResourceGroupWithResponse(
+                "res9407", "sto8596", StorageAccountExpand.GEO_REPLICATION_STATS, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetAsyncSkuConversionStatus.json
      */
     /**
      * Sample code: StorageAccountGetAsyncSkuConversionStatus.
@@ -57,11 +95,11 @@ public final class StorageAccountsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .getByResourceGroupWithResponse("res9407", "sto8596", null, Context.NONE);
+            .getByResourceGroupWithResponse("res9407", "sto8596", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountGetPropertiesCMKEnabled.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetPropertiesCMKEnabled.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesCMKEnabled.
@@ -74,6 +112,6 @@ public final class StorageAccountsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .getByResourceGroupWithResponse("res9407", "sto8596", null, Context.NONE);
+            .getByResourceGroupWithResponse("res9407", "sto8596", null, com.azure.core.util.Context.NONE);
     }
 }

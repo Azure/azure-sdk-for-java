@@ -6,6 +6,10 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L3IsolationDomainInner;
+import com.azure.resourcemanager.managednetworkfabric.models.AggregateRoute;
+import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.L3ExportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainsListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
@@ -20,16 +24,28 @@ public final class L3IsolationDomainsListResultTests {
         L3IsolationDomainsListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"networkFabricId\":\"hl\",\"disabledOnResources\":[],\"administrativeState\":\"Enabled\",\"optionBDisabledOnResources\":[],\"provisioningState\":\"Updating\",\"redistributeConnectedSubnets\":\"True\",\"redistributeStaticRoutes\":\"True\",\"description\":\"sbkyvpycanuzbp\",\"annotation\":\"fkuwbcrnwbmehhse\"},\"location\":\"jusrtslhspk\",\"tags\":{\"melmqkrha\":\"maofmxagkv\",\"aquhcdhm\":\"vljua\",\"rcrgvx\":\"ualaexqpvfadmw\"},\"id\":\"vgomz\",\"name\":\"fmisg\",\"type\":\"bnbbeldawkz\"},{\"properties\":{\"networkFabricId\":\"liourqhak\",\"disabledOnResources\":[],\"administrativeState\":\"Disabled\",\"optionBDisabledOnResources\":[],\"provisioningState\":\"Canceled\",\"redistributeConnectedSubnets\":\"False\",\"redistributeStaticRoutes\":\"True\",\"description\":\"w\",\"annotation\":\"ugicjooxdjebw\"},\"location\":\"cwwfvovbvme\",\"tags\":{\"iotwmcdytdxwit\":\"ivyhzceuojgjrwju\",\"hniskxfbkpyc\":\"nrjawgqwg\",\"l\":\"klwndnhjdauwhv\"},\"id\":\"zbtd\",\"name\":\"xujznbmpowu\",\"type\":\"przqlveu\"}],\"nextLink\":\"upjm\"}")
+                    "{\"value\":[{\"properties\":{\"networkFabricId\":\"eojhtollhsvi\",\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"Disabled\",\"redistributeConnectedSubnets\":\"False\",\"redistributeStaticRoutes\":\"False\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"yoan\"},{\"prefix\":\"bcswqagyw\"},{\"prefix\":\"t\"},{\"prefix\":\"igvjrktp\"}],\"ipv6Routes\":[{\"prefix\":\"ukyawoh\"},{\"prefix\":\"mwhqnucsklh\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"sjt\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"bninjgazlsvbzfc\",\"exportIpv6RoutePolicyId\":\"o\"}},\"annotation\":\"dwjcciklhs\"},\"location\":\"krdre\",\"tags\":{\"vdlhydwbdbfgr\":\"lriyehqbe\"},\"id\":\"punytjl\",\"name\":\"esmmpathubtahd\",\"type\":\"an\"},{\"properties\":{\"networkFabricId\":\"iwllbvgwzsffted\",\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Enabled\",\"redistributeConnectedSubnets\":\"False\",\"redistributeStaticRoutes\":\"False\",\"aggregateRouteConfiguration\":{\"ipv4Routes\":[{\"prefix\":\"ogfkbebauzlqb\"},{\"prefix\":\"xxw\"},{\"prefix\":\"f\"},{\"prefix\":\"njzudr\"}],\"ipv6Routes\":[{\"prefix\":\"kgmeb\"}]},\"connectedSubnetRoutePolicy\":{\"exportRoutePolicyId\":\"hczzqrhm\",\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"be\",\"exportIpv6RoutePolicyId\":\"gis\"}},\"annotation\":\"wnykdidjchlrmpw\"},\"location\":\"ofldseacdhz\",\"tags\":{\"ewhfjsrwqrxetf\":\"brfgdrwji\",\"r\":\"cwv\",\"ax\":\"dqntycnawthv\"},\"id\":\"nuyeamcmhud\",\"name\":\"jecehokwc\",\"type\":\"qtwloes\"}],\"nextLink\":\"ggvrbnyrukoilaci\"}")
                 .toObject(L3IsolationDomainsListResult.class);
-        Assertions.assertEquals("jusrtslhspk", model.value().get(0).location());
-        Assertions.assertEquals("maofmxagkv", model.value().get(0).tags().get("melmqkrha"));
-        Assertions.assertEquals("hl", model.value().get(0).networkFabricId());
-        Assertions.assertEquals(RedistributeConnectedSubnets.TRUE, model.value().get(0).redistributeConnectedSubnets());
-        Assertions.assertEquals(RedistributeStaticRoutes.TRUE, model.value().get(0).redistributeStaticRoutes());
-        Assertions.assertEquals("sbkyvpycanuzbp", model.value().get(0).description());
-        Assertions.assertEquals("fkuwbcrnwbmehhse", model.value().get(0).annotation());
-        Assertions.assertEquals("upjm", model.nextLink());
+        Assertions.assertEquals("krdre", model.value().get(0).location());
+        Assertions.assertEquals("lriyehqbe", model.value().get(0).tags().get("vdlhydwbdbfgr"));
+        Assertions.assertEquals("eojhtollhsvi", model.value().get(0).networkFabricId());
+        Assertions
+            .assertEquals(RedistributeConnectedSubnets.FALSE, model.value().get(0).redistributeConnectedSubnets());
+        Assertions.assertEquals(RedistributeStaticRoutes.FALSE, model.value().get(0).redistributeStaticRoutes());
+        Assertions
+            .assertEquals("yoan", model.value().get(0).aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions
+            .assertEquals("ukyawoh", model.value().get(0).aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("sjt", model.value().get(0).connectedSubnetRoutePolicy().exportRoutePolicyId());
+        Assertions
+            .assertEquals(
+                "bninjgazlsvbzfc",
+                model.value().get(0).connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions
+            .assertEquals(
+                "o", model.value().get(0).connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("dwjcciklhs", model.value().get(0).annotation());
+        Assertions.assertEquals("ggvrbnyrukoilaci", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -40,39 +56,79 @@ public final class L3IsolationDomainsListResultTests {
                     Arrays
                         .asList(
                             new L3IsolationDomainInner()
-                                .withLocation("jusrtslhspk")
-                                .withTags(
-                                    mapOf("melmqkrha", "maofmxagkv", "aquhcdhm", "vljua", "rcrgvx", "ualaexqpvfadmw"))
-                                .withNetworkFabricId("hl")
-                                .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.TRUE)
-                                .withRedistributeStaticRoutes(RedistributeStaticRoutes.TRUE)
-                                .withDescription("sbkyvpycanuzbp")
-                                .withAnnotation("fkuwbcrnwbmehhse"),
-                            new L3IsolationDomainInner()
-                                .withLocation("cwwfvovbvme")
-                                .withTags(
-                                    mapOf(
-                                        "iotwmcdytdxwit",
-                                        "ivyhzceuojgjrwju",
-                                        "hniskxfbkpyc",
-                                        "nrjawgqwg",
-                                        "l",
-                                        "klwndnhjdauwhv"))
-                                .withNetworkFabricId("liourqhak")
+                                .withLocation("krdre")
+                                .withTags(mapOf("vdlhydwbdbfgr", "lriyehqbe"))
+                                .withNetworkFabricId("eojhtollhsvi")
                                 .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.FALSE)
-                                .withRedistributeStaticRoutes(RedistributeStaticRoutes.TRUE)
-                                .withDescription("w")
-                                .withAnnotation("ugicjooxdjebw")))
-                .withNextLink("upjm");
+                                .withRedistributeStaticRoutes(RedistributeStaticRoutes.FALSE)
+                                .withAggregateRouteConfiguration(
+                                    new AggregateRouteConfiguration()
+                                        .withIpv4Routes(
+                                            Arrays
+                                                .asList(
+                                                    new AggregateRoute().withPrefix("yoan"),
+                                                    new AggregateRoute().withPrefix("bcswqagyw"),
+                                                    new AggregateRoute().withPrefix("t"),
+                                                    new AggregateRoute().withPrefix("igvjrktp")))
+                                        .withIpv6Routes(
+                                            Arrays
+                                                .asList(
+                                                    new AggregateRoute().withPrefix("ukyawoh"),
+                                                    new AggregateRoute().withPrefix("mwhqnucsklh"))))
+                                .withConnectedSubnetRoutePolicy(
+                                    new ConnectedSubnetRoutePolicy()
+                                        .withExportRoutePolicyId("sjt")
+                                        .withExportRoutePolicy(
+                                            new L3ExportRoutePolicy()
+                                                .withExportIpv4RoutePolicyId("bninjgazlsvbzfc")
+                                                .withExportIpv6RoutePolicyId("o")))
+                                .withAnnotation("dwjcciklhs"),
+                            new L3IsolationDomainInner()
+                                .withLocation("ofldseacdhz")
+                                .withTags(mapOf("ewhfjsrwqrxetf", "brfgdrwji", "r", "cwv", "ax", "dqntycnawthv"))
+                                .withNetworkFabricId("iwllbvgwzsffted")
+                                .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.FALSE)
+                                .withRedistributeStaticRoutes(RedistributeStaticRoutes.FALSE)
+                                .withAggregateRouteConfiguration(
+                                    new AggregateRouteConfiguration()
+                                        .withIpv4Routes(
+                                            Arrays
+                                                .asList(
+                                                    new AggregateRoute().withPrefix("ogfkbebauzlqb"),
+                                                    new AggregateRoute().withPrefix("xxw"),
+                                                    new AggregateRoute().withPrefix("f"),
+                                                    new AggregateRoute().withPrefix("njzudr")))
+                                        .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("kgmeb"))))
+                                .withConnectedSubnetRoutePolicy(
+                                    new ConnectedSubnetRoutePolicy()
+                                        .withExportRoutePolicyId("hczzqrhm")
+                                        .withExportRoutePolicy(
+                                            new L3ExportRoutePolicy()
+                                                .withExportIpv4RoutePolicyId("be")
+                                                .withExportIpv6RoutePolicyId("gis")))
+                                .withAnnotation("wnykdidjchlrmpw")))
+                .withNextLink("ggvrbnyrukoilaci");
         model = BinaryData.fromObject(model).toObject(L3IsolationDomainsListResult.class);
-        Assertions.assertEquals("jusrtslhspk", model.value().get(0).location());
-        Assertions.assertEquals("maofmxagkv", model.value().get(0).tags().get("melmqkrha"));
-        Assertions.assertEquals("hl", model.value().get(0).networkFabricId());
-        Assertions.assertEquals(RedistributeConnectedSubnets.TRUE, model.value().get(0).redistributeConnectedSubnets());
-        Assertions.assertEquals(RedistributeStaticRoutes.TRUE, model.value().get(0).redistributeStaticRoutes());
-        Assertions.assertEquals("sbkyvpycanuzbp", model.value().get(0).description());
-        Assertions.assertEquals("fkuwbcrnwbmehhse", model.value().get(0).annotation());
-        Assertions.assertEquals("upjm", model.nextLink());
+        Assertions.assertEquals("krdre", model.value().get(0).location());
+        Assertions.assertEquals("lriyehqbe", model.value().get(0).tags().get("vdlhydwbdbfgr"));
+        Assertions.assertEquals("eojhtollhsvi", model.value().get(0).networkFabricId());
+        Assertions
+            .assertEquals(RedistributeConnectedSubnets.FALSE, model.value().get(0).redistributeConnectedSubnets());
+        Assertions.assertEquals(RedistributeStaticRoutes.FALSE, model.value().get(0).redistributeStaticRoutes());
+        Assertions
+            .assertEquals("yoan", model.value().get(0).aggregateRouteConfiguration().ipv4Routes().get(0).prefix());
+        Assertions
+            .assertEquals("ukyawoh", model.value().get(0).aggregateRouteConfiguration().ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("sjt", model.value().get(0).connectedSubnetRoutePolicy().exportRoutePolicyId());
+        Assertions
+            .assertEquals(
+                "bninjgazlsvbzfc",
+                model.value().get(0).connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions
+            .assertEquals(
+                "o", model.value().get(0).connectedSubnetRoutePolicy().exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("dwjcciklhs", model.value().get(0).annotation());
+        Assertions.assertEquals("ggvrbnyrukoilaci", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

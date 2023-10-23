@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -14,27 +15,35 @@ public final class ExceptionPolicy {
     /*
      * The Id of the exception policy
      */
+    @Generated
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * (Optional) The name of the exception policy.
      */
+    @Generated
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * (Optional) A dictionary collection of exception rules on the exception
-     * policy. Key is the Id of each exception rule.
+     * (Optional) A dictionary collection of exception rules on the exception policy.
+     * Key is the Id of each exception rule.
      */
+    @Generated
     @JsonProperty(value = "exceptionRules")
     private Map<String, ExceptionRule> exceptionRules;
+
+    /** Creates an instance of ExceptionPolicy class. */
+    @Generated
+    public ExceptionPolicy() {}
 
     /**
      * Get the id property: The Id of the exception policy.
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -44,6 +53,7 @@ public final class ExceptionPolicy {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -54,6 +64,7 @@ public final class ExceptionPolicy {
      * @param name the name value to set.
      * @return the ExceptionPolicy object itself.
      */
+    @Generated
     public ExceptionPolicy setName(String name) {
         this.name = name;
         return this;
@@ -65,6 +76,7 @@ public final class ExceptionPolicy {
      *
      * @return the exceptionRules value.
      */
+    @Generated
     public Map<String, ExceptionRule> getExceptionRules() {
         return this.exceptionRules;
     }
@@ -76,6 +88,7 @@ public final class ExceptionPolicy {
      * @param exceptionRules the exceptionRules value to set.
      * @return the ExceptionPolicy object itself.
      */
+    @Generated
     public ExceptionPolicy setExceptionRules(Map<String, ExceptionRule> exceptionRules) {
         this.exceptionRules = exceptionRules;
         return this;

@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkRack;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -33,7 +34,7 @@ public final class NetworkRacksCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"networkRackSku\":\"rngl\",\"networkFabricId\":\"mbiipsnawwlqk\",\"networkDevices\":[\"hhl\",\"xricctkwmuqq\",\"ajxeiygle\"],\"provisioningState\":\"Succeeded\",\"annotation\":\"aexhdctrceqnk\"},\"location\":\"upobehdmljz\",\"tags\":{\"pphepifexl\":\"umepjpbibn\"},\"id\":\"qirccj\",\"name\":\"ly\",\"type\":\"cgxvrpj\"}";
+            "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"hedrbzzbhyagwxw\",\"networkDevices\":[\"kdlxdlh\",\"alz\"],\"provisioningState\":\"Succeeded\",\"annotation\":\"kyxowno\"},\"location\":\"qus\",\"tags\":{\"gtjxlopncc\":\"ajicrs\",\"jlwrfeabzjpg\":\"xtpprszeh\",\"rxix\":\"jmgpceqaklsfx\",\"sbjxpuokkdpts\":\"mfqmvnhsfjxt\"},\"id\":\"pg\",\"name\":\"plonal\",\"type\":\"waulkwuyasjwn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,21 +65,20 @@ public final class NetworkRacksCreateMockTests {
         NetworkRack response =
             manager
                 .networkRacks()
-                .define("sidqpxlbtpakft")
-                .withRegion("duyeuyl")
-                .withExistingResourceGroup("mbpjptnvwjh")
-                .withNetworkRackSku("gatwmykyu")
-                .withNetworkFabricId("rymdwmf")
-                .withTags(
-                    mapOf("h", "mtybkcgsu", "fxexlfciatxtjrr", "llnmwyn", "ajfoxc", "kmdskjhhxd", "lxlhuavkrm", "scv"))
-                .withAnnotation("outnpdctuhspfefy")
+                .define("eciexsc")
+                .withRegion("bnwdkgbzjoyy")
+                .withExistingResourceGroup("tkgopdjqnsicucq")
+                .withNetworkFabricId("hjjlypwgwbycf")
+                .withTags(mapOf("qxkzeowizvj", "okd", "xxboauvkkc", "jzxkflzqw"))
+                .withNetworkRackType(NetworkRackType.COMPUTE)
+                .withAnnotation("myerpusozaoutjl")
                 .create();
 
-        Assertions.assertEquals("upobehdmljz", response.location());
-        Assertions.assertEquals("umepjpbibn", response.tags().get("pphepifexl"));
-        Assertions.assertEquals("rngl", response.networkRackSku());
-        Assertions.assertEquals("mbiipsnawwlqk", response.networkFabricId());
-        Assertions.assertEquals("aexhdctrceqnk", response.annotation());
+        Assertions.assertEquals("qus", response.location());
+        Assertions.assertEquals("ajicrs", response.tags().get("gtjxlopncc"));
+        Assertions.assertEquals(NetworkRackType.AGGREGATE, response.networkRackType());
+        Assertions.assertEquals("hedrbzzbhyagwxw", response.networkFabricId());
+        Assertions.assertEquals("kyxowno", response.annotation());
     }
 
     @SuppressWarnings("unchecked")

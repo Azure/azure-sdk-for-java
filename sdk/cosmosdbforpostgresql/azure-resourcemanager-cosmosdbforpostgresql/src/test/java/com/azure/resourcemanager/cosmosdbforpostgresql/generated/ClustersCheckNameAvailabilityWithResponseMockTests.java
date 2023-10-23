@@ -32,7 +32,7 @@ public final class ClustersCheckNameAvailabilityWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"message\":\"bxzpuzycisp\",\"nameAvailable\":true,\"name\":\"hmgkbrpyy\",\"type\":\"ibnuqqkpik\"}";
+            "{\"message\":\"notyfjfcnjbkcn\",\"nameAvailable\":true,\"name\":\"ttkphywpnvjtoqne\",\"type\":\"clfp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class ClustersCheckNameAvailabilityWithResponseMockTests {
             manager
                 .clusters()
                 .checkNameAvailabilityWithResponse(
-                    new NameAvailabilityRequest().withName("flz"), com.azure.core.util.Context.NONE)
+                    new NameAvailabilityRequest().withName("eil"), com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("bxzpuzycisp", response.message());
+        Assertions.assertEquals("notyfjfcnjbkcn", response.message());
         Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("hmgkbrpyy", response.name());
-        Assertions.assertEquals("ibnuqqkpik", response.type());
+        Assertions.assertEquals("ttkphywpnvjtoqne", response.name());
+        Assertions.assertEquals("clfp", response.type());
     }
 }

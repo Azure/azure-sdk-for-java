@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BlobContainers GetImmutabilityPolicy. */
 public final class BlobContainersGetImmutabilityPolicySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersGetImmutabilityPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersGetImmutabilityPolicy.json
      */
     /**
      * Sample code: GetImmutabilityPolicy.
@@ -22,6 +20,7 @@ public final class BlobContainersGetImmutabilityPolicySamples {
             .manager()
             .serviceClient()
             .getBlobContainers()
-            .getImmutabilityPolicyWithResponse("res5221", "sto9177", "container3489", null, Context.NONE);
+            .getImmutabilityPolicyWithResponse(
+                "res5221", "sto9177", "container3489", null, com.azure.core.util.Context.NONE);
     }
 }

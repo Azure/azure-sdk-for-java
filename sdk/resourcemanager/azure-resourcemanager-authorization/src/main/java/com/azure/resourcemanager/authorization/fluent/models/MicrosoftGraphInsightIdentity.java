@@ -14,7 +14,7 @@ import java.util.Map;
 
 /** insightIdentity. */
 @Fluent
-public class MicrosoftGraphInsightIdentity {
+public final class MicrosoftGraphInsightIdentity {
     /*
      * The email address of the user who shared the item.
      */

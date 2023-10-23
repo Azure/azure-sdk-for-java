@@ -31,7 +31,7 @@ public final class NetworkInterfacesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"physicalIdentifier\":\"krxwet\",\"administrativeState\":\"Disabled\",\"provisioningState\":\"Succeeded\",\"connectedTo\":\"rucpcunnuz\",\"interfaceType\":\"Data\",\"ipv4Address\":\"oenodnaienh\",\"ipv6Address\":\"skndnelqkaadlknw\",\"annotation\":\"anniyopetxivcnr\"},\"id\":\"xnucaephblkwqp\",\"name\":\"tv\",\"type\":\"qsdtcjbctvivuzq\"}";
+            "{\"properties\":{\"physicalIdentifier\":\"svrljlhejccc\",\"connectedTo\":\"bnwitafjjevp\",\"interfaceType\":\"Management\",\"ipv4Address\":\"ghzqwvkparskpl\",\"ipv6Address\":\"tqc\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"annotation\":\"dcy\"},\"id\":\"gul\",\"name\":\"llfwrmsuxyq\",\"type\":\"mqoubxlpkdsn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class NetworkInterfacesCreateMockTests {
         NetworkInterface response =
             manager
                 .networkInterfaces()
-                .define("jogeslabnsmjkwyn")
-                .withExistingNetworkDevice("wltxeqipxgzdyims", "ayorprav")
-                .withAnnotation("pxvpifdfaif")
+                .define("mpgqqdhtct")
+                .withExistingNetworkDevice("totktd", "ewwlkry")
+                .withAnnotation("xdbisihumwafapct")
                 .create();
 
-        Assertions.assertEquals("anniyopetxivcnr", response.annotation());
+        Assertions.assertEquals("dcy", response.annotation());
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiManagementService List. */
 public final class ApiManagementServiceListSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListServiceBySubscription.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListServiceBySubscription.json
      */
     /**
      * Sample code: ApiManagementListServiceBySubscription.
@@ -18,6 +16,6 @@ public final class ApiManagementServiceListSamples {
      */
     public static void apiManagementListServiceBySubscription(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices().list(Context.NONE);
+        manager.apiManagementServices().list(com.azure.core.util.Context.NONE);
     }
 }

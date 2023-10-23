@@ -16,32 +16,32 @@ public final class DatabasePrincipalInnerTests {
         DatabasePrincipalInner model =
             BinaryData
                 .fromString(
-                    "{\"role\":\"Monitor\",\"name\":\"fxobbcsws\",\"type\":\"App\",\"fqn\":\"riplrbpbewtg\",\"email\":\"gblcgwxzvlvq\",\"appId\":\"kbegibt\",\"tenantName\":\"xiebwwaloayqcg\"}")
+                    "{\"role\":\"Admin\",\"name\":\"ynkedyatrwyhqmib\",\"type\":\"App\",\"fqn\":\"wit\",\"email\":\"ypyynpcdpumnzg\",\"appId\":\"z\",\"tenantName\":\"abikns\"}")
                 .toObject(DatabasePrincipalInner.class);
-        Assertions.assertEquals(DatabasePrincipalRole.MONITOR, model.role());
-        Assertions.assertEquals("fxobbcsws", model.name());
+        Assertions.assertEquals(DatabasePrincipalRole.ADMIN, model.role());
+        Assertions.assertEquals("ynkedyatrwyhqmib", model.name());
         Assertions.assertEquals(DatabasePrincipalType.APP, model.type());
-        Assertions.assertEquals("riplrbpbewtg", model.fqn());
-        Assertions.assertEquals("gblcgwxzvlvq", model.email());
-        Assertions.assertEquals("kbegibt", model.appId());
+        Assertions.assertEquals("wit", model.fqn());
+        Assertions.assertEquals("ypyynpcdpumnzg", model.email());
+        Assertions.assertEquals("z", model.appId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabasePrincipalInner model =
             new DatabasePrincipalInner()
-                .withRole(DatabasePrincipalRole.MONITOR)
-                .withName("fxobbcsws")
+                .withRole(DatabasePrincipalRole.ADMIN)
+                .withName("ynkedyatrwyhqmib")
                 .withType(DatabasePrincipalType.APP)
-                .withFqn("riplrbpbewtg")
-                .withEmail("gblcgwxzvlvq")
-                .withAppId("kbegibt");
+                .withFqn("wit")
+                .withEmail("ypyynpcdpumnzg")
+                .withAppId("z");
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalInner.class);
-        Assertions.assertEquals(DatabasePrincipalRole.MONITOR, model.role());
-        Assertions.assertEquals("fxobbcsws", model.name());
+        Assertions.assertEquals(DatabasePrincipalRole.ADMIN, model.role());
+        Assertions.assertEquals("ynkedyatrwyhqmib", model.name());
         Assertions.assertEquals(DatabasePrincipalType.APP, model.type());
-        Assertions.assertEquals("riplrbpbewtg", model.fqn());
-        Assertions.assertEquals("gblcgwxzvlvq", model.email());
-        Assertions.assertEquals("kbegibt", model.appId());
+        Assertions.assertEquals("wit", model.fqn());
+        Assertions.assertEquals("ypyynpcdpumnzg", model.email());
+        Assertions.assertEquals("z", model.appId());
     }
 }

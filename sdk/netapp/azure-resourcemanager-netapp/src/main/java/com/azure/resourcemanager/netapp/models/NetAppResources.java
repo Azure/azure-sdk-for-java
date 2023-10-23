@@ -125,4 +125,63 @@ public interface NetAppResources {
      * @return provides region specific information.
      */
     RegionInfo queryRegionInfo(String location);
+
+    /**
+     * Describe a network sibling set
+     *
+     * <p>Get details of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Network sibling set to query.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified network sibling set along with {@link Response}.
+     */
+    Response<NetworkSiblingSet> queryNetworkSiblingSetWithResponse(
+        String location, QueryNetworkSiblingSetRequest body, Context context);
+
+    /**
+     * Describe a network sibling set
+     *
+     * <p>Get details of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Network sibling set to query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified network sibling set.
+     */
+    NetworkSiblingSet queryNetworkSiblingSet(String location, QueryNetworkSiblingSetRequest body);
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set.
+     */
+    NetworkSiblingSet updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body);
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set.
+     */
+    NetworkSiblingSet updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body, Context context);
 }

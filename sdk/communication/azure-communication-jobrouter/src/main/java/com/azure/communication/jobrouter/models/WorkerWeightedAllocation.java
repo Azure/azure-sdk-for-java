@@ -4,45 +4,53 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /** Contains the weight percentage and worker selectors to be applied if selected for weighted distributions. */
-@Fluent
+@Immutable
 public final class WorkerWeightedAllocation {
     /*
      * The percentage of this weight, expressed as a fraction of 1.
      */
-    @JsonProperty(value = "weight", required = true)
+    @Generated
+    @JsonProperty(value = "weight")
     private double weight;
 
     /*
-     * A collection of worker selectors that will be applied if this allocation
-     * is selected.
+     * A collection of worker selectors that will be applied if this allocation is
+     * selected.
      */
-    @JsonProperty(value = "workerSelectors", required = true)
+    @Generated
+    @JsonProperty(value = "workerSelectors")
     private List<RouterWorkerSelector> workerSelectors;
+
+    /**
+     * Creates an instance of WorkerWeightedAllocation class.
+     *
+     * @param weight the weight value to set.
+     * @param workerSelectors the workerSelectors value to set.
+     */
+    @Generated
+    @JsonCreator
+    public WorkerWeightedAllocation(
+            @JsonProperty(value = "weight") double weight,
+            @JsonProperty(value = "workerSelectors") List<RouterWorkerSelector> workerSelectors) {
+        this.weight = weight;
+        this.workerSelectors = workerSelectors;
+    }
 
     /**
      * Get the weight property: The percentage of this weight, expressed as a fraction of 1.
      *
      * @return the weight value.
      */
+    @Generated
     public double getWeight() {
         return this.weight;
-    }
-
-    /**
-     * Set the weight property: The percentage of this weight, expressed as a fraction of 1.
-     *
-     * @param weight the weight value to set.
-     * @return the WorkerWeightedAllocation object itself.
-     */
-    public WorkerWeightedAllocation setWeight(double weight) {
-        this.weight = weight;
-        return this;
     }
 
     /**
@@ -51,19 +59,8 @@ public final class WorkerWeightedAllocation {
      *
      * @return the workerSelectors value.
      */
+    @Generated
     public List<RouterWorkerSelector> getWorkerSelectors() {
         return this.workerSelectors;
-    }
-
-    /**
-     * Set the workerSelectors property: A collection of worker selectors that will be applied if this allocation is
-     * selected.
-     *
-     * @param workerSelectors the workerSelectors value to set.
-     * @return the WorkerWeightedAllocation object itself.
-     */
-    public WorkerWeightedAllocation setWorkerSelectors(List<RouterWorkerSelector> workerSelectors) {
-        this.workerSelectors = workerSelectors;
-        return this;
     }
 }

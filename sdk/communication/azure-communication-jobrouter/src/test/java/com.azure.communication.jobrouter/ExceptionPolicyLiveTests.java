@@ -39,10 +39,7 @@ public class ExceptionPolicyLiveTests extends JobRouterTestBase {
             }
         };
 
-        ExceptionRule exceptionRule = new ExceptionRule()
-            .setTrigger(new QueueLengthExceptionTrigger()
-                .setThreshold(1))
-            .setActions(exceptionActions);
+        ExceptionRule exceptionRule = new ExceptionRule(new QueueLengthExceptionTrigger(1), exceptionActions);
 
         Map<String, ExceptionRule> exceptionRules = new HashMap<String, ExceptionRule>() {
             {

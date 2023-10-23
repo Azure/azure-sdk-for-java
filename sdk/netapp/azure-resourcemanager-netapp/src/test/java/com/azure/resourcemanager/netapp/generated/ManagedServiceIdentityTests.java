@@ -18,30 +18,31 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"b08e5065-c2d7-4c58-96f9-5287dc9ea765\",\"tenantId\":\"20af4492-d6c4-4406-afd3-7371b6caa8eb\",\"type\":\"None\",\"userAssignedIdentities\":{\"jfeallnwsub\":{\"principalId\":\"df6efb0e-0d53-47c7-9200-e52ecda72f1e\",\"clientId\":\"eb37883f-1094-4bdc-814a-af9d3fc93e04\"},\"jampmngnzscxaqw\":{\"principalId\":\"2730aa5b-9a50-4480-a8c8-9e61859de826\",\"clientId\":\"07aada81-b718-46a3-8975-ef02d6b68da5\"},\"hcbonqvpkvlr\":{\"principalId\":\"b15cab05-1bc0-49af-8bcf-e6cc585702c3\",\"clientId\":\"fbf982d5-e2f3-446b-8b46-3e9f66888c40\"},\"ea\":{\"principalId\":\"6f84b040-5de6-4797-ad21-1f16f4ac11fb\",\"clientId\":\"8f6139d5-6ecd-4ad6-aa8c-a6baf394265f\"}}}")
+                    "{\"principalId\":\"d5f74266-3576-4a12-81d6-ff02b2e89ff3\",\"tenantId\":\"5977122d-8f92-4b21-a571-178b2f396f04\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nlankxmyskpb\":{\"principalId\":\"9ae0881c-6aaf-44ba-8722-f13351e26773\",\"clientId\":\"9165b432-b66a-4398-9ca5-839611aaf6db\"},\"btkcxywnytnrsyn\":{\"principalId\":\"2f668827-5c8c-460e-9de2-a63a9fb2a250\",\"clientId\":\"43eb2372-ef41-46f9-acf4-b9b6f0f3c5d6\"},\"dybyxczfclhaa\":{\"principalId\":\"9f6c3000-212a-406d-8533-a95ff9918fc0\",\"clientId\":\"b4840252-4edc-475b-86f7-1277fd95ad17\"},\"abphlw\":{\"principalId\":\"24869444-5618-456e-811e-78f750ba34eb\",\"clientId\":\"04c2d95c-5312-4e99-af9a-e62c7a350dcb\"}}}")
                 .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedServiceIdentity model =
             new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.NONE)
+                .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
                     mapOf(
-                        "jfeallnwsub",
+                        "nlankxmyskpb",
                         new UserAssignedIdentity(),
-                        "jampmngnzscxaqw",
+                        "btkcxywnytnrsyn",
                         new UserAssignedIdentity(),
-                        "hcbonqvpkvlr",
+                        "dybyxczfclhaa",
                         new UserAssignedIdentity(),
-                        "ea",
+                        "abphlw",
                         new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

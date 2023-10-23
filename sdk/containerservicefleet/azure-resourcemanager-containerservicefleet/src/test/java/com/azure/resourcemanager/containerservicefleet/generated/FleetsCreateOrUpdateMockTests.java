@@ -12,8 +12,13 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
+import com.azure.resourcemanager.containerservicefleet.models.AgentProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ApiServerAccessProfile;
 import com.azure.resourcemanager.containerservicefleet.models.Fleet;
 import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.containerservicefleet.models.UserAssignedIdentity;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -34,7 +39,7 @@ public final class FleetsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"q\",\"fqdn\":\"a\",\"kubernetesVersion\":\"ae\"}},\"eTag\":\"fhyhltrpmopjmcma\",\"location\":\"okth\",\"tags\":{\"xodpuozmyzydagfu\":\"uaodsfcpk\",\"dxwzywqsmbsurexi\":\"xbezyiuokktwh\"},\"id\":\"o\",\"name\":\"yocf\",\"type\":\"fksymddystki\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"mpew\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":true,\"subnetId\":\"rn\"},\"agentProfile\":{\"subnetId\":\"hqjohxcrsbfova\",\"vmSize\":\"ruvw\"},\"fqdn\":\"sqfsubcgjbirxb\",\"kubernetesVersion\":\"bsrfbj\",\"portalFqdn\":\"twss\"}},\"eTag\":\"ftpvjzbexil\",\"identity\":{\"principalId\":\"16d66bfc-39a4-4c38-b14a-2541268ad766\",\"tenantId\":\"5e64c591-4eb5-442b-b83b-db5d2eea7229\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"pmqtaru\":{\"principalId\":\"e1be06b3-e91b-4646-adba-cab4abe98a28\",\"clientId\":\"3a7bdcce-5dc3-485d-8b7a-8ee484d04d0b\"},\"mkcjhwqytjrybn\":{\"principalId\":\"17c72af0-e5a4-4236-ba94-47a5af5d9a6c\",\"clientId\":\"c1e6ea3f-902a-4ab6-a4b3-49f012f6efd3\"},\"wgdrjervnaenqp\":{\"principalId\":\"718a66aa-b8d4-4c63-b52b-c0085a30315e\",\"clientId\":\"cb729303-5d89-4241-b04a-48c6043771e1\"},\"ndoygmifthnzdnd\":{\"principalId\":\"d6be28c6-fed8-4d01-b941-bc518d8baa47\",\"clientId\":\"d650aad7-87ae-46fb-b7b6-c378aa4f37e7\"}}},\"location\":\"gnayqigynduh\",\"tags\":{\"maqolbgycduie\":\"qlkth\",\"qlfmmdnbb\":\"tgccymvaolpss\",\"wyhzdx\":\"lzpswiydm\"},\"id\":\"sadbz\",\"name\":\"nvdfznuda\",\"type\":\"dvxzbncblylpst\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,20 +70,46 @@ public final class FleetsCreateOrUpdateMockTests {
         Fleet response =
             manager
                 .fleets()
-                .define("ndnvo")
-                .withRegion("whybcib")
-                .withExistingResourceGroup("vudwx")
-                .withTags(mapOf("ynnaam", "dcsi", "qsc", "ectehf", "hcjrefovgmk", "eypvhezrkg"))
-                .withHubProfile(new FleetHubProfile().withDnsPrefix("gwdkcglhsl"))
-                .withIfMatch("jh")
-                .withIfNoneMatch("mdajv")
+                .define("wyjsflhhcaalnjix")
+                .withRegion("uaopppcqeq")
+                .withExistingResourceGroup("mvb")
+                .withTags(mapOf("ahzxctobgbk", "z", "mgrcfbu", "moizpos", "mjh", "rmfqjhhkxbpvj", "tswb", "xjyngudivk"))
+                .withIdentity(
+                    new ManagedServiceIdentity()
+                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(
+                            mapOf(
+                                "gucnapkte",
+                                new UserAssignedIdentity(),
+                                "lwptfdy",
+                                new UserAssignedIdentity(),
+                                "qbuaceopzfqr",
+                                new UserAssignedIdentity())))
+                .withHubProfile(
+                    new FleetHubProfile()
+                        .withDnsPrefix("joya")
+                        .withApiServerAccessProfile(
+                            new ApiServerAccessProfile()
+                                .withEnablePrivateCluster(false)
+                                .withEnableVnetIntegration(true)
+                                .withSubnetId("kiidzyex"))
+                        .withAgentProfile(new AgentProfile().withSubnetId("lixhnrztfol").withVmSize("nxknalaulp")))
+                .withIfMatch("mcbxvwvxysl")
+                .withIfNoneMatch("bhsfxob")
                 .create();
 
-        Assertions.assertEquals("okth", response.location());
-        Assertions.assertEquals("uaodsfcpk", response.tags().get("xodpuozmyzydagfu"));
-        Assertions.assertEquals("q", response.hubProfile().dnsPrefix());
+        Assertions.assertEquals("gnayqigynduh", response.location());
+        Assertions.assertEquals("qlkth", response.tags().get("maqolbgycduie"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("mpew", response.hubProfile().dnsPrefix());
+        Assertions.assertEquals(true, response.hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals(true, response.hubProfile().apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("rn", response.hubProfile().apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("hqjohxcrsbfova", response.hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("ruvw", response.hubProfile().agentProfile().vmSize());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

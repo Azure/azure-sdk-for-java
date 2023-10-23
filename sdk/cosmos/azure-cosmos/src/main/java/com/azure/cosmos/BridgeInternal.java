@@ -202,6 +202,13 @@ public final class BridgeInternal {
                     cosmosDiagnostics.getFeedResponseDiagnostics()
                                      .getClientSideRequestStatistics());
             }
+
+            if (cosmosDiagnostics.getDiagnosticsContext() != null) {
+                diagnosticsAccessor.setDiagnosticsContext(
+                    feedResponseWithQueryMetrics.getCosmosDiagnostics(),
+                    cosmosDiagnostics.getDiagnosticsContext()
+                );
+            }
         }
 
         return feedResponseWithQueryMetrics;
@@ -588,13 +595,6 @@ public final class BridgeInternal {
             targetEndpoint,
             forceRefresh,
             forceCollectionRoutingMapRefresh);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void recordAddressResolutionEnd(CosmosDiagnostics cosmosDiagnostics,
-                                                  String identifier,
-                                                  String errorMessage) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier, errorMessage);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

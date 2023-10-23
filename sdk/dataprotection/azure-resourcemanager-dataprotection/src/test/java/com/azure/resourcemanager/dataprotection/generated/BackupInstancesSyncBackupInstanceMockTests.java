@@ -61,10 +61,10 @@ public final class BackupInstancesSyncBackupInstanceMockTests {
         manager
             .backupInstances()
             .syncBackupInstance(
-                "jcivmmg",
-                "f",
-                "fiwrxgkn",
-                new SyncBackupInstanceRequest().withSyncType(SyncType.DEFAULT),
+                "tzh",
+                "aglkafhon",
+                "juj",
+                new SyncBackupInstanceRequest().withSyncType(SyncType.FORCE_RESYNC),
                 com.azure.core.util.Context.NONE);
     }
 }

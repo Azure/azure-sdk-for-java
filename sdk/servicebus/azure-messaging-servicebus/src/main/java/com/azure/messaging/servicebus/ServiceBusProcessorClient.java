@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
@@ -12,6 +13,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Schedulers;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,8 +21,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-
-import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
 
 /**
  * The processor client for processing Service Bus messages. {@link ServiceBusProcessorClient} provides a push-based
@@ -31,6 +31,7 @@ import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
  * <p><strong>Sample code to instantiate a processor client and receive in PeekLock mode</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
  * <pre>
+ * &#47;&#47; Function that gets called whenever a message is received.
  * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
  *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
  *     &#47;&#47; Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
@@ -40,30 +41,40 @@ import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
  *     if &#40;success&#41; &#123;
  *         try &#123;
  *             context.complete&#40;&#41;;
- *         &#125; catch &#40;Exception completionError&#41; &#123;
- *             System.out.printf&#40;&quot;Completion of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
- *             completionError.printStackTrace&#40;&#41;;
+ *         &#125; catch &#40;RuntimeException error&#41; &#123;
+ *             System.out.printf&#40;&quot;Completion of the message %s failed.%n Error: %s%n&quot;,
+ *                 message.getMessageId&#40;&#41;, error&#41;;
  *         &#125;
  *     &#125; else &#123;
  *         try &#123;
  *             context.abandon&#40;&#41;;
- *         &#125; catch &#40;Exception abandonError&#41; &#123;
- *             System.out.printf&#40;&quot;Abandoning of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
- *             abandonError.printStackTrace&#40;&#41;;
+ *         &#125; catch &#40;RuntimeException error&#41; &#123;
+ *             System.out.printf&#40;&quot;Abandoning of the message %s failed.%nError: %s%n&quot;,
+ *                 message.getMessageId&#40;&#41;, error&#41;;
  *         &#125;
  *     &#125;
  * &#125;;
  *
  * &#47;&#47; Sample code that gets called if there's an error
  * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
- *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+ *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+ *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+ *             exception.getReason&#40;&#41;&#41;;
+ *     &#125; else &#123;
+ *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+ *     &#125;
  * &#125;;
  *
- * &#47;&#47; create the processor client via the builder and its sub-builder
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;&lt;&lt; CONNECTION STRING FOR THE SERVICE BUS NAMESPACE &gt;&gt;&quot;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .processor&#40;&#41;
- *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+ *     .queueName&#40;queueName&#41;
  *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
  *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
  *     .processMessage&#40;processMessage&#41;
@@ -71,13 +82,18 @@ import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
  *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
  *
- * &#47;&#47; Starts the processor in the background and returns immediately
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
  * processorClient.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * processorClient.stop&#40;&#41;;
+ * processorClient.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
  * <p><strong>Sample code to instantiate a processor client and receive in ReceiveAndDelete mode</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
  * <pre>
+ * &#47;&#47; Function that gets called whenever a message is received.
  * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
  *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
  *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
@@ -86,27 +102,43 @@ import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
  *
  * &#47;&#47; Sample code that gets called if there's an error
  * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
- *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+ *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+ *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+ *             exception.getReason&#40;&#41;&#41;;
+ *     &#125; else &#123;
+ *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+ *     &#125;
  * &#125;;
  *
- * &#47;&#47; create the processor client via the builder and its sub-builder
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete&#40;&#41;' will opt in to manual settlement &#40;e.g. complete, abandon&#41;.
  * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;&lt;&lt; CONNECTION STRING FOR THE SERVICE BUS NAMESPACE &gt;&gt;&quot;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .processor&#40;&#41;
- *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+ *     .queueName&#40;queueName&#41;
  *     .receiveMode&#40;ServiceBusReceiveMode.RECEIVE_AND_DELETE&#41;
  *     .processMessage&#40;processMessage&#41;
  *     .processError&#40;processError&#41;
  *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
  *
- * &#47;&#47; Starts the processor in the background and returns immediately
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
  * processorClient.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * processorClient.stop&#40;&#41;;
+ * processorClient.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
  * <p><strong>Create and run a session-enabled processor</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
  * <pre>
+ * &#47;&#47; Function that gets called whenever a message is received.
  * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
  *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
  *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
@@ -119,6 +151,7 @@ import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
  *
  *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
  *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
+ *
  *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
  *             exception.getReason&#40;&#41;&#41;;
  *     &#125; else &#123;
@@ -126,19 +159,27 @@ import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
  *     &#125;
  * &#125;;
  *
- * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .sessionProcessor&#40;&#41;
- *     .queueName&#40;queueName&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+ *     .disableAutoComplete&#40;&#41;
  *     .maxConcurrentSessions&#40;2&#41;
  *     .processMessage&#40;onMessage&#41;
  *     .processError&#40;onError&#41;
  *     .buildProcessorClient&#40;&#41;;
  *
- * &#47;&#47; Start the processor in the background
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
  * sessionProcessor.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * sessionProcessor.stop&#40;&#41;;
+ * sessionProcessor.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
  *
@@ -216,7 +257,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
 
-        ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClient();
+        ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClientForProcessor();
         this.asyncClient.set(client);
         this.sessionReceiverBuilder = null;
         this.queueName = queueName;
@@ -251,10 +292,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         }
 
         if (asyncClient.get() == null) {
-            ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
-                ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
-                : this.receiverBuilder.buildAsyncClient();
-            asyncClient.set(newReceiverClient);
+            asyncClient.set(createNewReceiver());
         }
 
         receiveMessages();
@@ -347,10 +385,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public synchronized String getIdentifier() {
         if (asyncClient.get() == null) {
-            ServiceBusReceiverAsyncClient newReceiverClient = receiverBuilder == null
-                ? sessionReceiverBuilder.buildAsyncClientForProcessor()
-                : receiverBuilder.buildAsyncClient();
-            asyncClient.set(newReceiverClient);
+            asyncClient.set(createNewReceiver());
         }
 
         return asyncClient.get().getIdentifier();
@@ -381,7 +416,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 @SuppressWarnings("try")
                 @Override
                 public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
-                    try (AutoCloseable scope = tracer.makeSpanCurrent(serviceBusMessageContext.getMessage().getContext())) {
+                    Context span = serviceBusMessageContext.getMessage() != null ? serviceBusMessageContext.getMessage().getContext() : Context.NONE;
+                    Exception exception = null;
+                    AutoCloseable scope = tracer.makeSpanCurrent(span);
+                    try {
                         if (serviceBusMessageContext.hasError()) {
                             handleError(serviceBusMessageContext.getThrowable());
                         } else {
@@ -391,22 +429,21 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                             try {
                                 processMessage.accept(serviceBusReceivedMessageContext);
                             } catch (Exception ex) {
-                                serviceBusMessageContext.getMessage().setContext(
-                                    serviceBusMessageContext.getMessage().getContext().addData(PROCESS_ERROR_KEY, ex));
                                 handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
 
                                 if (!processorOptions.isDisableAutoComplete()) {
                                     LOGGER.warning("Error when processing message. Abandoning message.", ex);
                                     abandonMessage(serviceBusMessageContext, receiverClient);
                                 }
+                                exception = ex;
                             }
                         }
                         if (isRunning.get()) {
                             LOGGER.verbose("Requesting 1 more message from upstream");
                             subscription.request(1);
                         }
-                    } catch (Exception e) {
-                        LOGGER.verbose("Error disposing scope", e);
+                    } finally {
+                        tracer.endSpan(exception, span, scope);
                     }
                 }
 
@@ -475,10 +512,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         receiverSubscriptions.clear();
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
         receiverClient.close();
-        ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
-            ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
-            : this.receiverBuilder.buildAsyncClient();
-        asyncClient.set(newReceiverClient);
+        asyncClient.set(createNewReceiver());
         receiveMessages();
+    }
+
+    private ServiceBusReceiverAsyncClient createNewReceiver() {
+        return this.receiverBuilder == null
+            ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
+            : this.receiverBuilder.buildAsyncClientForProcessor();
     }
 }

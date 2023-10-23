@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 /** Samples for PacketCoreDataPlanes ListByPacketCoreControlPlane. */
 public final class PacketCoreDataPlanesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List packet core data planes in a control plane.

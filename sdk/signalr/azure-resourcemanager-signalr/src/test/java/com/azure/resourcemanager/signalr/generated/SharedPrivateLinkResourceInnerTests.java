@@ -14,23 +14,23 @@ public final class SharedPrivateLinkResourceInnerTests {
         SharedPrivateLinkResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"groupId\":\"ofmxagkvtmelmqkr\",\"privateLinkResourceId\":\"ahvljuaha\",\"provisioningState\":\"Creating\",\"requestMessage\":\"dhmdua\",\"status\":\"Disconnected\"},\"id\":\"xqpvfadmw\",\"name\":\"rcrgvx\",\"type\":\"vgomz\"}")
+                    "{\"properties\":{\"groupId\":\"lo\",\"privateLinkResourceId\":\"bq\",\"provisioningState\":\"Updating\",\"requestMessage\":\"lmv\",\"status\":\"Timeout\"},\"id\":\"ktgplcr\",\"name\":\"wjxeznoigbr\",\"type\":\"jwmwkpnbs\"}")
                 .toObject(SharedPrivateLinkResourceInner.class);
-        Assertions.assertEquals("ofmxagkvtmelmqkr", model.groupId());
-        Assertions.assertEquals("ahvljuaha", model.privateLinkResourceId());
-        Assertions.assertEquals("dhmdua", model.requestMessage());
+        Assertions.assertEquals("lo", model.groupId());
+        Assertions.assertEquals("bq", model.privateLinkResourceId());
+        Assertions.assertEquals("lmv", model.requestMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharedPrivateLinkResourceInner model =
             new SharedPrivateLinkResourceInner()
-                .withGroupId("ofmxagkvtmelmqkr")
-                .withPrivateLinkResourceId("ahvljuaha")
-                .withRequestMessage("dhmdua");
+                .withGroupId("lo")
+                .withPrivateLinkResourceId("bq")
+                .withRequestMessage("lmv");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceInner.class);
-        Assertions.assertEquals("ofmxagkvtmelmqkr", model.groupId());
-        Assertions.assertEquals("ahvljuaha", model.privateLinkResourceId());
-        Assertions.assertEquals("dhmdua", model.requestMessage());
+        Assertions.assertEquals("lo", model.groupId());
+        Assertions.assertEquals("bq", model.privateLinkResourceId());
+        Assertions.assertEquals("lmv", model.requestMessage());
     }
 }

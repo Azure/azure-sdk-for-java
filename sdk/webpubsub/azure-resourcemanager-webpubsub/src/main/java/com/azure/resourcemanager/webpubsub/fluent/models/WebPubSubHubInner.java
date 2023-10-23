@@ -6,7 +6,6 @@ package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,12 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class WebPubSubHubInner extends ProxyResource {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /*
      * Properties of a hub.
      */
     @JsonProperty(value = "properties", required = true)
@@ -28,15 +21,6 @@ public final class WebPubSubHubInner extends ProxyResource {
 
     /** Creates an instance of WebPubSubHubInner class. */
     public WebPubSubHubInner() {
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

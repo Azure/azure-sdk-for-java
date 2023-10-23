@@ -31,7 +31,7 @@ public final class NetworkInterfacesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"physicalIdentifier\":\"ciijqpkzfbojxj\",\"administrativeState\":\"Disabled\",\"provisioningState\":\"Succeeded\",\"connectedTo\":\"wixvcpwnkwywzw\",\"interfaceType\":\"Data\",\"ipv4Address\":\"ickduoiqta\",\"ipv6Address\":\"yvsk\",\"annotation\":\"rwzawnvs\"},\"id\":\"fhzag\",\"name\":\"nvhycvdimwrz\",\"type\":\"e\"}";
+            "{\"properties\":{\"physicalIdentifier\":\"yjl\",\"connectedTo\":\"albcyuwahwzagvai\",\"interfaceType\":\"Data\",\"ipv4Address\":\"phnhn\",\"ipv6Address\":\"gyfzkhism\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Disabled\",\"annotation\":\"prjbpertjpairpw\"},\"id\":\"mcgiwsywpe\",\"name\":\"tvqopugrse\",\"type\":\"giuztqefzypul\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class NetworkInterfacesGetWithResponseMockTests {
         NetworkInterface response =
             manager
                 .networkInterfaces()
-                .getWithResponse("pkcvmwf", "uxx", "pmywbormcq", com.azure.core.util.Context.NONE)
+                .getWithResponse("mvaizv", "wqqpwcidsjqcqyz", "rtfdlgp", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("rwzawnvs", response.annotation());
+        Assertions.assertEquals("prjbpertjpairpw", response.annotation());
     }
 }

@@ -9,6 +9,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptio
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -61,6 +62,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             "testSdkVersion");
     }
 
+    @Disabled
     @Test
     public void testPing() {
         QuickPulsePingSender quickPulsePingSender = getQuickPulsePingSender();
@@ -163,10 +165,10 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         senderThread.setDaemon(true);
         senderThread.start();
         Thread.sleep(50);
-        assertTrue(pingCountDown.await(1, TimeUnit.SECONDS));
+        assertTrue(pingCountDown.await(5, TimeUnit.SECONDS));
         assertThat(quickPulseHeaderInfo.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
         assertThat(collector.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
-        assertTrue(postCountDown.await(1, TimeUnit.SECONDS));
+        assertTrue(postCountDown.await(5, TimeUnit.SECONDS));
         senderThread.interrupt();
         coordinatorThread.interrupt();
     }

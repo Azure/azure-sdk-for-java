@@ -5,8 +5,8 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -17,75 +17,87 @@ public final class RouterJob {
     /*
      * The id of the job.
      */
+    @Generated
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Reference to an external parent context, eg. call ID.
      */
+    @Generated
     @JsonProperty(value = "channelReference")
     private String channelReference;
 
     /*
      * The status of the Job.
      */
+    @Generated
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private RouterJobStatus status;
 
     /*
      * The time a job was queued in UTC.
      */
+    @Generated
     @JsonProperty(value = "enqueuedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime enqueuedAt;
 
     /*
      * The channel identifier. eg. voice, chat, etc.
      */
+    @Generated
     @JsonProperty(value = "channelId")
     private String channelId;
 
     /*
      * The Id of the Classification policy used for classifying a job.
      */
+    @Generated
     @JsonProperty(value = "classificationPolicyId")
     private String classificationPolicyId;
 
     /*
      * The Id of the Queue that this job is queued to.
      */
+    @Generated
     @JsonProperty(value = "queueId")
     private String queueId;
 
     /*
      * The priority of this job.
      */
+    @Generated
     @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Reason code for cancelled or closed jobs.
      */
+    @Generated
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
     /*
-     * A collection of manually specified label selectors, which a worker must
-     * satisfy in order to process this job.
+     * A collection of manually specified label selectors, which a worker must satisfy
+     * in order to process this job.
      */
+    @Generated
     @JsonProperty(value = "requestedWorkerSelectors")
     private List<RouterWorkerSelector> requestedWorkerSelectors;
 
     /*
-     * A collection of label selectors attached by a classification policy,
-     * which a worker must satisfy in order to process this job.
+     * A collection of label selectors attached by a classification policy, which a
+     * worker must satisfy in order to process this job.
      */
+    @Generated
     @JsonProperty(value = "attachedWorkerSelectors", access = JsonProperty.Access.WRITE_ONLY)
     private List<RouterWorkerSelector> attachedWorkerSelectors;
 
     /*
-     * A set of key/value pairs that are identifying attributes used by the
-     * rules engines to make decisions.
+     * A set of key/value pairs that are identifying attributes used by the rules
+     * engines to make decisions.
      */
+    @Generated
     @JsonProperty(value = "labels")
     private Map<String, Object> labels;
 
@@ -93,38 +105,59 @@ public final class RouterJob {
      * A collection of the assignments of the job.
      * Key is AssignmentId.
      */
+    @Generated
     @JsonProperty(value = "assignments", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, RouterJobAssignment> assignments;
 
     /*
      * A set of non-identifying attributes attached to this job
      */
+    @Generated
     @JsonProperty(value = "tags")
     private Map<String, Object> tags;
 
     /*
      * Notes attached to a job, sorted by timestamp
      */
+    @Generated
     @JsonProperty(value = "notes")
     private Map<String, String> notes;
 
     /*
      * If set, job will be scheduled to be enqueued at a given time
      */
+    @Generated
     @JsonProperty(value = "scheduledAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime scheduledAt;
 
     /*
-     * The matchingMode property.
+     * The matching mode to be applied to this job.
+     *
+     * Supported types:
+     *
+     *
+     * QueueAndMatchMode: Used when matching worker to a job is required to be
+     * done right after job is queued.
+     * ScheduleAndSuspendMode: Used for scheduling
+     * jobs to be queued at a future time. At specified time, matching of a worker to
+     * the job will not start automatically.
+     * SuspendMode: Used when matching workers
+     * to a job needs to be suspended.
      */
+    @Generated
     @JsonProperty(value = "matchingMode")
     private JobMatchingMode matchingMode;
+
+    /** Creates an instance of RouterJob class. */
+    @Generated
+    public RouterJob() {}
 
     /**
      * Get the id property: The id of the job.
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -134,6 +167,7 @@ public final class RouterJob {
      *
      * @return the channelReference value.
      */
+    @Generated
     public String getChannelReference() {
         return this.channelReference;
     }
@@ -144,6 +178,7 @@ public final class RouterJob {
      * @param channelReference the channelReference value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setChannelReference(String channelReference) {
         this.channelReference = channelReference;
         return this;
@@ -154,6 +189,7 @@ public final class RouterJob {
      *
      * @return the status value.
      */
+    @Generated
     public RouterJobStatus getStatus() {
         return this.status;
     }
@@ -163,6 +199,7 @@ public final class RouterJob {
      *
      * @return the enqueuedAt value.
      */
+    @Generated
     public OffsetDateTime getEnqueuedAt() {
         return this.enqueuedAt;
     }
@@ -172,6 +209,7 @@ public final class RouterJob {
      *
      * @return the channelId value.
      */
+    @Generated
     public String getChannelId() {
         return this.channelId;
     }
@@ -182,6 +220,7 @@ public final class RouterJob {
      * @param channelId the channelId value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setChannelId(String channelId) {
         this.channelId = channelId;
         return this;
@@ -192,6 +231,7 @@ public final class RouterJob {
      *
      * @return the classificationPolicyId value.
      */
+    @Generated
     public String getClassificationPolicyId() {
         return this.classificationPolicyId;
     }
@@ -202,6 +242,7 @@ public final class RouterJob {
      * @param classificationPolicyId the classificationPolicyId value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setClassificationPolicyId(String classificationPolicyId) {
         this.classificationPolicyId = classificationPolicyId;
         return this;
@@ -212,6 +253,7 @@ public final class RouterJob {
      *
      * @return the queueId value.
      */
+    @Generated
     public String getQueueId() {
         return this.queueId;
     }
@@ -222,6 +264,7 @@ public final class RouterJob {
      * @param queueId the queueId value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setQueueId(String queueId) {
         this.queueId = queueId;
         return this;
@@ -232,6 +275,7 @@ public final class RouterJob {
      *
      * @return the priority value.
      */
+    @Generated
     public Integer getPriority() {
         return this.priority;
     }
@@ -242,6 +286,7 @@ public final class RouterJob {
      * @param priority the priority value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setPriority(Integer priority) {
         this.priority = priority;
         return this;
@@ -252,6 +297,7 @@ public final class RouterJob {
      *
      * @return the dispositionCode value.
      */
+    @Generated
     public String getDispositionCode() {
         return this.dispositionCode;
     }
@@ -262,6 +308,7 @@ public final class RouterJob {
      * @param dispositionCode the dispositionCode value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;
@@ -273,6 +320,7 @@ public final class RouterJob {
      *
      * @return the requestedWorkerSelectors value.
      */
+    @Generated
     public List<RouterWorkerSelector> getRequestedWorkerSelectors() {
         return this.requestedWorkerSelectors;
     }
@@ -284,6 +332,7 @@ public final class RouterJob {
      * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
@@ -295,6 +344,7 @@ public final class RouterJob {
      *
      * @return the attachedWorkerSelectors value.
      */
+    @Generated
     public List<RouterWorkerSelector> getAttachedWorkerSelectors() {
         return this.attachedWorkerSelectors;
     }
@@ -305,6 +355,7 @@ public final class RouterJob {
      *
      * @return the labels value.
      */
+    @Generated
     public Map<String, Object> getLabels() {
         return this.labels;
     }
@@ -316,6 +367,7 @@ public final class RouterJob {
      * @param labels the labels value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setLabels(Map<String, Object> labels) {
         this.labels = labels;
         return this;
@@ -326,6 +378,7 @@ public final class RouterJob {
      *
      * @return the assignments value.
      */
+    @Generated
     public Map<String, RouterJobAssignment> getAssignments() {
         return this.assignments;
     }
@@ -335,6 +388,7 @@ public final class RouterJob {
      *
      * @return the tags value.
      */
+    @Generated
     public Map<String, Object> getTags() {
         return this.tags;
     }
@@ -345,6 +399,7 @@ public final class RouterJob {
      * @param tags the tags value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setTags(Map<String, Object> tags) {
         this.tags = tags;
         return this;
@@ -355,6 +410,7 @@ public final class RouterJob {
      *
      * @return the notes value.
      */
+    @Generated
     public Map<String, String> getNotes() {
         return this.notes;
     }
@@ -365,6 +421,7 @@ public final class RouterJob {
      * @param notes the notes value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setNotes(Map<String, String> notes) {
         this.notes = notes;
         return this;
@@ -375,25 +432,42 @@ public final class RouterJob {
      *
      * @return the scheduledAt value.
      */
+    @Generated
     public OffsetDateTime getScheduledAt() {
         return this.scheduledAt;
     }
 
     /**
-     * Get the matchingMode property: The matchingMode property.
+     * Get the matchingMode property: The matching mode to be applied to this job.
+     *
+     * <p>Supported types:
+     *
+     * <p>QueueAndMatchMode: Used when matching worker to a job is required to be done right after job is queued.
+     * ScheduleAndSuspendMode: Used for scheduling jobs to be queued at a future time. At specified time, matching of a
+     * worker to the job will not start automatically. SuspendMode: Used when matching workers to a job needs to be
+     * suspended.
      *
      * @return the matchingMode value.
      */
+    @Generated
     public JobMatchingMode getMatchingMode() {
         return this.matchingMode;
     }
 
     /**
-     * Set the matchingMode property: The matchingMode property.
+     * Set the matchingMode property: The matching mode to be applied to this job.
+     *
+     * <p>Supported types:
+     *
+     * <p>QueueAndMatchMode: Used when matching worker to a job is required to be done right after job is queued.
+     * ScheduleAndSuspendMode: Used for scheduling jobs to be queued at a future time. At specified time, matching of a
+     * worker to the job will not start automatically. SuspendMode: Used when matching workers to a job needs to be
+     * suspended.
      *
      * @param matchingMode the matchingMode value to set.
      * @return the RouterJob object itself.
      */
+    @Generated
     public RouterJob setMatchingMode(JobMatchingMode matchingMode) {
         this.matchingMode = matchingMode;
         return this;

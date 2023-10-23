@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachines ConvertToManagedDisks. */
 public final class VirtualMachinesConvertToManagedDisksSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.
@@ -25,7 +25,7 @@ public final class VirtualMachinesConvertToManagedDisksSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.

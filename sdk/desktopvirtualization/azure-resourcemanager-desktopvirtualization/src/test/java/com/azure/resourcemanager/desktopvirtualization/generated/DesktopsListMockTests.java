@@ -32,7 +32,7 @@ public final class DesktopsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"objectId\":\"khgn\",\"description\":\"zonzlrpiqywnc\",\"friendlyName\":\"tszcofizehtdhgb\",\"iconHash\":\"vreljea\"},\"id\":\"rvzmlovuana\",\"name\":\"hcxlpm\",\"type\":\"erbdk\"}]}";
+            "{\"value\":[{\"properties\":{\"objectId\":\"xigdhxiidlope\",\"description\":\"wdpyq\",\"friendlyName\":\"bxubmdna\",\"iconHash\":\"bqwremjela\"},\"id\":\"cigeleohdbvqvw\",\"name\":\"kjopwbeon\",\"type\":\"lkwzdqybxceakxcp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,9 @@ public final class DesktopsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Desktop> response =
-            manager
-                .desktops()
-                .list("hcz", "xrxzbujrtr", 1272649211, true, 1247179302, com.azure.core.util.Context.NONE);
+            manager.desktops().list("yrrueqth", "mg", 1745918799, false, 1620223491, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zonzlrpiqywnc", response.iterator().next().description());
-        Assertions.assertEquals("tszcofizehtdhgb", response.iterator().next().friendlyName());
+        Assertions.assertEquals("wdpyq", response.iterator().next().description());
+        Assertions.assertEquals("bxubmdna", response.iterator().next().friendlyName());
     }
 }

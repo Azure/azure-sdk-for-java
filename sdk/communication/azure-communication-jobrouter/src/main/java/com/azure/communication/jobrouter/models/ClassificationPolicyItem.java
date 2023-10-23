@@ -4,42 +4,51 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of ClassificationPolicy. */
-@Fluent
+@Immutable
 public final class ClassificationPolicyItem {
     /*
      * A container for the rules that govern how jobs are classified.
      */
+    @Generated
     @JsonProperty(value = "classificationPolicy")
     private ClassificationPolicy classificationPolicy;
 
     /*
      * (Optional) The Concurrency Token.
      */
+    @Generated
     @JsonProperty(value = "etag")
     private String etag;
+
+    /**
+     * Creates an instance of ClassificationPolicyItem class.
+     *
+     * @param classificationPolicy the classificationPolicy value to set.
+     * @param etag the etag value to set.
+     */
+    @Generated
+    @JsonCreator
+    private ClassificationPolicyItem(
+            @JsonProperty(value = "classificationPolicy") ClassificationPolicy classificationPolicy,
+            @JsonProperty(value = "etag") String etag) {
+        this.classificationPolicy = classificationPolicy;
+        this.etag = etag;
+    }
 
     /**
      * Get the classificationPolicy property: A container for the rules that govern how jobs are classified.
      *
      * @return the classificationPolicy value.
      */
+    @Generated
     public ClassificationPolicy getClassificationPolicy() {
         return this.classificationPolicy;
-    }
-
-    /**
-     * Set the classificationPolicy property: A container for the rules that govern how jobs are classified.
-     *
-     * @param classificationPolicy the classificationPolicy value to set.
-     * @return the ClassificationPolicyItem object itself.
-     */
-    public ClassificationPolicyItem setClassificationPolicy(ClassificationPolicy classificationPolicy) {
-        this.classificationPolicy = classificationPolicy;
-        return this;
     }
 
     /**
@@ -47,18 +56,8 @@ public final class ClassificationPolicyItem {
      *
      * @return the etag value.
      */
+    @Generated
     public String getEtag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: (Optional) The Concurrency Token.
-     *
-     * @param etag the etag value to set.
-     * @return the ClassificationPolicyItem object itself.
-     */
-    public ClassificationPolicyItem setEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 }

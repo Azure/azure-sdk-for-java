@@ -665,7 +665,15 @@ public class CosmosDatabase {
 
     /**
      * Query all Cosmos users for the current database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryUsers -->
+     * <pre>
+     * CosmosPagedIterable&lt;CosmosUserProperties&gt; userPropertiesList =
+     *     cosmosDatabase.queryUsers&#40;&quot;SELECT * FROM DB_NAME&quot;&#41;;
+     * userPropertiesList.forEach&#40;userProperties -&gt; &#123;
+     *     System.out.println&#40;userProperties&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryUsers -->
      * @param query the query.
      * @return the {@link CosmosPagedIterable}.
      */
@@ -675,7 +683,15 @@ public class CosmosDatabase {
 
     /**
      * Query all Cosmos users for the current database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryUsers -->
+     * <pre>
+     * CosmosPagedIterable&lt;CosmosUserProperties&gt; userPropertiesList =
+     *     cosmosDatabase.queryUsers&#40;&quot;SELECT * FROM DB_NAME&quot;&#41;;
+     * userPropertiesList.forEach&#40;userProperties -&gt; &#123;
+     *     System.out.println&#40;userProperties&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryUsers -->
      * @param query the query.
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
@@ -686,7 +702,15 @@ public class CosmosDatabase {
 
     /**
      * Query all Cosmos users for the current database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryUsers -->
+     * <pre>
+     * CosmosPagedIterable&lt;CosmosUserProperties&gt; userPropertiesList =
+     *     cosmosDatabase.queryUsers&#40;&quot;SELECT * FROM DB_NAME&quot;&#41;;
+     * userPropertiesList.forEach&#40;userProperties -&gt; &#123;
+     *     System.out.println&#40;userProperties&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryUsers -->
      * @param querySpec the query spec.
      * @return the {@link CosmosPagedIterable}.
      */
@@ -696,7 +720,15 @@ public class CosmosDatabase {
 
     /**
      * Query all Cosmos users for the current database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.queryUsers -->
+     * <pre>
+     * CosmosPagedIterable&lt;CosmosUserProperties&gt; userPropertiesList =
+     *     cosmosDatabase.queryUsers&#40;&quot;SELECT * FROM DB_NAME&quot;&#41;;
+     * userPropertiesList.forEach&#40;userProperties -&gt; &#123;
+     *     System.out.println&#40;userProperties&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.queryUsers -->
      * @param querySpec the query spec.
      * @param options the options.
      * @return the {@link CosmosPagedIterable}.
@@ -731,8 +763,16 @@ public class CosmosDatabase {
     }
 
     /**
-     * Sets the throughput.
+     * Sets the throughput of the current database.
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.replaceThroughput -->
+     * <pre>
+     * ThroughputProperties throughputProperties = ThroughputProperties
+     *     .createAutoscaledThroughput&#40;autoScaleMaxThroughput&#41;;
      *
+     * ThroughputResponse throughputResponse = cosmosDatabase.replaceThroughput&#40;throughputProperties&#41;;
+     * System.out.println&#40;throughputResponse&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.replaceThroughput -->
      * @param throughputProperties the throughput properties.
      * @return the throughput response.
      */
@@ -741,8 +781,13 @@ public class CosmosDatabase {
     }
 
     /**
-     * Gets the throughput of the database.
-     *
+     * Gets the throughput of the current database.
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.readThroughput -->
+     * <pre>
+     * ThroughputResponse throughputResponse = cosmosDatabase.readThroughput&#40;&#41;;
+     * System.out.println&#40;throughputResponse&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.readThroughput -->
      * @return the throughput response.
      */
     public ThroughputResponse readThroughput() {
@@ -761,7 +806,15 @@ public class CosmosDatabase {
 
     /**
      * Reads all cosmos client encryption keys in a database.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosDatabase.readAllClientEncryptionKeys -->
+     * <pre>
+     * CosmosPagedIterable&lt;CosmosClientEncryptionKeyProperties&gt; clientEncryptionKeys =
+     *     cosmosDatabase.readAllClientEncryptionKeys&#40;&#41;;
+     * clientEncryptionKeys.forEach&#40;encryptionKeyProperties -&gt;
+     *     System.out.println&#40;clientEncryptionKeys&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosDatabase.readAllClientEncryptionKeys -->
      * @return a {@link CosmosPagedIterable}.
      */
     public CosmosPagedIterable<CosmosClientEncryptionKeyProperties> readAllClientEncryptionKeys() {

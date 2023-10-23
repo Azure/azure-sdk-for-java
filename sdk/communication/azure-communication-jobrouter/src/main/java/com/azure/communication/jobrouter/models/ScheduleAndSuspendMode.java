@@ -4,36 +4,47 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
-/** The ScheduleAndSuspendMode model. */
-@Fluent
-public final class ScheduleAndSuspendMode {
+/**
+ * Describes a matching mode used for scheduling jobs to be queued at a future time. At the specified time, matching
+ * worker to a job will not start automatically.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("schedule-and-suspend")
+@Immutable
+public final class ScheduleAndSuspendMode extends JobMatchingMode {
     /*
-     * The scheduleAt property.
+     * Scheduled time.
      */
+    @Generated
     @JsonProperty(value = "scheduleAt")
     private OffsetDateTime scheduleAt;
 
     /**
-     * Get the scheduleAt property: The scheduleAt property.
+     * Creates an instance of ScheduleAndSuspendMode class.
      *
-     * @return the scheduleAt value.
+     * @param scheduleAt the scheduleAt value to set.
      */
-    public OffsetDateTime getScheduleAt() {
-        return this.scheduleAt;
+    @Generated
+    @JsonCreator
+    public ScheduleAndSuspendMode(@JsonProperty(value = "scheduleAt") OffsetDateTime scheduleAt) {
+        this.scheduleAt = scheduleAt;
     }
 
     /**
-     * Set the scheduleAt property: The scheduleAt property.
+     * Get the scheduleAt property: Scheduled time.
      *
-     * @param scheduleAt the scheduleAt value to set.
-     * @return the ScheduleAndSuspendMode object itself.
+     * @return the scheduleAt value.
      */
-    public ScheduleAndSuspendMode setScheduleAt(OffsetDateTime scheduleAt) {
-        this.scheduleAt = scheduleAt;
-        return this;
+    @Generated
+    public OffsetDateTime getScheduleAt() {
+        return this.scheduleAt;
     }
 }

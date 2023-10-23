@@ -1,6 +1,6 @@
 # Release History
 
-## 1.19.0-beta.1 (Unreleased)
+## 1.22.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,59 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.21.1 (2023-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to `1.44.1`.
+- Upgraded `reactor-test` from `3.4.31` to `3.4.32`.
+- Upgraded `reactor-netty-http` from `1.0.34` to `1.0.38`.
+- Upgraded `jetty-server` from `9.4.51.v20230217` to `9.4.53.v20231009`.
+- Upgraded `jetty-servlet` from `9.4.51.v20230217` to `9.4.53.v20231009`.
+- Upgraded `commons-compress` from `1.22` to `1.24.0`.
+
+## 1.21.0 (2023-10-06)
+
+### Features Added
+
+- Added support for bulk `AddSanitizers` in Test Proxy. ([#36694](https://github.com/Azure/azure-sdk-for-java/pull/36694))
+
+### Bugs Fixed
+
+- Aligned XML redactions for Test Proxy with previous recording framework. ([#37043](https://github.com/Azure/azure-sdk-for-java/pull/37043))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to `1.44.0`.
+
+## 1.20.0 (2023-09-07)
+
+### Features Added
+
+- Added `TestProxyRecordingOptions` model representing the transport layer options to send to the test proxy when recording.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+
+## 1.19.0 (2023-08-04)
+
+### Features Added
+- Add helper methods for adding sanitizers and matchers
+- Updated the list of headers to redact to include "subscription-key"
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
 
 ## 1.18.1 (2023-07-06)
 

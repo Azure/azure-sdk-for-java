@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Tags field of the AzureBareMetal instance. */
+/** Tags field of the AzureBareMetal/AzureBareMetaStorage instance. */
 @Fluent
 public final class Tags {
     /*
-     * Tags field of the AzureBareMetal instance.
+     * Tags field of the AzureBareMetal/AzureBareMetaStorage instance.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -24,7 +24,7 @@ public final class Tags {
     }
 
     /**
-     * Get the tags property: Tags field of the AzureBareMetal instance.
+     * Get the tags property: Tags field of the AzureBareMetal/AzureBareMetaStorage instance.
      *
      * @return the tags value.
      */
@@ -33,7 +33,7 @@ public final class Tags {
     }
 
     /**
-     * Set the tags property: Tags field of the AzureBareMetal instance.
+     * Set the tags property: Tags field of the AzureBareMetal/AzureBareMetaStorage instance.
      *
      * @param tags the tags value to set.
      * @return the Tags object itself.

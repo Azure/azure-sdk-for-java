@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
+import com.azure.resourcemanager.mobilenetwork.models.DiagnosticsUploadConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
@@ -117,6 +118,20 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
+     * Set the installation property: The installation state of the packet core control plane resource.
+     *
+     * @param installation the installation value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withInstallation(Installation installation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
+        }
+        this.innerProperties().withInstallation(installation);
+        return this;
+    }
+
+    /**
      * Get the sites property: Site(s) under which this packet core control plane should be deployed. The sites must be
      * in the same location as the packet core control plane.
      *
@@ -188,7 +203,7 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Get the version property: The version of the packet core software that is deployed.
+     * Get the version property: The desired version of the packet core software.
      *
      * @return the version value.
      */
@@ -197,7 +212,7 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Set the version property: The version of the packet core software that is deployed.
+     * Set the version property: The desired version of the packet core software.
      *
      * @param version the version value to set.
      * @return the PacketCoreControlPlaneInner object itself.
@@ -208,6 +223,15 @@ public final class PacketCoreControlPlaneInner extends Resource {
         }
         this.innerProperties().withVersion(version);
         return this;
+    }
+
+    /**
+     * Get the installedVersion property: The currently installed version of the packet core software.
+     *
+     * @return the installedVersion value.
+     */
+    public String installedVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().installedVersion();
     }
 
     /**
@@ -321,6 +345,29 @@ public final class PacketCoreControlPlaneInner extends Resource {
             this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
         }
         this.innerProperties().withLocalDiagnosticsAccess(localDiagnosticsAccess);
+        return this;
+    }
+
+    /**
+     * Get the diagnosticsUpload property: Configuration for uploading packet core diagnostics.
+     *
+     * @return the diagnosticsUpload value.
+     */
+    public DiagnosticsUploadConfiguration diagnosticsUpload() {
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticsUpload();
+    }
+
+    /**
+     * Set the diagnosticsUpload property: Configuration for uploading packet core diagnostics.
+     *
+     * @param diagnosticsUpload the diagnosticsUpload value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withDiagnosticsUpload(DiagnosticsUploadConfiguration diagnosticsUpload) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
+        }
+        this.innerProperties().withDiagnosticsUpload(diagnosticsUpload);
         return this;
     }
 

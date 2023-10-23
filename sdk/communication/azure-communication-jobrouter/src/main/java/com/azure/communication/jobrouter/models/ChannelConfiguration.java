@@ -5,24 +5,38 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the capacity a job in this channel will consume from a worker. */
 @Fluent
 public final class ChannelConfiguration {
     /*
-     * The amount of capacity that an instance of a job of this channel will
-     * consume of the total worker capacity.
+     * The amount of capacity that an instance of a job of this channel will consume
+     * of the total worker capacity.
      */
-    @JsonProperty(value = "capacityCostPerJob", required = true)
-    private Integer capacityCostPerJob;
+    @Generated
+    @JsonProperty(value = "capacityCostPerJob")
+    private int capacityCostPerJob;
 
     /*
-     * The maximum number of jobs that can be supported concurrently for this
-     * channel.
+     * The maximum number of jobs that can be supported concurrently for this channel.
      */
+    @Generated
     @JsonProperty(value = "maxNumberOfJobs")
     private Integer maxNumberOfJobs;
+
+    /**
+     * Creates an instance of ChannelConfiguration class.
+     *
+     * @param capacityCostPerJob the capacityCostPerJob value to set.
+     */
+    @Generated
+    @JsonCreator
+    public ChannelConfiguration(@JsonProperty(value = "capacityCostPerJob") int capacityCostPerJob) {
+        this.capacityCostPerJob = capacityCostPerJob;
+    }
 
     /**
      * Get the capacityCostPerJob property: The amount of capacity that an instance of a job of this channel will
@@ -30,20 +44,9 @@ public final class ChannelConfiguration {
      *
      * @return the capacityCostPerJob value.
      */
-    public Integer getCapacityCostPerJob() {
+    @Generated
+    public int getCapacityCostPerJob() {
         return this.capacityCostPerJob;
-    }
-
-    /**
-     * Set the capacityCostPerJob property: The amount of capacity that an instance of a job of this channel will
-     * consume of the total worker capacity.
-     *
-     * @param capacityCostPerJob the capacityCostPerJob value to set.
-     * @return the ChannelConfiguration object itself.
-     */
-    public ChannelConfiguration setCapacityCostPerJob(Integer capacityCostPerJob) {
-        this.capacityCostPerJob = capacityCostPerJob;
-        return this;
     }
 
     /**
@@ -51,6 +54,7 @@ public final class ChannelConfiguration {
      *
      * @return the maxNumberOfJobs value.
      */
+    @Generated
     public Integer getMaxNumberOfJobs() {
         return this.maxNumberOfJobs;
     }
@@ -61,6 +65,7 @@ public final class ChannelConfiguration {
      * @param maxNumberOfJobs the maxNumberOfJobs value to set.
      * @return the ChannelConfiguration object itself.
      */
+    @Generated
     public ChannelConfiguration setMaxNumberOfJobs(Integer maxNumberOfJobs) {
         this.maxNumberOfJobs = maxNumberOfJobs;
         return this;

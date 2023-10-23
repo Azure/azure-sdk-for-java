@@ -20,6 +20,8 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
+import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -58,6 +60,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private HttpClient httpClient;
     private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private ConnectionPolicy connectionPolicy;
+    private GatewayServerErrorInjector gatewayServerErrorInjector;
 
     public GlobalAddressResolver(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -172,8 +175,10 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         ContainerDirectConnectionMetadata containerDirectConnectionMetadata = containerPropertiesMap
                                                                 .get(cosmosContainerIdentity);
 
-                                                        int connectionsPerEndpointCountForContainer = containerDirectConnectionMetadata
-                                                                .getMinConnectionPoolSizePerEndpointForContainer();
+                                                        // check against the COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT system property
+                                                        // during client initialization
+                                                        int connectionsPerEndpointCountForContainer = Math.max(containerDirectConnectionMetadata
+                                                            .getMinConnectionPoolSizePerEndpointForContainer(), Configs.getMinConnectionPoolSizePerEndpoint());
 
                                                         return this.submitOpenConnectionInternal(
                                                                 endpointCache,
@@ -252,6 +257,20 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
+    public void configureFaultInjectorProvider(IFaultInjectorProvider faultInjectorProvider, Configs configs) {
+        if (this.gatewayServerErrorInjector == null) {
+            this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs);
+
+            // setup gatewayServerErrorInjector for existing address cache
+            // For the new ones added later, the gatewayServerErrorInjector will pass through constructor
+            for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
+                endpointCache.addressCache.setGatewayServerErrorInjector(this.gatewayServerErrorInjector);
+            }
+        }
+
+        this.gatewayServerErrorInjector.registerServerErrorInjector(faultInjectorProvider.getServerErrorInjector());
+    }
+
     private IAddressResolver getAddressResolver(RxDocumentServiceRequest rxDocumentServiceRequest) {
         URI endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
         return this.getOrAddEndpoint(endpoint).addressResolver;
@@ -269,7 +288,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.apiType,
                 this.endpointManager,
                 this.connectionPolicy,
-                this.proactiveOpenConnectionsProcessor);
+                this.proactiveOpenConnectionsProcessor,
+                this.gatewayServerErrorInjector);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();

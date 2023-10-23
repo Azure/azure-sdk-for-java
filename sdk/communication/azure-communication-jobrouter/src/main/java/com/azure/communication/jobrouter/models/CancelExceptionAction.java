@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,36 +16,44 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class CancelExceptionAction extends ExceptionAction {
     /*
-     * (Optional) A note that will be appended to the jobs' Notes collection
-     * with th current timestamp.
+     * (Optional) A note that will be appended to the jobs' Notes collection with the
+     * current timestamp.
      */
+    @Generated
     @JsonProperty(value = "note")
     private String note;
 
     /*
-     * (Optional) Indicates the outcome of the job, populate this field with
-     * your own custom values.
+     * (Optional) Indicates the outcome of the job, populate this field with your own
+     * custom values.
      */
+    @Generated
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
+    /** Creates an instance of CancelExceptionAction class. */
+    @Generated
+    public CancelExceptionAction() {}
+
     /**
-     * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with th current
+     * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current
      * timestamp.
      *
      * @return the note value.
      */
+    @Generated
     public String getNote() {
         return this.note;
     }
 
     /**
-     * Set the note property: (Optional) A note that will be appended to the jobs' Notes collection with th current
+     * Set the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current
      * timestamp.
      *
      * @param note the note value to set.
      * @return the CancelExceptionAction object itself.
      */
+    @Generated
     public CancelExceptionAction setNote(String note) {
         this.note = note;
         return this;
@@ -56,6 +65,7 @@ public final class CancelExceptionAction extends ExceptionAction {
      *
      * @return the dispositionCode value.
      */
+    @Generated
     public String getDispositionCode() {
         return this.dispositionCode;
     }
@@ -67,6 +77,7 @@ public final class CancelExceptionAction extends ExceptionAction {
      * @param dispositionCode the dispositionCode value to set.
      * @return the CancelExceptionAction object itself.
      */
+    @Generated
     public CancelExceptionAction setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;

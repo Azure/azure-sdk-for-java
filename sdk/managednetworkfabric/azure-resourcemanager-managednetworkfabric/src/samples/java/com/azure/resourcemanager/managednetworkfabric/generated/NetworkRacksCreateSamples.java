@@ -4,13 +4,14 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackType;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for NetworkRacks Create. */
 public final class NetworkRacksCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkRacks_Create_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkRacks_Create_MaximumSet_Gen.
@@ -21,14 +22,14 @@ public final class NetworkRacksCreateSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager
             .networkRacks()
-            .define("networkRackName")
-            .withRegion("eastus")
-            .withExistingResourceGroup("resourceGroupName")
-            .withNetworkRackSku("RackSKU")
+            .define("example-rack")
+            .withRegion("eastuseuap")
+            .withExistingResourceGroup("example-rg")
             .withNetworkFabricId(
-                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/networkFabricName")
-            .withTags(mapOf("keyID", "keyValue"))
-            .withAnnotation("null")
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric")
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withNetworkRackType(NetworkRackType.AGGREGATE)
+            .withAnnotation("annotation")
             .create();
     }
 

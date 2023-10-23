@@ -60,11 +60,11 @@ public final class UserSessionsSendMessageWithResponseMockTests {
         manager
             .userSessions()
             .sendMessageWithResponse(
-                "bzdixzmq",
-                "noda",
-                "opqhewjptmc",
-                "sbostzel",
-                new SendMessage().withMessageTitle("la").withMessageBody("tmzlbiojlv"),
+                "chillcecf",
+                "huwaoaguhic",
+                "llizs",
+                "ac",
+                new SendMessage().withMessageTitle("vhrweftkwqejpmv").withMessageBody("ehaepwamcxtc"),
                 com.azure.core.util.Context.NONE);
     }
 }

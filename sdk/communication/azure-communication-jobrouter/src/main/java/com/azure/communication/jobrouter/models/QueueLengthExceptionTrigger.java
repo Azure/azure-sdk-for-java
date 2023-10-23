@@ -4,7 +4,9 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -12,32 +14,33 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Trigger for an exception action on exceeding queue length. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("queue-length")
-@Fluent
+@Immutable
 public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
     /*
-     * Threshold of number of jobs ahead in the queue to for this trigger to
-     * fire.
+     * Threshold of number of jobs ahead in the queue to for this trigger to fire.
      */
-    @JsonProperty(value = "threshold", required = true)
+    @Generated
+    @JsonProperty(value = "threshold")
     private int threshold;
+
+    /**
+     * Creates an instance of QueueLengthExceptionTrigger class.
+     *
+     * @param threshold the threshold value to set.
+     */
+    @Generated
+    @JsonCreator
+    public QueueLengthExceptionTrigger(@JsonProperty(value = "threshold") int threshold) {
+        this.threshold = threshold;
+    }
 
     /**
      * Get the threshold property: Threshold of number of jobs ahead in the queue to for this trigger to fire.
      *
      * @return the threshold value.
      */
+    @Generated
     public int getThreshold() {
         return this.threshold;
-    }
-
-    /**
-     * Set the threshold property: Threshold of number of jobs ahead in the queue to for this trigger to fire.
-     *
-     * @param threshold the threshold value to set.
-     * @return the QueueLengthExceptionTrigger object itself.
-     */
-    public QueueLengthExceptionTrigger setThreshold(int threshold) {
-        this.threshold = threshold;
-        return this;
     }
 }

@@ -58,6 +58,7 @@ public final class SnapshotsDeleteMockTests {
 
         manager
             .snapshots()
-            .delete("jazysdzhezwwvaiq", "uvvfonkp", "hqyikvy", "auy", "vluwmncsttij", com.azure.core.util.Context.NONE);
+            .delete(
+                "kzyb", "jjidjk", "yxkyxvx", "vblbjednljlageua", "lxunsmjbnkppxy", com.azure.core.util.Context.NONE);
     }
 }

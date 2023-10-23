@@ -71,7 +71,7 @@ The following application starters are provided by Spring Cloud Azure under the 
 | Name                                                 | Description                                                        |
 |------------------------------------------------------|--------------------------------------------------------------------|
 | spring-cloud-azure-starter                           | Core starter, including auto-configuration support                 |
-| spring-cloud-azure-starter-active-directory          | Starter for using Azure Active Directory with Spring Security      |
+| spring-cloud-azure-starter-active-directory          | Starter for using Microsoft Entra ID with Spring Security          |
 | spring-cloud-azure-starter-active-directory-b2c      | Starter for using Azure Active Directory B2C with Spring Security  |
 | spring-cloud-azure-starter-appconfiguration          | Starter for using Azure App Configuration                          |
 | spring-cloud-azure-starter-cosmos                    | Starter for using Azure Cosmos DB                                  |
@@ -138,7 +138,7 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>4.9.0</version>
+            <version>4.11.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

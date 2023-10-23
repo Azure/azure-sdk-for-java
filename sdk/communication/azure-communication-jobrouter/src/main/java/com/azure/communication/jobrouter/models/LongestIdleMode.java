@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -12,4 +13,32 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("longest-idle")
 @Fluent
-public final class LongestIdleMode extends DistributionMode {}
+public final class LongestIdleMode extends DistributionMode {
+    /** Creates an instance of LongestIdleMode class. */
+    @Generated
+    public LongestIdleMode() {}
+
+    /** {@inheritDoc} */
+    @Generated
+    @Override
+    public LongestIdleMode setMinConcurrentOffers(Integer minConcurrentOffers) {
+        super.setMinConcurrentOffers(minConcurrentOffers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Generated
+    @Override
+    public LongestIdleMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
+        super.setMaxConcurrentOffers(maxConcurrentOffers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Generated
+    @Override
+    public LongestIdleMode setBypassSelectors(Boolean bypassSelectors) {
+        super.setBypassSelectors(bypassSelectors);
+        return this;
+    }
+}

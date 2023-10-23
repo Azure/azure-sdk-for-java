@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tag DetachFromOperation. */
 public final class TagDetachFromOperationSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteApiOperationTag.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteApiOperationTag.json
      */
     /**
      * Sample code: ApiManagementDeleteApiOperationTag.
@@ -26,6 +24,6 @@ public final class TagDetachFromOperationSamples {
                 "59d5b28d1f7fab116c282650",
                 "59d5b28d1f7fab116c282651",
                 "59d5b28e1f7fab116402044e",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

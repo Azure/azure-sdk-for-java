@@ -4,16 +4,17 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import java.util.Arrays;
 
 /** Samples for NetworkInterfaces UpdateAdministrativeState. */
 public final class NetworkInterfacesUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkInterfaces_updateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkInterfaces_UpdateAdministrativeState_MaximumSet_Gen.json
      */
     /**
-     * Sample code: NetworkInterfaces_updateAdministrativeState_MaximumSet_Gen.
+     * Sample code: NetworkInterfaces_UpdateAdministrativeState_MaximumSet_Gen.
      *
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
@@ -22,10 +23,10 @@ public final class NetworkInterfacesUpdateAdministrativeStateSamples {
         manager
             .networkInterfaces()
             .updateAdministrativeState(
-                "resourceGroupName",
-                "networkDeviceName",
-                "networkInterfaceName",
-                new UpdateAdministrativeState().withState(AdministrativeState.ENABLE),
+                "example-rg",
+                "example-device",
+                "example-interface",
+                new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
                 com.azure.core.util.Context.NONE);
     }
 }

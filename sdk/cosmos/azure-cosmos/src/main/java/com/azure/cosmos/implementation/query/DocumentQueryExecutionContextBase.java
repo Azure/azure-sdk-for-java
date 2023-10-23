@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -45,6 +46,10 @@ import java.util.function.Supplier;
  */
 public abstract class DocumentQueryExecutionContextBase<T>
 implements IDocumentQueryExecutionContext<T> {
+
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
     protected final DiagnosticsClientContext diagnosticsClientContext;
     protected ResourceType resourceTypeEnum;
     protected String resourceLink;
@@ -56,11 +61,12 @@ implements IDocumentQueryExecutionContext<T> {
     protected boolean shouldExecuteQueryRequest;
     private Supplier<String> operationContextTextProvider;
     private final OperationContextAndListenerTuple operationContext;
+    private final AtomicBoolean isQueryCancelledOnTimeout;
 
     protected DocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
                                                 IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
-                                                UUID correlatedActivityId) {
+                                                UUID correlatedActivityId, AtomicBoolean isQueryCancelledOnTimeout) {
 
         // TODO: validate args are not null: client and feedOption should not be null
         this.client = client;
@@ -76,6 +82,7 @@ implements IDocumentQueryExecutionContext<T> {
             .CosmosQueryRequestOptionsHelper
             .getCosmosQueryRequestOptionsAccessor()
             .getOperationContext(cosmosQueryRequestOptions);
+        this.isQueryCancelledOnTimeout = isQueryCancelledOnTimeout;
         this.operationContextTextProvider = () -> {
             String operationContextText = operationContext != null && operationContext.getOperationContext() != null ?
                 operationContext.getOperationContext().toString() : "n/a";
@@ -121,7 +128,6 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
-
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig =
             ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
                 getCosmosQueryRequestOptionsAccessor()
@@ -130,9 +136,10 @@ implements IDocumentQueryExecutionContext<T> {
         if (endToEndOperationLatencyConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
-        request.requestContext.setExcludeRegions( ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
+        request.requestContext.setExcludeRegions(ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
             getCosmosQueryRequestOptionsAccessor().getExcludeRegions(cosmosQueryRequestOptions));
 
+        request.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
         return request;
     }
 
@@ -166,7 +173,8 @@ implements IDocumentQueryExecutionContext<T> {
     }
 
     public CosmosQueryRequestOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
-        CosmosQueryRequestOptions options = ModelBridgeInternal.createQueryRequestOptions(this.cosmosQueryRequestOptions);
+        CosmosQueryRequestOptions options =
+            qryOptAccessor.clone(this.cosmosQueryRequestOptions);
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(options, continuationToken, maxPageSize);
         return options;
     }
@@ -256,10 +264,15 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(cosmosQueryRequestOptions.isQueryMetricsEnabled()));
         }
 
-        if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions() != null &&
-            cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
-            requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
-                String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions())));
+        if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions() != null) {
+            if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+                requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                    String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions())));
+            }
+            if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()) {
+                requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE,
+                    String.valueOf(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()));
+            }
         }
 
         if (cosmosQueryRequestOptions.isIndexMetricsEnabled()) {
@@ -322,6 +335,8 @@ implements IDocumentQueryExecutionContext<T> {
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
             }
+
+            executeQueryRequest.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
             executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
             break;

@@ -17,7 +17,7 @@
   <version>3.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
 
   <name>Microsoft Azure SDK for Event Hubs</name>
-  <description>Please note, a newer package azure-messaging-eventhubs for Azure Event Hubs is available at https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs as of February 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the migration guide at https://aka.ms/azsdk/java/migrate/eh for more details.
+  <description>Please note, a newer package azure-messaging-eventhubs for Azure Event Hubs is available at https://central.sonatype.com/artifact/com.azure/azure-messaging-eventhubs as of February 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the migration guide at https://aka.ms/azsdk/java/migrate/eh for more details.
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -77,7 +77,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.13.8</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.13.9</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

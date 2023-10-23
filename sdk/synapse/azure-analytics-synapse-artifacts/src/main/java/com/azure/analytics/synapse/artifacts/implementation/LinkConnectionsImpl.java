@@ -216,7 +216,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LinkConnectionResource>> listByWorkspaceSinglePageAsync() {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listByWorkspace(this.client.getEndpoint(), apiVersion, accept, context))
@@ -242,7 +242,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LinkConnectionResource>> listByWorkspaceSinglePageAsync(Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.listByWorkspace(this.client.getEndpoint(), apiVersion, accept, context)
                 .map(
@@ -350,7 +350,7 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkConnectionResource>> createOrUpdateWithResponseAsync(
             String linkConnectionName, LinkConnectionResource linkConnection) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -377,7 +377,7 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkConnectionResource>> createOrUpdateWithResponseAsync(
             String linkConnectionName, LinkConnectionResource linkConnection, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.createOrUpdate(
                 this.client.getEndpoint(), linkConnectionName, apiVersion, linkConnection, accept, context);
@@ -461,7 +461,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkConnectionResource>> getWithResponseAsync(String linkConnectionName) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.get(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
@@ -479,7 +479,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkConnectionResource>> getWithResponseAsync(String linkConnectionName, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.get(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context);
     }
@@ -553,7 +553,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String linkConnectionName) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.delete(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
@@ -571,7 +571,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String linkConnectionName, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.delete(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context);
     }
@@ -646,7 +646,7 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> editTablesWithResponseAsync(
             String linkConnectionName, EditTablesRequest editTablesRequest) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -673,7 +673,7 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> editTablesWithResponseAsync(
             String linkConnectionName, EditTablesRequest editTablesRequest, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.editTables(
                 this.client.getEndpoint(), linkConnectionName, apiVersion, editTablesRequest, accept, context);
@@ -754,7 +754,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startWithResponseAsync(String linkConnectionName) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.start(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
@@ -773,7 +773,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startWithResponseAsync(String linkConnectionName, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.start(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context);
     }
@@ -851,7 +851,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopWithResponseAsync(String linkConnectionName) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.stop(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
@@ -870,7 +870,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopWithResponseAsync(String linkConnectionName, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.stop(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context);
     }
@@ -948,7 +948,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkConnectionDetailedStatus>> getDetailedStatusWithResponseAsync(String linkConnectionName) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -970,7 +970,7 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkConnectionDetailedStatus>> getDetailedStatusWithResponseAsync(
             String linkConnectionName, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.getDetailedStatus(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context);
     }
@@ -1046,7 +1046,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkTableListResponse>> listLinkTablesWithResponseAsync(String linkConnectionName) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1067,7 +1067,7 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkTableListResponse>> listLinkTablesWithResponseAsync(
             String linkConnectionName, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.listLinkTables(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context);
     }
@@ -1144,7 +1144,7 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkConnectionQueryTableStatus>> queryTableStatusWithResponseAsync(
             String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1171,7 +1171,7 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkConnectionQueryTableStatus>> queryTableStatusWithResponseAsync(
             String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.queryTableStatus(
                 this.client.getEndpoint(), linkConnectionName, apiVersion, queryTableStatusRequest, accept, context);
@@ -1258,7 +1258,7 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateLandingZoneCredentialWithResponseAsync(
             String linkConnectionName, UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1287,7 +1287,7 @@ public final class LinkConnectionsImpl {
             String linkConnectionName,
             UpdateLandingZoneCredential updateLandingZoneCredentialRequest,
             Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.updateLandingZoneCredential(
                 this.client.getEndpoint(),
@@ -1384,7 +1384,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> pauseWithResponseAsync(String linkConnectionName) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.pause(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
@@ -1403,7 +1403,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> pauseWithResponseAsync(String linkConnectionName, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.pause(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context);
     }
@@ -1481,7 +1481,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resumeWithResponseAsync(String linkConnectionName) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.resume(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
@@ -1500,7 +1500,7 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resumeWithResponseAsync(String linkConnectionName, Context context) {
-        final String apiVersion = "2022-12-01-preview";
+        final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.resume(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context);
     }

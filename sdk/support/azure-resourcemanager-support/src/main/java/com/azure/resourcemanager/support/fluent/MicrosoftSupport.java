@@ -73,9 +73,79 @@ public interface MicrosoftSupport {
     SupportTicketsClient getSupportTickets();
 
     /**
+     * Gets the SupportTicketsNoSubscriptionsClient object to access its operations.
+     *
+     * @return the SupportTicketsNoSubscriptionsClient object.
+     */
+    SupportTicketsNoSubscriptionsClient getSupportTicketsNoSubscriptions();
+
+    /**
      * Gets the CommunicationsClient object to access its operations.
      *
      * @return the CommunicationsClient object.
      */
     CommunicationsClient getCommunications();
+
+    /**
+     * Gets the CommunicationsNoSubscriptionsClient object to access its operations.
+     *
+     * @return the CommunicationsNoSubscriptionsClient object.
+     */
+    CommunicationsNoSubscriptionsClient getCommunicationsNoSubscriptions();
+
+    /**
+     * Gets the SupportTicketCommunicationsNoSubscriptionsClient object to access its operations.
+     *
+     * @return the SupportTicketCommunicationsNoSubscriptionsClient object.
+     */
+    SupportTicketCommunicationsNoSubscriptionsClient getSupportTicketCommunicationsNoSubscriptions();
+
+    /**
+     * Gets the ChatTranscriptsClient object to access its operations.
+     *
+     * @return the ChatTranscriptsClient object.
+     */
+    ChatTranscriptsClient getChatTranscripts();
+
+    /**
+     * Gets the SupportTicketChatTranscriptsNoSubscriptionsClient object to access its operations.
+     *
+     * @return the SupportTicketChatTranscriptsNoSubscriptionsClient object.
+     */
+    SupportTicketChatTranscriptsNoSubscriptionsClient getSupportTicketChatTranscriptsNoSubscriptions();
+
+    /**
+     * Gets the ChatTranscriptsNoSubscriptionsClient object to access its operations.
+     *
+     * @return the ChatTranscriptsNoSubscriptionsClient object.
+     */
+    ChatTranscriptsNoSubscriptionsClient getChatTranscriptsNoSubscriptions();
+
+    /**
+     * Gets the FileWorkspacesClient object to access its operations.
+     *
+     * @return the FileWorkspacesClient object.
+     */
+    FileWorkspacesClient getFileWorkspaces();
+
+    /**
+     * Gets the FileWorkspacesNoSubscriptionsClient object to access its operations.
+     *
+     * @return the FileWorkspacesNoSubscriptionsClient object.
+     */
+    FileWorkspacesNoSubscriptionsClient getFileWorkspacesNoSubscriptions();
+
+    /**
+     * Gets the FilesClient object to access its operations.
+     *
+     * @return the FilesClient object.
+     */
+    FilesClient getFiles();
+
+    /**
+     * Gets the FilesNoSubscriptionsClient object to access its operations.
+     *
+     * @return the FilesNoSubscriptionsClient object.
+     */
+    FilesNoSubscriptionsClient getFilesNoSubscriptions();
 }

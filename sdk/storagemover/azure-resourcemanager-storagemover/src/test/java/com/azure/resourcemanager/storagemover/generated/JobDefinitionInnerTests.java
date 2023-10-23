@@ -15,35 +15,35 @@ public final class JobDefinitionInnerTests {
         JobDefinitionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"bqqwxrj\",\"copyMode\":\"Mirror\",\"sourceName\":\"al\",\"sourceResourceId\":\"wsubisnja\",\"sourceSubpath\":\"mngnzscxaqw\",\"targetName\":\"ochcbonqvpkvl\",\"targetResourceId\":\"njeaseipheofloke\",\"targetSubpath\":\"ienjbdlwtgr\",\"latestJobRunName\":\"djpjumasxazjpq\",\"latestJobRunResourceId\":\"gual\",\"latestJobRunStatus\":\"Canceling\",\"agentName\":\"hejjz\",\"agentResourceId\":\"dudgwdslfhot\",\"provisioningState\":\"Succeeded\"},\"id\":\"npwlbjnpg\",\"name\":\"cftadeh\",\"type\":\"nltyfsoppusuesnz\"}")
+                    "{\"properties\":{\"description\":\"fbowskanyk\",\"copyMode\":\"Mirror\",\"sourceName\":\"lcuiywgqywgndr\",\"sourceResourceId\":\"nhzgpphrcgyn\",\"sourceSubpath\":\"cpecfvmmcoofs\",\"targetName\":\"lzevgbmqjqab\",\"targetResourceId\":\"pmivkwlzu\",\"targetSubpath\":\"c\",\"latestJobRunName\":\"nfnbacfionlebxe\",\"latestJobRunResourceId\":\"gtzxdpn\",\"latestJobRunStatus\":\"Started\",\"agentName\":\"wxrjfeallnwsub\",\"agentResourceId\":\"njampm\",\"provisioningState\":\"Succeeded\"},\"id\":\"scxaq\",\"name\":\"ooch\",\"type\":\"bonqvpkvlrxnjeas\"}")
                 .toObject(JobDefinitionInner.class);
-        Assertions.assertEquals("bqqwxrj", model.description());
+        Assertions.assertEquals("fbowskanyk", model.description());
         Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("al", model.sourceName());
-        Assertions.assertEquals("mngnzscxaqw", model.sourceSubpath());
-        Assertions.assertEquals("ochcbonqvpkvl", model.targetName());
-        Assertions.assertEquals("ienjbdlwtgr", model.targetSubpath());
-        Assertions.assertEquals("hejjz", model.agentName());
+        Assertions.assertEquals("lcuiywgqywgndr", model.sourceName());
+        Assertions.assertEquals("cpecfvmmcoofs", model.sourceSubpath());
+        Assertions.assertEquals("lzevgbmqjqab", model.targetName());
+        Assertions.assertEquals("c", model.targetSubpath());
+        Assertions.assertEquals("wxrjfeallnwsub", model.agentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobDefinitionInner model =
             new JobDefinitionInner()
-                .withDescription("bqqwxrj")
+                .withDescription("fbowskanyk")
                 .withCopyMode(CopyMode.MIRROR)
-                .withSourceName("al")
-                .withSourceSubpath("mngnzscxaqw")
-                .withTargetName("ochcbonqvpkvl")
-                .withTargetSubpath("ienjbdlwtgr")
-                .withAgentName("hejjz");
+                .withSourceName("lcuiywgqywgndr")
+                .withSourceSubpath("cpecfvmmcoofs")
+                .withTargetName("lzevgbmqjqab")
+                .withTargetSubpath("c")
+                .withAgentName("wxrjfeallnwsub");
         model = BinaryData.fromObject(model).toObject(JobDefinitionInner.class);
-        Assertions.assertEquals("bqqwxrj", model.description());
+        Assertions.assertEquals("fbowskanyk", model.description());
         Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("al", model.sourceName());
-        Assertions.assertEquals("mngnzscxaqw", model.sourceSubpath());
-        Assertions.assertEquals("ochcbonqvpkvl", model.targetName());
-        Assertions.assertEquals("ienjbdlwtgr", model.targetSubpath());
-        Assertions.assertEquals("hejjz", model.agentName());
+        Assertions.assertEquals("lcuiywgqywgndr", model.sourceName());
+        Assertions.assertEquals("cpecfvmmcoofs", model.sourceSubpath());
+        Assertions.assertEquals("lzevgbmqjqab", model.targetName());
+        Assertions.assertEquals("c", model.targetSubpath());
+        Assertions.assertEquals("wxrjfeallnwsub", model.agentName());
     }
 }

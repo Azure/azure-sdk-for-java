@@ -14,7 +14,7 @@ import java.util.Map;
 
 /** objectIdentity. */
 @Fluent
-public class MicrosoftGraphObjectIdentity {
+public final class MicrosoftGraphObjectIdentity {
     /*
      * Specifies the issuer of the identity, for example facebook.com.For local accounts (where signInType is not
      * federated), this property is the local B2C tenant default domain name, for example contoso.onmicrosoft.com.For

@@ -67,7 +67,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"multi-region", "simple"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
     public void beforeClass() {
         try {
             client = getClientBuilder().buildAsyncClient();
@@ -76,12 +76,20 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
 
             this.databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
             this.writeRegionMap = getRegionMap(this.databaseAccount, true);
+
+            // This test runs against a real account
+            // Creating collections can take some time in the remote region
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         } finally {
             safeClose(client);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionErrorTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"long"}, dataProvider = "connectionErrorTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionConnectionErrorRuleTestWithNoConnectionWarmup(FaultInjectionConnectionErrorType errorType) {
 
         client = new CosmosClientBuilder()

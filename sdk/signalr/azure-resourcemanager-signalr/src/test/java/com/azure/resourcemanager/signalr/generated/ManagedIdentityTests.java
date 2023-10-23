@@ -18,7 +18,7 @@ public final class ManagedIdentityTests {
         ManagedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"bhsfxob\":{\"principalId\":\"cqaqtdoqmcbx\",\"clientId\":\"vxysl\"},\"shqjohxcrsbf\":{\"principalId\":\"tkblmpewww\",\"clientId\":\"krvrns\"},\"ybsrfbjfdtwss\":{\"principalId\":\"asrru\",\"clientId\":\"bhsqfsubcgjbirxb\"}},\"principalId\":\"ftpvjzbexil\",\"tenantId\":\"nfqqnvwp\"}")
+                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"woqhihe\":{\"principalId\":\"utr\",\"clientId\":\"upauut\"},\"xjvfoimwksl\":{\"principalId\":\"g\",\"clientId\":\"pnfqntcyp\"},\"awjs\":{\"principalId\":\"cizjxvydfceacvl\",\"clientId\":\"ygdyftumrtw\"},\"qphchqnrnrpxehuw\":{\"principalId\":\"iw\",\"clientId\":\"jgcyztsfmznba\"}},\"principalId\":\"k\",\"tenantId\":\"aifmvikl\"}")
                 .toObject(ManagedIdentity.class);
         Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
     }
@@ -30,16 +30,19 @@ public final class ManagedIdentityTests {
                 .withType(ManagedIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
                     mapOf(
-                        "bhsfxob",
+                        "woqhihe",
                         new UserAssignedIdentityProperty(),
-                        "shqjohxcrsbf",
+                        "xjvfoimwksl",
                         new UserAssignedIdentityProperty(),
-                        "ybsrfbjfdtwss",
+                        "awjs",
+                        new UserAssignedIdentityProperty(),
+                        "qphchqnrnrpxehuw",
                         new UserAssignedIdentityProperty()));
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
         Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

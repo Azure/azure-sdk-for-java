@@ -11,101 +11,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class ExternalNetworkPatchableProperties {
     /*
-     * Peering option list.
-     */
-    @JsonProperty(value = "peeringOption")
-    private PeeringOption peeringOption;
-
-    /*
-     * option B properties object
-     */
-    @JsonProperty(value = "optionBProperties")
-    private OptionBProperties optionBProperties;
-
-    /*
-     * option A properties object
-     */
-    @JsonProperty(value = "optionAProperties")
-    private Layer3OptionAProperties optionAProperties;
-
-    /*
-     * ARM resource ID of importRoutePolicy.
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "importRoutePolicyId")
     private String importRoutePolicyId;
 
     /*
-     * ARM resource ID of exportRoutePolicy.
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "exportRoutePolicyId")
     private String exportRoutePolicyId;
+
+    /*
+     * Import Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "importRoutePolicy")
+    private ImportRoutePolicy importRoutePolicy;
+
+    /*
+     * Export Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "exportRoutePolicy")
+    private ExportRoutePolicy exportRoutePolicy;
 
     /** Creates an instance of ExternalNetworkPatchableProperties class. */
     public ExternalNetworkPatchableProperties() {
     }
 
     /**
-     * Get the peeringOption property: Peering option list.
-     *
-     * @return the peeringOption value.
-     */
-    public PeeringOption peeringOption() {
-        return this.peeringOption;
-    }
-
-    /**
-     * Set the peeringOption property: Peering option list.
-     *
-     * @param peeringOption the peeringOption value to set.
-     * @return the ExternalNetworkPatchableProperties object itself.
-     */
-    public ExternalNetworkPatchableProperties withPeeringOption(PeeringOption peeringOption) {
-        this.peeringOption = peeringOption;
-        return this;
-    }
-
-    /**
-     * Get the optionBProperties property: option B properties object.
-     *
-     * @return the optionBProperties value.
-     */
-    public OptionBProperties optionBProperties() {
-        return this.optionBProperties;
-    }
-
-    /**
-     * Set the optionBProperties property: option B properties object.
-     *
-     * @param optionBProperties the optionBProperties value to set.
-     * @return the ExternalNetworkPatchableProperties object itself.
-     */
-    public ExternalNetworkPatchableProperties withOptionBProperties(OptionBProperties optionBProperties) {
-        this.optionBProperties = optionBProperties;
-        return this;
-    }
-
-    /**
-     * Get the optionAProperties property: option A properties object.
-     *
-     * @return the optionAProperties value.
-     */
-    public Layer3OptionAProperties optionAProperties() {
-        return this.optionAProperties;
-    }
-
-    /**
-     * Set the optionAProperties property: option A properties object.
-     *
-     * @param optionAProperties the optionAProperties value to set.
-     * @return the ExternalNetworkPatchableProperties object itself.
-     */
-    public ExternalNetworkPatchableProperties withOptionAProperties(Layer3OptionAProperties optionAProperties) {
-        this.optionAProperties = optionAProperties;
-        return this;
-    }
-
-    /**
-     * Get the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
@@ -114,7 +49,8 @@ public class ExternalNetworkPatchableProperties {
     }
 
     /**
-     * Set the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the ExternalNetworkPatchableProperties object itself.
@@ -125,7 +61,8 @@ public class ExternalNetworkPatchableProperties {
     }
 
     /**
-     * Get the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy.
+     * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
@@ -134,7 +71,8 @@ public class ExternalNetworkPatchableProperties {
     }
 
     /**
-     * Set the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy.
+     * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the ExternalNetworkPatchableProperties object itself.
@@ -145,16 +83,56 @@ public class ExternalNetworkPatchableProperties {
     }
 
     /**
+     * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.importRoutePolicy;
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the ExternalNetworkPatchableProperties object itself.
+     */
+    public ExternalNetworkPatchableProperties withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        this.importRoutePolicy = importRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.exportRoutePolicy;
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the ExternalNetworkPatchableProperties object itself.
+     */
+    public ExternalNetworkPatchableProperties withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        this.exportRoutePolicy = exportRoutePolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (optionBProperties() != null) {
-            optionBProperties().validate();
+        if (importRoutePolicy() != null) {
+            importRoutePolicy().validate();
         }
-        if (optionAProperties() != null) {
-            optionAProperties().validate();
+        if (exportRoutePolicy() != null) {
+            exportRoutePolicy().validate();
         }
     }
 }

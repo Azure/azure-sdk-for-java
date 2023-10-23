@@ -56,6 +56,6 @@ public final class L2NetworksDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.l2Networks().delete("x", "faoytehqpuv", com.azure.core.util.Context.NONE);
+        manager.l2Networks().delete("xlcskltez", "ugggzlfbgrdcgu", com.azure.core.util.Context.NONE);
     }
 }

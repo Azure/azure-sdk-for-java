@@ -33,7 +33,7 @@ public final class BackupInstancesAdhocBackupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"bunzozudh\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"gyyprotwy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +65,17 @@ public final class BackupInstancesAdhocBackupMockTests {
             manager
                 .backupInstances()
                 .adhocBackup(
-                    "g",
-                    "khocxvdfffwaf",
-                    "roud",
+                    "mexiitdfuxt",
+                    "asiibmiybnnust",
+                    "nlj",
                     new TriggerBackupRequest()
                         .withBackupRuleOptions(
                             new AdHocBackupRuleOptions()
-                                .withRuleName("spave")
-                                .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("r"))),
+                                .withRuleName("nmgixh")
+                                .withTriggerOption(
+                                    new AdhocBackupTriggerOption().withRetentionTagOverride("avmqfoudor"))),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bunzozudh", response.jobId());
+        Assertions.assertEquals("gyyprotwy", response.jobId());
     }
 }

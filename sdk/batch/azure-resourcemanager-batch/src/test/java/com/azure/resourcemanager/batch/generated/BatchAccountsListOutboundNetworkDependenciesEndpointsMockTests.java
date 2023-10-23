@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.OutboundEnvironmentEndpoint;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class BatchAccountsListOutboundNetworkDependenciesEndpointsMockTest
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"category\":\"kfbtndoaongbjc\",\"endpoints\":[{\"domainName\":\"i\",\"description\":\"jed\",\"endpointDetails\":[]},{\"domainName\":\"ae\",\"description\":\"ojvdcpzfoqo\",\"endpointDetails\":[]},{\"domainName\":\"bxarzgszufoxci\",\"description\":\"p\",\"endpointDetails\":[]}]}]}";
+            "{\"value\":[{\"category\":\"bdeibqipqk\",\"endpoints\":[{\"domainName\":\"ndzwmkrefa\",\"description\":\"jorwkqnyhgbij\",\"endpointDetails\":[{\"port\":1117462910},{\"port\":394204922},{\"port\":1033603649},{\"port\":1988757032}]},{\"domainName\":\"bsystawfsdjpvk\",\"description\":\"bjxbkzbzk\",\"endpointDetails\":[{\"port\":1155079568}]}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,6 +62,6 @@ public final class BatchAccountsListOutboundNetworkDependenciesEndpointsMockTest
         PagedIterable<OutboundEnvironmentEndpoint> response =
             manager
                 .batchAccounts()
-                .listOutboundNetworkDependenciesEndpoints("zlxwabmqoefkifr", "tpuqujmq", Context.NONE);
+                .listOutboundNetworkDependenciesEndpoints("q", "hkr", com.azure.core.util.Context.NONE);
     }
 }

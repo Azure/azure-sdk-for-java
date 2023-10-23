@@ -104,14 +104,14 @@ public final class ServerProperties {
 
     /*
      * The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or
-     * 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned only for Replica server
+     * 'GeoRestore' or 'Replica'. This property is returned only for Replica server
      */
     @JsonProperty(value = "sourceServerResourceId")
     private String sourceServerResourceId;
 
     /*
      * Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      */
     @JsonProperty(value = "pointInTimeUTC")
     private OffsetDateTime pointInTimeUtc;
@@ -377,8 +377,8 @@ public final class ServerProperties {
 
     /**
      * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
-     * only for Replica server.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for Replica
+     * server.
      *
      * @return the sourceServerResourceId value.
      */
@@ -388,8 +388,8 @@ public final class ServerProperties {
 
     /**
      * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
-     * only for Replica server.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for Replica
+     * server.
      *
      * @param sourceServerResourceId the sourceServerResourceId value to set.
      * @return the ServerProperties object itself.
@@ -401,7 +401,7 @@ public final class ServerProperties {
 
     /**
      * Get the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -411,7 +411,7 @@ public final class ServerProperties {
 
     /**
      * Set the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      *
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ServerProperties object itself.

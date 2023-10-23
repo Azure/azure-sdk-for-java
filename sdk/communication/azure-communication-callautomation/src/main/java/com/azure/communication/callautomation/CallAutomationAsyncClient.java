@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.implementation.AzureCommunicationC
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
+import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
@@ -44,10 +45,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.exception.HttpResponseException;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.time.OffsetDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -71,6 +72,7 @@ public final class CallAutomationAsyncClient {
     private final AzureCommunicationCallAutomationServiceImpl azureCommunicationCallAutomationServiceInternal;
     private final CallRecordingsImpl callRecordingsInternal;
     private final CallMediasImpl callMediasInternal;
+    private final CallDialogsImpl callDialogsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
@@ -82,6 +84,7 @@ public final class CallAutomationAsyncClient {
         this.azureCommunicationCallAutomationServiceInternal = callServiceClient;
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
         this.callMediasInternal = callServiceClient.getCallMedias();
+        this.callDialogsInternal = callServiceClient.getCallDialogs();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
@@ -219,10 +222,10 @@ public final class CallAutomationAsyncClient {
             .setOperationContext(createCallOptions.getOperationContext());
 
         // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-        if (createCallOptions.getCallInvite().getSipHeaders() != null || createCallOptions.getCallInvite().getVoipHeaders() != null) {
+        if (createCallOptions.getCallInvite().getCustomContext().getSipHeaders() != null || createCallOptions.getCallInvite().getCustomContext().getVoipHeaders() != null) {
             CustomContext customContext = new CustomContext();
-            customContext.setSipHeaders(createCallOptions.getCallInvite().getSipHeaders());
-            customContext.setVoipHeaders(createCallOptions.getCallInvite().getVoipHeaders());
+            customContext.setSipHeaders(createCallOptions.getCallInvite().getCustomContext().getSipHeaders());
+            customContext.setVoipHeaders(createCallOptions.getCallInvite().getCustomContext().getVoipHeaders());
             request.setCustomContext(customContext);
         }
 
@@ -251,10 +254,10 @@ public final class CallAutomationAsyncClient {
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
 
-        if (createCallGroupOptions.getSipHeaders() != null || createCallGroupOptions.getVoipHeaders() != null) {
+        if (createCallGroupOptions.getCustomContext().getSipHeaders() != null || createCallGroupOptions.getCustomContext().getVoipHeaders() != null) {
             CustomContext customContext = new CustomContext();
-            customContext.setSipHeaders(createCallGroupOptions.getSipHeaders());
-            customContext.setVoipHeaders(createCallGroupOptions.getVoipHeaders());
+            customContext.setSipHeaders(createCallGroupOptions.getCustomContext().getSipHeaders());
+            customContext.setVoipHeaders(createCallGroupOptions.getCustomContext().getVoipHeaders());
             request.setCustomContext(customContext);
         }
 
@@ -393,10 +396,10 @@ public final class CallAutomationAsyncClient {
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetParticipant().getTargetParticipant()));
 
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (redirectCallOptions.getTargetParticipant().getSipHeaders() != null || redirectCallOptions.getTargetParticipant().getVoipHeaders() != null) {
+            if (redirectCallOptions.getTargetParticipant().getCustomContext().getSipHeaders() != null || redirectCallOptions.getTargetParticipant().getCustomContext().getVoipHeaders() != null) {
                 CustomContext customContext = new CustomContext();
-                customContext.setSipHeaders(redirectCallOptions.getTargetParticipant().getSipHeaders());
-                customContext.setVoipHeaders(redirectCallOptions.getTargetParticipant().getVoipHeaders());
+                customContext.setSipHeaders(redirectCallOptions.getTargetParticipant().getCustomContext().getSipHeaders());
+                customContext.setVoipHeaders(redirectCallOptions.getTargetParticipant().getCustomContext().getVoipHeaders());
                 request.setCustomContext(customContext);
             }
 
@@ -466,7 +469,7 @@ public final class CallAutomationAsyncClient {
      * @return a CallContentAsync.
      */
     public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
-        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal);
+        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal, callDialogsInternal);
     }
     //endregion
 

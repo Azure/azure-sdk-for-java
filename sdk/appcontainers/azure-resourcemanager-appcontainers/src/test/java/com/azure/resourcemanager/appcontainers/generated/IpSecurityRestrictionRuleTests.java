@@ -15,26 +15,26 @@ public final class IpSecurityRestrictionRuleTests {
         IpSecurityRestrictionRule model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"zvqtmnubexkp\",\"description\":\"smond\",\"ipAddressRange\":\"mquxvypo\",\"action\":\"Deny\"}")
+                    "{\"name\":\"eqx\",\"description\":\"z\",\"ipAddressRange\":\"ahzxctobgbk\",\"action\":\"Allow\"}")
                 .toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("zvqtmnubexkp", model.name());
-        Assertions.assertEquals("smond", model.description());
-        Assertions.assertEquals("mquxvypo", model.ipAddressRange());
-        Assertions.assertEquals(Action.DENY, model.action());
+        Assertions.assertEquals("eqx", model.name());
+        Assertions.assertEquals("z", model.description());
+        Assertions.assertEquals("ahzxctobgbk", model.ipAddressRange());
+        Assertions.assertEquals(Action.ALLOW, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IpSecurityRestrictionRule model =
             new IpSecurityRestrictionRule()
-                .withName("zvqtmnubexkp")
-                .withDescription("smond")
-                .withIpAddressRange("mquxvypo")
-                .withAction(Action.DENY);
+                .withName("eqx")
+                .withDescription("z")
+                .withIpAddressRange("ahzxctobgbk")
+                .withAction(Action.ALLOW);
         model = BinaryData.fromObject(model).toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("zvqtmnubexkp", model.name());
-        Assertions.assertEquals("smond", model.description());
-        Assertions.assertEquals("mquxvypo", model.ipAddressRange());
-        Assertions.assertEquals(Action.DENY, model.action());
+        Assertions.assertEquals("eqx", model.name());
+        Assertions.assertEquals("z", model.description());
+        Assertions.assertEquals("ahzxctobgbk", model.ipAddressRange());
+        Assertions.assertEquals(Action.ALLOW, model.action());
     }
 }

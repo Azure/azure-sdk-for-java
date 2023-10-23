@@ -276,6 +276,54 @@ public final class VirtualMachineScaleSetNetworkConfiguration {
     }
 
     /**
+     * Get the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     *
+     * @return the auxiliaryMode value.
+     */
+    public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().auxiliaryMode();
+    }
+
+    /**
+     * Set the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     *
+     * @param auxiliaryMode the auxiliaryMode value to set.
+     * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfiguration withAuxiliaryMode(NetworkInterfaceAuxiliaryMode auxiliaryMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetNetworkConfigurationProperties();
+        }
+        this.innerProperties().withAuxiliaryMode(auxiliaryMode);
+        return this;
+    }
+
+    /**
+     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     *
+     * @return the auxiliarySku value.
+     */
+    public NetworkInterfaceAuxiliarySku auxiliarySku() {
+        return this.innerProperties() == null ? null : this.innerProperties().auxiliarySku();
+    }
+
+    /**
+     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     *
+     * @param auxiliarySku the auxiliarySku value to set.
+     * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfiguration withAuxiliarySku(NetworkInterfaceAuxiliarySku auxiliarySku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetNetworkConfigurationProperties();
+        }
+        this.innerProperties().withAuxiliarySku(auxiliarySku);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

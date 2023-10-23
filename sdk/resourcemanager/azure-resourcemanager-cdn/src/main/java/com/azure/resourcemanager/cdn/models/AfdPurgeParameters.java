@@ -24,6 +24,10 @@ public final class AfdPurgeParameters {
     @JsonProperty(value = "domains")
     private List<String> domains;
 
+    /** Creates an instance of AfdPurgeParameters class. */
+    public AfdPurgeParameters() {
+    }
+
     /**
      * Get the contentPaths property: The path to the content to be purged. Can describe a file path or a wild card
      * directory.

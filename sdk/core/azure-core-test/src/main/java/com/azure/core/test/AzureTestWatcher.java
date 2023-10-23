@@ -3,25 +3,17 @@
 
 package com.azure.core.test;
 
-import com.azure.core.test.implementation.TestRunMetrics;
-import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import java.lang.reflect.Method;
-import java.util.Objects;
-import java.util.function.Supplier;
+import static com.azure.core.test.TestBase.getTestName;
+import static com.azure.core.test.TestBase.shouldLogExecutionStatus;
 
 /**
  * JUnit 5 extension class which reports on testing running and simple metrics about the test such as run time.
  */
 public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
-    private static final String AZURE_TEST_DEBUG = "AZURE_TEST_DEBUG";
-
-    private static final Supplier<Boolean> SHOULD_LOG_EXECUTION_STATUS = () ->
-        Boolean.parseBoolean(Configuration.getGlobalConfiguration().get(AZURE_TEST_DEBUG));
-
     /**
      * Creates an instance of {@link AzureTestWatcher}.
      */
@@ -29,47 +21,44 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
     }
 
     @Override
-    public void beforeTestExecution(ExtensionContext extensionContext) {
-        if (!SHOULD_LOG_EXECUTION_STATUS.get()) {
+    public void beforeTestExecution(ExtensionContext context) {
+        // If the test class is an instance of TestBase or is a subtype of TestBase, then we don't need to track
+        // anything here as TestBase handles this logic in it's Before and After test methods.
+        Class<?> clazz = context.getTestClass().orElse(null);
+        if (clazz != null && TestBase.class.isAssignableFrom(clazz)) {
             return;
         }
 
-        String displayName = extensionContext.getDisplayName();
-
-        String testName = "";
-        String fullyQualifiedTestName = "";
-        if (extensionContext.getTestMethod().isPresent()) {
-            Method method = extensionContext.getTestMethod().get();
-            testName = method.getName();
-            fullyQualifiedTestName = method.getDeclaringClass().getName() + "." + testName;
+        // Check if test debugging is enabled to determine whether logging should happen.
+        if (!shouldLogExecutionStatus()) {
+            return;
         }
 
-        StringBuilder logPrefixBuilder = new StringBuilder("Starting test ")
-            .append(fullyQualifiedTestName);
+        String testName = getTestName(context.getTestMethod(), context.getDisplayName());
+        System.out.println("Starting test " + testName + ".");
 
-        if (!Objects.equals(displayName, testName)) {
-            logPrefixBuilder.append("(")
-                .append(displayName)
-                .append(")");
-        }
-
-        logPrefixBuilder.append(",");
-
-        getStore(extensionContext).put(extensionContext.getRequiredTestMethod(),
-            new TestRunMetrics(logPrefixBuilder.toString(), System.currentTimeMillis()));
+        getStore(context).put(context.getRequiredTestMethod(), System.currentTimeMillis());
     }
 
     @Override
     public void afterTestExecution(ExtensionContext context) {
-        if (!SHOULD_LOG_EXECUTION_STATUS.get()) {
+        // If the test class is an instance of TestBase or is a subtype of TestBase, then we don't need to track
+        // anything here as TestBase handles this logic in it's Before and After test methods.
+        Class<?> clazz = context.getTestClass().orElse(null);
+        if (clazz != null && TestBase.class.isAssignableFrom(clazz)) {
             return;
         }
 
-        TestRunMetrics testInformation = getStore(context)
-            .remove(context.getRequiredTestMethod(), TestRunMetrics.class);
-        long duration = System.currentTimeMillis() - testInformation.getStartMillis();
+        // Check if test debugging is enabled to determine whether logging should happen.
+        if (!shouldLogExecutionStatus()) {
+            return;
+        }
 
-        System.out.printf("%s completed in %d ms.%n", testInformation.getLogPrefix(), duration);
+        long startMillis = getStore(context).remove(context.getRequiredTestMethod(), long.class);
+        long duration = System.currentTimeMillis() - startMillis;
+
+        String testName = getTestName(context.getTestMethod(), context.getDisplayName());
+        System.out.println("Finished test " + testName + " in " + duration + " ms.");
     }
 
     private static ExtensionContext.Store getStore(ExtensionContext context) {

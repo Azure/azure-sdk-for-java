@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for LocalRulestacks CreateOrUpdate. */
 public final class LocalRulestacksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRulestacks_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRulestacks_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_CreateOrUpdate_MinimumSet_Gen.
@@ -30,7 +30,7 @@ public final class LocalRulestacksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/LocalRulestacks_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRulestacks_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_CreateOrUpdate_MaximumSet_Gen.

@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
 import com.azure.resourcemanager.containerservicefleet.models.Fleet;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +32,7 @@ public final class FleetsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"hubProfile\":{\"dnsPrefix\":\"fnba\",\"fqdn\":\"ionle\",\"kubernetesVersion\":\"etqgtzxdpnq\"}},\"eTag\":\"qwxrjfeallnw\",\"location\":\"bisnja\",\"tags\":{\"onq\":\"ngnzscxaqwoochc\",\"ea\":\"pkvlrxn\",\"enjbdlwtgrhp\":\"eipheoflokeyy\"},\"id\":\"jp\",\"name\":\"umasxazjpq\",\"type\":\"e\"}";
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"hubProfile\":{\"dnsPrefix\":\"nhjdauw\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":false,\"enableVnetIntegration\":false,\"subnetId\":\"tdhxujznbmpowuwp\"},\"agentProfile\":{\"subnetId\":\"lve\",\"vmSize\":\"lupj\"},\"fqdn\":\"hfxobbcswsrtj\",\"kubernetesVersion\":\"plrbpbewtghf\",\"portalFqdn\":\"lcgwxzvlvqh\"}},\"eTag\":\"begibtnmxiebwwa\",\"identity\":{\"principalId\":\"3a9d318d-dfb7-4e59-ba57-36c25a01bd50\",\"tenantId\":\"e185aa80-91ad-429a-a614-ee683da3b241\",\"type\":\"None\",\"userAssignedIdentities\":{\"tzjuzgwyzmhtxo\":{\"principalId\":\"24563c88-d38f-4545-a14f-5ca303fa1a7e\",\"clientId\":\"03e4e334-3eee-49c3-9512-f5e1a0c6c742\"},\"ts\":{\"principalId\":\"d075009a-d886-4ab1-a51d-1fe119e703e8\",\"clientId\":\"c96c5ebb-9e24-4f48-a61c-29c6977d0da3\"}}},\"location\":\"jcbpwxqpsrknft\",\"tags\":{\"yvxqtayriwwroy\":\"riuhprwm\",\"bycnojvkn\":\"bexrmcq\",\"qsgzvahapj\":\"e\",\"zlmwlxkvugfhz\":\"zhpvgqzcjrvxd\"},\"id\":\"vawjvzunlu\",\"name\":\"hnnpr\",\"type\":\"xipeilpjzuaejx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +63,17 @@ public final class FleetsGetByResourceGroupWithResponseMockTests {
         Fleet response =
             manager
                 .fleets()
-                .getByResourceGroupWithResponse("c", "pmivkwlzu", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("nrjawgqwg", "hniskxfbkpyc", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("bisnja", response.location());
-        Assertions.assertEquals("ngnzscxaqwoochc", response.tags().get("onq"));
-        Assertions.assertEquals("fnba", response.hubProfile().dnsPrefix());
+        Assertions.assertEquals("jcbpwxqpsrknft", response.location());
+        Assertions.assertEquals("riuhprwm", response.tags().get("yvxqtayriwwroy"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("nhjdauw", response.hubProfile().dnsPrefix());
+        Assertions.assertEquals(false, response.hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals(false, response.hubProfile().apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("tdhxujznbmpowuwp", response.hubProfile().apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("lve", response.hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("lupj", response.hubProfile().agentProfile().vmSize());
     }
 }

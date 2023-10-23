@@ -69,6 +69,10 @@ public final class VMInfoInner {
     @JsonProperty(value = "hostName")
     private String hostname;
 
+    /** Creates an instance of VMInfoInner class. */
+    public VMInfoInner() {
+    }
+
     /**
      * Get the resourceId property: Azure VM resource ID.
      *

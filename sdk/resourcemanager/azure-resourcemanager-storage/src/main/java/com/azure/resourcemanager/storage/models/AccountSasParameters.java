@@ -64,6 +64,10 @@ public final class AccountSasParameters {
     @JsonProperty(value = "keyToSign")
     private String keyToSign;
 
+    /** Creates an instance of AccountSasParameters class. */
+    public AccountSasParameters() {
+    }
+
     /**
      * Get the services property: The signed services accessible with the account SAS. Possible values include: Blob
      * (b), Queue (q), Table (t), File (f).

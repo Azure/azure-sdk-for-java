@@ -13,17 +13,17 @@ import java.io.InputStream;
  *
  * <p>The ClientCertificateCredential acquires a token via service principal authentication. It is a type of
  * authentication in Azure that enables a non-interactive login to
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a>, allowing an application or service to authenticate itself with Azure resources.
- * A Service Principal is essentially an identity created for an application in Azure AD that can be used to
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>, allowing an
+ * application or service to authenticate itself with Azure resources.
+ * A Service Principal is essentially an identity created for an application in Microsoft Entra ID that can be used to
  * authenticate with Azure resources. It's like a "user identity" for the application or service, and it provides
  * a way for the application to authenticate itself with Azure resources without needing to use a user's credentials.
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory
- * (Azure AD)</a> allows users to register service principals which can be used as an identity for authentication.
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> allows users to
+ * register service principals which can be used as an identity for authentication.
  * A client certificate associated with the registered service principal is used as the password when authenticating
  * the service principal.
  * The {@link ClientCertificateCredentialBuilder} acquires an access token with a client certificate for a service
- * principal/registered AAD application. The tenantId, clientId and clientCertificate of the service principal are
+ * principal/registered Microsoft Entra application. The tenantId, clientId and clientCertificate of the service principal are
  * required for this credential to acquire an access token. It can be used both in Azure hosted and local development
  * environments for authentication. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/clientcertificatecredential/docs">conceptual knowledge and configuration
@@ -78,7 +78,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     private String clientCertificatePassword;
 
     /**
-     * Sets the path of the PEM certificate for authenticating to AAD.
+     * Sets the path of the PEM certificate for authenticating to Microsoft Entra ID.
      *
      * @param certificatePath the PEM file containing the certificate
      * @return An updated instance of this builder.
@@ -89,23 +89,28 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets the input stream holding the PEM certificate for authenticating to AAD.
+     * Sets the input stream holding the PEM certificate for authenticating to Microsoft Entra ID.
      *
      * @param certificate the input stream containing the PEM certificate
      * @return An updated instance of this builder.
      */
-    ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
+    public ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
         this.clientCertificate = certificate;
         return this;
     }
 
     /**
-     * Sets the path and password of the PFX certificate for authenticating to AAD.
+     * Sets the path and password of the PFX certificate for authenticating to Microsoft Entra ID.
+     *
+     * @deprecated This API is deprecated and will be removed. Specify the PFX certificate via
+     * {@link ClientCertificateCredentialBuilder#pfxCertificate(String)} API and client certificate password via
+     * the {@link ClientCertificateCredentialBuilder#clientCertificatePassword(String)} API as applicable.
      *
      * @param certificatePath the password protected PFX file containing the certificate
      * @param clientCertificatePassword the password protecting the PFX file
      * @return An updated instance of this builder.
      */
+    @Deprecated
     public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath,
                                                              String clientCertificatePassword) {
         this.clientCertificatePath = certificatePath;
@@ -114,15 +119,34 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets the input stream holding the PFX certificate and its password for authenticating to AAD.
+     * Sets the path of the PFX certificate for authenticating to Microsoft Entra ID.
      *
-     * @param certificate the input stream containing the password protected PFX certificate
-     * @param clientCertificatePassword the password protecting the PFX file
+     * @param certificatePath the password protected PFX file containing the certificate
      * @return An updated instance of this builder.
      */
-    ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate,
-                                                             String clientCertificatePassword) {
+    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath) {
+        this.clientCertificatePath = certificatePath;
+        return this;
+    }
+
+    /**
+     * Sets the input stream holding the PFX certificate and its password for authenticating to Microsoft Entra ID.
+     *
+     * @param certificate the input stream containing the password protected PFX certificate
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate) {
         this.clientCertificate = certificate;
+        return this;
+    }
+
+    /**
+     * Sets the password of the client certificate for authenticating to Microsoft Entra ID.
+     *
+     * @param clientCertificatePassword the password protecting the certificate
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder clientCertificatePassword(String clientCertificatePassword) {
         this.clientCertificatePassword = clientCertificatePassword;
         return this;
     }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
+## 1.11.0-beta.2 (unreleased)
 
 ### Features Added
 
@@ -9,6 +9,70 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.10.4 (2023-10-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.8` to version `1.13.9`.
+
+## 1.10.3 (2023-10-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
+
+## 1.10.2 (2023-10-10)
+
+### Bugs Fixed
+- Bug fixes for developer credentials
+
+## 1.11.0-beta.1 (2023-09-20)
+
+### Features Added
+- Added support for passing an InputStream containing a client cerfificate [#36747](https://github.com/Azure/azure-sdk-for-java/pull/36747)
+
+### Bugs fixed
+- Fixed flowing `HttpClientOptions` through credentials [#36382](https://github.com/Azure/azure-sdk-for-java/pull/36382)
+- Fixed edge case in Docker where 403s erronously caused CredentialUnavailableExceptions [#36747](https://github.com/Azure/azure-sdk-for-java/pull/36747)
+
+## 1.10.1 (2023-09-10)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 1.10.0 (2023-08-09)
+
+### Features Added
+- Added `BrowserCustomizationOptions` to `InteractiveBrowserCredentialBuilder` to allow for customization of the browser window.
+
+### Other Changes
+- Renamed `enableSupportLogging` to `enableUnsafeSupportLogging`. This is a breaking change from 1.10.0-beta.1.
+- `DefaultAzureCredential` will try all developer credentials. Previously if a developer credential attempted to acquire a token and failed, it would stop the chain. Deployed credentials are unaffected.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+
+## 1.10.0-beta.1 (2023-07-24)
+
+### Features Added
+- Added CAE Authentication support for Service principal authentication.
+- Added the ability to log PII from MSAL using new `enableSupportLogging` API.
+
+### Other Changes
+
+#### Behavioral Breaking Change
+- CAE Authentication is disabled by default. It needs to be enabled by invoking `setEnableCae` on `TokenRequestContext` class.
 
 ## 1.9.2 (2023-07-10)
 
@@ -67,9 +131,9 @@
 
 - Fixed a bug in managed identity not properly URLEncoding a value. [#34375](https://github.com/Azure/azure-sdk-for-java/pull/34375)
 
-### Other Changes	### Other Changes
+### Other Changes
 
-#### Dependency Updates	#### Dependency Updates
+#### Dependency Updates
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 - Upgraded `msal4j` from `1.13.5` to version `1.13.7`.
@@ -96,7 +160,7 @@
 
 ### Features Added
 - [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
-- Added support to disable instance discovery on AAD credentials.
+- Added support to disable instance discovery on Microsoft Entra ID credentials.
 - `WorkloadIdentityCredential` and `DefaultAzureCredential` support Workload Identity Federation on Kubernetes. `DefaultAzureCredential` support requires environment variable configuration as set by the Workload Identity webhook.
 
 ## 1.8.0 (2023-02-03)
@@ -117,7 +181,7 @@
 
 ### Features Added
 - Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
-- Added support to disable instance discovery on AAD credentials.
+- Added support to disable instance discovery on Microsoft Entra ID credentials.
 
 ## 1.7.3 (2023-01-06)
 
@@ -620,7 +684,7 @@ The `getToken(String... scopes)` methods on all the credentials are changed to `
 ## 1.0.0-preview.3 (2019-09-09)
 **New features**
 
-A new credential `SharedTokenCacheCredential` is added. It's currently only supported on Windows. This credential is capable of authenticating to Azure Active Directory if you are logged in in Visual Studio 2019.
+A new credential `SharedTokenCacheCredential` is added. It's currently only supported on Windows. This credential is capable of authenticating to Microsoft Entra ID if you are logged in in Visual Studio 2019.
 
 ## 1.0.0-preview.2 (2019-08-05)
 **Breaking changes**
@@ -664,5 +728,5 @@ See the [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sd
 for more details. User authentication will be added in an upcoming preview
 release.
 
-This release supports only global Azure Active Directory tenants, i.e. those
+This release supports only global Microsoft Entra tenants, i.e. those
 using the https://login.microsoftonline.com authentication endpoint.

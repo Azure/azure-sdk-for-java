@@ -33,7 +33,7 @@ public final class L2IsolationDomainsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"networkFabricId\":\"ey\",\"vlanId\":967163680,\"mtu\":2064428749,\"disabledOnResources\":[\"ugmrmf\",\"lrxw\",\"oauk\"],\"administrativeState\":\"Enabled\",\"provisioningState\":\"Succeeded\",\"annotation\":\"sizmoae\"},\"location\":\"xjw\",\"tags\":{\"xeiqbpsmg\":\"edwcgyee\",\"dlrgms\":\"mguaml\",\"nxkympqanxrjk\":\"lzgaufcshhvnew\"},\"id\":\"xtwbta\",\"name\":\"ypnyghshxc\",\"type\":\"lhkgmnsghp\"}";
+            "{\"properties\":{\"networkFabricId\":\"ybnnnlpqdnnska\",\"vlanId\":1332593691,\"mtu\":238736375,\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"Disabled\",\"annotation\":\"dvvmbjernd\"},\"location\":\"ywxqr\",\"tags\":{\"utlkszuxjmrz\":\"tkdeetnnef\",\"n\":\"xwasfwqjzybmfq\",\"wpjbblu\":\"pfcfguamrvamuvkg\",\"hdukcsqvyeegxhu\":\"gctvnspjvsyydj\"},\"id\":\"ojwumfjdymeqv\",\"name\":\"xpfyxdjspnonx\",\"type\":\"mhqpz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,22 +64,22 @@ public final class L2IsolationDomainsCreateMockTests {
         L2IsolationDomain response =
             manager
                 .l2IsolationDomains()
-                .define("lwgniiprglvawu")
-                .withRegion("zqedikdfrdbi")
-                .withExistingResourceGroup("hoi")
-                .withTags(mapOf("zcxmjpbyep", "jgeihfqlggwfi", "rc", "mgtvlj"))
-                .withNetworkFabricId("d")
-                .withVlanId(1177580445)
-                .withMtu(340326244)
-                .withAnnotation("pbbttefjoknss")
+                .define("kgdskwvb")
+                .withRegion("kryhh")
+                .withExistingResourceGroup("rchmetvzhuugd")
+                .withNetworkFabricId("cawwayqtsrn")
+                .withVlanId(1911194089)
+                .withTags(mapOf("knooxdjkl", "zhhllx"))
+                .withMtu(946025458)
+                .withAnnotation("elued")
                 .create();
 
-        Assertions.assertEquals("xjw", response.location());
-        Assertions.assertEquals("edwcgyee", response.tags().get("xeiqbpsmg"));
-        Assertions.assertEquals("ey", response.networkFabricId());
-        Assertions.assertEquals(967163680, response.vlanId());
-        Assertions.assertEquals(2064428749, response.mtu());
-        Assertions.assertEquals("sizmoae", response.annotation());
+        Assertions.assertEquals("ywxqr", response.location());
+        Assertions.assertEquals("tkdeetnnef", response.tags().get("utlkszuxjmrz"));
+        Assertions.assertEquals("ybnnnlpqdnnska", response.networkFabricId());
+        Assertions.assertEquals(1332593691, response.vlanId());
+        Assertions.assertEquals(238736375, response.mtu());
+        Assertions.assertEquals("dvvmbjernd", response.annotation());
     }
 
     @SuppressWarnings("unchecked")
