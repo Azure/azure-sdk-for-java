@@ -3,9 +3,14 @@
 
 package com.azure.identity;
 
+import com.azure.core.implementation.util.StreamUtil;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 /**
@@ -74,7 +79,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     private static final String CLASS_NAME = ClientCertificateCredentialBuilder.class.getSimpleName();
 
     private String clientCertificatePath;
-    private InputStream clientCertificate;
+    private byte[] clientCertificateBytes;
     private String clientCertificatePassword;
 
     /**
@@ -95,7 +100,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return An updated instance of this builder.
      */
     public ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
-        this.clientCertificate = certificate;
+        this.clientCertificateBytes = IdentityUtil.convertInputStreamToByteArray(certificate);
         return this;
     }
 
@@ -136,7 +141,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return An updated instance of this builder.
      */
     public ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate) {
-        this.clientCertificate = certificate;
+        this.clientCertificateBytes = IdentityUtil.convertInputStreamToByteArray(certificate);
         return this;
     }
 
@@ -208,14 +213,15 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      */
     public ClientCertificateCredential build() {
         ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId,
-            "clientCertificate", clientCertificate == null ? clientCertificatePath : clientCertificate);
+            "clientCertificate", (clientCertificateBytes == null || clientCertificateBytes.length == 0)
+                ? clientCertificatePath : clientCertificateBytes);
 
-        if (clientCertificate != null && clientCertificatePath != null) {
+        if (clientCertificateBytes != null && clientCertificatePath != null) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Both certificate input stream and "
                     + "certificate path are provided in ClientCertificateCredentialBuilder. Only one of them should "
                     + "be provided."));
         }
-        return new ClientCertificateCredential(tenantId, clientId, clientCertificatePath, clientCertificate,
-            clientCertificatePassword, identityClientOptions);
+        return new ClientCertificateCredential(tenantId, clientId, clientCertificatePath,
+            clientCertificateBytes, clientCertificatePassword, identityClientOptions);
     }
 }

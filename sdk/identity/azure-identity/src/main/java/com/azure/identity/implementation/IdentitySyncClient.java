@@ -77,7 +77,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     IdentitySyncClient(String tenantId, String clientId, String clientSecret, String certificatePath,
                        String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-                       InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
+                       byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                        Duration clientAssertionTimeout, IdentityClientOptions options) {
         super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, clientAssertionSupplier,
             certificate, certificatePassword, isSharedTokenCacheCredential, clientAssertionTimeout, options);

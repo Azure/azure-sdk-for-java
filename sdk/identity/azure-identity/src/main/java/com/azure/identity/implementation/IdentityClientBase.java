@@ -50,15 +50,7 @@ import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -125,7 +117,7 @@ public abstract class IdentityClientBase {
     final String resourceId;
     final String clientSecret;
     final String clientAssertionFilePath;
-    final InputStream certificate;
+    final byte[] certificate;
     final String certificatePath;
     final Supplier<String> clientAssertionSupplier;
     final String certificatePassword;
@@ -149,7 +141,7 @@ public abstract class IdentityClientBase {
      */
     IdentityClientBase(String tenantId, String clientId, String clientSecret, String certificatePath,
                    String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-                   InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
+                   byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                    Duration clientAssertionTimeout, IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = IdentityUtil.DEFAULT_TENANT;
@@ -831,14 +823,7 @@ public abstract class IdentityClientBase {
         if (certificatePath != null) {
             return Files.readAllBytes(Paths.get(certificatePath));
         } else if (certificate != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[4096];
-            int read = certificate.read(buffer, 0, buffer.length);
-            while (read != -1) {
-                outputStream.write(buffer, 0, read);
-                read = certificate.read(buffer, 0, buffer.length);
-            }
-            return outputStream.toByteArray();
+            return certificate;
         } else {
             return new byte[0];
         }
@@ -848,7 +833,7 @@ public abstract class IdentityClientBase {
         if (certificatePath != null) {
             return new BufferedInputStream(new FileInputStream(certificatePath));
         } else {
-            return certificate;
+            return new ByteArrayInputStream(certificate);
         }
     }
 

@@ -99,7 +99,7 @@ public class ClientCertificateCredential implements TokenCredential {
      * @param certificatePassword the password protecting the PFX file
      * @param identityClientOptions the options to configure the identity client
      */
-    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, InputStream certificate,
+    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, byte[] certificate,
                                 String certificatePassword, IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(certificatePath == null ? certificate : certificatePath,
                 "'certificate' and 'certificatePath' cannot both be null.");
