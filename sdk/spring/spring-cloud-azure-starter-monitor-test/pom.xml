@@ -26,25 +26,6 @@
     <opentelemetry.version>1.31.0</opentelemetry.version> <!-- Only required with Spring Boot 3 to override the OTel version used in the Spring Boot BOM-->
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.opentelemetry</groupId>
-        <artifactId>opentelemetry-bom</artifactId>
-        <version>1.31.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-bom;external_dependency} -->
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.opentelemetry.instrumentation</groupId>
-        <artifactId>opentelemetry-instrumentation-bom-alpha</artifactId>
-        <version>1.31.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha;external_dependency} -->
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
