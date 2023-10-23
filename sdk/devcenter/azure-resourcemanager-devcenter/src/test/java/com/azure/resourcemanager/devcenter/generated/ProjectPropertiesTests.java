@@ -14,23 +14,26 @@ public final class ProjectPropertiesTests {
         ProjectProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Updated\",\"devCenterUri\":\"ol\",\"devCenterId\":\"fpsalgbqu\",\"description\":\"gjyjgzjaoyfhrtxi\",\"maxDevBoxesPerUser\":1620894991}")
+                    "{\"provisioningState\":\"Updating\",\"devCenterUri\":\"xsabkyqdu\",\"devCenterId\":\"itcjczdz\",\"description\":\"ndhkrw\",\"maxDevBoxesPerUser\":881924894,\"displayName\":\"p\"}")
                 .toObject(ProjectProperties.class);
-        Assertions.assertEquals("fpsalgbqu", model.devCenterId());
-        Assertions.assertEquals("gjyjgzjaoyfhrtxi", model.description());
-        Assertions.assertEquals(1620894991, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("itcjczdz", model.devCenterId());
+        Assertions.assertEquals("ndhkrw", model.description());
+        Assertions.assertEquals(881924894, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("p", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProjectProperties model =
             new ProjectProperties()
-                .withDevCenterId("fpsalgbqu")
-                .withDescription("gjyjgzjaoyfhrtxi")
-                .withMaxDevBoxesPerUser(1620894991);
+                .withDevCenterId("itcjczdz")
+                .withDescription("ndhkrw")
+                .withMaxDevBoxesPerUser(881924894)
+                .withDisplayName("p");
         model = BinaryData.fromObject(model).toObject(ProjectProperties.class);
-        Assertions.assertEquals("fpsalgbqu", model.devCenterId());
-        Assertions.assertEquals("gjyjgzjaoyfhrtxi", model.description());
-        Assertions.assertEquals(1620894991, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("itcjczdz", model.devCenterId());
+        Assertions.assertEquals("ndhkrw", model.description());
+        Assertions.assertEquals(881924894, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("p", model.displayName());
     }
 }

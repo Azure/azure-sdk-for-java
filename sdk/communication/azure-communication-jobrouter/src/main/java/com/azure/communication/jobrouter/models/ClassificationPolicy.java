@@ -4,101 +4,78 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.converters.LabelSelectorAdapter;
-import com.azure.communication.jobrouter.implementation.converters.RouterRuleAdapter;
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 /** A container for the rules that govern how jobs are classified. */
 @Fluent
 public final class ClassificationPolicy {
-    /**
-     * Public constructor.
-     *
-     * @param id The id
-     */
-    public ClassificationPolicy(String id) {
-        this.id = id;
-    }
-
-    /**
-     * Package-private constructor of the class, used internally.
-     *
-     * @param internal The internal ClassificationPolicy
-     */
-    ClassificationPolicy(ClassificationPolicyInternal internal) {
-        id = internal.getId();
-
-        setName(internal.getName());
-        setPrioritizationRule(RouterRuleAdapter.convertRouterRuleToPublic(internal.getPrioritizationRule()));
-        setFallbackQueueId(internal.getFallbackQueueId());
-        setQueueSelectors(internal.getQueueSelectors().stream()
-            .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToPublic)
-            .collect(Collectors.toList()));
-        setWorkerSelectors(internal.getWorkerSelectors().stream()
-            .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToPublic)
-            .collect(Collectors.toList()));
-    }
-
-    static {
-        ClassificationPolicyConstructorProxy.setAccessor(ClassificationPolicy::new);
-    }
-
     /*
      * Unique identifier of this policy.
      */
+    @Generated
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private final String id;
+    private String id;
 
     /*
      * Friendly name of this policy.
      */
+    @Generated
     @JsonProperty(value = "name")
     private String name;
 
     /*
      * The fallback queue to select if the queue selector doesn't find a match.
      */
+    @Generated
     @JsonProperty(value = "fallbackQueueId")
     private String fallbackQueueId;
 
     /*
      * The queue selectors to resolve a queue for a given job.
      */
+    @Generated
     @JsonProperty(value = "queueSelectors")
     private List<QueueSelectorAttachment> queueSelectors;
 
     /*
      * A rule of one of the following types:
      *
-     * StaticRule:  A rule providing static rules that always return the same
-     * result, regardless of input.
-     * DirectMapRule:  A rule that return the same labels as the input labels.
-     * ExpressionRule: A rule providing inline expression rules.
-     * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure
+     * StaticRule:  A rule
+     * providing static rules that always return the same result, regardless of
+     * input.
+     * DirectMapRule:  A rule that return the same labels as the input
+     * labels.
+     * ExpressionRule: A rule providing inline expression
+     * rules.
+     * FunctionRule: A rule providing a binding to an HTTP Triggered Azure
      * Function.
      * WebhookRule: A rule providing a binding to a webserver following
      * OAuth2.0 authentication protocol.
      */
+    @Generated
     @JsonProperty(value = "prioritizationRule")
     private RouterRule prioritizationRule;
 
     /*
      * The worker label selectors to attach to a given job.
      */
+    @Generated
     @JsonProperty(value = "workerSelectors")
     private List<WorkerSelectorAttachment> workerSelectors;
+
+    /** Creates an instance of ClassificationPolicy class. */
+    @Generated
+    public ClassificationPolicy() {}
 
     /**
      * Get the id property: Unique identifier of this policy.
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -108,6 +85,7 @@ public final class ClassificationPolicy {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -118,6 +96,7 @@ public final class ClassificationPolicy {
      * @param name the name value to set.
      * @return the ClassificationPolicy object itself.
      */
+    @Generated
     public ClassificationPolicy setName(String name) {
         this.name = name;
         return this;
@@ -128,6 +107,7 @@ public final class ClassificationPolicy {
      *
      * @return the fallbackQueueId value.
      */
+    @Generated
     public String getFallbackQueueId() {
         return this.fallbackQueueId;
     }
@@ -138,6 +118,7 @@ public final class ClassificationPolicy {
      * @param fallbackQueueId the fallbackQueueId value to set.
      * @return the ClassificationPolicy object itself.
      */
+    @Generated
     public ClassificationPolicy setFallbackQueueId(String fallbackQueueId) {
         this.fallbackQueueId = fallbackQueueId;
         return this;
@@ -148,6 +129,7 @@ public final class ClassificationPolicy {
      *
      * @return the queueSelectors value.
      */
+    @Generated
     public List<QueueSelectorAttachment> getQueueSelectors() {
         return this.queueSelectors;
     }
@@ -158,6 +140,7 @@ public final class ClassificationPolicy {
      * @param queueSelectors the queueSelectors value to set.
      * @return the ClassificationPolicy object itself.
      */
+    @Generated
     public ClassificationPolicy setQueueSelectors(List<QueueSelectorAttachment> queueSelectors) {
         this.queueSelectors = queueSelectors;
         return this;
@@ -168,11 +151,12 @@ public final class ClassificationPolicy {
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
-     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
+     * expression rules. FunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule: A
+     * rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @return the prioritizationRule value.
      */
+    @Generated
     public RouterRule getPrioritizationRule() {
         return this.prioritizationRule;
     }
@@ -182,12 +166,13 @@ public final class ClassificationPolicy {
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
-     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
+     * expression rules. FunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule: A
+     * rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @param prioritizationRule the prioritizationRule value to set.
      * @return the ClassificationPolicy object itself.
      */
+    @Generated
     public ClassificationPolicy setPrioritizationRule(RouterRule prioritizationRule) {
         this.prioritizationRule = prioritizationRule;
         return this;
@@ -198,6 +183,7 @@ public final class ClassificationPolicy {
      *
      * @return the workerSelectors value.
      */
+    @Generated
     public List<WorkerSelectorAttachment> getWorkerSelectors() {
         return this.workerSelectors;
     }
@@ -208,6 +194,7 @@ public final class ClassificationPolicy {
      * @param workerSelectors the workerSelectors value to set.
      * @return the ClassificationPolicy object itself.
      */
+    @Generated
     public ClassificationPolicy setWorkerSelectors(List<WorkerSelectorAttachment> workerSelectors) {
         this.workerSelectors = workerSelectors;
         return this;

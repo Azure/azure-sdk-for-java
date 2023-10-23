@@ -14,18 +14,18 @@ public final class FleetMemberPropertiesTests {
         FleetMemberProperties model =
             BinaryData
                 .fromString(
-                    "{\"clusterResourceId\":\"lnerkujysvleju\",\"group\":\"qawrlyxwj\",\"provisioningState\":\"Canceled\"}")
+                    "{\"clusterResourceId\":\"yulpkudjkr\",\"group\":\"hbzhfepg\",\"provisioningState\":\"Canceled\"}")
                 .toObject(FleetMemberProperties.class);
-        Assertions.assertEquals("lnerkujysvleju", model.clusterResourceId());
-        Assertions.assertEquals("qawrlyxwj", model.group());
+        Assertions.assertEquals("yulpkudjkr", model.clusterResourceId());
+        Assertions.assertEquals("hbzhfepg", model.group());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetMemberProperties model =
-            new FleetMemberProperties().withClusterResourceId("lnerkujysvleju").withGroup("qawrlyxwj");
+            new FleetMemberProperties().withClusterResourceId("yulpkudjkr").withGroup("hbzhfepg");
         model = BinaryData.fromObject(model).toObject(FleetMemberProperties.class);
-        Assertions.assertEquals("lnerkujysvleju", model.clusterResourceId());
-        Assertions.assertEquals("qawrlyxwj", model.group());
+        Assertions.assertEquals("yulpkudjkr", model.clusterResourceId());
+        Assertions.assertEquals("hbzhfepg", model.group());
     }
 }

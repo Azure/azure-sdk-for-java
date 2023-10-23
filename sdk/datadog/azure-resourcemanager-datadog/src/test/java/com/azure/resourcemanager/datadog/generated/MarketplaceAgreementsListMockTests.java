@@ -32,7 +32,7 @@ public final class MarketplaceAgreementsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"publisher\":\"ankxmyskpbhenb\",\"product\":\"cxy\",\"plan\":\"y\",\"licenseTextLink\":\"rsyn\",\"privacyPolicyLink\":\"idybyxczf\",\"retrieveDatetime\":\"2021-02-02T08:06:37Z\",\"signature\":\"axdbabph\",\"accepted\":true},\"id\":\"lfktsths\",\"name\":\"cocmnyyaztt\",\"type\":\"twwrqp\"}]}";
+            "{\"value\":[{\"properties\":{\"publisher\":\"tcktvfcivfsnky\",\"product\":\"ctq\",\"plan\":\"fbebrjcxer\",\"licenseTextLink\":\"wutttxfvjrbi\",\"privacyPolicyLink\":\"hxepcyvahfnlj\",\"retrieveDatetime\":\"2021-01-31T22:23:26Z\",\"signature\":\"j\",\"accepted\":false},\"id\":\"qgidokgjljyo\",\"name\":\"gvcl\",\"type\":\"bgsncghkjeszzhb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,16 +63,16 @@ public final class MarketplaceAgreementsListMockTests {
         PagedIterable<DatadogAgreementResource> response =
             manager.marketplaceAgreements().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ankxmyskpbhenb", response.iterator().next().properties().publisher());
-        Assertions.assertEquals("cxy", response.iterator().next().properties().product());
-        Assertions.assertEquals("y", response.iterator().next().properties().plan());
-        Assertions.assertEquals("rsyn", response.iterator().next().properties().licenseTextLink());
-        Assertions.assertEquals("idybyxczf", response.iterator().next().properties().privacyPolicyLink());
+        Assertions.assertEquals("tcktvfcivfsnky", response.iterator().next().properties().publisher());
+        Assertions.assertEquals("ctq", response.iterator().next().properties().product());
+        Assertions.assertEquals("fbebrjcxer", response.iterator().next().properties().plan());
+        Assertions.assertEquals("wutttxfvjrbi", response.iterator().next().properties().licenseTextLink());
+        Assertions.assertEquals("hxepcyvahfnlj", response.iterator().next().properties().privacyPolicyLink());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-02-02T08:06:37Z"),
+                OffsetDateTime.parse("2021-01-31T22:23:26Z"),
                 response.iterator().next().properties().retrieveDatetime());
-        Assertions.assertEquals("axdbabph", response.iterator().next().properties().signature());
-        Assertions.assertEquals(true, response.iterator().next().properties().accepted());
+        Assertions.assertEquals("j", response.iterator().next().properties().signature());
+        Assertions.assertEquals(false, response.iterator().next().properties().accepted());
     }
 }

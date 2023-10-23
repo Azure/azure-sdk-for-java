@@ -30,7 +30,7 @@ public final class ImagesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"uo\",\"publisher\":\"inyflnorwmduvwp\",\"offer\":\"vxwmygd\",\"sku\":\"gpqch\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"Creating\",\"hibernateSupport\":\"Enabled\"},\"id\":\"crxgibb\",\"name\":\"axconfozauo\",\"type\":\"sukokwbqplhl\"}";
+            "{\"properties\":{\"description\":\"d\",\"publisher\":\"nsiru\",\"offer\":\"z\",\"sku\":\"es\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":1975861158,\"max\":2124776241},\"vCPUs\":{\"min\":1885722966,\"max\":1771051614}},\"provisioningState\":\"Canceled\",\"hibernateSupport\":\"Enabled\"},\"id\":\"xwmdboxd\",\"name\":\"gsftufqobrjlnacg\",\"type\":\"ckknhxkizvy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class ImagesGetWithResponseMockTests {
         Image response =
             manager
                 .images()
-                .getWithResponse("neekulfg", "lqubkwdlen", "d", "utujba", com.azure.core.util.Context.NONE)
+                .getWithResponse("dmdqb", "pypqtgsfj", "cbslhhx", "db", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

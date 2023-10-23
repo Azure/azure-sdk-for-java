@@ -2712,4 +2712,6 @@
     <Method name="serializeRequest"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
+
+  <!-- Comment to force CI to run Spotbugs against all SDKs -->
 </FindBugsFilter>

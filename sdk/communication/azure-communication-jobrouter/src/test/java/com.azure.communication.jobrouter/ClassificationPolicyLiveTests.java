@@ -7,7 +7,6 @@ import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.LabelOperator;
-import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterQueueSelector;
@@ -46,7 +45,8 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          * Create queue selectors.
          */
         StaticQueueSelectorAttachment staticQueueSelector = new StaticQueueSelectorAttachment(
-            new RouterQueueSelector("queueId", LabelOperator.EQUAL, new LabelValue(queueId)));
+            new RouterQueueSelector("queueId", LabelOperator.EQUAL)
+                .setValue(queueId));
 
         List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
             {
@@ -59,7 +59,8 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          * Create worker selectors.
          */
         StaticWorkerSelectorAttachment staticWorkerSelector = new StaticWorkerSelectorAttachment(
-            new RouterWorkerSelector("key", LabelOperator.EQUAL, new LabelValue("value")));
+            new RouterWorkerSelector("key", LabelOperator.EQUAL)
+                .setValue("value"));
 
         List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {
             {
@@ -73,7 +74,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
             classificationPolicyId)
             .setName(classificationPolicyName)
-            .setPrioritizationRule(new StaticRouterRule(new LabelValue(1)))
+            .setPrioritizationRule(new StaticRouterRule().setValue(1))
             .setWorkerSelectors(workerSelectors)
             .setQueueSelectors(queueSelectors)
             .setFallbackQueueId(jobQueue.getId());

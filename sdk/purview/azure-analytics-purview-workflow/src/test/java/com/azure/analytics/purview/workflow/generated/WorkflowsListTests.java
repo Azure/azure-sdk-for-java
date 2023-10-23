@@ -16,7 +16,7 @@ public final class WorkflowsListTests extends PurviewWorkflowClientTestBase {
     @Disabled
     public void testWorkflowsListTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = purviewWorkflowClient.listWorkflows(requestOptions);
+        PagedIterable<BinaryData> response = workflowsClient.list(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(

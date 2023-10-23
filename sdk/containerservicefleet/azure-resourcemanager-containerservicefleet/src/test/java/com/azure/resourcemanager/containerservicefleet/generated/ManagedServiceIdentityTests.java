@@ -18,7 +18,7 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"77952b03-894a-457e-8988-ea8b57558a2e\",\"tenantId\":\"01c5134b-5509-4ba1-9f87-aab331c141a1\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ljfmppee\":{\"principalId\":\"13a83be7-b7f6-4a9d-9a6b-3ea1af3f1239\",\"clientId\":\"2b5de2d9-54b5-4d93-8556-67733c79e168\"}}}")
+                    "{\"principalId\":\"c42d8bf5-4483-4325-95b6-5cea77e032b9\",\"tenantId\":\"a4c1cf36-b350-4422-8ca4-64270437a46c\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fgibmadgakeq\":{\"principalId\":\"9df94168-a791-404c-9033-846f1c6ff8b5\",\"clientId\":\"dd52ce99-b25d-44ec-a94c-5f3616f04ce1\"},\"yb\":{\"principalId\":\"876febef-fd18-4dc6-a884-672a79043091\",\"clientId\":\"9682f597-976a-48ee-ab73-1a8f7c3a48f3\"},\"e\":{\"principalId\":\"e808e1b9-2385-4206-ae29-ef18f74873de\",\"clientId\":\"c6b2c7c2-caf3-4aad-881c-7342c91ea24f\"}}}")
                 .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
@@ -28,7 +28,14 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ljfmppee", new UserAssignedIdentity()));
+                .withUserAssignedIdentities(
+                    mapOf(
+                        "fgibmadgakeq",
+                        new UserAssignedIdentity(),
+                        "yb",
+                        new UserAssignedIdentity(),
+                        "e",
+                        new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
