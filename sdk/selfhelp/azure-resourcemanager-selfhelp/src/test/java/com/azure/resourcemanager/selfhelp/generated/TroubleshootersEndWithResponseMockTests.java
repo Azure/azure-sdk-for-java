@@ -12,28 +12,25 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.selfhelp.SelfHelpManager;
-import com.azure.resourcemanager.selfhelp.models.DiagnosticResource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class DiagnosticsGetWithResponseMockTests {
+public final class TroubleshootersEndWithResponseMockTests {
     @Test
-    public void testGetWithResponse() throws Exception {
+    public void testEndWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"globalParameters\":{\"l\":\"rhhbcs\",\"bnbdxkqpxokajion\":\"mmajtjaodx\",\"jrmvdjwzrlo\":\"imexgstxgcpodgma\"},\"insights\":[],\"acceptedAt\":\"whijcoejctbza\",\"provisioningState\":\"Failed\",\"diagnostics\":[]},\"id\":\"bkbfkgukdkex\",\"name\":\"ppofmxaxcfjpgdd\",\"type\":\"ocjjxhvpmouexh\"}";
+        String responseStr = "{}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
+        Mockito.when(httpResponse.getStatusCode()).thenReturn(204);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
         Mockito
             .when(httpResponse.getBody())
@@ -59,9 +56,6 @@ public final class DiagnosticsGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DiagnosticResource response =
-            manager.diagnostics().getWithResponse("locx", "c", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("rhhbcs", response.globalParameters().get("l"));
+        manager.troubleshooters().endWithResponse("yuhhziu", "efozbhdms", com.azure.core.util.Context.NONE);
     }
 }
