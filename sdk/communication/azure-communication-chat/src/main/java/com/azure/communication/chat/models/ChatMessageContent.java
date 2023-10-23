@@ -34,7 +34,6 @@ public final class ChatMessageContent {
      * @param message      The message
      * @param topic        The topic
      * @param participants The participants
-     * @param attachments  The attachments on the message
      * @param initiator    The initiator
      */
     public ChatMessageContent(
