@@ -442,11 +442,11 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
     }
 
     /**
-     * /** Constructor of {@link SearchIndexer}.
+     * Constructor of {@link SearchIndexer}.
      *
      * @param name The name of the indexer.
      * @param dataSourceName The name of the datasource from which this indexer reads data.
-     * @param targetIndexName The name of the index to which this indexer writes data. /
+     * @param targetIndexName The name of the index to which this indexer writes data.
      */
     public SearchIndexer(String name, String dataSourceName, String targetIndexName) {
         this.name = name;

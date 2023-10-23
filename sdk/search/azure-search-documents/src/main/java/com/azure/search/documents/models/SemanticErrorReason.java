@@ -10,18 +10,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /** Reason that a partial response was returned for a semantic search request. */
-public final class SemanticPartialResponseReason extends ExpandableStringEnum<SemanticPartialResponseReason> {
+public final class SemanticErrorReason extends ExpandableStringEnum<SemanticErrorReason> {
     /**
      * If 'semanticMaxWaitInMilliseconds' was set and the semantic processing duration exceeded that value. Only the
      * base results were returned.
      */
-    public static final SemanticPartialResponseReason MAX_WAIT_EXCEEDED = fromString("maxWaitExceeded");
+    public static final SemanticErrorReason MAX_WAIT_EXCEEDED = fromString("maxWaitExceeded");
 
     /** The request was throttled. Only the base results were returned. */
-    public static final SemanticPartialResponseReason CAPACITY_OVERLOADED = fromString("capacityOverloaded");
+    public static final SemanticErrorReason CAPACITY_OVERLOADED = fromString("capacityOverloaded");
 
     /** At least one step of the semantic process failed. */
-    public static final SemanticPartialResponseReason TRANSIENT = fromString("transient");
+    public static final SemanticErrorReason TRANSIENT = fromString("transient");
 
     /**
      * Creates a new instance of SemanticPartialResponseReason value.
@@ -29,7 +29,7 @@ public final class SemanticPartialResponseReason extends ExpandableStringEnum<Se
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SemanticPartialResponseReason() {}
+    public SemanticErrorReason() {}
 
     /**
      * Creates or finds a SemanticPartialResponseReason from its string representation.
@@ -37,8 +37,8 @@ public final class SemanticPartialResponseReason extends ExpandableStringEnum<Se
      * @param name a name to look for.
      * @return the corresponding SemanticPartialResponseReason.
      */
-    public static SemanticPartialResponseReason fromString(String name) {
-        return fromString(name, SemanticPartialResponseReason.class);
+    public static SemanticErrorReason fromString(String name) {
+        return fromString(name, SemanticErrorReason.class);
     }
 
     /**
@@ -46,7 +46,7 @@ public final class SemanticPartialResponseReason extends ExpandableStringEnum<Se
      *
      * @return known SemanticPartialResponseReason values.
      */
-    public static Collection<SemanticPartialResponseReason> values() {
-        return values(SemanticPartialResponseReason.class);
+    public static Collection<SemanticErrorReason> values() {
+        return values(SemanticErrorReason.class);
     }
 }

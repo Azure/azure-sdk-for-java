@@ -8,11 +8,11 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.core.util.paging.PageRetrieverSync;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
-import com.azure.search.documents.models.SemanticPartialResponseReason;
-import com.azure.search.documents.models.SemanticPartialResponseType;
 import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticErrorReason;
+import com.azure.search.documents.models.SemanticSearchResultsType;
 
 import java.util.List;
 import java.util.Map;
@@ -134,17 +134,17 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
      * The reason for a partial result returned by Azure Cognitive Search.
      * @return The reason for a partial result returned by Azure Cognitive Search.
      */
-    public SemanticPartialResponseReason getSemanticPartialResponseReason() {
-        return metadataSupplier != null ?  metadataSupplier.get().getFirstPageResponse().getSemanticPartialResponseReason()
-            : pagedFlux.getSemanticPartialResponseReason().block();
+    public SemanticErrorReason getSemanticErrorReason() {
+        return metadataSupplier != null ?  metadataSupplier.get().getFirstPageResponse().getSemanticErrorReason()
+            : pagedFlux.getSemanticErrorReason().block();
     }
 
     /**
      * The type of the partial result returned by Azure Cognitive Search.
      * @return The type of the partial result returned by Azure Cognitive Search.
      */
-    public SemanticPartialResponseType getSemanticPartialResponseType() {
-        return metadataSupplier != null ?  metadataSupplier.get().getFirstPageResponse().getSemanticPartialResponseType()
-            : pagedFlux.getSemanticPartialResponseType().block();
+    public SemanticSearchResultsType getSemanticSearchResultsType() {
+        return metadataSupplier != null ?  metadataSupplier.get().getFirstPageResponse().getSemanticSearchResultsType()
+            : pagedFlux.getSemanticSearchResultsType().block();
     }
 }

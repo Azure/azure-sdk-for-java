@@ -90,8 +90,15 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d52c50c22ec7f573d49fc3b4c6c931491d92ec8b/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,VectorQueryKind
 customization-class: src/main/java/SearchIndexCustomizations.java
+directive:
+    - rename-model:
+        from: VectorQuery
+        to: VectorizableQuery
+    - rename-model:
+        from: RawVectorQuery
+        to: VectorQuery
 ```
 
 ### Tag: searchservice
@@ -104,7 +111,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d52c50c22ec7f573d49fc3b4c6c931491d92ec8b/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,VectorSearchAlgorithmKind
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -240,7 +247,7 @@ directive:
       $.SearchIndexStatistics.required = $.SearchIndexStatistics.required.filter(required => required !== 'vectorIndexSize');
 ```
 
-### Renames 
+### Renames
 ``` yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
@@ -416,14 +423,14 @@ directive:
   transform: $["x-ms-format"] = "arm-id";
 ```
 
-### Rename VectorQuery property `K`
+### Rename VectorizableQuery property `K`
 
-Rename VectorQuery property `K` to `KNearestNeighborsCount`
+Rename VectorizableQuery property `K` to `KNearestNeighborsCount`
 
 ```yaml $(tag) == 'searchindex'
 directive:
 - from: swagger-document
-  where: $.definitions.VectorQuery.properties.k
+  where: $.definitions.VectorizableQuery.properties.k
   transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
 ```
 
@@ -491,12 +498,18 @@ directive:
     $["x-ms-client-name"] = "algorithmConfigurationName";
 ```
 
-### Rename SemanticPrioritizedFields properties to drop redundant prioritized
+### Rename SemanticErrorHandling to SemanticErrorMode
 
-```yaml $(tag) == 'searchservice'
+``` yaml $(tag) == 'searchindex'
 - from: swagger-document
-  where: $.definitions.SemanticPrioritizedFields
+  where: $.paths["/docs"].get.parameters
   transform: >
-    $.prioritizedContentFields["x-ms-client-name"] = "contentFields";
-    $.prioritizedKeywordsFields["x-ms-client-name"] = "keywordsFields";
+    $.find(p => p.name === "semanticErrorHandling")["x-ms-enum"].name = "semanticErrorMode";
+```
+
+``` yaml $(tag) == 'searchindex'
+- from: swagger-document
+  where: $.definitions.SemanticErrorHandling
+  transform: >
+    $["x-ms-enum"].name = "SemanticErrorMode";
 ```

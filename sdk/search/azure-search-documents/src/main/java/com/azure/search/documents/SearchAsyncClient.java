@@ -1113,7 +1113,7 @@ public final class SearchAsyncClient {
         VectorSearchOptions vectorSearchOptions = options.getVectorSearchOptions();
         if (vectorSearchOptions != null) {
             request.setVectorFilterMode(vectorSearchOptions.getFilterMode())
-                .setVectorQueries(vectorSearchOptions.getVectorQueries());
+                .setVectorQueries(vectorSearchOptions.getVectorizableQueries());
         }
 
         return request;

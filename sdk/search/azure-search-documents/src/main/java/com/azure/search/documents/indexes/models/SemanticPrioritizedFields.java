@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -65,54 +66,54 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
     }
 
     /**
-     * Get the prioritizedContentFields property: Defines the content fields to be used for semantic ranking, captions,
-     * highlights, and answers. For the best result, the selected fields should contain text in natural language form.
-     * The order of the fields in the array represents their priority. Fields with lower priority may get truncated if
-     * the content is long.
+     * Get the contentFields property: Defines the content fields to be used for semantic ranking, captions, highlights,
+     * and answers. For the best result, the selected fields should contain text in natural language form. The order of
+     * the fields in the array represents their priority. Fields with lower priority may get truncated if the content is
+     * long.
      *
-     * @return the prioritizedContentFields value.
+     * @return the contentFields value.
      */
-    public List<SemanticField> getPrioritizedContentFields() {
+    public List<SemanticField> getContentFields() {
         return this.prioritizedContentFields;
     }
 
     /**
-     * Set the prioritizedContentFields property: Defines the content fields to be used for semantic ranking, captions,
-     * highlights, and answers. For the best result, the selected fields should contain text in natural language form.
-     * The order of the fields in the array represents their priority. Fields with lower priority may get truncated if
-     * the content is long.
+     * Set the contentFields property: Defines the content fields to be used for semantic ranking, captions, highlights,
+     * and answers. For the best result, the selected fields should contain text in natural language form. The order of
+     * the fields in the array represents their priority. Fields with lower priority may get truncated if the content is
+     * long.
      *
-     * @param prioritizedContentFields the prioritizedContentFields value to set.
-     * @return the SemanticPrioritizedFields object itself.
+     * @param contentFields the contentFields value to set.
+     * @return the SemanticSearchPrioritizedFields object itself.
      */
-    public SemanticPrioritizedFields setPrioritizedContentFields(List<SemanticField> prioritizedContentFields) {
-        this.prioritizedContentFields = prioritizedContentFields;
+    public SemanticPrioritizedFields setContentFields(List<SemanticField> contentFields) {
+        this.prioritizedContentFields = contentFields;
         return this;
     }
 
     /**
-     * Get the prioritizedKeywordsFields property: Defines the keyword fields to be used for semantic ranking, captions,
+     * Get the keywordsFields property: Defines the keyword fields to be used for semantic ranking, captions,
      * highlights, and answers. For the best result, the selected fields should contain a list of keywords. The order of
      * the fields in the array represents their priority. Fields with lower priority may get truncated if the content is
      * long.
      *
-     * @return the prioritizedKeywordsFields value.
+     * @return the keywordsFields value.
      */
-    public List<SemanticField> getPrioritizedKeywordsFields() {
+    public List<SemanticField> getKeywordsFields() {
         return this.prioritizedKeywordsFields;
     }
 
     /**
-     * Set the prioritizedKeywordsFields property: Defines the keyword fields to be used for semantic ranking, captions,
+     * Set the keywordsFields property: Defines the keyword fields to be used for semantic ranking, captions,
      * highlights, and answers. For the best result, the selected fields should contain a list of keywords. The order of
      * the fields in the array represents their priority. Fields with lower priority may get truncated if the content is
      * long.
      *
-     * @param prioritizedKeywordsFields the prioritizedKeywordsFields value to set.
-     * @return the SemanticPrioritizedFields object itself.
+     * @param keywordsFields the keywordsFields value to set.
+     * @return the SemanticSearchPrioritizedFields object itself.
      */
-    public SemanticPrioritizedFields setPrioritizedKeywordsFields(List<SemanticField> prioritizedKeywordsFields) {
-        this.prioritizedKeywordsFields = prioritizedKeywordsFields;
+    public SemanticPrioritizedFields setKeywordsFields(List<SemanticField> keywordsFields) {
+        this.prioritizedKeywordsFields = keywordsFields;
         return this;
     }
 
@@ -162,5 +163,33 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
                     }
                     return deserializedSemanticPrioritizedFields;
                 });
+    }
+
+    /**
+     * Set the contentFields property: Defines the content fields to be used for semantic ranking, captions, highlights,
+     * and answers. For the best result, the selected fields should contain text in natural language form. The order of
+     * the fields in the array represents their priority. Fields with lower priority may get truncated if the content is
+     * long.
+     *
+     * @param contentFields the contentFields value to set.
+     * @return the SemanticSearchPrioritizedFields object itself.
+     */
+    public SemanticPrioritizedFields setContentFields(SemanticField... contentFields) {
+        this.prioritizedContentFields = (contentFields == null) ? null : Arrays.asList(contentFields);
+        return this;
+    }
+
+    /**
+     * Set the keywordsFields property: Defines the keyword fields to be used for semantic ranking, captions,
+     * highlights, and answers. For the best result, the selected fields should contain a list of keywords. The order of
+     * the fields in the array represents their priority. Fields with lower priority may get truncated if the content is
+     * long.
+     *
+     * @param keywordsFields the keywordsFields value to set.
+     * @return the SemanticSearchPrioritizedFields object itself.
+     */
+    public SemanticPrioritizedFields setKeywordsFields(SemanticField... keywordsFields) {
+        this.prioritizedKeywordsFields = (keywordsFields == null) ? null : Arrays.asList(keywordsFields);
+        return this;
     }
 }

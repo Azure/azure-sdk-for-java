@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.models;
 
-import com.azure.core.util.CoreUtils;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +10,7 @@ import java.util.List;
  */
 public final class VectorSearchOptions {
     private VectorFilterMode filterMode;
-    private List<VectorQuery> vectorQueries;
+    private List<VectorizableQuery> vectorizableQueries;
 
     /**
      * Creates a new instance of {@link VectorSearchOptions}.
@@ -45,29 +43,29 @@ public final class VectorSearchOptions {
      *
      * @return The list of vector queries to perform.
      */
-    public List<VectorQuery> getVectorQueries() {
-        return vectorQueries;
+    public List<VectorizableQuery> getVectorizableQueries() {
+        return vectorizableQueries;
     }
 
     /**
      * Sets the list of vector queries to perform.
      *
-     * @param vectorQueries The list of vector queries to perform.
+     * @param vectorizableQueries The list of vector queries to perform.
      * @return The VectorSearchOptions object itself.
      */
-    public VectorSearchOptions setVectorQueries(VectorQuery... vectorQueries) {
-        this.vectorQueries = vectorQueries == null ? null : Arrays.asList(vectorQueries);
+    public VectorSearchOptions setVectorizableQueries(VectorizableQuery... vectorizableQueries) {
+        this.vectorizableQueries = vectorizableQueries == null ? null : Arrays.asList(vectorizableQueries);
         return this;
     }
 
     /**
      * Sets the list of vector queries to perform.
      *
-     * @param vectorQueries The list of vector queries to perform.
+     * @param vectorizableQueries The list of vector queries to perform.
      * @return The VectorSearchOptions object itself.
      */
-    public VectorSearchOptions setVectorQueries(List<VectorQuery> vectorQueries) {
-        this.vectorQueries = vectorQueries;
+    public VectorSearchOptions setVectorizableQueries(List<VectorizableQuery> vectorizableQueries) {
+        this.vectorizableQueries = vectorizableQueries;
         return this;
     }
 }

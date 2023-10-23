@@ -10,6 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.implementation.models.VectorSearchAlgorithmKind;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

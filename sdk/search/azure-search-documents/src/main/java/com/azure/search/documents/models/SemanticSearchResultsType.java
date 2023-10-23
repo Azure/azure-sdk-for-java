@@ -10,15 +10,15 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /** Type of partial response that was returned for a semantic search request. */
-public final class SemanticPartialResponseType extends ExpandableStringEnum<SemanticPartialResponseType> {
+public final class SemanticSearchResultsType extends ExpandableStringEnum<SemanticSearchResultsType> {
     /** Results without any semantic enrichment or reranking. */
-    public static final SemanticPartialResponseType BASE_RESULTS = fromString("baseResults");
+    public static final SemanticSearchResultsType BASE_RESULTS = fromString("baseResults");
 
     /**
      * Results have been reranked with the reranker model and will include semantic captions. They will not include any
      * answers, answers highlights or caption highlights.
      */
-    public static final SemanticPartialResponseType RERANKED_RESULTS = fromString("rerankedResults");
+    public static final SemanticSearchResultsType RERANKED_RESULTS = fromString("rerankedResults");
 
     /**
      * Creates a new instance of SemanticPartialResponseType value.
@@ -26,7 +26,7 @@ public final class SemanticPartialResponseType extends ExpandableStringEnum<Sema
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SemanticPartialResponseType() {}
+    public SemanticSearchResultsType() {}
 
     /**
      * Creates or finds a SemanticPartialResponseType from its string representation.
@@ -34,8 +34,8 @@ public final class SemanticPartialResponseType extends ExpandableStringEnum<Sema
      * @param name a name to look for.
      * @return the corresponding SemanticPartialResponseType.
      */
-    public static SemanticPartialResponseType fromString(String name) {
-        return fromString(name, SemanticPartialResponseType.class);
+    public static SemanticSearchResultsType fromString(String name) {
+        return fromString(name, SemanticSearchResultsType.class);
     }
 
     /**
@@ -43,7 +43,7 @@ public final class SemanticPartialResponseType extends ExpandableStringEnum<Sema
      *
      * @return known SemanticPartialResponseType values.
      */
-    public static Collection<SemanticPartialResponseType> values() {
-        return values(SemanticPartialResponseType.class);
+    public static Collection<SemanticSearchResultsType> values() {
+        return values(SemanticSearchResultsType.class);
     }
 }

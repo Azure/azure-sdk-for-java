@@ -90,7 +90,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     /*
      * Defines parameters for a search index that influence semantic capabilities.
      */
-    private SemanticSearch semanticSettings;
+    private SemanticSearch semanticSearch;
 
     /*
      * Contains configuration options related to vector search.
@@ -365,18 +365,18 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      *
      * @return the semanticSettings value.
      */
-    public SemanticSearch getSemanticSettings() {
-        return this.semanticSettings;
+    public SemanticSearch getSemanticSearch() {
+        return this.semanticSearch;
     }
 
     /**
      * Set the semanticSettings property: Defines parameters for a search index that influence semantic capabilities.
      *
-     * @param semanticSettings the semanticSettings value to set.
+     * @param semanticSearch the semanticSettings value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSemanticSettings(SemanticSearch semanticSettings) {
-        this.semanticSettings = semanticSettings;
+    public SearchIndex setSemanticSearch(SemanticSearch semanticSearch) {
+        this.semanticSearch = semanticSearch;
         return this;
     }
 
@@ -436,7 +436,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeArrayField("charFilters", this.charFilters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
         jsonWriter.writeJsonField("similarity", this.similarity);
-        jsonWriter.writeJsonField("semantic", this.semanticSettings);
+        jsonWriter.writeJsonField("semantic", this.semanticSearch);
         jsonWriter.writeJsonField("vectorSearch", this.vectorSearch);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
@@ -521,7 +521,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                         deserializedSearchIndex.charFilters = charFilters;
                         deserializedSearchIndex.encryptionKey = encryptionKey;
                         deserializedSearchIndex.similarity = similarity;
-                        deserializedSearchIndex.semanticSettings = semanticSettings;
+                        deserializedSearchIndex.semanticSearch = semanticSettings;
                         deserializedSearchIndex.vectorSearch = vectorSearch;
                         deserializedSearchIndex.eTag = eTag;
                         return deserializedSearchIndex;
@@ -536,10 +536,10 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
-     * /** Constructor of {@link SearchIndex}.
+     * Constructor of {@link SearchIndex}.
      *
      * @param name The name of the index.
-     * @param fields The fields of the index. /
+     * @param fields The fields of the index.
      */
     public SearchIndex(String name, List<SearchField> fields) {
         this.name = name;

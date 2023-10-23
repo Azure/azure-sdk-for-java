@@ -25,13 +25,13 @@ import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionType;
-import com.azure.search.documents.models.RawVectorQuery;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SemanticSearchOptions;
 import com.azure.search.documents.models.VectorFilterMode;
 import com.azure.search.documents.models.VectorQuery;
 import com.azure.search.documents.models.VectorSearchOptions;
+import com.azure.search.documents.models.VectorizableQuery;
 import com.azure.search.documents.util.SearchPagedIterable;
 
 import java.io.IOException;
@@ -154,14 +154,13 @@ public class VectorSearchExample {
     public static void singleVectorSearch(SearchClient searchClient) {
         // Example of using vector search without using a search query or any filters.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        VectorQuery vectorQuery = new RawVectorQuery()
-            .setVector(vectorizedResult)
+        VectorizableQuery vectorizableQuery = new VectorQuery(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
-        SearchPagedIterable searchResults = searchClient.search(null,
-            new SearchOptions().setVectorSearchOptions(new VectorSearchOptions().setVectorQueries(vectorQuery)),
+        SearchPagedIterable searchResults = searchClient.search(null, new SearchOptions()
+                .setVectorSearchOptions(new VectorSearchOptions().setVectorizableQueries(vectorizableQuery)),
             Context.NONE);
 
         int count = 0;
@@ -182,15 +181,14 @@ public class VectorSearchExample {
     public static void singleVectorSearchWithFilter(SearchClient searchClient) {
         // Example of using vector search with a filter.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        VectorQuery searchQueryVector = new RawVectorQuery()
-            .setVector(vectorizedResult)
+        VectorizableQuery vectorizableQuery = new VectorQuery(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search(null, new SearchOptions()
             .setVectorSearchOptions(new VectorSearchOptions()
-                .setVectorQueries(searchQueryVector)
+                .setVectorizableQueries(vectorizableQuery)
                 .setFilterMode(VectorFilterMode.POST_FILTER))
             .setFilter("Category eq 'Luxury'"), Context.NONE);
 
@@ -212,14 +210,13 @@ public class VectorSearchExample {
     public static void simpleHybridSearch(SearchClient searchClient) {
         // Example of using vector search with a query in addition to vectorization.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        VectorQuery searchQueryVector = new RawVectorQuery()
-            .setVector(vectorizedResult)
+        VectorizableQuery vectorizableQuery = new VectorQuery(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search("Top hotels in town", new SearchOptions()
-            .setVectorSearchOptions(new VectorSearchOptions().setVectorQueries(searchQueryVector)), Context.NONE);
+            .setVectorSearchOptions(new VectorSearchOptions().setVectorizableQueries(vectorizableQuery)), Context.NONE);
 
         int count = 0;
         System.out.println("Simple Hybrid Search Results:");
@@ -242,15 +239,14 @@ public class VectorSearchExample {
     public static void semanticHybridSearch(SearchClient searchClient) {
         // Example of using vector search with a semantic query in addition to vectorization.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        VectorQuery searchQueryVector = new RawVectorQuery()
-            .setVector(vectorizedResult)
+        VectorizableQuery vectorizableQuery = new VectorQuery(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
         SearchOptions searchOptions = new SearchOptions()
             .setVectorSearchOptions(new VectorSearchOptions()
-                .setVectorQueries(searchQueryVector))
+                .setVectorizableQueries(vectorizableQuery))
             .setSemanticSearchOptions(new SemanticSearchOptions()
                 .setSemanticConfigurationName("my-semantic-config")
                 .setQueryAnswer(new QueryAnswer().setAnswerType(QueryAnswerType.EXTRACTIVE))
@@ -290,29 +286,27 @@ public class VectorSearchExample {
     public static void multiVectorSearch(SearchClient searchClient) {
         // Example of using multiple vectors in search without using a search query or any filters.
         List<Float> vectorizedResult = VectorSearchEmbeddings.HOTEL1_VECTORIZE_DESCRIPTION;
-        VectorQuery searchQueryVector = new RawVectorQuery()
-            .setVector(vectorizedResult)
+        VectorizableQuery firstVectorizableQuery = new VectorQuery(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
         List<Float> secondVectorizedResult = VectorSearchEmbeddings.HOTEL2_VECTORIZE_DESCRIPTION;
-        VectorQuery secondSearchQueryVector = new RawVectorQuery()
-            .setVector(secondVectorizedResult)
+        VectorizableQuery secondVectorizableQuery = new VectorQuery(secondVectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
         List<Float> thirdVectorizedResult = VectorSearchEmbeddings.HOTEL3_VECTORIZE_DESCRIPTION;
-        VectorQuery thirdQueryVector = new RawVectorQuery()
-            .setVector(thirdVectorizedResult)
+        VectorizableQuery thirdVectorizableQuery = new VectorQuery(thirdVectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search(null, new SearchOptions()
             .setVectorSearchOptions(new VectorSearchOptions()
-                .setVectorQueries(searchQueryVector, secondSearchQueryVector, thirdQueryVector)), Context.NONE);
+                .setVectorizableQueries(firstVectorizableQuery, secondVectorizableQuery, thirdVectorizableQuery)),
+            Context.NONE);
 
         int count = 0;
         System.out.println("Multi Vector Search Results:");

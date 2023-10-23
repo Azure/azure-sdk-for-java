@@ -16,7 +16,9 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -118,11 +120,9 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Constructor of {@link SearchIndex}.",
-                    " * @param name The name of the index.",
-                    " * @param fields The fields of the index.",
-                    " */"
+                    "Constructor of {@link SearchIndex}.",
+                    "@param name The name of the index.",
+                    "@param fields The fields of the index."
                 )));
 
             addVarArgsOverload(clazz, "fields", "SearchField");
@@ -149,13 +149,11 @@ public class SearchServiceCustomizations extends Customization {
                     "}"
                 )))
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "/**",
-                    " * Constructor of {@link SearchIndexer}.",
-                    " *",
-                    " * @param name The name of the indexer.",
-                    " * @param dataSourceName The name of the datasource from which this indexer reads data.",
-                    " * @param targetIndexName The name of the index to which this indexer writes data.",
-                    " */"
+                    "Constructor of {@link SearchIndexer}.",
+                    "",
+                    "@param name The name of the indexer.",
+                    "@param dataSourceName The name of the datasource from which this indexer reads data.",
+                    "@param targetIndexName The name of the index to which this indexer writes data."
                 )));
 
             addVarArgsOverload(clazz, "fieldMappings", "FieldMapping");
@@ -651,6 +649,7 @@ public class SearchServiceCustomizations extends Customization {
     private void customizeIndexingParameters(ClassCustomization classCustomization, Editor editor) {
         customizeAst(classCustomization, clazz -> {
             clazz.addPrivateField("Map<String, Object>", "configurationMap");
+            clazz.tryAddImportToParentCompilationUnit(Map.class);
 
             clazz.getMethodsByName("getConfiguration").get(0).setName("getIndexingParametersConfiguration");
             clazz.getMethodsByName("setConfiguration").get(0)
@@ -780,8 +779,79 @@ public class SearchServiceCustomizations extends Customization {
 
     private static void customizeSemanticPrioritizedFields(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            //addVarArgsOverload(clazz, "contentFields", "SemanticField");
-            //addVarArgsOverload(clazz, "keywordsFields", "SemanticField");
+            clazz.tryAddImportToParentCompilationUnit(Arrays.class);
+
+            clazz.getMethodsByName("setPrioritizedContentFields").get(0)
+                .setName("setContentFields")
+                .setParameters(new NodeList<>(new Parameter().setType("List<SemanticField>").setName("contentFields")))
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "    this.prioritizedContentFields = contentFields;",
+                    "    return this;",
+                    "}"
+                )))
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "Set the contentFields property: Defines the content fields to be used for semantic ranking, captions,",
+                    "highlights, and answers. For the best result, the selected fields should contain text in natural language form.",
+                    "The order of the fields in the array represents their priority. Fields with lower priority may get truncated if",
+                    "the content is long.",
+                    "",
+                    "@param contentFields the contentFields value to set.",
+                    "@return the SemanticSearchPrioritizedFields object itself."
+                )));
+            clazz.getMethodsByName("getPrioritizedContentFields").get(0)
+                .setName("getContentFields")
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "Get the contentFields property: Defines the content fields to be used for semantic ranking, captions,",
+                    "highlights, and answers. For the best result, the selected fields should contain text in natural language form.",
+                    "The order of the fields in the array represents their priority. Fields with lower priority may get truncated if",
+                    "the content is long.",
+                    "",
+                    "@return the contentFields value."
+                )));
+            addVarArgsOverload(clazz, "contentFields", "SemanticField")
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "    this.prioritizedContentFields = (contentFields == null) ? null : Arrays.asList(contentFields);",
+                    "    return this;",
+                    "}"
+                )));
+
+            clazz.getMethodsByName("setPrioritizedKeywordsFields").get(0)
+                .setName("setKeywordsFields")
+                .setParameters(new NodeList<>(new Parameter().setType("List<SemanticField>").setName("keywordsFields")))
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "    this.prioritizedKeywordsFields = keywordsFields;",
+                    "    return this;",
+                    "}"
+                )))
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "Set the keywordsFields property: Defines the keyword fields to be used for semantic ranking, captions,",
+                    "highlights, and answers. For the best result, the selected fields should contain a list of keywords. The order of",
+                    "the fields in the array represents their priority. Fields with lower priority may get truncated if the content is",
+                    "long.",
+                    "",
+                    "@param keywordsFields the keywordsFields value to set.",
+                    "@return the SemanticSearchPrioritizedFields object itself."
+                )));
+            clazz.getMethodsByName("getPrioritizedKeywordsFields").get(0)
+                .setName("getKeywordsFields")
+                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                    "Get the keywordsFields property: Defines the keyword fields to be used for semantic ranking, captions,",
+                    "highlights, and answers. For the best result, the selected fields should contain a list of keywords. The order of",
+                    "the fields in the array represents their priority. Fields with lower priority may get truncated if the content is",
+                    "long.",
+                    "",
+                    "@return the keywordsFields value."
+                )));
+            addVarArgsOverload(clazz, "keywordsFields", "SemanticField")
+                .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                    "{",
+                    "    this.prioritizedKeywordsFields = (keywordsFields == null) ? null : Arrays.asList(keywordsFields);",
+                    "    return this;",
+                    "}"
+                )));
         });
     }
 

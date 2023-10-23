@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import java.io.IOException;
+import java.util.Map;
 
 /** Represents parameters for indexer execution. */
 @Fluent

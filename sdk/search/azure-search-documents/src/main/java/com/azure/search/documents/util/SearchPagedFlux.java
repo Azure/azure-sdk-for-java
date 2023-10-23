@@ -7,11 +7,11 @@ import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
-import com.azure.search.documents.models.SemanticPartialResponseReason;
-import com.azure.search.documents.models.SemanticPartialResponseType;
 import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticErrorReason;
+import com.azure.search.documents.models.SemanticSearchResultsType;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -125,27 +125,27 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
      * The reason for a partial result returned by Azure Cognitive Search.
      * @return The reason for a partial result returned by Azure Cognitive Search.
      */
-    public Mono<SemanticPartialResponseReason> getSemanticPartialResponseReason() {
+    public Mono<SemanticErrorReason> getSemanticErrorReason() {
         return metadataSupplier.get()
             .flatMap(metaData -> {
-                if (metaData.getFirstPageResponse().getSemanticPartialResponseReason() == null) {
+                if (metaData.getFirstPageResponse().getSemanticErrorReason() == null) {
                     return Mono.empty();
                 }
-                return Mono.just(metaData.getFirstPageResponse().getSemanticPartialResponseReason());
+                return Mono.just(metaData.getFirstPageResponse().getSemanticErrorReason());
             });
-    } 
+    }
 
     /**
      * The type of the partial result returned by Azure Cognitive Search.
      * @return The type of the partial result returned by Azure Cognitive Search.
      */
-    public Mono<SemanticPartialResponseType> getSemanticPartialResponseType() {
+    public Mono<SemanticSearchResultsType> getSemanticSearchResultsType() {
         return metadataSupplier.get()
             .flatMap(metaData -> {
-                if (metaData.getFirstPageResponse().getSemanticPartialResponseType() == null) {
+                if (metaData.getFirstPageResponse().getSemanticSearchResultsType() == null) {
                     return Mono.empty();
                 }
-                return Mono.just(metaData.getFirstPageResponse().getSemanticPartialResponseType());
+                return Mono.just(metaData.getFirstPageResponse().getSemanticSearchResultsType());
             });
     }
 }
