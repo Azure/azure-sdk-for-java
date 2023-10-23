@@ -7,7 +7,7 @@ package com.azure.resourcemanager.devcenter.generated;
 /** Samples for NetworkConnections ListOutboundNetworkDependenciesEndpoints. */
 public final class NetworkConnectionsListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/NetworkConnections_ListOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/NetworkConnections_ListOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: ListOutboundNetworkDependencies.

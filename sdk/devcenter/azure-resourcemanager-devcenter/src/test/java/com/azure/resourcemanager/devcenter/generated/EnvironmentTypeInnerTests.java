@@ -16,29 +16,24 @@ public final class EnvironmentTypeInnerTests {
         EnvironmentTypeInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Created\"},\"tags\":{\"fmvfaxkffeiit\":\"leggzfbu\",\"ggi\":\"lvmezyvshxmzsbbz\",\"xxjnspydptk\":\"rxwburv\",\"iukbldngkpoci\":\"enkouknvudw\"},\"id\":\"z\",\"name\":\"xoegukgjnpiucgy\",\"type\":\"evqzntypmrbp\"}")
+                    "{\"properties\":{\"provisioningState\":\"Created\",\"displayName\":\"vleggzfbuhfmvfax\"},\"tags\":{\"v\":\"eiithlvmez\",\"xwburvjxxjns\":\"hxmzsbbzoggig\",\"ou\":\"ydptkoen\"},\"id\":\"vudwtiukbldng\",\"name\":\"pocipazyxoegu\",\"type\":\"g\"}")
                 .toObject(EnvironmentTypeInner.class);
-        Assertions.assertEquals("leggzfbu", model.tags().get("fmvfaxkffeiit"));
+        Assertions.assertEquals("eiithlvmez", model.tags().get("v"));
+        Assertions.assertEquals("vleggzfbuhfmvfax", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnvironmentTypeInner model =
             new EnvironmentTypeInner()
-                .withTags(
-                    mapOf(
-                        "fmvfaxkffeiit",
-                        "leggzfbu",
-                        "ggi",
-                        "lvmezyvshxmzsbbz",
-                        "xxjnspydptk",
-                        "rxwburv",
-                        "iukbldngkpoci",
-                        "enkouknvudw"));
+                .withTags(mapOf("v", "eiithlvmez", "xwburvjxxjns", "hxmzsbbzoggig", "ou", "ydptkoen"))
+                .withDisplayName("vleggzfbuhfmvfax");
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeInner.class);
-        Assertions.assertEquals("leggzfbu", model.tags().get("fmvfaxkffeiit"));
+        Assertions.assertEquals("eiithlvmez", model.tags().get("v"));
+        Assertions.assertEquals("vleggzfbuhfmvfax", model.displayName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

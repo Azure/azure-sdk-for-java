@@ -124,7 +124,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.TIMEOUT, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
@@ -133,7 +133,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
-            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.TIMEOUT, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
@@ -142,7 +142,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.TIMEOUT, false, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
@@ -220,7 +220,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
                     cosmosDiagnostics,
                     operationType,
                     HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
-                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE,
                     tooManyRequestsRuleId,
                     true);
             } else {
@@ -494,7 +494,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             cosmosDiagnostics,
             OperationType.Read,
             HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
-            HttpConstants.SubStatusCodes.UNKNOWN,
+            HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE,
             feedRangeRuleId,
             true
         );

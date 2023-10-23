@@ -122,7 +122,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
             // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
             { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
             { FaultInjectionServerErrorType.RETRY_WITH, false, 449, 0 },
-            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
+            { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE },
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
             { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 }
         };
@@ -283,7 +283,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
             cosmosDiagnostics,
             OperationType.Read,
             HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
-            HttpConstants.SubStatusCodes.UNKNOWN,
+            HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE,
             feedRangeRuleId,
             true
         );
@@ -504,7 +504,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
                         cosmosDiagnostics,
                         operationType,
                         HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
-                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE,
                         hitLimitRuleId,
                         true
                     );

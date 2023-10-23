@@ -13,7 +13,9 @@ import com.azure.resourcemanager.baremetalinfrastructure.fluent.models.Operation
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
     /**
-     * Gets a list of AzureBareMetal management operations.
+     * Lists all of the available consumption REST API operations.
+     *
+     * <p>Gets a list of AzureBareMetal management operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,7 +25,9 @@ public interface OperationsClient {
     PagedIterable<OperationInner> list();
 
     /**
-     * Gets a list of AzureBareMetal management operations.
+     * Lists all of the available consumption REST API operations.
+     *
+     * <p>Gets a list of AzureBareMetal management operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

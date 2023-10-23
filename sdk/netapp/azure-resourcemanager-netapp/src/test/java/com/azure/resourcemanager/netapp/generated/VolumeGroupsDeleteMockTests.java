@@ -58,6 +58,6 @@ public final class VolumeGroupsDeleteMockTests {
 
         manager
             .volumeGroups()
-            .delete("ndnpdwrpqafgfug", "nnfhyetefypo", "octfjgtixrjvzuyt", com.azure.core.util.Context.NONE);
+            .delete("ptfujgicgaaoept", "aqutdewemxswvruu", "zzjgehkfki", com.azure.core.util.Context.NONE);
     }
 }

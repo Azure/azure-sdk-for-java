@@ -13,7 +13,7 @@ public final class OperationListResultTests {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"hxcr\",\"isDataAction\":false,\"display\":{\"provider\":\"asrru\",\"resource\":\"bhsqfsubcgjbirxb\",\"operation\":\"bsrfbj\",\"description\":\"twss\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"jzbexilzznfq\",\"isDataAction\":false,\"display\":{\"provider\":\"mqtaruoujmkcjh\",\"resource\":\"ytjrybnwjewgdr\",\"operation\":\"rvnaenqpeh\",\"description\":\"doy\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"nzdndslgna\"}")
+                    "{\"value\":[{\"name\":\"mbqfqvmk\",\"isDataAction\":false,\"display\":{\"provider\":\"pvhelxprg\",\"resource\":\"atddc\",\"operation\":\"bcuejrjxgci\",\"description\":\"brh\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"rhzo\",\"isDataAction\":false,\"display\":{\"provider\":\"rq\",\"resource\":\"bahwfl\",\"operation\":\"zdtmhrkwofy\",\"description\":\"oqac\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"tg\",\"isDataAction\":true,\"display\":{\"provider\":\"enwash\",\"resource\":\"dtkcnqxwbpokulp\",\"operation\":\"jwaa\",\"description\":\"pqiiobyuqe\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"wcciuqgbdbu\",\"isDataAction\":true,\"display\":{\"provider\":\"btkuwhh\",\"resource\":\"ykojoxafnndlpic\",\"operation\":\"o\",\"description\":\"kcdyhbpk\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"q\"}")
                 .toObject(OperationListResult.class);
     }
 

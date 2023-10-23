@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionInner;
 
@@ -30,6 +31,13 @@ public interface JobDefinition {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the description property: A description for the Job Definition.

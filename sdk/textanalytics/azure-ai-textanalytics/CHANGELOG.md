@@ -1,6 +1,19 @@
 # Release History
 
-## 5.3.4 (2023-10-19)
+## 5.5.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.4.0 (2023-10-19)
+
+### Features Added
+- Added new default constructor to existing models for compatible with JDK 21. [#36371](https://github.com/Azure/azure-sdk-for-java/pull/36371/files#diff-97ab179febbd379931e540173f1655dca32fb9794ff5acb90c593e08bca67939R37)
 
 ### Other Changes
 

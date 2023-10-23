@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LocalAdminStatus. */
+/**
+ * Local Administrator enable or disable status. Indicates whether owners of Dev Boxes are added as local administrators
+ * on the Dev Box.
+ */
 public final class LocalAdminStatus extends ExpandableStringEnum<LocalAdminStatus> {
     /** Static value Disabled for LocalAdminStatus. */
     public static final LocalAdminStatus DISABLED = fromString("Disabled");

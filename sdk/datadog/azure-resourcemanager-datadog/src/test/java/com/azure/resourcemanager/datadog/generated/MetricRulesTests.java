@@ -17,11 +17,11 @@ public final class MetricRulesTests {
         MetricRules model =
             BinaryData
                 .fromString(
-                    "{\"filteringTags\":[{\"name\":\"xzko\",\"value\":\"cukoklyaxuconu\",\"action\":\"Include\"},{\"name\":\"kbeype\",\"value\":\"mjmwvvjektcx\",\"action\":\"Exclude\"}]}")
+                    "{\"filteringTags\":[{\"name\":\"sfksy\",\"value\":\"dystkiiuxhqyud\",\"action\":\"Exclude\"}]}")
                 .toObject(MetricRules.class);
-        Assertions.assertEquals("xzko", model.filteringTags().get(0).name());
-        Assertions.assertEquals("cukoklyaxuconu", model.filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.INCLUDE, model.filteringTags().get(0).action());
+        Assertions.assertEquals("sfksy", model.filteringTags().get(0).name());
+        Assertions.assertEquals("dystkiiuxhqyud", model.filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.EXCLUDE, model.filteringTags().get(0).action());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,16 +32,12 @@ public final class MetricRulesTests {
                     Arrays
                         .asList(
                             new FilteringTag()
-                                .withName("xzko")
-                                .withValue("cukoklyaxuconu")
-                                .withAction(TagAction.INCLUDE),
-                            new FilteringTag()
-                                .withName("kbeype")
-                                .withValue("mjmwvvjektcx")
+                                .withName("sfksy")
+                                .withValue("dystkiiuxhqyud")
                                 .withAction(TagAction.EXCLUDE)));
         model = BinaryData.fromObject(model).toObject(MetricRules.class);
-        Assertions.assertEquals("xzko", model.filteringTags().get(0).name());
-        Assertions.assertEquals("cukoklyaxuconu", model.filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.INCLUDE, model.filteringTags().get(0).action());
+        Assertions.assertEquals("sfksy", model.filteringTags().get(0).name());
+        Assertions.assertEquals("dystkiiuxhqyud", model.filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.EXCLUDE, model.filteringTags().get(0).action());
     }
 }
