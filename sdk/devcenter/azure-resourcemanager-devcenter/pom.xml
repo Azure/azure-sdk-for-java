@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for DevCenter Management</name>
-  <description>This package contains Microsoft Azure SDK for DevCenter Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. DevCenter Management API. Package tag package-2023-04.</description>
+  <description>This package contains Microsoft Azure SDK for DevCenter Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. DevCenter Management API. Package tag package-preview-2023-10.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,6 +45,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
+    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
