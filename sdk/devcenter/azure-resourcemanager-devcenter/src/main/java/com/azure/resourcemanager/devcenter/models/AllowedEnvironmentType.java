@@ -45,6 +45,13 @@ public interface AllowedEnvironmentType {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the displayName property: The display name of the allowed environment type.
+     *
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.AllowedEnvironmentTypeInner object.
      *
      * @return the inner object.
