@@ -17,8 +17,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = ProtectedItemModelCustomProperties.class)
 @JsonTypeName("ProtectedItemModelCustomProperties")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "HyperVToAzStackHCI", value = HyperVToAzStackHciProtectedItemModelCustomProperties.class),
-    @JsonSubTypes.Type(name = "VMwareToAzStackHCI", value = VMwareToAzStackHciProtectedItemModelCustomProperties.class)
+    @JsonSubTypes.Type(name = "HyperVToAzStackHCI", value = HyperVToAzStackHciProtectedItemProps.class),
+    @JsonSubTypes.Type(name = "VMwareToAzStackHCI", value = VMwareToAzStackHciProtectedItemProps.class)
 })
 @Immutable
 public class ProtectedItemModelCustomProperties {

@@ -155,13 +155,13 @@ public final class ProtectedItemModelProperties {
      * The lastFailedEnableProtectionJob property.
      */
     @JsonProperty(value = "lastFailedEnableProtectionJob", access = JsonProperty.Access.WRITE_ONLY)
-    private ProtectedItemModelPropertiesLastFailedEnableProtectionJob lastFailedEnableProtectionJob;
+    private LastFailedEnableProtectionJob lastFailedEnableProtectionJob;
 
     /*
      * The lastFailedPlannedFailoverJob property.
      */
     @JsonProperty(value = "lastFailedPlannedFailoverJob", access = JsonProperty.Access.WRITE_ONLY)
-    private ProtectedItemModelPropertiesLastFailedPlannedFailoverJob lastFailedPlannedFailoverJob;
+    private LastFailedPlannedFailoverJob lastFailedPlannedFailoverJob;
 
     /*
      * The lastTestFailoverJob property.
@@ -425,7 +425,7 @@ public final class ProtectedItemModelProperties {
      *
      * @return the lastFailedEnableProtectionJob value.
      */
-    public ProtectedItemModelPropertiesLastFailedEnableProtectionJob lastFailedEnableProtectionJob() {
+    public LastFailedEnableProtectionJob lastFailedEnableProtectionJob() {
         return this.lastFailedEnableProtectionJob;
     }
 
@@ -434,7 +434,7 @@ public final class ProtectedItemModelProperties {
      *
      * @return the lastFailedPlannedFailoverJob value.
      */
-    public ProtectedItemModelPropertiesLastFailedPlannedFailoverJob lastFailedPlannedFailoverJob() {
+    public LastFailedPlannedFailoverJob lastFailedPlannedFailoverJob() {
         return this.lastFailedPlannedFailoverJob;
     }
 

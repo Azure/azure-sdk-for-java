@@ -31,14 +31,14 @@ public final class PolicyOperationStatusClientImpl implements PolicyOperationSta
     private final PolicyOperationStatusService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of PolicyOperationStatusClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PolicyOperationStatusClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    PolicyOperationStatusClientImpl(DataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy
                 .create(PolicyOperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -46,11 +46,11 @@ public final class PolicyOperationStatusClientImpl implements PolicyOperationSta
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientPolicyOperationStatus to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientPolicyOperationStatus to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface PolicyOperationStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(

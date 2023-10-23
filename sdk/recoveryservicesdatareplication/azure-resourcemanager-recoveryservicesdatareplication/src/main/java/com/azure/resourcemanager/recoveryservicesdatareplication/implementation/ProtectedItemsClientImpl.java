@@ -46,25 +46,25 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     private final ProtectedItemsService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of ProtectedItemsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ProtectedItemsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    ProtectedItemsClientImpl(DataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(ProtectedItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientProtectedItems to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientProtectedItems to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface ProtectedItemsService {
         @Headers({"Content-Type: application/json"})
         @Get(

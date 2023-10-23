@@ -36,25 +36,25 @@ public final class OperationsClientImpl implements OperationsClient {
     private final OperationsService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    OperationsClientImpl(DataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientOperations to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientOperations to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface OperationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.DataReplication/operations")

@@ -34,25 +34,25 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private final ResourceProvidersService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ResourceProvidersClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    ResourceProvidersClientImpl(DataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientResourceProviders to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientResourceProviders to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post(

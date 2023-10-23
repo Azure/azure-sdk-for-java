@@ -75,10 +75,6 @@
 - [Get](#replicationextension_get)
 - [List](#replicationextension_list)
 
-## ReplicationExtensionOperationStatus
-
-- [Get](#replicationextensionoperationstatus_get)
-
 ## ResourceProvider
 
 - [CheckNameAvailability](#resourceprovider_checknameavailability)
@@ -981,29 +977,6 @@ public final class ReplicationExtensionListSamples {
         manager
             .replicationExtensions()
             .list("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ReplicationExtensionOperationStatus_Get
-
-```java
-/** Samples for ReplicationExtensionOperationStatus Get. */
-public final class ReplicationExtensionOperationStatusGet {
-    /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ReplicationExtensionOperationStatus_Get.json
-     */
-    /**
-     * Sample code: ReplicationExtensionOperationStatus_Get.
-     *
-     * @param manager Entry point to RecoveryServicesDataReplicationManager.
-     */
-    public static void replicationExtensionOperationStatusGet(
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .replicationExtensionOperationStatus()
-            .getWithResponse(
-                "rgrecoveryservicesdatareplication", "4", "g16yjJ", "wqdqc", com.azure.core.util.Context.NONE);
     }
 }
 ```

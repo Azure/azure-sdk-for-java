@@ -23,7 +23,8 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.RecoveryServicesDataReplicationMgmtClient;
+import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.DataReplicationMgmtClient;
+import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.DataReplicationMgmtClientBuilder;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.DraOperationStatusImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.DrasImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.EmailConfigurationsImpl;
@@ -36,8 +37,6 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.ProtectedItemOperationStatusImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.ProtectedItemsImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.RecoveryPointsImpl;
-import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.RecoveryServicesDataReplicationMgmtClientBuilder;
-import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.ReplicationExtensionOperationStatusImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.ReplicationExtensionsImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.recoveryservicesdatareplication.implementation.VaultOperationStatusImpl;
@@ -56,7 +55,6 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.PolicyOp
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.ProtectedItemOperationStatus;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.ProtectedItems;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.RecoveryPoints;
-import com.azure.resourcemanager.recoveryservicesdatareplication.models.ReplicationExtensionOperationStatus;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.ReplicationExtensions;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.ResourceProviders;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.VaultOperationStatus;
@@ -96,8 +94,6 @@ public final class RecoveryServicesDataReplicationManager {
 
     private ReplicationExtensions replicationExtensions;
 
-    private ReplicationExtensionOperationStatus replicationExtensionOperationStatus;
-
     private ResourceProviders resourceProviders;
 
     private Operations operations;
@@ -110,14 +106,14 @@ public final class RecoveryServicesDataReplicationManager {
 
     private WorkflowOperationStatus workflowOperationStatus;
 
-    private final RecoveryServicesDataReplicationMgmtClient clientObject;
+    private final DataReplicationMgmtClient clientObject;
 
     private RecoveryServicesDataReplicationManager(
         HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
-            new RecoveryServicesDataReplicationMgmtClientBuilder()
+            new DataReplicationMgmtClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
@@ -482,20 +478,6 @@ public final class RecoveryServicesDataReplicationManager {
     }
 
     /**
-     * Gets the resource collection API of ReplicationExtensionOperationStatus.
-     *
-     * @return Resource collection API of ReplicationExtensionOperationStatus.
-     */
-    public ReplicationExtensionOperationStatus replicationExtensionOperationStatus() {
-        if (this.replicationExtensionOperationStatus == null) {
-            this.replicationExtensionOperationStatus =
-                new ReplicationExtensionOperationStatusImpl(
-                    clientObject.getReplicationExtensionOperationStatus(), this);
-        }
-        return replicationExtensionOperationStatus;
-    }
-
-    /**
      * Gets the resource collection API of ResourceProviders.
      *
      * @return Resource collection API of ResourceProviders.
@@ -569,12 +551,12 @@ public final class RecoveryServicesDataReplicationManager {
     }
 
     /**
-     * Gets wrapped service client RecoveryServicesDataReplicationMgmtClient providing direct access to the underlying
-     * auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client DataReplicationMgmtClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
      *
-     * @return Wrapped service client RecoveryServicesDataReplicationMgmtClient.
+     * @return Wrapped service client DataReplicationMgmtClient.
      */
-    public RecoveryServicesDataReplicationMgmtClient serviceClient() {
+    public DataReplicationMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

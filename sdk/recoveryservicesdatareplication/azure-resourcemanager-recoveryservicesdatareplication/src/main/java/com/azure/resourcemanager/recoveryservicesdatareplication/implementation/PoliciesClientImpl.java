@@ -44,24 +44,24 @@ public final class PoliciesClientImpl implements PoliciesClient {
     private final PoliciesService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of PoliciesClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PoliciesClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    PoliciesClientImpl(DataReplicationMgmtClientImpl client) {
         this.service = RestProxy.create(PoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientPolicies to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientPolicies to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface PoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(

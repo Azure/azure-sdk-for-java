@@ -38,25 +38,25 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
     private final EmailConfigurationsService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of EmailConfigurationsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    EmailConfigurationsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    EmailConfigurationsClientImpl(DataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(EmailConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientEmailConfigurations to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientEmailConfigurations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface EmailConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(

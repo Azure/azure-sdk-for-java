@@ -46,24 +46,24 @@ public final class VaultsClientImpl implements VaultsClient {
     private final VaultsService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of VaultsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VaultsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    VaultsClientImpl(DataReplicationMgmtClientImpl client) {
         this.service = RestProxy.create(VaultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientVaults to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientVaults to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface VaultsService {
         @Headers({"Content-Type: application/json"})
         @Get(

@@ -36,25 +36,25 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     private final WorkflowsService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of WorkflowsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    WorkflowsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    WorkflowsClientImpl(DataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(WorkflowsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientWorkflows to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientWorkflows to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface WorkflowsService {
         @Headers({"Content-Type: application/json"})
         @Get(

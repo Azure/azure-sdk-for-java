@@ -16,9 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "instanceType",
     defaultImpl = RecoveryPointModelCustomProperties.class)
 @JsonTypeName("RecoveryPointModelCustomProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "HyperVToAzStackHCI", value = HyperVToAzStackHciRecoveryPointModelCustomProperties.class)
-})
+@JsonSubTypes({@JsonSubTypes.Type(name = "HyperVToAzStackHCI", value = HyperVToAzStackHciRecoveryPointProps.class)})
 @Immutable
 public class RecoveryPointModelCustomProperties {
     /** Creates an instance of RecoveryPointModelCustomProperties class. */

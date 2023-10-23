@@ -36,25 +36,25 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     private final RecoveryPointsService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of RecoveryPointsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RecoveryPointsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    RecoveryPointsClientImpl(DataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(RecoveryPointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientRecoveryPoints to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientRecoveryPoints to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface RecoveryPointsService {
         @Headers({"Content-Type: application/json"})
         @Get(

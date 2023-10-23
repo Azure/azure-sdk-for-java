@@ -31,25 +31,25 @@ public final class DraOperationStatusClientImpl implements DraOperationStatusCli
     private final DraOperationStatusService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of DraOperationStatusClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DraOperationStatusClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    DraOperationStatusClientImpl(DataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy.create(DraOperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientDraOperationStatus to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientDraOperationStatus to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface DraOperationStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(

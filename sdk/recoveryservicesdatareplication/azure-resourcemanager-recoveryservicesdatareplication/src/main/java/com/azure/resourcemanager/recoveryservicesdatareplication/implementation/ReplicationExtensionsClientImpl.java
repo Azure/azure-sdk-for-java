@@ -44,14 +44,14 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     private final ReplicationExtensionsService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of ReplicationExtensionsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ReplicationExtensionsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    ReplicationExtensionsClientImpl(DataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy
                 .create(ReplicationExtensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -59,11 +59,11 @@ public final class ReplicationExtensionsClientImpl implements ReplicationExtensi
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientReplicationExtensions to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientReplicationExtensions to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface ReplicationExtensionsService {
         @Headers({"Content-Type: application/json"})
         @Get(

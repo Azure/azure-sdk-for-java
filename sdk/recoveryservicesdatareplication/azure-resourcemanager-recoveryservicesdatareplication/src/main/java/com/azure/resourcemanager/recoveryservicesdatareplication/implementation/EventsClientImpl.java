@@ -36,24 +36,24 @@ public final class EventsClientImpl implements EventsClient {
     private final EventsService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of EventsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    EventsClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    EventsClientImpl(DataReplicationMgmtClientImpl client) {
         this.service = RestProxy.create(EventsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientEvents to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientEvents to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface EventsService {
         @Headers({"Content-Type: application/json"})
         @Get(

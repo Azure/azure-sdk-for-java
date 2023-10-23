@@ -31,14 +31,14 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
     private final FabricOperationsStatusService service;
 
     /** The service client containing this operation class. */
-    private final RecoveryServicesDataReplicationMgmtClientImpl client;
+    private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of FabricOperationsStatusClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    FabricOperationsStatusClientImpl(RecoveryServicesDataReplicationMgmtClientImpl client) {
+    FabricOperationsStatusClientImpl(DataReplicationMgmtClientImpl client) {
         this.service =
             RestProxy
                 .create(FabricOperationsStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -46,11 +46,11 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesDataReplicationMgmtClientFabricOperationsStatus to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for DataReplicationMgmtClientFabricOperationsStatus to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RecoveryServicesData")
+    @ServiceInterface(name = "DataReplicationMgmtC")
     public interface FabricOperationsStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(
