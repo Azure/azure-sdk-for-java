@@ -1385,7 +1385,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> updateAssets(String filter, AssetUpdateData assetUpdateData) {
         // Generated convenience method for updateAssetsWithResponse
@@ -1407,7 +1406,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the items in the current page of results on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AssetResource> getAssetResource(String assetId) {
         // Generated convenience method for getAssetResourceWithResponse
@@ -1429,7 +1427,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataConnection> listDataConnection(Integer skip) {
         // Generated convenience method for listDataConnection
@@ -1472,7 +1469,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataConnection> listDataConnection() {
         // Generated convenience method for listDataConnection
@@ -1514,7 +1510,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ValidateResult> validateDataConnection(DataConnectionData dataConnectionData) {
         // Generated convenience method for validateDataConnectionWithResponse
@@ -1536,7 +1531,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataConnection> getDataConnection(String dataConnectionName) {
         // Generated convenience method for getDataConnectionWithResponse
@@ -1559,7 +1553,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataConnection> createOrReplaceDataConnection(
             String dataConnectionName, DataConnectionData dataConnectionData) {
@@ -1692,7 +1685,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ValidateResult> validateDiscoGroup(DiscoGroupData discoGroupData) {
         // Generated convenience method for validateDiscoGroupWithResponse
@@ -1714,7 +1706,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiscoGroup> getDiscoGroup(String groupName) {
         // Generated convenience method for getDiscoGroupWithResponse
@@ -1737,7 +1728,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiscoGroup> createOrReplaceDiscoGroup(String groupName, DiscoGroupData discoGroupData) {
         // Generated convenience method for createOrReplaceDiscoGroupWithResponse
@@ -1782,7 +1772,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiscoRunPageResult> listRuns(String groupName, String filter, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listRunsWithResponse
@@ -1813,7 +1802,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiscoRunPageResult> listRuns(String groupName) {
         // Generated convenience method for listRunsWithResponse
@@ -1924,7 +1912,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the items in the current page of results on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiscoTemplate> getDiscoTemplate(String templateId) {
         // Generated convenience method for getDiscoTemplateWithResponse
@@ -1944,7 +1931,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return billable assets summary for the workspace on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReportBillableAssetSummaryResult> getBillable() {
         // Generated convenience method for getBillableWithResponse
@@ -1967,7 +1953,6 @@ public final class EasmAsyncClient {
      * @return the most recent snapshot of asset summary values for the snapshot request on successful completion of
      *     {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReportAssetSnapshotResult> getSnapshot(ReportAssetSnapshotRequest reportAssetSnapshotRequest) {
         // Generated convenience method for getSnapshotWithResponse
@@ -1990,7 +1975,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset summary details for the summary request on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReportAssetSummaryResult> getSummary(ReportAssetSummaryRequest reportAssetSummaryRequest) {
         // Generated convenience method for getSummaryWithResponse
@@ -2101,7 +2085,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SavedFilter> getSavedFilter(String filterName) {
         // Generated convenience method for getSavedFilterWithResponse
@@ -2124,7 +2107,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SavedFilter> createOrReplaceSavedFilter(String filterName, SavedFilterData savedFilterData) {
         // Generated convenience method for createOrReplaceSavedFilterWithResponse
@@ -2258,7 +2240,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> getTask(String taskId) {
         // Generated convenience method for getTaskWithResponse
@@ -2280,7 +2261,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> cancelTask(String taskId) {
         // Generated convenience method for cancelTaskWithResponse

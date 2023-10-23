@@ -106,7 +106,6 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<AssetResource> listAssetResource(RequestOptions requestOptions) {
         return this.serviceClient.listAssetResource(requestOptions);
@@ -247,7 +246,6 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<DataConnection> listDataConnection(RequestOptions requestOptions) {
         return this.serviceClient.listDataConnection(requestOptions);
@@ -754,7 +752,6 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CountPagedIterable<DiscoRunResult> listRuns(String groupName, RequestOptions requestOptions) {
         return this.serviceClient.listRunsWithResponse(groupName, requestOptions);
@@ -806,7 +803,6 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<DiscoTemplate> listDiscoTemplate(RequestOptions requestOptions) {
         return this.serviceClient.listDiscoTemplate(requestOptions);
@@ -1056,7 +1052,6 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<SavedFilter> listSavedFilter(RequestOptions requestOptions) {
         return this.serviceClient.listSavedFilter(requestOptions);
@@ -1188,7 +1183,6 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of Task items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<Task> listTask(RequestOptions requestOptions) {
         return this.serviceClient.listTask(requestOptions);
@@ -1279,7 +1273,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<AssetResource> listAssetResource(
         String filter, String orderBy, Integer skip, Integer maxPageSize, String mark) {
@@ -1314,7 +1307,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<AssetResource> listAssetResource() {
         // Generated convenience method for listAssetResource
@@ -1337,7 +1329,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Task updateAssets(String filter, AssetUpdateData assetUpdateData) {
         // Generated convenience method for updateAssetsWithResponse
@@ -1359,7 +1350,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the items in the current page of results.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetResource getAssetResource(String assetId) {
         // Generated convenience method for getAssetResourceWithResponse
@@ -1380,7 +1370,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<DataConnection> listDataConnection(Integer skip, Integer maxPageSize) {
         // Generated convenience method for listDataConnection
@@ -1406,7 +1395,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<DataConnection> listDataConnection() {
         // Generated convenience method for listDataConnection
@@ -1427,7 +1415,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateResult validateDataConnection(DataConnectionData dataConnectionData) {
         // Generated convenience method for validateDataConnectionWithResponse
@@ -1449,7 +1436,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataConnection getDataConnection(String dataConnectionName) {
         // Generated convenience method for getDataConnectionWithResponse
@@ -1472,7 +1458,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataConnection createOrReplaceDataConnection(String dataConnectionName, DataConnectionData dataConnectionData) {
         // Generated convenience method for createOrReplaceDataConnectionWithResponse
@@ -1516,7 +1501,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<DiscoGroup> listDiscoGroup(String filter, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listDiscoGroup
@@ -1545,7 +1529,6 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<DiscoGroup> listDiscoGroup() {
         // Generated convenience method for listDiscoGroup
@@ -1566,7 +1549,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateResult validateDiscoGroup(DiscoGroupData discoGroupData) {
         // Generated convenience method for validateDiscoGroupWithResponse
@@ -1588,7 +1570,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoGroup getDiscoGroup(String groupName) {
         // Generated convenience method for getDiscoGroupWithResponse
@@ -1609,7 +1590,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoGroup createOrReplaceDiscoGroup(String groupName, DiscoGroupData discoGroupData) {
         // Generated convenience method for createOrReplaceDiscoGroupWithResponse
@@ -1657,7 +1637,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CountPagedIterable<DiscoRunResult> listRuns(String groupName, String filter, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listRunsWithResponse
@@ -1687,7 +1666,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CountPagedIterable<DiscoRunResult> listRuns(String groupName) {
         // Generated convenience method for listRunsWithResponse
@@ -1710,7 +1688,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<DiscoTemplate> listDiscoTemplate(String filter, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listDiscoTemplate
@@ -1738,7 +1715,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<DiscoTemplate> listDiscoTemplate() {
         // Generated convenience method for listDiscoTemplate
@@ -1759,7 +1735,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the items in the current page of results.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoTemplate getDiscoTemplate(String templateId) {
         // Generated convenience method for getDiscoTemplateWithResponse
@@ -1777,7 +1752,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return billable assets summary for the workspace.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportBillableAssetSummaryResult getBillable() {
         // Generated convenience method for getBillableWithResponse
@@ -1797,7 +1771,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the most recent snapshot of asset summary values for the snapshot request.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportAssetSnapshotResult getSnapshot(ReportAssetSnapshotRequest reportAssetSnapshotRequest) {
         // Generated convenience method for getSnapshotWithResponse
@@ -1820,7 +1793,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset summary details for the summary request.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportAssetSummaryResult getSummary(ReportAssetSummaryRequest reportAssetSummaryRequest) {
         // Generated convenience method for getSummaryWithResponse
@@ -1844,7 +1816,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<SavedFilter> listSavedFilter(String filter, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listSavedFilter
@@ -1872,7 +1843,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<SavedFilter> listSavedFilter() {
         // Generated convenience method for listSavedFilter
@@ -1893,7 +1863,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SavedFilter getSavedFilter(String filterName) {
         // Generated convenience method for getSavedFilterWithResponse
@@ -1914,7 +1883,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SavedFilter createOrReplaceSavedFilter(String filterName, SavedFilterData savedFilterData) {
         // Generated convenience method for createOrReplaceSavedFilterWithResponse
@@ -1958,7 +1926,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of Task items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<Task> listTask(String filter, String orderBy, Integer skip, Integer maxPageSize) {
         // Generated convenience method for listTask
@@ -1988,7 +1955,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of Task items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public CountPagedIterable<Task> listTask() {
         // Generated convenience method for listTask
@@ -2008,7 +1974,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Task getTask(String taskId) {
         // Generated convenience method for getTaskWithResponse
@@ -2028,7 +1993,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Task cancelTask(String taskId) {
         // Generated convenience method for cancelTaskWithResponse
