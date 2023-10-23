@@ -309,13 +309,13 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-graph-api-version",
       "type": "java.lang.String",
-      "description": "The Microsoft Entra Graph API version.",
+      "description": "The Azure Active Directory Graph API version.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-graph-endpoint",
       "type": "java.lang.String",
-      "description": "The Microsoft Entra Graph endpoint.",
+      "description": "The Azure Active Directory Graph endpoint.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
