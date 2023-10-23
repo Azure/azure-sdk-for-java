@@ -206,9 +206,7 @@ public class ServicebusSampleTests {
             .processError(ServiceBusSessionProcessor::processError)
             .buildProcessorClient();
 
-        if (processorClient.equals(null)) {
-            throw new RuntimeException("Sample was not successful: processorClient equals null");
-        }
+        assertNotNull(processorClient);
 
         Log.i(PROCESSOR_TAG, "Starting the processor");
         processorClient.start();
