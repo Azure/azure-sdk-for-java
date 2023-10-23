@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.39.0 (2023-10-20)
+### 3.39.0 (2023-10-23)
 
 #### Other Changes
 * Updated `azure-cosmos` to version `4.50.0`.
