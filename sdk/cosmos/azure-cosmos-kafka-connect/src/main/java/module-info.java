@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 
-module com.azure.cosmos.kafka {
+module com.azure.cosmos.kafka.connect {
 
     requires transitive com.azure.cosmos;
     requires kafka.clients;
