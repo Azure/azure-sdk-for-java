@@ -6,8 +6,11 @@ package com.azure.android.appconfiguration;
 import android.util.Log;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.identity.ClientSecretCredential;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +20,55 @@ public class WatchFeature {
      */
 
     private static final String TAG = "WatchFeatureOutput";
+
+    public static void main(String endPoint, ClientSecretCredential credential) {
+
+        // Instantiate a client that will be used to call the service.
+        ConfigurationClient client = new ConfigurationClientBuilder()
+            .credential(credential)
+            .endpoint(endPoint)
+            .buildClient();
+
+
+        // Prepare a list of watching settings and update one same setting value to the service.
+        String prodDBConnectionKey = "prodDBConnection";
+        String prodDBConnectionLabel = "prodLabel";
+
+        // Assume we have a list of watching setting that stored somewhere.
+        List<ConfigurationSetting> watchingSettings = Arrays.asList(
+            client.addConfigurationSetting(prodDBConnectionKey, prodDBConnectionLabel, "prodValue"),
+            client.addConfigurationSetting("stageDBConnection", "stageLabel", "stageValue")
+        );
+
+        Log.i(TAG, "Watching settings:");
+        for (ConfigurationSetting setting : watchingSettings) {
+            Log.i(TAG, String.format("\tkey=%s, label=%s, value=%s, ETag=%s.%n",
+                setting.getKey(), setting.getLabel(), setting.getValue(), setting.getETag()));
+        }
+
+        // One of the watching settings is been updated by someone in other place.
+        ConfigurationSetting updatedSetting = client.setConfigurationSetting(
+            prodDBConnectionKey, prodDBConnectionLabel, "updatedProdValue");
+        Log.i(TAG, "Updated settings:");
+        Log.i(TAG, String.format("\tkey=%s, label=%s, value=%s, ETag=%s.%n",
+            updatedSetting.getKey(), updatedSetting.getLabel(), updatedSetting.getValue(), updatedSetting.getETag()));
+
+        // Updates the watching settings if needed, and only returns a list of updated settings.
+        List<ConfigurationSetting> refreshedSettings = refresh(client, watchingSettings);
+
+        Log.i(TAG, "Refreshed settings:");
+        for (ConfigurationSetting setting : refreshedSettings) {
+            Log.i(TAG, String.format("\tkey=%s, label=%s, value=%s, ETag=%s.%n",
+                setting.getKey(), setting.getLabel(), setting.getValue(), setting.getETag()));
+        }
+
+        // Cleaning up after ourselves by deleting the values.
+        Log.i(TAG, "Deleting settings:");
+        watchingSettings.forEach(setting -> {
+            client.deleteConfigurationSetting(setting.getKey(), setting.getLabel());
+            Log.i(TAG, String.format("\tkey: %s, value: %s.%n", setting.getKey(), setting.getValue()));
+        });
+    }
 
     /**
      * A refresh method that runs every day to update settings and returns a updated settings.
