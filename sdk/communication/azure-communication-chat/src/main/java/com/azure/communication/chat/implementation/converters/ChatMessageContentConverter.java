@@ -9,6 +9,7 @@ import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.common.CommunicationIdentifier;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -51,8 +52,11 @@ public final class ChatMessageContentConverter {
                     .collect(Collectors.toList());
         }
 
-        ChatMessageContent chatMessageContent = new ChatMessageContent(
-                obj.getMessage(), obj.getTopic(), participants, attachments, initiator);
+        ChatMessageContent chatMessageContent = (attachments.iterator().hasNext())
+                ? new ChatMessageContent(
+                        obj.getMessage(), obj.getTopic(), participants, initiator)
+                : new ChatMessageContent(
+                        obj.getMessage(), obj.getTopic(), participants, initiator, attachments);
 
         return chatMessageContent;
     }

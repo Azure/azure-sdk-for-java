@@ -31,21 +31,39 @@ public final class ChatMessageContent {
     /**
      * Constructs a new ChatMessageContent
      *
-     * @param message The message
-     * @param topic The topic
+     * @param message      The message
+     * @param topic        The topic
      * @param participants The participants
-     * @param attachments The attachments on the message
-     * @param initiator The initiator
+     * @param attachments  The attachments on the message
+     * @param initiator    The initiator
      */
     public ChatMessageContent(
-            String message, String topic, Iterable<ChatParticipant> participants, Iterable<ChatAttachment> attachments,
-            CommunicationIdentifier initiator) {
+            String message, String topic, Iterable<ChatParticipant> participants, CommunicationIdentifier initiator) {
 
         this.message = message;
         this.topic = topic;
         this.participants = participants;
-        this.attachments = attachments;
         this.initiator = initiator;
+    }
+
+    /**
+     * Constructs a new ChatMessageContent
+     *
+     * @param message      The message
+     * @param topic        The topic
+     * @param participants The participants
+     * @param attachments  The attachments on the message
+     * @param initiator    The initiator
+     */
+    public ChatMessageContent(
+            String message, String topic, Iterable<ChatParticipant> participants, CommunicationIdentifier initiator,
+            Iterable<ChatAttachment> attachments) {
+
+        this.message = message;
+        this.topic = topic;
+        this.participants = participants;
+        this.initiator = initiator;
+        this.attachments = attachments;
     }
 
     /**
