@@ -152,24 +152,9 @@ public class HttpUrlConnectionClient implements HttpClient {
                     Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
                     connection = (HttpURLConnection) url.openConnection(proxy);
                     if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
-                        String token = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-                        if (token != null && token.startsWith("Digest")) {
-                            MessageDigest messageDigest = null;
-                            try {
-                                messageDigest = MessageDigest.getInstance("SHA-256");
-                            } catch (NoSuchAlgorithmException e) {
-                                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-                            }
-                            String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
-                            assert messageDigest != null;
-                            messageDigest.update(authString.getBytes());
-                            String authStringEnc = Base64.getEncoder().encodeToString(messageDigest.digest());
-                            connection.setRequestProperty("Proxy-Authorization", "Digest " + authStringEnc);
-                        } else{
-                            String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
-                            String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
-                            connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
-                        }
+                        String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
+                        String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
+                        connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
                     }
                 } else {
                     throw new ConnectException("Invalid proxy address");
