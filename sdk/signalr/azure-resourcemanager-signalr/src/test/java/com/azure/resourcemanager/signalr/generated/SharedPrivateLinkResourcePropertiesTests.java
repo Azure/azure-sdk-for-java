@@ -14,23 +14,23 @@ public final class SharedPrivateLinkResourcePropertiesTests {
         SharedPrivateLinkResourceProperties model =
             BinaryData
                 .fromString(
-                    "{\"groupId\":\"grjguufzd\",\"privateLinkResourceId\":\"syqtfi\",\"provisioningState\":\"Failed\",\"requestMessage\":\"otzi\",\"status\":\"Timeout\"}")
+                    "{\"groupId\":\"zejjoqk\",\"privateLinkResourceId\":\"gfhsxttaugzxn\",\"provisioningState\":\"Failed\",\"requestMessage\":\"pxdtnkdmkq\",\"status\":\"Rejected\"}")
                 .toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("grjguufzd", model.groupId());
-        Assertions.assertEquals("syqtfi", model.privateLinkResourceId());
-        Assertions.assertEquals("otzi", model.requestMessage());
+        Assertions.assertEquals("zejjoqk", model.groupId());
+        Assertions.assertEquals("gfhsxttaugzxn", model.privateLinkResourceId());
+        Assertions.assertEquals("pxdtnkdmkq", model.requestMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharedPrivateLinkResourceProperties model =
             new SharedPrivateLinkResourceProperties()
-                .withGroupId("grjguufzd")
-                .withPrivateLinkResourceId("syqtfi")
-                .withRequestMessage("otzi");
+                .withGroupId("zejjoqk")
+                .withPrivateLinkResourceId("gfhsxttaugzxn")
+                .withRequestMessage("pxdtnkdmkq");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("grjguufzd", model.groupId());
-        Assertions.assertEquals("syqtfi", model.privateLinkResourceId());
-        Assertions.assertEquals("otzi", model.requestMessage());
+        Assertions.assertEquals("zejjoqk", model.groupId());
+        Assertions.assertEquals("gfhsxttaugzxn", model.privateLinkResourceId());
+        Assertions.assertEquals("pxdtnkdmkq", model.requestMessage());
     }
 }
