@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 /** Router Job Worker Selector. */
 @Fluent
@@ -128,8 +127,9 @@ public final class AcsRouterWorkerSelector {
      * @return the AcsRouterWorkerSelector object itself.
      */
     public AcsRouterWorkerSelector setTimeToLive(Duration timeToLive) {
-        Objects.requireNonNull(timeToLive);
-        this.ttlSeconds = (float) timeToLive.getSeconds();
+        if (timeToLive != null) {
+            this.ttlSeconds = (float) timeToLive.getSeconds();
+        }
         return this;
     }
 

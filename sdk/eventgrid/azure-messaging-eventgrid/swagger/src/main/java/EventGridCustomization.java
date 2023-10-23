@@ -448,7 +448,6 @@ public class EventGridCustomization extends Customization {
 PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         ClassCustomization classCustomization = packageModels.getClass("AcsRouterWorkerSelector");
 
-        classCustomization.addImports("java.util.Objects");
         classCustomization.customizeAst(comp -> {
             ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterWorkerSelector").get();
             clazz.getMethodsByName("getTtlSeconds").forEach(m -> {
@@ -460,7 +459,7 @@ PackageCustomization packageModels = customization.getPackage("com.azure.messagi
             clazz.getMethodsByName("setTtlSeconds").forEach(m -> {
                 m.setType("AcsRouterWorkerSelector");
                 m.getParameter(0).setType(Duration.class);
-                m.setBody(parseBlock("{ Objects.requireNonNull(timeToLive); this.ttlSeconds = (float) timeToLive.getSeconds(); return this; }"));
+                m.setBody(parseBlock("{ if (timeToLive != null) { this.ttlSeconds = (float) timeToLive.getSeconds(); } return this; }"));
                 m.setName("setTimeToLive");
                 m.getParameter(0).setName("timeToLive");
                 m.setJavadocComment(
