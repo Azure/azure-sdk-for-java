@@ -12,11 +12,10 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.selfhelp.SelfHelpManager;
-import com.azure.resourcemanager.selfhelp.models.DiagnosticResource;
+import com.azure.resourcemanager.selfhelp.models.TroubleshooterResource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -26,15 +25,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class DiagnosticsCreateMockTests {
+public final class TroubleshootersCreateWithResponseMockTests {
     @Test
-    public void testCreate() throws Exception {
+    public void testCreateWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"globalParameters\":{\"gqywgndrv\":\"nyktzlcuiy\",\"ocpecfvmmco\":\"nhzgpphrcgyn\",\"c\":\"fsxlzevgbmqjqa\",\"ccfwnfnbacfion\":\"pmivkwlzu\"},\"insights\":[],\"acceptedAt\":\"etqgtzxdpnq\",\"provisioningState\":\"Succeeded\",\"diagnostics\":[]},\"id\":\"jfeallnwsub\",\"name\":\"snjampmng\",\"type\":\"zscxaqwo\"}";
+            "{\"properties\":{\"solutionId\":\"smwutwbdsrezpd\",\"parameters\":{\"ytisibir\":\"euyowqkd\",\"lfzxiavrmbzonoki\":\"gpikpzimejza\"},\"provisioningState\":\"Failed\",\"steps\":[{\"id\":\"rgz\",\"title\":\"rlazszrnw\",\"description\":\"indfpwpjyl\",\"guidance\":\"tlhflsjcdhszf\",\"executionStatus\":\"Warning\",\"executionStatusDescription\":\"gofel\",\"type\":\"Insight\",\"isLastStep\":true,\"inputs\":[{}],\"automatedCheckResults\":{\"result\":\"dvriiiojnal\",\"type\":\"Success\"},\"insights\":[{},{},{},{}]},{\"id\":\"sexso\",\"title\":\"el\",\"description\":\"hhahhxvrhmzkwpjg\",\"guidance\":\"spughftqsxhq\",\"executionStatus\":\"Success\",\"executionStatusDescription\":\"ukndxdigrjgu\",\"type\":\"Insight\",\"isLastStep\":false,\"inputs\":[{},{}],\"automatedCheckResults\":{\"result\":\"fi\",\"type\":\"Information\"},\"insights\":[{}]}]},\"id\":\"ingamvp\",\"name\":\"ho\",\"type\":\"zqzudph\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,27 +61,20 @@ public final class DiagnosticsCreateMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DiagnosticResource response =
+        TroubleshooterResource response =
             manager
-                .diagnostics()
-                .define("xqbzvddntwnd")
-                .withExistingScope("zxibqeoj")
-                .withGlobalParameters(
-                    mapOf(
-                        "cyddglmjthjqk",
-                        "twnpzaoqvuhrhcf",
-                        "ciwqvhk",
-                        "pyeicxm",
-                        "ghmewuam",
-                        "ixuigdtopbobj",
-                        "gvdfgiotkftutq",
-                        "uhrzayvvt"))
-                .withInsights(Arrays.asList())
+                .troubleshooters()
+                .define("alnswhccsphk")
+                .withExistingScope("qzpiyyl")
+                .withSolutionId("witqscywuggwoluh")
+                .withParameters(mapOf("ai", "wem", "wmsweypqwd", "sbrgz", "mkttlstvlzywem", "ggicccnxqhue"))
                 .create();
 
-        Assertions.assertEquals("nyktzlcuiy", response.globalParameters().get("gqywgndrv"));
+        Assertions.assertEquals("smwutwbdsrezpd", response.solutionId());
+        Assertions.assertEquals("euyowqkd", response.parameters().get("ytisibir"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

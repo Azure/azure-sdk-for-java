@@ -12,26 +12,24 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.selfhelp.SelfHelpManager;
-import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityRequest;
-import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityResponse;
+import com.azure.resourcemanager.selfhelp.models.RestartTroubleshooterResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class DiagnosticsCheckNameAvailabilityWithResponseMockTests {
+public final class TroubleshootersRestartWithResponseMockTests {
     @Test
-    public void testCheckNameAvailabilityWithResponse() throws Exception {
+    public void testRestartWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"hbzhfepg\",\"message\":\"qex\"}";
+        String responseStr = "{\"troubleshooterResourceName\":\"maequiahxicslfa\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,17 +57,7 @@ public final class DiagnosticsCheckNameAvailabilityWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CheckNameAvailabilityResponse response =
-            manager
-                .diagnostics()
-                .checkNameAvailabilityWithResponse(
-                    "oq",
-                    new CheckNameAvailabilityRequest().withName("mkljavb").withType("dtqajzyulpkudj"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("hbzhfepg", response.reason());
-        Assertions.assertEquals("qex", response.message());
+        RestartTroubleshooterResponse response =
+            manager.troubleshooters().restartWithResponse("l", "zqhof", com.azure.core.util.Context.NONE).getValue();
     }
 }
