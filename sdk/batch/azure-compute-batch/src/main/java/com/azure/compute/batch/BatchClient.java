@@ -40,6 +40,7 @@ import com.azure.compute.batch.models.NodeRebootOptions;
 import com.azure.compute.batch.models.NodeReimageOptions;
 import com.azure.compute.batch.models.NodeRemoveOptions;
 import com.azure.compute.batch.models.NodeVMExtension;
+import com.azure.compute.batch.models.OptionsBag;
 import com.azure.compute.batch.models.PoolNodeCounts;
 import com.azure.compute.batch.models.PoolUsageMetrics;
 import com.azure.compute.batch.models.TaskAddCollectionResult;
@@ -12069,6 +12070,30 @@ public final class BatchClient {
     }
 
     /**
+     * Lists all of the applications available in the specified Account.
+     *
+     * <p>This operation returns only Applications and versions that are available for use on Compute Nodes; that is,
+     * that can be used in an Package reference. For administrator information about applications and versions that are
+     * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param optionsBag A bag of optional parameters: - maxresults: The maximum number of items to return in the
+     *     response. A maximum of 1000 applications can be returned. - timeOutInSeconds: Sets the maximum time that the
+     *     server can spend processing the request, in seconds. The default is 30 seconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the applications available in an Account as paginated response with {@link
+     *     PagedIterable}.
+     */
+    public PagedIterable<BatchApplication> listApplications(OptionsBag optionsBag) {
+        // Delegate the call to the original function
+        return this.listApplications(optionsBag.getMaxresults(), optionsBag.getTimeOutInSeconds());
+    }
+
+    /**
      * Gets information about the specified Application.
      *
      * <p>This operation returns only Applications and versions that are available for use on Compute Nodes; that is,
@@ -12095,6 +12120,28 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         return getApplicationWithResponse(applicationId, requestOptions).getValue().toObject(BatchApplication.class);
+    }
+
+    /**
+     * Gets information about the specified Application.
+     *
+     * <p>This operation returns only Applications and versions that are available for use on Compute Nodes; that is,
+     * that can be used in a Package reference. For administrator information about Applications and versions that are
+     * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param applicationId The ID of the Application.
+     * @param optionsBag A bag of optional parameters: - timeOutInSeconds: Sets the maximum time that the server can
+     *     spend processing the request, in seconds. The default is 30 seconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about an application in an Azure Batch Account.
+     */
+    public BatchApplication getApplication(String applicationId, OptionsBag optionsBag) {
+        return this.getApplication(applicationId, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -12156,6 +12203,37 @@ public final class BatchClient {
     }
 
     /**
+     * Lists the usage metrics, aggregated by Pool across individual time intervals, for the specified Account.
+     *
+     * <p>If you do not specify a $filter clause including a poolId, the response includes all Pools that existed in the
+     * Account in the time range of the returned aggregation intervals. If you do not specify a $filter clause including
+     * a startTime or endTime these filters default to the start and end times of the last aggregation interval
+     * currently available; that is, only the last aggregation interval is returned.
+     *
+     * @param optionsBag A bag of optional parameters: - maxresults: The maximum number of items to return in the
+     *     response. A maximum of 1000 applications can be returned. - timeOutInSeconds: Sets the maximum time that the
+     *     server can spend processing the request, in seconds. The default is 30 seconds. - starttime: The earliest
+     *     time from which to include metrics. - endtime: The latest time from which to include metrics. - filter: An
+     *     OData $filter clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a listing the usage metrics for an Account as paginated response with {@link
+     *     PagedIterable}.
+     */
+    public PagedIterable<PoolUsageMetrics> listPoolUsageMetrics(OptionsBag optionsBag) {
+        return this.listPoolUsageMetrics(
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getStartTime(),
+                optionsBag.getEndTime(),
+                optionsBag.getFilter());
+    }
+
+    /**
      * Creates a Pool to the specified Account.
      *
      * <p>When naming Pools, avoid including sensitive information such as user names or secret project names. This
@@ -12180,6 +12258,26 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         createPoolWithResponse(BinaryData.fromObject(body), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Pool to the specified Account.
+     *
+     * <p>When naming Pools, avoid including sensitive information such as user names or secret project names. This
+     * information may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param body The Pool to be created.
+     * @param optionsBag A bag of optional parameters: - timeOutInSeconds: Sets the maximum time that the server can
+     *     spend processing the request, in seconds. The default is 30 seconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void createPool(BatchPoolCreateOptions body, OptionsBag optionsBag) {
+        createPool(body, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -12238,6 +12336,30 @@ public final class BatchClient {
     }
 
     /**
+     * Lists all of the Pools in the specified Account using options provided in OptionsBag.
+     *
+     * @param optionsBag A bag of optional parameters: - maxresults: The maximum number of items to return in the
+     *     response. A maximum of 1000 applications can be returned. - timeOutInSeconds: Sets the maximum time that the
+     *     server can spend processing the request, in seconds. The default is 30 seconds. - filter: An OData $filter
+     *     clause. - select: An OData $select clause. - expand: An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
+     */
+    public PagedIterable<BatchPool> listPools(OptionsBag optionsBag) {
+        return listPools(
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getFilter(),
+                optionsBag.getSelect(),
+                optionsBag.getExpand());
+    }
+
+    /**
      * Deletes a Pool from the specified Account.
      *
      * <p>When you request that a Pool be deleted, the following actions occur: the Pool state is set to deleting; any
@@ -12290,6 +12412,22 @@ public final class BatchClient {
     }
 
     /**
+     * Deletes a Pool from the specified Account using the options provided in OptionsBag.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void deletePool(String poolId, OptionsBag optionsBag) {
+        deletePool(poolId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Gets basic properties of a Pool.
      *
      * @param poolId The ID of the Pool to get.
@@ -12330,6 +12468,22 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         return poolExistsWithResponse(poolId, requestOptions).getValue();
+    }
+
+    /**
+     * Gets basic properties of a Pool using the options provided in OptionsBag.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return basic properties of a Pool.
+     */
+    public boolean poolExists(String poolId, OptionsBag optionsBag) {
+        return poolExists(poolId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
     }
 
     /**
@@ -12400,6 +12554,28 @@ public final class BatchClient {
     }
 
     /**
+     * Gets information about the specified Pool using the options provided in OptionsBag.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Pool.
+     */
+    public BatchPool getPool(String poolId, OptionsBag optionsBag) {
+        return getPool(
+                poolId,
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getSelect(),
+                optionsBag.getExpand(),
+                optionsBag.getRequestConditions());
+    }
+
+    /**
      * Updates the properties of the specified Pool.
      *
      * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
@@ -12449,6 +12625,27 @@ public final class BatchClient {
     }
 
     /**
+     * Updates the properties of the specified Pool using the options provided in OptionsBag.
+     *
+     * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
+     * associated with it, and a request does not specify a StartTask element, then the Pool keeps the existing
+     * StartTask.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param body The pool properties to update.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void updatePool(String poolId, BatchPoolUpdateOptions body, OptionsBag optionsBag) {
+        updatePool(poolId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Disables automatic scaling for a Pool.
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
@@ -12470,6 +12667,22 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         disablePoolAutoScaleWithResponse(poolId, requestOptions).getValue();
+    }
+
+    /**
+     * Disables automatic scaling for a Pool using the options provided in OptionsBag.
+     *
+     * @param poolId The ID of the Pool on which to disable automatic scaling.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void disablePoolAutoScale(String poolId, OptionsBag optionsBag) {
+        disablePoolAutoScale(poolId, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -12526,6 +12739,28 @@ public final class BatchClient {
     }
 
     /**
+     * Enables automatic scaling for a Pool using the options provided in OptionsBag.
+     *
+     * <p>You cannot enable automatic scaling on a Pool if a resize operation is in progress on the Pool. If automatic
+     * scaling of the Pool is currently disabled, you must specify a valid autoscale formula as part of the request. If
+     * automatic scaling of the Pool is already enabled, you may specify a new autoscale formula and/or a new evaluation
+     * interval. You cannot call this API for the same Pool more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param body The options to use for enabling automatic scaling.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleOptions body, OptionsBag optionsBag) {
+        enablePoolAutoScale(poolId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
      *
      * <p>This API is primarily for validating an autoscale formula, as it simply returns the result without applying
@@ -12555,6 +12790,28 @@ public final class BatchClient {
         return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(body), requestOptions)
                 .getValue()
                 .toObject(AutoScaleRun.class);
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the Pool using the options provided in OptionsBag.
+     *
+     * <p>This API is primarily for validating an autoscale formula, as it simply returns the result without applying
+     * the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
+     *
+     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
+     * @param body The options to use for evaluating the automatic scaling formula.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the results and errors from an execution of a Pool autoscale formula.
+     */
+    public AutoScaleRun evaluatePoolAutoScale(
+            String poolId, BatchPoolEvaluateAutoScaleOptions body, OptionsBag optionsBag) {
+        return evaluatePoolAutoScale(poolId, body, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -12609,6 +12866,29 @@ public final class BatchClient {
     }
 
     /**
+     * Changes the number of Compute Nodes that are assigned to a Pool using the options provided in OptionsBag.
+     *
+     * <p>You can only resize a Pool when its allocation state is steady. If the Pool is already resizing, the request
+     * fails with status code 409. When you resize a Pool, the Pool's allocation state changes from steady to resizing.
+     * You cannot resize Pools which are configured for automatic scaling. If you try to do this, the Batch service
+     * returns an error 409. If you resize a Pool downwards, the Batch service chooses which Compute Nodes to remove. To
+     * remove specific Compute Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param body The options to use for resizing the pool.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void resizePool(String poolId, BatchPoolResizeOptions body, OptionsBag optionsBag) {
+        resizePool(poolId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Stops an ongoing resize operation on the Pool.
      *
      * <p>This does not restore the Pool to its previous state before the resize operation: it only stops any further
@@ -12658,6 +12938,22 @@ public final class BatchClient {
     }
 
     /**
+     * Stops an ongoing resize operation on the Pool.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void stopPoolResize(String poolId, OptionsBag optionsBag) {
+        stopPoolResize(poolId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Updates the properties of the specified Pool.
      *
      * <p>This fully replaces all the updatable properties of the Pool. For example, if the Pool has a StartTask
@@ -12684,6 +12980,23 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(body), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * @param poolId The ID of the Pool to update.
+     * @param body The options to use for replacing properties on the pool.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void replacePoolProperties(String poolId, BatchPoolReplaceOptions body, OptionsBag optionsBag) {
+        replacePoolProperties(poolId, body, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -12735,6 +13048,23 @@ public final class BatchClient {
     }
 
     /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param body The options to use for removing the node.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void removeNodes(String poolId, NodeRemoveOptions body, OptionsBag optionsBag) {
+        removeNodes(poolId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
      *
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
@@ -12770,6 +13100,24 @@ public final class BatchClient {
         return serviceClient
                 .listSupportedImages(requestOptions)
                 .mapPage(bodyItemValue -> bodyItemValue.toObject(ImageInformation.class));
+    }
+
+    /**
+     * Lists all Virtual Machine Images supported by the Azure Batch service.
+     *
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the supported Virtual Machine Images as paginated response with {@link
+     *     PagedIterable}.
+     */
+    public PagedIterable<ImageInformation> listSupportedImages(OptionsBag optionsBag) {
+        return listSupportedImages(
+                optionsBag.getMaxresults(), optionsBag.getTimeOutInSeconds(), optionsBag.getFilter());
     }
 
     /**
@@ -12809,6 +13157,24 @@ public final class BatchClient {
         return serviceClient
                 .listPoolNodeCounts(requestOptions)
                 .mapPage(bodyItemValue -> bodyItemValue.toObject(PoolNodeCounts.class));
+    }
+
+    /**
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be
+     * up to date. If you need exact node counts, use a list query.
+     *
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link
+     *     PagedIterable}.
+     */
+    public PagedIterable<PoolNodeCounts> listPoolNodeCounts(OptionsBag optionsBag) {
+        return listPoolNodeCounts(optionsBag.getMaxresults(), optionsBag.getTimeOutInSeconds(), optionsBag.getFilter());
     }
 
     /**
@@ -12859,6 +13225,29 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         deleteJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Job.
+     *
+     * <p>Deleting a Job also deletes all Tasks that are part of that Job, and all Job statistics. This also overrides
+     * the retention period for Task data; that is, if the Job contains Tasks which are still retained on Compute Nodes,
+     * the Batch services deletes those Tasks' working directories and all their contents. When a Delete Job request is
+     * received, the Batch service sets the Job to the deleting state. All update operations on a Job that is in
+     * deleting state will fail with status code 409 (Conflict), with additional information indicating that the Job is
+     * being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void deleteJob(String jobId, OptionsBag optionsBag) {
+        deleteJob(jobId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
     }
 
     /**
@@ -12929,6 +13318,28 @@ public final class BatchClient {
     }
 
     /**
+     * Gets information about the specified Job.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Job.
+     */
+    public BatchJob getJob(String jobId, OptionsBag optionsBag) {
+        return getJob(
+                jobId,
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getSelect(),
+                optionsBag.getExpand(),
+                optionsBag.getRequestConditions());
+    }
+
+    /**
      * Updates the properties of the specified Job.
      *
      * <p>This replaces only the Job properties specified in the request. For example, if the Job has constraints, and a
@@ -12979,6 +13390,26 @@ public final class BatchClient {
     /**
      * Updates the properties of the specified Job.
      *
+     * <p>This replaces only the Job properties specified in the request. For example, if the Job has constraints, and a
+     * request does not specify the constraints element, then the Job keeps the existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param body The options to use for updating the Job.
+     * @param optionsBag A bag of optional parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void updateJob(String jobId, BatchJobUpdateOptions body, OptionsBag optionsBag) {
+        updateJob(jobId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
      * <p>This fully replaces all the updatable properties of the Job. For example, if the Job has constraints
      * associated with it and if constraints is not specified with this request, then the Batch service will remove the
      * existing constraints.
@@ -13022,6 +13453,27 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         replaceJobWithResponse(jobId, BinaryData.fromObject(body), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
+     * <p>This fully replaces all the updatable properties of the Job. For example, if the Job has constraints
+     * associated with it and if constraints is not specified with this request, then the Batch service will remove the
+     * existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param body A job with updated properties.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void replaceJob(String jobId, BatchJob body, OptionsBag optionsBag) {
+        replaceJob(jobId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
     }
 
     /**
@@ -13077,6 +13529,30 @@ public final class BatchClient {
     }
 
     /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * <p>The Batch Service immediately moves the Job to the disabling state. Batch then uses the disableTasks parameter
+     * to determine what to do with the currently running Tasks of the Job. The Job remains in the disabling state until
+     * the disable operation is completed and all Tasks have been dealt with according to the disableTasks option; the
+     * Job then moves to the disabled state. No new Tasks are started under the Job until it moves back to active state.
+     * If you try to disable a Job that is in any state other than active, disabling, or disabled, the request fails
+     * with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param body The options to use for disabling the Job.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void disableJob(String jobId, BatchJobDisableOptions body, OptionsBag optionsBag) {
+        disableJob(jobId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Enables the specified Job, allowing new Tasks to run.
      *
      * <p>When you call this API, the Batch service sets a disabled Job to the enabling state. After the this operation
@@ -13122,6 +13598,27 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         enableJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * <p>When you call this API, the Batch service sets a disabled Job to the enabling state. After the this operation
+     * is completed, the Job moves to the active state, and scheduling of new Tasks under the Job resumes. The Batch
+     * service does not allow a Task to remain in the active state for more than 180 days. Therefore, if you enable a
+     * Job containing active Tasks which were added more than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void enableJob(String jobId, OptionsBag optionsBag) {
+        enableJob(jobId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
     }
 
     /**
@@ -13182,6 +13679,33 @@ public final class BatchClient {
     }
 
     /**
+     * Terminates the specified Job, marking it as completed.
+     *
+     * <p>When a Terminate Job request is received, the Batch service sets the Job to the terminating state. The Batch
+     * service then terminates any running Tasks associated with the Job and runs any required Job release Tasks. Then
+     * the Job moves into the completed state. If there are any Tasks in the Job in the active state, they will remain
+     * in the active state. Once a Job is terminated, new Tasks cannot be added and any remaining active Tasks will not
+     * be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds, body (BatchJobTerminateOptions), and
+     *     requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void terminateJob(String jobId, OptionsBag optionsBag) {
+        terminateJob(
+                jobId,
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getBatchJobTerminateOptionsBody(),
+                optionsBag.getRequestConditions());
+    }
+
+    /**
      * Creates a Job to the specified Account.
      *
      * <p>The Batch service supports two ways to control the work done as part of a Job. In the first approach, the user
@@ -13210,6 +13734,29 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         createJobWithResponse(BinaryData.fromObject(body), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Job to the specified Account.
+     *
+     * <p>The Batch service supports two ways to control the work done as part of a Job. In the first approach, the user
+     * specifies a Job Manager Task. The Batch service launches this Task when it is ready to start the Job. The Job
+     * Manager Task controls all other Tasks that run under this Job, by using the Task APIs. In the second approach,
+     * the user directly controls the execution of Tasks under an active Job, by using the Task APIs. Also note: when
+     * naming Jobs, avoid including sensitive information such as user names or secret project names. This information
+     * may appear in telemetry logs accessible to Microsoft Support engineers.
+     *
+     * @param body The Job to be created.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void createJob(BatchJobCreateOptions body, OptionsBag optionsBag) {
+        createJob(body, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -13263,6 +13810,28 @@ public final class BatchClient {
                     false);
         }
         return serviceClient.listJobs(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
+    }
+
+    /**
+     * Lists all of the Jobs in the specified Account.
+     *
+     * @param optionsBag A bag of optional parameters containing maxresults, timeOutInSeconds, filter, select, and
+     *     expand.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
+     */
+    public PagedIterable<BatchJob> listJobs(OptionsBag optionsBag) {
+        return listJobs(
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getFilter(),
+                optionsBag.getSelect(),
+                optionsBag.getExpand());
     }
 
     /**
@@ -13327,6 +13896,30 @@ public final class BatchClient {
     }
 
     /**
+     * Lists the Jobs that have been created under the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
+     * @param optionsBag A bag of optional parameters containing maxresults, timeOutInSeconds, filter, select, and
+     *     expand.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
+     */
+    public PagedIterable<BatchJob> listJobsFromSchedule(String jobScheduleId, OptionsBag optionsBag) {
+        return listJobsFromSchedule(
+                jobScheduleId,
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getFilter(),
+                optionsBag.getSelect(),
+                optionsBag.getExpand());
+    }
+
+    /**
      * Lists the execution status of the Job Preparation and Job Release Task for the specified Job across the Compute
      * Nodes where the Job has run.
      *
@@ -13383,6 +13976,36 @@ public final class BatchClient {
     }
 
     /**
+     * Lists the execution status of the Job Preparation and Job Release Task for the specified Job across the Compute
+     * Nodes where the Job has run.
+     *
+     * <p>This API returns the Job Preparation and Job Release Task status on all Compute Nodes that have run the Job
+     * Preparation or Job Release Task. This includes Compute Nodes which have since been removed from the Pool. If this
+     * API is invoked on a Job which has no Job Preparation or Job Release Task, the Batch service returns HTTP status
+     * code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
+     *
+     * @param jobId The ID of the Job.
+     * @param optionsBag A bag of optional parameters containing maxresults, timeOutInSeconds, filter, and select.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the status of the Job Preparation and Job Release Tasks for a Job as paginated
+     *     response with {@link PagedIterable}.
+     */
+    public PagedIterable<JobPreparationAndReleaseTaskExecutionInformation> listJobPreparationAndReleaseTaskStatus(
+            String jobId, OptionsBag optionsBag) {
+        return listJobPreparationAndReleaseTaskStatus(
+                jobId,
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getFilter(),
+                optionsBag.getSelect());
+    }
+
+    /**
      * Gets the Task counts for the specified Job.
      *
      * <p>Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks
@@ -13412,6 +14035,27 @@ public final class BatchClient {
     }
 
     /**
+     * Gets the Task counts for the specified Job.
+     *
+     * <p>Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks
+     * which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned
+     * may not always be up to date. If you need exact task counts, use a list query.
+     *
+     * @param jobId The ID of the Job.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Task and TaskSlot counts for a Job.
+     */
+    public TaskCountsResult getJobTaskCounts(String jobId, OptionsBag optionsBag) {
+        return getJobTaskCounts(jobId, optionsBag.getTimeOutInSeconds());
+    }
+
+    /**
      * Creates a Certificate to the specified Account.
      *
      * @param body The Certificate to be created.
@@ -13433,6 +14077,22 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         createCertificateWithResponse(BinaryData.fromObject(body), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Certificate to the specified Account.
+     *
+     * @param body The Certificate to be created.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void createCertificate(BatchCertificate body, OptionsBag optionsBag) {
+        createCertificate(body, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -13482,6 +14142,26 @@ public final class BatchClient {
     }
 
     /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     *
+     * @param optionsBag A bag of optional parameters containing maxresults, timeOutInSeconds, filter, and select.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
+     */
+    public PagedIterable<BatchCertificate> listCertificates(OptionsBag optionsBag) {
+        return listCertificates(
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getFilter(),
+                optionsBag.getSelect());
+    }
+
+    /**
      * Cancels a failed deletion of a Certificate from the specified Account.
      *
      * <p>If you try to delete a Certificate that is being used by a Pool or Compute Node, the status of the Certificate
@@ -13510,6 +14190,29 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         cancelCertificateDeletionWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue();
+    }
+
+    /**
+     * Cancels a failed deletion of a Certificate from the specified Account.
+     *
+     * <p>If you try to delete a Certificate that is being used by a Pool or Compute Node, the status of the Certificate
+     * changes to deleteFailed. If you decide that you want to continue using the Certificate, you can use this
+     * operation to set the status of the Certificate back to active. If you intend to delete the Certificate, you do
+     * not need to run this operation after the deletion failed. You must make sure that the Certificate is not being
+     * used by any resources, and then you can try again to delete the Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate being deleted.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint, OptionsBag optionsBag) {
+        cancelCertificateDeletion(thumbprintAlgorithm, thumbprint, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -13543,6 +14246,31 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Certificate from the specified Account.
+     *
+     * <p>You cannot delete a Certificate if a resource (Pool or Compute Node) is using it. Before you can delete a
+     * Certificate, you must therefore make sure that the Certificate is not associated with any existing Pools, the
+     * Certificate is not installed on any Nodes (even if you remove a Certificate from a Pool, it is not removed from
+     * existing Compute Nodes in that Pool until they restart), and no running Tasks depend on the Certificate. If you
+     * try to delete a Certificate that is in use, the deletion fails. The Certificate status changes to deleteFailed.
+     * You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue
+     * using the Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void deleteCertificate(String thumbprintAlgorithm, String thumbprint, OptionsBag optionsBag) {
+        deleteCertificate(thumbprintAlgorithm, thumbprint, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -13581,6 +14309,25 @@ public final class BatchClient {
         return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
                 .getValue()
                 .toObject(BatchCertificate.class);
+    }
+
+    /**
+     * Gets information about the specified Certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to get.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds and select.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Certificate.
+     */
+    public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint, OptionsBag optionsBag) {
+        return getCertificate(
+                thumbprintAlgorithm, thumbprint, optionsBag.getTimeOutInSeconds(), optionsBag.getSelect());
     }
 
     /**
@@ -13625,6 +14372,22 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         return jobScheduleExistsWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Checks the specified Job Schedule exists.
+     *
+     * @param jobScheduleId The ID of the Job Schedule which you want to check.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    public boolean jobScheduleExists(String jobScheduleId, OptionsBag optionsBag) {
+        return jobScheduleExists(jobScheduleId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
     }
 
     /**
@@ -13673,6 +14436,27 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         deleteJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Job Schedule from the specified Account.
+     *
+     * <p>When you delete a Job Schedule, this also deletes all Jobs and Tasks under that schedule. When Tasks are
+     * deleted, all the files in their working directories on the Compute Nodes are also deleted (the retention period
+     * is ignored). The Job Schedule statistics are no longer accessible once the Job Schedule is deleted, though they
+     * are still counted towards Account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to delete.
+     * @param optionsBag A bag of optional parameters containing timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void deleteJobSchedule(String jobScheduleId, OptionsBag optionsBag) {
+        deleteJobSchedule(jobScheduleId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
     }
 
     /**
@@ -13743,6 +14527,29 @@ public final class BatchClient {
     }
 
     /**
+     * Gets information about the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to get.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, select, expand and
+     *     requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Job Schedule.
+     */
+    public BatchJobSchedule getJobSchedule(String jobScheduleId, OptionsBag optionsBag) {
+        return getJobSchedule(
+                jobScheduleId,
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getSelect(),
+                optionsBag.getExpand(),
+                optionsBag.getRequestConditions());
+    }
+
+    /**
      * Updates the properties of the specified Job Schedule.
      *
      * <p>This replaces only the Job Schedule properties specified in the request. For example, if the schedule property
@@ -13793,6 +14600,24 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(body), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param body The options to use for updating the Job Schedule.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateOptions body, OptionsBag optionsBag) {
+        // Use the values from optionsBag to call the original method or handle them accordingly
+        updateJobSchedule(jobScheduleId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
     }
 
     /**
@@ -13849,6 +14674,23 @@ public final class BatchClient {
     }
 
     /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param body A Job Schedule with updated properties.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void replaceJobSchedule(String jobScheduleId, BatchJobSchedule body, OptionsBag optionsBag) {
+        replaceJobSchedule(jobScheduleId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Disables a Job Schedule.
      *
      * <p>No new Jobs will be created until the Job Schedule is enabled again.
@@ -13895,6 +14737,24 @@ public final class BatchClient {
     }
 
     /**
+     * Disables a Job Schedule.
+     *
+     * <p>No new Jobs will be created until the Job Schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to disable.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void disableJobSchedule(String jobScheduleId, OptionsBag optionsBag) {
+        disableJobSchedule(jobScheduleId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Enables a Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to enable.
@@ -13935,6 +14795,22 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         enableJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to enable.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void enableJobSchedule(String jobScheduleId, OptionsBag optionsBag) {
+        enableJobSchedule(jobScheduleId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
     }
 
     /**
@@ -13982,6 +14858,22 @@ public final class BatchClient {
     }
 
     /**
+     * Terminates a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to terminate.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by the server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by the server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void terminateJobSchedule(String jobScheduleId, OptionsBag optionsBag) {
+        terminateJobSchedule(jobScheduleId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Creates a Job Schedule to the specified Account.
      *
      * @param body The Job Schedule to be created.
@@ -14003,6 +14895,22 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         createJobScheduleWithResponse(BinaryData.fromObject(body), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Job Schedule to the specified Account.
+     *
+     * @param body The Job Schedule to be created.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by the server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by the server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void createJobSchedule(BatchJobScheduleCreateOptions body, OptionsBag optionsBag) {
+        createJobSchedule(body, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -14061,6 +14969,28 @@ public final class BatchClient {
     }
 
     /**
+     * Lists all of the Job Schedules in the specified Account.
+     *
+     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
+     *     expand.
+     * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by the server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by the server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public PagedIterable<BatchJobSchedule> listJobSchedules(OptionsBag optionsBag) {
+        return listJobSchedules(
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getFilter(),
+                optionsBag.getSelect(),
+                optionsBag.getExpand());
+    }
+
+    /**
      * Creates a Task to the specified Job.
      *
      * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
@@ -14086,6 +15016,26 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         createTaskWithResponse(jobId, BinaryData.fromObject(body), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Task to the specified Job.
+     *
+     * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
+     * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task is to be created.
+     * @param body The Task to be created.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void createTask(String jobId, BatchTaskCreateOptions body, OptionsBag optionsBag) {
+        createTask(jobId, body, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -14153,6 +15103,33 @@ public final class BatchClient {
     }
 
     /**
+     * Lists all of the Tasks that are associated with the specified Job.
+     *
+     * <p>For multi-instance Tasks, information such as affinityId, executionInfo, and nodeInfo refer to the primary
+     * Task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the Job.
+     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
+     *     expand.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
+     */
+    public PagedIterable<BatchTask> listTasks(String jobId, OptionsBag optionsBag) {
+        return listTasks(
+                jobId,
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getFilter(),
+                optionsBag.getSelect(),
+                optionsBag.getExpand());
+    }
+
+    /**
      * Adds a collection of Tasks to the specified Job.
      *
      * <p>Note that each Task must have a unique ID. The Batch service may not return the results for each Task in the
@@ -14190,6 +15167,36 @@ public final class BatchClient {
         return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(collection), requestOptions)
                 .getValue()
                 .toObject(TaskAddCollectionResult.class);
+    }
+
+    /**
+     * Adds a collection of Tasks to the specified Job.
+     *
+     * <p>Note that each Task must have a unique ID. The Batch service may not return the results for each Task in the
+     * same order the Tasks were submitted in this request. If the server times out or the connection is closed during
+     * the request, the request may have been partially or fully processed, or not at all. In such cases, the user
+     * should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a
+     * request. For example, you should use the same Task IDs during a retry so that if the prior operation succeeded,
+     * the retry will not create extra Tasks unexpectedly. If the response contains any Tasks which failed to add, a
+     * client can retry the request. In a retry, it is most efficient to resubmit only Tasks that failed to add, and to
+     * omit Tasks that were successfully added on the first attempt. The maximum lifetime of a Task from addition to
+     * completion is 180 days. If a Task has not completed within 180 days of being added it will be terminated by the
+     * Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task collection is to be added.
+     * @param collection The Tasks to be added.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of adding a collection of Tasks to a Job.
+     */
+    public TaskAddCollectionResult createTaskCollection(
+            String jobId, BatchTaskCollection collection, OptionsBag optionsBag) {
+        return createTaskCollection(jobId, collection, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -14238,6 +15245,27 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         deleteTaskWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Task from the specified Job.
+     *
+     * <p>When a Task is deleted, all of the files in its directory on the Compute Node where it ran are also deleted
+     * (regardless of the retention time). For multi-instance Tasks, the delete Task operation applies synchronously to
+     * the primary task; subtasks and their files are then deleted asynchronously in the background.
+     *
+     * @param jobId The ID of the Job from which to delete the Task.
+     * @param taskId The ID of the Task to delete.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void deleteTask(String jobId, String taskId, OptionsBag optionsBag) {
+        deleteTask(jobId, taskId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
     }
 
     /**
@@ -14316,6 +15344,37 @@ public final class BatchClient {
     }
 
     /**
+     * Gets information about the specified Task.
+     *
+     * <p>For multi-instance Tasks, information such as affinityId, executionInfo, and nodeInfo refer to the primary
+     * Task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task to get information about.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, select, expand, and
+     *     requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery operations
+     *     include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared due to host
+     *     failure. Retries due to recovery operations are independent of and are not counted against the
+     *     maxTaskRetryCount.
+     */
+    public BatchTask getTask(String jobId, String taskId, OptionsBag optionsBag) {
+        return getTask(
+                jobId,
+                taskId,
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getSelect(),
+                optionsBag.getExpand(),
+                optionsBag.getRequestConditions());
+    }
+
+    /**
      * Updates the properties of the specified Task.
      *
      * @param jobId The ID of the Job containing the Task.
@@ -14366,6 +15425,24 @@ public final class BatchClient {
     }
 
     /**
+     * Updates the properties of the specified Task.
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to update.
+     * @param body The Task to update.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void replaceTask(String jobId, String taskId, BatchTask body, OptionsBag optionsBag) {
+        replaceTask(jobId, taskId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Lists all of the subtasks that are associated with the specified multi-instance Task.
      *
      * <p>If the Task is not a multi-instance Task then this returns an empty collection.
@@ -14403,6 +15480,26 @@ public final class BatchClient {
         return listSubTasksWithResponse(jobId, taskId, requestOptions)
                 .getValue()
                 .toObject(BatchTaskListSubtasksResult.class);
+    }
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance Task.
+     *
+     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
+     *
+     * @param jobId The ID of the Job.
+     * @param taskId The ID of the Task.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and select.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the subtasks of a Task.
+     */
+    public BatchTaskListSubtasksResult listSubTasks(String jobId, String taskId, OptionsBag optionsBag) {
+        return listSubTasks(jobId, taskId, optionsBag.getTimeOutInSeconds(), optionsBag.getSelect());
     }
 
     /**
@@ -14452,6 +15549,27 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         terminateTaskWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Terminates the specified Task.
+     *
+     * <p>When the Task has been terminated, it moves to the completed state. For multi-instance Tasks, the terminate
+     * Task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the
+     * background.
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to terminate.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void terminateTask(String jobId, String taskId, OptionsBag optionsBag) {
+        terminateTask(jobId, taskId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
     }
 
     /**
@@ -14506,6 +15624,29 @@ public final class BatchClient {
     }
 
     /**
+     * Reactivates a Task, allowing it to run again even if its retry count has been exhausted.
+     *
+     * <p>Reactivation makes a Task eligible to be retried again up to its maximum retry count. The Task's state is
+     * changed to active. As the Task is no longer in the completed state, any previous exit code or failure information
+     * is no longer available after reactivation. Each time a Task is reactivated, its retry count is reset to 0.
+     * Reactivation will fail for Tasks that are not completed or that previously completed successfully (with an exit
+     * code of 0). Additionally, it will fail if the Job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to reactivate.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void reactivateTask(String jobId, String taskId, OptionsBag optionsBag) {
+        reactivateTask(jobId, taskId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    }
+
+    /**
      * Deletes the specified Task file from the Compute Node where the Task ran.
      *
      * @param jobId The ID of the Job that contains the Task.
@@ -14536,6 +15677,24 @@ public final class BatchClient {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
         deleteTaskFileWithResponse(jobId, taskId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes the specified Task file from the Compute Node where the Task ran.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and recursive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void deleteTaskFile(String jobId, String taskId, String filePath, OptionsBag optionsBag) {
+        deleteTaskFile(jobId, taskId, filePath, optionsBag.getTimeOutInSeconds(), optionsBag.getRecursive());
     }
 
     /**
@@ -14591,6 +15750,33 @@ public final class BatchClient {
     }
 
     /**
+     * Returns the content of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, ifModifiedSince, ifUnmodifiedSince,
+     *     and ocpRange.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    public BinaryData getTaskFile(String jobId, String taskId, String filePath, OptionsBag optionsBag) {
+        return getTaskFile(
+                jobId,
+                taskId,
+                filePath,
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getIfModifiedSince(),
+                optionsBag.getIfUnmodifiedSince(),
+                optionsBag.getOcpRange());
+    }
+
+    /**
      * Gets the properties of the specified Task file.
      *
      * @param jobId The ID of the Job that contains the Task.
@@ -14633,6 +15819,31 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file properties you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the properties of.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, ifModifiedSince, and
+     *     ifUnmodifiedSince.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void getTaskFileProperties(String jobId, String taskId, String filePath, OptionsBag optionsBag) {
+        getTaskFileProperties(
+                jobId,
+                taskId,
+                filePath,
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getIfModifiedSince(),
+                optionsBag.getIfUnmodifiedSince());
     }
 
     /**
@@ -14686,6 +15897,31 @@ public final class BatchClient {
     }
 
     /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, and recursive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedIterable}.
+     */
+    public PagedIterable<NodeFile> listTaskFiles(String jobId, String taskId, OptionsBag optionsBag) {
+        return listTaskFiles(
+                jobId,
+                taskId,
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getFilter(),
+                optionsBag.getRecursive());
+    }
+
+    /**
      * Adds a user Account to the specified Compute Node.
      *
      * <p>You can add a user Account to a Compute Node only when it is in the idle or running state.
@@ -14715,6 +15951,26 @@ public final class BatchClient {
     }
 
     /**
+     * Adds a user Account to the specified Compute Node.
+     *
+     * <p>You can add a user Account to a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to create a user Account.
+     * @param body The options to use for creating the user.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void createNodeUser(String poolId, String nodeId, BatchNodeUserCreateOptions body, OptionsBag optionsBag) {
+        createNodeUser(poolId, nodeId, body, optionsBag.getTimeOutInSeconds());
+    }
+
+    /**
      * Deletes a user Account from the specified Compute Node.
      *
      * <p>You can delete a user Account to a Compute Node only when it is in the idle or running state.
@@ -14740,6 +15996,26 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a user Account from the specified Compute Node.
+     *
+     * <p>You can delete a user Account to a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to delete a user Account.
+     * @param userName The name of the user Account to delete.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void deleteNodeUser(String poolId, String nodeId, String userName, OptionsBag optionsBag) {
+        deleteNodeUser(poolId, nodeId, userName, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -14772,6 +16048,30 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(body), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the password and expiration time of a user Account on the specified Compute Node.
+     *
+     * <p>This operation replaces all of the updatable properties of the Account. For example, if the expiryTime element
+     * is not specified, the current value is replaced with the default value, not left unmodified. You can update a
+     * user Account on a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to update a user Account.
+     * @param userName The name of the user Account to update.
+     * @param body The options to use for updating the user.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void replaceNodeUser(
+            String poolId, String nodeId, String userName, BatchNodeUserUpdateOptions body, OptionsBag optionsBag) {
+        replaceNodeUser(poolId, nodeId, userName, body, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -14810,6 +16110,24 @@ public final class BatchClient {
     }
 
     /**
+     * Gets information about the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to get information about.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and select.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Compute Node.
+     */
+    public BatchNode getNode(String poolId, String nodeId, OptionsBag optionsBag) {
+        return getNode(poolId, nodeId, optionsBag.getTimeOutInSeconds(), optionsBag.getSelect());
+    }
+
+    /**
      * Restarts the specified Compute Node.
      *
      * <p>You can restart a Compute Node only if it is in an idle or running state.
@@ -14838,6 +16156,25 @@ public final class BatchClient {
             requestOptions.setBody(BinaryData.fromObject(body));
         }
         rebootNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Restarts the specified Compute Node.
+     *
+     * <p>You can restart a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and nodeRebootOptionsBody.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void rebootNode(String poolId, String nodeId, OptionsBag optionsBag) {
+        rebootNode(poolId, nodeId, optionsBag.getTimeOutInSeconds(), optionsBag.getNodeRebootOptionsBody());
     }
 
     /**
@@ -14873,6 +16210,26 @@ public final class BatchClient {
     }
 
     /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * <p>You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API
+     * can be invoked only on Pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void reimageNode(String poolId, String nodeId, OptionsBag optionsBag) {
+        reimageNode(poolId, nodeId, optionsBag.getTimeOutInSeconds(), optionsBag.getNodeReimageOptionsBody());
+    }
+
+    /**
      * Disables Task scheduling on the specified Compute Node.
      *
      * <p>You can disable Task scheduling on a Compute Node only if its current scheduling state is enabled.
@@ -14905,6 +16262,26 @@ public final class BatchClient {
     }
 
     /**
+     * Disables Task scheduling on the specified Compute Node.
+     *
+     * <p>You can disable Task scheduling on a Compute Node only if its current scheduling state is enabled.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void disableNodeScheduling(String poolId, String nodeId, OptionsBag optionsBag) {
+        disableNodeScheduling(
+                poolId, nodeId, optionsBag.getTimeOutInSeconds(), optionsBag.getNodeDisableSchedulingOptionsBody());
+    }
+
+    /**
      * Enables Task scheduling on the specified Compute Node.
      *
      * <p>You can enable Task scheduling on a Compute Node only if its current scheduling state is disabled.
@@ -14929,6 +16306,25 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         enableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables Task scheduling on the specified Compute Node.
+     *
+     * <p>You can enable Task scheduling on a Compute Node only if its current scheduling state is disabled.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void enableNodeScheduling(String poolId, String nodeId, OptionsBag optionsBag) {
+        enableNodeScheduling(poolId, nodeId, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -14965,6 +16361,29 @@ public final class BatchClient {
     }
 
     /**
+     * Gets the settings required for remote login to a Compute Node.
+     *
+     * <p>Before you can remotely login to a Compute Node using the remote login settings, you must create a user
+     * Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration
+     * property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remote login settings for a Compute Node.
+     */
+    public BatchNodeRemoteLoginSettingsResult getNodeRemoteLoginSettings(
+            String poolId, String nodeId, OptionsBag optionsBag) {
+        return getNodeRemoteLoginSettings(poolId, nodeId, optionsBag.getTimeOutInSeconds());
+    }
+
+    /**
      * Gets the Remote Desktop Protocol file for the specified Compute Node.
      *
      * <p>Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute
@@ -14992,6 +16411,28 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
         }
         return getNodeRemoteDesktopFileWithResponse(poolId, nodeId, requestOptions).getValue().toObject(byte[].class);
+    }
+
+    /**
+     * Gets the Remote Desktop Protocol file for the specified Compute Node.
+     *
+     * <p>Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute
+     * Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a
+     * virtual machine configuration, see the GetRemoteLoginSettings API.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represent a byte array.
+     */
+    public byte[] getNodeRemoteDesktopFile(String poolId, String nodeId, OptionsBag optionsBag) {
+        return getNodeRemoteDesktopFile(poolId, nodeId, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -15026,6 +16467,29 @@ public final class BatchClient {
         return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(body), requestOptions)
                 .getValue()
                 .toObject(UploadBatchServiceLogsResult.class);
+    }
+
+    /**
+     * Upload Azure Batch service log files from the specified Compute Node to Azure Blob Storage.
+     *
+     * <p>This is for gathering Azure Batch service log files in an automated fashion from Compute Nodes if you are
+     * experiencing an error and wish to escalate to Azure support. The Azure Batch service log files should be shared
+     * with Azure support to aid in debugging issues with the Batch service.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of uploading Batch service log files from a specific Compute Node.
+     */
+    public UploadBatchServiceLogsResult uploadNodeLogs(
+            String poolId, String nodeId, UploadBatchServiceLogsOptions body, OptionsBag optionsBag) {
+        return uploadNodeLogs(poolId, nodeId, body, optionsBag.getTimeOutInSeconds());
     }
 
     /**
@@ -15076,6 +16540,28 @@ public final class BatchClient {
     }
 
     /**
+     * Lists the Compute Nodes in the specified Pool.
+     *
+     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
+     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, and select.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
+     */
+    public PagedIterable<BatchNode> listNodes(String poolId, OptionsBag optionsBag) {
+        return listNodes(
+                poolId,
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getFilter(),
+                optionsBag.getSelect());
+    }
+
+    /**
      * Gets information about the specified Compute Node Extension.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -15112,6 +16598,26 @@ public final class BatchClient {
         return getNodeExtensionWithResponse(poolId, nodeId, extensionName, requestOptions)
                 .getValue()
                 .toObject(NodeVMExtension.class);
+    }
+
+    /**
+     * Gets information about the specified Compute Node Extension.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that contains the extensions.
+     * @param extensionName The name of the Compute Node Extension that you want to get information about.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and select.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Compute Node Extension.
+     */
+    public NodeVMExtension getNodeExtension(String poolId, String nodeId, String extensionName, OptionsBag optionsBag) {
+        return getNodeExtension(
+                poolId, nodeId, extensionName, optionsBag.getTimeOutInSeconds(), optionsBag.getSelect());
     }
 
     /**
@@ -15159,6 +16665,26 @@ public final class BatchClient {
     }
 
     /**
+     * Lists the Compute Node Extensions in the specified Pool.
+     *
+     * @param poolId The ID of the Pool that contains Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to list extensions.
+     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, and select.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link
+     *     PagedIterable}.
+     */
+    public PagedIterable<NodeVMExtension> listNodeExtensions(String poolId, String nodeId, OptionsBag optionsBag) {
+        return listNodeExtensions(
+                poolId, nodeId, optionsBag.getMaxresults(), optionsBag.getTimeOutInSeconds(), optionsBag.getSelect());
+    }
+
+    /**
      * Deletes the specified file from the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -15189,6 +16715,24 @@ public final class BatchClient {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
         deleteNodeFileWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes the specified file from the Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and recursive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void deleteNodeFile(String poolId, String nodeId, String filePath, OptionsBag optionsBag) {
+        deleteNodeFile(poolId, nodeId, filePath, optionsBag.getTimeOutInSeconds(), optionsBag.getRecursive());
     }
 
     /**
@@ -15244,6 +16788,33 @@ public final class BatchClient {
     }
 
     /**
+     * Returns the content of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, ifModifiedSince, ifUnmodifiedSince,
+     *     and ocpRange.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represent a byte array.
+     */
+    public byte[] getNodeFile(String poolId, String nodeId, String filePath, OptionsBag optionsBag) {
+        return getNodeFile(
+                poolId,
+                nodeId,
+                filePath,
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getIfModifiedSince(),
+                optionsBag.getIfUnmodifiedSince(),
+                optionsBag.getOcpRange());
+    }
+
+    /**
      * Gets the properties of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -15286,6 +16857,31 @@ public final class BatchClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Gets the properties of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, ifModifiedSince, and
+     *     ifUnmodifiedSince.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void getNodeFileProperties(String poolId, String nodeId, String filePath, OptionsBag optionsBag) {
+        getNodeFileProperties(
+                poolId,
+                nodeId,
+                filePath,
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getIfModifiedSince(),
+                optionsBag.getIfUnmodifiedSince());
     }
 
     /**
@@ -15335,5 +16931,30 @@ public final class BatchClient {
         return serviceClient
                 .listNodeFiles(poolId, nodeId, requestOptions)
                 .mapPage(bodyItemValue -> bodyItemValue.toObject(NodeFile.class));
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, and recursive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedIterable}.
+     */
+    public PagedIterable<NodeFile> listNodeFiles(String poolId, String nodeId, OptionsBag optionsBag) {
+        return listNodeFiles(
+                poolId,
+                nodeId,
+                optionsBag.getMaxresults(),
+                optionsBag.getTimeOutInSeconds(),
+                optionsBag.getFilter(),
+                optionsBag.getRecursive());
     }
 }
