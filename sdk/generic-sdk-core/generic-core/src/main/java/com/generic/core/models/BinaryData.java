@@ -415,4 +415,203 @@ public final class BinaryData {
     public ByteBuffer toByteBuffer() {
         return null;
     }
+
+
+    /**
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
+     * {@link JsonSerializer}. Each time this method is called, the content is deserialized and a new instance of type
+     * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
+     * type is not recommended.
+     * <p>
+     * The type, represented by {@link Class}, should be a non-generic class, for generic classes use
+     * {@link #toObject(TypeReference, JsonSerializer)}.
+     * <p>
+     * The passed {@link JsonSerializer} can either be one of the implementations offered by the Azure SDKs or your
+     * own implementation.
+     *
+     * <p><strong>Azure SDK implementations</strong></p>
+     * <ul>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
+     * </ul>
+     *
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class-JsonSerializer -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * final JsonSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * Person person = binaryData.toObject&#40;Person.class, serializer&#41;;
+     * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObject#Class-JsonSerializer -->
+     *
+     * @param clazz The {@link Class} representing the Object's type.
+     * @param serializer The {@link JsonSerializer} used to deserialize object.
+     * @param <T> Type of the deserialized Object.
+     * @return An {@link Object} representing the deserialized {@link BinaryData}.
+     * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
+     * @see JsonSerializer
+     * @see JsonSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+     */
+    public <T> T toObject(Class<T> clazz, JsonSerializer serializer) {
+        return toObject(TypeReference.createInstance(clazz), serializer);
+    }
+
+    /**
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
+     * {@link JsonSerializer}. Each time this method is called, the content is deserialized and a new instance of type
+     * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
+     * type is not recommended.
+     * <p>
+     * The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
+     * generic create a sub-type of {@link TypeReference}, if the type is non-generic use
+     * {@link TypeReference#createInstance(Class)}.
+     * <p>
+     * The passed {@link JsonSerializer} can either be one of the implementations offered by the Azure SDKs or your
+     * own implementation.
+     *
+     * <p><strong>Azure SDK implementations</strong></p>
+     * <ul>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
+     * </ul>
+     *
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-JsonSerializer -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * final JsonSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * Person person = binaryData.toObject&#40;TypeReference.createInstance&#40;Person.class&#41;, serializer&#41;;
+     * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-JsonSerializer -->
+     *
+     * <p><strong>Get a generic Object from the BinaryData</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-JsonSerializer-generic -->
+     * <pre>
+     * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
+     *
+     * List&lt;Person&gt; personList = new ArrayList&lt;&gt;&#40;&#41;;
+     * personList.add&#40;person1&#41;;
+     * personList.add&#40;person2&#41;;
+     *
+     * final JsonSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;personList, serializer&#41;;
+     *
+     * &#47;&#47; Retains the type of the list when deserializing
+     * List&lt;Person&gt; persons = binaryData.toObject&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;, serializer&#41;;
+     * persons.forEach&#40;person -&gt; System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-JsonSerializer-generic -->
+     *
+     * @param typeReference The {@link TypeReference} representing the Object's type.
+     * @param serializer The {@link JsonSerializer} used to deserialize object.
+     * @param <T> Type of the deserialized Object.
+     * @return An {@link Object} representing the deserialized {@link BinaryData}.
+     * @throws NullPointerException If {@code typeReference} or {@code serializer} is null.
+     * @see JsonSerializer
+     * @see JsonSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+     */
+    public <T> T toObject(TypeReference<T> typeReference, JsonSerializer serializer) {
+        Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
+        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+
+        return null;
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the passed
+     * {@link JsonSerializer}.
+     * <p>
+     * The passed {@link JsonSerializer} can either be one of the implementations offered by the Azure SDKs or your
+     * own implementation.
+     * </p>
+     *
+     * <p><strong>Azure SDK implementations</strong></p>
+     * <ul>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Jackson JSON serializer</a></li>
+     * <li><a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">GSON JSON serializer</a></li>
+     * </ul>
+     *
+     * <p><strong>Create an instance from an Object</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object-JsonSerializer -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * final JsonSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromObject#Object-JsonSerializer -->
+     *
+     * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
+     * determines how {@code null} data is serialized.
+     * @param serializer The {@link JsonSerializer} used to serialize object.
+     * @return A {@link BinaryData} representing the serialized object.
+     * @throws NullPointerException If {@code serializer} is null.
+     * @see JsonSerializer
+     * @see JsonSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+     */
+    public static BinaryData fromObject(Object data, JsonSerializer serializer) {
+        return null;
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the default
+     * {@link JsonSerializer}.
+     *
+     * <p>
+     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
+     * implementation is found, a default Jackson-based implementation will be used to serialize the object.
+     * </p>
+     * <p><strong>Creating an instance from an Object</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+     *
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
+     *
+     * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the JSON serialized object.
+     * @throws NullPointerException If {@code data} is null.
+     * @see JsonSerializer
+     */
+    public static BinaryData fromObject(Object data) {
+        return fromObject(data, null);
+    }
+
 }

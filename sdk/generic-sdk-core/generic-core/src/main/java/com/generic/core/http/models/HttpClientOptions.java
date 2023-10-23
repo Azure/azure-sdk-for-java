@@ -274,7 +274,7 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public HttpClientOptions setMaximumConnectionPoolSize(Integer maximumConnectionPoolSize) {
         if (maximumConnectionPoolSize != null && maximumConnectionPoolSize <= 0) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.logThrowableAsError(
                 new IllegalArgumentException("'maximumConnectionPoolSize' cannot be less than 1."));
         }
 

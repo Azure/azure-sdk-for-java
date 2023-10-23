@@ -5,7 +5,6 @@ package com.generic.core.http.pipeline;
 
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpClientOptions;
-import com.generic.core.http.policy.HttpPipelinePolicy;
 import com.generic.core.models.ClientOptions;
 
 import java.util.ArrayList;
@@ -43,6 +42,15 @@ public class HttpPipelineBuilder {
      * creating an instance of it.
      */
     public HttpPipelineBuilder() {
+    }
+
+    /**
+     * Creates a new {@link HttpPipeline} instance.
+     *
+     * @return A new {@link HttpPipeline} instance.
+     */
+    public HttpPipeline createDefaultPipeline() {
+        return null;
     }
 
     /**

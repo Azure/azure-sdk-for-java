@@ -5,7 +5,7 @@ package com.generic.core.implementation.serializer;
 
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.JsonSerializer;
-import com.generic.core.util.serializer.TypeReference;
+import com.generic.core.models.TypeReference;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,7 +23,7 @@ public final class DefaultJsonSerializer implements JsonSerializer {
 //        try {
 //            return jacksonAdapter.deserialize(data, typeReference.getJavaType(), SerializerEncoding.JSON);
 //        } catch (IOException e) {
-//            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+//            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
 //        }
         return null;
     }
@@ -38,7 +38,7 @@ public final class DefaultJsonSerializer implements JsonSerializer {
 //        try {
 //            return jacksonAdapter.serializeToBytes(value, SerializerEncoding.JSON);
 //        } catch (IOException e) {
-//            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+//            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
 //        }
         return null;
     }

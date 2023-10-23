@@ -4,8 +4,8 @@
 package com.generic.core.implementation.http;
 
 import com.generic.core.http.pipeline.HttpPipeline;
-import com.generic.core.http.models.HttpPipelineCallContext;
-import com.generic.core.http.policy.HttpPipelinePolicy;
+import com.generic.core.http.pipeline.HttpPipelineCallContext;
+import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.util.logging.ClientLogger;
 
 /**
@@ -41,7 +41,7 @@ public class HttpPipelineCallState {
         this.currentPolicyIndex++;
 
         if (this.currentPolicyIndex > size) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("There is no more policies to execute."));
+            throw LOGGER.logThrowableAsError(new IllegalStateException("There is no more policies to execute."));
         } else if (this.currentPolicyIndex == size) {
             return null;
         } else {

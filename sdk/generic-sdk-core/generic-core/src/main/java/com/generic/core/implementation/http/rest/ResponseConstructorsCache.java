@@ -79,10 +79,10 @@ public final class ResponseConstructorsCache {
                     return ReflectionUtils.getConstructorInvoker(responseClass, constructor);
                 } catch (Exception ex) {
                     if (ex instanceof RuntimeException) {
-                        throw LOGGER.logExceptionAsError((RuntimeException) ex);
+                        throw LOGGER.logThrowableAsError((RuntimeException) ex);
                     }
 
-                    throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+                    throw LOGGER.logThrowableAsError(new RuntimeException(ex));
                 }
             }
         }
@@ -90,7 +90,7 @@ public final class ResponseConstructorsCache {
         // Before this was returning null, but in all cases where null is returned from this method an exception would
         // be thrown later. Instead, just throw here to properly use computeIfAbsent by not inserting a null key-value
         // pair that would cause the computation to always be performed.
-        throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class "
+        throw LOGGER.logThrowableAsError(new RuntimeException("Cannot find suitable constructor for class "
             + responseClass));
     }
 
@@ -120,7 +120,7 @@ public final class ResponseConstructorsCache {
                 return constructResponse(reflectiveInvoker, FIVE_PARAM_ERROR, httpRequest, responseStatusCode,
                     null, bodyAsObject, decodedResponse.getDecodedHeaders());
             default:
-                throw LOGGER.logExceptionAsError(new IllegalStateException(INVALID_PARAM_COUNT));
+                throw LOGGER.logThrowableAsError(new IllegalStateException(INVALID_PARAM_COUNT));
         }
     }
 
@@ -129,10 +129,10 @@ public final class ResponseConstructorsCache {
             return (Response<?>) reflectiveInvoker.invokeStatic(params);
         } catch (Exception exception) {
             if (exception instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) exception);
+                throw LOGGER.logThrowableAsError((RuntimeException) exception);
             }
 
-            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, exception));
+            throw LOGGER.logThrowableAsError(new IllegalStateException(exceptionMessage, exception));
         }
     }
 }

@@ -5,7 +5,7 @@ package com.generic.core.http.policy.redirect;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
-import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.util.CoreUtils;
@@ -33,43 +33,9 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     private final int maxAttempts;
     private final HttpHeaderName locationHeader;
     private final Set<HttpMethod> allowedRedirectHttpMethods;
-
-    /**
-     * Creates an instance of {@link DefaultRedirectStrategy} with a maximum number of redirect attempts 3,
-     * header name "Location" to locate the redirect url in the response headers and {@link HttpMethod#GET}
-     * and {@link HttpMethod#HEAD} as allowed methods for performing the redirect.
-     */
-    public DefaultRedirectStrategy() {
-        this(DEFAULT_MAX_REDIRECT_ATTEMPTS, HttpHeaderName.LOCATION, DEFAULT_REDIRECT_ALLOWED_METHODS);
-    }
-
-    /**
-     * Creates an instance of {@link DefaultRedirectStrategy} with the provided number of redirect attempts and
-     * default header name "Location" to locate the redirect url in the response headers and {@link HttpMethod#GET}
-     * and {@link HttpMethod#HEAD} as allowed methods for performing the redirect.
-     *
-     * @param maxAttempts The max number of redirect attempts that can be made.
-     * @throws IllegalArgumentException if {@code maxAttempts} is less than 0.
-     */
-    public DefaultRedirectStrategy(int maxAttempts) {
-        this(maxAttempts, HttpHeaderName.LOCATION, DEFAULT_REDIRECT_ALLOWED_METHODS);
-    }
-
-    /**
-     * Creates an instance of {@link DefaultRedirectStrategy}.
-     *
-     * @param maxAttempts The max number of redirect attempts that can be made.
-     * @param locationHeader The header name containing the redirect URL.
-     * @param allowedMethods The set of {@link HttpMethod} that are allowed to be redirected.
-     * @throws IllegalArgumentException if {@code maxAttempts} is less than 0.
-     */
-    public DefaultRedirectStrategy(int maxAttempts, String locationHeader, Set<HttpMethod> allowedMethods) {
-        this(maxAttempts, validateLocationHeader(locationHeader), validateAllowedMethods(allowedMethods));
-    }
-
     private DefaultRedirectStrategy(int maxAttempts, HttpHeaderName locationHeader, Set<HttpMethod> allowedMethods) {
         if (maxAttempts < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max attempts cannot be less than 0."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max attempts cannot be less than 0."));
         }
         this.maxAttempts = maxAttempts;
         this.locationHeader = locationHeader;

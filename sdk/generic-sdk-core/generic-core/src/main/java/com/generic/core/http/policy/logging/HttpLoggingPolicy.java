@@ -5,10 +5,10 @@ package com.generic.core.http.policy.logging;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
-import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.policy.HttpPipelinePolicy;
+import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.models.Context;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
@@ -51,8 +51,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final HttpLogDetailLevel httpLogDetailLevel;
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
-    private final boolean prettyPrintBody;
-
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
 
@@ -74,7 +72,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             this.httpLogDetailLevel = HttpLogDetailLevel.NONE;
             this.allowedHeaderNames = Collections.emptySet();
             this.allowedQueryParameterNames = Collections.emptySet();
-            this.prettyPrintBody = false;
 
             this.requestLogger = new DefaultHttpRequestLogger();
             this.responseLogger = new DefaultHttpResponseLogger();
@@ -88,7 +85,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .stream()
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
-            this.prettyPrintBody = httpLogOptions.isPrettyPrintBody();
 
             this.requestLogger = (httpLogOptions.getRequestLogger() == null)
                 ? new DefaultHttpRequestLogger()
@@ -119,7 +115,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return response;
         } catch (RuntimeException e) {
 //            logger.warning("<-- HTTP FAILED: ", e);
-            throw logger.logExceptionAsWarning(e);
+            throw logger.logThrowableAsWarning(e);
         }
     }
 
@@ -164,7 +160,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             //     addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), logBuilder);
             // }
             //
-            // if (request.getBodyAsBinaryData() == null) {
+            // if (request.getBody() == null) {
             //     logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, 0)
             //         .log(REQUEST_LOG_MESSAGE);
             //     return;
@@ -252,7 +248,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 long contentLength = getContentLength(logger, response.getHeaders());
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
                     return new LoggingHttpResponse(response, logBuilder, logger,
-                        (int) contentLength, contentTypeHeader, prettyPrintBody);
+                        (int) contentLength, contentTypeHeader);
                 }
             }
 
@@ -304,31 +300,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))
                 ? header.getValue() : REDACTED_PLACEHOLDER);
         }
-    }
-
-    /*
-     * Determines and attempts to pretty print the body if it is JSON.
-     *
-     * <p>The body is pretty printed if the Content-Type is JSON and the policy is configured to pretty print JSON.</p>
-     *
-     * @param logger Logger used to log a warning if the body fails to pretty print as JSON.
-     * @param contentType Content-Type header.
-     * @param body Body of the request or response.
-     * @return The body pretty printed if it is JSON, otherwise the unmodified body.
-     */
-    private static String prettyPrintIfNeeded(ClientLogger logger, boolean prettyPrintBody, String contentType,
-        String body) {
-        String result = body;
-        if (prettyPrintBody && contentType != null
-            && (contentType.startsWith(APPLICATION_JSON) || contentType.startsWith("text/json"))) {
-            try {
-                // final Object deserialized = PRETTY_PRINTER.readTree(body);
-                // result = PRETTY_PRINTER.writeValueAsString(deserialized);
-            } catch (Exception e) {
-//                logger.warning("Failed to pretty print JSON", e);
-            }
-        }
-        return result;
     }
 
     /*
@@ -421,19 +392,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         private final LoggingEventBuilder logBuilder;
         private final int contentLength;
         private final ClientLogger logger;
-        private final boolean prettyPrintBody;
         private final String contentTypeHeader;
 
         private LoggingHttpResponse(HttpResponse actualResponse, LoggingEventBuilder logBuilder,
-            ClientLogger logger, int contentLength, String contentTypeHeader,
-            boolean prettyPrintBody) {
+            ClientLogger logger, int contentLength, String contentTypeHeader) {
             super(actualResponse.getRequest());
             this.actualResponse = actualResponse;
             this.logBuilder = logBuilder;
             this.logger = logger;
             this.contentLength = contentLength;
             this.contentTypeHeader = contentTypeHeader;
-            this.prettyPrintBody = prettyPrintBody;
         }
 
         @Override
@@ -452,8 +420,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public BinaryData getBodyAsBinaryData() {
-            BinaryData content = actualResponse.getBodyAsBinaryData();
+        public BinaryData getBody() {
+            BinaryData content = actualResponse.getBody();
             doLog(content.toString());
             return content;
         }

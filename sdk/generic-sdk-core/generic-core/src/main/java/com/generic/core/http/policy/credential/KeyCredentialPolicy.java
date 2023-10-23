@@ -5,9 +5,9 @@ package com.generic.core.http.policy.credential;
 
 import com.generic.core.credential.KeyCredential;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
-import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.policy.HttpPipelinePolicy;
+import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.models.Headers;
 import com.generic.core.util.logging.ClientLogger;
 
@@ -24,18 +24,6 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
     private final String name;
     private final KeyCredential credential;
     private final String prefix;
-
-    /**
-     * Creates a policy that uses the passed {@link KeyCredential} to set the specified header name.
-     *
-     * @param name The name of the key header that will be set to {@link KeyCredential#getKey()}.
-     * @param credential The {@link KeyCredential} containing the authorization key to use.
-     * @throws NullPointerException If {@code name} or {@code credential} is {@code null}.
-     * @throws IllegalArgumentException If {@code name} is empty.
-     */
-    public KeyCredentialPolicy(String name, KeyCredential credential) {
-        this(name, credential, null);
-    }
 
     /**
      * Creates a policy that uses the passed {@link KeyCredential} to set the specified header name.
@@ -58,7 +46,7 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
 //    private static HttpHeaderName validateName(String name) {
 //        Objects.requireNonNull(name, "'name' cannot be null.");
 //        if (name.isEmpty()) {
-//            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty."));
+//            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be empty."));
 //        }
 //
 //        return HttpHeaderName.fromString(name);
@@ -67,7 +55,7 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
     @Override
     public HttpResponse process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.logThrowableAsError(
                 new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
         }
 

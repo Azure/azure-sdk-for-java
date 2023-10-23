@@ -24,41 +24,6 @@ public class HttpResponseException extends RuntimeException {
     /**
      * Initializes a new instance of the HttpResponseException class.
      *
-     * @param response The {@link HttpResponse} received that is associated to the exception.
-     */
-    public HttpResponseException(final HttpResponse response) {
-        super();
-        this.value = null;
-        this.response = response;
-    }
-
-    /**
-     * Initializes a new instance of the HttpResponseException class.
-     *
-     * @param message The exception message.
-     * @param response The {@link HttpResponse} received that is associated to the exception.
-     */
-    public HttpResponseException(final String message, final HttpResponse response) {
-        super(message);
-        this.value = null;
-        this.response = response;
-    }
-
-    /**
-     * Initializes a new instance of the HttpResponseException class.
-     *
-     * @param response The {@link HttpResponse} received that is associated to the exception.
-     * @param cause The {@link Throwable} which caused the creation of this exception.
-     */
-    public HttpResponseException(final HttpResponse response, final Throwable cause) {
-        super(cause);
-        this.value = null;
-        this.response = response;
-    }
-
-    /**
-     * Initializes a new instance of the HttpResponseException class.
-     *
      * @param message The exception message.
      * @param response The {@link HttpResponse} received that is associated to the exception.
      * @param value The deserialized response value.

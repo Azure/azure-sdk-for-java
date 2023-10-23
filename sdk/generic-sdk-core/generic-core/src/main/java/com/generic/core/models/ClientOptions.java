@@ -61,19 +61,20 @@ public class ClientOptions {
     //  * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
     //  * length.
     //  */
-    // public ClientOptions setApplicationId(String applicationId) {
+     public ClientOptions setApplicationId(String applicationId) {
+        return null;
     //     if (!CoreUtils.isNullOrEmpty(applicationId)) {
     //         if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-    //             throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
+    //             throw LOGGER.logThrowableAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
     //         } else if (applicationId.contains(" ")) {
-    //             throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
+    //             throw LOGGER.logThrowableAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
     //         }
     //     }
     //
     //     this.applicationId = applicationId;
     //
     //     return this;
-    // }
+     }
 
     /**
      * Sets the {@link Header Headers}.

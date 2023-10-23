@@ -9,7 +9,7 @@ import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
-import com.generic.core.http.policy.HttpPipelinePolicy;
+import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.implementation.http.policy.RetryPolicy;
 import com.generic.core.implementation.util.BinaryDataContent;
 import com.generic.core.implementation.util.BinaryDataHelper;

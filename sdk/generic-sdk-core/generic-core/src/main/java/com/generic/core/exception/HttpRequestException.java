@@ -20,32 +20,11 @@ public class HttpRequestException extends RuntimeException {
     /**
      * Initializes a new instance of the HttpRequestException class.
      *
-     * @param request The {@link HttpRequest} being sent when the exception occurred.
-     */
-    public HttpRequestException(final HttpRequest request) {
-        super();
-        this.request = request;
-    }
-
-    /**
-     * Initializes a new instance of the HttpRequestException class.
-     *
      * @param message The exception message.
      * @param request the HTTP request sends to the service.
      */
     public HttpRequestException(final String message, final HttpRequest request) {
         super(message);
-        this.request = request;
-    }
-
-    /**
-     * Initializes a new instance of the HttpRequestException class.
-     *
-     * @param request The {@link HttpRequest} being sent when the exception occurred.
-     * @param cause The {@link Throwable} which caused the creation of this HttpRequestException.
-     */
-    public HttpRequestException(final HttpRequest request, final Throwable cause) {
-        super(cause);
         this.request = request;
     }
 

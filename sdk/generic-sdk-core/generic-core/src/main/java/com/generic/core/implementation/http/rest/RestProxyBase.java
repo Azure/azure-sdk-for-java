@@ -4,7 +4,6 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.exception.ClientAuthenticationException;
-import com.generic.core.exception.DecodeException;
 import com.generic.core.exception.HttpResponseException;
 import com.generic.core.exception.ResourceExistsException;
 import com.generic.core.exception.ResourceModifiedException;
@@ -90,7 +89,7 @@ public abstract class RestProxyBase {
             return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
 
         } catch (IOException e) {
-           throw LOGGER.logExceptionAsError(new RuntimeException(e));
+           throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 
@@ -127,7 +126,7 @@ public abstract class RestProxyBase {
 //            // If the bodyAsObject is null use the constructor that take items and continuation token with null.
 //            // Otherwise, use the constructor that take Page.
 //            if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-//                throw LOGGER.logExceptionAsError(new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR));
+//                throw LOGGER.logThrowableAsError(new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR));
 //            } else if (bodyAsObject == null) {
 //                return cls.cast(new PagedResponseBase<>(request, statusCode, headers, null, null, decodedHeaders));
 //            } else {
@@ -238,8 +237,6 @@ public abstract class RestProxyBase {
             return new HttpResponseException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
         } else if (exceptionType == ClientAuthenticationException.class) {
             return new ClientAuthenticationException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == DecodeException.class) {
-            return new DecodeException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
         } else if (exceptionType == ResourceExistsException.class) {
             return new ResourceExistsException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
         } else if (exceptionType == ResourceModifiedException.class) {

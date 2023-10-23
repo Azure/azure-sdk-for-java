@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client.urlconnection;
+package com.generic.core.http.client.httpurlconnection;
 
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.util.configuration.Configuration;
@@ -14,7 +14,7 @@ import java.time.Duration;
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpURLConnection,
  * first introduced in JDK 1.1.
  */
-public class UrlConnectionClientBuilder {
+public class HttpUrlConnectionClientBuilder {
 
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
@@ -30,7 +30,7 @@ public class UrlConnectionClientBuilder {
     /**
      * HttpUrlConnectionAsyncClientBuilder.
      */
-    public UrlConnectionClientBuilder() {
+    public HttpUrlConnectionClientBuilder() {
     }
 
     /**
@@ -48,7 +48,7 @@ public class UrlConnectionClientBuilder {
      * @param connectionTimeout Connect timeout duration.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public UrlConnectionClientBuilder connectionTimeout(Duration connectionTimeout) {
+    public HttpUrlConnectionClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
     }
@@ -67,7 +67,7 @@ public class UrlConnectionClientBuilder {
      * @param readTimeout Read timeout duration.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public UrlConnectionClientBuilder readTimeout(Duration readTimeout) {
+    public HttpUrlConnectionClientBuilder readTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
         return this;
     }
@@ -87,7 +87,7 @@ public class UrlConnectionClientBuilder {
      * @param writeTimeout Write operation timeout duration.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public UrlConnectionClientBuilder writeTimeout(Duration writeTimeout) {
+    public HttpUrlConnectionClientBuilder writeTimeout(Duration writeTimeout) {
         this.writeTimeout = writeTimeout;
         return this;
     }
@@ -105,7 +105,7 @@ public class UrlConnectionClientBuilder {
      * @param responseTimeout Response timeout duration.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public UrlConnectionClientBuilder responseTimeout(Duration responseTimeout) {
+    public HttpUrlConnectionClientBuilder responseTimeout(Duration responseTimeout) {
         this.responseTimeout = responseTimeout;
         return this;
     }
@@ -145,7 +145,7 @@ public class UrlConnectionClientBuilder {
      * @param configuration The configuration store used to
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public UrlConnectionClientBuilder configuration(Configuration configuration) {
+    public HttpUrlConnectionClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -160,7 +160,7 @@ public class UrlConnectionClientBuilder {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        return new UrlConnectionClient(
+        return new HttpUrlConnectionClient(
             getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT),
             getTimeout(readTimeout, DEFAULT_READ_TIMEOUT),
             getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT),

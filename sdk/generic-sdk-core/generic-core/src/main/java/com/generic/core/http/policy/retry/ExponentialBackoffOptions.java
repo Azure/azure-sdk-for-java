@@ -43,7 +43,7 @@ public class ExponentialBackoffOptions {
      */
     public ExponentialBackoffOptions setMaxRetries(Integer maxRetries) {
         if (maxRetries != null && maxRetries < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
         this.maxRetries = maxRetries;
         return this;
@@ -97,15 +97,15 @@ public class ExponentialBackoffOptions {
 
     private void validateDelays(Duration baseDelay, Duration maxDelay) {
         if (baseDelay != null && (baseDelay.isZero() || baseDelay.isNegative())) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
         }
         if (maxDelay != null && (maxDelay.isZero() || maxDelay.isNegative())) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxDelay' cannot be negative or 0."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'maxDelay' cannot be negative or 0."));
         }
 
         if (baseDelay != null && maxDelay != null && baseDelay.compareTo(maxDelay) > 0) {
             throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
+                .logThrowableAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
         }
     }
 }

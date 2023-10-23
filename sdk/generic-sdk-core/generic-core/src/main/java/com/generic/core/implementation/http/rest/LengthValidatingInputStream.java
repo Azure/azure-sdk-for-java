@@ -38,7 +38,7 @@ final class LengthValidatingInputStream extends InputStream {
         this.inner = Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
 
         if (expectedReadSize < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'expectedReadSize' cannot be less than 0."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'expectedReadSize' cannot be less than 0."));
         }
 
         this.expectedReadSize = expectedReadSize;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client.urlconnection;
+package com.generic.core.http.client.httpurlconnection;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
@@ -37,7 +37,7 @@ class SocketClient {
      * @param httpRequest The HTTP Request being sent
      * @return an instance of HttpUrlConnectionResponse
      */
-    public static UrlConnectionResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
+    public static HttpUrlConnectionResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
         final URL requestUrl = httpRequest.getUrl();
         final String protocol = requestUrl.getProtocol();
         final String host = requestUrl.getHost();
@@ -67,7 +67,7 @@ class SocketClient {
      * @param socket An instance of the SocketClient
      * @return an instance of HttpUrlConnectionResponse
      */
-    private static UrlConnectionResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
+    private static HttpUrlConnectionResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
         httpRequest.setHeader(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
         if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HttpHeaderName.CONNECTION))) {
             httpRequest.setHeader(HttpHeaderName.CONNECTION, "close");
@@ -77,7 +77,7 @@ class SocketClient {
              OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
 
             buildAndSend(httpRequest, out);
-            UrlConnectionResponse response = buildResponse(httpRequest, in);
+            HttpUrlConnectionResponse response = buildResponse(httpRequest, in);
 
             String redirectLocation = response.getHeaders().stream()
                 .filter(h -> h.getName().equalsIgnoreCase("Location"))
@@ -139,7 +139,7 @@ class SocketClient {
      * @param reader the input stream from the socket
      * @return an instance of HttpUrlConnectionResponse
      */
-    private static UrlConnectionResponse buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
+    private static HttpUrlConnectionResponse buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
         String statusLine = reader.readLine();
         int dotIndex = statusLine.indexOf('.');
         int statusCode = Integer.parseInt(statusLine.substring(dotIndex+3, dotIndex+6));
@@ -160,6 +160,6 @@ class SocketClient {
 
         BinaryData body = BinaryData.fromByteBuffer(ByteBuffer.wrap(bodyString.toString().getBytes()));
 
-        return new UrlConnectionResponse(httpRequest, statusCode, headers, body);
+        return new HttpUrlConnectionResponse(httpRequest, statusCode, headers, body);
     }
 }

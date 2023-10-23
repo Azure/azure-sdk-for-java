@@ -53,7 +53,9 @@ public class ExponentialBackoff implements RetryStrategy {
      * with each additional retry attempt to a maximum of 8 seconds.
      */
     public ExponentialBackoff() {
-        this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
+        this.maxRetries = DEFAULT_MAX_RETRIES;
+        this.baseDelayNanos = DEFAULT_BASE_DELAY.toNanos();
+        this.maxDelayNanos = DEFAULT_MAX_DELAY.toNanos();
     }
 
     /**
@@ -63,36 +65,10 @@ public class ExponentialBackoff implements RetryStrategy {
      * @throws NullPointerException if {@code options} is {@code null}.
      */
     public ExponentialBackoff(ExponentialBackoffOptions options) {
-        this(options.getMaxRetries(), options.getBaseDelay(), options.getMaxDelay());
-    }
-
-    /**
-     * Creates an instance of {@link ExponentialBackoff}.
-     *
-     * @param maxRetries The max retry attempts that can be made.
-     * @param baseDelay The base delay duration for retry.
-     * @param maxDelay The max delay duration for retry.
-     * @throws IllegalArgumentException if {@code maxRetries} is less than 0 or {@code baseDelay} is less than or equal
-     * to 0 or {@code maxDelay} is less than {@code baseDelay}.
-     */
-    public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay) {
-        if (maxRetries < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
-        }
-        Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
-        Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
-
-        if (baseDelay.isZero() || baseDelay.isNegative()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
-        }
-
-        if (baseDelay.compareTo(maxDelay) > 0) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
-        }
-        this.maxRetries = maxRetries;
-        this.baseDelayNanos = baseDelay.toNanos();
-        this.maxDelayNanos = maxDelay.toNanos();
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        this.maxRetries = options.getMaxRetries();
+        this.baseDelayNanos = options.getBaseDelay().toNanos();
+        this.maxDelayNanos = options.getMaxDelay().toNanos();
     }
 
     @Override

@@ -24,16 +24,6 @@ public class ClientAuthenticationException extends HttpResponseException {
      *
      * @param message The exception message or the response content if a message is not available.
      * @param response The HTTP response with the authorization failure.
-     */
-    public ClientAuthenticationException(final String message, final HttpResponse response) {
-        super(message, response);
-    }
-
-    /**
-     * Initializes a new instance of the {@link ClientAuthenticationException} class.
-     *
-     * @param message The exception message or the response content if a message is not available.
-     * @param response The HTTP response with the authorization failure.
      * @param value The deserialized HTTP response value.
      */
     public ClientAuthenticationException(final String message, final HttpResponse response, final Object value) {

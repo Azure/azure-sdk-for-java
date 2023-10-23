@@ -5,13 +5,13 @@ package com.generic.core.implementation.http.policy;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
-import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.policy.retry.ExponentialBackoff;
 import com.generic.core.http.policy.retry.FixedDelay;
 import com.generic.core.http.policy.logging.HttpLoggingPolicy;
-import com.generic.core.http.policy.HttpPipelinePolicy;
+import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.http.policy.retry.RetryOptions;
 import com.generic.core.http.policy.retry.RetryStrategy;
 import com.generic.core.models.Headers;
@@ -136,7 +136,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
                 } catch (InterruptedException ie) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+                    throw LOGGER.logThrowableAsError(new RuntimeException(ie));
                 }
 
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
@@ -148,7 +148,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     suppressed.forEach(err::addSuppressed);
                 }
 
-                throw LOGGER.logExceptionAsError(err);
+                throw LOGGER.logThrowableAsError(err);
             }
         }
 
@@ -162,7 +162,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             try {
                 Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
             } catch (InterruptedException ie) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+                throw LOGGER.logThrowableAsError(new RuntimeException(ie));
             }
             return attempt(context, next, originalHttpRequest, tryCount + 1, suppressed);
         } else {
@@ -358,7 +358,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         for (int i = beginIndex; i < endIndex; i++) {
             final char c = date.charAt(i);
             if (c < '0' || c > '9') {
-                throw LOGGER.logExceptionAsError(new DateTimeException("Invalid date time: " + date));
+                throw LOGGER.logThrowableAsError(new DateTimeException("Invalid date time: " + date));
             }
             num = num * 10 + (c - '0');
         }
@@ -392,10 +392,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
                         switch (date.charAt(10)) {
                             case 'n': return Month.JUNE;
                             case 'l': return Month.JULY;
-                            default: throw LOGGER.logExceptionAsError(
+                            default: throw LOGGER.logThrowableAsError(
                                 new IllegalArgumentException("Unknown month " + date));
                         }
-                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    default: throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
                 }
             case 'F': return Month.FEBRUARY;
             case 'M':
@@ -403,20 +403,20 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 switch (date.charAt(10)) {
                     case 'r': return Month.MARCH;
                     case 'y': return Month.MAY;
-                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    default: throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
                 }
             case 'A':
                 // Apr, Aug
                 switch (date.charAt(10)) {
                     case 'r': return Month.APRIL;
                     case 'g': return Month.AUGUST;
-                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    default: throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
                 }
             case 'S': return Month.SEPTEMBER;
             case 'O': return Month.OCTOBER;
             case 'N': return Month.NOVEMBER;
             case 'D': return Month.DECEMBER;
-            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+            default: throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown month " + date));
         }
     }
 }

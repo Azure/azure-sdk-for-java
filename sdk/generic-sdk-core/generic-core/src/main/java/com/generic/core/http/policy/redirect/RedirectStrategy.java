@@ -3,7 +3,7 @@
 
 package com.generic.core.http.policy.redirect;
 
-import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 

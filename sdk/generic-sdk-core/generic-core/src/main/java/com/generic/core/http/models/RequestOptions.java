@@ -153,27 +153,7 @@ public final class RequestOptions {
      * @return the modified HttpRequestOptions object
      */
     public RequestOptions addQueryParam(String parameterName, String value) {
-        return addQueryParam(parameterName, value, false);
-    }
-
-    /**
-     * Adds a query parameter to the request URL, specifying whether the parameter is already encoded. A value true for
-     * this argument indicates that value of {@link QueryParam#value()} is already encoded hence engine should not
-     * encode it, by default value will be encoded.
-     *
-     * @param parameterName the name of the query parameter
-     * @param value the value of the query parameter
-     * @param encoded whether this query parameter is already encoded
-     * @return the modified HttpRequestOptions object
-     */
-    public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
-        this.requestCallback = this.requestCallback.andThen(request -> {
-            String url = request.getUrl().toString();
-            // String encodedParameterName = encoded ? parameterName : UrlEscapers.QUERY_ESCAPER.escape(parameterName);
-            // String encodedParameterValue = encoded ? value : UrlEscapers.QUERY_ESCAPER.escape(value);
-            // request.setUrl(url + (url.contains("?") ? "&" : "?") + encodedParameterName + "=" + encodedParameterValue);
-        });
-        return this;
+        return null;
     }
 
     /**
@@ -221,7 +201,7 @@ public final class RequestOptions {
     //     Objects.requireNonNull(errorOptions, "'errorOptions' cannot be null.");
     //
     //     if (errorOptions.contains(ErrorOptions.THROW) && errorOptions.contains(ErrorOptions.NO_THROW)) {
-    //         throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+    //         throw LOGGER.logThrowableAsError(new IllegalArgumentException(
     //             "'errorOptions' cannot contain both 'ErrorOptions.THROW' and 'ErrorOptions.NO_THROW'."));
     //     }
     //

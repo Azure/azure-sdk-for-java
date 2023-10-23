@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.util.serializer;
+package com.generic.core.models;
 
 import com.generic.core.util.logging.ClientLogger;
 
@@ -41,7 +41,7 @@ public abstract class TypeReference<T> {
     public TypeReference() {
         Type superClass = this.getClass().getGenericSuperclass();
         if (superClass instanceof Class) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(MISSING_TYPE));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(MISSING_TYPE));
         } else {
             this.javaType = ((ParameterizedType) superClass).getActualTypeArguments()[0];
         }

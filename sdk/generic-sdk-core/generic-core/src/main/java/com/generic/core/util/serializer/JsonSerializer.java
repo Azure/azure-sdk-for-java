@@ -3,6 +3,8 @@
 
 package com.generic.core.util.serializer;
 
+import com.generic.core.models.TypeReference;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 

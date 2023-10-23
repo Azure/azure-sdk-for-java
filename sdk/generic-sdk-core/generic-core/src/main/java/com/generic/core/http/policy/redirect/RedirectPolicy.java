@@ -5,10 +5,10 @@ package com.generic.core.http.policy.redirect;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
-import com.generic.core.http.models.HttpPipelineCallContext;
+import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.policy.HttpPipelinePolicy;
+import com.generic.core.http.pipeline.HttpPipelinePolicy;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -20,14 +20,6 @@ import java.util.Set;
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private final RedirectStrategy redirectStrategy;
-
-    /**
-     * Creates {@link RedirectPolicy} with default {@link DefaultRedirectStrategy} as {@link RedirectStrategy} and
-     * uses the redirect status response code (301, 302, 307, 308) to determine if this request should be redirected.
-     */
-    public RedirectPolicy() {
-        this(new DefaultRedirectStrategy());
-    }
 
     /**
      * Creates {@link RedirectPolicy} with the provided {@code redirectStrategy} as {@link RedirectStrategy}

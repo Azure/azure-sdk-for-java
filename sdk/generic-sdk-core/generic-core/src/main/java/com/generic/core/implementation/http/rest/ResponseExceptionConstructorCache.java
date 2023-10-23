@@ -41,10 +41,10 @@ public final class ResponseExceptionConstructorCache {
             return (T) reflectiveInvoker.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);
         } catch (Exception exception) {
             if (exception instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) exception);
+                throw LOGGER.logThrowableAsError((RuntimeException) exception);
             }
 
-            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, exception));
+            throw LOGGER.logThrowableAsError(new IllegalStateException(exceptionMessage, exception));
         }
     }
 }

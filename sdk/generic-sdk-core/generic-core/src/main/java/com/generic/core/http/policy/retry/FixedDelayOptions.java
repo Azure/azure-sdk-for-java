@@ -26,7 +26,7 @@ public class FixedDelayOptions {
      */
     public FixedDelayOptions(int maxRetries, Duration delay) {
         if (maxRetries < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
         this.maxRetries = maxRetries;
         this.delay = Objects.requireNonNull(delay, "'delay' cannot be null.");

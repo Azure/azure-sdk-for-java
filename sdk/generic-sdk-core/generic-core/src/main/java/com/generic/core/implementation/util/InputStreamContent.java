@@ -95,7 +95,7 @@ public final class InputStreamContent extends BinaryDataContent {
             stream.reset();
             return stream;
         } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -106,7 +106,7 @@ public final class InputStreamContent extends BinaryDataContent {
 
             return null;
         } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -121,7 +121,7 @@ public final class InputStreamContent extends BinaryDataContent {
             }
             return dataOutputBuffer.toByteArray();
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(ex));
         }
     }
 }

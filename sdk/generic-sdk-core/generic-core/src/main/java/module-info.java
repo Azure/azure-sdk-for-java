@@ -4,28 +4,29 @@
 module com.generic.core {
 
     requires transitive org.slf4j;
-    requires java.net.http;
-    requires com.generic.json;
+    requires transitive com.generic.json;
 
     // public API surface area
     exports com.generic.core.annotation;
     exports com.generic.core.credential;
     exports com.generic.core.exception;
+    exports com.generic.core.models;
+
     exports com.generic.core.http;
-    exports com.generic.core.http.policy;
+    exports com.generic.core.http.client;
+    exports com.generic.core.http.client.httpurlconnection;
+    exports com.generic.core.http.models;
+    exports com.generic.core.http.pipeline;
+    exports com.generic.core.http.policy.credential;
+    exports com.generic.core.http.policy.logging;
+    exports com.generic.core.http.policy.redirect;
+    exports com.generic.core.http.policy.retry;
+
     exports com.generic.core.util;
     exports com.generic.core.util.logging;
     exports com.generic.core.util.serializer;
-    exports com.generic.core.http.models;
-    exports com.generic.core.http.client;
-    exports com.generic.core.models;
-    exports com.generic.core.http.pipeline;
 
     // Service Provider Interfaces
     uses com.generic.core.http.client.HttpClientProvider;
     uses com.generic.core.util.serializer.JsonSerializerProvider;
-
-    provides com.generic.core.http.client.HttpClientProvider
-        with com.generic.core.http.client.urlconnection.UrlConnectionClientProvider;
-
 }

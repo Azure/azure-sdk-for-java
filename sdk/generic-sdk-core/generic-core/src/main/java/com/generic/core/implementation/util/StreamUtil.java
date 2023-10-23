@@ -49,15 +49,15 @@ public final class StreamUtil {
         int initialBufferSize, int maxBufferSize) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' must not be null");
         if (initialBufferSize <= 0) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.logThrowableAsError(
                 new IllegalArgumentException("'initialBufferSize' must be positive integer"));
         }
         if (maxBufferSize < initialBufferSize) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.logThrowableAsError(
                 new IllegalArgumentException("'maxBufferSize' must not be smaller than 'maxBufferSize'"));
         }
         if (lengthHint != null && lengthHint < 0) {
-            throw LOGGER.logExceptionAsError(
+            throw LOGGER.logThrowableAsError(
                 new IllegalArgumentException("'length' must not be negative"));
         }
 

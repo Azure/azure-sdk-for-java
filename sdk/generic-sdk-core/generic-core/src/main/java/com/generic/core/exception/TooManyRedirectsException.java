@@ -18,16 +18,6 @@ public class TooManyRedirectsException extends HttpResponseException {
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
-     */
-    public TooManyRedirectsException(final String message, final HttpResponse response) {
-        super(message, response);
-    }
-
-    /**
-     * Initializes a new instance of the TooManyRedirectsException class.
-     *
-     * @param message the exception message or the response content if a message is not available
-     * @param response the HTTP response
      * @param value the deserialized response value
      */
     public TooManyRedirectsException(final String message, final HttpResponse response, final Object value) {

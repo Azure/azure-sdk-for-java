@@ -25,7 +25,7 @@ public class KeyCredential {
     public KeyCredential(String key) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         if (key.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
 
         this.key = key;
@@ -51,7 +51,7 @@ public class KeyCredential {
     public KeyCredential update(String key) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         if (key.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
 
         this.key = key;

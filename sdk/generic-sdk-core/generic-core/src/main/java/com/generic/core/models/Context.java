@@ -36,7 +36,7 @@ public class Context {
         @Override
         public Optional<Object> getData(Object key) {
             if (key == null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException("key cannot be null"));
             }
 
             return Optional.empty();
@@ -110,7 +110,7 @@ public class Context {
      */
     public Context addData(Object key, Object value) {
         if (key == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("key cannot be null"));
         }
         return new Context(this, key, value, contextCount + 1);
     }
@@ -159,7 +159,7 @@ public class Context {
      */
     public Optional<Object> getData(Object key) {
         if (key == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("key cannot be null"));
         }
 
         for (Context c = this; c != null; c = c.parent) {

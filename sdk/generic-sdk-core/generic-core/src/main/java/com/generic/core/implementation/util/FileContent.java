@@ -63,7 +63,7 @@ public class FileContent extends BinaryDataContent {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
         if (!file.toFile().exists()) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(
                 new FileNotFoundException("File does not exist " + file)));
         }
 
@@ -72,7 +72,7 @@ public class FileContent extends BinaryDataContent {
 
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize <= 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
                 "'chunkSize' cannot be less than or equal to 0."));
         }
 
@@ -81,7 +81,7 @@ public class FileContent extends BinaryDataContent {
 
     private static long validatePosition(Long position) {
         if (position != null && position < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'position' cannot be negative."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'position' cannot be negative."));
         }
 
         return (position != null) ? position : 0;
@@ -89,7 +89,7 @@ public class FileContent extends BinaryDataContent {
 
     private static long validateLength(Long length, long fileLength, long position) {
         if (length != null && length < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be negative."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'length' cannot be negative."));
         }
 
         long maxAvailableLength = fileLength - position;
@@ -122,7 +122,7 @@ public class FileContent extends BinaryDataContent {
         try {
             return new SliceInputStream(new BufferedInputStream(getFileInputStream(), chunkSize), position, length);
         } catch (FileNotFoundException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException("File not found " + file, e));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException("File not found " + file, e));
         }
     }
 
@@ -138,7 +138,7 @@ public class FileContent extends BinaryDataContent {
         try (FileChannel fileChannel = FileChannel.open(file)) {
             return fileChannel.map(FileChannel.MapMode.READ_ONLY, position, length);
         } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(exception));
         }
     }
 
@@ -171,7 +171,7 @@ public class FileContent extends BinaryDataContent {
 
     private byte[] getBytes() {
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
 
         try (InputStream is = this.toStream()) {
@@ -185,13 +185,13 @@ public class FileContent extends BinaryDataContent {
                     pendingBytes -= read;
                     offset += read;
                 } else {
-                    throw LOGGER.logExceptionAsError(
+                    throw LOGGER.logThrowableAsError(
                         new IllegalStateException("Premature EOF. File was modified concurrently."));
                 }
             } while (pendingBytes > 0);
             return bytes;
         } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(exception));
         }
     }
 }

@@ -4,7 +4,6 @@
 package com.generic.core.http.pipeline;
 
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.policy.HttpPipelinePolicy;
 import com.generic.core.implementation.http.HttpPipelineCallState;
 
 /**
@@ -43,7 +42,6 @@ public class HttpPipelineNextPolicy {
      *
      * @return A new instance of this next pipeline policy.
      */
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
     @Override
     public HttpPipelineNextPolicy clone() {
         return new HttpPipelineNextPolicy(this.state.clone());
