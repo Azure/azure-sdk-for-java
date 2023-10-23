@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.AfdCertificateType;
 import com.azure.resourcemanager.cdn.models.AfdDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.AfdDomainUpdateParameters;
@@ -14,7 +13,7 @@ import com.azure.resourcemanager.cdn.models.ResourceReference;
 /** Samples for AfdCustomDomains Update. */
 public final class AfdCustomDomainsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDCustomDomains_Update.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDCustomDomains_Update.json
      */
     /**
      * Sample code: AFDCustomDomains_Update.
@@ -37,6 +36,6 @@ public final class AfdCustomDomainsUpdateSamples {
                             .withCertificateType(AfdCertificateType.CUSTOMER_CERTIFICATE)
                             .withMinimumTlsVersion(AfdMinimumTlsVersion.TLS12))
                     .withAzureDnsZone(new ResourceReference().withId("")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

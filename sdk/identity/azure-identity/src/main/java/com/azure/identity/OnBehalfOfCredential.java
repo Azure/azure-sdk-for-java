@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
  * credentials. The identity provider then issues a security token that contains information about the user and their
  * permissions. This security token is then passed to Azure, which uses it to authenticate the user or application and
  * grant them access to the requested resource.
- * The OnBehalfOfCredential acquires a token with a client secret/certificate and user assertion for an AAD application
+ * The OnBehalfOfCredential acquires a token with a client secret/certificate and user assertion for a Microsoft Entra application
  * on behalf of a user principal.</p>
  *
  * <p>The following code sample demonstrates the creation of a {@link OnBehalfOfCredential},
@@ -54,11 +54,11 @@ public class OnBehalfOfCredential implements TokenCredential {
     private final IdentitySyncClient identitySyncClient;
 
     /**
-     * Creates OnBehalfOfCredential with the specified AAD application details and client options.
+     * Creates OnBehalfOfCredential with the specified Microsoft Entra application details and client options.
      *
      * @param tenantId the tenant ID of the application
      * @param clientId the client ID of the application
-     * @param clientSecret the secret value of the AAD application.
+     * @param clientSecret the secret value of the Microsoft Entra application.
      * @param certificatePath the PEM file or PFX file containing the certificate
      * @param certificatePassword the password protecting the PFX file
      * @param identityClientOptions the options for configuring the identity client

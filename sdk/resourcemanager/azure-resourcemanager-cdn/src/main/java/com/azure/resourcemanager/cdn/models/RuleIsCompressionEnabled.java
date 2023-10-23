@@ -21,6 +21,15 @@ public final class RuleIsCompressionEnabled extends ExpandableStringEnum<RuleIsC
     public static final RuleIsCompressionEnabled DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of RuleIsCompressionEnabled value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RuleIsCompressionEnabled() {
+    }
+
+    /**
      * Creates or finds a RuleIsCompressionEnabled from its string representation.
      *
      * @param name a name to look for.

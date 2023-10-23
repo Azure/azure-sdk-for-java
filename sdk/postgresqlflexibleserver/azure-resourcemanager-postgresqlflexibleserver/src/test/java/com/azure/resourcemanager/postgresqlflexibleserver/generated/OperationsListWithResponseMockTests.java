@@ -31,7 +31,7 @@ public final class OperationsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"msgaoj\",\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"rctym\":\"datarfh\",\"xacpqjli\":\"dataxoftpipiwyczu\",\"skasdvlmfwdgzxu\":\"datahyus\"}},{\"name\":\"cvpa\",\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"ifqjz\":\"dataxurisjnhnyt\",\"lw\":\"dataxmrhu\",\"woqhihe\":\"datacesutrgjupauut\",\"zpnfqntcypsxj\":\"dataqg\"}},{\"name\":\"oimwkslirc\",\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"t\":\"dataceacvlhvygdy\",\"jslb\":\"datamrtwna\",\"aeqphchqnr\":\"datawkojgcyztsfmzn\"}}],\"nextLink\":\"pxehuwrykqga\"}";
+            "{\"value\":[{\"name\":\"myst\",\"display\":{\"provider\":\"qypfcv\",\"resource\":\"rchpqbmfpjbabwid\",\"operation\":\"xsspuunnoxyhk\",\"description\":\"qddrihpfhoqcaae\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"x\":\"datavlp\",\"zkdnc\":\"datakzbrmsgeivsiy\",\"wyrpgogtqxepnyl\":\"datadxonbzoggculap\"}},{\"name\":\"uajlyj\",\"display\":{\"provider\":\"of\",\"resource\":\"hvfcibyfmow\",\"operation\":\"rkjpvdwxfzwii\",\"description\":\"zjb\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"vldspa\":\"datakambtrnegvmnvuqe\",\"kdmflvestmjlx\":\"datatjb\"}},{\"name\":\"ilozapeewchpxlk\",\"display\":{\"provider\":\"uziycsl\",\"resource\":\"ufuztcktyhjtq\",\"operation\":\"cgzulwmmrqzzr\",\"description\":\"vpglydz\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"tpzdmovzvfvaawzq\":\"datavtoepryutnw\"}},{\"name\":\"f\",\"display\":{\"provider\":\"ur\",\"resource\":\"laecxndticok\",\"operation\":\"zmlqtmldgxo\",\"description\":\"irclnpk\"},\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"lmxhomdyn\":\"dataykhyawfvjlboxqvk\",\"raauzzpt\":\"datadwdigumb\"}}],\"nextLink\":\"zysdzh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class OperationsListWithResponseMockTests {
         OperationListResult response =
             manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(false, response.value().get(0).isDataAction());
-        Assertions.assertEquals("pxehuwrykqga", response.nextLink());
+        Assertions.assertEquals(true, response.value().get(0).isDataAction());
+        Assertions.assertEquals("zysdzh", response.nextLink());
     }
 }

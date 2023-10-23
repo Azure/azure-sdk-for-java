@@ -25,6 +25,12 @@ public final class DeferOptions extends SettlementOptions {
     private Map<String, Object> propertiesToModify;
 
     /**
+     * Creates a new instance of options to specify when deferring messages.
+     */
+    public DeferOptions() {
+    }
+
+    /**
      * Sets the message properties to modify while deferring the message.
      *
      * @param propertiesToModify Message properties to modify.

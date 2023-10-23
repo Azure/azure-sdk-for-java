@@ -114,6 +114,12 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KpiResourceHealthDetails> kpisHealths;
 
+    /*
+     * List of the nodes in case of distributed container.
+     */
+    @JsonProperty(value = "nodesList")
+    private List<DistributedNodesInfo> nodesList;
+
     /** Creates an instance of AzureVmWorkloadProtectedItem class. */
     public AzureVmWorkloadProtectedItem() {
     }
@@ -359,6 +365,26 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
         return this;
     }
 
+    /**
+     * Get the nodesList property: List of the nodes in case of distributed container.
+     *
+     * @return the nodesList value.
+     */
+    public List<DistributedNodesInfo> nodesList() {
+        return this.nodesList;
+    }
+
+    /**
+     * Set the nodesList property: List of the nodes in case of distributed container.
+     *
+     * @param nodesList the nodesList value to set.
+     * @return the AzureVmWorkloadProtectedItem object itself.
+     */
+    public AzureVmWorkloadProtectedItem withNodesList(List<DistributedNodesInfo> nodesList) {
+        this.nodesList = nodesList;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadProtectedItem withContainerName(String containerName) {
@@ -488,6 +514,9 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
                             e.validate();
                         }
                     });
+        }
+        if (nodesList() != null) {
+            nodesList().forEach(e -> e.validate());
         }
     }
 }

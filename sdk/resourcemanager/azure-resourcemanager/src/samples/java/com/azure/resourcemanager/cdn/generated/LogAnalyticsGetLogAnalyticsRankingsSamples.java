@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.LogRanking;
 import com.azure.resourcemanager.cdn.models.LogRankingMetric;
 import java.time.OffsetDateTime;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for LogAnalytics GetLogAnalyticsRankings. */
 public final class LogAnalyticsGetLogAnalyticsRankingsSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsRankings.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsRankings.json
      */
     /**
      * Sample code: LogAnalytics_GetLogAnalyticsRankings.
@@ -35,6 +34,6 @@ public final class LogAnalyticsGetLogAnalyticsRankingsSamples {
                 OffsetDateTime.parse("2020-11-04T06:49:27.554Z"),
                 OffsetDateTime.parse("2020-11-04T09:49:27.554Z"),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

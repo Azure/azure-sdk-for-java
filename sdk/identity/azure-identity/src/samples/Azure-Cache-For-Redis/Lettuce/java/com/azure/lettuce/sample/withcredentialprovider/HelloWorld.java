@@ -60,7 +60,7 @@ public class HelloWorld {
      * Redis Credential Implementation for Azure Redis for Cache
      */
     public static class AzureRedisCredentials implements RedisCredentials {
-        // Note: The Scopes value will change as the Azure AD Authentication support hits public preview and eventually GA's.
+        // Note: The Scopes value will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
         private TokenRequestContext tokenRequestContext = new TokenRequestContext()
             .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         private TokenCredential tokenCredential;

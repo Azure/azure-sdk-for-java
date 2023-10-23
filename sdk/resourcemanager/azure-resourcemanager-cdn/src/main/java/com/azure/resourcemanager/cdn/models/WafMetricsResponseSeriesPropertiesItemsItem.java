@@ -22,6 +22,10 @@ public final class WafMetricsResponseSeriesPropertiesItemsItem {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of WafMetricsResponseSeriesPropertiesItemsItem class. */
+    public WafMetricsResponseSeriesPropertiesItemsItem() {
+    }
+
     /**
      * Get the name property: The name property.
      *

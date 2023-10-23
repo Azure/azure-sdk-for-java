@@ -13,18 +13,18 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * Contains configuration options specific to the hnsw approximate nearest neighbors algorithm used during indexing
- * time.
+ * Contains configuration options specific to the hnsw approximate nearest neighbors algorithm used during indexing and
+ * querying. The hnsw algorithm offers a tunable trade-off between search speed and accuracy.
  */
 @Fluent
 public final class HnswVectorSearchAlgorithmConfiguration extends VectorSearchAlgorithmConfiguration {
     /*
-     * The name of the kind of algorithm being configured for use with vector search. Only `hnsw` is supported in the
-     * current preview.
+     * The name of the kind of algorithm being configured for use with vector search.
      */
-    private static final String KIND = "hnsw";
+    private static final VectorSearchAlgorithmKind KIND = VectorSearchAlgorithmKind.HNSW;
 
     /*
      * Contains the parameters specific to hnsw algorithm.
@@ -63,7 +63,7 @@ public final class HnswVectorSearchAlgorithmConfiguration extends VectorSearchAl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", KIND);
+        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeJsonField("hnswParameters", this.parameters);
         return jsonWriter.writeEndObject();
@@ -91,7 +91,7 @@ public final class HnswVectorSearchAlgorithmConfiguration extends VectorSearchAl
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!KIND.equals(kind)) {
+                            if (!KIND.toString().equals(kind)) {
                                 throw new IllegalStateException(
                                         "'kind' was expected to be non-null and equal to '"
                                                 + KIND

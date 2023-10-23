@@ -14,7 +14,7 @@ public final class ReplicationObject {
     /*
      * Id
      */
-    @JsonProperty(value = "replicationId")
+    @JsonProperty(value = "replicationId", access = JsonProperty.Access.WRITE_ONLY)
     private String replicationId;
 
     /*
@@ -52,17 +52,6 @@ public final class ReplicationObject {
      */
     public String replicationId() {
         return this.replicationId;
-    }
-
-    /**
-     * Set the replicationId property: Id.
-     *
-     * @param replicationId the replicationId value to set.
-     * @return the ReplicationObject object itself.
-     */
-    public ReplicationObject withReplicationId(String replicationId) {
-        this.replicationId = replicationId;
-        return this;
     }
 
     /**

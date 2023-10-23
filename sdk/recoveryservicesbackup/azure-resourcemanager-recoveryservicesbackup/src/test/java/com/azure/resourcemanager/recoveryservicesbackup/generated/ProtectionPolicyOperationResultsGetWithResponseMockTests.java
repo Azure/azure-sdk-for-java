@@ -31,7 +31,7 @@ public final class ProtectionPolicyOperationResultsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":820174977,\"resourceGuardOperationRequests\":[\"hpdujdigatole\",\"scbctnanqim\"]},\"eTag\":\"zxpdcldpkawnsnl\",\"location\":\"imouxwksqmudmfco\",\"tags\":{\"wswjrkbqsjh\":\"cziu\",\"scyrfwbivqv\":\"tqqvy\",\"hlimby\":\"gfuyzwv\",\"odlikcdrdaasax\":\"ecr\"},\"id\":\"obsmf\",\"name\":\"wiyjvzuko\",\"type\":\"r\"}";
+            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":819669190,\"resourceGuardOperationRequests\":[\"bqd\",\"bzfivfok\",\"ysthhza\"]},\"eTag\":\"fwy\",\"location\":\"rlhgenuze\",\"tags\":{\"zlsmmdqgmihzpim\":\"kvebaqszll\",\"gxsvtza\":\"qrhnxtminkl\",\"oslpky\":\"hzvqnsqktcmbjwz\"},\"id\":\"tglwkzpgajsqjc\",\"name\":\"mqbmfuvqarwz\",\"type\":\"uqrebluimmbwx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,14 @@ public final class ProtectionPolicyOperationResultsGetWithResponseMockTests {
         ProtectionPolicyResource response =
             manager
                 .protectionPolicyOperationResults()
-                .getWithResponse("fgtdmbvx", "kraokq", "budbt", "aokbavlyttaaknwf", com.azure.core.util.Context.NONE)
+                .getWithResponse(
+                    "zdajlskzptjxu", "weucyrth", "qlehmcgcjeinu", "hokamvfej", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("imouxwksqmudmfco", response.location());
-        Assertions.assertEquals("cziu", response.tags().get("wswjrkbqsjh"));
-        Assertions.assertEquals(820174977, response.properties().protectedItemsCount());
-        Assertions.assertEquals("hpdujdigatole", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("zxpdcldpkawnsnl", response.etag());
+        Assertions.assertEquals("rlhgenuze", response.location());
+        Assertions.assertEquals("kvebaqszll", response.tags().get("zlsmmdqgmihzpim"));
+        Assertions.assertEquals(819669190, response.properties().protectedItemsCount());
+        Assertions.assertEquals("bqd", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("fwy", response.etag());
     }
 }

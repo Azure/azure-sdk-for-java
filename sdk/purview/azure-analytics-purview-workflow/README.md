@@ -29,7 +29,7 @@ To use the [UsernamePasswordCredential][username_password_credential] provider s
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.1</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 
@@ -37,7 +37,7 @@ Set the values of the client ID, tenant ID of the AAD application as environment
 Set the value of user name and password of an AAD user as environment variables: USER_NAME, PASSWORD.
 
 ```java readme-sample-createWorkflowClient
-PurviewWorkflowClient purviewWorkflowClient = new PurviewWorkflowClientBuilder()
+WorkflowClient purviewWorkflowClient = new WorkflowClientBuilder()
     .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
     .credential(new UsernamePasswordCredentialBuilder()
         .clientId(Configuration.getGlobalConfiguration().get("CLIENTID", "clientId"))
@@ -64,7 +64,7 @@ BinaryData workflowCreateOrUpdateCommand =
         "{\"name\":\"Create glossary term workflow\",\"description\":\"\",\"triggers\":[{\"type\":\"when_term_creation_is_requested\",\"underGlossaryHierarchy\":\"/glossaries/20031e20-b4df-4a66-a61d-1b0716f3fa48\"}],\"isEnabled\":true,\"actionDag\":{\"actions\":{\"Startandwaitforanapproval\":{\"type\":\"Approval\",\"inputs\":{\"parameters\":{\"approvalType\":\"PendingOnAll\",\"title\":\"ApprovalRequestforCreateGlossaryTerm\",\"assignedTo\":[\"eece94d9-0619-4669-bb8a-d6ecec5220bc\"]}},\"runAfter\":{}},\"Condition\":{\"type\":\"If\",\"expression\":{\"and\":[{\"equals\":[\"@outputs('Startandwaitforanapproval')['body/outcome']\",\"Approved\"]}]},\"actions\":{\"Createglossaryterm\":{\"type\":\"CreateTerm\",\"runAfter\":{}},\"Sendemailnotification\":{\"type\":\"EmailNotification\",\"inputs\":{\"parameters\":{\"emailSubject\":\"GlossaryTermCreate-APPROVED\",\"emailMessage\":\"YourrequestforGlossaryTerm@{triggerBody()['request']['term']['name']}isapproved.\",\"emailRecipients\":[\"@{triggerBody()['request']['requestor']}\"]}},\"runAfter\":{\"Createglossaryterm\":[\"Succeeded\"]}}},\"else\":{\"actions\":{\"Sendrejectemailnotification\":{\"type\":\"EmailNotification\",\"inputs\":{\"parameters\":{\"emailSubject\":\"GlossaryTermCreate-REJECTED\",\"emailMessage\":\"YourrequestforGlossaryTerm@{triggerBody()['request']['term']['name']}isrejected.\",\"emailRecipients\":[\"@{triggerBody()['request']['requestor']}\"]}},\"runAfter\":{}}}},\"runAfter\":{\"Startandwaitforanapproval\":[\"Succeeded\"]}}}}}");
 RequestOptions requestOptions = new RequestOptions();
 Response<BinaryData> response =
-    purviewWorkflowClient.createOrReplaceWorkflowWithResponse(
+    purviewWorkflowClient.createOrReplaceWithResponse(
         "4afb5752-e47f-43a1-8ba7-c696bf8d2745", workflowCreateOrUpdateCommand, requestOptions);
 ```
 
@@ -76,16 +76,16 @@ BinaryData userRequestsPayload =
         "{\"comment\":\"Thanks!\",\"operations\":[{\"type\":\"CreateTerm\",\"payload\":{\"glossaryTerm\":{\"name\":\"term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"nickName\":\"term\",\"status\":\"Approved\"}}}]}");
 RequestOptions requestOptions = new RequestOptions();
 Response<BinaryData> response =
-    purviewWorkflowClient.submitUserRequestsWithResponse(userRequestsPayload, requestOptions);
+    userRequestsClient.submitWithResponse(userRequestsPayload, requestOptions);
 ```
 
 ### Approve workflow task
 
-```java readme-sample-approveWorkflowTask
+```java readme-sample-approveApproval
 BinaryData approvalResponseComment = BinaryData.fromString("{\"comment\":\"Thanks for raising this!\"}");
 RequestOptions requestOptions = new RequestOptions();
 Response<Void> response =
-    purviewWorkflowClient.approveApprovalTaskWithResponse(
+    approvalClient.approveWithResponse(
         "69b57a00-f5de-4a17-a44a-6479adae373d", approvalResponseComment, requestOptions);
 ```
 

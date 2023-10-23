@@ -4,53 +4,66 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RouterJobStatusSelector. */
+/** Enums used to filters jobs by state. */
 public final class RouterJobStatusSelector extends ExpandableStringEnum<RouterJobStatusSelector> {
-    /** Static value all for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector ALL = fromString("all");
+    /** Default. */
+    @Generated public static final RouterJobStatusSelector ALL = fromString("all");
 
-    /** Static value pendingClassification for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector PENDING_CLASSIFICATION = fromString("pendingClassification");
+    /** Job is waiting to be classified. */
+    @Generated public static final RouterJobStatusSelector PENDING_CLASSIFICATION = fromString("pendingClassification");
 
-    /** Static value queued for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector QUEUED = fromString("queued");
+    /** Job has been queued. */
+    @Generated public static final RouterJobStatusSelector QUEUED = fromString("queued");
 
-    /** Static value assigned for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector ASSIGNED = fromString("assigned");
+    /** Job has been assigned to a worker. */
+    @Generated public static final RouterJobStatusSelector ASSIGNED = fromString("assigned");
 
-    /** Static value completed for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector COMPLETED = fromString("completed");
+    /** Job has been completed by a worker. */
+    @Generated public static final RouterJobStatusSelector COMPLETED = fromString("completed");
 
-    /** Static value closed for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector CLOSED = fromString("closed");
+    /** Job has been closed by a worker. */
+    @Generated public static final RouterJobStatusSelector CLOSED = fromString("closed");
 
-    /** Static value cancelled for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector CANCELLED = fromString("cancelled");
+    /** Job has been cancelled. */
+    @Generated public static final RouterJobStatusSelector CANCELLED = fromString("cancelled");
 
-    /** Static value classificationFailed for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector CLASSIFICATION_FAILED = fromString("classificationFailed");
+    /** Classification process failed for the job. */
+    @Generated public static final RouterJobStatusSelector CLASSIFICATION_FAILED = fromString("classificationFailed");
 
-    /** Static value created for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector CREATED = fromString("created");
+    /** Job has been created. */
+    @Generated public static final RouterJobStatusSelector CREATED = fromString("created");
 
-    /** Static value pendingSchedule for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector PENDING_SCHEDULE = fromString("pendingSchedule");
+    /** Job has been created but not been scheduled yet. */
+    @Generated public static final RouterJobStatusSelector PENDING_SCHEDULE = fromString("pendingSchedule");
 
-    /** Static value scheduled for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector SCHEDULED = fromString("scheduled");
+    /** Job has been scheduled successfully. */
+    @Generated public static final RouterJobStatusSelector SCHEDULED = fromString("scheduled");
 
-    /** Static value scheduleFailed for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector SCHEDULE_FAILED = fromString("scheduleFailed");
+    /** Job scheduling failed. */
+    @Generated public static final RouterJobStatusSelector SCHEDULE_FAILED = fromString("scheduleFailed");
 
-    /** Static value waitingForActivation for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector WAITING_FOR_ACTIVATION = fromString("waitingForActivation");
+    /** Job is in a suspended state and waiting for an update. */
+    @Generated public static final RouterJobStatusSelector WAITING_FOR_ACTIVATION = fromString("waitingForActivation");
 
-    /** Static value active for RouterJobStatusSelector. */
-    public static final RouterJobStatusSelector ACTIVE = fromString("active");
+    /**
+     * Job is in a state of PendingClassification or Queued or Assigned or ClassificationFailed or Completed or
+     * PendingSchedule or Scheduled or ScheduleFailed or WaitingForActivation.
+     */
+    @Generated public static final RouterJobStatusSelector ACTIVE = fromString("active");
+
+    /**
+     * Creates a new instance of RouterJobStatusSelector value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Generated
+    @Deprecated
+    public RouterJobStatusSelector() {}
 
     /**
      * Creates or finds a RouterJobStatusSelector from its string representation.
@@ -58,6 +71,7 @@ public final class RouterJobStatusSelector extends ExpandableStringEnum<RouterJo
      * @param name a name to look for.
      * @return the corresponding RouterJobStatusSelector.
      */
+    @Generated
     @JsonCreator
     public static RouterJobStatusSelector fromString(String name) {
         return fromString(name, RouterJobStatusSelector.class);
@@ -68,6 +82,7 @@ public final class RouterJobStatusSelector extends ExpandableStringEnum<RouterJo
      *
      * @return known RouterJobStatusSelector values.
      */
+    @Generated
     public static Collection<RouterJobStatusSelector> values() {
         return values(RouterJobStatusSelector.class);
     }

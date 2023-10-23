@@ -30,9 +30,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
@@ -181,8 +184,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
-        assertNotNull(areaCodes);
+        List<String> expectedAreaCodes = Arrays.asList("888", "877", "866", "855", "844", "800", "833", "88");
+        for (PhoneNumberAreaCode areaCode : areaCodesResult) {
+            assertTrue(expectedAreaCodes.contains(areaCode.getAreaCode()));
+        }
+        assertNotNull(areaCodesResult);
     }
 
     @ParameterizedTest
@@ -246,8 +252,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
-        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
-        assertNotNull(areaCodes);
+        List<String> expectedAreaCodes = Arrays.asList("888", "877", "866", "855", "844", "800", "833", "88");
+        for (PhoneNumberAreaCode areaCode : areaCodesResult) {
+            assertTrue(expectedAreaCodes.contains(areaCode.getAreaCode()));
+        }
+        assertNotNull(areaCodesResult);
     }
 
     @ParameterizedTest

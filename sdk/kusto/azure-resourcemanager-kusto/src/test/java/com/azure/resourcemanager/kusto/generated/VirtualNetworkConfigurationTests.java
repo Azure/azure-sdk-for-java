@@ -6,6 +6,7 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
+import com.azure.resourcemanager.kusto.models.VnetState;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualNetworkConfigurationTests {
@@ -14,23 +15,26 @@ public final class VirtualNetworkConfigurationTests {
         VirtualNetworkConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"subnetId\":\"cr\",\"enginePublicIpId\":\"ffdfdosygexpa\",\"dataManagementPublicIpId\":\"jakhmsbzjh\"}")
+                    "{\"subnetId\":\"bcryffdfd\",\"enginePublicIpId\":\"sy\",\"dataManagementPublicIpId\":\"expa\",\"state\":\"Disabled\"}")
                 .toObject(VirtualNetworkConfiguration.class);
-        Assertions.assertEquals("cr", model.subnetId());
-        Assertions.assertEquals("ffdfdosygexpa", model.enginePublicIpId());
-        Assertions.assertEquals("jakhmsbzjh", model.dataManagementPublicIpId());
+        Assertions.assertEquals("bcryffdfd", model.subnetId());
+        Assertions.assertEquals("sy", model.enginePublicIpId());
+        Assertions.assertEquals("expa", model.dataManagementPublicIpId());
+        Assertions.assertEquals(VnetState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualNetworkConfiguration model =
             new VirtualNetworkConfiguration()
-                .withSubnetId("cr")
-                .withEnginePublicIpId("ffdfdosygexpa")
-                .withDataManagementPublicIpId("jakhmsbzjh");
+                .withSubnetId("bcryffdfd")
+                .withEnginePublicIpId("sy")
+                .withDataManagementPublicIpId("expa")
+                .withState(VnetState.DISABLED);
         model = BinaryData.fromObject(model).toObject(VirtualNetworkConfiguration.class);
-        Assertions.assertEquals("cr", model.subnetId());
-        Assertions.assertEquals("ffdfdosygexpa", model.enginePublicIpId());
-        Assertions.assertEquals("jakhmsbzjh", model.dataManagementPublicIpId());
+        Assertions.assertEquals("bcryffdfd", model.subnetId());
+        Assertions.assertEquals("sy", model.enginePublicIpId());
+        Assertions.assertEquals("expa", model.dataManagementPublicIpId());
+        Assertions.assertEquals(VnetState.DISABLED, model.state());
     }
 }

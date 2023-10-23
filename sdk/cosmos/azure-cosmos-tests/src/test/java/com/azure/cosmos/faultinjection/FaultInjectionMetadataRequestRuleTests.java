@@ -117,9 +117,9 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
                         .delay(Duration.ofSeconds(50)) // to simulate http connection timeout
-                        // changed from 2 to 8
-                        // 6 more address refresh request retries have been introduced by WebExceptionRetryPolicy
-                        .times(8)
+                        // changed from 2 to 6
+                        // 4 more address refresh request retries have been introduced by WebExceptionRetryPolicy
+                        .times(6)
                         .build()
                 )
                 .duration(Duration.ofMinutes(10))
@@ -155,7 +155,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                         .block()
                         .getDiagnostics();
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
-                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 8);
+                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 6);
             } catch (CosmosException e) {
                 fail("Request should be able to succeed by retrying in another region. " + e.getDiagnostics());
             }
@@ -186,7 +186,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
     public void faultInjectionServerErrorRuleTests_AddressRefresh_ResponseDelay() throws JsonProcessingException {
 
         // Test to validate if there is http request timeout for address refresh,
-        // SDK will retry 3 times before fail the request
+        // SDK will retry 2 times before fail the request
 
         // We need to create a new client because client may have marked region unavailable in other tests
         // which can impact the test result
@@ -212,8 +212,8 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-                        .delay(Duration.ofSeconds(6)) // to simulate http request timeout
-                        .times(4)
+                        .delay(Duration.ofSeconds(11)) // to simulate http request timeout
+                        .times(3)
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
@@ -255,7 +255,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                 CosmosDiagnostics cosmosDiagnostics = e.getDiagnostics();
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
                 assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase()))).isTrue();
-                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshResponseDelay, 4);
+                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshResponseDelay, 3);
             }
         } finally {
             addressRefreshResponseDelayRule.disable();
@@ -316,8 +316,8 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-                        .delay(Duration.ofSeconds(6)) // to simulate http request timeout
-                        .times(4)
+                        .delay(Duration.ofSeconds(11)) // to simulate http request timeout
+                        .times(3)
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
