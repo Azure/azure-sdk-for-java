@@ -431,6 +431,7 @@ com.azure.resourcemanager:azure-resourcemanager-hdinsight-containers;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-apicenter;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-hybridconnectivity;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-playwrighttesting;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-recoveryservicesdatareplication;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 
