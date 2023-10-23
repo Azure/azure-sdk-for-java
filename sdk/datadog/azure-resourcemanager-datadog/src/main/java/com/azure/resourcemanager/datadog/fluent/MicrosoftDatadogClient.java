@@ -52,6 +52,13 @@ public interface MicrosoftDatadogClient {
     MarketplaceAgreementsClient getMarketplaceAgreements();
 
     /**
+     * Gets the CreationSupportedsClient object to access its operations.
+     *
+     * @return the CreationSupportedsClient object.
+     */
+    CreationSupportedsClient getCreationSupporteds();
+
+    /**
      * Gets the MonitorsClient object to access its operations.
      *
      * @return the MonitorsClient object.
@@ -78,4 +85,11 @@ public interface MicrosoftDatadogClient {
      * @return the SingleSignOnConfigurationsClient object.
      */
     SingleSignOnConfigurationsClient getSingleSignOnConfigurations();
+
+    /**
+     * Gets the MonitoredSubscriptionsClient object to access its operations.
+     *
+     * @return the MonitoredSubscriptionsClient object.
+     */
+    MonitoredSubscriptionsClient getMonitoredSubscriptions();
 }
