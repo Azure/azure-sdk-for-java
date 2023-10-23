@@ -4,6 +4,8 @@
 package com.azure.android.servicebus;
 
 
+import com.azure.identity.ClientSecretCredential;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
@@ -12,6 +14,8 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 
 import android.util.Log;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Sample to demonstrate the creation of a session-enabled {@link ServiceBusProcessorClient} and starting the processor
  * to receive messages.
@@ -19,6 +23,33 @@ import android.util.Log;
 public class ServiceBusSessionProcessor {
 
     private static final String TAG = "ServiceBusSessionProcessorOutput";
+
+    public static void main(String queueName, ClientSecretCredential credential) throws InterruptedException {
+            ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
+                .fullyQualifiedNamespace("android-service-bus.servicebus.windows.net")
+                .credential(credential)
+                .sessionProcessor()
+                .queueName(queueName)
+                .maxConcurrentSessions(2)
+                .processMessage(ServiceBusSessionProcessor::processMessage)
+                .processError(ServiceBusSessionProcessor::processError)
+                .buildProcessorClient();
+
+            Log.i(TAG, "Starting the processor");
+            processorClient.start();
+
+            TimeUnit.SECONDS.sleep(1);
+            Log.i(TAG, "Stopping the processor");
+            processorClient.stop();
+
+            TimeUnit.SECONDS.sleep(1);
+            Log.i(TAG, "Resuming the processor");
+            processorClient.start();
+
+            TimeUnit.SECONDS.sleep(1);
+            Log.i(TAG, "Closing the processor");
+            processorClient.close();
+    }
 
     /**
      * Processes each message from the Service Bus entity.
