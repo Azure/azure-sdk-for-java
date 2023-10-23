@@ -30,6 +30,6 @@ public enum MetricsBatchQueryServiceVersion implements ServiceVersion {
      * @return the latest {@link MetricsBatchQueryServiceVersion}.
      */
     public static MetricsBatchQueryServiceVersion getLatest() {
-        return V2023_10_01;
+        return V2023_05_01_PREVIEW;
     }
 }
