@@ -7,17 +7,17 @@ package com.azure.resourcemanager.baremetalinfrastructure.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the IP address of the network interface. */
+/** Specifies the network interfaces of a bare metal resource. */
 @Fluent
-public final class IpAddress {
+public final class NetworkInterface {
     /*
      * Specifies the IP address of the network interface.
      */
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
-    /** Creates an instance of IpAddress class. */
-    public IpAddress() {
+    /** Creates an instance of NetworkInterface class. */
+    public NetworkInterface() {
     }
 
     /**
@@ -33,9 +33,9 @@ public final class IpAddress {
      * Set the ipAddress property: Specifies the IP address of the network interface.
      *
      * @param ipAddress the ipAddress value to set.
-     * @return the IpAddress object itself.
+     * @return the NetworkInterface object itself.
      */
-    public IpAddress withIpAddress(String ipAddress) {
+    public NetworkInterface withIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
         return this;
     }

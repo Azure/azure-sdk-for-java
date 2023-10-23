@@ -7,39 +7,43 @@ package com.azure.resourcemanager.baremetalinfrastructure.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Detailed BareMetal operation information. */
+/** Localized display information for this particular operation. */
 @Immutable
-public final class Display {
+public final class OperationDisplay {
     /*
-     * The localized friendly form of the resource provider name.
+     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+     * Compute".
      */
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
-     * The localized friendly form of the resource type related to this action/operation.
+     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+     * Schedule Collections".
      */
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
-     * The localized friendly name for the operation as shown to the user.
+     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+     * Machine", "Restart Virtual Machine".
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
-     * The localized friendly description for the operation as shown to the user.
+     * The short, localized friendly description of the operation; suitable for tool tips and detailed views.
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of Display class. */
-    public Display() {
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
     }
 
     /**
-     * Get the provider property: The localized friendly form of the resource provider name.
+     * Get the provider property: The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring
+     * Insights" or "Microsoft Compute".
      *
      * @return the provider value.
      */
@@ -48,7 +52,8 @@ public final class Display {
     }
 
     /**
-     * Get the resource property: The localized friendly form of the resource type related to this action/operation.
+     * Get the resource property: The localized friendly name of the resource type related to this operation. E.g.
+     * "Virtual Machines" or "Job Schedule Collections".
      *
      * @return the resource value.
      */
@@ -57,7 +62,8 @@ public final class Display {
     }
 
     /**
-     * Get the operation property: The localized friendly name for the operation as shown to the user.
+     * Get the operation property: The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
+     * "Create or Update Virtual Machine", "Restart Virtual Machine".
      *
      * @return the operation value.
      */
@@ -66,7 +72,8 @@ public final class Display {
     }
 
     /**
-     * Get the description property: The localized friendly description for the operation as shown to the user.
+     * Get the description property: The short, localized friendly description of the operation; suitable for tool tips
+     * and detailed views.
      *
      * @return the description value.
      */

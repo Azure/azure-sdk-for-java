@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.baremetalinfrastructure.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.baremetalinfrastructure.models.Display;
+import com.azure.resourcemanager.baremetalinfrastructure.models.OperationDisplay;
 
-public final class DisplayTests {
+public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Display model =
+        OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"zrnf\",\"resource\":\"xgispemvtzfkufu\",\"operation\":\"jofxqe\",\"description\":\"jaeq\"}")
-                .toObject(Display.class);
+                    "{\"provider\":\"iqihn\",\"resource\":\"ngbwjz\",\"operation\":\"fygxgispemvtzfk\",\"description\":\"ubljofxqe\"}")
+                .toObject(OperationDisplay.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Display model = new Display();
-        model = BinaryData.fromObject(model).toObject(Display.class);
+        OperationDisplay model = new OperationDisplay();
+        model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
     }
 }
