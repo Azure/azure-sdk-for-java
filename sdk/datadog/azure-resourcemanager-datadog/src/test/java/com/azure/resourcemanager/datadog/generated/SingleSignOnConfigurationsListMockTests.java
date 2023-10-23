@@ -33,7 +33,7 @@ public final class SingleSignOnConfigurationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"nrmfqjhhk\",\"singleSignOnUrl\":\"pvjymjhxxjyng\"},\"id\":\"ivkrtsw\",\"name\":\"xqzvszjfa\",\"type\":\"vjfdx\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"tdss\",\"singleSignOnUrl\":\"wtmwerio\"},\"id\":\"pyqs\",\"name\":\"mwabnetshhszhedp\",\"type\":\"vwiwubmwmbesld\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class SingleSignOnConfigurationsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatadogSingleSignOnResource> response =
-            manager.singleSignOnConfigurations().list("lzdahzxctobgbkdm", "izpost", com.azure.core.util.Context.NONE);
+            manager.singleSignOnConfigurations().list("xsrz", "zucerscdntnev", com.azure.core.util.Context.NONE);
 
         Assertions
             .assertEquals(SingleSignOnStates.DISABLE, response.iterator().next().properties().singleSignOnState());
-        Assertions.assertEquals("nrmfqjhhk", response.iterator().next().properties().enterpriseAppId());
+        Assertions.assertEquals("tdss", response.iterator().next().properties().enterpriseAppId());
     }
 }

@@ -40,6 +40,12 @@ public final class FleetHubProfile {
     @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kubernetesVersion;
 
+    /*
+     * The Azure Portal FQDN of the Fleet hub.
+     */
+    @JsonProperty(value = "portalFqdn", access = JsonProperty.Access.WRITE_ONLY)
+    private String portalFqdn;
+
     /** Creates an instance of FleetHubProfile class. */
     public FleetHubProfile() {
     }
@@ -120,6 +126,15 @@ public final class FleetHubProfile {
      */
     public String kubernetesVersion() {
         return this.kubernetesVersion;
+    }
+
+    /**
+     * Get the portalFqdn property: The Azure Portal FQDN of the Fleet hub.
+     *
+     * @return the portalFqdn value.
+     */
+    public String portalFqdn() {
+        return this.portalFqdn;
     }
 
     /**

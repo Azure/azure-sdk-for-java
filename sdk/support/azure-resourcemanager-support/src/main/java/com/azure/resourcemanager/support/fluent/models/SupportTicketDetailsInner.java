@@ -6,14 +6,17 @@ package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.ContactProfile;
 import com.azure.resourcemanager.support.models.QuotaTicketDetails;
+import com.azure.resourcemanager.support.models.SecondaryConsent;
 import com.azure.resourcemanager.support.models.ServiceLevelAgreement;
 import com.azure.resourcemanager.support.models.SeverityLevel;
 import com.azure.resourcemanager.support.models.SupportEngineer;
 import com.azure.resourcemanager.support.models.TechnicalTicketDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** Object that represents SupportTicketDetails resource. */
 @Fluent
@@ -179,6 +182,75 @@ public final class SupportTicketDetailsInner extends ProxyResource {
     }
 
     /**
+     * Get the advancedDiagnosticConsent property: Advanced diagnostic consent to be updated on the support ticket.
+     *
+     * @return the advancedDiagnosticConsent value.
+     */
+    public Consent advancedDiagnosticConsent() {
+        return this.innerProperties() == null ? null : this.innerProperties().advancedDiagnosticConsent();
+    }
+
+    /**
+     * Set the advancedDiagnosticConsent property: Advanced diagnostic consent to be updated on the support ticket.
+     *
+     * @param advancedDiagnosticConsent the advancedDiagnosticConsent value to set.
+     * @return the SupportTicketDetailsInner object itself.
+     */
+    public SupportTicketDetailsInner withAdvancedDiagnosticConsent(Consent advancedDiagnosticConsent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withAdvancedDiagnosticConsent(advancedDiagnosticConsent);
+        return this;
+    }
+
+    /**
+     * Get the problemScopingQuestions property: Problem scoping questions associated with the support ticket.
+     *
+     * @return the problemScopingQuestions value.
+     */
+    public String problemScopingQuestions() {
+        return this.innerProperties() == null ? null : this.innerProperties().problemScopingQuestions();
+    }
+
+    /**
+     * Set the problemScopingQuestions property: Problem scoping questions associated with the support ticket.
+     *
+     * @param problemScopingQuestions the problemScopingQuestions value to set.
+     * @return the SupportTicketDetailsInner object itself.
+     */
+    public SupportTicketDetailsInner withProblemScopingQuestions(String problemScopingQuestions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withProblemScopingQuestions(problemScopingQuestions);
+        return this;
+    }
+
+    /**
+     * Get the supportPlanId property: Support plan id associated with the support ticket.
+     *
+     * @return the supportPlanId value.
+     */
+    public String supportPlanId() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportPlanId();
+    }
+
+    /**
+     * Set the supportPlanId property: Support plan id associated with the support ticket.
+     *
+     * @param supportPlanId the supportPlanId value to set.
+     * @return the SupportTicketDetailsInner object itself.
+     */
+    public SupportTicketDetailsInner withSupportPlanId(String supportPlanId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withSupportPlanId(supportPlanId);
+        return this;
+    }
+
+    /**
      * Get the contactDetails property: Contact information of the user requesting to create a support ticket.
      *
      * @return the contactDetails value.
@@ -254,6 +326,15 @@ public final class SupportTicketDetailsInner extends ProxyResource {
      */
     public String supportPlanType() {
         return this.innerProperties() == null ? null : this.innerProperties().supportPlanType();
+    }
+
+    /**
+     * Get the supportPlanDisplayName property: Support plan type associated with the support ticket.
+     *
+     * @return the supportPlanDisplayName value.
+     */
+    public String supportPlanDisplayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportPlanDisplayName();
     }
 
     /**
@@ -364,6 +445,29 @@ public final class SupportTicketDetailsInner extends ProxyResource {
     }
 
     /**
+     * Get the fileWorkspaceName property: File workspace name.
+     *
+     * @return the fileWorkspaceName value.
+     */
+    public String fileWorkspaceName() {
+        return this.innerProperties() == null ? null : this.innerProperties().fileWorkspaceName();
+    }
+
+    /**
+     * Set the fileWorkspaceName property: File workspace name.
+     *
+     * @param fileWorkspaceName the fileWorkspaceName value to set.
+     * @return the SupportTicketDetailsInner object itself.
+     */
+    public SupportTicketDetailsInner withFileWorkspaceName(String fileWorkspaceName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withFileWorkspaceName(fileWorkspaceName);
+        return this;
+    }
+
+    /**
      * Get the technicalTicketDetails property: Additional ticket details associated with a technical support ticket
      * request.
      *
@@ -408,6 +512,29 @@ public final class SupportTicketDetailsInner extends ProxyResource {
             this.innerProperties = new SupportTicketDetailsProperties();
         }
         this.innerProperties().withQuotaTicketDetails(quotaTicketDetails);
+        return this;
+    }
+
+    /**
+     * Get the secondaryConsent property: This property indicates secondary consents for the support ticket.
+     *
+     * @return the secondaryConsent value.
+     */
+    public List<SecondaryConsent> secondaryConsent() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryConsent();
+    }
+
+    /**
+     * Set the secondaryConsent property: This property indicates secondary consents for the support ticket.
+     *
+     * @param secondaryConsent the secondaryConsent value to set.
+     * @return the SupportTicketDetailsInner object itself.
+     */
+    public SupportTicketDetailsInner withSecondaryConsent(List<SecondaryConsent> secondaryConsent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withSecondaryConsent(secondaryConsent);
         return this;
     }
 

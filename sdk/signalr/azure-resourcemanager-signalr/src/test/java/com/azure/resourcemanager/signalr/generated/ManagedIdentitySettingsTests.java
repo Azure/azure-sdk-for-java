@@ -12,14 +12,14 @@ public final class ManagedIdentitySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedIdentitySettings model =
-            BinaryData.fromString("{\"resource\":\"ysjkixqtnqttez\"}").toObject(ManagedIdentitySettings.class);
-        Assertions.assertEquals("ysjkixqtnqttez", model.resource());
+            BinaryData.fromString("{\"resource\":\"rfh\"}").toObject(ManagedIdentitySettings.class);
+        Assertions.assertEquals("rfh", model.resource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentitySettings model = new ManagedIdentitySettings().withResource("ysjkixqtnqttez");
+        ManagedIdentitySettings model = new ManagedIdentitySettings().withResource("rfh");
         model = BinaryData.fromObject(model).toObject(ManagedIdentitySettings.class);
-        Assertions.assertEquals("ysjkixqtnqttez", model.resource());
+        Assertions.assertEquals("rfh", model.resource());
     }
 }

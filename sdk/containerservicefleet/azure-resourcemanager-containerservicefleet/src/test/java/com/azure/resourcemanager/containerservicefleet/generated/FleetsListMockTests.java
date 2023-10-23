@@ -33,7 +33,8 @@ public final class FleetsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"hubProfile\":{\"dnsPrefix\":\"kphywpnvjto\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":false,\"subnetId\":\"fpl\"},\"agentProfile\":{\"subnetId\":\"xus\"},\"fqdn\":\"pabgyeps\",\"kubernetesVersion\":\"tazqugxywpmueefj\"}},\"eTag\":\"fqkquj\",\"identity\":{\"principalId\":\"13293e28-2fa6-4836-9dfe-01d82e560dd4\",\"tenantId\":\"620d8108-3be7-4d2f-9d3e-4a670e991cd6\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"glaocq\":{\"principalId\":\"ab38fafc-5867-4cbb-828a-f49295ed22d5\",\"clientId\":\"89f76313-affc-47be-a8bb-849ab09aebce\"},\"cmgyud\":{\"principalId\":\"f9f07d02-d2cf-4d95-891f-eabd28476099\",\"clientId\":\"8fd44560-a253-4855-b9ed-76312fb1f395\"},\"lmoyrx\":{\"principalId\":\"fc44cf97-52e1-43be-93e1-9e7f297e0b06\",\"clientId\":\"76de2a1e-7bdc-4dca-b3c9-2f0c9c74ee87\"}}},\"location\":\"fudwpznt\",\"tags\":{\"ck\":\"zhlrqjb\",\"kyv\":\"rlhrxs\"},\"id\":\"ycanuzbpzkafku\",\"name\":\"b\",\"type\":\"rnwb\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"hubProfile\":{\"dnsPrefix\":\"togt\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":false,\"subnetId\":\"vnm\"},\"agentProfile\":{\"subnetId\":\"kvceoveilovnotyf\",\"vmSize\":\"cnjbkcnxdhbt\"},\"fqdn\":\"phywpnvj\",\"kubernetesVersion\":\"qnermclfplphoxu\",\"portalFqdn\":\"rpabg\"}},\"eTag\":\"psbjta\",\"identity\":{\"principalId\":\"c6054ddf-bbcc-4cb1-8054-f6a71b0c703a\",\"tenantId\":\"c3c2e227-03cf-44be-8685-ebc8b96090ee\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{\"ueefjzwfqkqu\":{\"principalId\":\"44c7e2b1-6a91-48a2-b4b0-355aa8885482\",\"clientId\":\"b93837b5-53af-40c9-b28e-3a4f01f39b78\"},\"suyonobglaocq\":{\"principalId\":\"1b79cc6f-ec3f-47f1-88e8-40fef44dea3f\",\"clientId\":\"5eb62a70-39d7-4cbe-a015-f38f0baa5236\"}}},\"location\":\"ccm\",\"tags\":{\"moyrxvwfudwpz\":\"dxyt\",\"rqjbhckfrl\":\"txhdzh\",\"ca\":\"rxsbkyvp\"},\"id\":\"uzbpzkafku\",\"name\":\"b\",\"type\":\"rnwb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,18 +64,20 @@ public final class FleetsListMockTests {
 
         PagedIterable<Fleet> response = manager.fleets().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fudwpznt", response.iterator().next().location());
-        Assertions.assertEquals("zhlrqjb", response.iterator().next().tags().get("ck"));
+        Assertions.assertEquals("ccm", response.iterator().next().location());
+        Assertions.assertEquals("dxyt", response.iterator().next().tags().get("moyrxvwfudwpz"));
         Assertions
-            .assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("kphywpnvjto", response.iterator().next().hubProfile().dnsPrefix());
+            .assertEquals(
+                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("togt", response.iterator().next().hubProfile().dnsPrefix());
         Assertions
             .assertEquals(
                 true, response.iterator().next().hubProfile().apiServerAccessProfile().enablePrivateCluster());
         Assertions
             .assertEquals(
                 false, response.iterator().next().hubProfile().apiServerAccessProfile().enableVnetIntegration());
-        Assertions.assertEquals("fpl", response.iterator().next().hubProfile().apiServerAccessProfile().subnetId());
-        Assertions.assertEquals("xus", response.iterator().next().hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("vnm", response.iterator().next().hubProfile().apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("kvceoveilovnotyf", response.iterator().next().hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("cnjbkcnxdhbt", response.iterator().next().hubProfile().agentProfile().vmSize());
     }
 }

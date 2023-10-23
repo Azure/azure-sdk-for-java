@@ -19,7 +19,7 @@ public final class DatadogHostInner {
     private String name;
 
     /*
-     * The aliases for the host.
+     * The aliases for the host installed via the Datadog agent.
      */
     @JsonProperty(value = "aliases")
     private List<String> aliases;
@@ -61,7 +61,7 @@ public final class DatadogHostInner {
     }
 
     /**
-     * Get the aliases property: The aliases for the host.
+     * Get the aliases property: The aliases for the host installed via the Datadog agent.
      *
      * @return the aliases value.
      */
@@ -70,7 +70,7 @@ public final class DatadogHostInner {
     }
 
     /**
-     * Set the aliases property: The aliases for the host.
+     * Set the aliases property: The aliases for the host installed via the Datadog agent.
      *
      * @param aliases the aliases value to set.
      * @return the DatadogHostInner object itself.
