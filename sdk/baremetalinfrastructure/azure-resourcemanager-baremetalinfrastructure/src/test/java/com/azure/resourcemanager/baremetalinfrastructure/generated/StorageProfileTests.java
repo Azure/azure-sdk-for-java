@@ -16,10 +16,10 @@ public final class StorageProfileTests {
         StorageProfile model =
             BinaryData
                 .fromString(
-                    "{\"nfsIpAddress\":\"eho\",\"osDisks\":[{\"name\":\"huxinpmqnj\",\"diskSizeGB\":956745772,\"lun\":288433409},{\"name\":\"sprozvcput\",\"diskSizeGB\":1721756309,\"lun\":1903590590}]}")
+                    "{\"nfsIpAddress\":\"fp\",\"osDisks\":[{\"name\":\"bmtukknryrti\",\"diskSizeGB\":995143874,\"lun\":1773018691},{\"name\":\"bpzvgn\",\"diskSizeGB\":706884387,\"lun\":2084129316}]}")
                 .toObject(StorageProfile.class);
-        Assertions.assertEquals("huxinpmqnj", model.osDisks().get(0).name());
-        Assertions.assertEquals(956745772, model.osDisks().get(0).diskSizeGB());
+        Assertions.assertEquals("bmtukknryrti", model.osDisks().get(0).name());
+        Assertions.assertEquals(995143874, model.osDisks().get(0).diskSizeGB());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,10 +29,10 @@ public final class StorageProfileTests {
                 .withOsDisks(
                     Arrays
                         .asList(
-                            new Disk().withName("huxinpmqnj").withDiskSizeGB(956745772),
-                            new Disk().withName("sprozvcput").withDiskSizeGB(1721756309)));
+                            new Disk().withName("bmtukknryrti").withDiskSizeGB(995143874),
+                            new Disk().withName("bpzvgn").withDiskSizeGB(706884387)));
         model = BinaryData.fromObject(model).toObject(StorageProfile.class);
-        Assertions.assertEquals("huxinpmqnj", model.osDisks().get(0).name());
-        Assertions.assertEquals(956745772, model.osDisks().get(0).diskSizeGB());
+        Assertions.assertEquals("bmtukknryrti", model.osDisks().get(0).name());
+        Assertions.assertEquals(995143874, model.osDisks().get(0).diskSizeGB());
     }
 }

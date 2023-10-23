@@ -11,16 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Summary model = BinaryData.fromString("{\"count\":1680873734,\"item\":\"pmouexhdz\"}").toObject(Summary.class);
-        Assertions.assertEquals(1680873734, model.count());
-        Assertions.assertEquals("pmouexhdz", model.item());
+        Summary model =
+            BinaryData.fromString("{\"count\":1873646059,\"item\":\"njeaseipheofloke\"}").toObject(Summary.class);
+        Assertions.assertEquals(1873646059, model.count());
+        Assertions.assertEquals("njeaseipheofloke", model.item());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Summary model = new Summary().withCount(1680873734).withItem("pmouexhdz");
+        Summary model = new Summary().withCount(1873646059).withItem("njeaseipheofloke");
         model = BinaryData.fromObject(model).toObject(Summary.class);
-        Assertions.assertEquals(1680873734, model.count());
-        Assertions.assertEquals("pmouexhdz", model.item());
+        Assertions.assertEquals(1873646059, model.count());
+        Assertions.assertEquals("njeaseipheofloke", model.item());
     }
 }
