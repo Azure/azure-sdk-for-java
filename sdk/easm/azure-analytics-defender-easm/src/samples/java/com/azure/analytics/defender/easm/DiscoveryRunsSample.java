@@ -3,10 +3,10 @@
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.models.DiscoRunResult;
-import com.azure.analytics.defender.easm.models.CountPagedIterable;
 import com.azure.analytics.defender.easm.models.DiscoSource;
 import com.azure.analytics.defender.easm.models.DiscoSourceKind;
 import com.azure.analytics.defender.easm.models.DiscoGroupData;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
 
@@ -63,8 +63,7 @@ public class DiscoveryRunsSample {
         easmClient.listDiscoGroup()
             .forEach((discoGroupResponse -> {
                 System.out.println(discoGroupResponse.getName());
-                CountPagedIterable<DiscoRunResult> discoRunPageResponse = easmClient.listRuns(discoGroupResponse.getName(), null, 0, 5);
-                long elementsToPrint = discoRunPageResponse.getTotalElements() > 5 ? 5 : discoRunPageResponse.getTotalElements();
+                PagedIterable<DiscoRunResult> discoRunPageResponse = easmClient.listRuns(discoGroupResponse.getName(), null, 0);
                 discoRunPageResponse.forEach(discoRunResponse -> {
                     System.out.println(" - started: " + discoRunResponse.getStartedDate()
                         + ", finished: " + discoRunResponse.getCompletedDate()

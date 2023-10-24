@@ -42,7 +42,7 @@ public class DiscoTemplateSample {
 
         String partialName = Configuration.getGlobalConfiguration().get("PARTIAL_NAME");
         System.out.println("Partial name is " + partialName);
-        easmClient.listDiscoTemplate(partialName, 0, 25)
+        easmClient.listDiscoTemplate(partialName, 0)
             .forEach((discoTemplateResult -> {
                 System.out.println(discoTemplateResult.getId() + ": " + discoTemplateResult.getDisplayName());
             }));

@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.models.CountPagedIterable;
 import com.azure.analytics.defender.easm.models.SavedFilterData;
 import com.azure.analytics.defender.easm.models.SavedFilter;
+import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +19,7 @@ public class SavedFiltersTest extends EasmClientTestBase {
 
     @Test
     public void testsavedFiltersListWithResponse() {
-        CountPagedIterable<SavedFilter> savedFilters = easmClient.listSavedFilter();
+        PagedIterable<SavedFilter> savedFilters = easmClient.listSavedFilter();
         SavedFilter savedFilterResponse = savedFilters.stream().iterator().next();
         assertNotNull(savedFilterResponse.getId());
         assertNotNull(savedFilterResponse.getDescription());

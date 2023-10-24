@@ -89,7 +89,7 @@ public class ManagingExternalIdsSample {
         // external id using an `in` query
         String assetFilter = "External ID in ".concat(String.join(", ", externalIds));
 
-        easmClient.listAssetResource(assetFilter, "lastSeen", 0, 25, null)
+        easmClient.listAssetResource(assetFilter, "lastSeen", 0, null)
             .forEach(assetResponse -> {
                 System.out.println(assetResponse.getExternalId() + ", " + assetResponse.getName());
             });

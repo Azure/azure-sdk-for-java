@@ -3,6 +3,7 @@
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.models.*;
+import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,10 +18,10 @@ public class DataConnectionsTest extends EasmClientTestBase {
 
     @Test
     public void testdataConnectionsListWithResponse() {
-        CountPagedIterable<DataConnection> dataConnectionPageResult = easmClient.listDataConnection();
+        PagedIterable<DataConnection> dataConnectionPageResult = easmClient.listDataConnection();
         DataConnection dataConnection = dataConnectionPageResult.stream().iterator().next();
-        assertNotNull(dataConnection.getName());
-        assertNotNull(dataConnection.getDisplayName());
+        assertEquals("new-sample-dc", dataConnection.getName());
+        assertNotNull("new-sample-dc", dataConnection.getDisplayName());
 
     }
 

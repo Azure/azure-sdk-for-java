@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.models.CountPagedIterable;
 import com.azure.analytics.defender.easm.models.Task;
+import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,7 +15,7 @@ public class TasksTest extends EasmClientTestBase {
 
     @Test
     public void testtasksListWithResponse() {
-        CountPagedIterable<Task> taskPageResponse = easmClient.listTask();
+        PagedIterable<Task> taskPageResponse = easmClient.listTask();
         Task taskResponse = taskPageResponse.stream().iterator().next();
         assertTrue(taskResponse.getId().matches(uuidRegex));
 

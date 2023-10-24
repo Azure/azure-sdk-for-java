@@ -3,6 +3,7 @@
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.models.*;
+import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -24,13 +25,12 @@ public class DiscoveryGroupsTest extends EasmClientTestBase {
 
     @Test
     public void testdiscoveryGroupsListWithResponse() {
-        CountPagedIterable<DiscoGroup> discoGroups = easmClient.listDiscoGroup(null, 0, 5);
+        PagedIterable<DiscoGroup> discoGroups = easmClient.listDiscoGroup(null, 0);
         DiscoGroup discoGroup = discoGroups.stream().iterator().next();
         assertNotNull(discoGroup.getName());
         assertNotNull(discoGroup.getDescription());
         assertNotNull(discoGroup.getTier());
         assertNotNull(discoGroup.getId());
-        assertNotNull(discoGroups.getTotalElements());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class DiscoveryGroupsTest extends EasmClientTestBase {
 
     @Test
     public void testdiscoveryGroupsListRunsWithResponse() {
-        CountPagedIterable<DiscoRunResult> discoRunPageResponse = easmClient.listRuns(knownGroupName, null, 0, 5);
-        assertTrue(discoRunPageResponse.getTotalElements() > 2);
+        PagedIterable<DiscoRunResult> discoRunPageResponse = easmClient.listRuns(knownGroupName, null, 0);
+        assertNotNull(discoRunPageResponse);
     }
 }

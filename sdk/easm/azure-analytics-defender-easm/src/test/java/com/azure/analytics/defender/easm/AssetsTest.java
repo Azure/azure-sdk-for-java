@@ -3,6 +3,7 @@
 package com.azure.analytics.defender.easm;
 
 import com.azure.analytics.defender.easm.models.*;
+import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,7 +42,7 @@ public class AssetsTest extends EasmClientTestBase {
     @Test
     public void testAssetsListWithResponse() {
 
-        CountPagedIterable<AssetResource> assetPageResponse = easmClient.listAssetResource(filter, "lastSeen", 0, 25, null);
+        PagedIterable<AssetResource> assetPageResponse = easmClient.listAssetResource(filter, "lastSeen", 0, null);
         AssetResource assetResponse = assetPageResponse.iterator().next();
         assertEquals(assetName, assetResponse.getName());
         assertInstanceOf(getAssetResourceClass(assetKind), assetResponse);

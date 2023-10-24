@@ -88,14 +88,16 @@ public class DiscoveryGroupsAsyncTest extends EasmClientTestBase {
 
     @Test
     public void testDiscoveryGroupListRunsAsync() {
-        Mono<DiscoRunPageResult> discoRunPageResultMono = easmAsyncClient.listRuns(knownGroupName, null, 0, 5);
-        StepVerifier.create(discoRunPageResultMono)
-            .assertNext(discoRunPageResult -> {
-                List<DiscoRunResult> discoRunResults = discoRunPageResult.getValue();
-                assertNotNull(discoRunResults);
-                assertTrue(discoRunResults.size() > 2);
-            })
+        PagedFlux<DiscoRunResult> discoRunResultPagedFlux = easmAsyncClient.listRuns(knownGroupName, null, 0);
+        List<DiscoRunResult> discoRunResults = new ArrayList<>();
+
+        StepVerifier.create(discoRunResultPagedFlux)
+            .thenConsumeWhile(discoRunResults::add)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
+        assertTrue(discoRunResults.size() > 2);
+        for (DiscoRunResult discoRunResult : discoRunResults) {
+            assertNotNull(discoRunResult.getState());
+        }
     }
 }

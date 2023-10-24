@@ -52,7 +52,7 @@ public class SavedFilterSample {
 
         String monitorFilter = easmClient.getSavedFilter(savedFilterName).getFilter();
 
-        easmClient.listSavedFilter(monitorFilter, 0, 10)
+        easmClient.listSavedFilter(monitorFilter, 0)
             .forEach(SavedFilterSample::monitor);
 
         AssetUpdateData assetUpdateRequest = new AssetUpdateData().setState(AssetUpdateState.CONFIRMED);

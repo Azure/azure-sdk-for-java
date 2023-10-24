@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.models.CountPagedIterable;
 import com.azure.analytics.defender.easm.models.DiscoTemplate;
+import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -17,7 +17,7 @@ public class DiscoveryTemplatesTest extends EasmClientTestBase {
     @Test
     public void testdiscoveryTemplatesListWithResponse() {
 
-        CountPagedIterable<DiscoTemplate> discoTemplatePageResponse = easmClient.listDiscoTemplate(partialName, 0, 25);
+        PagedIterable<DiscoTemplate> discoTemplatePageResponse = easmClient.listDiscoTemplate(partialName, 0);
         DiscoTemplate discoTemplateResponse = discoTemplatePageResponse.stream().iterator().next();
         assertTrue(discoTemplateResponse.getName().toLowerCase().contains(partialName));
         assertNotNull(discoTemplateResponse.getId());
