@@ -1,0 +1,1 @@
+[ [ "com.azure.resourcemanager.edgemarketplace.implementation.PublishersClientImpl$PublishersService" ], [ "com.azure.resourcemanager.edgemarketplace.implementation.OperationsClientImpl$OperationsService" ], [ "com.azure.resourcemanager.edgemarketplace.implementation.OffersClientImpl$OffersService" ] ]
