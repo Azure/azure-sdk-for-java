@@ -1,14 +1,17 @@
 # Release History
 
-## 4.19.0-beta.1 (Unreleased)
+## 4.19.0 (2023-10-23)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- new ACS Router system events.
+- New Resource Notification system events.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 
 ## 4.18.0 (2023-09-13)
 
@@ -417,3 +420,5 @@ set of libraries that are consistent across multiple services as well as differe
     Event Grid, Cloud Event, or a custom schema.
 + Parsing and deserialization of system and user-defined events from JSON payload
     at an event destination in EventGrid or Cloud Event schema.
+
+
