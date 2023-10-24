@@ -168,7 +168,14 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                         .block()
                         .getDiagnostics();
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
-                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 3);
+                if (this.readPreferredLocations.size() == 2) {
+                    // when preferred regions is 2
+                    // Due to issue https://github.com/Azure/azure-sdk-for-java/issues/35779, the request mark the region unavailable will retry
+                    // in the unavailable region again, hence the addressRefresh fault injection will be happened 4 times
+                    validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 4);
+                } else {
+                    validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 3);
+                }
             } catch (CosmosException e) {
                 fail("Request should be able to succeed by retrying in another region. " + e.getDiagnostics());
             }
