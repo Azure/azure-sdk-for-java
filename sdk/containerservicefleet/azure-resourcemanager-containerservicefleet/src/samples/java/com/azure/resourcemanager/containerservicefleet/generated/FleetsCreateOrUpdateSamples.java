@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
+import com.azure.resourcemanager.containerservicefleet.models.AgentProfile;
 import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
 /** Samples for Fleets CreateOrUpdate. */
 public final class FleetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-08-15-preview/examples/Fleets_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates a Fleet resource with a long running operation.
@@ -26,7 +27,10 @@ public final class FleetsCreateOrUpdateSamples {
             .withRegion("East US")
             .withExistingResourceGroup("rg1")
             .withTags(mapOf("archv2", "", "tier", "production"))
-            .withHubProfile(new FleetHubProfile().withDnsPrefix("dnsprefix1"))
+            .withHubProfile(
+                new FleetHubProfile()
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentProfile(new AgentProfile().withVmSize("Standard_DS1")))
             .create();
     }
 

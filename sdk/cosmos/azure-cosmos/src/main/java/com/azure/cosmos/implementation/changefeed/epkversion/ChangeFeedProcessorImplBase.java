@@ -231,7 +231,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                             CosmosChangeFeedRequestOptions options = this.createRequestOptionsForProcessingFromNow(lease.getFeedRange());
 
                             return this.feedContextClient
-                                    .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class)
+                                    .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class, false)
                                     .take(1)
                                     .map(feedResponse -> {
                                         ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
