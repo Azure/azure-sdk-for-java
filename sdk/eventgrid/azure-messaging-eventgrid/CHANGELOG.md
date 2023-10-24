@@ -3,7 +3,8 @@
 ## 4.19.0 (2023-10-23)
 
 ### Features Added
-- new ACS Router systemevents.
+- new ACS Router system events.
+- New Resource Notification system events.
 
 ### Other Changes
 
