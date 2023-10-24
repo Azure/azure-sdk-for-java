@@ -274,6 +274,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
                     assertNotNull(areaCodes);
+                    assertNotNull(areaCodes.getAreaCode());
                 })
                 .verifyComplete();
     }
@@ -325,6 +326,8 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .listAvailableOfferings("US", null, null).next())
                 .assertNext((PhoneNumberOffering offering) -> {
                     assertNotNull(offering);
+                    assertNotNull(offering.getCost().getBillingFrequency());
+                    assertNotNull(offering.getCost().getCurrencyCode());
                 })
                 .verifyComplete();
     }
@@ -350,6 +353,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
                     assertNotNull(areaCodes);
+                    assertNotNull(areaCodes.getAreaCode());
                 })
                 .verifyComplete();
     }
@@ -413,6 +417,8 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .listAvailableOfferings("US", null, null).next())
                 .assertNext((PhoneNumberOffering offering) -> {
                     assertNotNull(offering);
+                    assertNotNull(offering.getCost().getBillingFrequency());
+                    assertNotNull(offering.getCost().getCurrencyCode());
                 })
                 .verifyComplete();
     }

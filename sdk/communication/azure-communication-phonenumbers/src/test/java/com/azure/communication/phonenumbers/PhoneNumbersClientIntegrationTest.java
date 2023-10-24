@@ -235,6 +235,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                         locality.getAdministrativeDivision().getAbbreviatedName());
         PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
         assertNotNull(areaCodes);
+        assertNotNull(areaCodes.getAreaCode());
     }
 
     @ParameterizedTest
@@ -292,7 +293,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertNotNull(offering);
         assertNotNull(offering.getAssignmentType());
         assertNotNull(offering.getAvailableCapabilities());
-        assertNotNull(offering.getCost());
+        assertNotNull(offering.getCost().getBillingFrequency());
+        assertNotNull(offering.getCost().getCurrencyCode());
         assertNotNull(offering.getPhoneNumberType());
     }
 
@@ -320,6 +322,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                         locality.getAdministrativeDivision().getAbbreviatedName());
         PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
         assertNotNull(areaCodes);
+        assertNotNull(areaCodes.getAreaCode());
     }
 
     @ParameterizedTest
@@ -370,7 +373,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertNotNull(offering);
         assertNotNull(offering.getAssignmentType());
         assertNotNull(offering.getAvailableCapabilities());
-        assertNotNull(offering.getCost());
+        assertNotNull(offering.getCost().getBillingFrequency());
+        assertNotNull(offering.getCost().getCurrencyCode());
         assertNotNull(offering.getPhoneNumberType());
     }
 
