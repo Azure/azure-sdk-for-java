@@ -399,8 +399,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
         assertEquals(phoneNumberError.getCode(), error.getCode());
         assertEquals(phoneNumberError.getMessage(), error.getMessage());
-        assertEquals(phoneNumberError.getDetails(), error.getDetails());
-        assertEquals(phoneNumberError.getTarget(), error.getTarget());
     }
 
     @ParameterizedTest

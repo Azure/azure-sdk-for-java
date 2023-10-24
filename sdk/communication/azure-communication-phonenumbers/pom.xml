@@ -146,7 +146,7 @@
             <include>com/azure/communication/phonenumbers/siprouting/models/*.class</include>
           </includes>
           <excludes>
-            <exclude>com/azure/communication/phonenumbers/implementation/models/*.classPhoneNumbersPurchasePhoneNumbersResponse</exclude>
+            <exclude>com/azure/communication/phonenumbers/CodeCoverageAnnotation*.class</exclude>
           </excludes>
         </configuration>
         <executions>
