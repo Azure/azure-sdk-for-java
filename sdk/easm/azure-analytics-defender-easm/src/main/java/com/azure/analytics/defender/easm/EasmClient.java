@@ -1666,7 +1666,9 @@ public final class EasmClient {
     public PagedIterable<Task> listTask() {
         // Generated convenience method for listTask
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
+        return serviceClient
+                .listTask(requestOptions)
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
     }
 
     /**
@@ -1950,7 +1952,9 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
+        return serviceClient
+                .listTask(requestOptions)
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
     }
 
     /**

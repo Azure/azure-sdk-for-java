@@ -30,6 +30,11 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.*;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import java.util.stream.Collectors;
@@ -106,7 +111,6 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of AssetResource items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAssetResource(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listAssetResourceAsync(requestOptions);
@@ -271,26 +275,25 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDataConnection(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDataConnectionAsync(requestOptions);
-        return PagedFlux.create(() ->
-            (continuationToken, pageSize) -> {
-                Flux<PagedResponse<BinaryData>> flux =
-                    (continuationToken == null)
-                        ? pagedFluxResponse.byPage().take(1)
-                        : pagedFluxResponse.byPage(continuationToken).take(1);
-                return flux.map(pagedResponse ->
-                    new PagedResponseBase<Void, BinaryData>(
-                        pagedResponse.getRequest(),
-                        pagedResponse.getStatusCode(),
-                        pagedResponse.getHeaders(),
-                        pagedResponse.getValue().stream().map(
-                            protocolMethodData ->
-                                cleanUp(protocolMethodData)
-                        ).collect(Collectors.toList()),
-                        pagedResponse.getContinuationToken(),
-                        null
-                    ));
-            }
-        );
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BinaryData>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
     }
 
     /**
@@ -513,26 +516,25 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDiscoGroupAsync(requestOptions);
-        return PagedFlux.create(() ->
-            (continuationToken, pageSize) -> {
-                Flux<PagedResponse<BinaryData>> flux =
-                    (continuationToken == null)
-                        ? pagedFluxResponse.byPage().take(1)
-                        : pagedFluxResponse.byPage(continuationToken).take(1);
-                return flux.map(pagedResponse ->
-                    new PagedResponseBase<Void, BinaryData>(
-                        pagedResponse.getRequest(),
-                        pagedResponse.getStatusCode(),
-                        pagedResponse.getHeaders(),
-                        pagedResponse.getValue().stream().map(
-                            protocolMethodData ->
-                                cleanUp(protocolMethodData)
-                        ).collect(Collectors.toList()),
-                        pagedResponse.getContinuationToken(),
-                        null
-                    ));
-            }
-        );
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BinaryData>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
     }
 
     /**
@@ -810,26 +812,25 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDiscoTemplate(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDiscoTemplateAsync(requestOptions);
-        return PagedFlux.create(() ->
-            (continuationToken, pageSize) -> {
-                Flux<PagedResponse<BinaryData>> flux =
-                    (continuationToken == null)
-                        ? pagedFluxResponse.byPage().take(1)
-                        : pagedFluxResponse.byPage(continuationToken).take(1);
-                return flux.map(pagedResponse ->
-                    new PagedResponseBase<Void, BinaryData>(
-                        pagedResponse.getRequest(),
-                        pagedResponse.getStatusCode(),
-                        pagedResponse.getHeaders(),
-                        pagedResponse.getValue().stream().map(
-                            protocolMethodData ->
-                                cleanUp(protocolMethodData)
-                        ).collect(Collectors.toList()),
-                        pagedResponse.getContinuationToken(),
-                        null
-                    ));
-            }
-        );
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BinaryData>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
     }
 
     /**
@@ -1083,26 +1084,25 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listSavedFilter(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listSavedFilterAsync(requestOptions);
-        return PagedFlux.create(() ->
-            (continuationToken, pageSize) -> {
-                Flux<PagedResponse<BinaryData>> flux =
-                    (continuationToken == null)
-                        ? pagedFluxResponse.byPage().take(1)
-                        : pagedFluxResponse.byPage(continuationToken).take(1);
-                return flux.map(pagedResponse ->
-                    new PagedResponseBase<Void, BinaryData>(
-                        pagedResponse.getRequest(),
-                        pagedResponse.getStatusCode(),
-                        pagedResponse.getHeaders(),
-                        pagedResponse.getValue().stream().map(
-                            protocolMethodData ->
-                                cleanUp(protocolMethodData)
-                        ).collect(Collectors.toList()),
-                        pagedResponse.getContinuationToken(),
-                        null
-                    ));
-            }
-        );
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BinaryData>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
     }
 
     /**
@@ -1235,26 +1235,25 @@ public final class EasmAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listTask(RequestOptions requestOptions) {
         PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listTaskAsync(requestOptions);
-        return PagedFlux.create(() ->
-            (continuationToken, pageSize) -> {
-                Flux<PagedResponse<BinaryData>> flux =
-                    (continuationToken == null)
-                        ? pagedFluxResponse.byPage().take(1)
-                        : pagedFluxResponse.byPage(continuationToken).take(1);
-                return flux.map(pagedResponse ->
-                    new PagedResponseBase<Void, BinaryData>(
-                        pagedResponse.getRequest(),
-                        pagedResponse.getStatusCode(),
-                        pagedResponse.getHeaders(),
-                        pagedResponse.getValue().stream().map(
-                            protocolMethodData ->
-                                cleanUp(protocolMethodData)
-                        ).collect(Collectors.toList()),
-                        pagedResponse.getContinuationToken(),
-                        null
-                    ));
-            }
-        );
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, BinaryData>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(protocolMethodData -> cleanUp(protocolMethodData))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
     }
 
     /**
@@ -1502,8 +1501,8 @@ public final class EasmAsyncClient {
                                                     pagedResponse.getValue().stream()
                                                             .map(
                                                                     protocolMethodData ->
-                                                                            protocolMethodData
-                                                                                    .toObject(DataConnection.class))
+                                                                            protocolMethodData.toObject(
+                                                                                    DataConnection.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
                                                     null));
@@ -1541,8 +1540,8 @@ public final class EasmAsyncClient {
                                                     pagedResponse.getValue().stream()
                                                             .map(
                                                                     protocolMethodData ->
-                                                                            protocolMethodData
-                                                                                    .toObject(DataConnection.class))
+                                                                            protocolMethodData.toObject(
+                                                                                    DataConnection.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
                                                     null));
@@ -1841,7 +1840,7 @@ public final class EasmAsyncClient {
                                                     pagedResponse.getValue().stream()
                                                             .map(
                                                                     protocolMethodData ->
-                                                                            cleanUp(protocolMethodData).toObject(
+                                                                            protocolMethodData.toObject(
                                                                                     DiscoRunResult.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
@@ -2360,10 +2359,32 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listRuns(String groupName, RequestOptions requestOptions) {
-        return this.serviceClient.listRunsAsync(groupName, requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listRunsAsync(groupName, requestOptions);
+        return PagedFlux.create(
+            () ->
+                (continuationToken, pageSize) -> {
+                    Flux<PagedResponse<BinaryData>> flux =
+                        (continuationToken == null)
+                        ? pagedFluxResponse.byPage().take(1)
+                        : pagedFluxResponse.byPage(continuationToken).take(1);
+                    return flux.map(
+                        pagedResponse ->
+                            new PagedResponseBase<Void, BinaryData>(
+                                pagedResponse.getRequest(),
+                                pagedResponse.getStatusCode(),
+                                pagedResponse.getHeaders(),
+                                pagedResponse.getValue().stream()
+                                    .map(protocolMethodData ->
+                                        cleanUp(protocolMethodData))
+                                    .collect(Collectors.toList()),
+                                pagedResponse.getContinuationToken(),
+                                null
+
+                            )
+                    );
+                });
     }
 
     /**
@@ -2408,7 +2429,7 @@ public final class EasmAsyncClient {
                                                     pagedResponse.getValue().stream()
                                                             .map(
                                                                     protocolMethodData ->
-                                                                            cleanUp(protocolMethodData).toObject(
+                                                                            protocolMethodData.toObject(
                                                                                     DiscoRunResult.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
