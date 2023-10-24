@@ -1,4 +1,4 @@
-FROM maven:3.8.6-openjdk-11 as builder
+FROM mcr.microsoft.com/openjdk/jdk:11-mariner as builder
 
 RUN mkdir /stress-eh
 WORKDIR /stress-eh

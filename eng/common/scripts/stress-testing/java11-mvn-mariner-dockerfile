@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/openjdk/jdk:11-mariner as builder
+
+RUN yum -y install curl tar
+
+ARG MAVEN_VERSION="3.8.8"
+ARG BASE_URL="https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries"
+
+RUN mkdir -p /usr/share/maven \
+    && curl -Lso  /tmp/maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
+    && tar -xzC /usr/share/maven --strip-components=1 -f /tmp/maven.tar.gz \
+    && rm -v /tmp/maven.tar.gz \
+    && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+ENV MAVEN_HOME /usr/share/maven
+
+# docker build -t <registry>.azurecr.io/java-tools/mvn:java11-mvn3.8.8
+# docker push <registry>.azurecr.io/java-tools/mvn:java11-mvn3.8.8

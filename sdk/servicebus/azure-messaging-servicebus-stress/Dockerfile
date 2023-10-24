@@ -1,4 +1,4 @@
-FROM maven:3.8.6-openjdk-11 as builder
+FROM stresspgs7b6dif73rup6.azurecr.io/java-tools/mvn:java11-mvn3.8.8 as builder
 
 RUN mkdir /stress-sb
 WORKDIR /stress-sb
