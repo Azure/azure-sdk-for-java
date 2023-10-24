@@ -335,7 +335,7 @@ public final class JobRouterClient {
             CreateJobOptions createJobOptions, RequestOptions requestOptions) {
         RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
         return this.serviceClient.upsertJobWithResponse(
-                createJobOptions.getId(), BinaryData.fromObject(routerJob), requestOptions);
+                createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
     }
 
     /**

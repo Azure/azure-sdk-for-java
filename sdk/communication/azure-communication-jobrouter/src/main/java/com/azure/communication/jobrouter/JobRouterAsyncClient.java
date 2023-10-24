@@ -341,7 +341,7 @@ public final class JobRouterAsyncClient {
     public Mono<Response<BinaryData>> createJobWithResponse(
             CreateJobOptions createJobOptions, RequestOptions requestOptions) {
         RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
-        return upsertJobWithResponse(createJobOptions.getId(), BinaryData.fromObject(routerJob), requestOptions);
+        return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
     }
 
     /**

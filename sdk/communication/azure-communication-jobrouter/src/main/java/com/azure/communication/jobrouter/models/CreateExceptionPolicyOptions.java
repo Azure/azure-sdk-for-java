@@ -16,7 +16,7 @@ public final class CreateExceptionPolicyOptions {
     /**
      * The Id of the exception policy
      */
-    private final String id;
+    private final String exceptionPolicyId;
 
     /**
      * (Optional) A dictionary collection of exception rules on the exception
@@ -31,11 +31,11 @@ public final class CreateExceptionPolicyOptions {
 
     /**
      * Constructor for CreateExceptionPolicyOptions
-     * @param id ExceptionPolicy id
+     * @param exceptionPolicyId ExceptionPolicy id
      * @param exceptionRules Map of exception rules with a string key
      */
-    public CreateExceptionPolicyOptions(String id, Map<String, ExceptionRule> exceptionRules) {
-        this.id = id;
+    public CreateExceptionPolicyOptions(String exceptionPolicyId, Map<String, ExceptionRule> exceptionRules) {
+        this.exceptionPolicyId = exceptionPolicyId;
         this.exceptionRules = exceptionRules;
     }
 
@@ -53,8 +53,8 @@ public final class CreateExceptionPolicyOptions {
      * Returns id of ExceptionPolicy.
      * @return id
      */
-    public String getId() {
-        return this.id;
+    public String getExceptionPolicyId() {
+        return this.exceptionPolicyId;
     }
 
     /**

@@ -133,7 +133,7 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     distributionPolicyId: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
@@ -148,7 +148,7 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     distributionPolicyId: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
@@ -159,7 +159,7 @@ public final class JobRouterAdministrationAsyncClient {
      * }
      * }</pre>
      *
-     * @param id The unique identifier of the policy.
+     * @param distributionPolicyId The unique identifier of the policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -171,8 +171,8 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateDistributionPolicyWithResponse(
-            String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertDistributionPolicyWithResponseAsync(id, resource, requestOptions);
+            String distributionPolicyId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertDistributionPolicyWithResponseAsync(distributionPolicyId, resource, requestOptions);
     }
 
     /**
@@ -191,7 +191,7 @@ public final class JobRouterAdministrationAsyncClient {
         DistributionPolicy distributionPolicy =
                 DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(
-                createDistributionPolicyOptions.getId(), BinaryData.fromObject(distributionPolicy), requestOptions);
+                createDistributionPolicyOptions.getDistributionPolicyId(), BinaryData.fromObject(distributionPolicy), requestOptions);
     }
 
     /**
@@ -381,7 +381,7 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     classificationPolicyId: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
      *     queueSelectors (Optional): [
@@ -401,7 +401,7 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     classificationPolicyId: String (Required)
      *     name: String (Optional)
      *     fallbackQueueId: String (Optional)
      *     queueSelectors (Optional): [
@@ -417,7 +417,7 @@ public final class JobRouterAdministrationAsyncClient {
      * }
      * }</pre>
      *
-     * @param id Unique identifier of this policy.
+     * @param classificationPolicyId Unique identifier of this policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -429,8 +429,8 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateClassificationPolicyWithResponse(
-            String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertClassificationPolicyWithResponseAsync(id, resource, requestOptions);
+            String classificationPolicyId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource, requestOptions);
     }
 
     /**
@@ -450,7 +450,7 @@ public final class JobRouterAdministrationAsyncClient {
                 ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(
                         createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(
-                createClassificationPolicyOptions.getId(), BinaryData.fromObject(classificationPolicy), requestOptions);
+                createClassificationPolicyOptions.getClassificationPolicyId(), BinaryData.fromObject(classificationPolicy), requestOptions);
     }
 
     /**
@@ -669,7 +669,7 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     exceptionPolicyId: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): {
      *         String (Optional): {
@@ -688,7 +688,7 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     exceptionPolicyId: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): {
      *         String (Optional): {
@@ -703,7 +703,7 @@ public final class JobRouterAdministrationAsyncClient {
      * }
      * }</pre>
      *
-     * @param id The Id of the exception policy.
+     * @param exceptionPolicyId The Id of the exception policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -715,8 +715,8 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateExceptionPolicyWithResponse(
-            String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertExceptionPolicyWithResponseAsync(id, resource, requestOptions);
+            String exceptionPolicyId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertExceptionPolicyWithResponseAsync(exceptionPolicyId, resource, requestOptions);
     }
 
     /**
@@ -735,7 +735,7 @@ public final class JobRouterAdministrationAsyncClient {
         ExceptionPolicy exceptionPolicy =
                 ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(
-                createExceptionPolicyOptions.getId(), BinaryData.fromObject(exceptionPolicy), requestOptions);
+                createExceptionPolicyOptions.getExceptionPolicyId(), BinaryData.fromObject(exceptionPolicy), requestOptions);
     }
 
     /**
@@ -924,7 +924,7 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     queueId: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
@@ -938,7 +938,7 @@ public final class JobRouterAdministrationAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Required)
+     *     queueId: String (Required)
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
@@ -948,7 +948,7 @@ public final class JobRouterAdministrationAsyncClient {
      * }
      * }</pre>
      *
-     * @param id The Id of this queue.
+     * @param queueId The Id of this queue.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -960,8 +960,8 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateQueueWithResponse(
-            String id, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertQueueWithResponseAsync(id, resource, requestOptions);
+            String queueId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertQueueWithResponseAsync(queueId, resource, requestOptions);
     }
 
     /**
