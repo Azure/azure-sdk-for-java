@@ -255,10 +255,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getGeographicAreaCodesWrongLocality(HttpClient httpClient) {
-        PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
-                .getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
-                .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, "XX",
-                        "XX");
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "listAvailableAreaCodes");
 
         assertThrows(RuntimeException.class,
