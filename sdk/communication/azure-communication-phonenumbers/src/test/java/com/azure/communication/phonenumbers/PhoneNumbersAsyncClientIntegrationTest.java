@@ -38,6 +38,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
 
@@ -348,6 +349,15 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodesWrongCountryCode(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
+                        .listAvailableTollFreeAreaCodes("XX", PhoneNumberAssignmentType.APPLICATION).next())
+                .expectError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getGeographicAreaCodes(HttpClient httpClient) {
         PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null).blockFirst();
@@ -361,6 +371,17 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                     assertNotNull(areaCodes.getAreaCode());
                 })
                 .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodesWronglocality(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
+                        .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
+                                "XX", "XX")
+                        .next())
+                .expectError();
     }
 
     @ParameterizedTest

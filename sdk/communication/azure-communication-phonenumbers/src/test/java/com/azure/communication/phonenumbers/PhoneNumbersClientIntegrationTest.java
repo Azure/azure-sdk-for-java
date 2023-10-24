@@ -230,6 +230,16 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodesWrongCountryCode(HttpClient httpClient) {
+        PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "listAvailableAreaCodes");
+
+        assertThrows(RuntimeException.class,
+                () -> client.listAvailableTollFreeAreaCodes("XX", null).iterator().next(),
+                "Unable to parse country code.");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getGeographicAreaCodes(HttpClient httpClient) {
         PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null).iterator().next();
@@ -240,6 +250,21 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
         assertNotNull(areaCodes);
         assertNotNull(areaCodes.getAreaCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodesWrongLocality(HttpClient httpClient) {
+        PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
+                .getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
+                .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, "XX",
+                        "XX");
+        PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "listAvailableAreaCodes");
+
+        assertThrows(RuntimeException.class,
+                () -> client.listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, "XX",
+                        "XX").iterator().next(),
+                "No area codes were found for the given parameters");
     }
 
     @ParameterizedTest
