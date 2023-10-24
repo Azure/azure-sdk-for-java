@@ -16,6 +16,7 @@
 * Fixed an issue where SDK skip cross region retry for server generated `410` for write operations - See [PR 37040](https://github.com/Azure/azure-sdk-for-java/pull/37040)
 * Added 410/1002 handling for `ChangeFeedProcessor#getCurrentState` in **Latest Version**, **All Version and Deletes** changes modes. - See [PR 37107](https://github.com/Azure/azure-sdk-for-java/pull/37107)
     * **NOTE :** Here the fix is for a `ChangeFeedProcessor` instance built with either `handleLatestVersionChanges` or `handleAllVersionsAndDeletesChanges`.
+* Fixed an issue where SDK does not do retry for `AddressRefresh` on `HttpTimeout` for write operations - See [PR 37286](https://github.com/Azure/azure-sdk-for-java/pull/37286)
 
 #### Other Changes
 
