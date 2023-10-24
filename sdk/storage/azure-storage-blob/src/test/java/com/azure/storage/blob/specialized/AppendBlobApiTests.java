@@ -834,10 +834,10 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @Test
     public void audienceError() {
-        AppendBlobClient aadBlob = new SpecializedBlobClientBuilder()
+        AppendBlobClient aadBlob = instrument(new SpecializedBlobClientBuilder()
             .endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
             .buildAppendBlobClient();
 
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());
