@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Volume response properties. */
@@ -15,6 +16,12 @@ public final class VolumeUpdateProperties {
      */
     @JsonProperty(value = "sizeGiB")
     private Long sizeGiB;
+
+    /*
+     * Parent resource information.
+     */
+    @JsonProperty(value = "managedBy")
+    private ManagedByInfo managedBy;
 
     /** Creates an instance of VolumeUpdateProperties class. */
     public VolumeUpdateProperties() {
@@ -41,10 +48,33 @@ public final class VolumeUpdateProperties {
     }
 
     /**
+     * Get the managedBy property: Parent resource information.
+     *
+     * @return the managedBy value.
+     */
+    public ManagedByInfo managedBy() {
+        return this.managedBy;
+    }
+
+    /**
+     * Set the managedBy property: Parent resource information.
+     *
+     * @param managedBy the managedBy value to set.
+     * @return the VolumeUpdateProperties object itself.
+     */
+    public VolumeUpdateProperties withManagedBy(ManagedByInfo managedBy) {
+        this.managedBy = managedBy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (managedBy() != null) {
+            managedBy().validate();
+        }
     }
 }

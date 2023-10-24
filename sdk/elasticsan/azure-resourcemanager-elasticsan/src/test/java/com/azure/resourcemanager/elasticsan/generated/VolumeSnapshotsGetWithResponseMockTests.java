@@ -12,10 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
-import com.azure.resourcemanager.elasticsan.models.Action;
-import com.azure.resourcemanager.elasticsan.models.EncryptionType;
-import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
-import com.azure.resourcemanager.elasticsan.models.VolumeGroup;
+import com.azure.resourcemanager.elasticsan.models.Snapshot;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -26,7 +23,7 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class VolumeGroupsGetWithResponseMockTests {
+public final class VolumeSnapshotsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -34,7 +31,7 @@ public final class VolumeGroupsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Updating\",\"protocolType\":\"None\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[{\"id\":\"erqf\",\"action\":\"Allow\",\"state\":\"provisioning\"},{\"id\":\"nkbykutwpfhp\",\"action\":\"Allow\",\"state\":\"succeeded\"},{\"id\":\"skdsnfdsdoakg\",\"action\":\"Allow\",\"state\":\"deprovisioning\"},{\"id\":\"kzevdlhewpusds\",\"action\":\"Allow\",\"state\":\"networkSourceDeleted\"}]},\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"cngqqmoakufgmjz\",\"wr\",\"grtwae\",\"u\"]},\"id\":\"kopbminrf\",\"name\":\"woyuhhziuief\",\"type\":\"zbhd\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"qhoftrmaequiah\",\"icslfaoq\"]},\"id\":\"iyylhalnswhccsp\",\"name\":\"kaivwit\",\"type\":\"scywuggwoluhc\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"ai\",\"sbrgz\",\"wmsweypqwd\",\"ggicccnxqhue\"]},\"id\":\"ktt\",\"name\":\"stvlzywemhzrnc\",\"type\":\"dtclusiypb\"}]},\"id\":\"gytguslfead\",\"name\":\"ygqukyhejh\",\"type\":\"isxgfp\"}";
+            "{\"properties\":{\"creationData\":{\"sourceId\":\"gplcrpwjxeznoigb\"},\"provisioningState\":\"Pending\",\"sourceVolumeSizeGiB\":2186486162242158404,\"volumeName\":\"pn\"},\"id\":\"azej\",\"name\":\"oqkag\",\"type\":\"hsxttaugzxnf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +59,12 @@ public final class VolumeGroupsGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        VolumeGroup response =
+        Snapshot response =
             manager
-                .volumeGroups()
-                .getWithResponse("zcmrvexztvb", "qgsfraoyzkoow", "lmnguxaw", com.azure.core.util.Context.NONE)
+                .volumeSnapshots()
+                .getWithResponse("fxtsgum", "jglikkxwslolb", "pvuzlmv", "elfk", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(StorageTargetType.NONE, response.protocolType());
-        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, response.encryption());
-        Assertions.assertEquals("erqf", response.networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
-        Assertions.assertEquals(Action.ALLOW, response.networkAcls().virtualNetworkRules().get(0).action());
+        Assertions.assertEquals("gplcrpwjxeznoigb", response.creationData().sourceId());
     }
 }
