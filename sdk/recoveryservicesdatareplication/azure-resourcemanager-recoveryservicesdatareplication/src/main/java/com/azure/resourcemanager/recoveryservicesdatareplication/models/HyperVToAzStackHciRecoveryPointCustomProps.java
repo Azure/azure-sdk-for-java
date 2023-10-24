@@ -14,15 +14,15 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVToAzStackHCI")
 @Immutable
-public final class HyperVToAzStackHciRecoveryPointProps extends RecoveryPointModelCustomProperties {
+public final class HyperVToAzStackHciRecoveryPointCustomProps extends RecoveryPointModelCustomProperties {
     /*
      * Gets or sets the list of the disk Ids.
      */
     @JsonProperty(value = "diskIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> diskIds;
 
-    /** Creates an instance of HyperVToAzStackHciRecoveryPointProps class. */
-    public HyperVToAzStackHciRecoveryPointProps() {
+    /** Creates an instance of HyperVToAzStackHciRecoveryPointCustomProps class. */
+    public HyperVToAzStackHciRecoveryPointCustomProps() {
     }
 
     /**

@@ -16,7 +16,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareToAzStackHCI")
 @Fluent
-public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemModelCustomProperties {
+public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedItemModelCustomProperties {
     /*
      * Gets or sets the location of the protected item.
      */
@@ -295,8 +295,8 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
     @JsonProperty(value = "lastReplicationUpdateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastReplicationUpdateTime;
 
-    /** Creates an instance of VMwareToAzStackHciProtectedItemProps class. */
-    public VMwareToAzStackHciProtectedItemProps() {
+    /** Creates an instance of VMwareToAzStackHciProtectedItemCustomProps class. */
+    public VMwareToAzStackHciProtectedItemCustomProps() {
     }
 
     /**
@@ -321,9 +321,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetHciClusterId property: Gets or sets the Target HCI Cluster ARM Id.
      *
      * @param targetHciClusterId the targetHciClusterId value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withTargetHciClusterId(String targetHciClusterId) {
+    public VMwareToAzStackHciProtectedItemCustomProps withTargetHciClusterId(String targetHciClusterId) {
         this.targetHciClusterId = targetHciClusterId;
         return this;
     }
@@ -341,9 +341,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetArcClusterCustomLocationId property: Gets or sets the Target Arc Cluster Custom Location ARM Id.
      *
      * @param targetArcClusterCustomLocationId the targetArcClusterCustomLocationId value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withTargetArcClusterCustomLocationId(
+    public VMwareToAzStackHciProtectedItemCustomProps withTargetArcClusterCustomLocationId(
         String targetArcClusterCustomLocationId) {
         this.targetArcClusterCustomLocationId = targetArcClusterCustomLocationId;
         return this;
@@ -371,9 +371,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the storageContainerId property: Gets or sets the target storage container ARM Id.
      *
      * @param storageContainerId the storageContainerId value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withStorageContainerId(String storageContainerId) {
+    public VMwareToAzStackHciProtectedItemCustomProps withStorageContainerId(String storageContainerId) {
         this.storageContainerId = storageContainerId;
         return this;
     }
@@ -391,9 +391,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetResourceGroupId property: Gets or sets the target resource group ARM Id.
      *
      * @param targetResourceGroupId the targetResourceGroupId value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withTargetResourceGroupId(String targetResourceGroupId) {
+    public VMwareToAzStackHciProtectedItemCustomProps withTargetResourceGroupId(String targetResourceGroupId) {
         this.targetResourceGroupId = targetResourceGroupId;
         return this;
     }
@@ -420,9 +420,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the customLocationRegion property: Gets or sets the location of Azure Arc HCI custom location resource.
      *
      * @param customLocationRegion the customLocationRegion value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withCustomLocationRegion(String customLocationRegion) {
+    public VMwareToAzStackHciProtectedItemCustomProps withCustomLocationRegion(String customLocationRegion) {
         this.customLocationRegion = customLocationRegion;
         return this;
     }
@@ -440,9 +440,10 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the disksToInclude property: Gets or sets the list of disks to replicate.
      *
      * @param disksToInclude the disksToInclude value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withDisksToInclude(List<VMwareToAzStackHciDiskInput> disksToInclude) {
+    public VMwareToAzStackHciProtectedItemCustomProps withDisksToInclude(
+        List<VMwareToAzStackHciDiskInput> disksToInclude) {
         this.disksToInclude = disksToInclude;
         return this;
     }
@@ -460,9 +461,10 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the nicsToInclude property: Gets or sets the list of VM NIC to replicate.
      *
      * @param nicsToInclude the nicsToInclude value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withNicsToInclude(List<VMwareToAzStackHciNicInput> nicsToInclude) {
+    public VMwareToAzStackHciProtectedItemCustomProps withNicsToInclude(
+        List<VMwareToAzStackHciNicInput> nicsToInclude) {
         this.nicsToInclude = nicsToInclude;
         return this;
     }
@@ -507,9 +509,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetVmName property: Gets or sets the target VM display name.
      *
      * @param targetVmName the targetVmName value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withTargetVmName(String targetVmName) {
+    public VMwareToAzStackHciProtectedItemCustomProps withTargetVmName(String targetVmName) {
         this.targetVmName = targetVmName;
         return this;
     }
@@ -529,9 +531,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * are 1,2.
      *
      * @param hyperVGeneration the hyperVGeneration value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withHyperVGeneration(String hyperVGeneration) {
+    public VMwareToAzStackHciProtectedItemCustomProps withHyperVGeneration(String hyperVGeneration) {
         this.hyperVGeneration = hyperVGeneration;
         return this;
     }
@@ -549,9 +551,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetNetworkId property: Gets or sets the target network Id within AzStackHCI Cluster.
      *
      * @param targetNetworkId the targetNetworkId value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withTargetNetworkId(String targetNetworkId) {
+    public VMwareToAzStackHciProtectedItemCustomProps withTargetNetworkId(String targetNetworkId) {
         this.targetNetworkId = targetNetworkId;
         return this;
     }
@@ -569,9 +571,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the testNetworkId property: Gets or sets the target test network Id within AzStackHCI Cluster.
      *
      * @param testNetworkId the testNetworkId value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withTestNetworkId(String testNetworkId) {
+    public VMwareToAzStackHciProtectedItemCustomProps withTestNetworkId(String testNetworkId) {
         this.testNetworkId = testNetworkId;
         return this;
     }
@@ -589,9 +591,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetCpuCores property: Gets or sets the target CPU cores.
      *
      * @param targetCpuCores the targetCpuCores value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withTargetCpuCores(Integer targetCpuCores) {
+    public VMwareToAzStackHciProtectedItemCustomProps withTargetCpuCores(Integer targetCpuCores) {
         this.targetCpuCores = targetCpuCores;
         return this;
     }
@@ -609,9 +611,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the isDynamicRam property: Gets or sets a value indicating whether memory is dynamical.
      *
      * @param isDynamicRam the isDynamicRam value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withIsDynamicRam(Boolean isDynamicRam) {
+    public VMwareToAzStackHciProtectedItemCustomProps withIsDynamicRam(Boolean isDynamicRam) {
         this.isDynamicRam = isDynamicRam;
         return this;
     }
@@ -629,9 +631,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the dynamicMemoryConfig property: Protected item dynamic memory config.
      *
      * @param dynamicMemoryConfig the dynamicMemoryConfig value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withDynamicMemoryConfig(
+    public VMwareToAzStackHciProtectedItemCustomProps withDynamicMemoryConfig(
         ProtectedItemDynamicMemoryConfig dynamicMemoryConfig) {
         this.dynamicMemoryConfig = dynamicMemoryConfig;
         return this;
@@ -650,9 +652,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetMemoryInMegaBytes property: Gets or sets the target memory in mega-bytes.
      *
      * @param targetMemoryInMegaBytes the targetMemoryInMegaBytes value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withTargetMemoryInMegaBytes(Integer targetMemoryInMegaBytes) {
+    public VMwareToAzStackHciProtectedItemCustomProps withTargetMemoryInMegaBytes(Integer targetMemoryInMegaBytes) {
         this.targetMemoryInMegaBytes = targetMemoryInMegaBytes;
         return this;
     }
@@ -697,9 +699,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the fabricDiscoveryMachineId property: Gets or sets the ARM Id of the discovered machine.
      *
      * @param fabricDiscoveryMachineId the fabricDiscoveryMachineId value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withFabricDiscoveryMachineId(String fabricDiscoveryMachineId) {
+    public VMwareToAzStackHciProtectedItemCustomProps withFabricDiscoveryMachineId(String fabricDiscoveryMachineId) {
         this.fabricDiscoveryMachineId = fabricDiscoveryMachineId;
         return this;
     }
@@ -744,9 +746,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the runAsAccountId property: Gets or sets the run as account Id.
      *
      * @param runAsAccountId the runAsAccountId value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withRunAsAccountId(String runAsAccountId) {
+    public VMwareToAzStackHciProtectedItemCustomProps withRunAsAccountId(String runAsAccountId) {
         this.runAsAccountId = runAsAccountId;
         return this;
     }
@@ -764,9 +766,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the sourceDraName property: Gets or sets the source DRA name.
      *
      * @param sourceDraName the sourceDraName value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withSourceDraName(String sourceDraName) {
+    public VMwareToAzStackHciProtectedItemCustomProps withSourceDraName(String sourceDraName) {
         this.sourceDraName = sourceDraName;
         return this;
     }
@@ -784,9 +786,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetDraName property: Gets or sets the target DRA name.
      *
      * @param targetDraName the targetDraName value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withTargetDraName(String targetDraName) {
+    public VMwareToAzStackHciProtectedItemCustomProps withTargetDraName(String targetDraName) {
         this.targetDraName = targetDraName;
         return this;
     }
@@ -914,9 +916,9 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the performAutoResync property: Gets or sets a value indicating whether auto resync is to be done.
      *
      * @param performAutoResync the performAutoResync value to set.
-     * @return the VMwareToAzStackHciProtectedItemProps object itself.
+     * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemProps withPerformAutoResync(Boolean performAutoResync) {
+    public VMwareToAzStackHciProtectedItemCustomProps withPerformAutoResync(Boolean performAutoResync) {
         this.performAutoResync = performAutoResync;
         return this;
     }
@@ -951,40 +953,43 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property targetHciClusterId in model VMwareToAzStackHciProtectedItemProps"));
+                        "Missing required property targetHciClusterId in model"
+                            + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (targetArcClusterCustomLocationId() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetArcClusterCustomLocationId in model"
-                            + " VMwareToAzStackHciProtectedItemProps"));
+                            + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (storageContainerId() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property storageContainerId in model VMwareToAzStackHciProtectedItemProps"));
+                        "Missing required property storageContainerId in model"
+                            + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (targetResourceGroupId() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetResourceGroupId in model"
-                            + " VMwareToAzStackHciProtectedItemProps"));
+                            + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (customLocationRegion() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property customLocationRegion in model"
-                            + " VMwareToAzStackHciProtectedItemProps"));
+                            + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (disksToInclude() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property disksToInclude in model VMwareToAzStackHciProtectedItemProps"));
+                        "Missing required property disksToInclude in model"
+                            + " VMwareToAzStackHciProtectedItemCustomProps"));
         } else {
             disksToInclude().forEach(e -> e.validate());
         }
@@ -992,7 +997,7 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property nicsToInclude in model VMwareToAzStackHciProtectedItemProps"));
+                        "Missing required property nicsToInclude in model VMwareToAzStackHciProtectedItemCustomProps"));
         } else {
             nicsToInclude().forEach(e -> e.validate());
         }
@@ -1006,7 +1011,8 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property hyperVGeneration in model VMwareToAzStackHciProtectedItemProps"));
+                        "Missing required property hyperVGeneration in model"
+                            + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (dynamicMemoryConfig() != null) {
             dynamicMemoryConfig().validate();
@@ -1016,27 +1022,28 @@ public final class VMwareToAzStackHciProtectedItemProps extends ProtectedItemMod
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property fabricDiscoveryMachineId in model"
-                            + " VMwareToAzStackHciProtectedItemProps"));
+                            + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (runAsAccountId() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property runAsAccountId in model VMwareToAzStackHciProtectedItemProps"));
+                        "Missing required property runAsAccountId in model"
+                            + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (sourceDraName() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property sourceDraName in model VMwareToAzStackHciProtectedItemProps"));
+                        "Missing required property sourceDraName in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (targetDraName() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property targetDraName in model VMwareToAzStackHciProtectedItemProps"));
+                        "Missing required property targetDraName in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(VMwareToAzStackHciProtectedItemProps.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VMwareToAzStackHciProtectedItemCustomProps.class);
 }

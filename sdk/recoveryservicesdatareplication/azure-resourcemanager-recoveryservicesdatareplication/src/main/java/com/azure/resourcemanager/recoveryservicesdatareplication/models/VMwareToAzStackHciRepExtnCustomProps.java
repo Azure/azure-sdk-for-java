@@ -10,22 +10,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** HyperV to AzStackHCI Replication extension model custom properties. */
+/** VMware to AzStackHCI Replication extension model custom properties. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVToAzStackHCI")
+@JsonTypeName("VMwareToAzStackHCI")
 @Fluent
-public final class HyperVToAzStackHciReplicationExtensionProps extends ReplicationExtensionModelCustomProperties {
+public final class VMwareToAzStackHciRepExtnCustomProps extends ReplicationExtensionModelCustomProperties {
     /*
-     * Gets or sets the ARM Id of the source HyperV fabric.
+     * Gets or sets the ARM Id of the source VMware fabric.
      */
-    @JsonProperty(value = "hyperVFabricArmId", required = true)
-    private String hyperVFabricArmId;
+    @JsonProperty(value = "vmwareFabricArmId", required = true)
+    private String vmwareFabricArmId;
 
     /*
-     * Gets or sets the ARM Id of the HyperV site.
+     * Gets or sets the ARM Id of the VMware site.
      */
-    @JsonProperty(value = "hyperVSiteId", access = JsonProperty.Access.WRITE_ONLY)
-    private String hyperVSiteId;
+    @JsonProperty(value = "vmwareSiteId", access = JsonProperty.Access.WRITE_ONLY)
+    private String vmwareSiteId;
 
     /*
      * Gets or sets the ARM Id of the target AzStackHCI fabric.
@@ -111,37 +111,37 @@ public final class HyperVToAzStackHciReplicationExtensionProps extends Replicati
     @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
-    /** Creates an instance of HyperVToAzStackHciReplicationExtensionProps class. */
-    public HyperVToAzStackHciReplicationExtensionProps() {
+    /** Creates an instance of VMwareToAzStackHciRepExtnCustomProps class. */
+    public VMwareToAzStackHciRepExtnCustomProps() {
     }
 
     /**
-     * Get the hyperVFabricArmId property: Gets or sets the ARM Id of the source HyperV fabric.
+     * Get the vmwareFabricArmId property: Gets or sets the ARM Id of the source VMware fabric.
      *
-     * @return the hyperVFabricArmId value.
+     * @return the vmwareFabricArmId value.
      */
-    public String hyperVFabricArmId() {
-        return this.hyperVFabricArmId;
+    public String vmwareFabricArmId() {
+        return this.vmwareFabricArmId;
     }
 
     /**
-     * Set the hyperVFabricArmId property: Gets or sets the ARM Id of the source HyperV fabric.
+     * Set the vmwareFabricArmId property: Gets or sets the ARM Id of the source VMware fabric.
      *
-     * @param hyperVFabricArmId the hyperVFabricArmId value to set.
-     * @return the HyperVToAzStackHciReplicationExtensionProps object itself.
+     * @param vmwareFabricArmId the vmwareFabricArmId value to set.
+     * @return the VMwareToAzStackHciRepExtnCustomProps object itself.
      */
-    public HyperVToAzStackHciReplicationExtensionProps withHyperVFabricArmId(String hyperVFabricArmId) {
-        this.hyperVFabricArmId = hyperVFabricArmId;
+    public VMwareToAzStackHciRepExtnCustomProps withVmwareFabricArmId(String vmwareFabricArmId) {
+        this.vmwareFabricArmId = vmwareFabricArmId;
         return this;
     }
 
     /**
-     * Get the hyperVSiteId property: Gets or sets the ARM Id of the HyperV site.
+     * Get the vmwareSiteId property: Gets or sets the ARM Id of the VMware site.
      *
-     * @return the hyperVSiteId value.
+     * @return the vmwareSiteId value.
      */
-    public String hyperVSiteId() {
-        return this.hyperVSiteId;
+    public String vmwareSiteId() {
+        return this.vmwareSiteId;
     }
 
     /**
@@ -157,9 +157,9 @@ public final class HyperVToAzStackHciReplicationExtensionProps extends Replicati
      * Set the azStackHciFabricArmId property: Gets or sets the ARM Id of the target AzStackHCI fabric.
      *
      * @param azStackHciFabricArmId the azStackHciFabricArmId value to set.
-     * @return the HyperVToAzStackHciReplicationExtensionProps object itself.
+     * @return the VMwareToAzStackHciRepExtnCustomProps object itself.
      */
-    public HyperVToAzStackHciReplicationExtensionProps withAzStackHciFabricArmId(String azStackHciFabricArmId) {
+    public VMwareToAzStackHciRepExtnCustomProps withAzStackHciFabricArmId(String azStackHciFabricArmId) {
         this.azStackHciFabricArmId = azStackHciFabricArmId;
         return this;
     }
@@ -186,9 +186,9 @@ public final class HyperVToAzStackHciReplicationExtensionProps extends Replicati
      * Set the storageAccountId property: Gets or sets the storage account Id.
      *
      * @param storageAccountId the storageAccountId value to set.
-     * @return the HyperVToAzStackHciReplicationExtensionProps object itself.
+     * @return the VMwareToAzStackHciRepExtnCustomProps object itself.
      */
-    public HyperVToAzStackHciReplicationExtensionProps withStorageAccountId(String storageAccountId) {
+    public VMwareToAzStackHciRepExtnCustomProps withStorageAccountId(String storageAccountId) {
         this.storageAccountId = storageAccountId;
         return this;
     }
@@ -206,10 +206,9 @@ public final class HyperVToAzStackHciReplicationExtensionProps extends Replicati
      * Set the storageAccountSasSecretName property: Gets or sets the Sas Secret of storage account.
      *
      * @param storageAccountSasSecretName the storageAccountSasSecretName value to set.
-     * @return the HyperVToAzStackHciReplicationExtensionProps object itself.
+     * @return the VMwareToAzStackHciRepExtnCustomProps object itself.
      */
-    public HyperVToAzStackHciReplicationExtensionProps withStorageAccountSasSecretName(
-        String storageAccountSasSecretName) {
+    public VMwareToAzStackHciRepExtnCustomProps withStorageAccountSasSecretName(String storageAccountSasSecretName) {
         this.storageAccountSasSecretName = storageAccountSasSecretName;
         return this;
     }
@@ -312,21 +311,20 @@ public final class HyperVToAzStackHciReplicationExtensionProps extends Replicati
     @Override
     public void validate() {
         super.validate();
-        if (hyperVFabricArmId() == null) {
+        if (vmwareFabricArmId() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property hyperVFabricArmId in model"
-                            + " HyperVToAzStackHciReplicationExtensionProps"));
+                        "Missing required property vmwareFabricArmId in model VMwareToAzStackHciRepExtnCustomProps"));
         }
         if (azStackHciFabricArmId() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property azStackHciFabricArmId in model"
-                            + " HyperVToAzStackHciReplicationExtensionProps"));
+                            + " VMwareToAzStackHciRepExtnCustomProps"));
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(HyperVToAzStackHciReplicationExtensionProps.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VMwareToAzStackHciRepExtnCustomProps.class);
 }

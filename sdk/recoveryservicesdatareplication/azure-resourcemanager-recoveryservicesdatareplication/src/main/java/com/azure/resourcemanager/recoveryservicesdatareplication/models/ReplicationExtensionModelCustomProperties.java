@@ -17,8 +17,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = ReplicationExtensionModelCustomProperties.class)
 @JsonTypeName("ReplicationExtensionModelCustomProperties")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "HyperVToAzStackHCI", value = HyperVToAzStackHciReplicationExtensionProps.class),
-    @JsonSubTypes.Type(name = "VMwareToAzStackHCI", value = VMwareToAzStackHciReplicationExtensionProps.class)
+    @JsonSubTypes.Type(name = "HyperVToAzStackHCI", value = HyperVToAzStackHciRepExtnCustomProps.class),
+    @JsonSubTypes.Type(name = "VMwareToAzStackHCI", value = VMwareToAzStackHciRepExtnCustomProps.class)
 })
 @Immutable
 public class ReplicationExtensionModelCustomProperties {

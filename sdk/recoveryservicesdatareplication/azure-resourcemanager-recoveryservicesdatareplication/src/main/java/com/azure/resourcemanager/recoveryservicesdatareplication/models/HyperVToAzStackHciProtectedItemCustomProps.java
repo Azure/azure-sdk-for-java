@@ -16,7 +16,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVToAzStackHCI")
 @Fluent
-public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemModelCustomProperties {
+public final class HyperVToAzStackHciProtectedItemCustomProps extends ProtectedItemModelCustomProperties {
     /*
      * Gets or sets the location of the protected item.
      */
@@ -253,8 +253,8 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
     @JsonProperty(value = "lastReplicationUpdateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastReplicationUpdateTime;
 
-    /** Creates an instance of HyperVToAzStackHciProtectedItemProps class. */
-    public HyperVToAzStackHciProtectedItemProps() {
+    /** Creates an instance of HyperVToAzStackHciProtectedItemCustomProps class. */
+    public HyperVToAzStackHciProtectedItemCustomProps() {
     }
 
     /**
@@ -279,9 +279,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetHciClusterId property: Gets or sets the Target HCI Cluster ARM Id.
      *
      * @param targetHciClusterId the targetHciClusterId value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withTargetHciClusterId(String targetHciClusterId) {
+    public HyperVToAzStackHciProtectedItemCustomProps withTargetHciClusterId(String targetHciClusterId) {
         this.targetHciClusterId = targetHciClusterId;
         return this;
     }
@@ -299,9 +299,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetArcClusterCustomLocationId property: Gets or sets the Target Arc Cluster Custom Location ARM Id.
      *
      * @param targetArcClusterCustomLocationId the targetArcClusterCustomLocationId value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withTargetArcClusterCustomLocationId(
+    public HyperVToAzStackHciProtectedItemCustomProps withTargetArcClusterCustomLocationId(
         String targetArcClusterCustomLocationId) {
         this.targetArcClusterCustomLocationId = targetArcClusterCustomLocationId;
         return this;
@@ -329,9 +329,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the fabricDiscoveryMachineId property: Gets or sets the ARM Id of the discovered machine.
      *
      * @param fabricDiscoveryMachineId the fabricDiscoveryMachineId value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withFabricDiscoveryMachineId(String fabricDiscoveryMachineId) {
+    public HyperVToAzStackHciProtectedItemCustomProps withFabricDiscoveryMachineId(String fabricDiscoveryMachineId) {
         this.fabricDiscoveryMachineId = fabricDiscoveryMachineId;
         return this;
     }
@@ -349,9 +349,10 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the disksToInclude property: Gets or sets the list of disks to replicate.
      *
      * @param disksToInclude the disksToInclude value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withDisksToInclude(List<HyperVToAzStackHciDiskInput> disksToInclude) {
+    public HyperVToAzStackHciProtectedItemCustomProps withDisksToInclude(
+        List<HyperVToAzStackHciDiskInput> disksToInclude) {
         this.disksToInclude = disksToInclude;
         return this;
     }
@@ -369,9 +370,10 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the nicsToInclude property: Gets or sets the list of VM NIC to replicate.
      *
      * @param nicsToInclude the nicsToInclude value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withNicsToInclude(List<HyperVToAzStackHciNicInput> nicsToInclude) {
+    public HyperVToAzStackHciProtectedItemCustomProps withNicsToInclude(
+        List<HyperVToAzStackHciNicInput> nicsToInclude) {
         this.nicsToInclude = nicsToInclude;
         return this;
     }
@@ -416,9 +418,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetVmName property: Gets or sets the target VM display name.
      *
      * @param targetVmName the targetVmName value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withTargetVmName(String targetVmName) {
+    public HyperVToAzStackHciProtectedItemCustomProps withTargetVmName(String targetVmName) {
         this.targetVmName = targetVmName;
         return this;
     }
@@ -436,9 +438,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetResourceGroupId property: Gets or sets the target resource group ARM Id.
      *
      * @param targetResourceGroupId the targetResourceGroupId value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withTargetResourceGroupId(String targetResourceGroupId) {
+    public HyperVToAzStackHciProtectedItemCustomProps withTargetResourceGroupId(String targetResourceGroupId) {
         this.targetResourceGroupId = targetResourceGroupId;
         return this;
     }
@@ -456,9 +458,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the storageContainerId property: Gets or sets the target storage container ARM Id.
      *
      * @param storageContainerId the storageContainerId value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withStorageContainerId(String storageContainerId) {
+    public HyperVToAzStackHciProtectedItemCustomProps withStorageContainerId(String storageContainerId) {
         this.storageContainerId = storageContainerId;
         return this;
     }
@@ -476,9 +478,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the hyperVGeneration property: Gets or sets the hypervisor generation of the virtual machine.
      *
      * @param hyperVGeneration the hyperVGeneration value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withHyperVGeneration(String hyperVGeneration) {
+    public HyperVToAzStackHciProtectedItemCustomProps withHyperVGeneration(String hyperVGeneration) {
         this.hyperVGeneration = hyperVGeneration;
         return this;
     }
@@ -496,9 +498,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetNetworkId property: Gets or sets the target network Id within AzStackHCI Cluster.
      *
      * @param targetNetworkId the targetNetworkId value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withTargetNetworkId(String targetNetworkId) {
+    public HyperVToAzStackHciProtectedItemCustomProps withTargetNetworkId(String targetNetworkId) {
         this.targetNetworkId = targetNetworkId;
         return this;
     }
@@ -516,9 +518,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the testNetworkId property: Gets or sets the target test network Id within AzStackHCI Cluster.
      *
      * @param testNetworkId the testNetworkId value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withTestNetworkId(String testNetworkId) {
+    public HyperVToAzStackHciProtectedItemCustomProps withTestNetworkId(String testNetworkId) {
         this.testNetworkId = testNetworkId;
         return this;
     }
@@ -536,9 +538,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetCpuCores property: Gets or sets the target CPU cores.
      *
      * @param targetCpuCores the targetCpuCores value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withTargetCpuCores(Integer targetCpuCores) {
+    public HyperVToAzStackHciProtectedItemCustomProps withTargetCpuCores(Integer targetCpuCores) {
         this.targetCpuCores = targetCpuCores;
         return this;
     }
@@ -556,9 +558,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the isDynamicRam property: Gets or sets a value indicating whether memory is dynamical.
      *
      * @param isDynamicRam the isDynamicRam value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withIsDynamicRam(Boolean isDynamicRam) {
+    public HyperVToAzStackHciProtectedItemCustomProps withIsDynamicRam(Boolean isDynamicRam) {
         this.isDynamicRam = isDynamicRam;
         return this;
     }
@@ -576,9 +578,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the dynamicMemoryConfig property: Protected item dynamic memory config.
      *
      * @param dynamicMemoryConfig the dynamicMemoryConfig value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withDynamicMemoryConfig(
+    public HyperVToAzStackHciProtectedItemCustomProps withDynamicMemoryConfig(
         ProtectedItemDynamicMemoryConfig dynamicMemoryConfig) {
         this.dynamicMemoryConfig = dynamicMemoryConfig;
         return this;
@@ -597,9 +599,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetMemoryInMegaBytes property: Gets or sets the target memory in mega-bytes.
      *
      * @param targetMemoryInMegaBytes the targetMemoryInMegaBytes value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withTargetMemoryInMegaBytes(Integer targetMemoryInMegaBytes) {
+    public HyperVToAzStackHciProtectedItemCustomProps withTargetMemoryInMegaBytes(Integer targetMemoryInMegaBytes) {
         this.targetMemoryInMegaBytes = targetMemoryInMegaBytes;
         return this;
     }
@@ -617,9 +619,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the runAsAccountId property: Gets or sets the Run As account Id.
      *
      * @param runAsAccountId the runAsAccountId value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withRunAsAccountId(String runAsAccountId) {
+    public HyperVToAzStackHciProtectedItemCustomProps withRunAsAccountId(String runAsAccountId) {
         this.runAsAccountId = runAsAccountId;
         return this;
     }
@@ -637,9 +639,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the sourceDraName property: Gets or sets the source DRA name.
      *
      * @param sourceDraName the sourceDraName value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withSourceDraName(String sourceDraName) {
+    public HyperVToAzStackHciProtectedItemCustomProps withSourceDraName(String sourceDraName) {
         this.sourceDraName = sourceDraName;
         return this;
     }
@@ -657,9 +659,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the targetDraName property: Gets or sets the target DRA name.
      *
      * @param targetDraName the targetDraName value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withTargetDraName(String targetDraName) {
+    public HyperVToAzStackHciProtectedItemCustomProps withTargetDraName(String targetDraName) {
         this.targetDraName = targetDraName;
         return this;
     }
@@ -731,9 +733,9 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
      * Set the customLocationRegion property: Gets or sets the location of Azure Arc HCI custom location resource.
      *
      * @param customLocationRegion the customLocationRegion value to set.
-     * @return the HyperVToAzStackHciProtectedItemProps object itself.
+     * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemProps withCustomLocationRegion(String customLocationRegion) {
+    public HyperVToAzStackHciProtectedItemCustomProps withCustomLocationRegion(String customLocationRegion) {
         this.customLocationRegion = customLocationRegion;
         return this;
     }
@@ -833,27 +835,29 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property targetHciClusterId in model HyperVToAzStackHciProtectedItemProps"));
+                        "Missing required property targetHciClusterId in model"
+                            + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (targetArcClusterCustomLocationId() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetArcClusterCustomLocationId in model"
-                            + " HyperVToAzStackHciProtectedItemProps"));
+                            + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (fabricDiscoveryMachineId() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property fabricDiscoveryMachineId in model"
-                            + " HyperVToAzStackHciProtectedItemProps"));
+                            + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (disksToInclude() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property disksToInclude in model HyperVToAzStackHciProtectedItemProps"));
+                        "Missing required property disksToInclude in model"
+                            + " HyperVToAzStackHciProtectedItemCustomProps"));
         } else {
             disksToInclude().forEach(e -> e.validate());
         }
@@ -861,7 +865,7 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property nicsToInclude in model HyperVToAzStackHciProtectedItemProps"));
+                        "Missing required property nicsToInclude in model HyperVToAzStackHciProtectedItemCustomProps"));
         } else {
             nicsToInclude().forEach(e -> e.validate());
         }
@@ -870,19 +874,21 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetResourceGroupId in model"
-                            + " HyperVToAzStackHciProtectedItemProps"));
+                            + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (storageContainerId() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property storageContainerId in model HyperVToAzStackHciProtectedItemProps"));
+                        "Missing required property storageContainerId in model"
+                            + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (hyperVGeneration() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property hyperVGeneration in model HyperVToAzStackHciProtectedItemProps"));
+                        "Missing required property hyperVGeneration in model"
+                            + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (dynamicMemoryConfig() != null) {
             dynamicMemoryConfig().validate();
@@ -891,26 +897,27 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property runAsAccountId in model HyperVToAzStackHciProtectedItemProps"));
+                        "Missing required property runAsAccountId in model"
+                            + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (sourceDraName() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property sourceDraName in model HyperVToAzStackHciProtectedItemProps"));
+                        "Missing required property sourceDraName in model HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (targetDraName() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property targetDraName in model HyperVToAzStackHciProtectedItemProps"));
+                        "Missing required property targetDraName in model HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (customLocationRegion() == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property customLocationRegion in model"
-                            + " HyperVToAzStackHciProtectedItemProps"));
+                            + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (protectedDisks() != null) {
             protectedDisks().forEach(e -> e.validate());
@@ -920,5 +927,5 @@ public final class HyperVToAzStackHciProtectedItemProps extends ProtectedItemMod
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(HyperVToAzStackHciProtectedItemProps.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HyperVToAzStackHciProtectedItemCustomProps.class);
 }

@@ -9,19 +9,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** VMware to AzStackHCI planned failover model custom properties. */
+/** HyperV to AzStackHCI planned failover model custom properties. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareToAzStackHCI")
+@JsonTypeName("HyperVToAzStackHCI")
 @Fluent
-public final class VMwareToAzStackHciPlannedFailoverProps extends PlannedFailoverModelCustomProperties {
+public final class HyperVToAzStackHciPlannedFailoverCustomProps extends PlannedFailoverModelCustomProperties {
     /*
      * Gets or sets a value indicating whether VM needs to be shut down.
      */
     @JsonProperty(value = "shutdownSourceVM", required = true)
     private boolean shutdownSourceVM;
 
-    /** Creates an instance of VMwareToAzStackHciPlannedFailoverProps class. */
-    public VMwareToAzStackHciPlannedFailoverProps() {
+    /** Creates an instance of HyperVToAzStackHciPlannedFailoverCustomProps class. */
+    public HyperVToAzStackHciPlannedFailoverCustomProps() {
     }
 
     /**
@@ -37,9 +37,9 @@ public final class VMwareToAzStackHciPlannedFailoverProps extends PlannedFailove
      * Set the shutdownSourceVM property: Gets or sets a value indicating whether VM needs to be shut down.
      *
      * @param shutdownSourceVM the shutdownSourceVM value to set.
-     * @return the VMwareToAzStackHciPlannedFailoverProps object itself.
+     * @return the HyperVToAzStackHciPlannedFailoverCustomProps object itself.
      */
-    public VMwareToAzStackHciPlannedFailoverProps withShutdownSourceVM(boolean shutdownSourceVM) {
+    public HyperVToAzStackHciPlannedFailoverCustomProps withShutdownSourceVM(boolean shutdownSourceVM) {
         this.shutdownSourceVM = shutdownSourceVM;
         return this;
     }
