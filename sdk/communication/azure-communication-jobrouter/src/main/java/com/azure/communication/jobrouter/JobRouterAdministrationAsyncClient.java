@@ -171,7 +171,6 @@ public final class JobRouterAdministrationAsyncClient {
      * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
      *     of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateDistributionPolicyWithResponse(
         String id, BinaryData resource, RequestOptions requestOptions) {
