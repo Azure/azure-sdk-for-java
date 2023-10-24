@@ -1688,7 +1688,8 @@ public final class OpenAIClientImpl {
                                 .setContext(
                                         requestOptions != null && requestOptions.getContext() != null
                                                 ? requestOptions.getContext()
-                                                : Context.NONE)),
+                                                : Context.NONE)
+                                .setServiceVersion(this.getServiceVersion().getVersion())),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1756,7 +1757,8 @@ public final class OpenAIClientImpl {
                                 .setContext(
                                         requestOptions != null && requestOptions.getContext() != null
                                                 ? requestOptions.getContext()
-                                                : Context.NONE)),
+                                                : Context.NONE)
+                                .setServiceVersion(this.getServiceVersion().getVersion())),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
