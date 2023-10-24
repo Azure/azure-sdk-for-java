@@ -203,7 +203,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
     }
 
-    @Test(groups = { "multi-region" }, dataProvider = "operationTypeProvider", timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-master" }, dataProvider = "operationTypeProvider", timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_ResponseDelay(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType) throws JsonProcessingException {
