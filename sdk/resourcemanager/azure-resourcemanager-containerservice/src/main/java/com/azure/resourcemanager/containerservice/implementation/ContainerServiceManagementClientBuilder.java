@@ -139,7 +139,7 @@ public final class ContainerServiceManagementClientBuilder {
                 localSerializerAdapter,
                 localDefaultPollInterval,
                 localEnvironment,
-                this.subscriptionId,
+                subscriptionId,
                 localEndpoint);
         return client;
     }

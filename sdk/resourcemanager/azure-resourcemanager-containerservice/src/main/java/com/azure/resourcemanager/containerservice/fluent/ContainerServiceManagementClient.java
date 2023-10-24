@@ -107,4 +107,18 @@ public interface ContainerServiceManagementClient {
      * @return the SnapshotsClient object.
      */
     SnapshotsClient getSnapshots();
+
+    /**
+     * Gets the TrustedAccessRoleBindingsClient object to access its operations.
+     *
+     * @return the TrustedAccessRoleBindingsClient object.
+     */
+    TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings();
+
+    /**
+     * Gets the TrustedAccessRolesClient object to access its operations.
+     *
+     * @return the TrustedAccessRolesClient object.
+     */
+    TrustedAccessRolesClient getTrustedAccessRoles();
 }
