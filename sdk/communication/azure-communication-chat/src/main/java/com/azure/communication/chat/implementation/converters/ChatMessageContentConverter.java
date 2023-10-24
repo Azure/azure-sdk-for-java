@@ -9,7 +9,6 @@ import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.common.CommunicationIdentifier;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
