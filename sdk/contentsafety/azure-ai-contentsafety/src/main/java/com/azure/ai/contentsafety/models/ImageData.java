@@ -10,21 +10,21 @@ import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The content or blob url of image, could be base64 encoding bytes or blob url. If both are given, the request will be
- * refused. The maximum size of image is 2048 pixels * 2048 pixels, no larger than 4MB at the same time. The minimum
- * size of image is 50 pixels * 50 pixels.
+ * The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are
+ * provided, the request will be refused. The maximum image size is 2048 x 2048 pixels and should not exceed 4 MB, while
+ * the minimum image size is 50 x 50 pixels.
  */
 @Fluent
 public final class ImageData {
     /*
-     * Base64 encoding of image.
+     * The Base64 encoding of the image.
      */
     @Generated
     @JsonProperty(value = "content")
     private byte[] content;
 
     /*
-     * The blob url of image.
+     * The blob url of the image.
      */
     @Generated
     @JsonProperty(value = "blobUrl")
@@ -35,7 +35,7 @@ public final class ImageData {
     public ImageData() {}
 
     /**
-     * Get the content property: Base64 encoding of image.
+     * Get the content property: The Base64 encoding of the image.
      *
      * @return the content value.
      */
@@ -45,7 +45,7 @@ public final class ImageData {
     }
 
     /**
-     * Set the content property: Base64 encoding of image.
+     * Set the content property: The Base64 encoding of the image.
      *
      * @param content the content value to set.
      * @return the ImageData object itself.
@@ -57,7 +57,7 @@ public final class ImageData {
     }
 
     /**
-     * Get the blobUrl property: The blob url of image.
+     * Get the blobUrl property: The blob url of the image.
      *
      * @return the blobUrl value.
      */
@@ -67,7 +67,7 @@ public final class ImageData {
     }
 
     /**
-     * Set the blobUrl property: The blob url of image.
+     * Set the blobUrl property: The blob url of the image.
      *
      * @param blobUrl the blobUrl value to set.
      * @return the ImageData object itself.

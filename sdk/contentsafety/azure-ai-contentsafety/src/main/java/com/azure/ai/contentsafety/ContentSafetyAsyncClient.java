@@ -5,15 +5,10 @@
 package com.azure.ai.contentsafety;
 
 import com.azure.ai.contentsafety.implementation.ContentSafetyClientImpl;
-import com.azure.ai.contentsafety.models.AddBlockItemsOptions;
-import com.azure.ai.contentsafety.models.AddBlockItemsResult;
 import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
 import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
 import com.azure.ai.contentsafety.models.AnalyzeTextResult;
-import com.azure.ai.contentsafety.models.RemoveBlockItemsOptions;
-import com.azure.ai.contentsafety.models.TextBlockItem;
-import com.azure.ai.contentsafety.models.TextBlocklist;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -22,15 +17,10 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import java.util.stream.Collectors;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous ContentSafetyClient type. */
@@ -51,8 +41,8 @@ public final class ContentSafetyAsyncClient {
     /**
      * Analyze Text
      *
-     * <p>A sync API for harmful content analysis for text. Currently, we support four categories: Hate, SelfHarm,
-     * Sexual, Violence.
+     * <p>A synchronous API for the analysis of potentially harmful text content. Currently, it supports four
+     * categories: Hate, SelfHarm, Sexual, and Violence.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -65,7 +55,8 @@ public final class ContentSafetyAsyncClient {
      *     blocklistNames (Optional): [
      *         String (Optional)
      *     ]
-     *     breakByBlocklists: Boolean (Optional)
+     *     haltOnBlocklistHit: Boolean (Optional)
+     *     outputType: String(FourSeverityLevels/EightSeverityLevels) (Optional)
      * }
      * }</pre>
      *
@@ -73,32 +64,29 @@ public final class ContentSafetyAsyncClient {
      *
      * <pre>{@code
      * {
-     *     blocklistsMatchResults (Optional): [
+     *     blocklistsMatch (Optional): [
      *          (Optional){
      *             blocklistName: String (Required)
-     *             blockItemId: String (Required)
-     *             blockItemText: String (Required)
-     *             offset: int (Required)
-     *             length: int (Required)
+     *             blocklistItemId: String (Required)
+     *             blocklistItemText: String (Required)
      *         }
      *     ]
-     *     hateResult (Optional): {
-     *         category: String(Hate/SelfHarm/Sexual/Violence) (Required)
-     *         severity: int (Required)
-     *     }
-     *     selfHarmResult (Optional): (recursive schema, see selfHarmResult above)
-     *     sexualResult (Optional): (recursive schema, see sexualResult above)
-     *     violenceResult (Optional): (recursive schema, see violenceResult above)
+     *     categoriesAnalysis (Required): [
+     *          (Required){
+     *             category: String(Hate/SelfHarm/Sexual/Violence) (Required)
+     *             severity: Integer (Optional)
+     *         }
+     *     ]
      * }
      * }</pre>
      *
-     * @param body The request of text analysis.
+     * @param body The text analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the analysis response of the text along with {@link Response} on successful completion of {@link Mono}.
+     * @return the text analysis response along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -109,8 +97,8 @@ public final class ContentSafetyAsyncClient {
     /**
      * Analyze Image
      *
-     * <p>A sync API for harmful content analysis for image. Currently, we support four categories: Hate, SelfHarm,
-     * Sexual, Violence.
+     * <p>A synchronous API for the analysis of potentially harmful image content. Currently, it supports four
+     * categories: Hate, SelfHarm, Sexual, and Violence.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -123,6 +111,7 @@ public final class ContentSafetyAsyncClient {
      *     categories (Optional): [
      *         String(Hate/SelfHarm/Sexual/Violence) (Optional)
      *     ]
+     *     outputType: String(FourSeverityLevels) (Optional)
      * }
      * }</pre>
      *
@@ -130,23 +119,22 @@ public final class ContentSafetyAsyncClient {
      *
      * <pre>{@code
      * {
-     *     hateResult (Optional): {
-     *         category: String(Hate/SelfHarm/Sexual/Violence) (Required)
-     *         severity: int (Required)
-     *     }
-     *     selfHarmResult (Optional): (recursive schema, see selfHarmResult above)
-     *     sexualResult (Optional): (recursive schema, see sexualResult above)
-     *     violenceResult (Optional): (recursive schema, see violenceResult above)
+     *     categoriesAnalysis (Required): [
+     *          (Required){
+     *             category: String(Hate/SelfHarm/Sexual/Violence) (Required)
+     *             severity: Integer (Optional)
+     *         }
+     *     ]
      * }
      * }</pre>
      *
-     * @param body The analysis request of the image.
+     * @param body The image analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the analysis response of the image along with {@link Response} on successful completion of {@link Mono}.
+     * @return the image analysis response along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -155,289 +143,19 @@ public final class ContentSafetyAsyncClient {
     }
 
     /**
-     * Get Text Blocklist By blocklistName
-     *
-     * <p>Returns text blocklist details.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     blocklistName: String (Required)
-     *     description: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param blocklistName Text blocklist name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return text Blocklist along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTextBlocklistWithResponse(
-            String blocklistName, RequestOptions requestOptions) {
-        return this.serviceClient.getTextBlocklistWithResponseAsync(blocklistName, requestOptions);
-    }
-
-    /**
-     * Create Or Update Text Blocklist
-     *
-     * <p>Updates a text blocklist, if blocklistName does not exist, create a new blocklist.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     blocklistName: String (Required)
-     *     description: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     blocklistName: String (Required)
-     *     description: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param blocklistName Text blocklist name.
-     * @param resource The resource instance.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return text Blocklist along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateTextBlocklistWithResponse(
-            String blocklistName, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'createOrUpdateTextBlocklist' is
-        // 'application/merge-patch+json'
-        return this.serviceClient.createOrUpdateTextBlocklistWithResponseAsync(blocklistName, resource, requestOptions);
-    }
-
-    /**
-     * Delete Text Blocklist By blocklistName
-     *
-     * <p>Deletes a text blocklist.
-     *
-     * @param blocklistName Text blocklist name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTextBlocklistWithResponse(String blocklistName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteTextBlocklistWithResponseAsync(blocklistName, requestOptions);
-    }
-
-    /**
-     * Get All Text Blocklists
-     *
-     * <p>Get all text blocklists details.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     blocklistName: String (Required)
-     *     description: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all text blocklists details as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listTextBlocklists(RequestOptions requestOptions) {
-        return this.serviceClient.listTextBlocklistsAsync(requestOptions);
-    }
-
-    /**
-     * Add BlockItems To Text Blocklist
-     *
-     * <p>Add blockItems to a text blocklist. You can add at most 100 BlockItems in one request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     blockItems (Required): [
-     *          (Required){
-     *             description: String (Optional)
-     *             text: String (Required)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Optional): [
-     *          (Optional){
-     *             blockItemId: String (Required)
-     *             description: String (Optional)
-     *             text: String (Required)
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param blocklistName Text blocklist name.
-     * @param addBlockItemsOptions The request of adding blockItems to text blocklist.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response of adding blockItems to text blocklist along with {@link Response} on successful completion
-     *     of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> addBlockItemsWithResponse(
-            String blocklistName, BinaryData addBlockItemsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.addBlockItemsWithResponseAsync(blocklistName, addBlockItemsOptions, requestOptions);
-    }
-
-    /**
-     * Remove BlockItems From Text Blocklist
-     *
-     * <p>Remove blockItems from a text blocklist. You can remove at most 100 BlockItems in one request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     blockItemIds (Required): [
-     *         String (Required)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param blocklistName Text blocklist name.
-     * @param removeBlockItemsOptions The request of removing blockItems from text blocklist.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeBlockItemsWithResponse(
-            String blocklistName, BinaryData removeBlockItemsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.removeBlockItemsWithResponseAsync(
-                blocklistName, removeBlockItemsOptions, requestOptions);
-    }
-
-    /**
-     * Get BlockItem By blocklistName And blockItemId
-     *
-     * <p>Get blockItem By blockItemId from a text blocklist.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     blockItemId: String (Required)
-     *     description: String (Optional)
-     *     text: String (Required)
-     * }
-     * }</pre>
-     *
-     * @param blocklistName Text blocklist name.
-     * @param blockItemId Block Item Id. It will be uuid.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return blockItem By blockItemId from a text blocklist along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTextBlocklistItemWithResponse(
-            String blocklistName, String blockItemId, RequestOptions requestOptions) {
-        return this.serviceClient.getTextBlocklistItemWithResponseAsync(blocklistName, blockItemId, requestOptions);
-    }
-
-    /**
-     * Get All BlockItems By blocklistName
-     *
-     * <p>Get all blockItems in a text blocklist.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     blockItemId: String (Required)
-     *     description: String (Optional)
-     *     text: String (Required)
-     * }
-     * }</pre>
-     *
-     * @param blocklistName Text blocklist name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all blockItems in a text blocklist as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listTextBlocklistItems(String blocklistName, RequestOptions requestOptions) {
-        return this.serviceClient.listTextBlocklistItemsAsync(blocklistName, requestOptions);
-    }
-
-    /**
      * Analyze Text
      *
-     * <p>A sync API for harmful content analysis for text. Currently, we support four categories: Hate, SelfHarm,
-     * Sexual, Violence.
+     * <p>A synchronous API for the analysis of potentially harmful text content. Currently, it supports four
+     * categories: Hate, SelfHarm, Sexual, and Violence.
      *
-     * @param body The request of text analysis.
+     * @param body The text analysis request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the analysis response of the text on successful completion of {@link Mono}.
+     * @return the text analysis response on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -452,17 +170,17 @@ public final class ContentSafetyAsyncClient {
     /**
      * Analyze Image
      *
-     * <p>A sync API for harmful content analysis for image. Currently, we support four categories: Hate, SelfHarm,
-     * Sexual, Violence.
+     * <p>A synchronous API for the analysis of potentially harmful image content. Currently, it supports four
+     * categories: Hate, SelfHarm, Sexual, and Violence.
      *
-     * @param body The analysis request of the image.
+     * @param body The image analysis request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the analysis response of the image on successful completion of {@link Mono}.
+     * @return the image analysis response on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -472,264 +190,5 @@ public final class ContentSafetyAsyncClient {
         return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeImageResult.class));
-    }
-
-    /**
-     * Get Text Blocklist By blocklistName
-     *
-     * <p>Returns text blocklist details.
-     *
-     * @param blocklistName Text blocklist name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return text Blocklist on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextBlocklist> getTextBlocklist(String blocklistName) {
-        // Generated convenience method for getTextBlocklistWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getTextBlocklistWithResponse(blocklistName, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TextBlocklist.class));
-    }
-
-    /**
-     * Delete Text Blocklist By blocklistName
-     *
-     * <p>Deletes a text blocklist.
-     *
-     * @param blocklistName Text blocklist name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteTextBlocklist(String blocklistName) {
-        // Generated convenience method for deleteTextBlocklistWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteTextBlocklistWithResponse(blocklistName, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Get All Text Blocklists
-     *
-     * <p>Get all text blocklists details.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all text blocklists details as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TextBlocklist> listTextBlocklists() {
-        // Generated convenience method for listTextBlocklists
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklists(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, TextBlocklist>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    TextBlocklist.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
-    }
-
-    /**
-     * Add BlockItems To Text Blocklist
-     *
-     * <p>Add blockItems to a text blocklist. You can add at most 100 BlockItems in one request.
-     *
-     * @param blocklistName Text blocklist name.
-     * @param addBlockItemsOptions The request of adding blockItems to text blocklist.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of adding blockItems to text blocklist on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AddBlockItemsResult> addBlockItems(String blocklistName, AddBlockItemsOptions addBlockItemsOptions) {
-        // Generated convenience method for addBlockItemsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return addBlockItemsWithResponse(blocklistName, BinaryData.fromObject(addBlockItemsOptions), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AddBlockItemsResult.class));
-    }
-
-    /**
-     * Remove BlockItems From Text Blocklist
-     *
-     * <p>Remove blockItems from a text blocklist. You can remove at most 100 BlockItems in one request.
-     *
-     * @param blocklistName Text blocklist name.
-     * @param removeBlockItemsOptions The request of removing blockItems from text blocklist.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeBlockItems(String blocklistName, RemoveBlockItemsOptions removeBlockItemsOptions) {
-        // Generated convenience method for removeBlockItemsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return removeBlockItemsWithResponse(
-                        blocklistName, BinaryData.fromObject(removeBlockItemsOptions), requestOptions)
-                .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Get BlockItem By blocklistName And blockItemId
-     *
-     * <p>Get blockItem By blockItemId from a text blocklist.
-     *
-     * @param blocklistName Text blocklist name.
-     * @param blockItemId Block Item Id. It will be uuid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blockItem By blockItemId from a text blocklist on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextBlockItem> getTextBlocklistItem(String blocklistName, String blockItemId) {
-        // Generated convenience method for getTextBlocklistItemWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getTextBlocklistItemWithResponse(blocklistName, blockItemId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TextBlockItem.class));
-    }
-
-    /**
-     * Get All BlockItems By blocklistName
-     *
-     * <p>Get all blockItems in a text blocklist.
-     *
-     * @param blocklistName Text blocklist name.
-     * @param top The number of result items to return.
-     * @param skip The number of result items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all blockItems in a text blocklist as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TextBlockItem> listTextBlocklistItems(String blocklistName, Integer top, Integer skip) {
-        // Generated convenience method for listTextBlocklistItems
-        RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(blocklistName, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, TextBlockItem>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    TextBlockItem.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
-    }
-
-    /**
-     * Get All BlockItems By blocklistName
-     *
-     * <p>Get all blockItems in a text blocklist.
-     *
-     * @param blocklistName Text blocklist name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all blockItems in a text blocklist as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TextBlockItem> listTextBlocklistItems(String blocklistName) {
-        // Generated convenience method for listTextBlocklistItems
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(blocklistName, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, TextBlockItem>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    TextBlockItem.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
     }
 }
