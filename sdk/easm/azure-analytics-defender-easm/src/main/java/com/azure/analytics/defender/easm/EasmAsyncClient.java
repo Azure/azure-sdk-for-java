@@ -29,11 +29,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.*;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import java.util.stream.Collectors;
@@ -113,7 +109,27 @@ public final class EasmAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAssetResource(RequestOptions requestOptions) {
-        return this.serviceClient.listAssetResourceAsync(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listAssetResourceAsync(requestOptions);
+        return PagedFlux.create(() ->
+            (continuationToken, pageSize) -> {
+                Flux<PagedResponse<BinaryData>> flux =
+                    (continuationToken == null)
+                        ? pagedFluxResponse.byPage().take(1)
+                        : pagedFluxResponse.byPage(continuationToken).take(1);
+                return flux.map(pagedResponse ->
+                    new PagedResponseBase<Void, BinaryData>(
+                        pagedResponse.getRequest(),
+                        pagedResponse.getStatusCode(),
+                        pagedResponse.getHeaders(),
+                        pagedResponse.getValue().stream().map(
+                            protocolMethodData ->
+                                cleanUp(protocolMethodData)
+                        ).collect(Collectors.toList()),
+                        pagedResponse.getContinuationToken(),
+                        null
+                    ));
+            }
+        );
     }
 
     /**
@@ -252,10 +268,29 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DataConnection items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDataConnection(RequestOptions requestOptions) {
-        return this.serviceClient.listDataConnectionAsync(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDataConnectionAsync(requestOptions);
+        return PagedFlux.create(() ->
+            (continuationToken, pageSize) -> {
+                Flux<PagedResponse<BinaryData>> flux =
+                    (continuationToken == null)
+                        ? pagedFluxResponse.byPage().take(1)
+                        : pagedFluxResponse.byPage(continuationToken).take(1);
+                return flux.map(pagedResponse ->
+                    new PagedResponseBase<Void, BinaryData>(
+                        pagedResponse.getRequest(),
+                        pagedResponse.getStatusCode(),
+                        pagedResponse.getHeaders(),
+                        pagedResponse.getValue().stream().map(
+                            protocolMethodData ->
+                                cleanUp(protocolMethodData)
+                        ).collect(Collectors.toList()),
+                        pagedResponse.getContinuationToken(),
+                        null
+                    ));
+            }
+        );
     }
 
     /**
@@ -475,10 +510,29 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
-        return this.serviceClient.listDiscoGroupAsync(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDiscoGroupAsync(requestOptions);
+        return PagedFlux.create(() ->
+            (continuationToken, pageSize) -> {
+                Flux<PagedResponse<BinaryData>> flux =
+                    (continuationToken == null)
+                        ? pagedFluxResponse.byPage().take(1)
+                        : pagedFluxResponse.byPage(continuationToken).take(1);
+                return flux.map(pagedResponse ->
+                    new PagedResponseBase<Void, BinaryData>(
+                        pagedResponse.getRequest(),
+                        pagedResponse.getStatusCode(),
+                        pagedResponse.getHeaders(),
+                        pagedResponse.getValue().stream().map(
+                            protocolMethodData ->
+                                cleanUp(protocolMethodData)
+                        ).collect(Collectors.toList()),
+                        pagedResponse.getContinuationToken(),
+                        null
+                    ));
+            }
+        );
     }
 
     /**
@@ -753,10 +807,29 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDiscoTemplate(RequestOptions requestOptions) {
-        return this.serviceClient.listDiscoTemplateAsync(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDiscoTemplateAsync(requestOptions);
+        return PagedFlux.create(() ->
+            (continuationToken, pageSize) -> {
+                Flux<PagedResponse<BinaryData>> flux =
+                    (continuationToken == null)
+                        ? pagedFluxResponse.byPage().take(1)
+                        : pagedFluxResponse.byPage(continuationToken).take(1);
+                return flux.map(pagedResponse ->
+                    new PagedResponseBase<Void, BinaryData>(
+                        pagedResponse.getRequest(),
+                        pagedResponse.getStatusCode(),
+                        pagedResponse.getHeaders(),
+                        pagedResponse.getValue().stream().map(
+                            protocolMethodData ->
+                                cleanUp(protocolMethodData)
+                        ).collect(Collectors.toList()),
+                        pagedResponse.getContinuationToken(),
+                        null
+                    ));
+            }
+        );
     }
 
     /**
@@ -1007,10 +1080,29 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listSavedFilter(RequestOptions requestOptions) {
-        return this.serviceClient.listSavedFilterAsync(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listSavedFilterAsync(requestOptions);
+        return PagedFlux.create(() ->
+            (continuationToken, pageSize) -> {
+                Flux<PagedResponse<BinaryData>> flux =
+                    (continuationToken == null)
+                        ? pagedFluxResponse.byPage().take(1)
+                        : pagedFluxResponse.byPage(continuationToken).take(1);
+                return flux.map(pagedResponse ->
+                    new PagedResponseBase<Void, BinaryData>(
+                        pagedResponse.getRequest(),
+                        pagedResponse.getStatusCode(),
+                        pagedResponse.getHeaders(),
+                        pagedResponse.getValue().stream().map(
+                            protocolMethodData ->
+                                cleanUp(protocolMethodData)
+                        ).collect(Collectors.toList()),
+                        pagedResponse.getContinuationToken(),
+                        null
+                    ));
+            }
+        );
     }
 
     /**
@@ -1140,10 +1232,29 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of Task items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listTask(RequestOptions requestOptions) {
-        return this.serviceClient.listTaskAsync(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listTaskAsync(requestOptions);
+        return PagedFlux.create(() ->
+            (continuationToken, pageSize) -> {
+                Flux<PagedResponse<BinaryData>> flux =
+                    (continuationToken == null)
+                        ? pagedFluxResponse.byPage().take(1)
+                        : pagedFluxResponse.byPage(continuationToken).take(1);
+                return flux.map(pagedResponse ->
+                    new PagedResponseBase<Void, BinaryData>(
+                        pagedResponse.getRequest(),
+                        pagedResponse.getStatusCode(),
+                        pagedResponse.getHeaders(),
+                        pagedResponse.getValue().stream().map(
+                            protocolMethodData ->
+                                cleanUp(protocolMethodData)
+                        ).collect(Collectors.toList()),
+                        pagedResponse.getContinuationToken(),
+                        null
+                    ));
+            }
+        );
     }
 
     /**
@@ -1391,7 +1502,7 @@ public final class EasmAsyncClient {
                                                     pagedResponse.getValue().stream()
                                                             .map(
                                                                     protocolMethodData ->
-                                                                            cleanUp(protocolMethodData)
+                                                                            protocolMethodData
                                                                                     .toObject(DataConnection.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
@@ -1430,7 +1541,7 @@ public final class EasmAsyncClient {
                                                     pagedResponse.getValue().stream()
                                                             .map(
                                                                     protocolMethodData ->
-                                                                            cleanUp(protocolMethodData)
+                                                                            protocolMethodData
                                                                                     .toObject(DataConnection.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
@@ -1583,7 +1694,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiscoGroup> listDiscoGroup() {
         // Generated convenience method for listDiscoGroup
@@ -1731,7 +1841,7 @@ public final class EasmAsyncClient {
                                                     pagedResponse.getValue().stream()
                                                             .map(
                                                                     protocolMethodData ->
-                                                                            protocolMethodData.toObject(
+                                                                            cleanUp(protocolMethodData).toObject(
                                                                                     DiscoRunResult.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),
@@ -1752,7 +1862,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiscoTemplate> listDiscoTemplate(String filter, Integer skip) {
         // Generated convenience method for listDiscoTemplate
@@ -1798,7 +1907,6 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiscoTemplate> listDiscoTemplate() {
         // Generated convenience method for listDiscoTemplate
@@ -2300,7 +2408,7 @@ public final class EasmAsyncClient {
                                                     pagedResponse.getValue().stream()
                                                             .map(
                                                                     protocolMethodData ->
-                                                                            protocolMethodData.toObject(
+                                                                            cleanUp(protocolMethodData).toObject(
                                                                                     DiscoRunResult.class))
                                                             .collect(Collectors.toList()),
                                                     pagedResponse.getContinuationToken(),

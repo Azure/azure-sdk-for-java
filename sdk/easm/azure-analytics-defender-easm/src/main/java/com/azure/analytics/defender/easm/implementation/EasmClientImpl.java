@@ -6771,7 +6771,7 @@ public final class EasmClientImpl {
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {
         try {
-            Map<?, ?> obj = cleanUp(binaryData).toObject(Map.class);
+            Map<?, ?> obj = binaryData.toObject(Map.class);
             List<?> values = (List<?>) obj.get(path);
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
@@ -6781,14 +6781,10 @@ public final class EasmClientImpl {
 
     private String getNextLink(BinaryData binaryData, String path) {
         try {
-            Map<?, ?> obj = cleanUp(binaryData).toObject(Map.class);
+            Map<?, ?> obj = binaryData.toObject(Map.class);
             return (String) obj.get(path);
         } catch (RuntimeException e) {
             return null;
         }
-    }
-
-    private BinaryData cleanUp(BinaryData input) {
-        return BinaryData.fromString(input.toString().replaceAll("\\+0000", "+00:00"));
     }
 }

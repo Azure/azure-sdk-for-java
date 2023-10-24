@@ -104,10 +104,9 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAssetResource(RequestOptions requestOptions) {
-        return this.serviceClient.listAssetResource(requestOptions);
+        return this.serviceClient.listAssetResource(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
     }
 
     /**
@@ -245,10 +244,9 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDataConnection(RequestOptions requestOptions) {
-        return this.serviceClient.listDataConnection(requestOptions);
+        return this.serviceClient.listDataConnection(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
     }
 
     /**
@@ -675,10 +673,9 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listRuns(String groupName, RequestOptions requestOptions) {
-        return this.serviceClient.listRuns(groupName, requestOptions);
+        return this.serviceClient.listRuns(groupName, requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
     }
 
     /**
@@ -727,10 +724,9 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDiscoTemplate(RequestOptions requestOptions) {
-        return this.serviceClient.listDiscoTemplate(requestOptions);
+        return this.serviceClient.listDiscoTemplate(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
     }
 
     /**
@@ -977,10 +973,9 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSavedFilter(RequestOptions requestOptions) {
-        return this.serviceClient.listSavedFilter(requestOptions);
+        return this.serviceClient.listSavedFilter(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
     }
 
     /**
@@ -1109,10 +1104,9 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of Task items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTask(RequestOptions requestOptions) {
-        return this.serviceClient.listTask(requestOptions);
+        return this.serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
     }
 
     /**
@@ -1193,14 +1187,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetResource> listAssetResource() {
         // Generated convenience method for listAssetResource
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
                 .listAssetResource(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(AssetResource.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(AssetResource.class));
     }
 
     /**
@@ -1255,14 +1248,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataConnection> listDataConnection() {
         // Generated convenience method for listDataConnection
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
                 .listDataConnection(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DataConnection.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DataConnection.class));
     }
 
     /**
@@ -1361,14 +1353,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoGroup> listDiscoGroup() {
         // Generated convenience method for listDiscoGroup
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
                 .listDiscoGroup(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoGroup.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoGroup.class));
     }
 
     /**
@@ -1469,14 +1460,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoRunResult> listRuns(String groupName) {
         // Generated convenience method for listRuns
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
                 .listRuns(groupName, requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoRunResult.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoRunResult.class));
     }
 
     /**
@@ -1489,14 +1479,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoTemplate> listDiscoTemplate() {
         // Generated convenience method for listDiscoTemplate
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
                 .listDiscoTemplate(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoTemplate.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoTemplate.class));
     }
 
     /**
@@ -1592,14 +1581,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SavedFilter> listSavedFilter() {
         // Generated convenience method for listSavedFilter
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient
                 .listSavedFilter(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(SavedFilter.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(SavedFilter.class));
     }
 
     /**
@@ -1674,12 +1662,11 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of Task items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Task> listTask() {
         // Generated convenience method for listTask
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Task.class));
+        return serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
     }
 
     /**
@@ -1786,10 +1773,9 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
-        return this.serviceClient.listDiscoGroup(requestOptions);
+        return this.serviceClient.listDiscoGroup(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
     }
 
     /**
@@ -1808,7 +1794,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetResource> listAssetResource(String filter, String orderBy, Integer skip, String mark) {
         // Generated convenience method for listAssetResource
@@ -1827,7 +1812,7 @@ public final class EasmClient {
         }
         return serviceClient
                 .listAssetResource(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(AssetResource.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(AssetResource.class));
     }
 
     /**
@@ -1842,7 +1827,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataConnection> listDataConnection(Integer skip) {
         // Generated convenience method for listDataConnection
@@ -1852,7 +1836,7 @@ public final class EasmClient {
         }
         return serviceClient
                 .listDataConnection(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DataConnection.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DataConnection.class));
     }
 
     /**
@@ -1868,7 +1852,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoGroup> listDiscoGroup(String filter, Integer skip) {
         // Generated convenience method for listDiscoGroup
@@ -1881,7 +1864,7 @@ public final class EasmClient {
         }
         return serviceClient
                 .listDiscoGroup(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoGroup.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoGroup.class));
     }
 
     /**
@@ -1897,7 +1880,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoTemplate> listDiscoTemplate(String filter, Integer skip) {
         // Generated convenience method for listDiscoTemplate
@@ -1910,7 +1892,7 @@ public final class EasmClient {
         }
         return serviceClient
                 .listDiscoTemplate(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoTemplate.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoTemplate.class));
     }
 
     /**
@@ -1926,7 +1908,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SavedFilter> listSavedFilter(String filter, Integer skip) {
         // Generated convenience method for listSavedFilter
@@ -1939,7 +1920,7 @@ public final class EasmClient {
         }
         return serviceClient
                 .listSavedFilter(requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(SavedFilter.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(SavedFilter.class));
     }
 
     /**
@@ -1956,7 +1937,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of Task items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Task> listTask(String filter, String orderBy, Integer skip) {
         // Generated convenience method for listTask
@@ -1970,7 +1950,7 @@ public final class EasmClient {
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
-        return serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Task.class));
+        return serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
     }
 
     /**
@@ -1987,7 +1967,6 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoRunResult> listRuns(String groupName, String filter, Integer skip) {
         // Generated convenience method for listRuns
@@ -2000,6 +1979,6 @@ public final class EasmClient {
         }
         return serviceClient
                 .listRuns(groupName, requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoRunResult.class));
+                .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoRunResult.class));
     }
 }
