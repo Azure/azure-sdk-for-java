@@ -38,6 +38,7 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -1057,6 +1058,71 @@ public final class ConfigurationAsyncClient {
                     null,
                     addTracingNamespace(context))
                                .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
+        );
+    }
+
+    /**
+     * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
+     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all settings that use the key "prodDBConnection".</p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettings -->
+     * <pre>
+     * client.listConfigurationSettings&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;setting -&gt;
+     *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettings -->
+     *
+     * @param selector Optional. Selector to filter configuration setting results from the service.
+     * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
+     * contains all of the current settings in the service.
+     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ConfigurationSetting> listConfigurationSettings(SettingSelector selector,
+        List<MatchConditions> matchConditions) {
+        final String keyFilter = selector == null ? null : selector.getKeyFilter();
+        final String labelFilter = selector == null ? null : selector.getLabelFilter();
+        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+        final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
+        AtomicInteger count = new AtomicInteger();
+
+        return new PagedFlux<>(
+            () -> withContext(
+                context -> {
+                    final String eTagInFirstPage = matchConditions != null && !matchConditions.isEmpty()
+                        ? matchConditions.get(0).getIfNoneMatch()
+                        : null;
+                    return serviceClient.getKeyValuesSinglePageAsync(
+                            keyFilter,
+                            labelFilter,
+                            null,
+                            acceptDateTime,
+                            settingFields,
+                            null,
+                            null,
+                            eTagInFirstPage,
+                            addTracingNamespace(context))
+                        .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse));
+                }),
+            nextLink -> withContext(
+                context -> {
+                    final String eTagInNextPage = matchConditions != null && !matchConditions.isEmpty()
+                        ? matchConditions.get(count.incrementAndGet()).getIfNoneMatch()
+                        : null;
+                    return serviceClient.getKeyValuesNextSinglePageAsync(
+                            nextLink,
+                            acceptDateTime,
+                            null,
+                            eTagInNextPage,
+                            addTracingNamespace(context))
+                        .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse));
+                })
         );
     }
 

@@ -40,6 +40,7 @@ import com.azure.data.appconfiguration.models.SnapshotSelector;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
@@ -1051,13 +1052,15 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
+        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+
         return new PagedIterable<>(
             () -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
                     selector == null ? null : selector.getKeyFilter(),
                     selector == null ? null : selector.getLabelFilter(),
                     null,
-                    selector == null ? null : selector.getAcceptDateTime(),
+                    acceptDateTime,
                     selector == null ? null : toSettingFieldsList(selector.getFields()),
                     null,
                     null,
@@ -1067,7 +1070,76 @@ public final class ConfigurationClient {
             },
             nextLink -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
-                    selector.getAcceptDateTime(), null, null, enableSyncRestProxy(addTracingNamespace(context)));
+                    acceptDateTime,
+                    null, null, enableSyncRestProxy(addTracingNamespace(context)));
+                return toConfigurationSettingWithPagedResponse(pagedResponse);
+            }
+        );
+    }
+
+    /**
+     * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
+     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all settings that use the key "prodDBConnection".</p>
+     *
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
+     * <pre>
+     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
+     * Context ctx = new Context&#40;key2, value2&#41;;
+     * configurationClient.listConfigurationSettings&#40;settingSelector, ctx&#41;.forEach&#40;setting -&gt; &#123;
+     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
+     *
+     * @param selector Optional. Selector to filter configuration setting results from the service.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
+     * provided, the {@link PagedIterable} contains all the current settings in the service.
+     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector,
+        List<MatchConditions> matchConditions, Context context) {
+        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+
+        AtomicInteger count = new AtomicInteger();
+        return new PagedIterable<>(
+            () -> {
+                String eTagInFirstPage;
+
+                if (matchConditions != null && !matchConditions.isEmpty()) {
+                    eTagInFirstPage = matchConditions.get(0).getIfNoneMatch();
+                } else {
+                    eTagInFirstPage = null;
+                }
+
+                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
+                    selector == null ? null : selector.getKeyFilter(),
+                    selector == null ? null : selector.getLabelFilter(),
+                    null,
+                    acceptDateTime,
+                    selector == null ? null : toSettingFieldsList(selector.getFields()),
+                    null,
+                    null,
+                    eTagInFirstPage,
+                    enableSyncRestProxy(addTracingNamespace(context)));
+                return toConfigurationSettingWithPagedResponse(pagedResponse);
+            },
+            nextLink -> {
+                String eTagInNextPage;
+                if (matchConditions != null && !matchConditions.isEmpty()) {
+                    eTagInNextPage = matchConditions.get(count.incrementAndGet()).getIfNoneMatch();
+                } else {
+                    eTagInNextPage = null;
+                }
+
+                final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
+                    acceptDateTime,
+                    null, eTagInNextPage, enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             }
         );
