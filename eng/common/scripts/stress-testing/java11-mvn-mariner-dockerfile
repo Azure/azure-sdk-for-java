@@ -13,5 +13,7 @@ RUN mkdir -p /usr/share/maven \
 
 ENV MAVEN_HOME /usr/share/maven
 
-# docker build -t <registry>.azurecr.io/java-tools/mvn:java11-mvn3.8.8
-# docker push <registry>.azurecr.io/java-tools/mvn:java11-mvn3.8.8
+# Usage:
+# - make changes (e.g. update versions)
+# - docker build -t stresspgs7b6dif73rup6.azurecr.io/java-tools/mvn:{new tag}, e.g. java11-mvn3.8.8
+# - docker push stresspgs7b6dif73rup6.azurecr.io/java-tools/mvn:{new tag}
