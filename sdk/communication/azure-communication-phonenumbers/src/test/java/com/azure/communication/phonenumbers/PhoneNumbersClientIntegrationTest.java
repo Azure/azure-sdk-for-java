@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
+import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
@@ -9,6 +11,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
+import com.azure.communication.phonenumbers.models.PhoneNumberError;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
@@ -32,6 +35,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -376,6 +380,33 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertNotNull(offering.getCost().getBillingFrequency());
         assertNotNull(offering.getCost().getCurrencyCode());
         assertNotNull(offering.getPhoneNumberType());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void convertCommunicationError(HttpClient httpClient) {
+        List<PhoneNumberError> details = new ArrayList<PhoneNumberError>();
+        CommunicationError communicationError = new CommunicationError();
+        communicationError.setCode("500");
+        communicationError.setMessage("Communication Error");
+
+        PhoneNumberError phoneNumberError = new PhoneNumberError(
+            communicationError.getMessage(),
+            communicationError.getCode(),
+            communicationError.getTarget(),
+            details
+        );
+        PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
+        assertEquals(phoneNumberError.getCode(), error.getCode());
+        assertEquals(phoneNumberError.getMessage(), error.getMessage());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void convertCommunicationErrorWithNull(HttpClient httpClient) {
+        CommunicationError communicationError = null;
+        PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
+        assertEquals(null, error);
     }
 
     private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(
