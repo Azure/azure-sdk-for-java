@@ -41,6 +41,8 @@ parameters:
       # This only affects the phone-numbers package
       MatrixReplace:
         - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
+        - SKIP_LIVE_TEST=false/true
+        - COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST=false/true
     Int:
       SubscriptionConfigurations:
         - $(sub-config-communication-int-test-resources-common)
@@ -49,6 +51,8 @@ parameters:
       # This only affects the phone-numbers package
       MatrixReplace:
         - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
+        - SKIP_LIVE_TEST=false/true
+        - COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST=false/true
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
