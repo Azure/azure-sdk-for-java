@@ -3,7 +3,7 @@
 ### 5.6.0 (2023-10-24)
 
 #### Other Changes
-* Updated `azure-cosmos` to version `4.49.0`.
+* Updated `azure-cosmos` to version `4.51.0`.
 * Updated `Spring Data Commons` to version `3.1.3`.
 
 ### 5.5.0 (2023-08-28)
