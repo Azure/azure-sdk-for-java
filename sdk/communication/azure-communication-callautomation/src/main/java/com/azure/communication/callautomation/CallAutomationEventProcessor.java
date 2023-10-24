@@ -1,9 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.eventprocessor;
+package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.CallAutomationEventParser;
+import com.azure.communication.callautomation.implementation.eventprocessor.EventAwaiter;
+import com.azure.communication.callautomation.implementation.eventprocessor.EventAwaiterOngoing;
+import com.azure.communication.callautomation.implementation.eventprocessor.EventAwaiterSingleTime;
+import com.azure.communication.callautomation.implementation.eventprocessor.EventBacklog;
+import com.azure.communication.callautomation.implementation.eventprocessor.EventWithBacklogId;
+import com.azure.communication.callautomation.implementation.eventprocessor.OngoingEventAwaiterKey;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
 import com.azure.core.util.logging.ClientLogger;

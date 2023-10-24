@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.eventprocessor;
+package com.azure.communication.callautomation.implementation.eventprocessor;
 
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 
@@ -22,16 +22,16 @@ public final class EventBacklog {
     // Key: Backlog event ID, Value: Event
     private final ConcurrentHashMap<String, CallAutomationEventBase> eventBacklog;
 
-    EventBacklog() {
+    public EventBacklog() {
         this(DEFAULT_BACKLOG_EVENT_TIMEOUT_SECONDS);
     }
 
-    EventBacklog(long expiringTimeout) {
+    public EventBacklog(long expiringTimeout) {
         this.expiringTimeout = expiringTimeout;
         eventBacklog = new ConcurrentHashMap<>();
     }
 
-    EventWithBacklogId addEvent(String backlogEventId, CallAutomationEventBase eventToBeSaved) {
+    public EventWithBacklogId addEvent(String backlogEventId, CallAutomationEventBase eventToBeSaved) {
         if (eventBacklog.size() >= MAXIMUM_EVENTBACKLOGS_AT_ONCE) {
             return null;
         }
@@ -50,7 +50,7 @@ public final class EventBacklog {
         return new EventWithBacklogId(backlogEventId, eventToBeSaved);
     }
 
-    EventWithBacklogId tryGetAndRemoveMatchedEvent(Predicate<CallAutomationEventBase> predicate) {
+    public EventWithBacklogId tryGetAndRemoveMatchedEvent(Predicate<CallAutomationEventBase> predicate) {
         Entry<String, CallAutomationEventBase> searchResult = eventBacklog.searchEntries(1, (entry) -> {
             return predicate.test(entry.getValue()) ? entry : null;
         });
@@ -62,7 +62,7 @@ public final class EventBacklog {
         }
     }
 
-    EventWithBacklogId removeEvent(String backlogEventId) {
+    public EventWithBacklogId removeEvent(String backlogEventId) {
         return new EventWithBacklogId(backlogEventId, eventBacklog.remove(backlogEventId));
     }
 }

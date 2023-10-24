@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.eventprocessor;
+package com.azure.communication.callautomation.implementation.eventprocessor;
 
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 
@@ -16,7 +16,7 @@ public final class EventAwaiterOngoing<TEvent extends CallAutomationEventBase> e
     private final Consumer<TEvent> eventProcessor;
     private final Class<TEvent> clazz;
 
-    EventAwaiterOngoing(Class<TEvent> clazz, String callConnectionId, Consumer<TEvent> eventProcessor) {
+    public EventAwaiterOngoing(Class<TEvent> clazz, String callConnectionId, Consumer<TEvent> eventProcessor) {
         super();
         this.clazz = clazz;
         this.callConnectionId = callConnectionId;
@@ -25,7 +25,7 @@ public final class EventAwaiterOngoing<TEvent extends CallAutomationEventBase> e
 
     @Override
     @SuppressWarnings("unchecked")
-    void onEventsReceived(EventWithBacklogId event) {
+    public void onEventsReceived(EventWithBacklogId event) {
         if (event.getEvent().getClass() == clazz
             && Objects.equals(event.getEvent().getCallConnectionId(), callConnectionId)) {
             eventProcessor.accept((TEvent) event.getEvent());

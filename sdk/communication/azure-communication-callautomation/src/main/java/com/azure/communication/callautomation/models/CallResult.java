@@ -5,7 +5,7 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.CallConnection;
 import com.azure.communication.callautomation.CallConnectionAsync;
-import com.azure.communication.callautomation.eventprocessor.CallAutomationEventProcessor;
+import com.azure.communication.callautomation.CallAutomationEventProcessor;
 
 /**
  * The abstract class used as parent of [action]CallResult

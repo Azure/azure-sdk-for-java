@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.eventprocessor;
+package com.azure.communication.callautomation.implementation.eventprocessor;
 
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import reactor.core.publisher.Mono;
@@ -16,20 +16,20 @@ public final class EventAwaiterSingleTime extends EventAwaiter {
     private final Predicate<CallAutomationEventBase> predicate;
     private final Sinks.One<EventWithBacklogId> task;
 
-    EventAwaiterSingleTime(Predicate<CallAutomationEventBase> predicate) {
+    public EventAwaiterSingleTime(Predicate<CallAutomationEventBase> predicate) {
         super();
         this.predicate = predicate;
         this.task = Sinks.one();
     }
 
     @Override
-    void onEventsReceived(EventWithBacklogId event) {
+    public void onEventsReceived(EventWithBacklogId event) {
         if (predicate.test(event.getEvent())) {
             task.tryEmitValue(event);
         }
     }
 
-    Mono<EventWithBacklogId> getEventWithBacklogId() {
+    public Mono<EventWithBacklogId> getEventWithBacklogId() {
         return task.asMono();
     }
 }

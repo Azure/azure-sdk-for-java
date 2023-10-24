@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.eventprocessor.CallAutomationEventProcessor;
+import com.azure.communication.callautomation.CallAutomationEventProcessor;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import reactor.core.publisher.Mono;
 

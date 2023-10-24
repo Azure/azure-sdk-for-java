@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.eventprocessor.CallAutomationEventProcessor;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImplBuilder;
 import com.azure.communication.callautomation.implementation.CustomBearerTokenAuthenticationPolicy;

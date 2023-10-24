@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.eventprocessor;
+package com.azure.communication.callautomation.implementation.eventprocessor;
 
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 
@@ -12,7 +12,7 @@ public class OngoingEventAwaiterKey<TEvent extends CallAutomationEventBase> {
     private final String callConnectionId;
     private final Class<TEvent> clazz;
 
-    OngoingEventAwaiterKey(String callConnectionId, Class<TEvent> clazz) {
+    public OngoingEventAwaiterKey(String callConnectionId, Class<TEvent> clazz) {
         this.clazz = clazz;
         this.callConnectionId = callConnectionId;
     }

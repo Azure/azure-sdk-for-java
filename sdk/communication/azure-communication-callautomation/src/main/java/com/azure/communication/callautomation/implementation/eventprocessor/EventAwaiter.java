@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.eventprocessor;
+package com.azure.communication.callautomation.implementation.eventprocessor;
 
 /**
  * Abstract class for event awaiters.
@@ -14,9 +14,9 @@ public abstract class EventAwaiter implements AutoCloseable {
         disposed = true;
     }
 
-    boolean isDisposed() {
+    public boolean isDisposed() {
         return disposed;
     }
 
-    abstract void onEventsReceived(EventWithBacklogId event);
+    public abstract void onEventsReceived(EventWithBacklogId event);
 }
