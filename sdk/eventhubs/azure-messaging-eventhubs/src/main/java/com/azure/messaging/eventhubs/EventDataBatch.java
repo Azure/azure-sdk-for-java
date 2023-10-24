@@ -13,9 +13,9 @@ import com.azure.messaging.eventhubs.implementation.MessageUtils;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.codec.DroppingWritableBuffer;
 import org.apache.qpid.proton.message.Message;
 
-import java.nio.BufferOverflowException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +40,6 @@ public final class EventDataBatch {
     private final String partitionKey;
     private final ErrorContextProvider contextProvider;
     private final List<EventData> events;
-    private final byte[] eventBytes;
     private final String partitionId;
     private int sizeInBytes;
     private final EventHubsTracer tracer;
@@ -53,7 +52,6 @@ public final class EventDataBatch {
         this.contextProvider = contextProvider;
         this.events = new LinkedList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
-        this.eventBytes = new byte[maxMessageSize];
         this.tracer = instrumentation.getTracer();
     }
 
@@ -103,10 +101,9 @@ public final class EventDataBatch {
 
         tracer.reportMessageSpan(eventData, eventData.getContext());
 
-        final int size;
-        try {
-            size = getSize(eventData, events.isEmpty());
-        } catch (BufferOverflowException exception) {
+        final int size = getSize(eventData, events.isEmpty());
+
+        if (size > maxMessageSize) {
             throw LOGGER.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                 String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
                     maxMessageSize / 1024),
@@ -138,7 +135,7 @@ public final class EventDataBatch {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
-        int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
+        int eventSize = amqpMessage.encode(new DroppingWritableBuffer()); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
         if (isFirst) {
@@ -147,7 +144,7 @@ public final class EventDataBatch {
             amqpMessage.setProperties(null);
             amqpMessage.setDeliveryAnnotations(null);
 
-            eventSize += amqpMessage.encode(this.eventBytes, 0, maxMessageSize);
+            eventSize += amqpMessage.encode(new DroppingWritableBuffer());
         }
 
         return eventSize;
