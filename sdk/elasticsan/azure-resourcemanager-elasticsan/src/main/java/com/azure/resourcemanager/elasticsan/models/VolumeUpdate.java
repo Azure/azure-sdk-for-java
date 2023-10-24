@@ -54,6 +54,29 @@ public final class VolumeUpdate {
     }
 
     /**
+     * Get the managedBy property: Parent resource information.
+     *
+     * @return the managedBy value.
+     */
+    public ManagedByInfo managedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedBy();
+    }
+
+    /**
+     * Set the managedBy property: Parent resource information.
+     *
+     * @param managedBy the managedBy value to set.
+     * @return the VolumeUpdate object itself.
+     */
+    public VolumeUpdate withManagedBy(ManagedByInfo managedBy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeUpdateProperties();
+        }
+        this.innerProperties().withManagedBy(managedBy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

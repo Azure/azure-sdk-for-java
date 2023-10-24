@@ -13,7 +13,7 @@ public final class EnvironmentTypeListResultTests {
         EnvironmentTypeListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"tags\":{\"xbezyiuokktwh\":\"ozmyzydagfu\",\"o\":\"dxwzywqsmbsurexi\",\"fksymddystki\":\"yocf\",\"yudxorrqnbp\":\"uxh\"},\"id\":\"zvyifqrvkdvj\",\"name\":\"llr\",\"type\":\"vvdfwatkpnpul\"},{\"properties\":{\"provisioningState\":\"Creating\"},\"tags\":{\"okacspk\":\"wtruwiqzbqjvsovm\",\"jmflbvvnch\":\"lhzdobp\",\"ajiwkuo\":\"kcciwwzjuqkhr\",\"sauuimj\":\"oskg\"},\"id\":\"xieduugidyjrr\",\"name\":\"byao\",\"type\":\"v\"}],\"nextLink\":\"csonpclhoco\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"displayName\":\"watkpnpulexxb\"},\"tags\":{\"j\":\"truwiqzb\",\"zdobpxjmflbvvnch\":\"sovmyokacspkwl\",\"ajiwkuo\":\"kcciwwzjuqkhr\",\"sauuimj\":\"oskg\"},\"id\":\"xieduugidyjrr\",\"name\":\"byao\",\"type\":\"v\"}],\"nextLink\":\"csonpclhoco\"}")
                 .toObject(EnvironmentTypeListResult.class);
     }
 

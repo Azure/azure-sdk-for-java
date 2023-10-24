@@ -92,4 +92,11 @@ public interface ElasticSanManagement {
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the VolumeSnapshotsClient object to access its operations.
+     *
+     * @return the VolumeSnapshotsClient object.
+     */
+    VolumeSnapshotsClient getVolumeSnapshots();
 }

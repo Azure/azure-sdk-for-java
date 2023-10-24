@@ -23,8 +23,27 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spotbugs.skip>true</spotbugs.skip>
     <codesnippet.skip>true</codesnippet.skip>
-    <opentelemetry.version>1.28.0</opentelemetry.version> <!-- Only required with Spring Boot 3 to override the OTel version used in the Spring Boot BOM-->
+    <opentelemetry.version>1.31.0</opentelemetry.version> <!-- Only required with Spring Boot 3 to override the OTel version used in the Spring Boot BOM-->
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.opentelemetry</groupId>
+        <artifactId>opentelemetry-bom</artifactId>
+        <version>1.31.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-bom;external_dependency} -->
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.opentelemetry.instrumentation</groupId>
+        <artifactId>opentelemetry-instrumentation-bom-alpha</artifactId>
+        <version>1.31.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha;external_dependency} -->
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -37,12 +56,12 @@
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-jdbc</artifactId>
-      <version>1.28.0-alpha</version><!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-jdbc;external_dependency} -->
+      <version>1.31.0-alpha</version><!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-jdbc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-logback-appender-1.0</artifactId>
-      <version>1.28.0-alpha</version><!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
+      <version>1.31.0-alpha</version><!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
       <scope>runtime</scope>
     </dependency>
     <!-- End of OTel dependencies -->
@@ -66,7 +85,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.21.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.21.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

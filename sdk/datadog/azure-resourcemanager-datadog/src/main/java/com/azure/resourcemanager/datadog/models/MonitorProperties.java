@@ -30,13 +30,14 @@ public final class MonitorProperties {
     private MarketplaceSubscriptionStatus marketplaceSubscriptionStatus;
 
     /*
-     * Datadog organization properties
+     * Specify the Datadog organization name. In the case of linking to existing organizations, Id, ApiKey, and
+     * Applicationkey is required as well.
      */
     @JsonProperty(value = "datadogOrganizationProperties")
     private DatadogOrganizationProperties datadogOrganizationProperties;
 
     /*
-     * User info
+     * Includes name, email and optionally, phone number. User Information can't be null.
      */
     @JsonProperty(value = "userInfo")
     private UserInfo userInfo;
@@ -97,7 +98,8 @@ public final class MonitorProperties {
     }
 
     /**
-     * Get the datadogOrganizationProperties property: Datadog organization properties.
+     * Get the datadogOrganizationProperties property: Specify the Datadog organization name. In the case of linking to
+     * existing organizations, Id, ApiKey, and Applicationkey is required as well.
      *
      * @return the datadogOrganizationProperties value.
      */
@@ -106,7 +108,8 @@ public final class MonitorProperties {
     }
 
     /**
-     * Set the datadogOrganizationProperties property: Datadog organization properties.
+     * Set the datadogOrganizationProperties property: Specify the Datadog organization name. In the case of linking to
+     * existing organizations, Id, ApiKey, and Applicationkey is required as well.
      *
      * @param datadogOrganizationProperties the datadogOrganizationProperties value to set.
      * @return the MonitorProperties object itself.
@@ -118,7 +121,7 @@ public final class MonitorProperties {
     }
 
     /**
-     * Get the userInfo property: User info.
+     * Get the userInfo property: Includes name, email and optionally, phone number. User Information can't be null.
      *
      * @return the userInfo value.
      */
@@ -127,7 +130,7 @@ public final class MonitorProperties {
     }
 
     /**
-     * Set the userInfo property: User info.
+     * Set the userInfo property: Includes name, email and optionally, phone number. User Information can't be null.
      *
      * @param userInfo the userInfo value to set.
      * @return the MonitorProperties object itself.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.0.0-beta.13 (Unreleased)
 
 ### Features Added
 
@@ -9,7 +9,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.12 (2023-10-17)
+
+### Features Added
+- [Enable Statsbeat](https://github.com/Azure/azure-sdk-for-java/pull/37032)
+
+### Other Changes
+- [Update OpenTelemetry to 1.31.0](https://github.com/Azure/azure-sdk-for-java/pull/37209)
+- [Use OpenTelemetry AutoConfigure Module](https://github.com/Azure/azure-sdk-for-java/pull/36230)
 - [Don't drop known attributes on custom metrics](https://github.com/Azure/azure-sdk-for-java/pull/37175)
+- [Remove RetryPolicy from metadata service call](https://github.com/Azure/azure-sdk-for-java/pull/37031)
 
 ## 1.0.0-beta.11 (2023-07-27)
 

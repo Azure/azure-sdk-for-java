@@ -7,6 +7,7 @@ package com.azure.resourcemanager.elasticsan.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanInner;
 import com.azure.resourcemanager.elasticsan.models.ElasticSanList;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
@@ -21,15 +22,16 @@ public final class ElasticSanListTests {
         ElasticSanList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"xhocdgeablgphuti\",\"ndv\",\"aozwyiftyhxhu\",\"okftyxolniwpwcuk\"],\"provisioningState\":\"Deleting\",\"baseSizeTiB\":5413928169725328380,\"extendedCapacitySizeTiB\":6655543031987188756,\"totalVolumeSizeGiB\":831725990805220252,\"volumeGroupCount\":3283985932829658956,\"totalIops\":3346461090524524080,\"totalMBps\":5365450808227113003,\"totalSizeTiB\":8979659875393704693,\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"dhsgcba\",\"name\":\"phejkotynqgoulz\",\"type\":\"dlikwyqkgfgibma\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"akeqs\",\"name\":\"xybz\",\"type\":\"qedqytbciqfoufl\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"nkzsmodmglou\",\"name\":\"pbkwtmu\",\"type\":\"duqkt\"}]},\"location\":\"spwgcuertumkdosv\",\"tags\":{\"bjf\":\"bmdg\",\"bexppb\":\"dgmb\",\"rolfpfp\":\"tq\"},\"id\":\"algbquxigjyjg\",\"name\":\"jaoyfhrtx\",\"type\":\"lnerkujysvleju\"}],\"nextLink\":\"qawrlyxwj\"}")
+                    "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"xhocdgeablgphuti\",\"ndv\",\"aozwyiftyhxhu\",\"okftyxolniwpwcuk\"],\"provisioningState\":\"Deleting\",\"baseSizeTiB\":5413928169725328380,\"extendedCapacitySizeTiB\":6655543031987188756,\"totalVolumeSizeGiB\":831725990805220252,\"volumeGroupCount\":3283985932829658956,\"totalIops\":3346461090524524080,\"totalMBps\":5365450808227113003,\"totalSizeTiB\":8979659875393704693,\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"dhsgcba\",\"name\":\"phejkotynqgoulz\",\"type\":\"dlikwyqkgfgibma\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"akeqs\",\"name\":\"xybz\",\"type\":\"qedqytbciqfoufl\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"nkzsmodmglou\",\"name\":\"pbkwtmu\",\"type\":\"duqkt\"}],\"publicNetworkAccess\":\"Disabled\"},\"location\":\"wgcu\",\"tags\":{\"bbjfddgmbmbexp\":\"umkdosvqwhbmd\",\"gbquxigj\":\"bhtqqrolfpfpsa\",\"lnerkujysvleju\":\"jgzjaoyfhrtx\",\"kcprbnw\":\"fqawrlyxw\"},\"id\":\"xgjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"}],\"nextLink\":\"rwzwbng\"}")
                 .toObject(ElasticSanList.class);
-        Assertions.assertEquals("spwgcuertumkdosv", model.value().get(0).location());
-        Assertions.assertEquals("bmdg", model.value().get(0).tags().get("bjf"));
+        Assertions.assertEquals("wgcu", model.value().get(0).location());
+        Assertions.assertEquals("umkdosvqwhbmd", model.value().get(0).tags().get("bbjfddgmbmbexp"));
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, model.value().get(0).sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.value().get(0).sku().tier());
         Assertions.assertEquals("xhocdgeablgphuti", model.value().get(0).availabilityZones().get(0));
         Assertions.assertEquals(5413928169725328380L, model.value().get(0).baseSizeTiB());
         Assertions.assertEquals(6655543031987188756L, model.value().get(0).extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.value().get(0).publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
@@ -40,23 +42,35 @@ public final class ElasticSanListTests {
                     Arrays
                         .asList(
                             new ElasticSanInner()
-                                .withLocation("spwgcuertumkdosv")
-                                .withTags(mapOf("bjf", "bmdg", "bexppb", "dgmb", "rolfpfp", "tq"))
+                                .withLocation("wgcu")
+                                .withTags(
+                                    mapOf(
+                                        "bbjfddgmbmbexp",
+                                        "umkdosvqwhbmd",
+                                        "gbquxigj",
+                                        "bhtqqrolfpfpsa",
+                                        "lnerkujysvleju",
+                                        "jgzjaoyfhrtx",
+                                        "kcprbnw",
+                                        "fqawrlyxw"))
                                 .withSku(new Sku().withName(SkuName.PREMIUM_ZRS).withTier(SkuTier.PREMIUM))
                                 .withAvailabilityZones(
                                     Arrays.asList("xhocdgeablgphuti", "ndv", "aozwyiftyhxhu", "okftyxolniwpwcuk"))
                                 .withBaseSizeTiB(5413928169725328380L)
-                                .withExtendedCapacitySizeTiB(6655543031987188756L)));
+                                .withExtendedCapacitySizeTiB(6655543031987188756L)
+                                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)));
         model = BinaryData.fromObject(model).toObject(ElasticSanList.class);
-        Assertions.assertEquals("spwgcuertumkdosv", model.value().get(0).location());
-        Assertions.assertEquals("bmdg", model.value().get(0).tags().get("bjf"));
+        Assertions.assertEquals("wgcu", model.value().get(0).location());
+        Assertions.assertEquals("umkdosvqwhbmd", model.value().get(0).tags().get("bbjfddgmbmbexp"));
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, model.value().get(0).sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.value().get(0).sku().tier());
         Assertions.assertEquals("xhocdgeablgphuti", model.value().get(0).availabilityZones().get(0));
         Assertions.assertEquals(5413928169725328380L, model.value().get(0).baseSizeTiB());
         Assertions.assertEquals(6655543031987188756L, model.value().get(0).extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.value().get(0).publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -6,17 +6,26 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.ReplicaProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class ReplicaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicaProperties model =
-            BinaryData.fromString("{\"provisioningState\":\"Succeeded\"}").toObject(ReplicaProperties.class);
+            BinaryData
+                .fromString(
+                    "{\"provisioningState\":\"Running\",\"regionEndpointEnabled\":\"xcvhrfs\",\"resourceStopped\":\"uagrttikteusqc\"}")
+                .toObject(ReplicaProperties.class);
+        Assertions.assertEquals("xcvhrfs", model.regionEndpointEnabled());
+        Assertions.assertEquals("uagrttikteusqc", model.resourceStopped());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaProperties model = new ReplicaProperties();
+        ReplicaProperties model =
+            new ReplicaProperties().withRegionEndpointEnabled("xcvhrfs").withResourceStopped("uagrttikteusqc");
         model = BinaryData.fromObject(model).toObject(ReplicaProperties.class);
+        Assertions.assertEquals("xcvhrfs", model.regionEndpointEnabled());
+        Assertions.assertEquals("uagrttikteusqc", model.resourceStopped());
     }
 }

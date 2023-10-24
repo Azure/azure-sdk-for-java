@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"zysdzh\",\"isDataAction\":true,\"display\":{\"provider\":\"aiqyuvvfo\",\"resource\":\"p\",\"operation\":\"qyikvy\",\"description\":\"uyav\"},\"origin\":\"wmn\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"fybvpoek\",\"displayName\":\"gsgbdhuzq\",\"displayDescription\":\"j\",\"unit\":\"kynscliqhzv\",\"aggregationType\":\"nk\",\"fillGapWithZero\":\"tkubotppn\",\"category\":\"xz\",\"dimensions\":[{},{},{}]}],\"logSpecifications\":[{\"name\":\"bbc\",\"displayName\":\"qagt\"},{\"name\":\"dhlfkqojpykvgt\",\"displayName\":\"cnifm\"}]}}}]}";
+            "{\"value\":[{\"name\":\"uqgsj\",\"isDataAction\":true,\"display\":{\"provider\":\"xgketwz\",\"resource\":\"zjhfjmhvv\",\"operation\":\"vgpmun\",\"description\":\"sx\"},\"origin\":\"hfbuzjyihsasbhud\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"emslynsqyrp\",\"displayName\":\"obrltt\",\"displayDescription\":\"sjnygqdnfwqzdzgt\",\"unit\":\"axhnfh\",\"aggregationType\":\"yvi\",\"fillGapWithZero\":\"uwivkxoy\",\"category\":\"nbixxrti\",\"dimensions\":[{},{}]}],\"logSpecifications\":[{\"name\":\"gclrci\",\"displayName\":\"soxfrken\"},{\"name\":\"m\",\"displayName\":\"efrp\"},{\"name\":\"dnqqskawaoqvmmb\",\"displayName\":\"qfr\"}]}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,20 +62,20 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zysdzh", response.iterator().next().name());
+        Assertions.assertEquals("uqgsj", response.iterator().next().name());
         Assertions.assertEquals(true, response.iterator().next().isDataAction());
-        Assertions.assertEquals("aiqyuvvfo", response.iterator().next().display().provider());
-        Assertions.assertEquals("p", response.iterator().next().display().resource());
-        Assertions.assertEquals("qyikvy", response.iterator().next().display().operation());
-        Assertions.assertEquals("uyav", response.iterator().next().display().description());
-        Assertions.assertEquals("wmn", response.iterator().next().origin());
+        Assertions.assertEquals("xgketwz", response.iterator().next().display().provider());
+        Assertions.assertEquals("zjhfjmhvv", response.iterator().next().display().resource());
+        Assertions.assertEquals("vgpmun", response.iterator().next().display().operation());
+        Assertions.assertEquals("sx", response.iterator().next().display().description());
+        Assertions.assertEquals("hfbuzjyihsasbhud", response.iterator().next().origin());
         Assertions
             .assertEquals(
-                "fybvpoek",
+                "emslynsqyrp",
                 response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).name());
         Assertions
             .assertEquals(
-                "gsgbdhuzq",
+                "obrltt",
                 response
                     .iterator()
                     .next()
@@ -86,7 +86,7 @@ public final class OperationsListMockTests {
                     .displayName());
         Assertions
             .assertEquals(
-                "j",
+                "sjnygqdnfwqzdzgt",
                 response
                     .iterator()
                     .next()
@@ -97,11 +97,11 @@ public final class OperationsListMockTests {
                     .displayDescription());
         Assertions
             .assertEquals(
-                "kynscliqhzv",
+                "axhnfh",
                 response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).unit());
         Assertions
             .assertEquals(
-                "nk",
+                "yvi",
                 response
                     .iterator()
                     .next()
@@ -112,7 +112,7 @@ public final class OperationsListMockTests {
                     .aggregationType());
         Assertions
             .assertEquals(
-                "tkubotppn",
+                "uwivkxoy",
                 response
                     .iterator()
                     .next()
@@ -123,7 +123,7 @@ public final class OperationsListMockTests {
                     .fillGapWithZero());
         Assertions
             .assertEquals(
-                "xz",
+                "nbixxrti",
                 response
                     .iterator()
                     .next()
@@ -134,11 +134,11 @@ public final class OperationsListMockTests {
                     .category());
         Assertions
             .assertEquals(
-                "bbc",
+                "gclrci",
                 response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
         Assertions
             .assertEquals(
-                "qagt",
+                "soxfrken",
                 response
                     .iterator()
                     .next()

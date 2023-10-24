@@ -13,7 +13,7 @@ public final class AffectedMoveResourceTests {
         AffectedMoveResource model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"wyahuxinpmqnja\",\"sourceId\":\"ixjsprozvcputeg\",\"moveResources\":[{\"id\":\"fdatsc\",\"sourceId\":\"vpjhulsuuv\",\"moveResources\":[]},{\"id\":\"zkrwfn\",\"sourceId\":\"odjpslwejd\",\"moveResources\":[]},{\"id\":\"yoqpsoaccta\",\"sourceId\":\"kljla\",\"moveResources\":[]},{\"id\":\"yffdfdos\",\"sourceId\":\"expa\",\"moveResources\":[]}]}")
+                    "{\"id\":\"ftyhxhurokf\",\"sourceId\":\"xolniwpwcukjfk\",\"moveResources\":[{\"id\":\"xklrypl\",\"sourceId\":\"kbasyypn\",\"moveResources\":[{\"id\":\"gcbacphejkot\",\"sourceId\":\"qgoulznd\",\"moveResources\":[{}]},{\"id\":\"yqkgfg\",\"sourceId\":\"madgakeqsrxyb\",\"moveResources\":[{},{},{},{}]},{\"id\":\"dqytbciqfouflmm\",\"sourceId\":\"zsm\",\"moveResources\":[{},{},{}]},{\"id\":\"lougpbkw\",\"sourceId\":\"utduqktapspwgcu\",\"moveResources\":[{},{},{},{}]}]},{\"id\":\"mkdo\",\"sourceId\":\"qw\",\"moveResources\":[{\"id\":\"gbbjfddgmbmbe\",\"sourceId\":\"pbhtqqrolfpfpsa\",\"moveResources\":[{},{}]},{\"id\":\"uxig\",\"sourceId\":\"jgzjaoyfhrtx\",\"moveResources\":[{}]},{\"id\":\"rkujy\",\"sourceId\":\"l\",\"moveResources\":[{},{},{}]}]}]}")
                 .toObject(AffectedMoveResource.class);
     }
 
