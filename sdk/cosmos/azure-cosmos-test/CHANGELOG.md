@@ -4,11 +4,13 @@
 
 #### Features Added
 * Added support for `ReadFeed` operation type - See [PR 37108](https://github.com/Azure/azure-sdk-for-java/pull/37108)
+* Added support for `FaultInjectionServerErrorType.NAME_CACHE_IS_STALE` - See [PR 37285](https://github.com/Azure/azure-sdk-for-java/pull/37285)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 * Fixed an issue where `SERVICE_UNAVAILABLE` being injected incorrectly - See [PR 36601](https://github.com/Azure/azure-sdk-for-java/pull/36601)
+* Fixed an issue where `FaultInjectionRule` is not being injected correctly for `FaultInjectionOperationType.METADATA_REQUEST_CONTAINER` - See [PR 37285] - (https://github.com/Azure/azure-sdk-for-java/pull/37285)
 
 #### Other Changes
 

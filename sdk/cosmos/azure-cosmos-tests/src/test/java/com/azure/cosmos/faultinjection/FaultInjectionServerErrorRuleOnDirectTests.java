@@ -120,6 +120,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
     @DataProvider(name = "faultInjectionServerErrorResponseProvider")
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
+            // Test retry situation within local region  - there is no preferred regions being configured on the client
             // operationType, faultInjectionOperationType, faultInjectionServerError, will SDK retry within local region, errorStatusCode, errorSubStatusCode
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
@@ -130,6 +131,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, true, 410, 1000 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
@@ -139,6 +141,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, true, 410, 1000 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
@@ -147,6 +150,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, true, 410, 1000 }
         };
     }
 
