@@ -17,11 +17,11 @@ public final class SourceCreationData {
     private VolumeCreateOption createSource;
 
     /*
-     * If createOption is Copy, this is the ARM id of the source snapshot or disk. If createOption is Restore, this is
-     * the ARM-like id of the source disk restore point.
+     * Fully qualified resource ID for the resource. E.g.
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
      */
-    @JsonProperty(value = "sourceUri")
-    private String sourceUri;
+    @JsonProperty(value = "sourceId")
+    private String sourceId;
 
     /** Creates an instance of SourceCreationData class. */
     public SourceCreationData() {
@@ -48,24 +48,24 @@ public final class SourceCreationData {
     }
 
     /**
-     * Get the sourceUri property: If createOption is Copy, this is the ARM id of the source snapshot or disk. If
-     * createOption is Restore, this is the ARM-like id of the source disk restore point.
+     * Get the sourceId property: Fully qualified resource ID for the resource. E.g.
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
      *
-     * @return the sourceUri value.
+     * @return the sourceId value.
      */
-    public String sourceUri() {
-        return this.sourceUri;
+    public String sourceId() {
+        return this.sourceId;
     }
 
     /**
-     * Set the sourceUri property: If createOption is Copy, this is the ARM id of the source snapshot or disk. If
-     * createOption is Restore, this is the ARM-like id of the source disk restore point.
+     * Set the sourceId property: Fully qualified resource ID for the resource. E.g.
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
      *
-     * @param sourceUri the sourceUri value to set.
+     * @param sourceId the sourceId value to set.
      * @return the SourceCreationData object itself.
      */
-    public SourceCreationData withSourceUri(String sourceUri) {
-        this.sourceUri = sourceUri;
+    public SourceCreationData withSourceId(String sourceId) {
+        this.sourceId = sourceId;
         return this;
     }
 
