@@ -234,7 +234,7 @@ public final class AzureMonitorMetricBatchBuilder
     @Generated
     public AzureMonitorMetricBatch buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-10-01";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-05-01-preview";
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureMonitorMetricBatch client =
