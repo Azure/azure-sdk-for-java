@@ -192,32 +192,28 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       .asInstanceOf[FeedRangePartitionKeyImpl]
 
     val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
-    rangeToNormalizedRange(feedRange.getEffectiveRange(pkDefinition))
+    val effectiveRange = feedRange.getEffectiveRange(pkDefinition)
+    rangeToNormalizedRange(effectiveRange)
   }
 
   private[cosmos] def partitionKeyValuesToNormalizedRange
   (
-      partitionKeyValue: Object,
+      partitionKeyValue: String,
       partitionKeyDefinitionJson: String
   ): NormalizedRange = {
 
       val partitionKey = new PartitionKeyBuilder()
       val objectMapper = new ObjectMapper()
-      val json = partitionKeyValue.toString
-      var isMultiplePartitionKeyPaths = false
+      val json = partitionKeyValue
       try {
           val partitionKeyValues = objectMapper.readValue(json, classOf[Array[String]])
           for (value <- partitionKeyValues) {
               partitionKey.add(value.trim)
           }
           partitionKey.build()
-          isMultiplePartitionKeyPaths = true
       } catch {
           case e: Exception =>
               logInfo("Invalid partition key paths: " + json, e)
-      }
-      if (!isMultiplePartitionKeyPaths) {
-          partitionKey.add(partitionKeyValue.toString.trim)
       }
 
       val feedRange = FeedRange
@@ -225,7 +221,8 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
           .asInstanceOf[FeedRangePartitionKeyImpl]
 
       val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
-      rangeToNormalizedRange(feedRange.getEffectiveRange(pkDefinition))
+      val effectiveRange = feedRange.getEffectiveRange(pkDefinition)
+      rangeToNormalizedRange(effectiveRange)
   }
 
   def setIoThreadCountPerCoreFactor

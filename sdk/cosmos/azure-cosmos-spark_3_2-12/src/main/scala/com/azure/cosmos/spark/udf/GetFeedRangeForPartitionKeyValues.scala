@@ -8,11 +8,11 @@ import org.apache.spark.sql.api.java.UDF2
 
 
 @SerialVersionUID(1L)
-class GetFeedRangeForPartitionKeyValues extends UDF2[String, Object, String] {
+class GetFeedRangeForPartitionKeyValues extends UDF2[String, String, String] {
   override def call
   (
     partitionKeyDefinitionJson: String,
-    partitionKeyValue: Object
+    partitionKeyValue: String
   ): String = {
 
     requireNotNullOrEmpty(partitionKeyDefinitionJson, "partitionKeyDefinitionJson")
