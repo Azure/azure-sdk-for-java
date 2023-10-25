@@ -7,21 +7,23 @@ metadata:
 spec:
   containers:
     - name: fault-injector
-      image:  {{ .Stress.imageTag }}
-      command: ['sh', '-c']
-      args:
-        - set -ex && http-fault-injector
+      image: stresspgs7b6dif73rup6.azurecr.io/dotnet-tools/httpfaultinjector:0.2.0-dev
       imagePullPolicy: Always
     - name: main
-      # az acr list -g rg-stress-cluster-test --subscription "Azure SDK Developer Playground" --query "[0].loginServer"
       image:  {{ .Stress.imageTag }}
       command: ['sh', '-c']
       args:
         - |
           set -exa;
           mkdir -p "$DEBUG_SHARE";
-          . /mnt/outputs/.env &&
-          java -jar /stress-storage/sdk/storage/azure-storage-blob-stress/target/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar {{ .Stress.testTarget }} -async {{ .Stress.async }} -size {{ .Stress.blobSizeBytes }} -parallel {{ .Stress.parallel }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          . /mnt/outputs/.env;
+          export AZURE_HTTP_LOG_DETAIL_LEVEL="HEADERS";
+          export AZURE_LOG_LEVEL="INFO";
+          export APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL="DEBUG";
+          export APPLICATIONINSIGHTS_ROLE_NAME=storage-{{ .Stress.BaseName }};
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.17.jar \
+          -jar /app/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar \
+          {{ .Stress.testTarget }} -async {{ .Stress.async }} -size {{ .Stress.blobSizeBytes }} -parallel {{ .Stress.parallel }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
       # when iterating, so this is a must.
       imagePullPolicy: Always

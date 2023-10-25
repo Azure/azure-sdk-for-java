@@ -1,6 +1,7 @@
 package com.azure.storage.blob.stress;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.stress.builders.DownloadToFileScenarioBuilder;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.HttpFaultInjectingHttpClient;
@@ -18,7 +19,11 @@ import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.System.exit;
+
 public class BlobStorageStressRunner {
+
+    private static final ClientLogger LOGGER = new ClientLogger(BlobStorageStressRunner.class);
 
     public static void main(String[] args) {
         FaultInjectionProbabilities probabilities = getDefaultFaultProbabilities();
@@ -29,7 +34,7 @@ public class BlobStorageStressRunner {
             Path tmpdir = Files.createTempDirectory("tmpDirPrefix");
             builder.setDirectoryPath(Paths.get(tmpdir.toString()));
         } catch (Exception e) {
-            System.err.println("Unable to create tmpDirPrefix directory.");
+            LOGGER.error("Unable to create tmpDirPrefix directory.", e);
             e.printStackTrace();
         }
 
@@ -41,8 +46,8 @@ public class BlobStorageStressRunner {
         try {
             run(builder, true);
         } catch (Exception e) {
-            System.err.println("Critical failure.");
-            e.printStackTrace();
+            LOGGER.error("Critical failure.", e);
+            exit(1);
         }
     }
 
@@ -54,22 +59,21 @@ public class BlobStorageStressRunner {
         }
 
         if (sync) {
-            System.out.println("start: " + java.time.LocalTime.now());
+            LOGGER.info("Starting the test");
             ForkJoinPool forkJoinPool = new ForkJoinPool(scenarios.size());
             for (StorageStressScenario s : scenarios) {
                 forkJoinPool.execute(() -> s.run(Duration.ofSeconds(builder.getTestTimeSeconds())));
             }
-            System.out.println("scenarios started: " + java.time.LocalTime.now());
+            LOGGER.info("Starting scenarios.");
             forkJoinPool.awaitQuiescence(builder.getTestTimeSeconds() + 1, TimeUnit.SECONDS);
-            System.out.println("awaited: " + java.time.LocalTime.now());
+            LOGGER.info("Scenario ended.");
         } else {
             // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
             // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
             // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.
             Schedulers.onHandleError((t, e) -> {
-                System.err.print(t + " threw exception: ");
-                e.printStackTrace();
-                System.exit(1);
+                LOGGER.error("Critical failure.", e);
+                exit(1);
             });
 
             Flux.fromIterable(scenarios)
@@ -82,8 +86,10 @@ public class BlobStorageStressRunner {
                 .block();
         }
 
-        System.out.println("Success: " + scenarios.stream().mapToInt(StorageStressScenario::getSuccessfulRunCount).sum());
-        System.out.println("failed: " + scenarios.stream().mapToInt(StorageStressScenario::getFailedRunCount).sum());
+        LOGGER.atInfo()
+            .addKeyValue("succeeded", scenarios.stream().mapToInt(StorageStressScenario::getSuccessfulRunCount).sum())
+            .addKeyValue("failed", scenarios.stream().mapToInt(StorageStressScenario::getFailedRunCount).sum())
+            .log("test ended");
 
         for (StorageStressScenario s : scenarios) {
             s.teardown();
