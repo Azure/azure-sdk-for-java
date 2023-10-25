@@ -33,7 +33,7 @@ import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
 /**
  * Unit tests for FeatureManager.
  */
-@SpringBootTest(classes = { TestConfiguration.class, SpringBootTest.class })
+@SpringBootTest(classes = { FeatureManagementTestConfigurations.class, SpringBootTest.class })
 public class FeatureManagerTest {
 
     private FeatureManager featureManager;
@@ -52,7 +52,7 @@ public class FeatureManagerTest {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
 
-        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties);
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null, null);
     }
 
     @AfterEach
@@ -159,7 +159,7 @@ public class FeatureManagerTest {
 
         assertTrue(featureManager.isEnabledAsync("On").block());
     }
-    
+
     @Test
     public void oneOffAny() {
         HashMap<String, Feature> features = new HashMap<>();
@@ -180,7 +180,7 @@ public class FeatureManagerTest {
 
         assertTrue(featureManager.isEnabledAsync("On").block());
     }
-    
+
     @Test
     public void oneOffAll() {
         HashMap<String, Feature> features = new HashMap<>();
