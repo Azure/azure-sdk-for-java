@@ -90,11 +90,11 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .withWebApplicationFirewall(true, ApplicationGatewayFirewallMode.PREVENTION)
                 .create();
 
-        Assertions.assertTrue(appGateway != null);
-        Assertions.assertTrue(ApplicationGatewayTier.WAF_V2.equals(appGateway.tier()));
-        Assertions.assertTrue(ApplicationGatewaySkuName.WAF_V2.equals(appGateway.size()));
-        Assertions.assertTrue(appGateway.autoscaleConfiguration().minCapacity() == 2);
-        Assertions.assertTrue(appGateway.autoscaleConfiguration().maxCapacity() == 5);
+        Assertions.assertNotNull(appGateway);
+        Assertions.assertEquals(ApplicationGatewayTier.WAF_V2, appGateway.tier());
+        Assertions.assertEquals(ApplicationGatewaySkuName.WAF_V2, appGateway.size());
+        Assertions.assertEquals(2, appGateway.autoscaleConfiguration().minCapacity());
+        Assertions.assertEquals(5, (int) appGateway.autoscaleConfiguration().maxCapacity());
 
         ApplicationGatewayWebApplicationFirewallConfiguration config = appGateway.webApplicationFirewallConfiguration();
         config.withFileUploadLimitInMb(200);
@@ -119,30 +119,26 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         appGateway.refresh();
 
         // Verify WAF
-        Assertions.assertTrue(appGateway.webApplicationFirewallConfiguration().fileUploadLimitInMb() == 200);
+        Assertions.assertEquals(200, (int) appGateway.webApplicationFirewallConfiguration().fileUploadLimitInMb());
         Assertions.assertTrue(appGateway.webApplicationFirewallConfiguration().requestBodyCheck());
-        Assertions
-            .assertEquals(appGateway.webApplicationFirewallConfiguration().maxRequestBodySizeInKb(), (Integer) 64);
+        Assertions.assertEquals(64, (int) appGateway.webApplicationFirewallConfiguration().maxRequestBodySizeInKb());
 
-        Assertions.assertEquals(appGateway.webApplicationFirewallConfiguration().exclusions().size(), 1);
+        Assertions.assertEquals(1, appGateway.webApplicationFirewallConfiguration().exclusions().size());
 
-        Assertions
-            .assertEquals(
-                appGateway.webApplicationFirewallConfiguration().exclusions().get(0).matchVariable(),
-                "RequestHeaderNames");
-        Assertions
-            .assertEquals(
-                appGateway.webApplicationFirewallConfiguration().exclusions().get(0).selectorMatchOperator(),
-                "StartsWith");
-        Assertions
-            .assertEquals(
-                appGateway.webApplicationFirewallConfiguration().exclusions().get(0).selector(), "User-Agent");
+        Assertions.assertEquals(
+            "RequestHeaderNames",
+            appGateway.webApplicationFirewallConfiguration().exclusions().get(0).matchVariable());
+        Assertions.assertEquals(
+            "StartsWith",
+            appGateway.webApplicationFirewallConfiguration().exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals(
+            "User-Agent",
+            appGateway.webApplicationFirewallConfiguration().exclusions().get(0).selector());
 
-        Assertions.assertEquals(appGateway.webApplicationFirewallConfiguration().disabledRuleGroups().size(), 1);
-        Assertions
-            .assertEquals(
-                appGateway.webApplicationFirewallConfiguration().disabledRuleGroups().get(0).ruleGroupName(),
-                "REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION");
+        Assertions.assertEquals(1, appGateway.webApplicationFirewallConfiguration().disabledRuleGroups().size());
+        Assertions.assertEquals(
+            "REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION",
+            appGateway.webApplicationFirewallConfiguration().disabledRuleGroups().get(0).ruleGroupName());
     }
 
     @Test
