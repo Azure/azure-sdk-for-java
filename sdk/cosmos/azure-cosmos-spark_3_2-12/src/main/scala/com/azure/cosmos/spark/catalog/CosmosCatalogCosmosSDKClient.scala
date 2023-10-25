@@ -172,9 +172,9 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
         val partitionKeyDef = new PartitionKeyDefinition
         val paths = new util.ArrayList[String]
         val pathList = partitionKeyPath.split(",").toList
-        if (pathList.size > 1) {
+        if (pathList.size >= 2) {
             partitionKeyDef.setKind(PartitionKind.MULTI_HASH)
-            partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2)
+            partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.valueOf(CosmosContainerProperties.getPartitionKeyVersion(containerProperties).get ))
             pathList.foreach(path => paths.add(path.trim))
         } else {
             partitionKeyDef.setKind(PartitionKind.HASH)

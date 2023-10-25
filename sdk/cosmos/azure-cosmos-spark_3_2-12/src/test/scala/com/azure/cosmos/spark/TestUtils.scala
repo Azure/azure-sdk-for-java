@@ -374,7 +374,7 @@ trait AutoCleanableCosmosContainerWithSubpartitions extends CosmosContainerWithS
 
         try {
             // wait for data to get replicated
-            Thread.sleep(20000)
+            Thread.sleep(1000)
             System.out.println(s"cleaning the items in container $cosmosContainer")
             val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 

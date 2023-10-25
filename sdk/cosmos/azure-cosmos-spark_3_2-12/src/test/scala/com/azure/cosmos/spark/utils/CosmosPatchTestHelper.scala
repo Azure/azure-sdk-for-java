@@ -32,9 +32,11 @@ def getPatchItemWithFullSchemaSubpartitions(id: String, partitionKeyPath: String
  def getPatchItemWithSchema(id: String, partitionKeyPath: String, schema: StructType): ObjectNode = {
   val objectNode = objectMapper.createObjectNode()
   objectNode.put(IdAttributeName, id)
-/*  if (partitionKeyPath != IdAttributeName) {
-   objectNode.put(partitionKeyPath, UUID.randomUUID().toString)
-  }*/
+  if (partitionKeyPath != IdAttributeName) {
+      if (!partitionKeyPath.contains("tenantId")) {
+          objectNode.put(partitionKeyPath, UUID.randomUUID().toString)
+      }
+  }
   val guid = UUID.randomUUID().toString
 
   for (field <- schema.fields) {
