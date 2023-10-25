@@ -86,7 +86,7 @@ class ApplicationGatewayProbeImpl
     }
 
     @Override
-    public Boolean isUseHostNameFromBackendHttpSettings() {
+    public Boolean isHostNameFromBackendHttpSettings() {
         return this.innerModel().pickHostnameFromBackendHttpSettings();
     }
 

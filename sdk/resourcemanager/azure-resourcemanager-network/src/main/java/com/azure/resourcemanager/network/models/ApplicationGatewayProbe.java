@@ -55,7 +55,7 @@ public interface ApplicationGatewayProbe
      *
      * @return Whether probe uses the host name from the HTTP settings.
      */
-    Boolean isUseHostNameFromBackendHttpSettings();
+    Boolean isHostNameFromBackendHttpSettings();
 
     /** Grouping of application gateway probe definition stages. */
     interface DefinitionStages {

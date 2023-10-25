@@ -673,7 +673,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
 
         Assertions.assertEquals(1, appGateway.probes().size());
         Assertions.assertNull(appGateway.probes().get(probeName).host());
-        Assertions.assertTrue(appGateway.probes().get(probeName).isUseHostNameFromBackendHttpSettings());
+        Assertions.assertTrue(appGateway.probes().get(probeName).isHostNameFromBackendHttpSettings());
 
         appGateway.update()
             .updateProbe(probeName)
@@ -684,7 +684,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
 
         Assertions.assertEquals(1, appGateway.probes().size());
         Assertions.assertNotNull(appGateway.probes().get(probeName).host());
-        Assertions.assertFalse(appGateway.probes().get(probeName).isUseHostNameFromBackendHttpSettings());
+        Assertions.assertFalse(appGateway.probes().get(probeName).isHostNameFromBackendHttpSettings());
 
         appGateway.update()
             .withoutProbe(probeName)
