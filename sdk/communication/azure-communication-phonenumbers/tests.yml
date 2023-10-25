@@ -1,9 +1,30 @@
-trigger: none
-
 parameters:
+- name: PackageName
+  type: string
+  default: not-specified
+- name: SafeName
+  type: string
+  default: not-specified
 - name: Clouds
   type: string
   default: 'Public, PPE, Int'
+- name: TestMode
+  type: string
+  default: 'LIVE'
+- name: TestResourceDirectories
+  type: object
+  default:
+    - communication/test-resources/
+- name: EnVars
+  type: object
+  default: {}
+- name: MatrixConfigs
+  type: object
+  default:
+    - Name: Java_live_test_base
+      Path: eng/pipelines/templates/stages/platform-matrix.json
+      Selection: sparse
+      GenerateVMJobs: true
 - name: CloudConfig
   type: object
   default:
@@ -20,6 +41,7 @@ parameters:
       # This only affects the phone-numbers package
       MatrixReplace:
         - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
+        - SKIP_SIP_ROUTING_LIVE_TESTS=false/true
     Int:
       SubscriptionConfigurations:
         - $(sub-config-communication-int-test-resources-common)
@@ -27,9 +49,10 @@ parameters:
 
       # This only affects the phone-numbers package
       MatrixReplace:
-        - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true  
+        - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
+        - SKIP_SIP_ROUTING_LIVE_TESTS=false/true
+
 stages:
-  - template: /sdk/communication/communication-tests-template.yml
     parameters:
       PackageName: azure-communication-phonenumbers
       SafeName: azurecommunicationphonenumbers
