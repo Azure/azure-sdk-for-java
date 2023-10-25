@@ -2,7 +2,9 @@ package com.azure.storage.blob.stress.scenarios;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.stress.BlobStorageStressRunner;
 import com.azure.storage.blob.stress.builders.DownloadToFileScenarioBuilder;
 import com.azure.storage.blob.stress.scenarios.infra.BlobStressScenario;
 import com.azure.storage.stress.RandomInputStream;
@@ -23,6 +25,8 @@ import java.util.zip.CRC32;
 import static com.azure.storage.stress.HttpFaultInjectingHttpClient.FAULT_TRACKING_CONTEXT_KEY;
 
 public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToFileScenarioBuilder> {
+
+    private static final ClientLogger LOGGER = new ClientLogger(DownloadToFileScenarioBuilder.class);
 
     private static Path originalDataPath;
     private static long originalDataChecksum;
@@ -49,13 +53,13 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
 
                 validateDownloadedContents(downloadPath);
                 logSuccess();
-                System.out.println("success");
+                LOGGER.info("success");
             } catch (Exception e) {
                 if (e.getMessage().contains("Timeout on blocking read")) {
                     // test timed out, so break out of loop instead of counting as a failure
                     break;
                 }
-                System.err.println("failure: " + e.getMessage());
+                LOGGER.error("failure", e);
                 logFailure(e.getMessage());
             }
         }
