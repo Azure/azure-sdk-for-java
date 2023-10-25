@@ -3,42 +3,35 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.certificates.implementation.models.Action;
+import com.azure.security.keyvault.certificates.implementation.models.Trigger;
 
-import java.util.Map;
+import java.io.IOException;
 
 /**
  * Represents a LifeTimeAction in {@link CertificatePolicy}
  */
-public final class LifetimeAction {
+public final class LifetimeAction implements JsonSerializable<LifetimeAction> {
+    private final com.azure.security.keyvault.certificates.implementation.models.LifetimeAction impl;
 
-    /**
-     * The type of the action. Possible values include: 'EmailContacts',
-     * 'AutoRenew'.
-     */
-    private CertificatePolicyAction certificatePolicyAction;
-
-    /**
-     * Percentage of lifetime at which to trigger. Value should be between 1
-     * and 99.
-     */
-    private Integer lifetimePercentage;
-
-    /**
-     * Days before expiry to attempt renewal. Value should be between 1 and
-     * validity_in_months multiplied by 27. If validity_in_months is 36, then
-     * value should be between 1 and 972 (36 * 27).
-     */
-    private Integer daysBeforeExpiry;
-
-    LifetimeAction() { }
+    com.azure.security.keyvault.certificates.implementation.models.LifetimeAction getImpl() {
+        return this.impl;
+    }
 
     /**
      * Creates a new LifetimeAction instance, with the provided {@link CertificatePolicyAction}.
      * @param action The action type of this LifetimeAction.
      */
     public LifetimeAction(CertificatePolicyAction action) {
-        this.certificatePolicyAction = action;
+        this.impl = new com.azure.security.keyvault.certificates.implementation.models.LifetimeAction()
+            .setAction(new Action().setActionType(action));
+    }
+
+    LifetimeAction(com.azure.security.keyvault.certificates.implementation.models.LifetimeAction impl) {
+        this.impl = impl;
     }
 
     /**
@@ -47,7 +40,7 @@ public final class LifetimeAction {
      * @return the lifetime percentage
      */
     public Integer getLifetimePercentage() {
-        return this.lifetimePercentage;
+        return impl.getTrigger() == null ? null : impl.getTrigger().getLifetimePercentage();
     }
 
     /**
@@ -57,7 +50,11 @@ public final class LifetimeAction {
      * @return the LifetimeAction object itself.
      */
     public LifetimeAction setLifetimePercentage(Integer lifetimePercentage) {
-        this.lifetimePercentage = lifetimePercentage;
+        if (impl.getTrigger() == null) {
+            impl.setTrigger(new Trigger());
+        }
+
+        impl.getTrigger().setLifetimePercentage(lifetimePercentage);
         return this;
     }
 
@@ -67,7 +64,7 @@ public final class LifetimeAction {
      * @return the days before expiry
      */
     public Integer getDaysBeforeExpiry() {
-        return this.daysBeforeExpiry;
+        return impl.getTrigger() == null ? null : impl.getTrigger().getDaysBeforeExpiry();
     }
 
     /**
@@ -77,7 +74,11 @@ public final class LifetimeAction {
      * @return the LifetimeAction object itself.
      */
     public LifetimeAction setDaysBeforeExpiry(Integer daysBeforeExpiry) {
-        this.daysBeforeExpiry = daysBeforeExpiry;
+        if (impl.getTrigger() == null) {
+            impl.setTrigger(new Trigger());
+        }
+
+        impl.getTrigger().setDaysBeforeExpiry(daysBeforeExpiry);
         return this;
     }
 
@@ -87,18 +88,23 @@ public final class LifetimeAction {
      * @return the lifetime action
      */
     public CertificatePolicyAction getAction() {
-        return this.certificatePolicyAction;
+        return impl.getAction() == null ? null : impl.getAction().getActionType();
     }
 
-
-    @JsonProperty(value = "action")
-    private void unpackAction(Map<String, Object> action) {
-        certificatePolicyAction = CertificatePolicyAction.fromString((String) action.get("action_type"));
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return impl.toJson(jsonWriter);
     }
 
-    @JsonProperty(value = "trigger")
-    private void unpackTrigger(Map<String, Object> triggerProps) {
-        lifetimePercentage = (Integer) triggerProps.get("lifetime_percentage");
-        daysBeforeExpiry = (Integer) triggerProps.get("days_before_expiry");
+    /**
+     * Reads a JSON stream into a {@link LifetimeAction}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link LifetimeAction} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link LifetimeAction} fails to be read from the {@code jsonReader}.
+     */
+    public static LifetimeAction fromJson(JsonReader jsonReader) throws IOException {
+        return new LifetimeAction(
+            com.azure.security.keyvault.certificates.implementation.models.LifetimeAction.fromJson(jsonReader));
     }
 }
