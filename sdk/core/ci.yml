@@ -131,6 +131,7 @@ extends:
       - name: azure-core-experimental
         groupId: com.azure
         safeName: azurecoreexperimental
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecoreexperimental }}
       - name: azure-core-http-jdk-httpclient
         groupId: com.azure
