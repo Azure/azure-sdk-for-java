@@ -8,6 +8,11 @@ import com.azure.storage.blob.stress.BlobStorageStressRunner;
 import com.azure.storage.blob.stress.builders.DownloadToFileScenarioBuilder;
 import com.azure.storage.blob.stress.scenarios.infra.BlobStressScenario;
 import com.azure.storage.stress.RandomInputStream;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -42,9 +47,12 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
     public void run(Duration timeout) {
         long endTimeNano = System.nanoTime() + timeout.toNanos();
         long timeoutNano;
+
+        Tracer tracer = GlobalOpenTelemetry.getTracer("test");
         while ((timeoutNano = endTimeNano - System.nanoTime()) > 0) {
             Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
-            try {
+            Span span = tracer.spanBuilder("downloadToFile").startSpan();
+            try (Scope s = span.makeCurrent()) {
                 Queue<String> faultTypes = new ConcurrentLinkedQueue<>();
                 Context context = new Context(FAULT_TRACKING_CONTEXT_KEY, faultTypes);
                 BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(downloadPath.toString());
@@ -61,6 +69,9 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
                 }
                 LOGGER.error("failure", e);
                 logFailure(e.getMessage());
+                span.setStatus(StatusCode.ERROR, e.getMessage());
+            } finally {
+                span.end();
             }
         }
     }
