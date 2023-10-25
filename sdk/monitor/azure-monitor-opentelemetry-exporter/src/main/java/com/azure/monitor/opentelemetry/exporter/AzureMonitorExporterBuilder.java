@@ -463,7 +463,6 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
-        RpAttachType.setRpAttachType(RpAttachType.MANUAL);
         return new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
     }
 
