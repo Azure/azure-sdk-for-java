@@ -25,7 +25,6 @@ import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
