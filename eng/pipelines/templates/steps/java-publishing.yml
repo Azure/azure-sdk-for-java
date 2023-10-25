@@ -107,7 +107,7 @@ steps:
           -Path ${{ parameters.OutputDirectory }}
           -InformationAction Continue
     - ${{if and(eq(parameters.ShouldPublish, 'true'), ne(parameters.StageOnly, 'true'))}}:
-      - task: EsrpRelease@2
+      - task: EsrpRelease@4
         displayName: 'Publish to ESRP'
         inputs:
           ConnectedServiceName: 'ESRP Release Service'
