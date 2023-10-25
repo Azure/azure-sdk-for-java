@@ -37,7 +37,6 @@ import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
-import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 
 import java.net.MalformedURLException;
@@ -185,7 +184,6 @@ public class ShareFileClientBuilder implements
     private ShareTokenIntent shareTokenIntent;
     private boolean allowSourceTrailingDot;
     private boolean allowTrailingDot;
-    private ShareAudience audience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareFileClient FileClients} and {@link
@@ -208,7 +206,7 @@ public class ShareFileClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         return new AzureFileStorageImplBuilder()
             .url(endpoint)
@@ -728,17 +726,6 @@ public class ShareFileClientBuilder implements
      */
     public ShareFileClientBuilder shareTokenIntent(ShareTokenIntent shareTokenIntent) {
         this.shareTokenIntent = shareTokenIntent;
-        return this;
-    }
-
-    /**
-     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
-     * when using a shared key.
-     * @param audience {@link ShareAudience} to be used when requesting a token from Azure Active Directory (AAD).
-     * @return the updated ShareFileClientBuilder object
-     */
-    public ShareFileClientBuilder audience(ShareAudience audience) {
-        this.audience = audience;
         return this;
     }
 }

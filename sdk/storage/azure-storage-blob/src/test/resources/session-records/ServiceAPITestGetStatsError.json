@@ -1,0 +1,89 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ce1f44fc0ce1f44fc27242771c340abfe0c8a4ccfb80?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "55816c99-2f92-4af3-8a14-0ec125557f3f"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7FBBD04CE",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:42:57 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "56e6bd20-101e-0045-7ba0-791f52000000",
+      "x-ms-client-request-id" : "55816c99-2f92-4af3-8a14-0ec125557f3f",
+      "Date" : "Thu, 15 Jul 2021 17:42:56 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1f165632-3a60-4f00-b0b5-38c8ea759ba2",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "d3fd7a46-e01e-0041-0ba0-799255000000",
+      "x-ms-client-request-id" : "1f165632-3a60-4f00-b0b5-38c8ea759ba2",
+      "Date" : "Thu, 15 Jul 2021 17:42:57 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=stats",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b153f263-97be-4889-83fb-bae94c1dafe1"
+    },
+    "Response" : {
+      "content-length" : "376",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Date" : "Thu, 15 Jul 2021 17:42:58 GMT",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-error-code" : "InvalidQueryParameterValue",
+      "x-ms-request-id" : "e4578e34-701e-0043-18a0-792ced000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:e4578e34-701e-0043-18a0-792ced000000\nTime:2021-07-15T17:42:58.5977599Z</Message><QueryParameterName>comp</QueryParameterName><QueryParameterValue>stats</QueryParameterValue><Reason /></Error>",
+      "x-ms-client-request-id" : "b153f263-97be-4889-83fb-bae94c1dafe1",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "27cbae28-3636-4a1b-9bcf-ccc55c0a0098",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "a7bf0192-001e-0004-62a0-7947b6000000",
+      "x-ms-client-request-id" : "27cbae28-3636-4a1b-9bcf-ccc55c0a0098",
+      "Date" : "Thu, 15 Jul 2021 17:42:57 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "ce1f44fc0ce1f44fc27242771c340abfe0c8a4ccfb80", "ce1f44fc975295ea", "ce1f44fc79562cb7" ]
+}

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/2c0daa8302c0daa83c52374105a5c75e76efc49fd88e?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6f137406-6697-407a-bb68-690b835bd615"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1E799D675608",
+      "Last-Modified" : "Fri, 15 Apr 2022 00:48:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a4c7a93b-801e-007b-6462-505064000000",
+      "x-ms-client-request-id" : "6f137406-6697-407a-bb68-690b835bd615",
+      "Date" : "Fri, 15 Apr 2022 00:48:09 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.blob.core.windows.net/2c0daa8302c0daa83c52374105a5c75e76efc49fd88e?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "004d9ae3-4c17-4ba9-8eb3-19be44d2cc68"
+    },
+    "Response" : {
+      "content-length" : "252",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ConditionNotMet",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "8a51e433-a01e-001e-3862-50fe20000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:8a51e433-a01e-001e-3862-50fe20000000\nTime:2022-04-15T00:48:10.9435340Z</Message></Error>",
+      "x-ms-client-request-id" : "004d9ae3-4c17-4ba9-8eb3-19be44d2cc68",
+      "Date" : "Fri, 15 Apr 2022 00:48:10 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "2c0daa8302c0daa83c52374105a5c75e76efc49fd88e", "2c0daa8315748a16", "2c0daa8307979ec4" ]
+}

@@ -4,16 +4,38 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-storage-file-datalake
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azurestoragefiledatalake
+      ServiceDirectory: storage
+    - name: azure-storage-common
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azurestoragecommon
+      ServiceDirectory: storage
+    - name: azure-storage-internal-avro
       groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azurestorageinternalavro
+      skipPublishDocMs: true
+      skipPublishDocGithubIo: true
+      ServiceDirectory: storage
+    - name: azure-storage-queue
+      groupId: com.azure
+      safeName: azurestoragequeue
+      ServiceDirectory: storage
+    - name: azure-storage-blob
+      groupId: com.azure
+      safeName: azurestorageblob
+      ServiceDirectory: storage
+    - name: azure-storage-blob-batch
+      groupId: com.azure
+      safeName: azurestorageblobbatch
+      ServiceDirectory: storage
+    - name: azure-storage-file-share
+      groupId: com.azure
+      safeName: azurestoragefileshare
+      ServiceDirectory: storage
+    - name: azure-storage-blob-cryptography
+      groupId: com.azure
+      safeName: azurestorageblobcryptography
+      ServiceDirectory: storage
 
