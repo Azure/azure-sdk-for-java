@@ -25,6 +25,7 @@ import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
@@ -231,6 +232,19 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodesWithContextParam(HttpClient httpClient) {
+        PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
+                .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
+                .listAvailableTollFreeAreaCodes("US", Context.NONE);
+        List<String> expectedAreaCodes = Arrays.asList("888", "877", "866", "855", "844", "800", "833", "88");
+        for (PhoneNumberAreaCode areaCode : areaCodesResult) {
+            assertTrue(expectedAreaCodes.contains(areaCode.getAreaCode()));
+        }
+        assertNotNull(areaCodesResult);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getTollFreeAreaCodesWrongCountryCode(HttpClient httpClient) {
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "listAvailableAreaCodes");
 
@@ -248,6 +262,20 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
                 .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
                         locality.getAdministrativeDivision().getAbbreviatedName());
+        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+        assertNotNull(areaCodes);
+        assertNotNull(areaCodes.getAreaCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodesWithContextParam(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).iterator().next();
+        PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
+                .getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
+                .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
+                        locality.getAdministrativeDivision().getAbbreviatedName(), Context.NONE);
         PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
         assertNotNull(areaCodes);
         assertNotNull(areaCodes.getAreaCode());
@@ -277,10 +305,43 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getCountriesWithContextParam(HttpClient httpClient) {
+        PagedIterable<PhoneNumberCountry> countriesResult = this
+                .getClientWithConnectionString(httpClient, "listAvailableCountries")
+                .listAvailableCountries(Context.NONE);
+        PhoneNumberCountry country = countriesResult.iterator().next();
+        assertNotNull(country);
+        assertNotNull(country.getCountryCode());
+        assertNotNull(country.getLocalizedName());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getCountriesByPages(HttpClient httpClient) {
+        Iterable<PagedResponse<PhoneNumberCountry>> countriesResult = this
+                .getClientWithConnectionString(httpClient, "listAvailableCountries").listAvailableCountries()
+                .iterableByPage(1);
+        PagedResponse<PhoneNumberCountry> countriesPages = countriesResult.iterator().next();
+        assertEquals(countriesPages.getValue().size(), 1);
+        assertNotNull(countriesPages.getValue().iterator().next().getCountryCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalities(HttpClient httpClient) {
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null);
+        PhoneNumberLocality locality = localitiesResult.iterator().next();
+        assertNotNull(locality);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithContextParam(HttpClient httpClient) {
+        PagedIterable<PhoneNumberLocality> localitiesResult = this
+                .getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null, Context.NONE);
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
     }
@@ -315,6 +376,23 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PagedIterable<PhoneNumberOffering> offeringsResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableOfferings")
                 .listAvailableOfferings("US", null, null);
+        PhoneNumberOffering offering = offeringsResult.iterator().next();
+        assertNotNull(offering);
+        assertNotNull(offering.getAssignmentType());
+        assertNotNull(offering.getAvailableCapabilities());
+        offering.getCost().getBillingFrequency();
+        assertNotNull(BillingFrequency.values());
+        assertNotNull(offering.getCost().getCurrencyCode());
+        assertNotNull(offering.getCost().getAmount());
+        assertNotNull(offering.getPhoneNumberType());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getOfferingsWithContext(HttpClient httpClient) {
+        PagedIterable<PhoneNumberOffering> offeringsResult = this
+                .getClientWithConnectionString(httpClient, "listAvailableOfferings")
+                .listAvailableOfferings("US", null, null, Context.NONE);
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
         assertNotNull(offering.getAssignmentType());
