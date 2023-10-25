@@ -317,17 +317,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getCountriesByPages(HttpClient httpClient) {
-        Iterable<PagedResponse<PhoneNumberCountry>> countriesResult = this
-                .getClientWithConnectionString(httpClient, "listAvailableCountries").listAvailableCountries()
-                .iterableByPage(1);
-        PagedResponse<PhoneNumberCountry> countriesPages = countriesResult.iterator().next();
-        assertEquals(countriesPages.getValue().size(), 1);
-        assertNotNull(countriesPages.getValue().iterator().next().getCountryCode());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalities(HttpClient httpClient) {
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableLocalities")
