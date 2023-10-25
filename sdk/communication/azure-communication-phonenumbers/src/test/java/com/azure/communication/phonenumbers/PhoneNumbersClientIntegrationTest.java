@@ -5,6 +5,7 @@ package com.azure.communication.phonenumbers;
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.phonenumbers.models.BillingFrequency;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -318,8 +319,10 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertNotNull(offering);
         assertNotNull(offering.getAssignmentType());
         assertNotNull(offering.getAvailableCapabilities());
-        assertNotNull(offering.getCost().getBillingFrequency());
+        offering.getCost().getBillingFrequency();
+        assertNotNull(BillingFrequency.values());
         assertNotNull(offering.getCost().getCurrencyCode());
+        assertNotNull(offering.getCost().getAmount());
         assertNotNull(offering.getPhoneNumberType());
     }
 
@@ -398,8 +401,10 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertNotNull(offering);
         assertNotNull(offering.getAssignmentType());
         assertNotNull(offering.getAvailableCapabilities());
-        assertNotNull(offering.getCost().getBillingFrequency());
+        offering.getCost().getBillingFrequency();
+        assertNotNull(BillingFrequency.values());
         assertNotNull(offering.getCost().getCurrencyCode());
+        assertNotNull(offering.getCost().getAmount());
         assertNotNull(offering.getPhoneNumberType());
     }
 
