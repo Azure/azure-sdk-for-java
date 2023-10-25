@@ -54,26 +54,19 @@ import java.util.Map;
 
 public class ApplicationGatewayTests extends NetworkManagementTest {
 
+    private static final Region REGION = Region.US_EAST;
+
     @Test
     public void canCRUDApplicationGatewayWithWAF() throws Exception {
         String appGatewayName = generateRandomResourceName("agwaf", 15);
-        String appPublicIp = generateRandomResourceName("pip", 15);
 
-        PublicIpAddress pip =
-            networkManager
-                .publicIpAddresses()
-                .define(appPublicIp)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip = createResourceGroupAndPublicIpAddress();
 
         ApplicationGateway appGateway =
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
@@ -144,23 +137,15 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     @Test
     public void canSpecifyWildcardListeners() {
         String appGatewayName = generateRandomResourceName("agwaf", 15);
-        String appPublicIp = generateRandomResourceName("pip", 15);
 
-        PublicIpAddress pip =
-            networkManager
-                .publicIpAddresses()
-                .define(appPublicIp)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip = createResourceGroupAndPublicIpAddress();
+
         String listener1 = "listener1";
         // regular hostname
         String hostname1 = "my.contoso.com";
         ApplicationGateway gateway = networkManager.applicationGateways()
             .define(appGatewayName)
-            .withRegion(Region.US_EAST)
+            .withRegion(REGION)
             .withExistingResourceGroup(rgName)
 
             // Request routing rules
@@ -217,24 +202,15 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     @DoNotRecord(skipInPlayback = true)
     public void canCreateApplicationGatewayWithSecret() throws Exception {
         String appGatewayName = generateRandomResourceName("agwaf", 15);
-        String appPublicIp = generateRandomResourceName("pip", 15);
         String identityName = generateRandomResourceName("id", 10);
 
-        PublicIpAddress pip =
-            networkManager
-                .publicIpAddresses()
-                .define(appPublicIp)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip = createResourceGroupAndPublicIpAddress();
 
         Identity identity =
             msiManager
                 .identities()
                 .define(identityName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 .create();
 
@@ -250,7 +226,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
@@ -287,24 +263,15 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     @DoNotRecord(skipInPlayback = true)
     public void canCreateApplicationGatewayWithSslCertificate() throws Exception {
         String appGatewayName = generateRandomResourceName("agwaf", 15);
-        String appPublicIp = generateRandomResourceName("pip", 15);
         String identityName = generateRandomResourceName("id", 10);
 
-        PublicIpAddress pip =
-            networkManager
-                .publicIpAddresses()
-                .define(appPublicIp)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip = createResourceGroupAndPublicIpAddress();
 
         Identity identity =
             msiManager
                 .identities()
                 .define(identityName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 .create();
 
@@ -319,7 +286,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
@@ -349,23 +316,14 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     public void canAutoAssignPriorityForRequestRoutingRulesWithWAF() {
         // auto-assign 3 rules, user-assign with 1 (highest) and 20000 (lowest)
         String appGatewayName = generateRandomResourceName("agwaf", 15);
-        String appPublicIp = generateRandomResourceName("pip", 15);
 
-        PublicIpAddress pip =
-            networkManager
-                .publicIpAddresses()
-                .define(appPublicIp)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip = createResourceGroupAndPublicIpAddress();
 
         ApplicationGateway appGateway =
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 // Request routing rules
                 // rule1 with no priority
@@ -453,23 +411,14 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     @Test
     public void testAddRemoveIpAddressFromWafV2WithExclusionsEqualsAny() {
         String appGatewayName = generateRandomResourceName("agwaf", 15);
-        String appPublicIp = generateRandomResourceName("pip", 15);
 
-        PublicIpAddress pip =
-            networkManager
-                .publicIpAddresses()
-                .define(appPublicIp)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip = createResourceGroupAndPublicIpAddress();
 
         ApplicationGateway appGateway =
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withNewResourceGroup(rgName)
                 .defineRequestRoutingRule("rule1")
                 .fromPublicFrontend()
@@ -513,24 +462,15 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     @Test
     public void canAssociateWafPolicy() {
         String appGatewayName = generateRandomResourceName("agwaf", 15);
-        String appPublicIp = generateRandomResourceName("pip", 15);
         String wafPolicyName = generateRandomResourceName("waf", 15);
 
-        PublicIpAddress pip =
-            networkManager
-                .publicIpAddresses()
-                .define(appPublicIp)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip = createResourceGroupAndPublicIpAddress();
 
         WebApplicationFirewallPolicy wafPolicy =
             networkManager
                 .webApplicationFirewallPolicies()
                 .define(wafPolicyName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 .withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet.OWASP_3_2)
                 .create();
@@ -539,7 +479,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 .defineRequestRoutingRule("rule1")
                 .fromPublicFrontend()
@@ -582,7 +522,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         Assertions.assertThrows(IllegalStateException.class, () -> {
             networkManager.applicationGateways()
                 .define("invalid")
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 .defineRequestRoutingRule("rule1")
                 .fromPublicFrontend()
@@ -599,7 +539,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                     networkManager
                         .webApplicationFirewallPolicies()
                         .define(invalidPolicyName)
-                        .withRegion(Region.US_EAST)
+                        .withRegion(REGION)
                         .withExistingResourceGroup(rgName)
                         .withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet.OWASP_3_2))
                 .withWebApplicationFirewall(true, ApplicationGatewayFirewallMode.PREVENTION)
@@ -618,24 +558,15 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     @Test
     public void canSetSslPolicy() {
         String appGatewayName = generateRandomResourceName("agw", 15);
-        String appPublicIp = generateRandomResourceName("pip", 15);
 
-        PublicIpAddress pip =
-            networkManager
-                .publicIpAddresses()
-                .define(appPublicIp)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip = createResourceGroupAndPublicIpAddress();
 
         // create with predefined ssl policy
         ApplicationGateway appGateway =
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
@@ -682,23 +613,13 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     public void canCreateApplicationGatewayWithDefaultSku() {
         String appGatewayName = generateRandomResourceName("agw", 15);
 
-        String appPublicIp = generateRandomResourceName("pip", 15);
-
-        PublicIpAddress pip =
-            networkManager
-                .publicIpAddresses()
-                .define(appPublicIp)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withSku(PublicIPSkuType.STANDARD)
-                .withStaticIP()
-                .create();
+        PublicIpAddress pip = createResourceGroupAndPublicIpAddress();
 
         ApplicationGateway appGateway =
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withNewResourceGroup(rgName)
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
@@ -718,6 +639,60 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         Assertions.assertNotNull(appGateway.requestRoutingRules().get("rule1").priority());
     }
 
+    @Test
+    public void canCRUDProbes() {
+        String appGatewayName = generateRandomResourceName("agw", 15);
+        String probeName = "probe1";
+
+        PublicIpAddress pip = createResourceGroupAndPublicIpAddress();
+
+        ApplicationGateway appGateway = networkManager.applicationGateways().define(appGatewayName)
+            .withRegion(REGION)
+            .withNewResourceGroup(rgName)
+            // Request routing rules
+            .defineRequestRoutingRule("rule1")
+                // BASIC still needs a public frontend. With private only, it'll report error:
+                // "Application Gateway does not support Application Gateway without Public IP for the selected SKU tier Basic.
+                // Supported SKU tiers are Standard,WAF."
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .attach()
+            .defineProbe(probeName)
+                .withHostNameFromBackendHttpSettings()
+                .withPath("/")
+                .withHttp()
+                .withTimeoutInSeconds(10)
+                .withTimeBetweenProbesInSeconds(9)
+                .withRetriesBeforeUnhealthy(5)
+                .withHealthyHttpResponseStatusCodeRange(200, 249)
+                .attach()
+            .withExistingPublicIpAddress(pip)
+            .create();
+
+        Assertions.assertEquals(1, appGateway.probes().size());
+        Assertions.assertNull(appGateway.probes().get(probeName).host());
+        Assertions.assertTrue(appGateway.probes().get(probeName).isUseHostNameFromBackendHttpSettings());
+
+        appGateway.update()
+            .updateProbe(probeName)
+                .withoutHostNameFromBackendHttpSettings()
+                .withHost("microsoft.com")
+                .parent()
+            .apply();
+
+        Assertions.assertEquals(1, appGateway.probes().size());
+        Assertions.assertNotNull(appGateway.probes().get(probeName).host());
+        Assertions.assertFalse(appGateway.probes().get(probeName).isUseHostNameFromBackendHttpSettings());
+
+        appGateway.update()
+            .withoutProbe(probeName)
+            .apply();
+
+        Assertions.assertTrue(appGateway.probes().isEmpty());
+    }
+
     private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {
         String vaultName = generateRandomResourceName("vlt", 10);
         String secretName = generateRandomResourceName("srt", 10);
@@ -726,7 +701,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             keyVaultManager
                 .vaults()
                 .define(vaultName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()
                     .forServicePrincipal(servicePrincipal)
@@ -766,7 +741,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             keyVaultManager
                 .vaults()
                 .define(vaultName)
-                .withRegion(Region.US_EAST)
+                .withRegion(REGION)
                 .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()
                 .forServicePrincipal(servicePrincipal)
@@ -805,5 +780,17 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         serviceIdentity.withType(ResourceIdentityType.USER_ASSIGNED);
         serviceIdentity.withUserAssignedIdentities(userAssignedIdentities);
         return serviceIdentity;
+    }
+
+    private PublicIpAddress createResourceGroupAndPublicIpAddress() {
+        String appPublicIp = generateRandomResourceName("pip", 15);
+        return networkManager
+            .publicIpAddresses()
+            .define(appPublicIp)
+            .withRegion(REGION)
+            .withNewResourceGroup(rgName)
+            .withSku(PublicIPSkuType.STANDARD)
+            .withStaticIP()
+            .create();
     }
 }
