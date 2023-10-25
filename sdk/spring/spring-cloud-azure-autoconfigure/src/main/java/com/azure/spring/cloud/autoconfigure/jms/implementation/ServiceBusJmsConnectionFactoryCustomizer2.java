@@ -1,14 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.jms;
+package com.azure.spring.cloud.autoconfigure.jms.implementation;
+
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 
 /**
  * A customizer for {@link ServiceBusJmsConnectionFactory}.
  */
 @FunctionalInterface
 @Deprecated
-public interface ServiceBusJmsConnectionFactoryCustomizer {
+public interface ServiceBusJmsConnectionFactoryCustomizer2 {
 
     /**
      * Customize the given {@link ServiceBusJmsConnectionFactory}.

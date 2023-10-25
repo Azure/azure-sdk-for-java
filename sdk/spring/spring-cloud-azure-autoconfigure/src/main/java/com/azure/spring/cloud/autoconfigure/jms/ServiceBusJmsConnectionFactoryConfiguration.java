@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
+import com.azure.spring.cloud.autoconfigure.jms.implementation.ServiceBusJmsConnectionFactoryCustomizer2;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.apache.commons.pool2.PooledObject;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 public class ServiceBusJmsConnectionFactoryConfiguration {
 
     private static ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                                             ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+                                                                             ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers) {
         return new ServiceBusJmsConnectionFactoryFactory(properties,
             factoryCustomizers.orderedStream().collect(Collectors.toList()))
             .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
@@ -42,7 +43,7 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
         @Bean
         @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "false")
         ServiceBusJmsConnectionFactory jmsConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                            ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+                                                            ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers) {
             return createJmsConnectionFactory(properties, factoryCustomizers);
         }
 
@@ -55,7 +56,7 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
             @Bean
             CachingConnectionFactory jmsConnectionFactory(JmsProperties jmsProperties,
                                                           AzureServiceBusJmsProperties properties,
-                                                          ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+                                                          ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers) {
                 ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
                 CachingConnectionFactory connectionFactory = new CachingConnectionFactory(factory);
                 JmsProperties.Cache cacheProperties = jmsProperties.getCache();
@@ -75,7 +76,7 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
         @Bean(destroyMethod = "stop")
         @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "true")
         JmsPoolConnectionFactory jmsPoolConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                          ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+                                                          ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers) {
             ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
             return new JmsPoolConnectionFactoryFactory(properties.getPool())
                 .createPooledConnectionFactory(factory);

@@ -5,14 +5,12 @@ package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.jms.implementation.ServiceBusJmsConnectionFactoryCustomizer2;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
-import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
-import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
-import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -51,7 +49,7 @@ import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentif
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
 @EnableConfigurationProperties({ JmsProperties.class })
-@Import({ ServiceBusJmsPasswordlessConfiguration.class, ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
+@Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
 
     @Bean
@@ -62,19 +60,15 @@ public class ServiceBusJmsAutoConfiguration {
 
     @Bean
     @ConditionalOnExpression("'premium'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
-    ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
+    ServiceBusJmsConnectionFactoryCustomizer2 amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
         return factory -> {
             final Map<String, Object> properties = new HashMap<>();
-            properties.put("com.microsoft:is-client-provider", true);
             if (azureServiceBusJmsCredentialSupplier.getIfAvailable() != null) {
                 properties.put("user-agent", AZURE_SPRING_PASSWORDLESS_SERVICE_BUS);
             } else {
                 properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
             }
-            //set user agent
-            JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
-            jmsFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
-                (connection, uri) -> properties);
+            // TODO no way to set the custom useragent
         };
     }
 

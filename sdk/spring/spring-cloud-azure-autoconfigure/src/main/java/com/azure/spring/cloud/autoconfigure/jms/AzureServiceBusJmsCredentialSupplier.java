@@ -13,6 +13,7 @@ import java.util.function.Supplier;
  *
  * @since 4.7.0
  */
+@Deprecated
 public class AzureServiceBusJmsCredentialSupplier implements Supplier<String> {
 
     private final AzureAuthenticationTemplate azureAuthenticationTemplate;

@@ -4,14 +4,11 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.spring.cloud.autoconfigure.jms.implementation.ServiceBusJmsConnectionFactoryCustomizer2;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
-import org.apache.qpid.jms.JmsConnectionFactory;
-import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -19,19 +16,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
-
 /**
  * A factory for ServiceBusJmsConnectionFactory.
  */
 public class ServiceBusJmsConnectionFactoryFactory {
     private final AzureServiceBusJmsProperties properties;
-    private final List<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
-
-    private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
+    private final List<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers;
 
     ServiceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties properties,
-                                          List<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+                                          List<ServiceBusJmsConnectionFactoryCustomizer2> factoryCustomizers) {
         Assert.notNull(properties, "Properties must not be null");
         this.properties = properties;
         this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
@@ -81,7 +74,7 @@ public class ServiceBusJmsConnectionFactoryFactory {
     }
 
     private void customize(ServiceBusJmsConnectionFactory connectionFactory) {
-        for (ServiceBusJmsConnectionFactoryCustomizer factoryCustomizer : this.factoryCustomizers) {
+        for (ServiceBusJmsConnectionFactoryCustomizer2 factoryCustomizer : this.factoryCustomizers) {
             factoryCustomizer.customize(connectionFactory);
         }
     }
