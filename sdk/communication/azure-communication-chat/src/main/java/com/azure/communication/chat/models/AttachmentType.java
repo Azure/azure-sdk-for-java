@@ -12,9 +12,6 @@ public final class AttachmentType extends ExpandableStringEnum<AttachmentType> {
     /** Static value image for AttachmentType. */
     public static final AttachmentType IMAGE = fromString("image");
 
-    /** Static value file for AttachmentType. */
-    public static final AttachmentType FILE = fromString("file");
-
     /**
      * Creates or finds a AttachmentType from its string representation.
      *
