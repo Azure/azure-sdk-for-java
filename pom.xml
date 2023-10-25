@@ -28,6 +28,7 @@
     <module>sdk/avs</module>
     <module>sdk/azureadexternalidentities</module>
     <module>sdk/azurearcdata</module>
+    <module>sdk/azureintegrationspaces</module>
     <module>sdk/azurestack</module>
     <module>sdk/azurestackhci</module>
     <module>sdk/baremetalinfrastructure</module>
