@@ -9,7 +9,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -106,10 +105,16 @@ public final class CertificateClientBuilder implements
     HttpTrait<CertificateClientBuilder>,
     ConfigurationTrait<CertificateClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateClientBuilder.class);
-    // This is properties file's name.
-    private static final String AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES = "azure-key-vault-certificates.properties";
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
+
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        // This is properties file's name.
+        Map<String, String> properties = CoreUtils.getProperties("azure-key-vault-certificates.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
 
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
@@ -117,7 +122,6 @@ public final class CertificateClientBuilder implements
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
-    private final Map<String, String> properties;
 
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -138,7 +142,6 @@ public final class CertificateClientBuilder implements
         httpLogOptions = new HttpLogOptions();
         perCallPolicies = new ArrayList<>();
         perRetryPolicies = new ArrayList<>();
-        properties = CoreUtils.getProperties(AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES);
     }
 
     /**
@@ -160,7 +163,7 @@ public final class CertificateClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateClient buildClient() {
-        return new CertificateClient(buildInnerClient());
+        return new CertificateClient(buildInnerClient(), vaultUrl);
     }
 
     /**
@@ -182,7 +185,7 @@ public final class CertificateClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
-        return new CertificateAsyncClient(buildInnerClient());
+        return new CertificateAsyncClient(buildInnerClient(), vaultUrl);
     }
 
     private CertificateClientImpl buildInnerClient() {
@@ -199,7 +202,7 @@ public final class CertificateClientBuilder implements
         CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new CertificateClientImpl(vaultUrl, pipeline, serviceVersion);
+            return new CertificateClientImpl(pipeline, serviceVersion.getVersion());
         }
 
         if (credential == null) {
@@ -210,20 +213,16 @@ public final class CertificateClientBuilder implements
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
         ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME,
+            CLIENT_VERSION, buildConfiguration));
 
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
-            clientVersion, buildConfiguration));
-
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
 
         // Add per call additional policies.
         policies.addAll(perCallPolicies);
@@ -242,7 +241,7 @@ public final class CertificateClientBuilder implements
 
         TracingOptions tracingOptions = localClientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -251,7 +250,7 @@ public final class CertificateClientBuilder implements
             .clientOptions(localClientOptions)
             .build();
 
-        return new CertificateClientImpl(vaultUrl, pipeline, serviceVersion);
+        return new CertificateClientImpl(pipeline, serviceVersion.getVersion());
     }
 
     /**
@@ -401,7 +400,7 @@ public final class CertificateClientBuilder implements
 
     /**
      * Sets the configuration store that is used during construction of the service client.
-     *
+     * <p>
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
@@ -435,9 +434,9 @@ public final class CertificateClientBuilder implements
 
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
-     *
+     * <p>
      * The default retry policy will be used in the pipeline, if not provided.
-     *
+     * <p>
      * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy user's retry policy applied to each request.
