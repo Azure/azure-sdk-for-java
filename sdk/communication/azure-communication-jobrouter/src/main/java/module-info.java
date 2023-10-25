@@ -5,6 +5,8 @@
 module com.azure.communication.jobrouter {
     requires transitive com.azure.core;
 
+    requires transitive com.azure.communication.common;
+
     exports com.azure.communication.jobrouter;
     exports com.azure.communication.jobrouter.models;
 
