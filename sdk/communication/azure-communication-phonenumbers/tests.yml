@@ -53,6 +53,24 @@ parameters:
         - SKIP_SIP_ROUTING_LIVE_TESTS=false/true
 
 stages:
+    template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      CloudConfig: ${{ parameters.CloudConfig }}
+      Clouds: ${{ parameters.Clouds }}
+      TestMode: ${{ parameters.TestMode }}
+      Artifacts:
+        - name: ${{ parameters.PackageName }}
+          groupId: com.azure
+          safeName: ${{ parameters.SafeName }}
+      ServiceDirectory: communication
+      TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
+      EnvVars:
+        SKIP_LIVE_TEST: TRUE
+        ${{ each var in parameters.EnVars }}:
+          ${{ var.key }}: ${{ var.value }}
+      MatrixConfigs:
+        - ${{ each config in parameters.MatrixConfigs }}:
+          -  ${{ config }}
     parameters:
       PackageName: azure-communication-phonenumbers
       SafeName: azurecommunicationphonenumbers
