@@ -14,6 +14,7 @@ import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -84,8 +85,7 @@ public class BlobCheckpointStoreTests {
     }
 
     /**
-     * Tests that listing ownership checks for lower case variant first rather than legacy ones. Legacy ownership
-     * records are checked as a fallback.
+     * Tests that listing ownership works.
      */
     @Test
     public void testListOwnership() {
@@ -150,7 +150,7 @@ public class BlobCheckpointStoreTests {
     }
 
     /**
-     * Verifies that it will get the lowercase checkpoint paths.
+     * Verifies that it lists checkpoints.
      */
     @Test
     public void testListCheckpoint() {
@@ -207,9 +207,7 @@ public class BlobCheckpointStoreTests {
     }
 
     /**
-     * Tests that can update checkpoint (new format).
-     * 1. There is no legacy checkpoint.
-     * 2. There is an existing checkpoint. Updates that.
+     * Tests that can update checkpoint.
      */
     @Test
     public void testUpdateCheckpoint() {
@@ -249,6 +247,9 @@ public class BlobCheckpointStoreTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that errors are thrown if the checkpoint is invalid
+     */
     @Test
     public void testUpdateCheckpointInvalid() {
         // Arrange
@@ -259,26 +260,34 @@ public class BlobCheckpointStoreTests {
         assertThrows(IllegalStateException.class, () -> blobCheckpointStore.updateCheckpoint(new Checkpoint()));
     }
 
+    /**
+     * Tests that will update checkpoint if one does not exist.
+     */
     @Test
     public void testUpdateCheckpointForNewPartition() {
-        Checkpoint checkpoint = new Checkpoint()
+        final Checkpoint checkpoint = new Checkpoint()
             .setFullyQualifiedNamespace("ns")
             .setEventHubName("eh")
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(2L)
             .setOffset(100L);
+        final String legacyPrefix = getLegacyPrefix(checkpoint.getFullyQualifiedNamespace(),
+            checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
+        final String blobName = legacyPrefix + "/checkpoint/0";
+
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaderName.ETAG, "etag2");
 
-        BlobItem blobItem = getCheckpointBlobItem("230", "1", "ns/eh/cg/checkpoint/0");
+        BlobItem blobItem = getCheckpointBlobItem("230", "1", blobName);
+
         PagedFlux<BlobItem> response = new PagedFlux<BlobItem>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
             BlobItem>(null, 200, null,
             Collections.singletonList(blobItem), null,
             null)));
 
-        when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/checkpoint/0")).thenReturn(blobAsyncClient);
+        when(blobContainerAsyncClient.getBlobAsyncClient(blobName)).thenReturn(blobAsyncClient);
         when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
 
         when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
@@ -292,6 +301,9 @@ public class BlobCheckpointStoreTests {
         StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
     }
 
+    /**
+     * Tests claiming ownership on a partition that never had an entry.
+     */
     @Test
     public void testClaimOwnership() {
         PartitionOwnership po = createPartitionOwnership("ns", "eh", "cg", "1", "owner1");
@@ -317,6 +329,9 @@ public class BlobCheckpointStoreTests {
             }).verifyComplete();
     }
 
+    /**
+     * Tests claiming ownership on a previously owned partition.
+     */
     @Test
     public void testClaimOwnershipExistingBlob() {
         PartitionOwnership po = createPartitionOwnership("ns", "eh", "cg", "0", "owner1");
@@ -417,7 +432,7 @@ public class BlobCheckpointStoreTests {
             .expectError(SocketTimeoutException.class).verify();
     }
 
-    private PartitionOwnership createPartitionOwnership(String fullyQualifiedNamespace, String eventHubName,
+    private static PartitionOwnership createPartitionOwnership(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroupName, String partitionId, String ownerId) {
         return new PartitionOwnership()
             .setFullyQualifiedNamespace(fullyQualifiedNamespace)
