@@ -4,15 +4,22 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
+import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -23,7 +30,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -417,6 +424,476 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             });
     }
 
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("appendBlockSupplier")
+    public void appendBlockAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                              String leaseID, Long appendPosE, Long maxSizeLTE, String tags) {
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bc.setTags(t).block();
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags);
 
+        assertAsyncResponseStatusCode(bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
+            null, bac), 201);
+    }
 
+    private static Stream<Arguments> appendBlockSupplier() {
+        return Stream.of(
+//            Arguments.of(null, null, null, null, null, null, null, null),
+//            Arguments.of(OLD_DATE, null, null, null, null, null, null, null),
+//            Arguments.of(null, NEW_DATE, null, null, null, null, null, null),
+//            Arguments.of(null, null, RECEIVED_ETAG, null, null, null, null, null),
+//            Arguments.of(null, null, null, GARBAGE_ETAG, null, null, null, null),
+//            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null, null, null),
+            Arguments.of(null, null, null, null, null, 0L, null, null)
+//            Arguments.of(null, null, null, null, null, null, 100L, null),
+//            Arguments.of(null, null, null, null, null, null, null, "\"foo\" = 'bar'")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("appendBlockFailSupplier")
+    public void appendBlockACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                                  String leaseID, Long appendPosE, Long maxSizeLTE, String tags) throws IOException {
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        setupBlobLeaseCondition(bc, leaseID);
+
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags);
+
+        StepVerifier.create(bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, bac))
+            .verifyError(BlobStorageException.class);
+    }
+
+    private static Stream<Arguments> appendBlockFailSupplier() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null, null, null, null, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null, null, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null, null, null, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG, null, null, null, null),
+            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null, null, null),
+            Arguments.of(null, null, null, null, null, 1L, null, null),
+            Arguments.of(null, null, null, null, null, null, 1L, null),
+            Arguments.of(null, null, null, null, null, null, null, "\"notfoo\" = 'notbar'")
+        );
+    }
+
+    @Test
+    public void appendBlockError() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        StepVerifier.create(bc.appendBlock(DATA.getDefaultFlux(), DATA.getDefaultDataSize()))
+            .verifyError(BlobStorageException.class);
+    }
+
+    @Test
+    public void appendBlockRetryOnTransientFailure() {
+        AppendBlobAsyncClient clientWithFailure = getBlobAsyncClient(
+            ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getAppendBlobAsyncClient();
+
+        clientWithFailure.appendBlock(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()))
+            .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20221102ServiceVersion")
+    @Test
+    public void appendBlockHighThroughput() {
+        int size = 5 * Constants.MB;
+        byte[] randomData = getRandomByteArray(size); // testing upload of size greater than 4MB
+        Flux<ByteBuffer> uploadStream = Flux.just(ByteBuffer.wrap(randomData));
+
+        assertAsyncResponseStatusCode(bc.appendBlockWithResponse(uploadStream, size, null, null), 201);
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bc.downloadStream()))
+            .assertNext(r -> TestUtils.assertArraysEqual(randomData, r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void appendBlockFromURLMin() {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+        byte[] data = getRandomByteArray(1024);
+        bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
+
+        AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        destURL.create().block();
+
+        BlobRange blobRange = new BlobRange(0, (long) PageBlobClient.PAGE_BYTES);
+
+        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), blobRange, null,
+            null, null))
+            .assertNext(r -> {
+                assertResponseStatusCode(r, 201);
+                validateBasicHeaders(r.getHeaders());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void appendBlockFromURLRange() {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+        byte[] data = getRandomByteArray(4 * 1024);
+        bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
+
+        AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        destURL.create().block();
+
+        destURL.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(2 * 1024, 1024L)).block();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(destURL.downloadStream()))
+            .assertNext(r -> TestUtils.assertArraysEqual(data, 2 * 1024, r, 0, 1024))
+            .verifyComplete();
+    }
+
+    @Test
+    public void appendBlockFromURLMD5() throws NoSuchAlgorithmException {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+        byte[] data = getRandomByteArray(1024);
+        bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
+
+        AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        destURL.create().block();
+
+        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), null,
+            MessageDigest.getInstance("MD5").digest(data), null, null))
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void appendBlockFromURLMD5Fail() throws NoSuchAlgorithmException {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+        byte[] data = getRandomByteArray(1024);
+        bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
+
+        AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        destURL.create().block();
+
+        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), null,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null))
+            .verifyError(BlobStorageException.class);
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("appendBlockSupplier")
+    public void appendBlockFromURLDestinationAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                                String noneMatch, String leaseID, Long appendPosE, Long maxSizeLTE, String tags) {
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bc.setTags(t).block();
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags);
+
+        AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        sourceURL.create().block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null).block();
+
+        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, bac, null), 201);
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("appendBlockFailSupplier")
+    public void appendBlockFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                                    String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE, String tags) {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        setupBlobLeaseCondition(bc, leaseID);
+
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags);
+
+        AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        sourceURL.create().block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null).block();
+
+        StepVerifier.create(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null,
+            null, bac, null))
+            .verifyError(BlobStorageException.class);
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("appendBlockFromURLSupplier")
+    public void appendBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
+                                           String sourceIfMatch, String sourceIfNoneMatch) {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+
+        AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        sourceURL.create().block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null).block();
+
+        BlobRequestConditions smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(setupBlobMatchCondition(sourceURL, sourceIfMatch))
+            .setIfNoneMatch(sourceIfNoneMatch);
+
+        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, null, smac), 201);
+    }
+
+    private static Stream<Arguments> appendBlockFromURLSupplier() {
+        return Stream.of(
+            Arguments.of(null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null),
+            Arguments.of(null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG)
+        );
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("appendBlockFromURLFailSupplier")
+    public void appendBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
+                                               OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
+        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+
+        AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        sourceURL.create().block();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, null).block();
+
+        BlobRequestConditions smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(sourceIfMatch)
+            .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
+
+        StepVerifier.create(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null,
+            null, null, smac))
+            .verifyError(BlobStorageException.class);
+    }
+
+    private static Stream<Arguments> appendBlockFromURLFailSupplier() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG)
+        );
+    }
+
+    @Test
+    public void getContainerName() {
+        assertEquals(containerName, bc.getContainerName());
+    }
+
+    @Test
+    public void getAppendBlobName() {
+        assertEquals(blobName, bc.getBlobName());
+    }
+
+    @Test
+    public void createOverwriteFalse() {
+        StepVerifier.create(bc.create())
+            .verifyError(BlobStorageException.class);
+    }
+
+    @Test
+    public void createOverwriteTrue() {
+        StepVerifier.create(bc.create(true))
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void sealDefaults() {
+        StepVerifier.create(bc.sealWithResponse(null))
+            .assertNext(r -> {
+                assertResponseStatusCode(r, 200);
+                assertEquals("true", r.getHeaders().getValue("x-ms-blob-sealed"));
+            })
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void sealMin() {
+        bc.seal().block();
+
+        StepVerifier.create(bc.getProperties())
+            .assertNext(p -> assertTrue(p.isSealed()))
+            .verifyComplete();
+
+        StepVerifier.create(bc.downloadStreamWithResponse(null, null, null, false))
+            .assertNext(r -> assertTrue(r.getDeserializedHeaders().isSealed()))
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void sealError() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        StepVerifier.create(bc.seal())
+            .verifyError(BlobStorageException.class);
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("sealACSupplier")
+    public void sealAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                       String leaseID, Long appendPosE) {
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE);
+
+        assertAsyncResponseStatusCode(bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac)),
+            200);
+
+    }
+
+    private static Stream<Arguments> sealACSupplier() {
+        return Stream.of(
+            Arguments.of(null, null, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null, null, null),
+            Arguments.of(null, null, RECEIVED_ETAG, null, null, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG, null, null),
+            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null),
+            Arguments.of(null, null, null, null, null, 0L)
+        );
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("sealACFailSupplier")
+    public void sealACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+                           String leaseID, Long appendPosE) {
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        setupBlobLeaseCondition(bc, leaseID);
+
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE);
+
+        StepVerifier.create(bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac)))
+            .verifyError(BlobStorageException.class);
+    }
+
+    private static Stream<Arguments> sealACFailSupplier() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null, null, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
+            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null),
+            Arguments.of(null, null, null, null, null, 1L)
+        );
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
+    @Test
+    public void perCallPolicy() {
+        AppendBlobAsyncClient specialBlob = getSpecializedBuilder(bc.getBlobUrl())
+            .addPolicy(getPerCallVersionPolicy())
+            .buildAppendBlobAsyncClient();
+
+        StepVerifier.create(specialBlob.getPropertiesWithResponse(null))
+            .assertNext(r -> assertEquals("2017-11-09", r.getHeaders().getValue(X_MS_VERSION)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void defaultAudience() {
+        AppendBlobAsyncClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(null)
+            .buildAppendBlobAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        AppendBlobAsyncClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
+            .buildAppendBlobAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        AppendBlobAsyncClient aadBlob = new SpecializedBlobClientBuilder()
+            .endpoint(bc.getBlobUrl())
+            .credential(new MockTokenCredential())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+            .buildAppendBlobAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", ccAsync.getAccountName());
+        BlobAudience audience = BlobAudience.fromString(url);
+
+        AppendBlobAsyncClient aadBlob = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(audience)
+            .buildAppendBlobAsyncClient();
+
+        StepVerifier.create(aadBlob.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
 }
