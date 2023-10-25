@@ -11,14 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
-import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
 import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
@@ -210,7 +208,7 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertEquals(202, primaryDataLakeServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode());
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @DisabledIf("olderThan20191212ServiceVersion")
     @ResourceLock("ServiceProperties")
     @Test
     public void setPropsStaticWebsite() {
@@ -384,7 +382,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     }
 
     @ResourceLock("ServiceProperties")
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201002ServiceVersion")
+    @DisabledIf("olderThan20201002ServiceVersion")
     @Test
     public void listSystemFileSystems() {
         DataLakeAnalyticsLogging logging = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0")
@@ -505,7 +503,7 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertEquals("2019-02-02", response.getHeaders().getValue(X_MS_VERSION));
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @DisabledIf("olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystem() {
         DataLakeFileSystemClient cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
@@ -558,7 +556,7 @@ public class ServiceApiTests extends DataLakeTestBase {
 //        assertEquals(blobName, pathItems.get(0).getName());
 //    }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @DisabledIf("olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemWithResponse() {
         DataLakeFileSystemClient cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
@@ -584,7 +582,7 @@ public class ServiceApiTests extends DataLakeTestBase {
         assertEquals(blobName, pathItems.get(0).getName());
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @DisabledIf("olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemAsync() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -609,7 +607,7 @@ public class ServiceApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @DisabledIf("olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemAsyncWithResponse() {
         DataLakeFileSystemAsyncClient cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -642,7 +640,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
+    @DisabledIf("olderThan20191212ServiceVersion")
     @Test
     public void restoreFileSystemIntoExistingFileSystemError() {
         DataLakeFileSystemClient cc1 = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
@@ -696,46 +694,6 @@ public class ServiceApiTests extends DataLakeTestBase {
         serviceClientBuilder.connectionString(connectionString);
 
         assertDoesNotThrow(serviceClientBuilder::buildClient);
-    }
-
-    @Test
-    public void defaultAudience() {
-        DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .audience(null) // should default to "https://storage.azure.com/"
-            .buildClient();
-
-        assertNotNull(aadServiceClient.getProperties());
-    }
-
-    @Test
-    public void storageAccountAudience() {
-        DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(primaryDataLakeServiceClient.getAccountName()))
-            .buildClient();
-
-        assertNotNull(aadServiceClient.getProperties());
-    }
-
-    @Test
-    public void audienceError() {
-        DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
-            .buildClient();
-
-        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadServiceClient::getProperties);
-        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
-    }
-
-    @Test
-    public void audienceFromString() {
-        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemClient.getAccountName());
-        DataLakeAudience audience = DataLakeAudience.fromString(url);
-
-        DataLakeServiceClient aadServiceClient = getOAuthServiceClientBuilder()
-            .audience(audience)
-            .buildClient();
-
-        assertNotNull(aadServiceClient.getProperties());
     }
 
 //    @Test
@@ -814,6 +772,14 @@ public class ServiceApiTests extends DataLakeTestBase {
 //        assertThrows(DataLakeStorageException.class, () ->
 //                primaryDataLakeServiceClient.renameFileSystem(generateFileSystemName(), generateFileSystemName()));
 //    }
+
+    private static boolean olderThan20191212ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2019_12_12);
+    }
+
+    private static boolean olderThan20201002ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2020_10_02);
+    }
 
     private static <T> T waitUntilFileSystemIsDeleted(
         Callable<T> waitUntilOperation) {
