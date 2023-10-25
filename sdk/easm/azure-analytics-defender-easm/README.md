@@ -105,7 +105,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [discovery_runs_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoveryRunsSample.java
-[disco_template_sample]: https://github.com/Azrue/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoTemplateSample.java
+[disco_template_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoTemplateSample.java
 [saved_filter_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/SavedFilterSample.java
 [external_ids_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/ManagingExternalIdsSample.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
