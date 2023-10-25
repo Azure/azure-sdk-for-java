@@ -103,12 +103,7 @@ public enum ShareServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2023-08-03}.
      */
-    V2023_08_03("2023-08-03"),
-
-    /**
-     * Service version {@code 2023-11-03}.
-     */
-    V2023_11_03("2023-11-03");
+    V2023_08_03("2023-08-03");
 
     private final String version;
 
@@ -130,6 +125,6 @@ public enum ShareServiceVersion implements ServiceVersion {
      * @return the latest {@link ShareServiceVersion}
      */
     public static ShareServiceVersion getLatest() {
-        return V2023_11_03;
+        return V2023_08_03;
     }
 }
