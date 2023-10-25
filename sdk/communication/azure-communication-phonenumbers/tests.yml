@@ -1,7 +1,7 @@
 trigger: none
 
 extends:
-  template: template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     PackageName: azure-communication-phonenumbers
       SafeName: azurecommunicationphonenumbers
