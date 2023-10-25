@@ -1,5 +1,6 @@
 FROM mcr.microsoft.com/openjdk/jdk:11-mariner as builder
 
+RUN yum -y update
 RUN yum -y install curl tar
 
 ARG MAVEN_VERSION="3.8.8"
@@ -15,5 +16,5 @@ ENV MAVEN_HOME /usr/share/maven
 
 # Usage:
 # - make changes (e.g. update versions)
-# - docker build -t stresspgs7b6dif73rup6.azurecr.io/java-tools/mvn:{new tag}, e.g. java11-mvn3.8.8
-# - docker push stresspgs7b6dif73rup6.azurecr.io/java-tools/mvn:{new tag}
+# - docker build -t azsdkengsys.azurecr.io/java-tools/mvn:{new tag}, e.g. java11-mvn3.8.8
+# - docker push azsdkengsys.azurecr.io/java-tools/mvn:{new tag}
