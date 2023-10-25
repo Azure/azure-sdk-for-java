@@ -28,6 +28,10 @@ public class Certificate {
     @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String expirationDate;
 
+    /** Creates an instance of Certificate class. */
+    public Certificate() {
+    }
+
     /**
      * Get the type property: The type of the secret resource.
      *

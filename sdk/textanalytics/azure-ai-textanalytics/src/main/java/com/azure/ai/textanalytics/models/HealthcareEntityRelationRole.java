@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationRolePro
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link HealthcareEntityRelationRole} model.
+ * The {@code HealthcareEntityRelationRole} model.
  */
 @Immutable
 public final class HealthcareEntityRelationRole {
@@ -34,6 +34,12 @@ public final class HealthcareEntityRelationRole {
                     healthcareEntityRelationRole.setEntity(entity);
                 }
             });
+    }
+
+    /**
+     * Constructs a {@code HealthcareEntityRelationRole} model.
+     */
+    public HealthcareEntityRelationRole() {
     }
 
     /**

@@ -6,20 +6,37 @@ package com.azure.resourcemanager.support.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationProperties;
+import com.azure.resourcemanager.support.models.SecondaryConsentEnabled;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ProblemClassificationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProblemClassificationProperties model =
-            BinaryData.fromString("{\"displayName\":\"ngbwjz\"}").toObject(ProblemClassificationProperties.class);
-        Assertions.assertEquals("ngbwjz", model.displayName());
+            BinaryData
+                .fromString(
+                    "{\"displayName\":\"b\",\"secondaryConsentEnabled\":[{\"description\":\"utduqktapspwgcu\",\"type\":\"tumkdosvqwhbm\"}]}")
+                .toObject(ProblemClassificationProperties.class);
+        Assertions.assertEquals("b", model.displayName());
+        Assertions.assertEquals("utduqktapspwgcu", model.secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("tumkdosvqwhbm", model.secondaryConsentEnabled().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProblemClassificationProperties model = new ProblemClassificationProperties().withDisplayName("ngbwjz");
+        ProblemClassificationProperties model =
+            new ProblemClassificationProperties()
+                .withDisplayName("b")
+                .withSecondaryConsentEnabled(
+                    Arrays
+                        .asList(
+                            new SecondaryConsentEnabled()
+                                .withDescription("utduqktapspwgcu")
+                                .withType("tumkdosvqwhbm")));
         model = BinaryData.fromObject(model).toObject(ProblemClassificationProperties.class);
-        Assertions.assertEquals("ngbwjz", model.displayName());
+        Assertions.assertEquals("b", model.displayName());
+        Assertions.assertEquals("utduqktapspwgcu", model.secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("tumkdosvqwhbm", model.secondaryConsentEnabled().get(0).type());
     }
 }

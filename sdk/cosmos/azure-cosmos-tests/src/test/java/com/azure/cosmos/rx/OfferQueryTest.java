@@ -2,14 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.models.FeedResponse;
@@ -55,9 +62,13 @@ public class OfferQueryTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
-        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, null);
+        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
+            query,
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client));
 
-        List<Offer> allOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
+        List<Offer> allOffers = client
+            .readOffers(TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, options, client))
+            .flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
         List<Offer> expectedOffers = allOffers.stream().filter(o -> collectionResourceId.equals(o.getString("offerResourceId"))).collect(Collectors.toList());
 
         assertThat(expectedOffers).isNotEmpty();
@@ -85,9 +96,14 @@ public class OfferQueryTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 1);
-        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, options);
 
-        List<Offer> expectedOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.getResults()))
+        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
+            query,
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client));
+
+        List<Offer> expectedOffers = client
+                .readOffers(TestUtils.createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, new CosmosQueryRequestOptions(), client))
+                .flatMap(f -> Flux.fromIterable(f.getResults()))
                 .collectList()
                 .single().block()
                 .stream().filter(o -> collectionResourceIds.contains(o.getOfferResourceId()))
@@ -114,7 +130,22 @@ public class OfferQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, options);
+        CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .buildAsyncClient();
+        QueryFeedOperationState dummyState = new QueryFeedOperationState(
+            cosmosClient,
+            "SomeSpanName",
+            "SomeDBName",
+            "SomeContainerName",
+            ResourceType.Document,
+            OperationType.Query,
+            null,
+            options,
+            new CosmosPagedFluxOptions()
+        );
+        Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, dummyState);
 
         FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
                 .containsExactly(new ArrayList<>())

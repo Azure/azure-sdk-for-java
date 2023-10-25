@@ -15,26 +15,26 @@ public final class ProtectableContainerTests {
         ProtectableContainer model =
             BinaryData
                 .fromString(
-                    "{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"uhpkxkgymar\",\"backupManagementType\":\"AzureIaasVM\",\"healthStatus\":\"jxqugjhky\",\"containerId\":\"beddgssofw\"}")
+                    "{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"iknsorgjh\",\"backupManagementType\":\"DefaultBackup\",\"healthStatus\":\"tlwwrlk\",\"containerId\":\"tncvokot\"}")
                 .toObject(ProtectableContainer.class);
-        Assertions.assertEquals("uhpkxkgymar", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
-        Assertions.assertEquals("jxqugjhky", model.healthStatus());
-        Assertions.assertEquals("beddgssofw", model.containerId());
+        Assertions.assertEquals("iknsorgjh", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
+        Assertions.assertEquals("tlwwrlk", model.healthStatus());
+        Assertions.assertEquals("tncvokot", model.containerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectableContainer model =
             new ProtectableContainer()
-                .withFriendlyName("uhpkxkgymar")
-                .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
-                .withHealthStatus("jxqugjhky")
-                .withContainerId("beddgssofw");
+                .withFriendlyName("iknsorgjh")
+                .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
+                .withHealthStatus("tlwwrlk")
+                .withContainerId("tncvokot");
         model = BinaryData.fromObject(model).toObject(ProtectableContainer.class);
-        Assertions.assertEquals("uhpkxkgymar", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
-        Assertions.assertEquals("jxqugjhky", model.healthStatus());
-        Assertions.assertEquals("beddgssofw", model.containerId());
+        Assertions.assertEquals("iknsorgjh", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
+        Assertions.assertEquals("tlwwrlk", model.healthStatus());
+        Assertions.assertEquals("tncvokot", model.containerId());
     }
 }

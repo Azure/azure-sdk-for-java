@@ -15,16 +15,27 @@ public final class UserRoleAssignmentValueTests {
     public void testDeserialize() throws Exception {
         UserRoleAssignmentValue model =
             BinaryData
-                .fromString("{\"roles\":{\"seyvj\":{\"roleName\":\"b\",\"description\":\"nwbmeh\"}}}")
+                .fromString(
+                    "{\"roles\":{\"pfqbuaceopzf\":{\"roleName\":\"pkteo\",\"description\":\"lwptfdy\"},\"lzdahzxctobgbkdm\":{\"roleName\":\"hhuao\",\"description\":\"pcqeqx\"},\"jy\":{\"roleName\":\"zpostmgrcfbu\",\"description\":\"mfqjhhkxbp\"}}}")
                 .toObject(UserRoleAssignmentValue.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserRoleAssignmentValue model = new UserRoleAssignmentValue().withRoles(mapOf("seyvj", new EnvironmentRole()));
+        UserRoleAssignmentValue model =
+            new UserRoleAssignmentValue()
+                .withRoles(
+                    mapOf(
+                        "pfqbuaceopzf",
+                        new EnvironmentRole(),
+                        "lzdahzxctobgbkdm",
+                        new EnvironmentRole(),
+                        "jy",
+                        new EnvironmentRole()));
         model = BinaryData.fromObject(model).toObject(UserRoleAssignmentValue.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

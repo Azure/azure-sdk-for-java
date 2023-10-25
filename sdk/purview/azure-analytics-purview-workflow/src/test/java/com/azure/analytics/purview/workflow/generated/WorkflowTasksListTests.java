@@ -21,7 +21,7 @@ public final class WorkflowTasksListTests extends PurviewWorkflowClientTestBase 
                         .addQueryParam("orderby", "createdTime desc")
                         .addQueryParam("timeWindow", "30d")
                         .addQueryParam("viewMode", "sent");
-        PagedIterable<BinaryData> response = purviewWorkflowClient.listWorkflowTasks(requestOptions);
+        PagedIterable<BinaryData> response = workflowTasksClient.list(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(

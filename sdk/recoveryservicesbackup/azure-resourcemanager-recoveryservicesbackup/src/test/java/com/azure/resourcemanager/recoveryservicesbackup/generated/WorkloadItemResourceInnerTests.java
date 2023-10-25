@@ -18,40 +18,41 @@ public final class WorkloadItemResourceInnerTests {
         WorkloadItemResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"knnqvsaznq\",\"workloadType\":\"orudsgsa\",\"friendlyName\":\"kycgrauwj\",\"protectionState\":\"Protected\"},\"eTag\":\"eburu\",\"location\":\"dmovsm\",\"tags\":{\"oefki\":\"wabm\",\"qujmqlgkf\":\"rvtp\"},\"id\":\"tndoaongbjc\",\"name\":\"tujitcjedft\",\"type\":\"waezkojvd\"}")
+                    "{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"dpfrxtrthzvaytdw\",\"workloadType\":\"brqubp\",\"friendlyName\":\"h\",\"protectionState\":\"NotProtected\"},\"eTag\":\"livpdt\",\"location\":\"irqtdqoa\",\"tags\":{\"squyfxrxxlep\":\"uzf\"},\"id\":\"ramxjezwlwnw\",\"name\":\"uqlcvydy\",\"type\":\"atdooaojkniod\"}")
                 .toObject(WorkloadItemResourceInner.class);
-        Assertions.assertEquals("dmovsm", model.location());
-        Assertions.assertEquals("wabm", model.tags().get("oefki"));
-        Assertions.assertEquals("knnqvsaznq", model.properties().backupManagementType());
-        Assertions.assertEquals("orudsgsa", model.properties().workloadType());
-        Assertions.assertEquals("kycgrauwj", model.properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.properties().protectionState());
-        Assertions.assertEquals("eburu", model.etag());
+        Assertions.assertEquals("irqtdqoa", model.location());
+        Assertions.assertEquals("uzf", model.tags().get("squyfxrxxlep"));
+        Assertions.assertEquals("dpfrxtrthzvaytdw", model.properties().backupManagementType());
+        Assertions.assertEquals("brqubp", model.properties().workloadType());
+        Assertions.assertEquals("h", model.properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.properties().protectionState());
+        Assertions.assertEquals("livpdt", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadItemResourceInner model =
             new WorkloadItemResourceInner()
-                .withLocation("dmovsm")
-                .withTags(mapOf("oefki", "wabm", "qujmqlgkf", "rvtp"))
+                .withLocation("irqtdqoa")
+                .withTags(mapOf("squyfxrxxlep", "uzf"))
                 .withProperties(
                     new WorkloadItem()
-                        .withBackupManagementType("knnqvsaznq")
-                        .withWorkloadType("orudsgsa")
-                        .withFriendlyName("kycgrauwj")
-                        .withProtectionState(ProtectionStatus.PROTECTED))
-                .withEtag("eburu");
+                        .withBackupManagementType("dpfrxtrthzvaytdw")
+                        .withWorkloadType("brqubp")
+                        .withFriendlyName("h")
+                        .withProtectionState(ProtectionStatus.NOT_PROTECTED))
+                .withEtag("livpdt");
         model = BinaryData.fromObject(model).toObject(WorkloadItemResourceInner.class);
-        Assertions.assertEquals("dmovsm", model.location());
-        Assertions.assertEquals("wabm", model.tags().get("oefki"));
-        Assertions.assertEquals("knnqvsaznq", model.properties().backupManagementType());
-        Assertions.assertEquals("orudsgsa", model.properties().workloadType());
-        Assertions.assertEquals("kycgrauwj", model.properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.properties().protectionState());
-        Assertions.assertEquals("eburu", model.etag());
+        Assertions.assertEquals("irqtdqoa", model.location());
+        Assertions.assertEquals("uzf", model.tags().get("squyfxrxxlep"));
+        Assertions.assertEquals("dpfrxtrthzvaytdw", model.properties().backupManagementType());
+        Assertions.assertEquals("brqubp", model.properties().workloadType());
+        Assertions.assertEquals("h", model.properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.properties().protectionState());
+        Assertions.assertEquals("livpdt", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

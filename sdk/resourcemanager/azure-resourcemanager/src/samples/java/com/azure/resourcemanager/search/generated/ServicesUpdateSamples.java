@@ -4,12 +4,17 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.search.models.AadAuthFailureMode;
+import com.azure.resourcemanager.search.models.DataPlaneAadOrApiKeyAuthOption;
+import com.azure.resourcemanager.search.models.DataPlaneAuthOptions;
+import com.azure.resourcemanager.search.models.EncryptionWithCmk;
 import com.azure.resourcemanager.search.models.Identity;
 import com.azure.resourcemanager.search.models.IdentityType;
 import com.azure.resourcemanager.search.models.IpRule;
 import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
+import com.azure.resourcemanager.search.models.SearchEncryptionWithCmk;
+import com.azure.resourcemanager.search.models.SearchSemanticSearch;
 import com.azure.resourcemanager.search.models.SearchServiceUpdate;
 import com.azure.resourcemanager.search.models.Sku;
 import com.azure.resourcemanager.search.models.SkuName;
@@ -20,10 +25,135 @@ import java.util.Map;
 /** Samples for Services Update. */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceDisableLocalAuth.json
      */
     /**
-     * Sample code: searchUpdateServiceToAllowAccessFromPublicCustomIPs.
+     * Sample code: SearchUpdateServiceDisableLocalAuth.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void searchUpdateServiceDisableLocalAuth(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .searchServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .updateWithResponse(
+                "rg1",
+                "mysearchservice",
+                new SearchServiceUpdate()
+                    .withTags(mapOf("app-name", "My e-commerce app", "new-tag", "Adding a new tag"))
+                    .withReplicaCount(2)
+                    .withDisableLocalAuth(true),
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceWithCmkEnforcement.json
+     */
+    /**
+     * Sample code: SearchUpdateServiceWithCmkEnforcement.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void searchUpdateServiceWithCmkEnforcement(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .searchServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .updateWithResponse(
+                "rg1",
+                "mysearchservice",
+                new SearchServiceUpdate()
+                    .withTags(mapOf("app-name", "My e-commerce app", "new-tag", "Adding a new tag"))
+                    .withReplicaCount(2)
+                    .withEncryptionWithCmk(new EncryptionWithCmk().withEnforcement(SearchEncryptionWithCmk.ENABLED)),
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceToRemoveIdentity.json
+     */
+    /**
+     * Sample code: SearchUpdateServiceToRemoveIdentity.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void searchUpdateServiceToRemoveIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .searchServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .updateWithResponse(
+                "rg1",
+                "mysearchservice",
+                new SearchServiceUpdate()
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withIdentity(new Identity().withType(IdentityType.NONE)),
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceWithSemanticSearch.json
+     */
+    /**
+     * Sample code: SearchUpdateServiceWithSemanticSearch.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void searchUpdateServiceWithSemanticSearch(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .searchServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .updateWithResponse(
+                "rg1",
+                "mysearchservice",
+                new SearchServiceUpdate()
+                    .withTags(mapOf("app-name", "My e-commerce app", "new-tag", "Adding a new tag"))
+                    .withReplicaCount(2)
+                    .withSemanticSearch(SearchSemanticSearch.STANDARD),
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
+     */
+    /**
+     * Sample code: SearchUpdateServiceToAllowAccessFromPrivateEndpoints.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void searchUpdateServiceToAllowAccessFromPrivateEndpoints(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .searchServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .updateWithResponse(
+                "rg1",
+                "mysearchservice",
+                new SearchServiceUpdate()
+                    .withReplicaCount(1)
+                    .withPartitionCount(1)
+                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED),
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
+     */
+    /**
+     * Sample code: SearchUpdateServiceToAllowAccessFromPublicCustomIPs.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
@@ -48,18 +178,18 @@ public final class ServicesUpdateSamples {
                                     .asList(
                                         new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchUpdateServiceToRemoveIdentity.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceAuthOptions.json
      */
     /**
-     * Sample code: SearchUpdateServiceToRemoveIdentity.
+     * Sample code: SearchUpdateServiceAuthOptions.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchUpdateServiceToRemoveIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void searchUpdateServiceAuthOptions(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .searchServices()
             .manager()
@@ -69,40 +199,19 @@ public final class ServicesUpdateSamples {
                 "rg1",
                 "mysearchservice",
                 new SearchServiceUpdate()
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withIdentity(new Identity().withType(IdentityType.NONE)),
+                    .withTags(mapOf("app-name", "My e-commerce app", "new-tag", "Adding a new tag"))
+                    .withReplicaCount(2)
+                    .withAuthOptions(
+                        new DataPlaneAuthOptions()
+                            .withAadOrApiKey(
+                                new DataPlaneAadOrApiKeyAuthOption()
+                                    .withAadAuthFailureMode(AadAuthFailureMode.HTTP401WITH_BEARER_CHALLENGE))),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
-     */
-    /**
-     * Sample code: searchUpdateServiceToAllowAccessFromPrivateEndpoints.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void searchUpdateServiceToAllowAccessFromPrivateEndpoints(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
-            .manager()
-            .serviceClient()
-            .getServices()
-            .updateWithResponse(
-                "rg1",
-                "mysearchservice",
-                new SearchServiceUpdate()
-                    .withReplicaCount(1)
-                    .withPartitionCount(1)
-                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED),
-                null,
-                Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchUpdateService.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateService.json
      */
     /**
      * Sample code: SearchUpdateService.
@@ -122,9 +231,10 @@ public final class ServicesUpdateSamples {
                     .withTags(mapOf("app-name", "My e-commerce app", "new-tag", "Adding a new tag"))
                     .withReplicaCount(2),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

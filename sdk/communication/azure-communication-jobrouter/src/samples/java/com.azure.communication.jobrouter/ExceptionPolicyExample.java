@@ -13,15 +13,16 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.CancelExceptionAction;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.models.WaitTimeExceptionTrigger;
-import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
-import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
 
 import java.util.Collections;
 
@@ -33,10 +34,7 @@ public class ExceptionPolicyExample {
     }
 
     private void createAndUpdateExceptionPolicy() {
-        String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
-
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
-            .connectionString(connectionString)
             .buildClient();
 
         /**
@@ -74,13 +72,13 @@ public class ExceptionPolicyExample {
         ExceptionRule waitTimeExceptionRule = new ExceptionRule(waitTimeExceptionTrigger,
             Collections.singletonMap("CancelJobActionWhenJobInQFor1Hr", exceptionAction));
 
-        UpdateExceptionPolicyOptions updateExceptionPolicyOptions = new UpdateExceptionPolicyOptions(createExceptionPolicyOptions.getId())
+        ExceptionPolicy exceptionPolicy = new ExceptionPolicy()
             .setExceptionRules(Collections.singletonMap("CancelJobWhenInQueueFor1Hr", waitTimeExceptionRule));
 
         /**
          * Update policy using routerClient.
          */
-        routerAdminClient.updateExceptionPolicy(updateExceptionPolicyOptions);
+        routerAdminClient.updateQueueWithResponse(createExceptionPolicyOptions.getId(), BinaryData.fromObject(exceptionPolicy), new RequestOptions());
 
         System.out.println("Exception policy has been successfully updated.");
     }
@@ -88,7 +86,6 @@ public class ExceptionPolicyExample {
     private void getExceptionPolicy() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
-            .connectionString(connectionString)
             .buildClient();
 
         ExceptionPolicy exceptionPolicyResult = routerAdminClient.getExceptionPolicy(exceptionPolicyId);
@@ -98,7 +95,6 @@ public class ExceptionPolicyExample {
     private void listExceptionPolicies() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
-            .connectionString(connectionString)
             .buildClient();
 
         PagedIterable<ExceptionPolicyItem> exceptionPolicyPagedIterable = routerAdminClient.listExceptionPolicies();
@@ -114,7 +110,6 @@ public class ExceptionPolicyExample {
     private void cleanUp() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
-            .connectionString(connectionString)
             .buildClient();
         routerAdminClient.deleteExceptionPolicy(exceptionPolicyId);
     }

@@ -47,7 +47,7 @@ public final class Office365Source extends CopySource {
 
     /*
      * The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType
-     * array of objects). Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
+     * array of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
      */
     @JsonProperty(value = "outputColumns")
     private Object outputColumns;
@@ -166,7 +166,8 @@ public final class Office365Source extends CopySource {
 
     /**
      * Get the outputColumns property: The columns to be read out from the Office 365 table. Type: array of objects (or
-     * Expression with resultType array of objects). Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ].
+     * Expression with resultType array of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name":
+     * "CreatedDateTime" } ].
      *
      * @return the outputColumns value.
      */
@@ -176,7 +177,8 @@ public final class Office365Source extends CopySource {
 
     /**
      * Set the outputColumns property: The columns to be read out from the Office 365 table. Type: array of objects (or
-     * Expression with resultType array of objects). Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ].
+     * Expression with resultType array of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name":
+     * "CreatedDateTime" } ].
      *
      * @param outputColumns the outputColumns value to set.
      * @return the Office365Source object itself.

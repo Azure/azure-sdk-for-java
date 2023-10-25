@@ -1,5 +1,26 @@
 # Release History
 
+## 4.8.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.7.1 (2023-10-20)
+
+### Bugs Fixed
+- Fixed an issue preventing the client from setting the `contentType` of the secret when the set secret operation is performed. ([#37019](https://github.com/Azure/azure-sdk-for-java/issues/37019))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
 ## 4.7.0 (2023-09-25)
 
 ### Features Added

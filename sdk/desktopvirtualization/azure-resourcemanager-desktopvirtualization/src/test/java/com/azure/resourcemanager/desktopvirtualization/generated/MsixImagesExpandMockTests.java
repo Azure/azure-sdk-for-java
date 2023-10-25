@@ -33,7 +33,7 @@ public final class MsixImagesExpandMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"packageAlias\":\"jcxcjxgrytfmpcyc\",\"imagePath\":\"rmcaykgg\",\"packageName\":\"xu\",\"packageFamilyName\":\"rksxwpndfc\",\"packageFullName\":\"nznthjtw\",\"displayName\":\"aosrxuz\",\"packageRelativePath\":\"amktcqiosmgbzah\",\"isRegularRegistration\":false,\"isActive\":true,\"packageDependencies\":[],\"version\":\"ltlaprltzkatbhj\",\"lastUpdated\":\"2021-11-12T18:26:07Z\",\"packageApplications\":[]},\"id\":\"s\",\"name\":\"qeqala\",\"type\":\"vlagun\"}]}";
+            "{\"value\":[{\"properties\":{\"packageAlias\":\"hmpejtlkexaonw\",\"imagePath\":\"kcq\",\"packageName\":\"xhxknlc\",\"packageFamilyName\":\"mmkyu\",\"packageFullName\":\"jubyqjfkakfq\",\"displayName\":\"kemyil\",\"packageRelativePath\":\"dxjascowvfdj\",\"isRegularRegistration\":false,\"isActive\":false,\"packageDependencies\":[{\"dependencyName\":\"ksnmgzv\",\"publisher\":\"ij\",\"minVersion\":\"zuqnwsithuqo\"},{\"dependencyName\":\"ah\",\"publisher\":\"qwqul\",\"minVersion\":\"trjbhxykfhyq\"},{\"dependencyName\":\"vqqugdrftbcv\",\"publisher\":\"reuquowtljvf\",\"minVersion\":\"reagkhyxvrqt\"}],\"version\":\"czsulmdggl\",\"lastUpdated\":\"2021-11-17T19:55:24Z\",\"packageApplications\":[{\"appId\":\"s\",\"description\":\"kgsangpszng\",\"appUserModelID\":\"p\",\"friendlyName\":\"lkvec\",\"iconImageName\":\"jcngoadyed\"},{\"appId\":\"jfoknubnoitpkp\",\"description\":\"rgdg\",\"appUserModelID\":\"coqra\",\"friendlyName\":\"ugyxpqit\",\"iconImageName\":\"ialwv\"}]},\"id\":\"uhz\",\"name\":\"caqt\",\"type\":\"ltcoqc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,26 @@ public final class MsixImagesExpandMockTests {
         PagedIterable<ExpandMsixImage> response =
             manager
                 .msixImages()
-                .expand("vefloccsrmozihmi", "g", new MsixImageUri().withUri("txx"), com.azure.core.util.Context.NONE);
+                .expand("oaiknaqlnuwig", "yxl", new MsixImageUri().withUri("wphvxz"), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jcxcjxgrytfmpcyc", response.iterator().next().packageAlias());
-        Assertions.assertEquals("rmcaykgg", response.iterator().next().imagePath());
-        Assertions.assertEquals("xu", response.iterator().next().packageName());
-        Assertions.assertEquals("rksxwpndfc", response.iterator().next().packageFamilyName());
-        Assertions.assertEquals("nznthjtw", response.iterator().next().packageFullName());
-        Assertions.assertEquals("aosrxuz", response.iterator().next().displayName());
-        Assertions.assertEquals("amktcqiosmgbzah", response.iterator().next().packageRelativePath());
+        Assertions.assertEquals("hmpejtlkexaonw", response.iterator().next().packageAlias());
+        Assertions.assertEquals("kcq", response.iterator().next().imagePath());
+        Assertions.assertEquals("xhxknlc", response.iterator().next().packageName());
+        Assertions.assertEquals("mmkyu", response.iterator().next().packageFamilyName());
+        Assertions.assertEquals("jubyqjfkakfq", response.iterator().next().packageFullName());
+        Assertions.assertEquals("kemyil", response.iterator().next().displayName());
+        Assertions.assertEquals("dxjascowvfdj", response.iterator().next().packageRelativePath());
         Assertions.assertEquals(false, response.iterator().next().isRegularRegistration());
-        Assertions.assertEquals(true, response.iterator().next().isActive());
-        Assertions.assertEquals("ltlaprltzkatbhj", response.iterator().next().version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-12T18:26:07Z"), response.iterator().next().lastUpdated());
+        Assertions.assertEquals(false, response.iterator().next().isActive());
+        Assertions.assertEquals("ksnmgzv", response.iterator().next().packageDependencies().get(0).dependencyName());
+        Assertions.assertEquals("ij", response.iterator().next().packageDependencies().get(0).publisher());
+        Assertions.assertEquals("zuqnwsithuqo", response.iterator().next().packageDependencies().get(0).minVersion());
+        Assertions.assertEquals("czsulmdggl", response.iterator().next().version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-17T19:55:24Z"), response.iterator().next().lastUpdated());
+        Assertions.assertEquals("s", response.iterator().next().packageApplications().get(0).appId());
+        Assertions.assertEquals("kgsangpszng", response.iterator().next().packageApplications().get(0).description());
+        Assertions.assertEquals("p", response.iterator().next().packageApplications().get(0).appUserModelId());
+        Assertions.assertEquals("lkvec", response.iterator().next().packageApplications().get(0).friendlyName());
+        Assertions.assertEquals("jcngoadyed", response.iterator().next().packageApplications().get(0).iconImageName());
     }
 }

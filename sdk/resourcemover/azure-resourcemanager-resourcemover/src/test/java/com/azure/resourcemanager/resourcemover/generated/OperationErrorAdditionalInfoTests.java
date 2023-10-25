@@ -13,7 +13,7 @@ public final class OperationErrorAdditionalInfoTests {
         OperationErrorAdditionalInfo model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"scnpqxuhivy\",\"info\":{\"moveResources\":[{\"id\":\"ybrk\",\"sourceId\":\"dumjgrtfwvuk\",\"moveResources\":[]}]}}")
+                    "{\"type\":\"ijbpzvgnwzsymgl\",\"info\":{\"moveResources\":[{\"id\":\"zk\",\"sourceId\":\"dbihanufhfcbj\",\"moveResources\":[{\"id\":\"ithxqhabifpi\",\"sourceId\":\"wczbys\",\"moveResources\":[{}]}]},{\"id\":\"x\",\"sourceId\":\"ivyqniwbybrkxvd\",\"moveResources\":[{\"id\":\"rtfw\",\"sourceId\":\"k\",\"moveResources\":[{},{},{}]},{\"id\":\"dcc\",\"sourceId\":\"h\",\"moveResources\":[{},{},{},{}]},{\"id\":\"yejhk\",\"sourceId\":\"htnapczwlokjyem\",\"moveResources\":[{},{}]}]},{\"id\":\"ipjoxzjnchgejs\",\"sourceId\":\"dmailzydehojw\",\"moveResources\":[{\"id\":\"xinpmqnjaq\",\"sourceId\":\"xj\",\"moveResources\":[{}]},{\"id\":\"zvcputegjvwmfda\",\"sourceId\":\"cmdv\",\"moveResources\":[{},{},{},{}]},{\"id\":\"lsuuvmkjozkrwfnd\",\"sourceId\":\"djpslw\",\"moveResources\":[{},{},{},{}]}]},{\"id\":\"vwryoqpso\",\"sourceId\":\"ctazakljlahbcryf\",\"moveResources\":[{\"id\":\"osygex\",\"sourceId\":\"ojakhmsbzjhcrze\",\"moveResources\":[{},{}]},{\"id\":\"lxaolthqtrgqjbp\",\"sourceId\":\"fsinzgvfcjrwzoxx\",\"moveResources\":[{},{},{},{}]}]}]}}")
                 .toObject(OperationErrorAdditionalInfo.class);
     }
 

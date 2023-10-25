@@ -15,41 +15,41 @@ public final class AzureVmWorkloadSapHanaDatabaseWorkloadItemTests {
         AzureVmWorkloadSapHanaDatabaseWorkloadItem model =
             BinaryData
                 .fromString(
-                    "{\"workloadItemType\":\"SAPHanaDatabase\",\"parentName\":\"phmgtvljvrcmyfq\",\"serverName\":\"gxhnpomyqwcabv\",\"isAutoProtectable\":false,\"subinquireditemcount\":1791320619,\"subWorkloadItemCount\":637099772,\"backupManagementType\":\"swlpaugmrmfj\",\"workloadType\":\"xwtoaukhfkvc\",\"friendlyName\":\"izmoaeds\",\"protectionState\":\"ProtectionFailed\"}")
+                    "{\"workloadItemType\":\"SAPHanaDatabase\",\"parentName\":\"uihywart\",\"serverName\":\"phkixkykxdssjpe\",\"isAutoProtectable\":false,\"subinquireditemcount\":1510283924,\"subWorkloadItemCount\":115970163,\"backupManagementType\":\"kkflrmymyincqlhr\",\"workloadType\":\"wslmiiiovgqcg\",\"friendlyName\":\"ugqkctotiowlxteq\",\"protectionState\":\"Protected\"}")
                 .toObject(AzureVmWorkloadSapHanaDatabaseWorkloadItem.class);
-        Assertions.assertEquals("swlpaugmrmfj", model.backupManagementType());
-        Assertions.assertEquals("xwtoaukhfkvc", model.workloadType());
-        Assertions.assertEquals("izmoaeds", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
-        Assertions.assertEquals("phmgtvljvrcmyfq", model.parentName());
-        Assertions.assertEquals("gxhnpomyqwcabv", model.serverName());
+        Assertions.assertEquals("kkflrmymyincqlhr", model.backupManagementType());
+        Assertions.assertEquals("wslmiiiovgqcg", model.workloadType());
+        Assertions.assertEquals("ugqkctotiowlxteq", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals("uihywart", model.parentName());
+        Assertions.assertEquals("phkixkykxdssjpe", model.serverName());
         Assertions.assertEquals(false, model.isAutoProtectable());
-        Assertions.assertEquals(1791320619, model.subinquireditemcount());
-        Assertions.assertEquals(637099772, model.subWorkloadItemCount());
+        Assertions.assertEquals(1510283924, model.subinquireditemcount());
+        Assertions.assertEquals(115970163, model.subWorkloadItemCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureVmWorkloadSapHanaDatabaseWorkloadItem model =
             new AzureVmWorkloadSapHanaDatabaseWorkloadItem()
-                .withBackupManagementType("swlpaugmrmfj")
-                .withWorkloadType("xwtoaukhfkvc")
-                .withFriendlyName("izmoaeds")
-                .withProtectionState(ProtectionStatus.PROTECTION_FAILED)
-                .withParentName("phmgtvljvrcmyfq")
-                .withServerName("gxhnpomyqwcabv")
+                .withBackupManagementType("kkflrmymyincqlhr")
+                .withWorkloadType("wslmiiiovgqcg")
+                .withFriendlyName("ugqkctotiowlxteq")
+                .withProtectionState(ProtectionStatus.PROTECTED)
+                .withParentName("uihywart")
+                .withServerName("phkixkykxdssjpe")
                 .withIsAutoProtectable(false)
-                .withSubinquireditemcount(1791320619)
-                .withSubWorkloadItemCount(637099772);
+                .withSubinquireditemcount(1510283924)
+                .withSubWorkloadItemCount(115970163);
         model = BinaryData.fromObject(model).toObject(AzureVmWorkloadSapHanaDatabaseWorkloadItem.class);
-        Assertions.assertEquals("swlpaugmrmfj", model.backupManagementType());
-        Assertions.assertEquals("xwtoaukhfkvc", model.workloadType());
-        Assertions.assertEquals("izmoaeds", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
-        Assertions.assertEquals("phmgtvljvrcmyfq", model.parentName());
-        Assertions.assertEquals("gxhnpomyqwcabv", model.serverName());
+        Assertions.assertEquals("kkflrmymyincqlhr", model.backupManagementType());
+        Assertions.assertEquals("wslmiiiovgqcg", model.workloadType());
+        Assertions.assertEquals("ugqkctotiowlxteq", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals("uihywart", model.parentName());
+        Assertions.assertEquals("phkixkykxdssjpe", model.serverName());
         Assertions.assertEquals(false, model.isAutoProtectable());
-        Assertions.assertEquals(1791320619, model.subinquireditemcount());
-        Assertions.assertEquals(637099772, model.subWorkloadItemCount());
+        Assertions.assertEquals(1510283924, model.subinquireditemcount());
+        Assertions.assertEquals(115970163, model.subWorkloadItemCount());
     }
 }

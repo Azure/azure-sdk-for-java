@@ -215,7 +215,7 @@
   <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.jca.implementation.JREKeyStoreFactory"/> <!-- false positive -->
+      <Class name="com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -463,8 +463,9 @@
   <!-- The casting problems do not exist in Azure use cases -->
   <Match>
     <Or>
+      <Class name="com.azure.core.implementation.MethodHandleReflectiveInvoker"/>
+      <Class name="com.azure.core.implementation.ReflectionUtilsMethodHandle"/>
       <Class name="com.azure.core.implementation.TypeUtil"/>
-      <Class name="com.azure.core.implementation.ReflectionUtils"/>
     </Or>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
@@ -2711,4 +2712,6 @@
     <Method name="serializeRequest"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
+
+  <!-- Comment to force CI to run Spotbugs against all SDKs -->
 </FindBugsFilter>

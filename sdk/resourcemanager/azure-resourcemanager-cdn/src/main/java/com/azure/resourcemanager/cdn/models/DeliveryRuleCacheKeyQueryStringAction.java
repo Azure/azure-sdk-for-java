@@ -21,6 +21,10 @@ public final class DeliveryRuleCacheKeyQueryStringAction extends DeliveryRuleAct
     @JsonProperty(value = "parameters", required = true)
     private CacheKeyQueryStringActionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleCacheKeyQueryStringAction class. */
+    public DeliveryRuleCacheKeyQueryStringAction() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the action.
      *

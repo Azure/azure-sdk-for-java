@@ -2,9 +2,9 @@
 
 This Spring Boot starter provides telemetry data to Azure Monitor for Spring Boot applications and GraalVM native images.
 
-_For a Spring Boot application running on a JVM (not with a GraalVM native image), we recommend using the [Application Insights Java agent][application_insights_java_agent_spring_boot].
+For a Spring Boot application running on a JVM (not with a GraalVM native image), we recommend using the [Application Insights Java agent][application_insights_java_agent_spring_boot].
 
-[Source code][source_code] | (Package yet to release) | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
+[Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 
 ## Getting started
 
@@ -143,18 +143,17 @@ First, add the `opentelemetry-jdbc` library:
 Then wrap your `DataSource` bean in an `io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource`, e.g.
 
 ```java
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.context.annotation.Configuration;
 import io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource;
 
 @Configuration
 public class DataSourceConfig {
 
     @Bean
-    public DataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        // Other data source configurations
-        return new OpenTelemetryDataSource(dataSource);
+    public DataSource dataSource(OpenTelemetry openTelemetry) {
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        // Data source configurations
+        DataSource dataSource = dataSourceBuilder.build();
+        return new OpenTelemetryDataSource(dataSource, openTelemetry);
     }
 
 }
@@ -250,7 +249,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-monitor/src
-<!-- [package_mvn]: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-monitor -->
+[package_mvn]: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-monitor
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free/

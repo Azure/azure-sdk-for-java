@@ -554,7 +554,7 @@ public class CallAutomationEventParserUnitTests {
         assertEquals("context", sendDtmfFailed.getOperationContext());
         assertEquals("Send DTMF couldn't be completed successfully.", sendDtmfFailed.getResultInformation().getMessage());
     }
-    
+
     @Test
     public void parseTransferAccptedEvent() {
         String receivedEvent = "[\n"
@@ -601,5 +601,367 @@ public class CallAutomationEventParserUnitTests {
         assertEquals("The transfer operation completed successfully.", event.getResultInformation().getMessage());
         assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2f-2234-655d-573a0d00443e", event.getTransferTarget().getRawId());
         assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2e-e2b4-655d-573a0d004434", event.getTransferee().getRawId());
+    }
+
+    @Test
+    public void parseAddParticipantCancelledEvent() {
+        String receivedEvent = "[{\n"
+                + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+                + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+                + "\"type\": \"Microsoft.Communication.AddParticipantCancelled\",\n"
+                + "\"data\": {\n"
+                + "\"operationContext\": \"context\",\n"
+                + "\"participant\": {\n"
+                + "\"rawId\": \"rawId\",\n"
+                + "\"phoneNumber\": {\n"
+                + "\"value\": \"value\"\n"
+                + "}\n"
+                + "},\n"
+                + "\"callConnectionId\": \"callConnectionId\",\n"
+                + "\"serverCallId\": \"serverCallId\",\n"
+                + "\"invitationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\",\n"
+                + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n"
+                + "},\n"
+                + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n"
+                + "\"specversion\": \"1.0\",\n"
+                + "\"datacontenttype\": \"application/json\",\n"
+                + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
+                + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+
+        AddParticipantCancelled addParticipantCancelled = (AddParticipantCancelled) event;
+
+        assertNotNull(addParticipantCancelled);
+        assertEquals("serverCallId", addParticipantCancelled.getServerCallId());
+        assertEquals("callConnectionId", addParticipantCancelled.getCallConnectionId());
+        assertEquals("b880bd5a-1916-470a-b43d-aabf3caff91c", addParticipantCancelled.getInvitationId());
+    }
+
+    @Test
+    public void parseCancelAddParticipantFailedEvent() {
+        String receivedEvent = "[{\n"
+                + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+                + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+                + "\"type\": \"Microsoft.Communication.CancelAddParticipantFailed\",\n"
+                + "\"data\": {\n"
+                + "\"operationContext\": \"context\",\n"
+                + "\"callConnectionId\": \"callConnectionId\",\n"
+                + "\"serverCallId\": \"serverCallId\",\n"
+                + "\"invitationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\",\n"
+                + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n"
+                + "},\n"
+                + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n"
+                + "\"specversion\": \"1.0\",\n"
+                + "\"datacontenttype\": \"application/json\",\n"
+                + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
+                + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+
+        CancelAddParticipantFailed cancelAddParticipantFailed = (CancelAddParticipantFailed) event;
+
+        assertNotNull(cancelAddParticipantFailed);
+        assertEquals("serverCallId", cancelAddParticipantFailed.getServerCallId());
+        assertEquals("callConnectionId", cancelAddParticipantFailed.getCallConnectionId());
+        assertEquals("b880bd5a-1916-470a-b43d-aabf3caff91c", cancelAddParticipantFailed.getInvitationId());
+    }
+
+    @Test
+    public void parseDialogCompletedEvent() {
+        String receivedEvent = "\n"
+            + "  {\n"
+            + "    \"id\": \"91f8b34b-383c-431d-9fa5-79d39fad9300\",\n"
+            + "    \"source\": \"calling/callConnections/441fbf00-5b21-4beb-bd4d-fd665ca4b65f\",\n"
+            + "    \"type\": \"Microsoft.Communication.DialogCompleted\",\n"
+            + "    \"data\": {\n"
+            + "        \"operationContext\": \"context\",\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Success Result\"\n"
+            + "        },\n"
+            + "        \"dialogInputType\": \"powerVirtualAgents\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"441fbf00-5b21-4beb-bd4d-fd665ca4b65f\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzc2MtMDkuY29udi5za3lwZS5jb20vY29udi9ubUpvbG9wMUhrdWhDVllYNUlxTTZnP2k9OCZlPTYzODI1NjEzMTYxNDIwOTA2MQ==\",\n"
+            + "        \"correlationId\": \"fb2d738b-d9cb-496c-8be6-416aeecd4d96\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-07-27T07:48:56.0766803+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/441fbf00-5b21-4beb-bd4d-fd665ca4b65f\"\n"
+            + "  }]";
+        DialogCompleted event = (DialogCompleted) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzc2MtMDkuY29udi5za3lwZS5jb20vY29udi9ubUpvbG9wMUhrdWhDVllYNUlxTTZnP2k9OCZlPTYzODI1NjEzMTYxNDIwOTA2MQ==", event.getServerCallId());
+        assertEquals("441fbf00-5b21-4beb-bd4d-fd665ca4b65f", event.getCallConnectionId());
+        assertEquals("fb2d738b-d9cb-496c-8be6-416aeecd4d96", event.getCorrelationId());
+        assertEquals("Success Result", event.getResultInformation().getMessage());
+        assertEquals("92e08834-b6ee-4ede-8956-9fefa27a691c", event.getDialogId());
+        assertEquals("powerVirtualAgents", event.getDialogInputType().toString());
+    }
+
+    @Test
+    public void parseDialogStartedEvent() {
+        String receivedEvent = "[{\n"
+            + "    \"id\": \"91f8b34b-383c-431d-9fa5-79d39fad9300\",\n"
+            + "    \"source\": \"calling/callConnections/441fbf00-5b21-4beb-bd4d-fd665ca4b65f\",\n"
+            + "    \"type\": \"Microsoft.Communication.DialogStarted\",\n"
+            + "    \"data\": {\n"
+            + "        \"operationContext\": \"context\",\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Success Result\"\n"
+            + "        },\n"
+            + "        \"dialogInputType\": \"powerVirtualAgents\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"441fbf00-5b21-4beb-bd4d-fd665ca4b65f\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzc2MtMDkuY29udi5za3lwZS5jb20vY29udi9ubUpvbG9wMUhrdWhDVllYNUlxTTZnP2k9OCZlPTYzODI1NjEzMTYxNDIwOTA2MQ==\",\n"
+            + "        \"correlationId\": \"fb2d738b-d9cb-496c-8be6-416aeecd4d96\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-07-27T07:48:55.2765079+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/441fbf00-5b21-4beb-bd4d-fd665ca4b65f\"\n"
+            + "}]";
+        DialogStarted event = (DialogStarted) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzc2MtMDkuY29udi5za3lwZS5jb20vY29udi9ubUpvbG9wMUhrdWhDVllYNUlxTTZnP2k9OCZlPTYzODI1NjEzMTYxNDIwOTA2MQ==", event.getServerCallId());
+        assertEquals("441fbf00-5b21-4beb-bd4d-fd665ca4b65f", event.getCallConnectionId());
+        assertEquals("fb2d738b-d9cb-496c-8be6-416aeecd4d96", event.getCorrelationId());
+        assertEquals("Success Result", event.getResultInformation().getMessage());
+        assertEquals("92e08834-b6ee-4ede-8956-9fefa27a691c", event.getDialogId());
+        assertEquals("powerVirtualAgents", event.getDialogInputType().toString());
+    }
+
+    @Test
+    public void parseDialogFailedEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"91f8b34b-383c-431d-9fa5-79d39fad9300\",\n"
+            + "    \"source\": \"calling/callConnections/441fbf00-5b21-4beb-bd4d-fd665ca4b65f\",\n"
+            + "    \"type\": \"Microsoft.Communication.DialogFailed\",\n"
+            + "    \"data\": {\n"
+            + "        \"operationContext\": \"context\",\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Operation Failed\"\n"
+            + "        },\n"
+            + "        \"dialogInputType\": \"powerVirtualAgents\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"441fbf00-5b21-4beb-bd4d-fd665ca4b65f\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzc2MtMDkuY29udi5za3lwZS5jb20vY29udi9ubUpvbG9wMUhrdWhDVllYNUlxTTZnP2k9OCZlPTYzODI1NjEzMTYxNDIwOTA2MQ==\",\n"
+            + "        \"correlationId\": \"fb2d738b-d9cb-496c-8be6-416aeecd4d96\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-07-27T07:48:55.5109544+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/441fbf00-5b21-4beb-bd4d-fd665ca4b65f\"\n"
+            + "}]";
+        DialogFailed event = (DialogFailed) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzc2MtMDkuY29udi5za3lwZS5jb20vY29udi9ubUpvbG9wMUhrdWhDVllYNUlxTTZnP2k9OCZlPTYzODI1NjEzMTYxNDIwOTA2MQ==", event.getServerCallId());
+        assertEquals("441fbf00-5b21-4beb-bd4d-fd665ca4b65f", event.getCallConnectionId());
+        assertEquals("fb2d738b-d9cb-496c-8be6-416aeecd4d96", event.getCorrelationId());
+        assertEquals("Operation Failed", event.getResultInformation().getMessage());
+        assertEquals("92e08834-b6ee-4ede-8956-9fefa27a691c", event.getDialogId());
+        assertEquals("powerVirtualAgents", event.getDialogInputType().toString());
+    }
+
+    @Test
+    public void parseDialogLanguageChangeEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/441fbf00-5b21-4beb-bd4d-fd665ca4b65f\",\n"
+            + "    \"type\": \"Microsoft.Communication.DialogLanguageChange\",\n"
+            + "    \"data\": {\n"
+            + "        \"selectedLanguage\": \"eng-USA\",\n"
+            + "        \"operationContext\": \"context\",\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Success Result\"\n"
+            + "        },\n"
+            + "        \"dialogInputType\": \"powerVirtualAgents\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"ivrContext\": \"Sanitized\",\n"
+            + "        \"callConnectionId\": \"441fbf00-5b21-4beb-bd4d-fd665ca4b65f\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzc2MtMDkuY29udi5za3lwZS5jb20vY29udi9ubUpvbG9wMUhrdWhDVllYNUlxTTZnP2k9OCZlPTYzODI1NjEzMTYxNDIwOTA2MQ==\",\n"
+            + "        \"correlationId\": \"fb2d738b-d9cb-496c-8be6-416aeecd4d96\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-07-27T07:48:55.5109544+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/441fbf00-5b21-4beb-bd4d-fd665ca4b65f\"\n"
+            + "}]";
+
+        DialogLanguageChange event = (DialogLanguageChange) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzc2MtMDkuY29udi5za3lwZS5jb20vY29udi9ubUpvbG9wMUhrdWhDVllYNUlxTTZnP2k9OCZlPTYzODI1NjEzMTYxNDIwOTA2MQ==", event.getServerCallId());
+        assertEquals("441fbf00-5b21-4beb-bd4d-fd665ca4b65f", event.getCallConnectionId());
+        assertEquals("fb2d738b-d9cb-496c-8be6-416aeecd4d96", event.getCorrelationId());
+        assertEquals("Success Result", event.getResultInformation().getMessage());
+        assertEquals("92e08834-b6ee-4ede-8956-9fefa27a691c", event.getDialogId());
+        assertEquals("powerVirtualAgents", event.getDialogInputType().toString());
+        assertEquals("Sanitized", event.getIvrContext());
+    }
+
+    @Test
+    public void parseDialogSensitivityUpdateEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.DialogSensitivityUpdate\",\n"
+            + "    \"data\": {\n"
+            + "        \"sensitiveMask\": false,\n"
+            + "        \"operationContext\": \"context\",\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Success Result\"\n"
+            + "        },\n"
+            + "        \"dialogInputType\": \"powerVirtualAgents\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+        DialogSensitivityUpdate event = (DialogSensitivityUpdate) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Success Result", event.getResultInformation().getMessage());
+        assertEquals("92e08834-b6ee-4ede-8956-9fefa27a691c", event.getDialogId());
+        assertEquals("powerVirtualAgents", event.getDialogInputType().toString());
+    }
+
+    @Test
+    public void parseDialogConsentEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.DialogConsent\",\n"
+            + "    \"data\": {\n"
+            + "        \"sensitiveMask\": false,\n"
+            + "        \"operationContext\": \"context\",\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Success Result\"\n"
+            + "        },\n"
+            + "        \"dialogInputType\": \"powerVirtualAgents\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+        DialogConsent event = (DialogConsent) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Success Result", event.getResultInformation().getMessage());
+        assertEquals("92e08834-b6ee-4ede-8956-9fefa27a691c", event.getDialogId());
+        assertEquals("powerVirtualAgents", event.getDialogInputType().toString());
+    }
+
+    @Test
+    public void parseDialogHangupEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.DialogHangup\",\n"
+            + "    \"data\": {\n"
+            + "        \"sensitiveMask\": false,\n"
+            + "        \"operationContext\": \"context\",\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Success Result\"\n"
+            + "        },\n"
+            + "        \"dialogInputType\": \"powerVirtualAgents\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+        DialogHangup event = (DialogHangup) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Success Result", event.getResultInformation().getMessage());
+        assertEquals("92e08834-b6ee-4ede-8956-9fefa27a691c", event.getDialogId());
+        assertEquals("powerVirtualAgents", event.getDialogInputType().toString());
+    }
+
+    @Test
+    public void parseDialogTransferEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.DialogTransfer\",\n"
+            + "    \"data\": {\n"
+            + "        \"sensitiveMask\": false,\n"
+            + "        \"operationContext\": \"context\",\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Success Result\"\n"
+            + "        },\n"
+            + "        \"dialogInputType\": \"powerVirtualAgents\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+        DialogTransfer event = (DialogTransfer) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Success Result", event.getResultInformation().getMessage());
+        assertEquals("92e08834-b6ee-4ede-8956-9fefa27a691c", event.getDialogId());
+        assertEquals("powerVirtualAgents", event.getDialogInputType().toString());
     }
 }
