@@ -113,7 +113,7 @@ steps:
           ConnectedServiceName: 'ESRP Release Service'
           Intent: 'PackageDistribution'
           ContentType: 'Maven'
-          PackageLocation: ${{ parameters.OutputDirectory }}
+          FolderLocation: ${{ parameters.OutputDirectory }}
           Owners: $(Build.RequestedForEmail)
           Approvers: 'wesh@microsoft.com'
           ServiceEndpointUrl: 'https://api.esrp.microsoft.com'
