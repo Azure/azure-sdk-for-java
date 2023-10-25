@@ -40,7 +40,7 @@ public final class CallAutomationEventProcessor {
     /**
      * Constructor of the event processor
      */
-    public CallAutomationEventProcessor() {
+    CallAutomationEventProcessor() {
         eventBacklog = new EventBacklog();
         eventAwaiters = new HashSet<>();
         ongoingEventAwaiters = new ConcurrentHashMap<>();
@@ -183,8 +183,11 @@ public final class CallAutomationEventProcessor {
                     }
                     return null;
                 });
-                ongoingEventAwaiters.remove(removalKey);
-                eventAwaiters.remove(eventAwaiterOngoing);
+
+                if (removalKey != null) {
+                    ongoingEventAwaiters.remove(removalKey);
+                    eventAwaiters.remove(eventAwaiterOngoing);
+                }
             }
         }
     }
@@ -221,8 +224,11 @@ public final class CallAutomationEventProcessor {
                 }
                 return null;
             });
-            EventAwaiterOngoing<?> awaiterOngoingToBeRemoved = ongoingEventAwaiters.remove(removalKey);
-            eventAwaiters.remove(awaiterOngoingToBeRemoved);
+
+            if (removalKey != null) {
+                EventAwaiterOngoing<?> awaiterOngoingToBeRemoved = ongoingEventAwaiters.remove(removalKey);
+                eventAwaiters.remove(awaiterOngoingToBeRemoved);
+            }
         }
     }
 }

@@ -13,14 +13,18 @@ import com.azure.communication.callautomation.models.events.ReasonCode.Recognize
 
 import org.junit.jupiter.api.Test;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-public class CallAutomationEventParserUnitTests {
+public class CallAutomationEventParserAndProcessorUnitTests {
     static final String EVENT_PARTICIPANT_UPDATED = "{\"id\":\"61069ef9-5ca9-457f-ac36-e2bb5e8400ca\",\"source\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\",\"type\":\"Microsoft.Communication.ParticipantsUpdated\",\"data\":{\"participants\":[{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\"}}, \"isMuted\": false},{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\"}}, \"isMuted\": false}],\"type\":\"participantsUpdated\",\"callConnectionId\":\"401f3500-62bd-46a9-8c09-9e1b06caca01\",\"correlationId\":\"ebd8bf1f-0794-494f-bdda-913042c06ef7\"},\"time\":\"2022-08-12T03:35:07.9129474+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\"}";
     static final String EVENT_CALL_CONNECTED = "{\"id\":\"46116fb7-27e0-4a99-9478-a659c8fd4815\",\"source\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/CallConnected\",\"type\":\"Microsoft.Communication.CallConnected\",\"data\":{\"type\":\"callConnected\",\"callConnectionId\":\"401f3500-62bd-46a9-8c09-9e1b06caca01\",\"correlationId\":\"ebd8bf1f-0794-494f-bdda-913042c06ef7\"},\"time\":\"2022-08-12T03:35:07.8174402+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/CallConnected\"}";
     static final String EVENT_RECOGNIZE_DTMF = "[{\"id\":\"ac2cb537-2d62-48bf-909e-cc93534c4258\",\"source\":\"calling/callConnections/401f7000-c1c0-41e2-962d-85d0dc1d6f01\",\"type\":\"Microsoft.Communication.RecognizeCompleted\",\"data\":{\"eventSource\":\"calling/callConnections/401f7000-c1c0-41e2-962d-85d0dc1d6f01\",\"operationContext\":\"OperationalContextValue-1118-1049\",\"resultInformation\":{\"code\":200,\"subCode\":8533,\"message\":\"Action completed, DTMF option matched.\"},\"recognitionType\":\"dtmf\",\"dtmfResult\":{\"tones\":[\"five\", \"six\", \"pound\"]},\"choiceResult\":{\"label\":\"Marketing\"},\"callConnectionId\":\"401f7000-c1c0-41e2-962d-85d0dc1d6f01\",\"serverCallId\":\"serverCallId\",\"correlationId\":\"d4f4c1be-59d8-4850-b9bf-ee564c15839d\"},\"time\":\"2022-11-22T01:41:44.5582769+00:00\",\"specversion\":\"1.0\",\"subject\":\"calling/callConnections/401f7000-c1c0-41e2-962d-85d0dc1d6f01\"}]";
@@ -253,7 +257,7 @@ public class CallAutomationEventParserUnitTests {
     }
 
     @Test
-    public void parseRemoveParticipantSucceededEvent() {
+    public void parseAndProcessRemoveParticipantSucceededEvent() {
         String receivedEvent = "[{\n"
                 + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
                 + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
@@ -285,10 +289,18 @@ public class CallAutomationEventParserUnitTests {
         assertEquals("serverCallId", removeParticipantSucceeded.getServerCallId());
         assertEquals("callConnectionId", removeParticipantSucceeded.getCallConnectionId());
         assertEquals("rawId", removeParticipantSucceeded.getParticipant().getRawId());
+
+        CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        RemoveParticipantSucceeded eventFromProcessor = callAutomationEventProcessor.waitForEventProcessor(
+            removeParticipantSucceeded.getCallConnectionId(), removeParticipantSucceeded.getOperationContext(), RemoveParticipantSucceeded.class);
+        assertEquals("serverCallId", eventFromProcessor.getServerCallId());
+        assertEquals("callConnectionId", eventFromProcessor.getCallConnectionId());
+        assertEquals("rawId", eventFromProcessor.getParticipant().getRawId());
     }
 
     @Test
-    public void parseRemoveParticipantFailedEvent() {
+    public void parseAndProcessRemoveParticipantFailedEvent() {
         String receivedEvent = "[{\n"
                 + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
                 + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
@@ -321,6 +333,16 @@ public class CallAutomationEventParserUnitTests {
         assertEquals("serverCallId", removeParticipantFailed.getServerCallId());
         assertEquals("callConnectionId", removeParticipantFailed.getCallConnectionId());
         assertEquals("rawId", removeParticipantFailed.getParticipant().getRawId());
+
+        CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
+        callAutomationEventProcessor.waitForEventProcessorAsync(removeParticipantFailed.getCallConnectionId(),
+            removeParticipantFailed.getOperationContext(), RemoveParticipantFailed.class)
+                .subscribe(eventFromProcessor -> {
+                    assertEquals("serverCallId", eventFromProcessor.getServerCallId());
+                    assertEquals("callConnectionId", eventFromProcessor.getCallConnectionId());
+                    assertEquals("rawId", eventFromProcessor.getParticipant().getRawId());
+                });
+        callAutomationEventProcessor.processEvents(receivedEvent);
     }
 
     @Test
@@ -601,10 +623,23 @@ public class CallAutomationEventParserUnitTests {
         assertEquals("The transfer operation completed successfully.", event.getResultInformation().getMessage());
         assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2f-2234-655d-573a0d00443e", event.getTransferTarget().getRawId());
         assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2e-e2b4-655d-573a0d004434", event.getTransferee().getRawId());
+
+        CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        CallAutomationEventBase eventComing = callAutomationEventProcessor.waitForEventProcessor(eventFromProcessor -> Objects.equals(event.getServerCallId(), eventFromProcessor.getServerCallId()) &&
+            Objects.equals(event.getCallConnectionId(), eventFromProcessor.getCallConnectionId()));
+
+        assertNotNull(eventComing);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDEuY29udi5za3lwZS5jb20vY29udi8yZWtNYmJRN3VVbUY1RDJERFdITWJnP2k9MTUmZT02MzgyNTMwMzY2ODQ5NzkwMDI=", eventComing.getServerCallId());
+        assertEquals("411f0b00-dc73-4528-a9e6-968ba983d2a1", eventComing.getCallConnectionId());
+        assertEquals("be43dd55-38e9-4de8-9d75-e20b6b32744f", eventComing.getCorrelationId());
+        assertEquals("The transfer operation completed successfully.", ((CallTransferAccepted)eventComing).getResultInformation().getMessage());
+        assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2f-2234-655d-573a0d00443e", ((CallTransferAccepted)eventComing).getTransferTarget().getRawId());
+        assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2e-e2b4-655d-573a0d004434", ((CallTransferAccepted)eventComing).getTransferee().getRawId());
     }
 
     @Test
-    public void parseAddParticipantCancelledEvent() {
+    public void parseAndProcessAddParticipantCancelledEvent() {
         String receivedEvent = "[{\n"
                 + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
                 + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
@@ -637,6 +672,19 @@ public class CallAutomationEventParserUnitTests {
         assertEquals("serverCallId", addParticipantCancelled.getServerCallId());
         assertEquals("callConnectionId", addParticipantCancelled.getCallConnectionId());
         assertEquals("b880bd5a-1916-470a-b43d-aabf3caff91c", addParticipantCancelled.getInvitationId());
+
+        CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
+        callAutomationEventProcessor.attachOngoingEventProcessor(addParticipantCancelled.getCallConnectionId(),
+            eventToHandle -> {
+                assertEquals("serverCallId", eventToHandle.getServerCallId());
+                assertEquals("callConnectionId", eventToHandle.getCallConnectionId());
+                assertEquals("b880bd5a-1916-470a-b43d-aabf3caff91c", eventToHandle.getInvitationId());
+            }, AddParticipantCancelled.class);
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        callAutomationEventProcessor.detachOngoingEventProcessor(addParticipantCancelled.getCallConnectionId(), AddParticipantCancelled.class);
     }
 
     @Test
@@ -668,6 +716,16 @@ public class CallAutomationEventParserUnitTests {
         assertEquals("serverCallId", cancelAddParticipantFailed.getServerCallId());
         assertEquals("callConnectionId", cancelAddParticipantFailed.getCallConnectionId());
         assertEquals("b880bd5a-1916-470a-b43d-aabf3caff91c", cancelAddParticipantFailed.getInvitationId());
+
+        CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
+        callAutomationEventProcessor.attachOngoingEventProcessor(cancelAddParticipantFailed.getCallConnectionId(),
+            eventToHandle -> {
+                assertEquals("serverCallId", eventToHandle.getServerCallId());
+                assertEquals("callConnectionId", eventToHandle.getCallConnectionId());
+                assertEquals("b880bd5a-1916-470a-b43d-aabf3caff91c", eventToHandle.getInvitationId());
+            }, CancelAddParticipantFailed.class);
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        callAutomationEventProcessor.detachOngoingEventProcessor(cancelAddParticipantFailed.getCallConnectionId(), CancelAddParticipantFailed.class);
     }
 
     @Test
