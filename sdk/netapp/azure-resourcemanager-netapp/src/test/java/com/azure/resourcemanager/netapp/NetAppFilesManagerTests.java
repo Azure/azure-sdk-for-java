@@ -76,8 +76,9 @@ public class NetAppFilesManagerTests extends TestBase {
             Assertions.assertEquals(account.name(), netAppFilesManager.accounts().getById(account.id()).name());
             Assertions.assertTrue(netAppFilesManager.accounts().list().stream().findAny().isPresent());
         } finally {
-            if (account != null)
+            if (account != null) {
                 netAppFilesManager.accounts().deleteById(account.id());
+            }
         }
     }
 
