@@ -335,7 +335,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic" })
+    @ValueSource(strings = { "basic", "standard", "premium" })
     void jmsPoolConnectionFactoryBeanConfiguredByPropertyCondition(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
