@@ -4,7 +4,6 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An attachment in a chat message. */
 @Fluent
@@ -12,38 +11,37 @@ public final class ChatAttachment {
     /*
      * Id of the attachment
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The type of attachment.
      */
-    @JsonProperty(value = "attachmentType", required = true)
     private AttachmentType attachmentType;
 
     /*
      * The file extension of the attachment, if available
      */
-    @JsonProperty(value = "extension")
     private String extension;
 
     /*
      * The name of the attachment content.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The URL where the attachment can be downloaded
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The URL where the preview of attachment can be downloaded
      */
-    @JsonProperty(value = "previewUrl")
     private String previewUrl;
+
+    public ChatAttachment(String id, AttachmentType attachmentType) {
+        this.id = id;
+        this.attachmentType = attachmentType;
+    }
 
     /**
      * Get the id property: Id of the attachment.
@@ -55,34 +53,12 @@ public final class ChatAttachment {
     }
 
     /**
-     * Set the id property: Id of the attachment.
-     *
-     * @param id the id value to set.
-     * @return the ChatAttachment object itself.
-     */
-    public ChatAttachment setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the attachmentType property: The type of attachment.
      *
      * @return the attachmentType value.
      */
     public AttachmentType getAttachmentType() {
         return this.attachmentType;
-    }
-
-    /**
-     * Set the attachmentType property: The type of attachment.
-     *
-     * @param attachmentType the attachmentType value to set.
-     * @return the ChatAttachment object itself.
-     */
-    public ChatAttachment setAttachmentType(AttachmentType attachmentType) {
-        this.attachmentType = attachmentType;
-        return this;
     }
 
     /**

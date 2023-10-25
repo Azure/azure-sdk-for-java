@@ -31,10 +31,10 @@ public final class ChatMessageContent {
     /**
      * Constructs a new ChatMessageContent
      *
-     * @param message The message
-     * @param topic The topic
+     * @param message      The message
+     * @param topic        The topic
      * @param participants The participants
-     * @param initiator The initiator
+     * @param initiator    The initiator
      */
     public ChatMessageContent(
             String message, String topic, Iterable<ChatParticipant> participants, CommunicationIdentifier initiator) {
@@ -43,26 +43,6 @@ public final class ChatMessageContent {
         this.topic = topic;
         this.participants = participants;
         this.initiator = initiator;
-    }
-
-    /**
-     * Constructs a new ChatMessageContent
-     *
-     * @param message The message
-     * @param topic The topic
-     * @param participants The participants
-     * @param attachments The attachments on the message
-     * @param initiator The initiator
-     */
-    public ChatMessageContent(
-            String message, String topic, Iterable<ChatParticipant> participants, CommunicationIdentifier initiator,
-            Iterable<ChatAttachment> attachments) {
-
-        this.message = message;
-        this.topic = topic;
-        this.participants = participants;
-        this.initiator = initiator;
-        this.attachments = attachments;
     }
 
     /**
@@ -103,6 +83,17 @@ public final class ChatMessageContent {
      */
     public Iterable<ChatAttachment> getAttachments() {
         return this.attachments;
+    }
+
+    /**
+     * Set the attachments property: List of attachments for this message.
+     *
+     * @param attachments the attachments value to set.
+     * @return the ChatMessageContent object itself.
+     */
+    public ChatMessageContent setAttachments(Iterable<ChatAttachment> attachments) {
+        this.attachments = attachments;
+        return this;
     }
 
     /**

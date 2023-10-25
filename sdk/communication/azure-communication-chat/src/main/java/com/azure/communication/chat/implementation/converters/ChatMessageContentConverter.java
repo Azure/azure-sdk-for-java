@@ -51,11 +51,8 @@ public final class ChatMessageContentConverter {
                     .collect(Collectors.toList());
         }
 
-        ChatMessageContent chatMessageContent = (attachments.iterator().hasNext())
-                ? new ChatMessageContent(
-                        obj.getMessage(), obj.getTopic(), participants, initiator)
-                : new ChatMessageContent(
-                        obj.getMessage(), obj.getTopic(), participants, initiator, attachments);
+        ChatMessageContent chatMessageContent = new ChatMessageContent(obj.getMessage(), obj.getTopic(), participants,
+                initiator).setAttachments(attachments);
 
         return chatMessageContent;
     }

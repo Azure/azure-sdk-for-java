@@ -11,9 +11,8 @@ public final class ChatAttachmentConverter {
             return null;
         }
 
-        ChatAttachment chatAttachment = new ChatAttachment()
-                .setId(obj.getId())
-                .setAttachmentType(AttachmentTypeConverter.convert(obj.getAttachmentType()))
+        ChatAttachment chatAttachment = new ChatAttachment(obj.getId(),
+                AttachmentTypeConverter.convert(obj.getAttachmentType()))
                 .setExtension(obj.getExtension())
                 .setName(obj.getName())
                 .setUrl(obj.getUrl())
