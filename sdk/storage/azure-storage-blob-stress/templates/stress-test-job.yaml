@@ -21,7 +21,7 @@ spec:
           set -exa;
           mkdir -p "$DEBUG_SHARE";
           . /mnt/outputs/.env &&
-          java -jar ./target/Icm387357955-1.0-SNAPSHOT-jar-with-dependencies.jar {{ .Stress.testTarget }} -async {{ .Stress.async }} -size {{ .Stress.blobSizeBytes }} -parallel {{ .Stress.parallel }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          java -jar /stress-storage/sdk/storage/azure-storage-blob-stress/target/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar {{ .Stress.testTarget }} -async {{ .Stress.async }} -size {{ .Stress.blobSizeBytes }} -parallel {{ .Stress.parallel }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
       # when iterating, so this is a must.
       imagePullPolicy: Always

@@ -5,3 +5,4 @@ matrix:
       async: false
       blobSizeBytes: 10485760
       parallel: 500
+      imageBuildDir: "../../.."

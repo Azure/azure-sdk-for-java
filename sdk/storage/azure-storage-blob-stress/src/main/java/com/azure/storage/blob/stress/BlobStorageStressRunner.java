@@ -9,6 +9,8 @@ import com.azure.storage.stress.StressScenarioBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -23,7 +25,14 @@ public class BlobStorageStressRunner {
         DownloadToFileScenarioBuilder builder = new DownloadToFileScenarioBuilder();
         builder.setBlobPrefix("foo");
         builder.setBlobSize(10 * 1024 * 1024);
-        builder.setDirectoryPath(Paths.get("C:\\Users\\jaschrep\\temp"));
+        try {
+            Path tmpdir = Files.createTempDirectory("tmpDirPrefix");
+            builder.setDirectoryPath(Paths.get(tmpdir.toString()));
+        } catch (Exception e) {
+            System.err.println("Unable to create tmpDirPrefix directory.");
+            e.printStackTrace();
+        }
+
         builder.setParallel(100);
         builder.setTestTimeSeconds(30);
         builder.setFaultInjectingClient(new HttpFaultInjectingHttpClient(

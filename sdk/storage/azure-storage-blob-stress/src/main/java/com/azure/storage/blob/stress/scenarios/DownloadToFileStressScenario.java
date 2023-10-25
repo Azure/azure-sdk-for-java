@@ -49,11 +49,13 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
 
                 validateDownloadedContents(downloadPath);
                 logSuccess();
+                System.out.println("success");
             } catch (Exception e) {
                 if (e.getMessage().contains("Timeout on blocking read")) {
                     // test timed out, so break out of loop instead of counting as a failure
                     break;
                 }
+                System.err.println("failure: " + e.getMessage());
                 logFailure(e.getMessage());
             }
         }
