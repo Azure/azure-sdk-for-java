@@ -112,7 +112,7 @@ public class Configs {
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS";
     private static final int DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS = 500;
 
-    public static final int MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS = 100;
+    public static final int MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS = 0;
 
     private static final String DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS_NAME =
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_IN_REGION-RETRY_TIME_IN_MILLISECONDS";
@@ -140,6 +140,11 @@ public class Configs {
 
     private static final String MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = "COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT";
     private static final int DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = 1;
+
+    private static final String MAX_TRACE_MESSAGE_LENGTH = "COSMOS.MAX_TRACE_MESSAGE_LENGTH";
+    private static final int DEFAULT_MAX_TRACE_MESSAGE_LENGTH = 32 * 1024;
+
+    private static final int MIN_MAX_TRACE_MESSAGE_LENGTH = 8 * 1024;
 
     private static final String AGGRESSIVE_WARMUP_CONCURRENCY = "COSMOS.AGGRESSIVE_WARMUP_CONCURRENCY";
     private static final int DEFAULT_AGGRESSIVE_WARMUP_CONCURRENCY = Configs.getCPUCnt();
@@ -418,5 +423,14 @@ public class Configs {
                     System.getProperty(DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS_NAME),
                     DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS),
                 MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS));
+    }
+
+    public static int getMaxTraceMessageLength() {
+        return
+            Math.max(
+                getIntValue(
+                    System.getProperty(MAX_TRACE_MESSAGE_LENGTH),
+                    DEFAULT_MAX_TRACE_MESSAGE_LENGTH),
+                MIN_MAX_TRACE_MESSAGE_LENGTH);
     }
 }
