@@ -142,16 +142,16 @@ public class FeatureManagerTest {
     @Test
     public void allOn() {
         HashMap<String, Feature> features = new HashMap<>();
-        Feature onFeature = new Feature();
-        onFeature.setKey("On");
+        Feature feature = new Feature();
+        feature.setKey("On");
         HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext alwaysOn = new FeatureFilterEvaluationContext();
         alwaysOn.setName("AlwaysOn");
         filters.put(0, alwaysOn);
         filters.put(1, alwaysOn);
-        onFeature.setEnabledFor(filters);
-        onFeature.setRequirementType("All");
-        features.put("On", onFeature);
+        feature.setEnabledFor(filters);
+        feature.setRequirementType("All");
+        features.put("On", feature);
         when(featureManagementPropertiesMock.getFeatureManagement()).thenReturn(features);
 
         when(context.getBean(Mockito.matches("AlwaysOn"))).thenReturn(new AlwaysOnFilter())

@@ -58,7 +58,7 @@ public final class VariantAssignment {
      * @param variants List of the possible variants.
      * @return Variant object containing an instance of the type
      */
-    public Mono<Variant> assignVariant(Allocation allocation, Collection<VariantReference> variants) {
+    public String assignVariant(Allocation allocation) {
         TargetingFilterContext targetingContext = new TargetingFilterContext();
 
         if (contextAccessor == null) {
@@ -78,7 +78,7 @@ public final class VariantAssignment {
                     }
 
                     if (user.equals(targetedUser)) {
-                        return getVariant(variants, users.getVariant());
+                        return users.getVariant();
                     }
                 }
             }
@@ -97,7 +97,7 @@ public final class VariantAssignment {
                                 targetedGroup = targetedGroup.toLowerCase(Locale.getDefault());
                             }
                             if (targetedGroup.equals(group)) {
-                                return getVariant(variants, groups.getVariant());
+                                return groups.getVariant();
                             }
                         }
                     }
@@ -118,17 +118,16 @@ public final class VariantAssignment {
         for (PercentileAllocation percentile : allocation.getPercentile().values()) {
             if (percentile.getFrom().doubleValue() <= value
                 && (percentile.getTo().doubleValue() > value || 100 == percentile.getTo().doubleValue())) {
-                return getVariant(variants, percentile.getVariant());
+                return percentile.getVariant();
             }
         }
 
         if (StringUtils.hasText(allocation.getDefaultWhenEnabled())) {
-            return getVariant(variants, allocation.getDefaultWhenEnabled());
+            return allocation.getDefaultWhenEnabled();
         }
 
-        return Mono.justOrEmpty(null);
+        return null;
     }
-
     /**
      * Returns a variant for the given name.
      * @param variants List of the Variant References which can be returned

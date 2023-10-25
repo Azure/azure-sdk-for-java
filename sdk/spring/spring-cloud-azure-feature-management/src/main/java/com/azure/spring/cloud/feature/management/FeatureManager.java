@@ -5,7 +5,9 @@ package com.azure.spring.cloud.feature.management;
 import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.ALL_REQUIREMENT_TYPE;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -137,37 +139,78 @@ public class FeatureManager {
         return generateVariant(feature, featureContext).single();
     }
 
-    private Mono<Boolean> checkFeature(String feature, Object featureContext) throws FilterNotFoundException {
+    private Mono<Boolean> checkFeature(String featureName, Object featureContext) throws FilterNotFoundException {
         if (featureManagementConfigurations.getFeatureManagement() == null
             || featureManagementConfigurations.getOnOff() == null) {
             return Mono.just(false);
         }
 
-        Boolean boolFeature = featureManagementConfigurations.getOnOff().get(feature);
+        Boolean boolFeature = featureManagementConfigurations.getOnOff().get(featureName);
 
         if (boolFeature != null) {
             return Mono.just(boolFeature);
         }
 
-        Feature featureItem = featureManagementConfigurations.getFeatureManagement().get(feature);
+        Feature feature = featureManagementConfigurations.getFeatureManagement().get(featureName);
 
-        if (featureItem == null || !featureItem.getEvaluate()) {
+        if (feature == null || !feature.getEvaluate()) {
             return Mono.just(false);
         }
 
         List<Mono<Boolean>> results = new ArrayList<>();
 
-        for (FeatureFilterEvaluationContext featureFilter : featureItem.getEnabledFor().values()) {
+        for (FeatureFilterEvaluationContext featureFilter : feature.getEnabledFor().values()) {
             if (StringUtils.hasText(featureFilter.getName())) {
-                results.add(isFeatureOn(featureFilter, feature, featureContext));
+                results.add(isFeatureOn(featureFilter, featureName, featureContext));
             }
         }
 
-        if (results.size() == 0) {
-            return Mono.just(false);
+        String defaultDisabledVariant = feature.getAllocation().getDefaultWhenDisabled();
+        Collection<VariantReference> variants = feature.getVariants().values();
+
+        if (results.size() > 0) {
+            return evaluateFeatureFlagResults(feature, results).map(filterAssignedValue -> {
+                if (filterAssignedValue && feature.getVariants().size() > 0) {
+                    // Feature is on by Feature Flags, check allocation
+                    validateVariant(feature);
+
+                    VariantAssignment variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions,
+                        propertiesProvider);
+                    // Checking if allocation overrides true result
+                    return checkDefaultOverride(feature.getVariants().values(), true,
+                        variantAssignment.assignVariant(feature.getAllocation()));
+                } else if (filterAssignedValue) {
+                    return true;
+                }
+                // Feature is disabled by Feature Flags, check default disabled variant
+                return checkDefaultOverride(variants, false, defaultDisabledVariant);
+            });
+        } else if (feature.getVariants().size() > 0 && StringUtils.hasText(defaultDisabledVariant)) {
+            return Mono.just(checkDefaultOverride(variants, false, defaultDisabledVariant));
+
         }
 
-        return evaluateFeatureFlagResults(featureItem, results);
+        return Mono.just(false);
+
+    }
+
+    private Boolean checkDefaultOverride(Collection<VariantReference> variants, Boolean result,
+        String defaultVariantName) {
+        if (defaultVariantName == null) {
+            return result;
+        }
+        // Should return the given value, but the default disabled variant may override.
+        Iterator<VariantReference> variantsIterator = variants.iterator();
+        while (variantsIterator.hasNext()) {
+            VariantReference variantReference = variantsIterator.next();
+            if (defaultVariantName.equals(variantReference.getName())
+                && StringUtils.hasText(variantReference.getStatusOverride())) {
+                // If any text is provided we assume it is a valid boolean and return true/false, invalid booleans
+                // return false
+                return Boolean.valueOf(variantReference.getStatusOverride());
+            }
+        }
+        return result;
     }
 
     private Mono<Variant> generateVariant(String featureName, Object featureContext) {
@@ -187,15 +230,16 @@ public class FeatureManager {
         VariantAssignment variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions,
             propertiesProvider);
 
+        Collection<VariantReference> variants = feature.getVariants().values();
         String defaultDisabledVariant = feature.getAllocation().getDefaultWhenDisabled();
 
         // Disabled?
         if (!feature.getEvaluate() && StringUtils.hasText(defaultDisabledVariant)) {
-            return variantAssignment.getVariant(feature.getVariants().values(), defaultDisabledVariant).single();
+            return variantAssignment.getVariant(variants, defaultDisabledVariant).single();
         } else if (!feature.getEvaluate()) {
             return Mono.justOrEmpty(null);
         } else if (feature.getEnabledFor().size() == 0) {
-            return variantAssignment.assignVariant(feature.getAllocation(), feature.getVariants().values());
+            return variantAssignment.getVariant(variants, variantAssignment.assignVariant(feature.getAllocation()));
         }
 
         List<Mono<Boolean>> results = new ArrayList<>();
@@ -213,10 +257,10 @@ public class FeatureManager {
                 return Mono.justOrEmpty(null);
             }
 
-            return variantAssignment.assignVariant(feature.getAllocation(), feature.getVariants().values());
+            return variantAssignment.getVariant(variants, variantAssignment.assignVariant(feature.getAllocation()));
         });
     }
-    
+
     private Mono<Boolean> evaluateFeatureFlagResults(Feature feature, List<Mono<Boolean>> results) {
         // All Filters must be true
         if (ALL_REQUIREMENT_TYPE.equals(feature.getRequirementType())) {
@@ -224,7 +268,7 @@ public class FeatureManager {
         }
         // Any Filter must be true
         return Flux.merge(results).reduce((a, b) -> a || b).single();
-        
+
     }
 
     private void validateVariant(Feature feature) {
