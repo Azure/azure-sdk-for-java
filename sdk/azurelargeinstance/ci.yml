@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/azurelargeinstance/ci.yml
+      - sdk/azurelargeinstance/azure-resourcemanager-azurelargeinstance/
+    exclude:
+      - sdk/azurelargeinstance/pom.xml
+      - sdk/azurelargeinstance/azure-resourcemanager-azurelargeinstance/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/azurelargeinstance/ci.yml
+      - sdk/azurelargeinstance/azure-resourcemanager-azurelargeinstance/
+    exclude:
+      - sdk/azurelargeinstance/pom.xml
+      - sdk/azurelargeinstance/azure-resourcemanager-azurelargeinstance/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerazurelargeinstance
+    displayName: azure-resourcemanager-azurelargeinstance
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: azurelargeinstance
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-azurelargeinstance
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerazurelargeinstance
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerazurelargeinstance }}

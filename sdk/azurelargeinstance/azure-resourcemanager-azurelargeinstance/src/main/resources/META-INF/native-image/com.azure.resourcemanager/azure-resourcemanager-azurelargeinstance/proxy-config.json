@@ -1,0 +1,1 @@
+[ [ "com.azure.resourcemanager.azurelargeinstance.implementation.AzureLargeInstancesClientImpl$AzureLargeInstancesService" ], [ "com.azure.resourcemanager.azurelargeinstance.implementation.OperationsClientImpl$OperationsService" ], [ "com.azure.resourcemanager.azurelargeinstance.implementation.AzureLargeStorageInstancesClientImpl$AzureLargeStorageInstancesService" ] ]
