@@ -3,26 +3,49 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.events.*;
-import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
+import com.azure.communication.callautomation.models.events.AddParticipantCancelled;
+import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.CallTransferAccepted;
+import com.azure.communication.callautomation.models.events.CancelAddParticipantFailed;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
+import com.azure.communication.callautomation.models.events.DialogCompleted;
+import com.azure.communication.callautomation.models.events.DialogConsent;
+import com.azure.communication.callautomation.models.events.DialogFailed;
+import com.azure.communication.callautomation.models.events.DialogHangup;
+import com.azure.communication.callautomation.models.events.DialogLanguageChange;
+import com.azure.communication.callautomation.models.events.DialogSensitivityUpdate;
+import com.azure.communication.callautomation.models.events.DialogStarted;
+import com.azure.communication.callautomation.models.events.DialogTransfer;
+import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
+import com.azure.communication.callautomation.models.events.PlayCanceled;
+import com.azure.communication.callautomation.models.events.PlayCompleted;
+import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.ReasonCode;
 import com.azure.communication.callautomation.models.events.ReasonCode.Recognize;
-
+import com.azure.communication.callautomation.models.events.RecognizeCanceled;
+import com.azure.communication.callautomation.models.events.RecognizeCompleted;
+import com.azure.communication.callautomation.models.events.RecognizeFailed;
+import com.azure.communication.callautomation.models.events.RecordingStateChanged;
+import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
+import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.SendDtmfCompleted;
+import com.azure.communication.callautomation.models.events.SendDtmfFailed;
 import org.junit.jupiter.api.Test;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CallAutomationEventParserAndProcessorUnitTests {
     static final String EVENT_PARTICIPANT_UPDATED = "{\"id\":\"61069ef9-5ca9-457f-ac36-e2bb5e8400ca\",\"source\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\",\"type\":\"Microsoft.Communication.ParticipantsUpdated\",\"data\":{\"participants\":[{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\"}}, \"isMuted\": false},{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\"}}, \"isMuted\": false}],\"type\":\"participantsUpdated\",\"callConnectionId\":\"401f3500-62bd-46a9-8c09-9e1b06caca01\",\"correlationId\":\"ebd8bf1f-0794-494f-bdda-913042c06ef7\"},\"time\":\"2022-08-12T03:35:07.9129474+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\"}";
@@ -626,16 +649,16 @@ public class CallAutomationEventParserAndProcessorUnitTests {
 
         CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
         callAutomationEventProcessor.processEvents(receivedEvent);
-        CallAutomationEventBase eventComing = callAutomationEventProcessor.waitForEventProcessor(eventFromProcessor -> Objects.equals(event.getServerCallId(), eventFromProcessor.getServerCallId()) &&
-            Objects.equals(event.getCallConnectionId(), eventFromProcessor.getCallConnectionId()));
+        CallAutomationEventBase eventComing = callAutomationEventProcessor.waitForEventProcessor(eventFromProcessor -> Objects.equals(event.getServerCallId(), eventFromProcessor.getServerCallId())
+            && Objects.equals(event.getCallConnectionId(), eventFromProcessor.getCallConnectionId()));
 
         assertNotNull(eventComing);
         assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDEuY29udi5za3lwZS5jb20vY29udi8yZWtNYmJRN3VVbUY1RDJERFdITWJnP2k9MTUmZT02MzgyNTMwMzY2ODQ5NzkwMDI=", eventComing.getServerCallId());
         assertEquals("411f0b00-dc73-4528-a9e6-968ba983d2a1", eventComing.getCallConnectionId());
         assertEquals("be43dd55-38e9-4de8-9d75-e20b6b32744f", eventComing.getCorrelationId());
-        assertEquals("The transfer operation completed successfully.", ((CallTransferAccepted)eventComing).getResultInformation().getMessage());
-        assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2f-2234-655d-573a0d00443e", ((CallTransferAccepted)eventComing).getTransferTarget().getRawId());
-        assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2e-e2b4-655d-573a0d004434", ((CallTransferAccepted)eventComing).getTransferee().getRawId());
+        assertEquals("The transfer operation completed successfully.", ((CallTransferAccepted) eventComing).getResultInformation().getMessage());
+        assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2f-2234-655d-573a0d00443e", ((CallTransferAccepted) eventComing).getTransferTarget().getRawId());
+        assertEquals("8:acs:3afbe310-c6d9-4b6f-a11e-c2aeb352f207_0000001a-0f2e-e2b4-655d-573a0d004434", ((CallTransferAccepted) eventComing).getTransferee().getRawId());
     }
 
     @Test
