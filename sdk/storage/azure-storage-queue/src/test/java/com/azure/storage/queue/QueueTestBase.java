@@ -19,7 +19,6 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
-import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
 import com.azure.storage.common.test.shared.TestEnvironment;
@@ -113,18 +112,6 @@ public class QueueTestBase extends TestProxyTestBase {
             .queueName(getRandomName(60));
     }
 
-    protected QueueServiceClientBuilder getOAuthServiceClientBuilder(String endpoint) {
-        QueueServiceClientBuilder builder = new QueueServiceClientBuilder();
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
-        return instrument(builder).endpoint(endpoint);
-    }
-
     protected QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
@@ -145,18 +132,6 @@ public class QueueTestBase extends TestProxyTestBase {
 
     protected QueueClientBuilder getQueueClientBuilder(String endpoint) {
         return instrument(new QueueClientBuilder()).endpoint(endpoint);
-    }
-
-    protected QueueClientBuilder getOAuthQueueClientBuilder(String endpoint) {
-        QueueClientBuilder builder = new QueueClientBuilder();
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
-        return instrument(builder).endpoint(endpoint);
     }
 
     protected Duration getMessageUpdateDelay(long liveMillis) {
