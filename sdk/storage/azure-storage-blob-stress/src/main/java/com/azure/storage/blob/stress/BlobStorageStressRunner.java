@@ -2,6 +2,7 @@ package com.azure.storage.blob.stress;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.storage.blob.stress.builders.DownloadToFileScenarioBuilder;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.HttpFaultInjectingHttpClient;
@@ -27,6 +28,10 @@ public class BlobStorageStressRunner {
 
     public static void main(String[] args) {
         FaultInjectionProbabilities probabilities = getDefaultFaultProbabilities();
+
+        // TODO: parse cmd line arguments
+        // e.g. like it's don in perf-tests or in azure-messaging-servicebus-stress
+
         DownloadToFileScenarioBuilder builder = new DownloadToFileScenarioBuilder();
         builder.setBlobPrefix("foo");
         builder.setBlobSize(10 * 1024 * 1024);
