@@ -132,7 +132,7 @@ public class CertificateBundle implements JsonSerializable<CertificateBundle> {
      */
     public byte[] getX509Thumbprint() {
         if (this.x509Thumbprint == null) {
-            return new byte[0];
+            return null;
         }
         return this.x509Thumbprint.decodedBytes();
     }

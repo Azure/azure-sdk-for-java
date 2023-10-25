@@ -74,9 +74,9 @@ import static com.azure.security.keyvault.certificates.implementation.KeyVaultCe
 
 /**
  * The CertificateAsyncClient provides asynchronous methods to manage {@link KeyVaultCertificate certifcates} in the
- * Azure Key Vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up,
+ * Azure key vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up,
  * restoring and listing the {@link KeyVaultCertificate certificates}. The client also supports listing
- * {@link DeletedCertificate deleted certificates} for a soft-delete enabled Azure Key Vault.
+ * {@link DeletedCertificate deleted certificates} for a soft-delete enabled Azure key vVault.
  *
  * <p>The client further allows creating, retrieving, updating, deleting and listing the
  * {@link CertificateIssuer certificate issuers}. The client also supports creating, listing and deleting
@@ -582,7 +582,7 @@ public final class CertificateAsyncClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificateProperties#CertificateProperties -->
      *
      * @param properties The {@link CertificateProperties} object with updated properties.
-     * @throws NullPointerException if {@code certificate} is null.
+     * @throws NullPointerException if {@code properties} is null.
      * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() name} and
      * {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
      * @throws HttpResponseException if {@link CertificateProperties#getName() name} or

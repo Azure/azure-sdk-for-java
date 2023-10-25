@@ -30,7 +30,7 @@ public final class BackupCertificateResult implements JsonSerializable<BackupCer
      */
     public byte[] getValue() {
         if (this.value == null) {
-            return new byte[0];
+            return null;
         }
         return this.value.decodedBytes();
     }

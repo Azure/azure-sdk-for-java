@@ -21,12 +21,6 @@ public final class CertificateKeyType extends ExpandableStringEnum<CertificateKe
     /** RSA with a private key which is stored in the HSM. */
     public static final CertificateKeyType RSA_HSM = fromString("RSA-HSM");
 
-    /** Octet sequence (used to represent symmetric keys). */
-    public static final CertificateKeyType OCT = fromString("oct");
-
-    /** Octet sequence (used to represent symmetric keys) which is stored the HSM. */
-    public static final CertificateKeyType OCT_HSM = fromString("oct-HSM");
-
     /**
      * Creates a new instance of CertificateKeyType value.
      *

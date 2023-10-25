@@ -30,7 +30,7 @@ autorest
 ## Configuration
 
 ```yaml
-use: '@autorest/java@4.1.19'
+use: '@autorest/java@4.1.22'
 output-folder: ../
 java: true
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/certificates.json
@@ -148,16 +148,19 @@ directive:
     where: $.definitions
     transform: >
       $.CertificateKeyType = $.JsonWebKey.properties.kty;
+      $.CertificateKeyType.enum = $.CertificateKeyType.enum.filter(item => item != "oct" && item != "oct-HSM");
       $.CertificateKeyType["x-ms-enum"].name = "CertificateKeyType";
-      $.CertificateKeyType["x-ms-enum"].values = $.CertificateKeyType["x-ms-enum"].values.map(item => {
-        if (item.value === "EC-HSM") {
-          item.name = "EcHsm";
-        } else if (item.value === "RSA-HSM") {
-          item.name = "RsaHsm";
-        }
-        
-        return item;
-      });
+      $.CertificateKeyType["x-ms-enum"].values = $.CertificateKeyType["x-ms-enum"].values
+          .filter(item => item.value != "oct" && item.value != "oct-HSM")
+          .map(item => {
+            if (item.value === "EC-HSM") {
+              item.name = "EcHsm";
+            } else if (item.value === "RSA-HSM") {
+              item.name = "RsaHsm";
+            }
+            
+            return item;
+          });
       
       delete $.JsonWebKey.properties.kty;
       $.JsonWebKey.properties.kty = { "$ref": "#/definitions/CertificateKeyType" };

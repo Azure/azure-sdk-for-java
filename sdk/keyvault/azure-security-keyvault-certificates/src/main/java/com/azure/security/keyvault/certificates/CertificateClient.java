@@ -490,7 +490,7 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.updateCertificateProperties#CertificateProperties -->
      *
      * @param properties The {@link CertificateProperties} object with updated properties.
-     * @throws NullPointerException if {@code certificate} is null.
+     * @throws NullPointerException if {@code properties} is null.
      * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() certificateName}
      * and {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link CertificateProperties#getName() certificateName} or
@@ -526,7 +526,7 @@ public final class CertificateClient {
      *
      * @param properties The {@link CertificateProperties} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code certificate} is null.
+     * @throws NullPointerException if {@code properties} is null.
      * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() certificateName}
      * and {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link CertificateProperties#getName() certificateName} or
@@ -1267,6 +1267,7 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.createIssuer#CertificateIssuer -->
      *
      * @param issuer The configuration of the certificate issuer to be created.
+     * @throws NullPointerException if {@code issuer} is null.
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
      * @throws HttpRequestException when a certificate issuer with {@link CertificateIssuer#getName() name} is empty
      * string.
@@ -1952,6 +1953,7 @@ public final class CertificateClient {
      *
      * @param importCertificateOptions The details of the certificate to import to the key vault
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
+     * @throws NullPointerException when {@code importCertificateOptions} is null.
      * @return the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1983,6 +1985,7 @@ public final class CertificateClient {
      * @param importCertificateOptions The details of the certificate to import to the key vault
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
+     * @throws NullPointerException when {@code importCertificateOptions} is null.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultCertificateWithPolicy imported certificate}.
      */

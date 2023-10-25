@@ -32,7 +32,7 @@ public final class CertificateRestoreParameters implements JsonSerializable<Cert
      */
     public byte[] getCertificateBundleBackup() {
         if (this.certificateBundleBackup == null) {
-            return new byte[0];
+            return null;
         }
         return this.certificateBundleBackup.decodedBytes();
     }

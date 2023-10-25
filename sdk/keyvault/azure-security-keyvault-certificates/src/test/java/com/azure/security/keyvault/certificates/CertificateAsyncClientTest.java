@@ -460,7 +460,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         cancelCertificateOperationRunner((certName) -> {
             PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
                 certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
-                    .setPollInterval(Duration.ofMillis(100));
+                    .setPollInterval(Duration.ofMillis(250));
 
             StepVerifier.create(certPoller
                     .takeUntil(asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS)
