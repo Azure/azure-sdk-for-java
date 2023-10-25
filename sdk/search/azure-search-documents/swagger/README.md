@@ -560,3 +560,13 @@ directive:
   transform: >
     $["x-ms-enum"].name = "SemanticSearchResultsType";
 ```
+
+### Rename SemanticSearch.defaultConfiguration to defaultConfigurationName
+
+``` yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.SemanticSearch.properties.defaultConfiguration
+  transform: >
+    $["x-ms-client-name"] = "defaultConfigurationName";
+```

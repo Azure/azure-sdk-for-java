@@ -21,7 +21,7 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
      * Allows you to set the name of a default semantic configuration in your index, making it optional to pass it on
      * as a query parameter every time.
      */
-    private String defaultConfiguration;
+    private String defaultConfigurationName;
 
     /*
      * The semantic configurations for the index.
@@ -32,24 +32,24 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
     public SemanticSearch() {}
 
     /**
-     * Get the defaultConfiguration property: Allows you to set the name of a default semantic configuration in your
+     * Get the defaultConfigurationName property: Allows you to set the name of a default semantic configuration in your
      * index, making it optional to pass it on as a query parameter every time.
      *
-     * @return the defaultConfiguration value.
+     * @return the defaultConfigurationName value.
      */
-    public String getDefaultConfiguration() {
-        return this.defaultConfiguration;
+    public String getDefaultConfigurationName() {
+        return this.defaultConfigurationName;
     }
 
     /**
-     * Set the defaultConfiguration property: Allows you to set the name of a default semantic configuration in your
+     * Set the defaultConfigurationName property: Allows you to set the name of a default semantic configuration in your
      * index, making it optional to pass it on as a query parameter every time.
      *
-     * @param defaultConfiguration the defaultConfiguration value to set.
+     * @param defaultConfigurationName the defaultConfigurationName value to set.
      * @return the SemanticSearch object itself.
      */
-    public SemanticSearch setDefaultConfiguration(String defaultConfiguration) {
-        this.defaultConfiguration = defaultConfiguration;
+    public SemanticSearch setDefaultConfigurationName(String defaultConfigurationName) {
+        this.defaultConfigurationName = defaultConfigurationName;
         return this;
     }
 
@@ -76,7 +76,7 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("defaultConfiguration", this.defaultConfiguration);
+        jsonWriter.writeStringField("defaultConfiguration", this.defaultConfigurationName);
         jsonWriter.writeArrayField(
                 "configurations", this.configurations, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -99,7 +99,7 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
                         reader.nextToken();
 
                         if ("defaultConfiguration".equals(fieldName)) {
-                            deserializedSemanticSearch.defaultConfiguration = reader.getString();
+                            deserializedSemanticSearch.defaultConfigurationName = reader.getString();
                         } else if ("configurations".equals(fieldName)) {
                             List<SemanticConfiguration> configurations =
                                     reader.readArray(reader1 -> SemanticConfiguration.fromJson(reader1));
