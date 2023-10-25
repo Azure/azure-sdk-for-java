@@ -232,7 +232,7 @@
     "dir": "azure-resourcemanager-search",
     "source": "specification/search/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.search",
-    "args": "--tag=package-2020-08 --remove-inner=CheckNameAvailabilityOutput"
+    "args": "--tag=package-2023-11 --remove-inner=CheckNameAvailabilityOutput"
   },
   "servicebus": {
     "dir": "azure-resourcemanager-servicebus",
