@@ -137,12 +137,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>org.apache.qpid</groupId>-->
-<!--      <artifactId>qpid-jms-client</artifactId>-->
-<!--      <version>0.53.0</version> &lt;!&ndash; {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} &ndash;&gt;-->
-<!--      <optional>true</optional>-->
-<!--    </dependency>-->
     <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
