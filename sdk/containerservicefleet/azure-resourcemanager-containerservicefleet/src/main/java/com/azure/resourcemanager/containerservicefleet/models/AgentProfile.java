@@ -17,6 +17,12 @@ public final class AgentProfile {
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
+    /*
+     * The virtual machine size of the Fleet hub.
+     */
+    @JsonProperty(value = "vmSize")
+    private String vmSize;
+
     /** Creates an instance of AgentProfile class. */
     public AgentProfile() {
     }
@@ -40,6 +46,26 @@ public final class AgentProfile {
      */
     public AgentProfile withSubnetId(String subnetId) {
         this.subnetId = subnetId;
+        return this;
+    }
+
+    /**
+     * Get the vmSize property: The virtual machine size of the Fleet hub.
+     *
+     * @return the vmSize value.
+     */
+    public String vmSize() {
+        return this.vmSize;
+    }
+
+    /**
+     * Set the vmSize property: The virtual machine size of the Fleet hub.
+     *
+     * @param vmSize the vmSize value to set.
+     * @return the AgentProfile object itself.
+     */
+    public AgentProfile withVmSize(String vmSize) {
+        this.vmSize = vmSize;
         return this;
     }
 

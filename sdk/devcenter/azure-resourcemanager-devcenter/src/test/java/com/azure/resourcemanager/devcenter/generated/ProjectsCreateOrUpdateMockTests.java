@@ -33,7 +33,7 @@ public final class ProjectsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"nu\",\"devCenterId\":\"jsrtk\",\"description\":\"wnopqgikyzirtx\",\"maxDevBoxesPerUser\":543574693},\"location\":\"zejntps\",\"tags\":{\"ieoxorggufhyaomt\":\"ioilqukrydxtq\",\"jzhpjbibgjmfx\":\"ghhavgrvkffo\"},\"id\":\"mv\",\"name\":\"cluyovwxnbkf\",\"type\":\"zzxscyhwzdgiruj\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"jsto\",\"devCenterId\":\"eitpkxztmo\",\"description\":\"klf\",\"maxDevBoxesPerUser\":2138880865,\"displayName\":\"fc\"},\"location\":\"mpimaqxzhemjyh\",\"tags\":{\"lkb\":\"jswtwkozzwc\"},\"id\":\"wpfaj\",\"name\":\"jwltlwtjjgu\",\"type\":\"talhsnvkcdmxzr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,22 +64,34 @@ public final class ProjectsCreateOrUpdateMockTests {
         Project response =
             manager
                 .projects()
-                .define("fcdmqnrojlpijn")
-                .withRegion("krlgnyhm")
-                .withExistingResourceGroup("nepttwqmsni")
-                .withTags(mapOf("thrrgh", "xkk", "gf", "jbdhqxvc"))
-                .withDevCenterId("asxifto")
-                .withDescription("yzhftwesgogczh")
-                .withMaxDevBoxesPerUser(1907577103)
+                .define("oteyowc")
+                .withRegion("klxubyja")
+                .withExistingResourceGroup("hfgmvecactxm")
+                .withTags(
+                    mapOf(
+                        "ibrta",
+                        "mfblcqcuubg",
+                        "lqxihhrmooiz",
+                        "metttwgd",
+                        "y",
+                        "seypxiutcxapz",
+                        "lhvnhlab",
+                        "petogebjox"))
+                .withDevCenterId("pjwyiv")
+                .withDescription("kfxcvhrfs")
+                .withMaxDevBoxesPerUser(1587826907)
+                .withDisplayName("grttikteusqczk")
                 .create();
 
-        Assertions.assertEquals("zejntps", response.location());
-        Assertions.assertEquals("ioilqukrydxtq", response.tags().get("ieoxorggufhyaomt"));
-        Assertions.assertEquals("jsrtk", response.devCenterId());
-        Assertions.assertEquals("wnopqgikyzirtx", response.description());
-        Assertions.assertEquals(543574693, response.maxDevBoxesPerUser());
+        Assertions.assertEquals("mpimaqxzhemjyh", response.location());
+        Assertions.assertEquals("jswtwkozzwc", response.tags().get("lkb"));
+        Assertions.assertEquals("eitpkxztmo", response.devCenterId());
+        Assertions.assertEquals("klf", response.description());
+        Assertions.assertEquals(2138880865, response.maxDevBoxesPerUser());
+        Assertions.assertEquals("fc", response.displayName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

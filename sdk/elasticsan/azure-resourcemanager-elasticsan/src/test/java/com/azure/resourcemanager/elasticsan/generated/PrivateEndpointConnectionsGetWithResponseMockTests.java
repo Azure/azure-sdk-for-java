@@ -32,7 +32,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{\"id\":\"vjayvblmhvkzu\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"vyhgs\",\"actionsRequired\":\"byrqufeg\"},\"groupIds\":[\"wz\"]},\"id\":\"nhlmctlpdng\",\"name\":\"tvgbmhrixkwmy\",\"type\":\"jejveg\"}";
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{\"id\":\"ehtwdwrft\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"yrcdlbhshfwprac\",\"actionsRequired\":\"wity\"},\"groupIds\":[\"vxccedcp\",\"md\",\"odn\"]},\"id\":\"xltjcvnhltiu\",\"name\":\"cxnavv\",\"type\":\"xqi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,14 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .getWithResponse("x", "v", "kkgll", com.azure.core.util.Context.NONE)
+                .getWithResponse("fgytguslfeadcyg", "ukyhejhzis", "gfpelolppvksrpqv", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions
             .assertEquals(
                 PrivateEndpointServiceConnectionStatus.PENDING, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("vyhgs", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("byrqufeg", response.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("wz", response.groupIds().get(0));
+        Assertions.assertEquals("yrcdlbhshfwprac", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wity", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("vxccedcp", response.groupIds().get(0));
     }
 }

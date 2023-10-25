@@ -16,23 +16,23 @@ public final class DiscardRequestTests {
         DiscardRequest model =
             BinaryData
                 .fromString(
-                    "{\"validateOnly\":true,\"moveResources\":[\"podepoo\",\"inuvamiheogn\"],\"moveResourceInputType\":\"MoveResourceId\"}")
+                    "{\"validateOnly\":false,\"moveResources\":[\"fizuckyf\",\"hr\",\"idf\"],\"moveResourceInputType\":\"MoveResourceSourceId\"}")
                 .toObject(DiscardRequest.class);
-        Assertions.assertEquals(true, model.validateOnly());
-        Assertions.assertEquals("podepoo", model.moveResources().get(0));
-        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
+        Assertions.assertEquals(false, model.validateOnly());
+        Assertions.assertEquals("fizuckyf", model.moveResources().get(0));
+        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID, model.moveResourceInputType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiscardRequest model =
             new DiscardRequest()
-                .withValidateOnly(true)
-                .withMoveResources(Arrays.asList("podepoo", "inuvamiheogn"))
-                .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_ID);
+                .withValidateOnly(false)
+                .withMoveResources(Arrays.asList("fizuckyf", "hr", "idf"))
+                .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID);
         model = BinaryData.fromObject(model).toObject(DiscardRequest.class);
-        Assertions.assertEquals(true, model.validateOnly());
-        Assertions.assertEquals("podepoo", model.moveResources().get(0));
-        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
+        Assertions.assertEquals(false, model.validateOnly());
+        Assertions.assertEquals("fizuckyf", model.moveResources().get(0));
+        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID, model.moveResourceInputType());
     }
 }

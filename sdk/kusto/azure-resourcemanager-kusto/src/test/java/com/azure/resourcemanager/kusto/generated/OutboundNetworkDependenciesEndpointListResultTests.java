@@ -18,10 +18,10 @@ public final class OutboundNetworkDependenciesEndpointListResultTests {
         OutboundNetworkDependenciesEndpointListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"category\":\"duhpk\",\"endpoints\":[{\"domainName\":\"mareqnajxqugj\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"ubeddg\",\"endpointDetails\":[{}]}],\"provisioningState\":\"Creating\"},\"etag\":\"mzqa\",\"id\":\"krmnjijpxacqqud\",\"name\":\"nbyxbaaabjyv\",\"type\":\"yffimrzrtuzqogs\"}],\"nextLink\":\"nevfdnw\"}")
+                    "{\"value\":[{\"properties\":{\"category\":\"fvpdbo\",\"endpoints\":[{\"domainName\":\"zsjqlh\",\"endpointDetails\":[{}]},{\"domainName\":\"bdeibqipqk\",\"endpointDetails\":[{},{}]},{\"domainName\":\"ndzwmkrefa\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"rwkq\",\"endpointDetails\":[{},{}]}],\"provisioningState\":\"Moving\"},\"etag\":\"j\",\"id\":\"jivfxzsjabib\",\"name\":\"ystawfsdjpvkvp\",\"type\":\"jxbkzbzkdvn\"}],\"nextLink\":\"abudurgk\"}")
                 .toObject(OutboundNetworkDependenciesEndpointListResult.class);
-        Assertions.assertEquals("duhpk", model.value().get(0).category());
-        Assertions.assertEquals("mareqnajxqugj", model.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("fvpdbo", model.value().get(0).category());
+        Assertions.assertEquals("zsjqlh", model.value().get(0).endpoints().get(0).domainName());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,23 +32,32 @@ public final class OutboundNetworkDependenciesEndpointListResultTests {
                     Arrays
                         .asList(
                             new OutboundNetworkDependenciesEndpointInner()
-                                .withCategory("duhpk")
+                                .withCategory("fvpdbo")
                                 .withEndpoints(
                                     Arrays
                                         .asList(
                                             new EndpointDependency()
-                                                .withDomainName("mareqnajxqugj")
+                                                .withDomainName("zsjqlh")
+                                                .withEndpointDetails(Arrays.asList(new EndpointDetail())),
+                                            new EndpointDependency()
+                                                .withDomainName("bdeibqipqk")
+                                                .withEndpointDetails(
+                                                    Arrays.asList(new EndpointDetail(), new EndpointDetail())),
+                                            new EndpointDependency()
+                                                .withDomainName("ndzwmkrefa")
                                                 .withEndpointDetails(
                                                     Arrays
                                                         .asList(
                                                             new EndpointDetail(),
                                                             new EndpointDetail(),
+                                                            new EndpointDetail(),
                                                             new EndpointDetail())),
                                             new EndpointDependency()
-                                                .withDomainName("ubeddg")
-                                                .withEndpointDetails(Arrays.asList(new EndpointDetail()))))));
+                                                .withDomainName("rwkq")
+                                                .withEndpointDetails(
+                                                    Arrays.asList(new EndpointDetail(), new EndpointDetail()))))));
         model = BinaryData.fromObject(model).toObject(OutboundNetworkDependenciesEndpointListResult.class);
-        Assertions.assertEquals("duhpk", model.value().get(0).category());
-        Assertions.assertEquals("mareqnajxqugj", model.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("fvpdbo", model.value().get(0).category());
+        Assertions.assertEquals("zsjqlh", model.value().get(0).endpoints().get(0).domainName());
     }
 }

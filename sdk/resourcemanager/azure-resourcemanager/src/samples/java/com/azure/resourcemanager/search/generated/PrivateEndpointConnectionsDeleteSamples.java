@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/DeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/DeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnectionDelete.
@@ -23,6 +21,10 @@ public final class PrivateEndpointConnectionsDeleteSamples {
             .serviceClient()
             .getPrivateEndpointConnections()
             .deleteWithResponse(
-                "rg1", "mysearchservice", "testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546", null, Context.NONE);
+                "rg1",
+                "mysearchservice",
+                "testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

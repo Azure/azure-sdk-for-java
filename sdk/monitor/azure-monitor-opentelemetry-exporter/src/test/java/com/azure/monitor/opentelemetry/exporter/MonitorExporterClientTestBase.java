@@ -36,8 +36,7 @@ public class MonitorExporterClientTestBase extends TestProxyTestBase {
         return new AzureMonitorExporterBuilder().httpPipeline(getHttpPipeline(null));
     }
 
-    HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy) {
-        HttpClient httpClient = HttpClient.createDefault();
+    HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy, HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (policy != null) {
             policies.add(policy);
@@ -56,6 +55,10 @@ public class MonitorExporterClientTestBase extends TestProxyTestBase {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .tracer(new NoopTracer())
             .build();
+    }
+
+    HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy) {
+        return getHttpPipeline(policy, HttpClient.createDefault());
     }
 
     List<TelemetryItem> getAllInvalidTelemetryItems() {

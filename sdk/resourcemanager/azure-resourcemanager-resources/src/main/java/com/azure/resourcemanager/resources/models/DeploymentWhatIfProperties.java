@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Deployment What-if properties. */
 @Fluent
@@ -56,7 +57,7 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
 
     /** {@inheritDoc} */
     @Override
-    public DeploymentWhatIfProperties withParameters(Object parameters) {
+    public DeploymentWhatIfProperties withParameters(Map<String, DeploymentParameter> parameters) {
         super.withParameters(parameters);
         return this;
     }

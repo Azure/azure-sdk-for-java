@@ -358,6 +358,80 @@ public interface VolumesClient {
         Context context);
 
     /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(
+        String resourceGroupName, String accountName, String poolName, String volumeName);
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VolumeInner populateAvailabilityZone(
+        String resourceGroupName, String accountName, String poolName, String volumeName);
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VolumeInner populateAvailabilityZone(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+
+    /**
      * Revert a volume to one of its snapshots
      *
      * <p>Revert a volume to the snapshot specified in the body.

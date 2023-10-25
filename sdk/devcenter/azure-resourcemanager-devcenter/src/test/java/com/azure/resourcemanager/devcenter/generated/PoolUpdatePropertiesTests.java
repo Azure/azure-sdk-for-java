@@ -8,8 +8,11 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.PoolUpdateProperties;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
+import com.azure.resourcemanager.devcenter.models.SingleSignOnStatus;
 import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
 import com.azure.resourcemanager.devcenter.models.StopOnDisconnectEnableStatus;
+import com.azure.resourcemanager.devcenter.models.VirtualNetworkType;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class PoolUpdatePropertiesTests {
@@ -18,34 +21,46 @@ public final class PoolUpdatePropertiesTests {
         PoolUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"devBoxDefinitionName\":\"cktqumiekkezzi\",\"networkConnectionName\":\"ly\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\",\"stopOnDisconnect\":{\"status\":\"Disabled\",\"gracePeriodMinutes\":558583308}}")
+                    "{\"devBoxDefinitionName\":\"honnxkrlgnyhmos\",\"networkConnectionName\":\"kkgthr\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\",\"stopOnDisconnect\":{\"status\":\"Disabled\",\"gracePeriodMinutes\":2131974737},\"singleSignOnStatus\":\"Disabled\",\"displayName\":\"gf\",\"virtualNetworkType\":\"Unmanaged\",\"managedVirtualNetworkRegions\":[\"fbshrnsvbuswd\",\"z\"]}")
                 .toObject(PoolUpdateProperties.class);
-        Assertions.assertEquals("cktqumiekkezzi", model.devBoxDefinitionName());
-        Assertions.assertEquals("ly", model.networkConnectionName());
+        Assertions.assertEquals("honnxkrlgnyhmos", model.devBoxDefinitionName());
+        Assertions.assertEquals("kkgthr", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
-        Assertions.assertEquals(LocalAdminStatus.ENABLED, model.localAdministrator());
+        Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
         Assertions.assertEquals(StopOnDisconnectEnableStatus.DISABLED, model.stopOnDisconnect().status());
-        Assertions.assertEquals(558583308, model.stopOnDisconnect().gracePeriodMinutes());
+        Assertions.assertEquals(2131974737, model.stopOnDisconnect().gracePeriodMinutes());
+        Assertions.assertEquals(SingleSignOnStatus.DISABLED, model.singleSignOnStatus());
+        Assertions.assertEquals("gf", model.displayName());
+        Assertions.assertEquals(VirtualNetworkType.UNMANAGED, model.virtualNetworkType());
+        Assertions.assertEquals("fbshrnsvbuswd", model.managedVirtualNetworkRegions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PoolUpdateProperties model =
             new PoolUpdateProperties()
-                .withDevBoxDefinitionName("cktqumiekkezzi")
-                .withNetworkConnectionName("ly")
+                .withDevBoxDefinitionName("honnxkrlgnyhmos")
+                .withNetworkConnectionName("kkgthr")
                 .withLicenseType(LicenseType.WINDOWS_CLIENT)
-                .withLocalAdministrator(LocalAdminStatus.ENABLED)
+                .withLocalAdministrator(LocalAdminStatus.DISABLED)
                 .withStopOnDisconnect(
                     new StopOnDisconnectConfiguration()
                         .withStatus(StopOnDisconnectEnableStatus.DISABLED)
-                        .withGracePeriodMinutes(558583308));
+                        .withGracePeriodMinutes(2131974737))
+                .withSingleSignOnStatus(SingleSignOnStatus.DISABLED)
+                .withDisplayName("gf")
+                .withVirtualNetworkType(VirtualNetworkType.UNMANAGED)
+                .withManagedVirtualNetworkRegions(Arrays.asList("fbshrnsvbuswd", "z"));
         model = BinaryData.fromObject(model).toObject(PoolUpdateProperties.class);
-        Assertions.assertEquals("cktqumiekkezzi", model.devBoxDefinitionName());
-        Assertions.assertEquals("ly", model.networkConnectionName());
+        Assertions.assertEquals("honnxkrlgnyhmos", model.devBoxDefinitionName());
+        Assertions.assertEquals("kkgthr", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
-        Assertions.assertEquals(LocalAdminStatus.ENABLED, model.localAdministrator());
+        Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
         Assertions.assertEquals(StopOnDisconnectEnableStatus.DISABLED, model.stopOnDisconnect().status());
-        Assertions.assertEquals(558583308, model.stopOnDisconnect().gracePeriodMinutes());
+        Assertions.assertEquals(2131974737, model.stopOnDisconnect().gracePeriodMinutes());
+        Assertions.assertEquals(SingleSignOnStatus.DISABLED, model.singleSignOnStatus());
+        Assertions.assertEquals("gf", model.displayName());
+        Assertions.assertEquals(VirtualNetworkType.UNMANAGED, model.virtualNetworkType());
+        Assertions.assertEquals("fbshrnsvbuswd", model.managedVirtualNetworkRegions().get(0));
     }
 }

@@ -86,6 +86,29 @@ public final class EnvironmentTypeInner extends ProxyResource {
     }
 
     /**
+     * Get the displayName property: The display name of the environment type.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name of the environment type.
+     *
+     * @param displayName the displayName value to set.
+     * @return the EnvironmentTypeInner object itself.
+     */
+    public EnvironmentTypeInner withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EnvironmentTypeProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

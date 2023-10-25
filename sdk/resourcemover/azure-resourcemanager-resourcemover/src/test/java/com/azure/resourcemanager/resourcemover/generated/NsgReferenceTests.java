@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class NsgReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NsgReference model =
-            BinaryData.fromString("{\"sourceArmResourceId\":\"ptkoenkoukn\"}").toObject(NsgReference.class);
-        Assertions.assertEquals("ptkoenkoukn", model.sourceArmResourceId());
+        NsgReference model = BinaryData.fromString("{\"sourceArmResourceId\":\"jf\"}").toObject(NsgReference.class);
+        Assertions.assertEquals("jf", model.sourceArmResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NsgReference model = new NsgReference().withSourceArmResourceId("ptkoenkoukn");
+        NsgReference model = new NsgReference().withSourceArmResourceId("jf");
         model = BinaryData.fromObject(model).toObject(NsgReference.class);
-        Assertions.assertEquals("ptkoenkoukn", model.sourceArmResourceId());
+        Assertions.assertEquals("jf", model.sourceArmResourceId());
     }
 }

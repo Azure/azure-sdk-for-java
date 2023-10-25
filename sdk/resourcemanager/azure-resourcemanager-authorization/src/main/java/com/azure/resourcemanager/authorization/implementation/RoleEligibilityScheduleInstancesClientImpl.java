@@ -76,8 +76,7 @@ public final class RoleEligibilityScheduleInstancesClientImpl implements RoleEli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleInstances"
-                + "/{roleEligibilityScheduleInstanceName}")
+            "/{scope}/providers/Microsoft.Authorization/roleEligibilityScheduleInstances/{roleEligibilityScheduleInstanceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleEligibilityScheduleInstanceInner>> get(
