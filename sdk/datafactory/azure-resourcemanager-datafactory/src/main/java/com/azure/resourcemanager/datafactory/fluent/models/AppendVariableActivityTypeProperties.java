@@ -17,7 +17,8 @@ public final class AppendVariableActivityTypeProperties {
     private String variableName;
 
     /*
-     * Value to be appended. Could be a static value or Expression
+     * Value to be appended. Type: could be a static value matching type of the variable item or Expression with
+     * resultType matching type of the variable item
      */
     @JsonProperty(value = "value")
     private Object value;
@@ -47,7 +48,8 @@ public final class AppendVariableActivityTypeProperties {
     }
 
     /**
-     * Get the value property: Value to be appended. Could be a static value or Expression.
+     * Get the value property: Value to be appended. Type: could be a static value matching type of the variable item or
+     * Expression with resultType matching type of the variable item.
      *
      * @return the value value.
      */
@@ -56,7 +58,8 @@ public final class AppendVariableActivityTypeProperties {
     }
 
     /**
-     * Set the value property: Value to be appended. Could be a static value or Expression.
+     * Set the value property: Value to be appended. Type: could be a static value matching type of the variable item or
+     * Expression with resultType matching type of the variable item.
      *
      * @param value the value value to set.
      * @return the AppendVariableActivityTypeProperties object itself.

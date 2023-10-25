@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Endpoints Update. */
 public final class EndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Endpoints_Update.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Endpoints_Update.json
      */
     /**
      * Sample code: Endpoints_Update.
@@ -30,7 +29,7 @@ public final class EndpointsUpdateSamples {
                 "profile1",
                 "endpoint1",
                 new EndpointUpdateParameters().withTags(mapOf("additionalProperties", "Tag1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

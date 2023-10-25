@@ -126,12 +126,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 WebExceptionUtility.isReadTimeoutException(clientException) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
 
-                boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(request);
-
-                //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
-                if(canFailoverOnTimeout) {
-                    return shouldRetryOnEndpointFailureAsync(this.isReadRequest, true, true);
-                }
+                return shouldRetryOnGatewayTimeout();
             }
         }
 
@@ -162,7 +157,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return this.shouldRetryOnBackendServiceUnavailableAsync(
                 this.isReadRequest,
                 isWebExceptionRetriable,
-                this.request.getNonIdempotentWriteRetriesEnabled());
+                this.request.getNonIdempotentWriteRetriesEnabled(),
+                clientException);
         }
 
         return this.throttlingRetry.shouldRetry(e);
@@ -204,7 +200,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     this.isReadRequest ?
                         this.globalEndpointManager.getApplicableReadEndpoints(request) : this.globalEndpointManager.getApplicableWriteEndpoints(request);
 
-                if (this.sessionTokenRetryCount > endpoints.size()) {
+                if (this.sessionTokenRetryCount >= endpoints.size()) {
                     // When use multiple write locations is true and the request has been tried
                     // on all locations, then don't retry the request
                     return ShouldRetryResult.noRetry();
@@ -246,7 +242,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return this.rxCollectionCache.refreshAsync(null, this.request).then(Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO)));
     }
 
-    private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh, boolean usePreferredLocations) {
+    private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest, boolean forceRefresh, boolean usePreferredLocations) {
         if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
             logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
@@ -269,6 +265,25 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
         }
         return refreshLocationCompletable.then(Mono.just(ShouldRetryResult.retryAfter(retryDelay)));
+    }
+
+    private Mono<ShouldRetryResult> shouldRetryOnGatewayTimeout() {
+        boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(request);
+
+        //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
+        if(canFailoverOnTimeout) {
+            if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
+                logger.warn("shouldRetryOnHttpTimeout() Not retrying. Retry count = {}", this.failoverRetryCount);
+                return Mono.just(ShouldRetryResult.noRetry());
+            }
+
+            this.failoverRetryCount++;
+            this.retryContext = new RetryContext(this.failoverRetryCount, true);
+            Duration retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);
+            return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
+        }
+
+        return Mono.just(ShouldRetryResult.NO_RETRY);
     }
 
     private Mono<ShouldRetryResult> shouldNotRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh, boolean usePreferredLocations) {
@@ -299,11 +314,31 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private Mono<ShouldRetryResult> shouldRetryOnBackendServiceUnavailableAsync(
         boolean isReadRequest,
         boolean isWebExceptionRetriable,
-        boolean nonIdempotentWriteRetriesEnabled) {
+        boolean nonIdempotentWriteRetriesEnabled,
+        CosmosException cosmosException) {
 
-        if (!isReadRequest && !nonIdempotentWriteRetriesEnabled && !isWebExceptionRetriable) {
+        // The request has failed with 503, SDK need to decide whether it is safe to retry for write operations
+        // For server generated retries, it is safe to retry
+        // For SDK generated 503, it will be more tricky as we have to decide the cause of it. For any causes that SDK not sure whether the request
+        // has reached/processed from server side, unless customer has specifically opted in for nonIdempotentWriteRetries, SDK should not retry.
+        // When SDK would generate 503:
+        //    - When server return 410, SDK may internally retry multiple times, when all the retries exhausted, SDK will bubble up 503 with corresponding subStatusCode
+        //      (Note: currently, subStatus code for read may get lost during the conversion, but for writes, the subStatus code will be reserved)
+        //    - when SDK generated 410 due to different reason (like connectionTimeout, transient timeout etc), SDK will internally retry multiple times
+        //      when all the retries exhausted, SDK will bubble up 503
+        //
+        // Fow now, without nonIdempotentWriteRetries being enabled, SDK will only retry for the following situation:
+        // 1. For any connection related errors, it will be covered under isWebExceptionRetriable -> which SDK will retry
+        // 2. For any server returned 503s, SDK will retry
+        // 3. For SDK generated 503, SDK will only retry if the subStatusCode is SERVER_GENERATED_410
+        if (!isReadRequest
+            && !shouldRetryWriteOnServiceUnavailable(
+                nonIdempotentWriteRetriesEnabled,
+                isWebExceptionRetriable,
+                cosmosException)) {
             logger.warn(
-                "shouldRetryOnBackendServiceUnavailableAsync() Not retrying on write with non retriable exception. Retry count = {}",
+                "shouldRetryOnBackendServiceUnavailableAsync() Not retrying" +
+                    " on write with non retriable exception and non server returned service unavailable. Retry count = {}",
                 this.serviceUnavailableRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
@@ -372,6 +407,24 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     CosmosDiagnostics getCosmosDiagnostics() {
         return cosmosDiagnostics;
+    }
+
+    private boolean shouldRetryWriteOnServiceUnavailable(
+        boolean nonIdempotentWriteRetriesEnabled,
+        boolean isWebExceptionRetriable,
+        CosmosException cosmosException) {
+
+        if (nonIdempotentWriteRetriesEnabled || isWebExceptionRetriable) {
+            return true;
+        }
+
+        if (cosmosException instanceof ServiceUnavailableException) {
+            ServiceUnavailableException serviceUnavailableException = (ServiceUnavailableException) cosmosException;
+            return serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_503
+                || serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_410;
+        }
+
+        return false;
     }
 
     private static class RetryContext {

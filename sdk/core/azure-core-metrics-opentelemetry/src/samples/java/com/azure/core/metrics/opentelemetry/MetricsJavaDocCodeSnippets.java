@@ -11,7 +11,6 @@ import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
@@ -93,9 +92,10 @@ public class MetricsJavaDocCodeSnippets {
             .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
             .build();
 
+        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build();
         // Pass OpenTelemetry instance to MetricsOptions.
         MetricsOptions customMetricsOptions = new OpenTelemetryMetricsOptions()
-            .setOpenTelemetry(OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build());
+            .setOpenTelemetry(openTelemetry);
 
         // configure Azure Client to use customMetricsOptions - it will use meterProvider
         // to create meters and instruments
@@ -108,6 +108,7 @@ public class MetricsJavaDocCodeSnippets {
         sampleClient.methodCall("get items");
 
         // END: readme-sample-customConfiguration
+        openTelemetry.close();
     }
 
     /**
@@ -125,7 +126,7 @@ public class MetricsJavaDocCodeSnippets {
             .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
             .build();
 
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
+        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder()
             .setTracerProvider(tracerProvider)
             .setMeterProvider(meterProvider)
             .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
@@ -157,6 +158,7 @@ public class MetricsJavaDocCodeSnippets {
         span.end();
 
         // END: com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#custom
+        openTelemetry.close();
     }
 
     /**

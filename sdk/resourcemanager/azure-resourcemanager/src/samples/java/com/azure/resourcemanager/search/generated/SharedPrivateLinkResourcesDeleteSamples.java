@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SharedPrivateLinkResources Delete. */
 public final class SharedPrivateLinkResourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/DeleteSharedPrivateLinkResource.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/DeleteSharedPrivateLinkResource.json
      */
     /**
      * Sample code: SharedPrivateLinkResourceDelete.
@@ -22,6 +20,6 @@ public final class SharedPrivateLinkResourcesDeleteSamples {
             .manager()
             .serviceClient()
             .getSharedPrivateLinkResources()
-            .delete("rg1", "mysearchservice", "testResource", null, Context.NONE);
+            .delete("rg1", "mysearchservice", "testResource", null, com.azure.core.util.Context.NONE);
     }
 }

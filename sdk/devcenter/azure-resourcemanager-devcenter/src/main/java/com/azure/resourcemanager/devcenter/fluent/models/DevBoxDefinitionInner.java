@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.devcenter.models.CatalogResourceValidationStatus;
 import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
 import com.azure.resourcemanager.devcenter.models.ImageValidationErrorDetails;
@@ -93,6 +94,15 @@ public final class DevBoxDefinitionInner extends Resource {
      */
     public ImageValidationErrorDetails imageValidationErrorDetails() {
         return this.innerProperties() == null ? null : this.innerProperties().imageValidationErrorDetails();
+    }
+
+    /**
+     * Get the validationStatus property: Validation status for the Dev Box Definition.
+     *
+     * @return the validationStatus value.
+     */
+    public CatalogResourceValidationStatus validationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().validationStatus();
     }
 
     /**

@@ -34,7 +34,8 @@ public final class ProjectEnvironmentTypesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"deploymentTargetId\":\"ecxn\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"irclnpk\":\"mlqtmldgxob\",\"iykhy\":\"iayz\",\"jlb\":\"wf\"},\"identity\":{\"principalId\":\"98acf4ee-341a-42e2-a2d5-46ee6a3be727\",\"tenantId\":\"789836d0-9cfd-4df2-b21f-7b1f8a117fc2\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"xhom\",\"id\":\"nhdwdigumbnra\",\"name\":\"uzzptjazysdz\",\"type\":\"ezwwv\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updated\",\"displayName\":\"uxtyasiibmi\",\"environmentCount\":1192000578,\"deploymentTargetId\":\"ustgnljhnmgixhc\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"ndm\":{\"roleName\":\"udorh\",\"description\":\"yyprotwyp\"},\"mdtzfjltfvnzc\":{\"roleName\":\"hu\",\"description\":\"mjkavlgorbmft\"}}},\"userRoleAssignments\":{\"qgqqihedsvqwthmk\":{\"roles\":{\"p\":{},\"opv\":{},\"bdb\":{}}}}},\"tags\":{\"qcwdhoh\":\"cysihs\",\"sufco\":\"dtmcd\"},\"identity\":{\"principalId\":\"960a468b-6f30-46a8-936a-62d1a0d2252c\",\"tenantId\":\"935d0f39-d663-4b11-94f4-1563033a0654\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{\"uapcvhdbevwqqxe\":{\"principalId\":\"dcb8d430-917f-49fa-a2a1-2a1f1a80b193\",\"clientId\":\"6be43b35-b4f6-4604-abed-432288c1bb9f\"},\"onqzinkfkbgbzbow\":{\"principalId\":\"47157874-e8a3-49fa-b0d7-50c2ab666a04\",\"clientId\":\"f90346ee-ff85-4779-9bd8-ecd7780cda93\"}}},\"location\":\"qocl\",\"id\":\"ygvkzqkjj\",\"name\":\"okbzef\",\"type\":\"zrxcczurt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +64,17 @@ public final class ProjectEnvironmentTypesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ProjectEnvironmentType> response =
-            manager.projectEnvironmentTypes().list("aawzqadfl", "z", 1828408441, com.azure.core.util.Context.NONE);
+            manager
+                .projectEnvironmentTypes()
+                .list("qhykprlpyzn", "ciqdsme", 1994491974, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mlqtmldgxob", response.iterator().next().tags().get("irclnpk"));
+        Assertions.assertEquals("cysihs", response.iterator().next().tags().get("qcwdhoh"));
         Assertions
-            .assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("xhom", response.iterator().next().location());
-        Assertions.assertEquals("ecxn", response.iterator().next().deploymentTargetId());
+            .assertEquals(
+                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("qocl", response.iterator().next().location());
+        Assertions.assertEquals("uxtyasiibmi", response.iterator().next().displayName());
+        Assertions.assertEquals("ustgnljhnmgixhc", response.iterator().next().deploymentTargetId());
         Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, response.iterator().next().status());
     }
 }

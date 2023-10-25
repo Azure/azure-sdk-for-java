@@ -1,6 +1,6 @@
 # Release History
 
-## 11.6.0-beta.9 (Unreleased)
+## 11.6.0-beta.11 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,64 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.5.12 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.4` to version `1.4.6`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+## 11.6.0-beta.10 (2023-10-12)
+
+### Features Added
+
+- `SemanticQuery` has been added to `SearchOptions`, allowing the setting of a separate search query that will be solely 
+used for semantic reranking, semantic captions and semantic answers.
+
+
+### Breaking Changes
+
+- `SearchQueryVector` model has been replaced by `VectorQuery`.
+- `SearchOptions` instance method `SearchOptions setVectors(List<SearchQueryVector>)` has been replaced by `SearchOptions setVectorQueries(List<VectorQuery>)`.
+- `SearchOptions` instance method `SearchOptions setVectors(SearchQueryVector...)` has been replaced by `SearchOptions setVetorQueries(VectorQuery...)`.
+- `SearchOptions` instance method `List<SearchQueryVector> getVectors()` has been replaced by `List<VectorQuery> getVectorQueries()`.
+- `VectorSearch` instance property `List<VectorSearchAlgorithmConfiguration> algorithmConfigurations` has been replaced by properties `List<VectorSearchProfile> profiles`, 
+`List<VectorSearchAlgorithmConfiguration> algorithms`, and `List<VectorSearchVectorizer> vectorizers`.
+
+### Other Changes
+
+- Added additional models to support vector search.
+- Updated vector search samples to use `VectorQuery`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.4` to version `1.4.5`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+
+## 11.5.11 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.3` to version `1.4.4`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 11.6.0-beta.9 (2023-09-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.3` to version `1.4.4`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 
 ## 11.5.10 (2023-08-18)
 

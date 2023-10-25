@@ -60,33 +60,82 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * {@link #buildClient() buildClient()} and {@link #buildAsyncClient() buildAsyncClient()} respectively to construct an
  * instance of the desired client.
  *
- * <p><strong>Create the sync client using a connection string</strong></p>
+ * <p>
+ * <strong>Credentials are required</strong> to perform operations against Azure Service Bus. They can be set by using
+ * one of the following methods:
+ * <ul>
+ *      <li>{@link #connectionString(String)} with a Service Bus <i>namespace</i> connection string.</li>
+ *      <li>{@link #credential(String, TokenCredential)} with the fully qualified Service Bus namespace and
+ *      a set of credentials authorized to use the namespace.</li>
+ *      <li>{@link #credential(TokenCredential)} and {@link #credential(AzureSasCredential)} overloads can be used with
+ *      its respective credentials.  In addition, {@link #endpoint(String)} must be set.</li>
+ * </ul>
+ *
+ * <p>The credential used in the following samples is {@code DefaultAzureCredential} for authentication. It is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we recommend
+ * using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.  You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Create the sync client</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous administration client.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' from your configuration.
- *
  * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;
  *     .setLogLevel&#40;HttpLogDetailLevel.HEADERS&#41;;
  *
+ * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .httpLogOptions&#40;logOptions&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation -->
  *
- * <p><strong>Create the async client using Azure Identity</strong></p>
+ * <p><strong>Sample: Create the async client using Azure Identity</strong></p>
+ *
+ * <p>The follow code sample demonstrates the creation of the async administration client.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation -->
  * <pre>
  * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;&lt;&lt; Service Bus NAMESPACE connection string&gt;&gt;&quot;&#41;
- *     .credential&#40;&quot;&lt;&lt; my-sb-namespace.servicebus.windows.net &gt;&gt;&quot;, credential&#41;
+ *     .credential&#40;fullyQualifiedNamespace, new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation -->
+ *
+ * <p><strong>Sample: Create the async client</strong></p>
+ *
+ * <p>The follow code sample demonstrates the creation of the async administration client with retry options and HTTP
+ * log options configured.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.construct#retryoptions -->
+ * <pre>
+ * &#47;&#47; DefaultAzureCredential creates a credential based on the environment it is executed in.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * RetryOptions retryOptions = new RetryOptions&#40;new FixedDelayOptions&#40;4, Duration.ofSeconds&#40;20&#41;&#41;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, credential&#41;
+ *     .retryOptions&#40;retryOptions&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.HEADERS&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.construct#retryoptions -->
  *
  * @see ServiceBusAdministrationClient
  * @see ServiceBusAdministrationAsyncClient

@@ -15,26 +15,22 @@ public final class TargetDiskNetworkAccessSettingsTests {
         TargetDiskNetworkAccessSettings model =
             BinaryData
                 .fromString(
-                    "{\"targetDiskNetworkAccessOption\":\"EnablePrivateAccessForAllDisks\",\"targetDiskAccessId\":\"yospspshc\"}")
+                    "{\"targetDiskNetworkAccessOption\":\"SameAsOnSourceDisks\",\"targetDiskAccessId\":\"bgqjxgpnrhgo\"}")
                 .toObject(TargetDiskNetworkAccessSettings.class);
         Assertions
-            .assertEquals(
-                TargetDiskNetworkAccessOption.ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS,
-                model.targetDiskNetworkAccessOption());
-        Assertions.assertEquals("yospspshc", model.targetDiskAccessId());
+            .assertEquals(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS, model.targetDiskNetworkAccessOption());
+        Assertions.assertEquals("bgqjxgpnrhgo", model.targetDiskAccessId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetDiskNetworkAccessSettings model =
             new TargetDiskNetworkAccessSettings()
-                .withTargetDiskNetworkAccessOption(TargetDiskNetworkAccessOption.ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS)
-                .withTargetDiskAccessId("yospspshc");
+                .withTargetDiskNetworkAccessOption(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS)
+                .withTargetDiskAccessId("bgqjxgpnrhgo");
         model = BinaryData.fromObject(model).toObject(TargetDiskNetworkAccessSettings.class);
         Assertions
-            .assertEquals(
-                TargetDiskNetworkAccessOption.ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS,
-                model.targetDiskNetworkAccessOption());
-        Assertions.assertEquals("yospspshc", model.targetDiskAccessId());
+            .assertEquals(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS, model.targetDiskNetworkAccessOption());
+        Assertions.assertEquals("bgqjxgpnrhgo", model.targetDiskAccessId());
     }
 }

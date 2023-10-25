@@ -29,6 +29,15 @@ public final class MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes
         fromString("allowOverrideWithJustification");
 
     /**
+     * Creates a new instance of MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes from its string representation.
      *
      * @param name a name to look for.

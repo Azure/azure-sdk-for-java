@@ -37,6 +37,12 @@ public final class AbstractiveSummary {
     }
 
     /**
+     * Constructs a {@code AbstractiveSummary} model.
+     */
+    public AbstractiveSummary() {
+    }
+
+    /**
      * Get the text property: The text of the summary.
      *
      * @return the text value.

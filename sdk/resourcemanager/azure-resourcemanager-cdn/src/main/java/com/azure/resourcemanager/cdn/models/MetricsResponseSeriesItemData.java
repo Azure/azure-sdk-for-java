@@ -23,6 +23,10 @@ public final class MetricsResponseSeriesItemData {
     @JsonProperty(value = "value")
     private Float value;
 
+    /** Creates an instance of MetricsResponseSeriesItemData class. */
+    public MetricsResponseSeriesItemData() {
+    }
+
     /**
      * Get the dateTime property: The dateTime property.
      *

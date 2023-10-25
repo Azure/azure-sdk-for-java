@@ -100,17 +100,23 @@ public class Configs {
     private static final int DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = 5;
 
     // SessionTokenMismatchRetryPolicy Constants
-    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS_NAME =
+    public static final String DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS_NAME =
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS";
     private static final int DEFAULT_SESSION_TOKEN_MISMATCH_WAIT_TIME_IN_MILLISECONDS = 5000;
 
-    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS_NAME =
+    public static final String DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS_NAME =
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS";
     private static final int DEFAULT_SESSION_TOKEN_MISMATCH_INITIAL_BACKOFF_TIME_IN_MILLISECONDS = 5;
 
-    private static final String DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME =
+    public static final String DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME =
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS";
     private static final int DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS = 500;
+
+    public static final int MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS = 100;
+
+    private static final String DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS_NAME =
+        "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_IN_REGION-RETRY_TIME_IN_MILLISECONDS";
+    private static final int DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS = 500;
 
     // Whether to process the response on a different thread
     private static final String SWITCH_OFF_IO_THREAD_FOR_RESPONSE_NAME = "COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE";
@@ -141,8 +147,10 @@ public class Configs {
     private static final String OPEN_CONNECTIONS_CONCURRENCY = "COSMOS.OPEN_CONNECTIONS_CONCURRENCY";
     private static final int DEFAULT_OPEN_CONNECTIONS_CONCURRENCY = 1;
 
-    private static final String MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = "COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED";
+    public static final String MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = "COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED";
     private static final int DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
+
+    public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -395,7 +403,20 @@ public class Configs {
     }
 
     public static int getMaxRetriesInLocalRegionWhenRemoteRegionPreferred() {
-        return getIntValue(System.getProperty(MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED),
-            DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED);
+        return
+            Math.max(
+                getIntValue(
+                    System.getProperty(MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED),
+                    DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED),
+                MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED);
+    }
+
+    public static Duration getMinRetryTimeInLocalRegionWhenRemoteRegionPreferred() {
+        return
+            Duration.ofMillis(Math.max(
+                getIntValue(
+                    System.getProperty(DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS_NAME),
+                    DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS),
+                MIN_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS));
     }
 }

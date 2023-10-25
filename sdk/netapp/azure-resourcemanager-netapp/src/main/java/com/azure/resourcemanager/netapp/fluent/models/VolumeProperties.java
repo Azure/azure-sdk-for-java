@@ -7,6 +7,7 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
+import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
@@ -53,7 +54,8 @@ public final class VolumeProperties {
      * usageThreshold
      *
      * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
+     * Specified in bytes.
      */
     @JsonProperty(value = "usageThreshold", required = true)
     private long usageThreshold;
@@ -120,7 +122,7 @@ public final class VolumeProperties {
     /*
      * Network features
      *
-     * Basic network, or Standard features available to the volume.
+     * Network features available to the volume, or current state of update.
      */
     @JsonProperty(value = "networkFeatures")
     private NetworkFeatures networkFeatures;
@@ -198,7 +200,7 @@ public final class VolumeProperties {
     /*
      * smbAccessBasedEnumeration
      *
-     * Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
      */
     @JsonProperty(value = "smbAccessBasedEnumeration")
     private SmbAccessBasedEnumeration smbAccessBasedEnumeration;
@@ -206,7 +208,7 @@ public final class VolumeProperties {
     /*
      * smbNonBrowsable
      *
-     * Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
      */
     @JsonProperty(value = "smbNonBrowsable")
     private SmbNonBrowsable smbNonBrowsable;
@@ -261,6 +263,17 @@ public final class VolumeProperties {
      */
     @JsonProperty(value = "coolnessPeriod")
     private Integer coolnessPeriod;
+
+    /*
+     * coolAccessRetrievalPolicy determines the data retrieval behavior from the cool tier to standard storage based on
+     * the read pattern for cool access enabled volumes. The possible values for this field are:
+     * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
+     * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
+     * reads.
+     * Never - No client-driven data is pulled from cool tier to standard storage.
+     */
+    @JsonProperty(value = "coolAccessRetrievalPolicy")
+    private CoolAccessRetrievalPolicy coolAccessRetrievalPolicy;
 
     /*
      * UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set
@@ -471,7 +484,8 @@ public final class VolumeProperties {
      * Get the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
+     * Specified in bytes.
      *
      * @return the usageThreshold value.
      */
@@ -483,7 +497,8 @@ public final class VolumeProperties {
      * Set the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
+     * Specified in bytes.
      *
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeProperties object itself.
@@ -656,7 +671,7 @@ public final class VolumeProperties {
     /**
      * Get the networkFeatures property: Network features
      *
-     * <p>Basic network, or Standard features available to the volume.
+     * <p>Network features available to the volume, or current state of update.
      *
      * @return the networkFeatures value.
      */
@@ -667,7 +682,7 @@ public final class VolumeProperties {
     /**
      * Set the networkFeatures property: Network features
      *
-     * <p>Basic network, or Standard features available to the volume.
+     * <p>Network features available to the volume, or current state of update.
      *
      * @param networkFeatures the networkFeatures value to set.
      * @return the VolumeProperties object itself.
@@ -867,7 +882,7 @@ public final class VolumeProperties {
     /**
      * Get the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
      *
-     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @return the smbAccessBasedEnumeration value.
      */
@@ -878,7 +893,7 @@ public final class VolumeProperties {
     /**
      * Set the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
      *
-     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
      * @return the VolumeProperties object itself.
@@ -891,7 +906,7 @@ public final class VolumeProperties {
     /**
      * Get the smbNonBrowsable property: smbNonBrowsable
      *
-     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @return the smbNonBrowsable value.
      */
@@ -902,7 +917,7 @@ public final class VolumeProperties {
     /**
      * Set the smbNonBrowsable property: smbNonBrowsable
      *
-     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @param smbNonBrowsable the smbNonBrowsable value to set.
      * @return the VolumeProperties object itself.
@@ -1071,6 +1086,34 @@ public final class VolumeProperties {
      */
     public VolumeProperties withCoolnessPeriod(Integer coolnessPeriod) {
         this.coolnessPeriod = coolnessPeriod;
+        return this;
+    }
+
+    /**
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
+     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
+     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
+     *
+     * @return the coolAccessRetrievalPolicy value.
+     */
+    public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
+        return this.coolAccessRetrievalPolicy;
+    }
+
+    /**
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
+     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
+     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
+     *
+     * @param coolAccessRetrievalPolicy the coolAccessRetrievalPolicy value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy) {
+        this.coolAccessRetrievalPolicy = coolAccessRetrievalPolicy;
         return this;
     }
 

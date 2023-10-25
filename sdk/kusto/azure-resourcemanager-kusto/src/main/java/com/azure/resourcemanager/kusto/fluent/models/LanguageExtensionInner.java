@@ -24,6 +24,12 @@ public final class LanguageExtensionInner {
     @JsonProperty(value = "languageExtensionImageName")
     private LanguageExtensionImageName languageExtensionImageName;
 
+    /*
+     * The language extension custom image name.
+     */
+    @JsonProperty(value = "languageExtensionCustomImageName")
+    private String languageExtensionCustomImageName;
+
     /** Creates an instance of LanguageExtensionInner class. */
     public LanguageExtensionInner() {
     }
@@ -66,6 +72,26 @@ public final class LanguageExtensionInner {
     public LanguageExtensionInner withLanguageExtensionImageName(
         LanguageExtensionImageName languageExtensionImageName) {
         this.languageExtensionImageName = languageExtensionImageName;
+        return this;
+    }
+
+    /**
+     * Get the languageExtensionCustomImageName property: The language extension custom image name.
+     *
+     * @return the languageExtensionCustomImageName value.
+     */
+    public String languageExtensionCustomImageName() {
+        return this.languageExtensionCustomImageName;
+    }
+
+    /**
+     * Set the languageExtensionCustomImageName property: The language extension custom image name.
+     *
+     * @param languageExtensionCustomImageName the languageExtensionCustomImageName value to set.
+     * @return the LanguageExtensionInner object itself.
+     */
+    public LanguageExtensionInner withLanguageExtensionCustomImageName(String languageExtensionCustomImageName) {
+        this.languageExtensionCustomImageName = languageExtensionCustomImageName;
         return this;
     }
 

@@ -127,6 +127,7 @@
     "sdk/core/azure-xml/**",
     "sdk/cosmos/azure-cosmos-dotnet-benchmark/**",
     "sdk/core/azure-core-tracing-opentelemetry/**",
+    "sdk/core/azure-core-tracing-opentelemetry-samples/**",
     "sdk/cosmos/azure-cosmos-benchmark/**",
     "sdk/core/azure-json-gson/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
@@ -180,6 +181,7 @@
     "sdk/remoterendering/TestResources/**",
     "sdk/purview/azure-analytics-purview-catalog/**",
     "sdk/servicebus/build/**",
+    "sdk/servicebus/azure-messaging-servicebus-stress/templates/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/workbooks/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/Dockerfile",
     "sdk/search/azure-search-documents/**",
@@ -273,6 +275,8 @@
     "embedme",
     "encryptor",
     "endtoend",
+    "entra",
+    "Entra",
     "Esto",
     "etag",
     "eventhub",
@@ -330,6 +334,7 @@
     "Mockito",
     "Mordor",
     "mosca",
+    "mpga",
     "msal",
     "msix",
     "MSRC",
@@ -338,6 +343,7 @@
     "odata",
     "ODBC",
     "okhttp",
+    "OTLP",
     "OLTP",
     "onboarded",
     "Onco",
@@ -473,6 +479,16 @@
       "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
       "words": [
         "Decibles"
+      ]
+    },
+    {
+      "filename": "sdk/easm/*",
+      "words": [
+        "easm",
+        "asns",
+        "nxdomain",
+        "cnames",
+        "riskiq"
       ]
     },
     {
@@ -683,7 +699,9 @@
         "Pdirect",
 	      "Pmulti",
         "Psplit",
-        "Pquery"
+        "Pquery",
+        "Pcfp",
+        "Pflaky"
       ]
     },
     {
@@ -1036,6 +1054,12 @@
         "Dskip",
         "Dspotbugs",
         "Pdev"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
+      "words": [
+        "Djava"
       ]
     },
     {

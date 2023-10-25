@@ -16,7 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger
 private class ItemsDataWriteFactory(userConfig: Map[String, String],
                                     inputSchema: StructType,
                                     cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-                                    diagnosticsConfig: DiagnosticsConfig)
+                                    diagnosticsConfig: DiagnosticsConfig,
+                                    sparkEnvironmentInfo: String)
   extends DataWriterFactory
     with StreamingDataWriterFactory {
 
@@ -42,7 +43,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
    *                    for example).
    */
   override def createWriter(partitionId: Int, taskId: Long): DataWriter[InternalRow] =
-    new CosmosWriter(inputSchema, partitionId, taskId, None)
+    new CosmosWriter(inputSchema, partitionId, taskId, None, sparkEnvironmentInfo)
 
   /**
    * Returns a data writer to do the actual writing work. Note that, Spark will reuse the same data
@@ -64,9 +65,15 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
    *                     discrete periods of execution.
    */
   override def createWriter(partitionId: Int, taskId: Long, epochId: Long): DataWriter[InternalRow] =
-    new CosmosWriter(inputSchema, partitionId, taskId, Some(epochId))
+    new CosmosWriter(inputSchema, partitionId, taskId, Some(epochId), sparkEnvironmentInfo)
 
-  private class CosmosWriter(inputSchema: StructType, partitionId: Int, taskId: Long, epochId: Option[Long]) extends DataWriter[InternalRow] {
+  private class CosmosWriter(
+                              inputSchema: StructType,
+                              partitionId: Int,
+                              taskId: Long,
+                              epochId: Option[Long],
+                              sparkEnvironmentInfo: String) extends DataWriter[InternalRow] {
+
     log.logInfo(s"Instantiated ${this.getClass.getSimpleName} - ($partitionId, $taskId, $epochId)")
     private val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
     private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, inputSchema)
@@ -74,8 +81,9 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
     private val cacheItemReleasedCount = new AtomicInteger(0)
+
     private val clientCacheItem = CosmosClientCache(
-      CosmosClientConfiguration(userConfig, useEventualConsistency = true),
+      CosmosClientConfiguration(userConfig, useEventualConsistency = true, sparkEnvironmentInfo),
       Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
       s"CosmosWriter($partitionId, $taskId, $epochId)"
     )
@@ -84,7 +92,8 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
       ThroughputControlHelper.getThroughputControlClientCacheItem(
         userConfig,
         clientCacheItem.context,
-        Some(cosmosClientStateHandles))
+        Some(cosmosClientStateHandles),
+        sparkEnvironmentInfo)
 
     private val container =
       ThroughputControlHelper.getContainer(

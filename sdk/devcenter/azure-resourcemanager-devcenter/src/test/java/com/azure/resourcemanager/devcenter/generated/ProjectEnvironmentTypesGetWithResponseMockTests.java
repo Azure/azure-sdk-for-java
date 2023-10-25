@@ -33,8 +33,7 @@ public final class ProjectEnvironmentTypesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Running\",\"deploymentTargetId\":\"ncstt\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"huzqgn\":\"krsgsgb\",\"omtkub\":\"dgkynscliqhzvhxn\"},\"identity\":{\"principalId\":\"b6e190a5-9bd1-40d6-adfa-9c7f591019e2\",\"tenantId\":\"d8a6339c-0589-427c-b82b-78428cf0275c\",\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"zxhi\",\"id\":\"rbbcevq\",\"name\":\"gtltdhlf\",\"type\":\"qojpy\"}";
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"odawopqhewjptmcg\",\"environmentCount\":888576031,\"deploymentTargetId\":\"t\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"wyyu\":{\"roleName\":\"tutmzl\",\"description\":\"ojlvfhrbbpneqvc\"}}},\"userRoleAssignments\":{\"rsnm\":{\"roles\":{\"ppr\":{}}},\"sfapaqtferrq\":{\"roles\":{\"yzejnhlbk\":{},\"bzpcpiljhahzvec\":{},\"ndbnwieh\":{},\"lewjwiuubwef\":{}}}}},\"tags\":{\"qqnobpudcd\":\"jkmfxapjwo\"},\"identity\":{\"principalId\":\"03f5a466-6c50-4919-bde5-066b76901bfc\",\"tenantId\":\"f83b623c-d15c-4e12-b872-6c287a69fbad\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"wbzasqbuclj\":{\"principalId\":\"54031da3-0b48-4c10-91ab-9d31be163e57\",\"clientId\":\"8bdf02b8-1a81-46df-9068-f687522afd91\"},\"exaoguya\":{\"principalId\":\"7085f48d-96cc-4d67-b0ae-a1d5febb84d7\",\"clientId\":\"a9fc2a4b-157d-4c21-b92a-1f7e3dbe0c9f\"},\"dsdaultxijjumf\":{\"principalId\":\"c5372a5b-ceb8-48a3-8848-43a7e4f1cf1c\",\"clientId\":\"ebe4ce5b-5fac-45b2-9081-76b53b699eb3\"}}},\"location\":\"azlnqnmcjngzqdqx\",\"id\":\"jw\",\"name\":\"nyfusfzsvtuikzh\",\"type\":\"jqg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,13 +64,14 @@ public final class ProjectEnvironmentTypesGetWithResponseMockTests {
         ProjectEnvironmentType response =
             manager
                 .projectEnvironmentTypes()
-                .getWithResponse("iqyuvvfo", "kphhq", "ikvylauya", com.azure.core.util.Context.NONE)
+                .getWithResponse("e", "pqxbkwvzgnzvdf", "zdix", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("krsgsgb", response.tags().get("huzqgn"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("zxhi", response.location());
-        Assertions.assertEquals("ncstt", response.deploymentTargetId());
+        Assertions.assertEquals("jkmfxapjwo", response.tags().get("qqnobpudcd"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("azlnqnmcjngzqdqx", response.location());
+        Assertions.assertEquals("odawopqhewjptmcg", response.displayName());
+        Assertions.assertEquals("t", response.deploymentTargetId());
         Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, response.status());
     }
 }

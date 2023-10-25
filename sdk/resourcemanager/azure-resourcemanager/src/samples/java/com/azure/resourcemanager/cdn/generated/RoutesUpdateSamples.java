@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdQueryStringCachingBehavior;
@@ -21,7 +20,7 @@ import java.util.Arrays;
 /** Samples for Routes Update. */
 public final class RoutesUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Routes_Update.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Routes_Update.json
      */
     /**
      * Sample code: Routes_Update.
@@ -69,6 +68,6 @@ public final class RoutesUpdateSamples {
                     .withLinkToDefaultDomain(LinkToDefaultDomain.ENABLED)
                     .withHttpsRedirect(HttpsRedirect.ENABLED)
                     .withEnabledState(EnabledState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

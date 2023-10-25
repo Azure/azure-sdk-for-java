@@ -17,6 +17,12 @@ public final class AllowedEnvironmentTypeProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /*
+     * The display name of the allowed environment type.
+     */
+    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
+    private String displayName;
+
     /** Creates an instance of AllowedEnvironmentTypeProperties class. */
     public AllowedEnvironmentTypeProperties() {
     }
@@ -28,6 +34,15 @@ public final class AllowedEnvironmentTypeProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the displayName property: The display name of the allowed environment type.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
     }
 
     /**
