@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -27,17 +28,5 @@ class ServiceBusJmsPasswordlessConfiguration {
     AzureServiceBusJmsCredentialSupplier azureServiceBusJmsCredentialSupplier(AzureServiceBusJmsProperties azureServiceBusJmsProperties) {
         return new AzureServiceBusJmsCredentialSupplier(azureServiceBusJmsProperties.toPasswordlessProperties());
     }
-
-    @Bean
-    ServiceBusJmsConnectionFactoryCustomizer jmsAADAuthenticationCustomizer(AzureServiceBusJmsCredentialSupplier credentialSupplier) {
-        return factory -> {
-            JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(JmsConnectionFactory.class, "factory", factory);
-            jmsFactory.setExtension(JmsConnectionExtensions.USERNAME_OVERRIDE.toString(), (connection, uri) -> "$jwt");
-            jmsFactory.setExtension(JmsConnectionExtensions.PASSWORD_OVERRIDE.toString(), (connection, uri) ->
-                    credentialSupplier.get()
-            );
-        };
-    }
-
 
 }
