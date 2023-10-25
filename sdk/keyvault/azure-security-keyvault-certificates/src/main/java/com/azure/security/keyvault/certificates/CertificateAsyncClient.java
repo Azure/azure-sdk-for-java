@@ -74,9 +74,9 @@ import static com.azure.security.keyvault.certificates.implementation.KeyVaultCe
 
 /**
  * The CertificateAsyncClient provides asynchronous methods to manage {@link KeyVaultCertificate certifcates} in the
- * Azure key vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up,
+ * key vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up,
  * restoring and listing the {@link KeyVaultCertificate certificates}. The client also supports listing
- * {@link DeletedCertificate deleted certificates} for a soft-delete enabled Azure key vVault.
+ * {@link DeletedCertificate deleted certificates} for a soft-delete enabled key vault.
  *
  * <p>The client further allows creating, retrieving, updating, deleting and listing the
  * {@link CertificateIssuer certificate issuers}. The client also supports creating, listing and deleting
