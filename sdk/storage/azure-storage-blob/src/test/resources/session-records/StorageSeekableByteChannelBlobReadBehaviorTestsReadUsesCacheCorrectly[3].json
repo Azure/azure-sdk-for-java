@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/30f1a57d030f1a57daca6963982551b30d3914ee8ac7?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.22.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "3fd5e824-0922-4747-a0f7-17e21bb13073"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DB1B461A168279",
+      "Last-Modified" : "Thu, 02 Mar 2023 17:46:50 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b75e041e-901e-004f-192e-4d24b3000000",
+      "Date" : "Thu, 02 Mar 2023 17:46:49 GMT",
+      "x-ms-client-request-id" : "3fd5e824-0922-4747-a0f7-17e21bb13073"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/30f1a57d030f1a57daca6963982551b30d3914ee8ac7?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.22.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "3ab643d5-7093-4cae-a090-252a3b290b41"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "93f16cd0-b01e-0017-042e-4d20c8000000",
+      "Date" : "Thu, 02 Mar 2023 17:46:50 GMT",
+      "x-ms-client-request-id" : "3ab643d5-7093-4cae-a090-252a3b290b41"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "30f1a57d030f1a57daca6963982551b30d3914ee8ac7", "30f1a57d30f1a57daca55962d74d2be58d3d4e3cac", "30f1a57d30f1a57daca61554b06f11ed48384c668a", "30f1a57d30f1a57daca13740f8fecc0f8dd6479e88", "b6af52b1-0b90-442b-b37f-b3979b484bef", "cc7798f7-5e30-4dce-bc34-c06a51cabe1e" ]
+}

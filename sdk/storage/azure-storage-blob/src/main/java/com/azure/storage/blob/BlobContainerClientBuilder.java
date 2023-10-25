@@ -28,7 +28,6 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
-import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -94,7 +93,6 @@ public final class BlobContainerClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private BlobServiceVersion version;
-    private BlobAudience audience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobContainerClient ContainerClients}
@@ -163,7 +161,7 @@ public final class BlobContainerClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
@@ -569,17 +567,6 @@ public final class BlobContainerClientBuilder implements
      */
     public BlobContainerClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
-        return this;
-    }
-
-    /**
-     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
-     * when using a shared key.
-     * @param audience {@link BlobAudience} to be used when requesting a token from Azure Active Directory (AAD).
-     * @return the updated BlobContainerClientBuilder object
-     */
-    public BlobContainerClientBuilder audience(BlobAudience audience) {
-        this.audience = audience;
         return this;
     }
 }

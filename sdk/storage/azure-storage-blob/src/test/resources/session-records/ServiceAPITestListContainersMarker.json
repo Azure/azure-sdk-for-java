@@ -1,0 +1,319 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d26401ce4d264dc1119493ebfdf8e4ee946a48f9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c2ec3a1c-1dc7-4bc0-9277-efcc6ead29b4"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BB510C17",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:09 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ceaab5ec-901e-0016-38a0-793c66000000",
+      "x-ms-client-request-id" : "c2ec3a1c-1dc7-4bc0-9277-efcc6ead29b4",
+      "Date" : "Thu, 15 Jul 2021 17:41:08 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "836e405d-183b-4069-aa56-f898f03a16cc",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "a06b281b-701e-000e-09a0-79e301000000",
+      "x-ms-client-request-id" : "836e405d-183b-4069-aa56-f898f03a16cc",
+      "Date" : "Thu, 15 Jul 2021 17:41:09 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d26411ce4d264dc126149222b96acbd3f4351b39?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c0afa68d-5005-4773-960c-e763962f2371"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BBCDCC29",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ca9ee744-501e-006b-50a0-794d45000000",
+      "x-ms-client-request-id" : "c0afa68d-5005-4773-960c-e763962f2371",
+      "Date" : "Thu, 15 Jul 2021 17:41:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d26421ce4d264dc16415030d8e8f417a643ddb89?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f97fb665-57dc-482a-abc0-26a626f4af74"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BBD99142",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f84b18a3-801e-0025-1ba0-7963cd000000",
+      "x-ms-client-request-id" : "f97fb665-57dc-482a-abc0-26a626f4af74",
+      "Date" : "Thu, 15 Jul 2021 17:41:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d26431ce4d264dc185437321abd1b735b4ab7962?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c576e697-9f33-440f-930f-50ff8bc36d90"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BBE584EE",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "145eb391-901e-004b-0aa0-7936e2000000",
+      "x-ms-client-request-id" : "c576e697-9f33-440f-930f-50ff8bc36d90",
+      "Date" : "Thu, 15 Jul 2021 17:41:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d26441ce4d264dc1114765bfa2f35279f4b9fbeb?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "47f990a2-74c8-4387-933f-5448083e02a4"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BBF20450",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "76ba0012-001e-0076-01a0-7940f9000000",
+      "x-ms-client-request-id" : "47f990a2-74c8-4387-933f-5448083e02a4",
+      "Date" : "Thu, 15 Jul 2021 17:41:09 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d26451ce4d264dc196806bd95f7d1e0174ef4be1?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6f6858a1-f193-40fb-ba74-a158e8439b14"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BBFE1864",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "cf3ff8b1-b01e-0011-35a0-795005000000",
+      "x-ms-client-request-id" : "6f6858a1-f193-40fb-ba74-a158e8439b14",
+      "Date" : "Thu, 15 Jul 2021 17:41:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d26461ce4d264dc1231145fc51511f6924b4dac5?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "56df6e73-79c2-4f5c-93d9-9bbb8b5ccd63"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BC0A7029",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7e5c3f13-501e-0009-7ea0-798f62000000",
+      "x-ms-client-request-id" : "56df6e73-79c2-4f5c-93d9-9bbb8b5ccd63",
+      "Date" : "Thu, 15 Jul 2021 17:41:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d26471ce4d264dc10358022e8a92a4c444bf08cc?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bd6026a0-007f-4f83-96a1-97c602461dd5"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BC163279",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:10 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f28da659-701e-001e-50a0-792669000000",
+      "x-ms-client-request-id" : "bd6026a0-007f-4f83-96a1-97c602461dd5",
+      "Date" : "Thu, 15 Jul 2021 17:41:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d26481ce4d264dc1820822f496d192aac4a98844?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0f837cb1-d597-4747-80d6-3d5c082328ab"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BC21D7BB",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:11 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ecb65967-001e-002b-44a0-794a7d000000",
+      "x-ms-client-request-id" : "0f837cb1-d597-4747-80d6-3d5c082328ab",
+      "Date" : "Thu, 15 Jul 2021 17:41:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d26491ce4d264dc119353f8069ec62fdf4193b33?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a226165e-7b98-4899-9552-fddf866b226f"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BC303381",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:11 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a1ff2114-401e-0048-2ca0-79d786000000",
+      "x-ms-client-request-id" : "a226165e-7b98-4899-9552-fddf866b226f",
+      "Date" : "Thu, 15 Jul 2021 17:41:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1ce4d264101ce4d264dc140858e6fe18e400734ce3a2?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "49a84e32-4600-4a1d-ba06-7a2185956bd6"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7BC3BC59A",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:41:11 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "295eeead-801e-0068-27a0-79ac21000000",
+      "x-ms-client-request-id" : "49a84e32-4600-4a1d-ba06-7a2185956bd6",
+      "Date" : "Thu, 15 Jul 2021 17:41:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&maxresults=5",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0951dc4b-657b-4ab5-b8e8-1b630b6af58a"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "e8357fba-801e-0078-2aa0-796949000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\"><MaxResults>5</MaxResults><Containers><Container><Name>$root</Name><Properties><Last-Modified>Tue, 04 May 2021 23:22:53 GMT</Last-Modified><Etag>\"0x8D90F538AA49CDE\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>$web</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:40:59 GMT</Last-Modified><Etag>\"0x8D947B7B51C8613\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>0029b62900029b629c7b711755b4dbea6a6b94890b0f</Name><Properties><Last-Modified>Wed, 05 May 2021 14:34:48 GMT</Last-Modified><Etag>\"0x8D90FD2EF8221B7\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>0029b62900029b629d9f888251db5b4a5a2c240abbdc</Name><Properties><Last-Modified>Wed, 05 May 2021 14:32:05 GMT</Last-Modified><Etag>\"0x8D90FD28E55365D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>0f2610ca00f2610ca36546496ed90d366da14445eb6d</Name><Properties><Last-Modified>Wed, 05 May 2021 15:03:14 GMT</Last-Modified><Etag>\"0x8D90FD6E894E29F\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container></Containers><NextMarker>/kasobolcanadacentral/0f2610ca00f2610ca824142663030101a62094625a43</NextMarker></EnumerationResults>",
+      "x-ms-client-request-id" : "0951dc4b-657b-4ab5-b8e8-1b630b6af58a",
+      "Date" : "Thu, 15 Jul 2021 17:41:11 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&marker=/kasobolcanadacentral/0f2610ca00f2610ca824142663030101a62094625a43",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b19ec510-a50c-4902-ab6b-19465f544cb1"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "850a0b4f-e01e-001c-22a0-7998d1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\"><Marker>/kasobolcanadacentral/0f2610ca00f2610ca824142663030101a62094625a43</Marker><Containers><Container><Name>0f2610ca00f2610ca824142663030101a62094625a43</Name><Properties><Last-Modified>Wed, 05 May 2021 15:01:55 GMT</Last-Modified><Etag>\"0x8D90FD6B96D8E80\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>0f2610ca00f2610caaae163987c552ec2dac449b1af5</Name><Properties><Last-Modified>Wed, 05 May 2021 14:55:08 GMT</Last-Modified><Etag>\"0x8D90FD5C6CDB85A\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>0f2610ca00f2610cadc6936759d6683e2e897444fa06</Name><Properties><Last-Modified>Wed, 05 May 2021 14:55:42 GMT</Last-Modified><Etag>\"0x8D90FD5DAD82C81\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d26401ce4d264dc1119493ebfdf8e4ee946a48f9</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:09 GMT</Last-Modified><Etag>\"0x8D947B7BB510C17\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d264101ce4d264dc140858e6fe18e400734ce3a2</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:11 GMT</Last-Modified><Etag>\"0x8D947B7BC3BC59A\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d26411ce4d264dc126149222b96acbd3f4351b39</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:10 GMT</Last-Modified><Etag>\"0x8D947B7BBCDCC29\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d26421ce4d264dc16415030d8e8f417a643ddb89</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:10 GMT</Last-Modified><Etag>\"0x8D947B7BBD99142\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d26431ce4d264dc185437321abd1b735b4ab7962</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:10 GMT</Last-Modified><Etag>\"0x8D947B7BBE584EE\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d26441ce4d264dc1114765bfa2f35279f4b9fbeb</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:10 GMT</Last-Modified><Etag>\"0x8D947B7BBF20450\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d26451ce4d264dc196806bd95f7d1e0174ef4be1</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:10 GMT</Last-Modified><Etag>\"0x8D947B7BBFE1864\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d26461ce4d264dc1231145fc51511f6924b4dac5</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:10 GMT</Last-Modified><Etag>\"0x8D947B7BC0A7029\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d26471ce4d264dc10358022e8a92a4c444bf08cc</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:10 GMT</Last-Modified><Etag>\"0x8D947B7BC163279\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d26481ce4d264dc1820822f496d192aac4a98844</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:11 GMT</Last-Modified><Etag>\"0x8D947B7BC21D7BB\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>1ce4d26491ce4d264dc119353f8069ec62fdf4193b33</Name><Properties><Last-Modified>Thu, 15 Jul 2021 17:41:11 GMT</Last-Modified><Etag>\"0x8D947B7BC303381\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>34bd9b9c034bd9b9c3a107976b84107bb23234650bfb</Name><Properties><Last-Modified>Wed, 05 May 2021 14:34:48 GMT</Last-Modified><Etag>\"0x8D90FD2EF831E4D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>34bd9b9c034bd9b9c3d9450352602fef32d4a4d94bdd</Name><Properties><Last-Modified>Wed, 05 May 2021 14:32:05 GMT</Last-Modified><Etag>\"0x8D90FD28E56E0AD\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>408e86b73408e86b7b2a4540668e08302e2a14a92b67</Name><Properties><Last-Modified>Wed, 12 May 2021 23:14:53 GMT</Last-Modified><Etag>\"0x8D9159BBFED185C\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>408e86b73408e86b7dfa77712d5bbf6dfe9ce4be28aa</Name><Properties><Last-Modified>Thu, 06 May 2021 14:37:36 GMT</Last-Modified><Etag>\"0x8D9109C7E0961DC\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>504f3aef0504f3aef38735633c4811cdb40504723b5f</Name><Properties><Last-Modified>Wed, 05 May 2021 14:32:05 GMT</Last-Modified><Etag>\"0x8D90FD28E579002\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>504f3aef0504f3aef71087376b5c1ac4fcae3449bb9e</Name><Properties><Last-Modified>Wed, 05 May 2021 14:34:48 GMT</Last-Modified><Etag>\"0x8D90FD2EF81C6E9\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>801ede903801ede9007319896e73bb28d7f904846a10</Name><Properties><Last-Modified>Thu, 06 May 2021 14:37:36 GMT</Last-Modified><Etag>\"0x8D9109C7E087F55\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>801ede903801ede901483139512a4dbf77a7e4ba2936</Name><Properties><Last-Modified>Wed, 12 May 2021 23:14:53 GMT</Last-Modified><Etag>\"0x8D9159BBFEC4BDC\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>ab171d6a1ab171d6a9978245637d9552d2b3e4bf9a2b</Name><Properties><Last-Modified>Wed, 12 May 2021 23:21:31 GMT</Last-Modified><Etag>\"0x8D9159CAD7263F3\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>ab171d6a2ab171d6a997398374bc91eb436b049498e9</Name><Properties><Last-Modified>Wed, 12 May 2021 23:21:32 GMT</Last-Modified><Etag>\"0x8D9159CAD8A99F3\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>b542b5160b542b516dd50533331c08c7d64f94484992</Name><Properties><Last-Modified>Wed, 05 May 2021 14:34:48 GMT</Last-Modified><Etag>\"0x8D90FD2EF811FC0\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>b542b5160b542b516eb35234195859f9bb3504641a52</Name><Properties><Last-Modified>Wed, 05 May 2021 14:32:05 GMT</Last-Modified><Etag>\"0x8D90FD28E57654D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>bb5a7b4c0bb5a7b4c7bc182970928f17df59b4b9bb18</Name><Properties><Last-Modified>Wed, 05 May 2021 15:03:14 GMT</Last-Modified><Etag>\"0x8D90FD6E8952C22\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>bb5a7b4c0bb5a7b4cd40993682dbea421a48242658b3</Name><Properties><Last-Modified>Wed, 05 May 2021 14:55:42 GMT</Last-Modified><Etag>\"0x8D90FD5DAD82A27\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>bb5a7b4c0bb5a7b4cf7c0208348f414f9645748f7aaa</Name><Properties><Last-Modified>Wed, 05 May 2021 15:01:55 GMT</Last-Modified><Etag>\"0x8D90FD6B96BC79C\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>bb5a7b4c0bb5a7b4cf8e015352490230dea9f4c9c9d7</Name><Properties><Last-Modified>Wed, 05 May 2021 14:55:08 GMT</Last-Modified><Etag>\"0x8D90FD5C6CD0167\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>cb3512700cb35127062121800dd6839eeeaee43a68cf</Name><Properties><Last-Modified>Wed, 05 May 2021 14:32:05 GMT</Last-Modified><Etag>\"0x8D90FD28E574B2E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>cb3512700cb351270a8d533359e06e2f255b8419f85e</Name><Properties><Last-Modified>Wed, 05 May 2021 14:34:48 GMT</Last-Modified><Etag>\"0x8D90FD2EF8211F6\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>jtcazurepath1</Name><Properties><Last-Modified>Wed, 05 May 2021 14:20:49 GMT</Last-Modified><Etag>\"0x8D90FD0FB64EAE7\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>jtcazurepath2</Name><Properties><Last-Modified>Wed, 05 May 2021 14:20:49 GMT</Last-Modified><Etag>\"0x8D90FD0FB903EC0\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>sample-container-f6ddcf12-f5c3-4115-a3b5-f7b05a853686</Name><Properties><Last-Modified>Fri, 05 Mar 2021 20:56:32 GMT</Last-Modified><Etag>\"0x8D8E019282DD290\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-0cd13f56-9686-4f21-bdaa-98c5a5b13a2f</Name><Properties><Last-Modified>Tue, 06 Jul 2021 18:37:51 GMT</Last-Modified><Etag>\"0x8D940AD290E985D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-2dbe1567-82a3-4b3c-af7d-d8e74c53a9cc</Name><Properties><Last-Modified>Thu, 03 Jun 2021 04:06:51 GMT</Last-Modified><Etag>\"0x8D92645045F1FE0\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-5688d34e-b50e-4dac-864f-0760260ebf80</Name><Properties><Last-Modified>Thu, 03 Jun 2021 03:05:28 GMT</Last-Modified><Etag>\"0x8D9263C70FB92B5\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-6180273f-3755-42ab-9560-504d92d2cffe</Name><Properties><Last-Modified>Thu, 03 Jun 2021 03:20:54 GMT</Last-Modified><Etag>\"0x8D9263E98A46773\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-71f91ceb-eb9b-403a-89c4-17f76a019660</Name><Properties><Last-Modified>Tue, 22 Jun 2021 20:55:48 GMT</Last-Modified><Etag>\"0x8D935C01D2C409A\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-a1701418-4815-4314-8fc1-f6fa7ea8cf0c</Name><Properties><Last-Modified>Thu, 03 Jun 2021 00:26:01 GMT</Last-Modified><Etag>\"0x8D926262AA0A4B9\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-b9d649ae-c210-5de2-a13e-151f8bcbc085</Name><Properties><Last-Modified>Wed, 14 Jul 2021 17:29:20 GMT</Last-Modified><Etag>\"0x8D946ECEA60F3FC\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-c1b62043-ecb6-401e-9c02-061fc9d60f75</Name><Properties><Last-Modified>Thu, 03 Jun 2021 03:56:37 GMT</Last-Modified><Etag>\"0x8D9264395FFC50B\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-de8cf254-2e8c-426c-92c0-28f539ca5896</Name><Properties><Last-Modified>Thu, 03 Jun 2021 03:57:56 GMT</Last-Modified><Etag>\"0x8D92643C50CF44D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-fb843f64-aaea-438c-87af-0a9b43f9d432</Name><Properties><Last-Modified>Tue, 22 Jun 2021 20:45:47 GMT</Last-Modified><Etag>\"0x8D935BEB6EC1636\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-container-fe8396ec-46c0-4f46-9c33-c2a7e40e1051</Name><Properties><Last-Modified>Thu, 03 Jun 2021 04:01:32 GMT</Last-Modified><Etag>\"0x8D92644461CD8B7\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test1</Name><Properties><Last-Modified>Wed, 05 May 2021 00:06:08 GMT</Last-Modified><Etag>\"0x8D90F59954254E5\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "b19ec510-a50c-4902-ab6b-19465f544cb1",
+      "Date" : "Thu, 15 Jul 2021 17:41:10 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "35d6e7cb-818c-428a-ac10-3bea4ac8cc63",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "f6e93b44-501e-0019-2aa0-794a0a000000",
+      "x-ms-client-request-id" : "35d6e7cb-818c-428a-ac10-3bea4ac8cc63",
+      "Date" : "Thu, 15 Jul 2021 17:41:11 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "1ce4d26401ce4d264dc1119493ebfdf8e4ee946a48f9", "1ce4d26403890bcc", "1ce4d264074794eb", "1ce4d26411ce4d264dc126149222b96acbd3f4351b39", "1ce4d26421ce4d264dc16415030d8e8f417a643ddb89", "1ce4d26431ce4d264dc185437321abd1b735b4ab7962", "1ce4d26441ce4d264dc1114765bfa2f35279f4b9fbeb", "1ce4d26451ce4d264dc196806bd95f7d1e0174ef4be1", "1ce4d26461ce4d264dc1231145fc51511f6924b4dac5", "1ce4d26471ce4d264dc10358022e8a92a4c444bf08cc", "1ce4d26481ce4d264dc1820822f496d192aac4a98844", "1ce4d26491ce4d264dc119353f8069ec62fdf4193b33", "1ce4d264101ce4d264dc140858e6fe18e400734ce3a2" ]
+}

@@ -1,0 +1,91 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/b3e3e0420b3e3e042f2995132d65f5780bbab4551a4b?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 (11.0.13; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bf5a93a6-3bd9-4e7e-82cf-1c50e9582f86"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA2237EB8AA2AF",
+      "Last-Modified" : "Tue, 19 Apr 2022 19:07:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "5b532e63-101e-0065-4e20-547486000000",
+      "x-ms-client-request-id" : "bf5a93a6-3bd9-4e7e-82cf-1c50e9582f86",
+      "Date" : "Tue, 19 Apr 2022 19:07:58 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/b3e3e0420b3e3e042f2995132d65f5780bbab4551a4b/b3e3e0421b3e3e042f29092180d06807680f94c17a26",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 (11.0.13; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3216f678-2281-4e74-9b4e-2fdb633b4cb8"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA2237EB9DE016",
+      "Last-Modified" : "Tue, 19 Apr 2022 19:07:59 GMT",
+      "x-ms-version-id" : "2022-04-19T19:07:59.7884438Z",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "5b532f25-101e-0065-5720-547486000000",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-client-request-id" : "3216f678-2281-4e74-9b4e-2fdb633b4cb8",
+      "Date" : "Tue, 19 Apr 2022 19:07:59 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/b3e3e0420b3e3e042f2995132d65f5780bbab4551a4b/b3e3e0421b3e3e042f29092180d06807680f94c17a26?comp=tags",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 (11.0.13; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "aee794e2-9a36-4c4b-8b38-a598f858c0ce",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "5b532f6a-101e-0065-1620-547486000000",
+      "x-ms-client-request-id" : "aee794e2-9a36-4c4b-8b38-a598f858c0ce",
+      "Date" : "Tue, 19 Apr 2022 19:07:59 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://REDACTED.blob.core.windows.net/b3e3e0420b3e3e042f2995132d65f5780bbab4551a4b/b3e3e0421b3e3e042f29092180d06807680f94c17a26?comp=pagelist",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 (11.0.13; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "325722fb-8377-4399-90b1-38722067fe5b"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-blob-content-length" : "512",
+      "Last-Modified" : "Tue, 19 Apr 2022 19:07:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 19 Apr 2022 19:08:01 GMT",
+      "eTag" : "0x8DA2237EB9DE016",
+      "x-ms-request-id" : "830e366f-801e-0067-6220-54ca3e000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<PageList/>",
+      "x-ms-client-request-id" : "325722fb-8377-4399-90b1-38722067fe5b",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "b3e3e0420b3e3e042f2995132d65f5780bbab4551a4b", "b3e3e0421b3e3e042f29092180d06807680f94c17a26" ]
+}
