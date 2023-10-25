@@ -9,7 +9,7 @@ public enum RpAttachType {
     STANDALONE_AUTO("StandaloneAuto"), // RP attach is enabled via a custom JAVA_OPTS or on premise resources
     INTEGRATED_AUTO("IntegratedAuto"); // RP attach is on by default
 
-    private static volatile RpAttachType attachType = MANUAL;
+    private static volatile RpAttachType attachType = INTEGRATED_AUTO;
     private final String label;
 
     private RpAttachType(String label) {

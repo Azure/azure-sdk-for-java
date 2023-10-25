@@ -45,7 +45,7 @@ public class StatsbeatModule {
         featureStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.FEATURE);
         instrumentationStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.INSTRUMENTATION);
         azureMetadataService = new AzureMetadataService(attachStatsbeat, customDimensions, vmMetadataServiceCallback);
-        if (RpAttachType.getRpAttachType() == RpAttachType.MANUAL) {
+        if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
             networkStatsbeat = new NetworkStatsbeat(customDimensions);
             nonessentialStatsbeat = new NonessentialStatsbeat(customDimensions);
         } else {

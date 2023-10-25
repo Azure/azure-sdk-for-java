@@ -36,6 +36,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Feature;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.RpAttachType;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
@@ -462,6 +463,7 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
+        RpAttachType.setRpAttachType(RpAttachType.MANUAL);
         return new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
     }
 
