@@ -1,5 +1,33 @@
 trigger: none
 
+parameters:
+- name: Clouds
+  type: string
+  default: 'Public, PPE, Int'
+- name: CloudConfig
+  type: object
+  default:
+    Public:
+      SubscriptionConfigurations:
+        - $(sub-config-azure-cloud-test-resources)
+        - $(sub-config-communication-services-cloud-test-resources-common)
+        - $(sub-config-communication-services-cloud-test-resources-java)
+    PPE:
+      SubscriptionConfigurations:
+        - $(sub-config-communication-ppe-test-resources-common)
+        - $(sub-config-communication-ppe-test-resources-java)
+
+      # This only affects the phone-numbers package
+      MatrixReplace:
+        - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
+    Int:
+      SubscriptionConfigurations:
+        - $(sub-config-communication-int-test-resources-common)
+        - $(sub-config-communication-int-test-resources-java)
+
+      # This only affects the phone-numbers package
+      MatrixReplace:
+        - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true  
 stages:
   - template: /sdk/communication/communication-tests-template.yml
     parameters:
