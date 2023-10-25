@@ -23,7 +23,10 @@ spec:
           export APPLICATIONINSIGHTS_ROLE_NAME=storage-{{ .Stress.BaseName }};
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.17.jar \
           -jar /app/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar \
-          {{ .Stress.testTarget }} -async {{ .Stress.async }} -size {{ .Stress.blobSizeBytes }} -parallel {{ .Stress.parallel }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
+          {{ .Stress.testTarget }} \
+          -async {{ default false .Stress.async }} \
+          -size {{ .Stress.blobSizeBytes }} \
+          -parallel {{ .Stress.parallel }} 2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
       # when iterating, so this is a must.
       imagePullPolicy: Always

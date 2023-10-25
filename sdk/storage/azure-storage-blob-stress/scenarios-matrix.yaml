@@ -1,8 +1,15 @@
 matrix:
   scenarios:
-    file-test:
+    download-small-file-test:
       testTarget: downloadToFile
       async: false
-      blobSizeBytes: 10485760
+      blobSizeBytes: 1024
       parallel: 500
       imageBuildDir: "../../.."
+#    we can add new test cases here - will run in parallel
+#    download-large-file-test:
+#      testTarget: downloadToFile
+#      async: false
+#      blobSizeBytes: 104857600
+#      parallel: 500
+#      imageBuildDir: "../../.."
