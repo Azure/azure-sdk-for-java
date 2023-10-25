@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.util.configuration;
+package com.generic.core.implementation.util;
+
+import com.generic.core.util.configuration.Configuration;
+import com.generic.core.util.configuration.ConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;

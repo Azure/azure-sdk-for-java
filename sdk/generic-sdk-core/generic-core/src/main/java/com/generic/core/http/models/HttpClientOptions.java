@@ -31,7 +31,7 @@ public final class HttpClientOptions extends ClientOptions {
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientOptions.class);
 
     // private ProxyOptions proxyOptions;
-    private Configuration configuration;
+//    private Configuration configuration;
     private Duration connectTimeout;
     private Duration writeTimeout;
     private Duration responseTimeout;
@@ -58,26 +58,6 @@ public final class HttpClientOptions extends ClientOptions {
         super.setHeaders(headers);
 
         return this;
-    }
-
-    /**
-     * Sets the configuration store that the {@link HttpClient} will use.
-     *
-     * @param configuration The configuration store to use.
-     * @return The updated HttpClientOptions object.
-     */
-    public HttpClientOptions setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
-    }
-
-    /**
-     * Gets the configuration store that the {@link HttpClient} will use.
-     *
-     * @return The configuration store to use.
-     */
-    public Configuration getConfiguration() {
-        return configuration;
     }
 
     /**

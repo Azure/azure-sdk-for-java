@@ -10,7 +10,6 @@ import com.generic.core.implementation.util.InputStreamContent;
 import com.generic.core.implementation.util.StringContent;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.JsonSerializer;
-import com.generic.core.util.serializer.JsonSerializerProvider;
 
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -587,7 +586,6 @@ public final class BinaryData {
      * {@link JsonSerializer}.
      *
      * <p>
-     * <b>Note:</b> This method first looks for a {@link JsonSerializerProvider} implementation on the classpath. If no
      * implementation is found, a default Jackson-based implementation will be used to serialize the object.
      * </p>
      * <p><strong>Creating an instance from an Object</strong></p>

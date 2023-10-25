@@ -4,6 +4,7 @@
 package com.generic.core.util.configuration;
 
 import com.generic.core.annotation.Fluent;
+import com.generic.core.implementation.util.EnvironmentConfiguration;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.Collections;
