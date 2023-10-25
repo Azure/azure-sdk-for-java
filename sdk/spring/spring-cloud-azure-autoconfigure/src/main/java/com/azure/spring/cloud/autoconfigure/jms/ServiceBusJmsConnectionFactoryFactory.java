@@ -54,27 +54,10 @@ public class ServiceBusJmsConnectionFactoryFactory {
 
     private <T extends ServiceBusJmsConnectionFactory> void setPrefetchPolicy(T factory) {
         AzureServiceBusJmsProperties.PrefetchPolicy prefetchProperties = this.properties.getPrefetchPolicy();
-        JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
-        JmsDefaultPrefetchPolicy prefetchPolicy = (JmsDefaultPrefetchPolicy) jmsFactory.getPrefetchPolicy();
-//        JmsDefaultPrefetchPolicy prefetchPolicy = (JmsDefaultPrefetchPolicy) factory.getPrefetchPolicy();
-//        Map<String, String> configurationOptions = factory.getSettings().getConfigurationOptions();
-        prefetchPolicy.setDurableTopicPrefetch(prefetchProperties.getDurableTopicPrefetch());
-//        configurationOptions.put("jms.prefetchPolicy.durableTopicPrefetch", String.valueOf(prefetchProperties.getDurableTopicPrefetch()));
-        prefetchPolicy.setQueueBrowserPrefetch(prefetchProperties.getQueueBrowserPrefetch());
-//        configurationOptions.put("jms.prefetchPolicy.queueBrowserPrefetch", String.valueOf(prefetchProperties.getQueueBrowserPrefetch()));
-        prefetchPolicy.setQueuePrefetch(prefetchProperties.getQueuePrefetch());
-//        configurationOptions.put("jms.prefetchPolicy.queuePrefetch", String.valueOf(prefetchProperties.getQueuePrefetch()));
-        prefetchPolicy.setTopicPrefetch(prefetchProperties.getTopicPrefetch());
-//        configurationOptions.put("jms.prefetchPolicy.topicPrefetch", String.valueOf(prefetchProperties.getTopicPrefetch()));
-//        ServiceBusJmsConnectionFactorySettings settings = new ServiceBusJmsConnectionFactorySettings(configurationOptions);
-        jmsFactory.setPrefetchPolicy(prefetchPolicy);
-//        try {
-//            Field factorySettings = factory.getClass().getDeclaredField("settings");
-//            factorySettings.setAccessible(true);
-//            factorySettings.set(factory, configurationOptions);
-//        } catch (NoSuchFieldException | IllegalAccessException ex) {
-//            throw new IllegalStateException("Unable to set PrefetchPolicy", ex);
-//        }
+        factory.getSettings().getConfigurationOptions().put("jms.prefetchPolicy.durableTopicPrefetch", String.valueOf(prefetchProperties.getDurableTopicPrefetch()));
+        factory.getSettings().getConfigurationOptions().put("jms.prefetchPolicy.queueBrowserPrefetch", String.valueOf(prefetchProperties.getQueueBrowserPrefetch()));
+        factory.getSettings().getConfigurationOptions().put("jms.prefetchPolicy.queuePrefetch", String.valueOf(prefetchProperties.getQueuePrefetch()));
+        factory.getSettings().getConfigurationOptions().put("jms.prefetchPolicy.topicPrefetch", String.valueOf(prefetchProperties.getTopicPrefetch()));
     }
 
     private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass) {
