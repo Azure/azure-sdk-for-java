@@ -31,10 +31,10 @@ public final class ChatMessageContent {
     /**
      * Constructs a new ChatMessageContent
      *
-     * @param message      The message
-     * @param topic        The topic
+     * @param message The message
+     * @param topic The topic
      * @param participants The participants
-     * @param initiator    The initiator
+     * @param initiator The initiator
      */
     public ChatMessageContent(
             String message, String topic, Iterable<ChatParticipant> participants, CommunicationIdentifier initiator) {

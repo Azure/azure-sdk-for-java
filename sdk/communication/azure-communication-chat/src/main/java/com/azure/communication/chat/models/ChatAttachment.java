@@ -11,12 +11,12 @@ public final class ChatAttachment {
     /*
      * Id of the attachment
      */
-    private String id;
+    private final String id;
 
     /*
      * The type of attachment.
      */
-    private AttachmentType attachmentType;
+    private final AttachmentType attachmentType;
 
     /*
      * The file extension of the attachment, if available
@@ -38,6 +38,11 @@ public final class ChatAttachment {
      */
     private String previewUrl;
 
+    /**
+     * Create a new instance of ChatAttachment
+     * @param id the unique id of the chat attachment
+     * @param attachmentType the type of attachment 
+     */
     public ChatAttachment(String id, AttachmentType attachmentType) {
         this.id = id;
         this.attachmentType = attachmentType;
