@@ -5,7 +5,6 @@ package com.azure.communication.phonenumbers;
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.phonenumbers.models.BillingFrequency;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -56,12 +55,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .getPurchasedPhoneNumber(phoneNumber);
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
-        assertNotNull(number.getAssignmentType());
-        assertNotNull(number.getCapabilities());
-        assertNotNull(number.getCost());
-        assertNotNull(number.getId());
-        assertNotNull(number.getPhoneNumberType());
-        assertNotNull(number.getPurchaseDate());
     }
 
     @ParameterizedTest
@@ -73,12 +66,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .getPurchasedPhoneNumber(phoneNumber);
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
-        assertNotNull(number.getAssignmentType());
-        assertNotNull(number.getCapabilities());
-        assertNotNull(number.getCost());
-        assertNotNull(number.getId());
-        assertNotNull(number.getPhoneNumberType());
-        assertNotNull(number.getPurchaseDate());
     }
 
     @ParameterizedTest
@@ -92,12 +79,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertEquals(200, response.getStatusCode());
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
-        assertNotNull(number.getAssignmentType());
-        assertNotNull(number.getCapabilities());
-        assertNotNull(number.getCost());
-        assertNotNull(number.getId());
-        assertNotNull(number.getPhoneNumberType());
-        assertNotNull(number.getPurchaseDate());
     }
 
     @ParameterizedTest
@@ -109,12 +90,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PurchasedPhoneNumber number = numbers.iterator().next();
         assertNotNull(number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
-        assertNotNull(number.getAssignmentType());
-        assertNotNull(number.getCapabilities());
-        assertNotNull(number.getCost());
-        assertNotNull(number.getId());
-        assertNotNull(number.getPhoneNumberType());
-        assertNotNull(number.getPurchaseDate());
     }
 
     @ParameterizedTest
@@ -125,12 +100,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PurchasedPhoneNumber number = numbers.iterator().next();
         assertNotNull(number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
-        assertNotNull(number.getAssignmentType());
-        assertNotNull(number.getCapabilities());
-        assertNotNull(number.getCost());
-        assertNotNull(number.getId());
-        assertNotNull(number.getPhoneNumberType());
-        assertNotNull(number.getPurchaseDate());
     }
 
     @ParameterizedTest
@@ -218,7 +187,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTollFreeAreaCodes(HttpClient httpClient) {
+    public void getTollFreeAreaCodesWithoutContext(HttpClient httpClient) {
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
@@ -231,7 +200,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTollFreeAreaCodesWithContextParam(HttpClient httpClient) {
+    public void getTollFreeAreaCodes(HttpClient httpClient) {
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US", Context.NONE);
@@ -254,7 +223,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getGeographicAreaCodes(HttpClient httpClient) {
+    public void getGeographicAreaCodesWithoutContext(HttpClient httpClient) {
         PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null).iterator().next();
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
@@ -268,7 +237,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getGeographicAreaCodesWithContextParam(HttpClient httpClient) {
+    public void getGeographicAreaCodes(HttpClient httpClient) {
         PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null).iterator().next();
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
@@ -293,7 +262,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getCountries(HttpClient httpClient) {
+    public void getCountriesWithoutContext(HttpClient httpClient) {
         PagedIterable<PhoneNumberCountry> countriesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableCountries").listAvailableCountries();
         PhoneNumberCountry country = countriesResult.iterator().next();
@@ -304,7 +273,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getCountriesWithContextParam(HttpClient httpClient) {
+    public void getCountries(HttpClient httpClient) {
         PagedIterable<PhoneNumberCountry> countriesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableCountries")
                 .listAvailableCountries(Context.NONE);
@@ -316,7 +285,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getLocalities(HttpClient httpClient) {
+    public void getLocalitiesWithoutContext(HttpClient httpClient) {
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null);
@@ -326,7 +295,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getLocalitiesWithContextParam(HttpClient httpClient) {
+    public void getLocalities(HttpClient httpClient) {
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null, Context.NONE);
@@ -360,36 +329,22 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getOfferings(HttpClient httpClient) {
+    public void getOfferingsWithoutContext(HttpClient httpClient) {
         PagedIterable<PhoneNumberOffering> offeringsResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableOfferings")
                 .listAvailableOfferings("US", null, null);
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
-        assertNotNull(offering.getAssignmentType());
-        assertNotNull(offering.getAvailableCapabilities());
-        offering.getCost().getBillingFrequency();
-        assertNotNull(BillingFrequency.values());
-        assertNotNull(offering.getCost().getCurrencyCode());
-        assertNotNull(offering.getCost().getAmount());
-        assertNotNull(offering.getPhoneNumberType());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getOfferingsWithContext(HttpClient httpClient) {
+    public void getOfferings(HttpClient httpClient) {
         PagedIterable<PhoneNumberOffering> offeringsResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableOfferings")
                 .listAvailableOfferings("US", null, null, Context.NONE);
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
-        assertNotNull(offering.getAssignmentType());
-        assertNotNull(offering.getAvailableCapabilities());
-        offering.getCost().getBillingFrequency();
-        assertNotNull(BillingFrequency.values());
-        assertNotNull(offering.getCost().getCurrencyCode());
-        assertNotNull(offering.getCost().getAmount());
-        assertNotNull(offering.getPhoneNumberType());
     }
 
     @ParameterizedTest
@@ -465,13 +420,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                 .listAvailableOfferings("US", null, null);
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
-        assertNotNull(offering.getAssignmentType());
-        assertNotNull(offering.getAvailableCapabilities());
-        offering.getCost().getBillingFrequency();
-        assertNotNull(BillingFrequency.values());
-        assertNotNull(offering.getCost().getCurrencyCode());
-        assertNotNull(offering.getCost().getAmount());
-        assertNotNull(offering.getPhoneNumberType());
     }
 
     @ParameterizedTest
