@@ -80,6 +80,7 @@ steps:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
+  # we want to run this when TestFromSource isn't true
   - task: Maven@3
     ${{ if ne(parameters.VersionOverride, '') }}:
       displayName: '${{ parameters.VersionOverride }} - Run tests'
@@ -95,21 +96,19 @@ steps:
       publishJUnitResults: false
       goals: ${{ parameters.TestGoals }}
     env: ${{ parameters.TestEnvVars }}
-    # we want to run this when TestFromSource isn't true
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
     displayName: 'Generate pom for aggregate code coverage report'
-    condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
       scriptPath: 'eng/scripts/generate_aggregate_pom.py'
       arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
+    condition: eq(variables['RunAggregateReports'], 'true')
 
   - task: Maven@3
     displayName: 'Generate aggregate code coverage report'
-    condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
       mavenPomFile: aggregate-pom.xml
       options: '$(DefaultOptions)'
@@ -118,6 +117,7 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       goals: jacoco:report-aggregate
+    condition: eq(variables['RunAggregateReports'], 'true')
 
   - task: Maven@3
     displayName: 'Build for From Source run'
@@ -184,9 +184,9 @@ steps:
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
   - task: PublishCodeCoverageResults@1
-    condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
       codeCoverageTool: JaCoCo
       summaryFileLocation: target/site/test-coverage/jacoco.xml
       reportDirectory: target/site/test-coverage/
       failIfCoverageEmpty: false
+    condition: eq(variables['RunAggregateReports'], 'true')

@@ -11,36 +11,28 @@ import com.azure.resourcemanager.hdinsight.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"u\",\"tenantId\":\"a\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"tthzrvqd\":{\"principalId\":\"vvtpgvdfgio\",\"clientId\":\"ftutqxlngxlefgu\",\"tenantId\":\"xkrxdqmi\"},\"nyktzlcuiy\":{\"principalId\":\"bhj\",\"clientId\":\"igeho\",\"tenantId\":\"bowsk\"},\"ocpecfvmmco\":{\"principalId\":\"qyw\",\"clientId\":\"drvyn\",\"tenantId\":\"gpphrcgyn\"}}}")
+                    "{\"principalId\":\"ni\",\"tenantId\":\"x\",\"type\":\"None\",\"userAssignedIdentities\":{\"uwprzql\":{\"principalId\":\"gklwn\",\"clientId\":\"hjdauwhvylwz\",\"tenantId\":\"dhxujznbmpo\"}}}")
                 .toObject(ClusterIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("xkrxdqmi", model.userAssignedIdentities().get("tthzrvqd").tenantId());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals("dhxujznbmpo", model.userAssignedIdentities().get("uwprzql").tenantId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClusterIdentity model =
             new ClusterIdentity()
-                .withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "tthzrvqd",
-                        new UserAssignedIdentity().withTenantId("xkrxdqmi"),
-                        "nyktzlcuiy",
-                        new UserAssignedIdentity().withTenantId("bowsk"),
-                        "ocpecfvmmco",
-                        new UserAssignedIdentity().withTenantId("gpphrcgyn")));
+                .withType(ResourceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("uwprzql", new UserAssignedIdentity().withTenantId("dhxujznbmpo")));
         model = BinaryData.fromObject(model).toObject(ClusterIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("xkrxdqmi", model.userAssignedIdentities().get("tthzrvqd").tenantId());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals("dhxujznbmpo", model.userAssignedIdentities().get("uwprzql").tenantId());
     }
 
     @SuppressWarnings("unchecked")

@@ -33,8 +33,6 @@ public abstract class HttpTimeoutPolicy {
         return timeoutAndDelaysList.size();
     }
 
-    public long maximumRetryTimeLimit() { return Configs.getHttpResponseTimeoutInSeconds(); };
-
     public List<ResponseTimeoutAndDelays> getTimeoutAndDelaysList() {
         return timeoutAndDelaysList;
     }

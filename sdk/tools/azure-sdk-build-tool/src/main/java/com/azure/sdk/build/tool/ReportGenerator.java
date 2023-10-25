@@ -1,25 +1,22 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool;
 
-import com.azure.sdk.build.tool.models.BuildError;
-import com.azure.sdk.build.tool.models.BuildErrorLevel;
+import com.azure.core.util.BinaryData;
 import com.azure.sdk.build.tool.models.BuildReport;
 import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
-import com.azure.sdk.build.tool.util.AnnotatedMethodCallerResult;
 import com.azure.sdk.build.tool.util.MavenUtils;
 import com.azure.sdk.build.tool.util.logging.Logger;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.DependencyManagement;
 
-import java.io.*;
-import java.lang.reflect.Method;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
-import java.util.function.Function;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.sdk.build.tool.util.MojoUtils.getAllDependencies;
@@ -33,132 +30,43 @@ public class ReportGenerator {
     private static final String AZURE_SDK_BOM_ARTIFACT_ID = "azure-sdk-bom";
     private final BuildReport report;
 
+    /**
+     * Creates an instance of {@link ReportGenerator} to generate the final report of the build.
+     * @param report the report to generate.
+     */
     public ReportGenerator(BuildReport report) {
         this.report = report;
     }
 
+    /**
+     * Gets the generated report.
+     * @return the generated report.
+     */
     public BuildReport getReport() {
         return this.report;
     }
 
+    /**
+     * Generates the final report of the build.
+     */
     public void generateReport() {
-        report.setBomVersion(computeBomVersion());
         report.setAzureDependencies(computeAzureDependencies());
-        createJsonReport();
+        report.setGroupId(getMd5(AzureSdkMojo.getMojo().getProject().getGroupId()));
+        report.setArtifactId(getMd5(AzureSdkMojo.getMojo().getProject().getArtifactId()));
+        report.setVersion(getMd5(AzureSdkMojo.getMojo().getProject().getVersion()));
+        writeReportToFile();
     }
 
-    private String computeBomVersion() {
-        DependencyManagement depMgmt = AzureSdkMojo.MOJO.getProject().getDependencyManagement();
-        Optional<Dependency> bomDependency = Optional.empty();
-        if (depMgmt != null) {
-            bomDependency = depMgmt.getDependencies().stream()
-                .filter(d -> d.getArtifactId().equals(AZURE_SDK_BOM_ARTIFACT_ID))
-                .findAny();
+    private void writeReportToFile() {
+        final String reportFileString = AzureSdkMojo.getMojo().getReportFile();
+        if (reportFileString != null && !reportFileString.isEmpty()) {
+            final File reportFile = new File(reportFileString);
+            try (FileWriter fileWriter = new FileWriter(reportFile)) {
+                fileWriter.write(BinaryData.fromObject(report).toString());
+            } catch (IOException exception) {
+                AzureSdkMojo.getMojo().getLog().warn("Unable to write report to " + reportFileString, exception);
+            }
         }
-
-        if (bomDependency.isPresent()) {
-            return bomDependency.get().getVersion();
-        }
-        return null;
-    }
-
-    private void createJsonReport() {
-
-        try {
-            StringWriter writer = new StringWriter();
-            JsonGenerator generator = new JsonFactory().createGenerator(writer).useDefaultPrettyPrinter();
-
-            generator.writeStartObject();
-            generator.writeStringField("group", getMd5(AzureSdkMojo.MOJO.getProject().getGroupId()));
-            generator.writeStringField("artifact", getMd5(AzureSdkMojo.MOJO.getProject().getArtifactId()));
-            generator.writeStringField("version", getMd5(AzureSdkMojo.MOJO.getProject().getVersion()));
-            if (report.getBomVersion() != null && !report.getBomVersion().isEmpty()) {
-                generator.writeStringField("bomVersion", report.getBomVersion());
-            }
-            if (report.getAzureDependencies() != null && !report.getAzureDependencies().isEmpty()) {
-                writeArray("azureDependencies", report.getAzureDependencies(), generator);
-            }
-
-            if (report.getServiceMethodCalls() != null && !report.getServiceMethodCalls().isEmpty()) {
-                writeArray(generator, "serviceMethodCalls", report.getServiceMethodCalls());
-            }
-
-            if (report.getBetaMethodCalls() != null && !report.getBetaMethodCalls().isEmpty()) {
-                writeArray(generator, "betaMethodCalls", report.getBetaMethodCalls());
-            }
-
-
-            if(!report.getErrors().isEmpty()) {
-                writeErrors(generator, "errors", report.getErrors());
-            }
-
-            generator.writeEndObject();
-            generator.close();
-            writer.close();
-
-            report.setJsonReport(writer.toString());
-            final String reportFileString = AzureSdkMojo.MOJO.getReportFile();
-            if (reportFileString != null && !reportFileString.isEmpty()) {
-                final File reportFile = new File(reportFileString);
-                try (FileWriter fileWriter = new FileWriter(reportFile)) {
-                    fileWriter.write(report.getJsonReport());
-                }
-            }
-        } catch (IOException exception) {
-
-        }
-    }
-
-    private void writeErrors(JsonGenerator generator, String key, List<BuildError> errors)  throws IOException {
-        generator.writeFieldName(key);
-        generator.writeStartArray();
-
-        errors.forEach(error -> {
-            try {
-                generator.writeStartObject();
-                generator.writeStringField("code", error.getCode().toString());
-                generator.writeStringField("level", error.getLevel().toString());
-                if (error.getAdditionalDetails() != null && !error.getAdditionalDetails().isEmpty()) {
-                    writeArray("additionalDetails", error.getAdditionalDetails(), generator);
-                }
-                generator.writeEndObject();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        });
-        generator.writeEndArray();
-    }
-
-    private void writeArray(JsonGenerator generator, String serviceMethodCalls, Set<AnnotatedMethodCallerResult> report) throws IOException {
-        generator.writeFieldName(serviceMethodCalls);
-        generator.writeStartArray();
-
-        Map<String, Integer> methodCallFrequency = report
-            .stream()
-            .map(AnnotatedMethodCallerResult::getAnnotatedMethod)
-            .map(Method::toGenericString)
-            .sorted()
-            .collect(Collectors.groupingBy(Function.identity(), Collectors.summingInt(e -> 1)));
-
-        methodCallFrequency.forEach((key, value) -> {
-            try {
-                generator.writeStartObject();
-                generator.writeStringField("methodName", key);
-                generator.writeNumberField("frequency", value);
-                generator.writeEndObject();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        });
-        generator.writeEndArray();
-    }
-    private void writeArray(String fieldName, Collection<String> values, JsonGenerator generator) throws IOException {
-        generator.writeFieldName(fieldName);
-        generator.writeStartArray();
-        for (String value : values) {
-            generator.writeString(value);
-        }
-        generator.writeEndArray();
     }
 
     private List<String> computeAzureDependencies() {

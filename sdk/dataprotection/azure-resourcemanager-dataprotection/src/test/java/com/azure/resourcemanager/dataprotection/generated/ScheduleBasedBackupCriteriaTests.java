@@ -21,43 +21,40 @@ public final class ScheduleBasedBackupCriteriaTests {
         ScheduleBasedBackupCriteria model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"ScheduleBasedBackupCriteria\",\"absoluteCriteria\":[\"FirstOfDay\",\"AllBackup\",\"FirstOfMonth\"],\"daysOfMonth\":[{\"date\":703556051,\"isLast\":false}],\"daysOfTheWeek\":[\"Thursday\",\"Thursday\",\"Wednesday\",\"Sunday\"],\"monthsOfYear\":[\"June\",\"January\",\"February\"],\"scheduleTimes\":[\"2021-09-12T22:34:01Z\",\"2020-12-25T13:36:23Z\",\"2021-03-18T10:35:55Z\",\"2021-01-08T13:03:36Z\"],\"weeksOfTheMonth\":[\"First\",\"Third\"]}")
+                    "{\"objectType\":\"ScheduleBasedBackupCriteria\",\"absoluteCriteria\":[\"FirstOfYear\"],\"daysOfMonth\":[{\"date\":172770191,\"isLast\":true},{\"date\":863803765,\"isLast\":false},{\"date\":2107096986,\"isLast\":false}],\"daysOfTheWeek\":[\"Wednesday\",\"Wednesday\",\"Monday\",\"Tuesday\"],\"monthsOfYear\":[\"May\",\"June\"],\"scheduleTimes\":[\"2021-01-06T07:58:29Z\"],\"weeksOfTheMonth\":[\"Third\",\"Second\",\"First\"]}")
                 .toObject(ScheduleBasedBackupCriteria.class);
-        Assertions.assertEquals(AbsoluteMarker.FIRST_OF_DAY, model.absoluteCriteria().get(0));
-        Assertions.assertEquals(703556051, model.daysOfMonth().get(0).date());
-        Assertions.assertEquals(false, model.daysOfMonth().get(0).isLast());
-        Assertions.assertEquals(DayOfWeek.THURSDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(Month.JUNE, model.monthsOfYear().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T22:34:01Z"), model.scheduleTimes().get(0));
-        Assertions.assertEquals(WeekNumber.FIRST, model.weeksOfTheMonth().get(0));
+        Assertions.assertEquals(AbsoluteMarker.FIRST_OF_YEAR, model.absoluteCriteria().get(0));
+        Assertions.assertEquals(172770191, model.daysOfMonth().get(0).date());
+        Assertions.assertEquals(true, model.daysOfMonth().get(0).isLast());
+        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(Month.MAY, model.monthsOfYear().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T07:58:29Z"), model.scheduleTimes().get(0));
+        Assertions.assertEquals(WeekNumber.THIRD, model.weeksOfTheMonth().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduleBasedBackupCriteria model =
             new ScheduleBasedBackupCriteria()
-                .withAbsoluteCriteria(
-                    Arrays
-                        .asList(AbsoluteMarker.FIRST_OF_DAY, AbsoluteMarker.ALL_BACKUP, AbsoluteMarker.FIRST_OF_MONTH))
-                .withDaysOfMonth(Arrays.asList(new Day().withDate(703556051).withIsLast(false)))
-                .withDaysOfTheWeek(
-                    Arrays.asList(DayOfWeek.THURSDAY, DayOfWeek.THURSDAY, DayOfWeek.WEDNESDAY, DayOfWeek.SUNDAY))
-                .withMonthsOfYear(Arrays.asList(Month.JUNE, Month.JANUARY, Month.FEBRUARY))
-                .withScheduleTimes(
+                .withAbsoluteCriteria(Arrays.asList(AbsoluteMarker.FIRST_OF_YEAR))
+                .withDaysOfMonth(
                     Arrays
                         .asList(
-                            OffsetDateTime.parse("2021-09-12T22:34:01Z"),
-                            OffsetDateTime.parse("2020-12-25T13:36:23Z"),
-                            OffsetDateTime.parse("2021-03-18T10:35:55Z"),
-                            OffsetDateTime.parse("2021-01-08T13:03:36Z")))
-                .withWeeksOfTheMonth(Arrays.asList(WeekNumber.FIRST, WeekNumber.THIRD));
+                            new Day().withDate(172770191).withIsLast(true),
+                            new Day().withDate(863803765).withIsLast(false),
+                            new Day().withDate(2107096986).withIsLast(false)))
+                .withDaysOfTheWeek(
+                    Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY, DayOfWeek.TUESDAY))
+                .withMonthsOfYear(Arrays.asList(Month.MAY, Month.JUNE))
+                .withScheduleTimes(Arrays.asList(OffsetDateTime.parse("2021-01-06T07:58:29Z")))
+                .withWeeksOfTheMonth(Arrays.asList(WeekNumber.THIRD, WeekNumber.SECOND, WeekNumber.FIRST));
         model = BinaryData.fromObject(model).toObject(ScheduleBasedBackupCriteria.class);
-        Assertions.assertEquals(AbsoluteMarker.FIRST_OF_DAY, model.absoluteCriteria().get(0));
-        Assertions.assertEquals(703556051, model.daysOfMonth().get(0).date());
-        Assertions.assertEquals(false, model.daysOfMonth().get(0).isLast());
-        Assertions.assertEquals(DayOfWeek.THURSDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(Month.JUNE, model.monthsOfYear().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T22:34:01Z"), model.scheduleTimes().get(0));
-        Assertions.assertEquals(WeekNumber.FIRST, model.weeksOfTheMonth().get(0));
+        Assertions.assertEquals(AbsoluteMarker.FIRST_OF_YEAR, model.absoluteCriteria().get(0));
+        Assertions.assertEquals(172770191, model.daysOfMonth().get(0).date());
+        Assertions.assertEquals(true, model.daysOfMonth().get(0).isLast());
+        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(Month.MAY, model.monthsOfYear().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T07:58:29Z"), model.scheduleTimes().get(0));
+        Assertions.assertEquals(WeekNumber.THIRD, model.weeksOfTheMonth().get(0));
     }
 }

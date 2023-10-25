@@ -334,6 +334,13 @@ public final class PrivateCloudProperties extends PrivateCloudUpdateProperties {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PrivateCloudProperties withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
+        super.withExtendedNetworkBlocks(extendedNetworkBlocks);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

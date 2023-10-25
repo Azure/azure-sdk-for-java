@@ -85,11 +85,13 @@ public interface ApplicationPackage {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ApplicationPackage definition stages. */
     interface DefinitionStages {
         /** The first stage of the ApplicationPackage definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ApplicationPackage definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -102,6 +104,7 @@ public interface ApplicationPackage {
              */
             WithCreate withExistingApplication(String resourceGroupName, String accountName, String applicationName);
         }
+
         /**
          * The stage of the ApplicationPackage definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -123,6 +126,7 @@ public interface ApplicationPackage {
             ApplicationPackage create(Context context);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

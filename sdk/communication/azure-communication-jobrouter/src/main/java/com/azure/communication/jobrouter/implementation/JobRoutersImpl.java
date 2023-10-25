@@ -692,13 +692,9 @@ public final class JobRoutersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> cancelJobActionWithResponseAsync(String id, String note, String dispositionCode) {
         final String accept = "application/json";
-        CancelJobRequest cancelJobRequestInternal = null;
-        if (note != null || dispositionCode != null) {
-            cancelJobRequestInternal = new CancelJobRequest();
-            cancelJobRequestInternal.setNote(note);
-            cancelJobRequestInternal.setDispositionCode(dispositionCode);
-        }
-        CancelJobRequest cancelJobRequest = cancelJobRequestInternal;
+        CancelJobRequest cancelJobRequest = new CancelJobRequest();
+        cancelJobRequest.setNote(note);
+        cancelJobRequest.setDispositionCode(dispositionCode);
         return FluxUtil.withContext(
                 context ->
                         service.cancelJobAction(
@@ -727,13 +723,9 @@ public final class JobRoutersImpl {
     public Mono<Response<Object>> cancelJobActionWithResponseAsync(
             String id, String note, String dispositionCode, Context context) {
         final String accept = "application/json";
-        CancelJobRequest cancelJobRequestInternal = null;
-        if (note != null || dispositionCode != null) {
-            cancelJobRequestInternal = new CancelJobRequest();
-            cancelJobRequestInternal.setNote(note);
-            cancelJobRequestInternal.setDispositionCode(dispositionCode);
-        }
-        CancelJobRequest cancelJobRequest = cancelJobRequestInternal;
+        CancelJobRequest cancelJobRequest = new CancelJobRequest();
+        cancelJobRequest.setNote(note);
+        cancelJobRequest.setDispositionCode(dispositionCode);
         return service.cancelJobAction(
                 this.client.getEndpoint(), id, this.client.getApiVersion(), cancelJobRequest, accept, context);
     }

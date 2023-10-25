@@ -50,11 +50,10 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientT")
-    private interface TenantAccessGitsService {
+    public interface TenantAccessGitsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/tenant/{accessName}/git/regeneratePrimaryKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/git/regeneratePrimaryKey")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> regeneratePrimaryKey(
@@ -69,8 +68,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/tenant/{accessName}/git/regenerateSecondaryKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/git/regenerateSecondaryKey")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> regenerateSecondaryKey(
@@ -87,7 +85,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
     /**
      * Regenerate primary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +138,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
     /**
      * Regenerate primary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -191,7 +189,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
     /**
      * Regenerate primary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,28 +201,13 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
     private Mono<Void> regeneratePrimaryKeyAsync(
         String resourceGroupName, String serviceName, AccessIdName accessName) {
         return regeneratePrimaryKeyWithResponseAsync(resourceGroupName, serviceName, accessName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Regenerate primary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param accessName The identifier of the Access configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void regeneratePrimaryKey(String resourceGroupName, String serviceName, AccessIdName accessName) {
-        regeneratePrimaryKeyAsync(resourceGroupName, serviceName, accessName).block();
-    }
-
-    /**
-     * Regenerate primary access key for GIT.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -240,9 +223,24 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
     }
 
     /**
+     * Regenerate primary access key for GIT.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param accessName The identifier of the Access configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void regeneratePrimaryKey(String resourceGroupName, String serviceName, AccessIdName accessName) {
+        regeneratePrimaryKeyWithResponse(resourceGroupName, serviceName, accessName, Context.NONE);
+    }
+
+    /**
      * Regenerate secondary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,7 +293,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
     /**
      * Regenerate secondary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -346,7 +344,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
     /**
      * Regenerate secondary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -358,28 +356,13 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
     private Mono<Void> regenerateSecondaryKeyAsync(
         String resourceGroupName, String serviceName, AccessIdName accessName) {
         return regenerateSecondaryKeyWithResponseAsync(resourceGroupName, serviceName, accessName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Regenerate secondary access key for GIT.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param accessName The identifier of the Access configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void regenerateSecondaryKey(String resourceGroupName, String serviceName, AccessIdName accessName) {
-        regenerateSecondaryKeyAsync(resourceGroupName, serviceName, accessName).block();
-    }
-
-    /**
-     * Regenerate secondary access key for GIT.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -392,5 +375,20 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
     public Response<Void> regenerateSecondaryKeyWithResponse(
         String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
         return regenerateSecondaryKeyWithResponseAsync(resourceGroupName, serviceName, accessName, context).block();
+    }
+
+    /**
+     * Regenerate secondary access key for GIT.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param accessName The identifier of the Access configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void regenerateSecondaryKey(String resourceGroupName, String serviceName, AccessIdName accessName) {
+        regenerateSecondaryKeyWithResponse(resourceGroupName, serviceName, accessName, Context.NONE);
     }
 }

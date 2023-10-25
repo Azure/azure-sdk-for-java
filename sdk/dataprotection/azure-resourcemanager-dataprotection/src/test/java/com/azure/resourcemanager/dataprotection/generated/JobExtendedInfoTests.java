@@ -16,9 +16,9 @@ public final class JobExtendedInfoTests {
         JobExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"additionalDetails\":{\"deemao\":\"yvjusrtslhsp\",\"gkvtmelmqkrhah\":\"mx\",\"duala\":\"ljuahaquhcdh\",\"rcrgvx\":\"xqpvfadmw\"},\"backupInstanceState\":\"gomz\",\"dataTransferredInBytes\":46.13873642470099,\"recoveryDestination\":\"gwb\",\"sourceRecoverPoint\":{\"recoveryPointID\":\"e\",\"recoveryPointTime\":\"2021-04-09T03:27:31Z\"},\"subTasks\":[{\"additionalDetails\":{\"urqhaka\":\"ali\",\"xcug\":\"hashsfwxosow\",\"ovbvmeueciv\":\"cjooxdjebwpucwwf\",\"otwmcdyt\":\"hzceuojgjrwjue\"},\"taskId\":17080551,\"taskName\":\"wit\",\"taskProgress\":\"rjaw\",\"taskStatus\":\"qwgxhniskx\"}],\"targetRecoverPoint\":{\"recoveryPointID\":\"py\",\"recoveryPointTime\":\"2021-02-14T18:57Z\"}}")
+                    "{\"additionalDetails\":{\"hhuao\":\"zfq\",\"ahzxctobgbk\":\"ppcqeqxolz\",\"mgrcfbu\":\"moizpos\",\"mjh\":\"rmfqjhhkxbpvj\"},\"backupInstanceState\":\"j\",\"dataTransferredInBytes\":87.30772584972803,\"recoveryDestination\":\"ivkrtsw\",\"sourceRecoverPoint\":{\"recoveryPointID\":\"zvszj\",\"recoveryPointTime\":\"2021-04-01T03:47:56Z\"},\"subTasks\":[{\"additionalDetails\":{\"cqaqtdoqmcbx\":\"xxivetv\",\"bhsfxob\":\"wvxysl\"},\"taskId\":168100762,\"taskName\":\"tkblmpewww\",\"taskProgress\":\"krvrns\",\"taskStatus\":\"shqjohxcrsbf\"}],\"targetRecoverPoint\":{\"recoveryPointID\":\"srruvwbhsqfsubcg\",\"recoveryPointTime\":\"2021-02-04T22:06:27Z\"}}")
                 .toObject(JobExtendedInfo.class);
-        Assertions.assertEquals("yvjusrtslhsp", model.additionalDetails().get("deemao"));
+        Assertions.assertEquals("zfq", model.additionalDetails().get("hhuao"));
     }
 
     @org.junit.jupiter.api.Test
@@ -26,17 +26,9 @@ public final class JobExtendedInfoTests {
         JobExtendedInfo model =
             new JobExtendedInfo()
                 .withAdditionalDetails(
-                    mapOf(
-                        "deemao",
-                        "yvjusrtslhsp",
-                        "gkvtmelmqkrhah",
-                        "mx",
-                        "duala",
-                        "ljuahaquhcdh",
-                        "rcrgvx",
-                        "xqpvfadmw"));
+                    mapOf("hhuao", "zfq", "ahzxctobgbk", "ppcqeqxolz", "mgrcfbu", "moizpos", "mjh", "rmfqjhhkxbpvj"));
         model = BinaryData.fromObject(model).toObject(JobExtendedInfo.class);
-        Assertions.assertEquals("yvjusrtslhsp", model.additionalDetails().get("deemao"));
+        Assertions.assertEquals("zfq", model.additionalDetails().get("hhuao"));
     }
 
     @SuppressWarnings("unchecked")

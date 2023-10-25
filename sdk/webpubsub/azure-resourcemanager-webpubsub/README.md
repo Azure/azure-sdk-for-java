@@ -2,7 +2,7 @@
 
 Azure Resource Manager WebPubSub client library for Java.
 
-This package contains Microsoft Azure SDK for WebPubSub Management SDK. REST API for Azure WebPubSub Service. Package tag package-2023-02-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for WebPubSub Management SDK. REST API for Azure WebPubSub Service. Package tag package-2023-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-webpubsub</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -74,6 +74,14 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+webPubSubResource = webPubSubManager.webPubSubs()
+    .define(resourceName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withSku(new ResourceSku().withName("Free_F1").withCapacity(1).withTier(WebPubSubSkuTier.FREE))
+    .create();
+```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-resourcemanager-webpubsub/SAMPLE.md)
 
 
@@ -103,3 +111,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fwebpubsub%2Fazure-resourcemanager-webpubsub%2FREADME.png)

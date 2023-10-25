@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.LockedException;
@@ -832,6 +831,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             if (pendingRequestTimeout.get() != null) {
                 pendingRequestTimeout.get().cancel();
             }
+
+            if (record.isCancelled()) {
+                this.timestamps.cancellation();
+            }
         });
 
         return record;
@@ -1048,17 +1051,17 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                         case SubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
                             cause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
                             handleGoneException(serviceRequest, cause);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.COMPLETING_PARTITION_MIGRATION:
                             cause = new PartitionIsMigratingException(error, lsn, partitionKeyRangeId, responseHeaders);
                             handleGoneException(serviceRequest, cause);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.NAME_CACHE_IS_STALE:
                             cause = new InvalidPartitionException(error, lsn, partitionKeyRangeId, responseHeaders);
                             handleGoneException(serviceRequest, cause);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
@@ -1070,7 +1073,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             goneExceptionFromService.setIsBasedOn410ResponseFromService();
                             cause = goneExceptionFromService;
                             handleGoneException(serviceRequest, cause);
-                            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, cause);
+                            this.attemptBackgroundAddressRefresh(serviceRequest, cause);
                             break;
                     }
                     break;
@@ -1172,6 +1175,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (!this.pendingWrites.isEmpty()) {
             this.pendingWrites.writeAndRemoveAll(context);
             context.flush();
+        }
+    }
+
+    private void attemptBackgroundAddressRefresh(RxDocumentServiceRequest request, CosmosException cause) {
+        if (rntbdConnectionStateListener != null) {
+            rntbdConnectionStateListener.attemptBackgroundAddressRefresh(request, cause);
         }
     }
 

@@ -7,19 +7,19 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.SshPublicKey;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SshPublicKeyTests {
-    @Test
-    public void testDeserialize() {
-        SshPublicKey model = BinaryData.fromString("{\"certificateData\":\"kzsmodm\"}").toObject(SshPublicKey.class);
-        Assertions.assertEquals("kzsmodm", model.certificateData());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SshPublicKey model =
+            BinaryData.fromString("{\"certificateData\":\"imoryocfsfksym\"}").toObject(SshPublicKey.class);
+        Assertions.assertEquals("imoryocfsfksym", model.certificateData());
     }
 
-    @Test
-    public void testSerialize() {
-        SshPublicKey model = new SshPublicKey().withCertificateData("kzsmodm");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SshPublicKey model = new SshPublicKey().withCertificateData("imoryocfsfksym");
         model = BinaryData.fromObject(model).toObject(SshPublicKey.class);
-        Assertions.assertEquals("kzsmodm", model.certificateData());
+        Assertions.assertEquals("imoryocfsfksym", model.certificateData());
     }
 }

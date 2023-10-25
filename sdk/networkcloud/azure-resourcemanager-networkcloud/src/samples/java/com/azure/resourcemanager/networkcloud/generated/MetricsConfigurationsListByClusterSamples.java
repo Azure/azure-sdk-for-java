@@ -7,7 +7,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 /** Samples for MetricsConfigurations ListByCluster. */
 public final class MetricsConfigurationsListByClusterSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/ClusterMetricsConfigurations_ListByCluster.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/ClusterMetricsConfigurations_ListByCluster.json
      */
     /**
      * Sample code: List metrics configurations of the cluster.

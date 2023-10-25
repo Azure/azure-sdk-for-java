@@ -19,7 +19,7 @@ public final class CreateDistributionPolicyOptions {
     private final String id;
 
     /**
-     * The human readable name of the policy.
+     * The human-readable name of the policy.
      */
     private String name;
 

@@ -50,7 +50,7 @@ public class ManageEventHubEvents {
                 .withKind(DatabaseAccountKind.MONGO_DB)
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_WEST)
-                .withReadReplication(Region.US_CENTRAL)
+                .withReadReplication(Region.US_WEST3)
                 .create();
 
             System.out.println("Created a DocumentDb instance.");

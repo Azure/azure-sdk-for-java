@@ -24,8 +24,8 @@ import java.util.Map;
 /**
  * Sample for recognizing commonly found invoice fields from a local file input stream of an invoice document.
  * For a suggested approach to extracting information from a general recognized form, see StronglyTypedRecognizedForm.java.
- * See fields found on a invoice here:
- * https://aka.ms/formrecognizer/invoicefields
+ * See fields found on a invoice
+ * <a href="https://aka.ms/formrecognizer/invoicefields">here</a>.
  */
 public class RecognizeInvoices {
     /**

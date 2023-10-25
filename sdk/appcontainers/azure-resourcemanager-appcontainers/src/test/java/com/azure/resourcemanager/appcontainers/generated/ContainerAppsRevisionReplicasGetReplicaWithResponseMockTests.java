@@ -16,6 +16,7 @@ import com.azure.resourcemanager.appcontainers.models.Replica;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -30,7 +31,7 @@ public final class ContainerAppsRevisionReplicasGetReplicaWithResponseMockTests 
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"createdTime\":\"2021-06-14T18:40:43Z\",\"containers\":[]},\"id\":\"je\",\"name\":\"jklntikyj\",\"type\":\"zkdbqzolx\"}";
+            "{\"properties\":{\"createdTime\":\"2021-04-22T19:07:29Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"nsq\",\"containers\":[{\"name\":\"comlikytwvczc\",\"containerId\":\"k\",\"ready\":false,\"started\":false,\"restartCount\":789888473,\"runningState\":\"Terminated\",\"runningStateDetails\":\"vhb\",\"logStreamEndpoint\":\"nfxtgdd\",\"execEndpoint\":\"th\"}],\"initContainers\":[{\"name\":\"naoyank\",\"containerId\":\"eqswanklty\",\"ready\":false,\"started\":true,\"restartCount\":1174469585,\"runningState\":\"Terminated\",\"runningStateDetails\":\"drlktg\",\"logStreamEndpoint\":\"sggux\",\"execEndpoint\":\"mlwywaeeczg\"}]},\"id\":\"bukklels\",\"name\":\"xblycsxzuj\",\"type\":\"srlsmd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +62,18 @@ public final class ContainerAppsRevisionReplicasGetReplicaWithResponseMockTests 
         Replica response =
             manager
                 .containerAppsRevisionReplicas()
-                .getReplicaWithResponse("z", "iblkujr", "lfojuidjp", "uyjucejikzo", com.azure.core.util.Context.NONE)
+                .getReplicaWithResponse("rhpw", "gddeimaw", "o", "gkkumuikjcj", com.azure.core.util.Context.NONE)
                 .getValue();
+
+        Assertions.assertEquals("comlikytwvczc", response.containers().get(0).name());
+        Assertions.assertEquals("k", response.containers().get(0).containerId());
+        Assertions.assertEquals(false, response.containers().get(0).ready());
+        Assertions.assertEquals(false, response.containers().get(0).started());
+        Assertions.assertEquals(789888473, response.containers().get(0).restartCount());
+        Assertions.assertEquals("naoyank", response.initContainers().get(0).name());
+        Assertions.assertEquals("eqswanklty", response.initContainers().get(0).containerId());
+        Assertions.assertEquals(false, response.initContainers().get(0).ready());
+        Assertions.assertEquals(true, response.initContainers().get(0).started());
+        Assertions.assertEquals(1174469585, response.initContainers().get(0).restartCount());
     }
 }

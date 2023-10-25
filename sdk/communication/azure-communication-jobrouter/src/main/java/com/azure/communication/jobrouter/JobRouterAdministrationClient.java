@@ -45,10 +45,10 @@ import com.azure.core.util.Context;
  * <p><strong>Instantiating a synchronous JobRouter Administration Client</strong></p>
  * <!-- src_embed com.azure.communication.jobrouter.jobrouteradministrationclient.instantiation -->
  * <pre>
- * &#47;&#47; Initialize the router administration client builder
+ * &#47;&#47; Initialize the jobrouter administration client builder
  * final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
- * &#47;&#47; Build the jobRouter administration client
+ * &#47;&#47; Build the jobrouter administration client
  * JobRouterAdministrationClient jobRouterAdministrationClient = builder.buildClient&#40;&#41;;
  *
  * </pre>
@@ -99,6 +99,7 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Update a classification policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateClassificationPolicyOptions Request options to update classification policy.
      * @return a container for the rules that govern how jobs are classified.
@@ -113,6 +114,7 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Update a classification policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateClassificationPolicyOptions Request options to update classification policy.
      * @param context The context to associate with this operation.
@@ -257,6 +259,7 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Update a distribution policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateDistributionPolicyOptions Request options to update distribution policy.
      * @return policy governing how jobs are distributed to workers.
@@ -271,6 +274,7 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Update a distribution policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateDistributionPolicyOptions Request options to update distribution policy.
      * @param context The context to associate with this operation.
@@ -415,6 +419,7 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Update an exception policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateExceptionPolicyOptions Options to update ExceptionPolicy.
      * @return a policy that defines actions to execute when exception are triggered.
@@ -557,6 +562,7 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Update a queue.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateQueueOptions Container for inputs to update a queue.
      * @return a queue that can contain jobs to be routed.
@@ -571,6 +577,7 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Update a queue.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateQueueOptions Container for inputs to update a queue.
      * @param context The context to associate with this operation.

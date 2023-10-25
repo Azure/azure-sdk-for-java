@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DeletedServices Purge. */
 public final class DeletedServicesPurgeSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeletedServicesPurge.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeletedServicesPurge.json
      */
     /**
      * Sample code: ApiManagementDeletedServicesPurge.
@@ -18,6 +16,6 @@ public final class DeletedServicesPurgeSamples {
      */
     public static void apiManagementDeletedServicesPurge(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.deletedServices().purge("apimService3", "westus", Context.NONE);
+        manager.deletedServices().purge("apimService3", "westus", com.azure.core.util.Context.NONE);
     }
 }

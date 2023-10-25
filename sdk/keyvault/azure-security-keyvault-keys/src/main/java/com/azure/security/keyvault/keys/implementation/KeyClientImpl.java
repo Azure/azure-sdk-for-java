@@ -91,8 +91,7 @@ public class KeyClientImpl {
      * @param keyServiceVersion {@link KeyServiceVersion} of the service to be used when making requests.
      */
     public KeyClientImpl(String vaultUrl, HttpPipeline pipeline, KeyServiceVersion keyServiceVersion) {
-        Objects.requireNonNull(vaultUrl,
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
 
         this.vaultUrl = vaultUrl;
         this.service = RestProxy.create(KeyService.class, pipeline);

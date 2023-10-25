@@ -249,14 +249,12 @@ public class FeatureManager {
                 results.add(isFeatureOn(featureFilter, feature.getKey(), featureContext));
             }
         }
-
         return evaluateFeatureFlagResults(feature, results).flatMap(enabled -> {
             if (!enabled && StringUtils.hasText(defaultDisabledVariant)) {
                 return variantAssignment.getVariant(feature.getVariants().values(), defaultDisabledVariant).single();
             } else if (!enabled) {
                 return Mono.justOrEmpty(null);
             }
-
             return variantAssignment.getVariant(variants, variantAssignment.assignVariant(feature.getAllocation()));
         });
     }
@@ -268,7 +266,6 @@ public class FeatureManager {
         }
         // Any Filter must be true
         return Flux.merge(results).reduce((a, b) -> a || b).single();
-
     }
 
     private void validateVariant(Feature feature) {

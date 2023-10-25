@@ -7,6 +7,8 @@ package com.azure.resourcemanager.dataprotection.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dataprotection.models.AlertsState;
 import com.azure.resourcemanager.dataprotection.models.AzureMonitorAlertSettings;
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreSettings;
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreState;
 import com.azure.resourcemanager.dataprotection.models.CrossSubscriptionRestoreSettings;
 import com.azure.resourcemanager.dataprotection.models.CrossSubscriptionRestoreState;
 import com.azure.resourcemanager.dataprotection.models.FeatureSettings;
@@ -25,19 +27,22 @@ public final class PatchBackupVaultInputTests {
         PatchBackupVaultInput model =
             BinaryData
                 .fromString(
-                    "{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Enabled\"}},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"Off\",\"retentionDurationInDays\":3.707691340875785},\"immutabilitySettings\":{\"state\":\"Unlocked\"}},\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Enabled\"}}}")
+                    "{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Enabled\"}},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"Off\",\"retentionDurationInDays\":59.897839624628624},\"immutabilitySettings\":{\"state\":\"Unlocked\"}},\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Enabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}}}")
                 .toObject(PatchBackupVaultInput.class);
         Assertions
             .assertEquals(
                 AlertsState.ENABLED, model.monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
         Assertions.assertEquals(SoftDeleteState.OFF, model.securitySettings().softDeleteSettings().state());
         Assertions
-            .assertEquals(3.707691340875785D, model.securitySettings().softDeleteSettings().retentionDurationInDays());
+            .assertEquals(59.897839624628624D, model.securitySettings().softDeleteSettings().retentionDurationInDays());
         Assertions.assertEquals(ImmutabilityState.UNLOCKED, model.securitySettings().immutabilitySettings().state());
         Assertions
             .assertEquals(
                 CrossSubscriptionRestoreState.ENABLED,
                 model.featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions
+            .assertEquals(
+                CrossRegionRestoreState.ENABLED, model.featureSettings().crossRegionRestoreSettings().state());
     }
 
     @org.junit.jupiter.api.Test
@@ -53,23 +58,28 @@ public final class PatchBackupVaultInputTests {
                         .withSoftDeleteSettings(
                             new SoftDeleteSettings()
                                 .withState(SoftDeleteState.OFF)
-                                .withRetentionDurationInDays(3.707691340875785D))
+                                .withRetentionDurationInDays(59.897839624628624D))
                         .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
                 .withFeatureSettings(
                     new FeatureSettings()
                         .withCrossSubscriptionRestoreSettings(
-                            new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.ENABLED)));
+                            new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.ENABLED))
+                        .withCrossRegionRestoreSettings(
+                            new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(PatchBackupVaultInput.class);
         Assertions
             .assertEquals(
                 AlertsState.ENABLED, model.monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
         Assertions.assertEquals(SoftDeleteState.OFF, model.securitySettings().softDeleteSettings().state());
         Assertions
-            .assertEquals(3.707691340875785D, model.securitySettings().softDeleteSettings().retentionDurationInDays());
+            .assertEquals(59.897839624628624D, model.securitySettings().softDeleteSettings().retentionDurationInDays());
         Assertions.assertEquals(ImmutabilityState.UNLOCKED, model.securitySettings().immutabilitySettings().state());
         Assertions
             .assertEquals(
                 CrossSubscriptionRestoreState.ENABLED,
                 model.featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions
+            .assertEquals(
+                CrossRegionRestoreState.ENABLED, model.featureSettings().crossRegionRestoreSettings().state());
     }
 }

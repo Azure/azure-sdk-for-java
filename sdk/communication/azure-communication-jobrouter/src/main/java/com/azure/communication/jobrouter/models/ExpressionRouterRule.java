@@ -9,11 +9,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.Objects;
+
 /** A rule providing inline expression rules. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("expression-rule")
 @Fluent
 public final class ExpressionRouterRule extends RouterRule {
+    /**
+     * Creates an instance of ExpressionRouterRule class.
+     *
+     * @param expression The string containing the expression to evaluate. Should contain return statement with calculated values.
+     */
+    public ExpressionRouterRule(String expression) {
+        this.expression = Objects.requireNonNull(expression, "'expression' cannot be null.");
+        this.language = ExpressionRouterRuleLanguage.POWER_FX;
+    }
+
     /*
      * The expression language to compile to and execute
      */
@@ -37,17 +49,6 @@ public final class ExpressionRouterRule extends RouterRule {
     }
 
     /**
-     * Set the language property: The expression language to compile to and execute.
-     *
-     * @param language the language value to set.
-     * @return the ExpressionRule object itself.
-     */
-    public ExpressionRouterRule setLanguage(ExpressionRouterRuleLanguage language) {
-        this.language = language;
-        return this;
-    }
-
-    /**
      * Get the expression property: The string containing the expression to evaluate. Should contain return statement
      * with calculated values.
      *
@@ -55,17 +56,5 @@ public final class ExpressionRouterRule extends RouterRule {
      */
     public String getExpression() {
         return this.expression;
-    }
-
-    /**
-     * Set the expression property: The string containing the expression to evaluate. Should contain return statement
-     * with calculated values.
-     *
-     * @param expression the expression value to set.
-     * @return the ExpressionRule object itself.
-     */
-    public ExpressionRouterRule setExpression(String expression) {
-        this.expression = expression;
-        return this;
     }
 }

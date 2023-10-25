@@ -20,7 +20,7 @@ function readPom(callback) {
             process.exit(1);
         }
         console.log("[INFO] reading modules from pom...");
-        readProjSpecs(response.pomObject.project.profiles.profile[0].modules.module);
+        readProjSpecs(response.pomObject.project.modules.module);
     });
 }
 
@@ -31,7 +31,7 @@ function readProjSpecs(modules) {
     var map = {};
     Object.keys(mappings).forEach((key) => {
         // skip graphrbac as it moves to MSGraph now
-        if (key == "graphrbac") {
+        if (key == "msgraph") {
             return;
         }
         if (modules.includes(mappings[key].dir)) {

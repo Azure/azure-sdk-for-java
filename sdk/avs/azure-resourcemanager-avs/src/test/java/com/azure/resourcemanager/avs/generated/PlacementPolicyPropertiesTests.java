@@ -15,18 +15,18 @@ public final class PlacementPolicyPropertiesTests {
         PlacementPolicyProperties model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"nnqvsa\",\"provisioningState\":\"Deleting\"}")
+                    "{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"yhmossxkkg\",\"provisioningState\":\"Failed\"}")
                 .toObject(PlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.DISABLED, model.state());
-        Assertions.assertEquals("nnqvsa", model.displayName());
+        Assertions.assertEquals("yhmossxkkg", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PlacementPolicyProperties model =
-            new PlacementPolicyProperties().withState(PlacementPolicyState.DISABLED).withDisplayName("nnqvsa");
+            new PlacementPolicyProperties().withState(PlacementPolicyState.DISABLED).withDisplayName("yhmossxkkg");
         model = BinaryData.fromObject(model).toObject(PlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.DISABLED, model.state());
-        Assertions.assertEquals("nnqvsa", model.displayName());
+        Assertions.assertEquals("yhmossxkkg", model.displayName());
     }
 }

@@ -91,9 +91,9 @@
  *
  * <p>Let's take a look at the analysis client scenarios and their respective usage below.</p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Train a model</h2>
  *
@@ -144,9 +144,9 @@
  * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/label-tool?tabs=v2-1">Form Recognizer Labeling Tool</a>.
  * </p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Manage custom models</h2>
  *

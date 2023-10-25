@@ -9,8 +9,11 @@ import com.azure.communication.jobrouter.implementation.models.CommunicationErro
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.CloseJobOptions;
+import com.azure.communication.jobrouter.models.CompleteJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
 import com.azure.communication.jobrouter.models.ListJobsOptions;
@@ -81,6 +84,20 @@ public final class JobRouterClient {
     }
 
     /**
+     * Create a job with classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterJob createJobWithClassificationPolicy(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+        return this.client.createJobWithClassificationPolicy(createJobWithClassificationPolicyOptions).block();
+    }
+
+    /**
      * Create a job.
      *
      * @param createJobOptions Options to create a RouterJob.
@@ -97,7 +114,24 @@ public final class JobRouterClient {
     }
 
     /**
+     * Create a job with classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create a RouterJob.
+     * @param context The context to associate with this operation.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RouterJob> createJobWithClassificationPolicyWithResponse(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions, Context context) {
+        RouterJobInternal routerJobInternal = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+        return this.client.upsertJobWithResponse(createJobWithClassificationPolicyOptions.getId(), routerJobInternal, context).block();
+    }
+
+    /**
      * Update a job.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateJobOptions Options to update RouterJob.
      * @return a unit of work to be routed.
@@ -112,6 +146,7 @@ public final class JobRouterClient {
 
     /**
      * Update a job.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateJobOptions Options to update RouterJob.
      * @param context The context to associate with this operation.
@@ -214,26 +249,20 @@ public final class JobRouterClient {
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param jobId Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     * provided, default value of "Cancelled" is set.
+     * @param cancelJobOptions options object for cancelJob operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelJob(String jobId, String note, String dispositionCode) {
-        this.client.cancelJob(jobId, note, dispositionCode).block();
+    public void cancelJob(CancelJobOptions cancelJobOptions) {
+        this.client.cancelJob(cancelJobOptions).block();
     }
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param jobId Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     * provided, default value of "Cancelled" is set.
+     * @param cancelJobOptions options object for cancelJob operation.
      * @param context The context to associate with this operation.
      * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,23 +270,25 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelJobWithResponse(String jobId, String note, String dispositionCode, Context context) {
-        return this.client.cancelJobWithResponse(jobId, note, dispositionCode, context).block();
+    public Response<Void> cancelJobWithResponse(CancelJobOptions cancelJobOptions, Context context) {
+        return this.client.cancelJobWithResponse(
+            cancelJobOptions.getJobId(),
+            cancelJobOptions.getNote(),
+            cancelJobOptions.getDispositionCode(),
+            context).block();
     }
 
     /**
      * Completes an assigned job.
      *
-     * @param jobId Id of the job.
-     * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param completeJobOptions options object for completeJob.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void completeJob(String jobId, String assignmentId, String note) {
-        this.client.completeJob(jobId, assignmentId, note).block();
+    public void completeJob(CompleteJobOptions completeJobOptions) {
+        this.client.completeJob(completeJobOptions).block();
     }
 
     /**
@@ -524,6 +555,7 @@ public final class JobRouterClient {
 
     /**
      * Update a worker.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateWorkerOptions Container for inputs to update a worker.
      * @return an entity for jobs to be routed to.
@@ -538,6 +570,7 @@ public final class JobRouterClient {
 
     /**
      * Update a worker.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateWorkerOptions Container for inputs to update a worker.
      * @param context The context to associate with this operation.

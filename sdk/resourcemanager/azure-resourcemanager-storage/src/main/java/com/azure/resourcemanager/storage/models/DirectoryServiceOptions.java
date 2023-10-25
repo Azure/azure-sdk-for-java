@@ -23,6 +23,15 @@ public final class DirectoryServiceOptions extends ExpandableStringEnum<Director
     public static final DirectoryServiceOptions AADKERB = fromString("AADKERB");
 
     /**
+     * Creates a new instance of DirectoryServiceOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DirectoryServiceOptions() {
+    }
+
+    /**
      * Creates or finds a DirectoryServiceOptions from its string representation.
      *
      * @param name a name to look for.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -17,11 +15,11 @@ public final class OperationsListSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void operationsListMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.
@@ -29,6 +27,6 @@ public final class OperationsListSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void operationsListMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

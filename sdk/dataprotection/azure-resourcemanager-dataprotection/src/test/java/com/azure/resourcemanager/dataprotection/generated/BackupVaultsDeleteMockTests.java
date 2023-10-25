@@ -56,6 +56,6 @@ public final class BackupVaultsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.backupVaults().delete("jslb", "wkojgcyztsfmzn", com.azure.core.util.Context.NONE);
+        manager.backupVaults().delete("cvhrfsp", "uagrttikteusqc", com.azure.core.util.Context.NONE);
     }
 }

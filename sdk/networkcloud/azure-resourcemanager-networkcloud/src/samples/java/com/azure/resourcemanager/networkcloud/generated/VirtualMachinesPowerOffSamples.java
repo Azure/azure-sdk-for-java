@@ -10,7 +10,7 @@ import com.azure.resourcemanager.networkcloud.models.VirtualMachinePowerOffParam
 /** Samples for VirtualMachines PowerOff. */
 public final class VirtualMachinesPowerOffSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/VirtualMachines_PowerOff.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/VirtualMachines_PowerOff.json
      */
     /**
      * Sample code: Power off virtual machine.

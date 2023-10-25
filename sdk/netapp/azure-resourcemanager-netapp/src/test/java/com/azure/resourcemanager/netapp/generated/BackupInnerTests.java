@@ -14,20 +14,20 @@ public final class BackupInnerTests {
         BackupInner model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"apvhelxprgly\",\"properties\":{\"backupId\":\"dd\",\"creationDate\":\"2021-07-03T10:39:12Z\",\"provisioningState\":\"cuejrjxgci\",\"size\":3405568102133288247,\"label\":\"osx\",\"backupType\":\"Scheduled\",\"failureReason\":\"hzoymibmrqy\",\"volumeName\":\"ahwfluszdtmhrk\",\"useExistingSnapshot\":false},\"id\":\"yvoqa\",\"name\":\"piexpbtgiw\",\"type\":\"wo\"}")
+                    "{\"location\":\"cqqudf\",\"properties\":{\"backupId\":\"yxbaaabjyvayf\",\"creationDate\":\"2021-07-23T05:30:54Z\",\"provisioningState\":\"zrtuzq\",\"size\":1189193758157462805,\"label\":\"nevfdnw\",\"backupType\":\"Manual\",\"failureReason\":\"wzsyyceuzs\",\"volumeName\":\"bjudpfrxtrthzv\",\"useExistingSnapshot\":false},\"id\":\"dwkqbrq\",\"name\":\"bpaxhexiilivpdt\",\"type\":\"irqtdqoa\"}")
                 .toObject(BackupInner.class);
-        Assertions.assertEquals("apvhelxprgly", model.location());
-        Assertions.assertEquals("osx", model.label());
+        Assertions.assertEquals("cqqudf", model.location());
+        Assertions.assertEquals("nevfdnw", model.label());
         Assertions.assertEquals(false, model.useExistingSnapshot());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupInner model =
-            new BackupInner().withLocation("apvhelxprgly").withLabel("osx").withUseExistingSnapshot(false);
+            new BackupInner().withLocation("cqqudf").withLabel("nevfdnw").withUseExistingSnapshot(false);
         model = BinaryData.fromObject(model).toObject(BackupInner.class);
-        Assertions.assertEquals("apvhelxprgly", model.location());
-        Assertions.assertEquals("osx", model.label());
+        Assertions.assertEquals("cqqudf", model.location());
+        Assertions.assertEquals("nevfdnw", model.label());
         Assertions.assertEquals(false, model.useExistingSnapshot());
     }
 }

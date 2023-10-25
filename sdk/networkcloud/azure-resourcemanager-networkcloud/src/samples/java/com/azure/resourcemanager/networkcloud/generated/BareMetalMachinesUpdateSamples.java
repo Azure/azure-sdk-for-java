@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for BareMetalMachines Update. */
 public final class BareMetalMachinesUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachines_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachines_Patch.json
      */
     /**
      * Sample code: Patch bare metal machine.
@@ -27,11 +27,12 @@ public final class BareMetalMachinesUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withMachineDetails("machinedetails")
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

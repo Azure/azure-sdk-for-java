@@ -23,14 +23,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_FILE_LOCATION;
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
@@ -46,6 +49,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     private final HttpClient client;
     private final URL proxyUrl;
     private String xRecordingId;
+    private String xRecordingFileLocation;
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
@@ -91,6 +95,9 @@ public class TestProxyPlaybackClient implements HttpClient {
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue(X_RECORDING_ID);
+            xRecordingFileLocation
+                = new String(Base64.getUrlDecoder().decode(
+                    response.getHeaders().get(X_RECORDING_FILE_LOCATION).getValue()), StandardCharsets.UTF_8);
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
@@ -213,5 +220,13 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     private boolean isPlayingBack() {
         return xRecordingId != null;
+    }
+
+    /**
+     * Get the recording file location in assets repo.
+     * @return the assets repo location of the recording file.
+     */
+    public String getRecordingFileLocation() {
+        return xRecordingFileLocation;
     }
 }

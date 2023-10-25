@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 
 /** Samples for ApiOperationPolicy GetEntityTag. */
 public final class ApiOperationPolicyGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadApiOperationPolicy.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadApiOperationPolicy.json
      */
     /**
      * Sample code: ApiManagementHeadApiOperationPolicy.
@@ -27,6 +26,6 @@ public final class ApiOperationPolicyGetEntityTagSamples {
                 "5600b539c53f5b0062040001",
                 "5600b53ac53f5b0062080006",
                 PolicyIdName.POLICY,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

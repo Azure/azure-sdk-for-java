@@ -48,6 +48,7 @@ import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironment
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentsStoragesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.NamespacesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.OperationsImpl;
+import com.azure.resourcemanager.appcontainers.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.appcontainers.models.AvailableWorkloadProfiles;
 import com.azure.resourcemanager.appcontainers.models.BillingMeters;
 import com.azure.resourcemanager.appcontainers.models.Certificates;
@@ -71,6 +72,7 @@ import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentsDiagnos
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentsStorages;
 import com.azure.resourcemanager.appcontainers.models.Namespaces;
 import com.azure.resourcemanager.appcontainers.models.Operations;
+import com.azure.resourcemanager.appcontainers.models.ResourceProviders;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -96,10 +98,6 @@ public final class ContainerAppsApiManager {
 
     private ContainerApps containerApps;
 
-    private Jobs jobs;
-
-    private JobsExecutions jobsExecutions;
-
     private ContainerAppsRevisions containerAppsRevisions;
 
     private ContainerAppsRevisionReplicas containerAppsRevisionReplicas;
@@ -111,6 +109,12 @@ public final class ContainerAppsApiManager {
     private ManagedEnvironmentsDiagnostics managedEnvironmentsDiagnostics;
 
     private Operations operations;
+
+    private Jobs jobs;
+
+    private JobsExecutions jobsExecutions;
+
+    private ResourceProviders resourceProviders;
 
     private ManagedEnvironments managedEnvironments;
 
@@ -291,7 +295,7 @@ public final class ContainerAppsApiManager {
                 .append("-")
                 .append("com.azure.resourcemanager.appcontainers")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0-beta.6");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -451,30 +455,6 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of Jobs. It manages Job.
-     *
-     * @return Resource collection API of Jobs.
-     */
-    public Jobs jobs() {
-        if (this.jobs == null) {
-            this.jobs = new JobsImpl(clientObject.getJobs(), this);
-        }
-        return jobs;
-    }
-
-    /**
-     * Gets the resource collection API of JobsExecutions.
-     *
-     * @return Resource collection API of JobsExecutions.
-     */
-    public JobsExecutions jobsExecutions() {
-        if (this.jobsExecutions == null) {
-            this.jobsExecutions = new JobsExecutionsImpl(clientObject.getJobsExecutions(), this);
-        }
-        return jobsExecutions;
-    }
-
-    /**
      * Gets the resource collection API of ContainerAppsRevisions.
      *
      * @return Resource collection API of ContainerAppsRevisions.
@@ -549,6 +529,42 @@ public final class ContainerAppsApiManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /**
+     * Gets the resource collection API of Jobs. It manages Job.
+     *
+     * @return Resource collection API of Jobs.
+     */
+    public Jobs jobs() {
+        if (this.jobs == null) {
+            this.jobs = new JobsImpl(clientObject.getJobs(), this);
+        }
+        return jobs;
+    }
+
+    /**
+     * Gets the resource collection API of JobsExecutions.
+     *
+     * @return Resource collection API of JobsExecutions.
+     */
+    public JobsExecutions jobsExecutions() {
+        if (this.jobsExecutions == null) {
+            this.jobsExecutions = new JobsExecutionsImpl(clientObject.getJobsExecutions(), this);
+        }
+        return jobsExecutions;
+    }
+
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
+    public ResourceProviders resourceProviders() {
+        if (this.resourceProviders == null) {
+            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
+        }
+        return resourceProviders;
     }
 
     /**
@@ -638,8 +654,10 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * @return Wrapped service client ContainerAppsApiClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client ContainerAppsApiClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client ContainerAppsApiClient.
      */
     public ContainerAppsApiClient serviceClient() {
         return this.clientObject;

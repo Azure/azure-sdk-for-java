@@ -10,6 +10,8 @@ import com.azure.communication.jobrouter.implementation.models.DistributionPolic
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
+
 /** Policy governing how jobs are distributed to workers. */
 @Fluent
 public final class DistributionPolicy {
@@ -32,7 +34,7 @@ public final class DistributionPolicy {
 
         setName(internal.getName());
         setMode(DistributionPolicyAdapter.convertDistributionModeToPublic(internal.getMode()));
-        setOfferExpiresAfterSeconds(internal.getOfferExpiresAfterSeconds());
+        setOfferExpiresAfter(Duration.ofSeconds(internal.getOfferExpiresAfterSeconds().longValue()));
     }
 
     static {
@@ -56,7 +58,7 @@ public final class DistributionPolicy {
      * will be expired.
      */
     @JsonProperty(value = "offerExpiresAfterSeconds")
-    private Double offerExpiresAfterSeconds;
+    private Duration offerExpiresAfter;
 
     /*
      * Abstract base class for defining a distribution mode
@@ -99,19 +101,19 @@ public final class DistributionPolicy {
      *
      * @return the offerExpiresAfterSeconds value.
      */
-    public Double getOfferExpiresAfterSeconds() {
-        return this.offerExpiresAfterSeconds;
+    public Duration getOfferExpiresAfter() {
+        return this.offerExpiresAfter;
     }
 
     /**
      * Set the offerExpiresAfterSeconds property: The number of seconds after which any offers created under this policy
      * will be expired.
      *
-     * @param offerExpiresAfterSeconds the offerExpiresAfterSeconds value to set.
+     * @param offerExpiresAfter the offerExpiresAfterSeconds value to set.
      * @return the DistributionPolicy object itself.
      */
-    public DistributionPolicy setOfferExpiresAfterSeconds(Double offerExpiresAfterSeconds) {
-        this.offerExpiresAfterSeconds = offerExpiresAfterSeconds;
+    public DistributionPolicy setOfferExpiresAfter(Duration offerExpiresAfter) {
+        this.offerExpiresAfter = offerExpiresAfter;
         return this;
     }
 

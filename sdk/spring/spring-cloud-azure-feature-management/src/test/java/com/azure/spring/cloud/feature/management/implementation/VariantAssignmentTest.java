@@ -119,7 +119,6 @@ public class VariantAssignmentTest {
         groupAllocations.put("0", groupAllocation);
         allocation.setGroups(groupAllocations);
 
-
         assertNull(variantAssignment.assignVariant(allocation));
 
         groups.put("1", "test-group-id2");

@@ -29,7 +29,7 @@ public class AzureMetadataServiceTest {
 
         AttachStatsbeat attachStatsbeat = new AttachStatsbeat(new CustomDimensions());
         AzureMetadataService azureMetadataService =
-            new AzureMetadataService(attachStatsbeat, new CustomDimensions());
+            new AzureMetadataService(attachStatsbeat, new CustomDimensions(), response -> {});
         azureMetadataService.updateMetadata(result);
 
         MetadataInstanceResponse response = attachStatsbeat.getMetadataInstanceResponse();
@@ -52,7 +52,7 @@ public class AzureMetadataServiceTest {
 
         AttachStatsbeat attachStatsbeat = new AttachStatsbeat(new CustomDimensions());
         AzureMetadataService azureMetadataService =
-            new AzureMetadataService(attachStatsbeat, new CustomDimensions());
+            new AzureMetadataService(attachStatsbeat, new CustomDimensions(), (response) -> {});
         azureMetadataService.updateMetadata(result);
 
         MetadataInstanceResponse response = attachStatsbeat.getMetadataInstanceResponse();

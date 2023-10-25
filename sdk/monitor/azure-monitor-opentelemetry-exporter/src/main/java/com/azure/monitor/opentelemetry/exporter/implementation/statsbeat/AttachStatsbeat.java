@@ -8,6 +8,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 
 import javax.annotation.Nullable;
 import java.util.Collections;
+import java.util.function.Function;
 
 class AttachStatsbeat extends BaseStatsbeat {
 
@@ -20,20 +21,23 @@ class AttachStatsbeat extends BaseStatsbeat {
     private static final String WEBSITE_HOME_STAMPNAME = "WEBSITE_HOME_STAMPNAME";
 
     private final CustomDimensions customDimensions;
+    private final Function<String, String> systemGetenvFn;
+
     private volatile String resourceProviderId;
     private volatile MetadataInstanceResponse metadataInstanceResponse;
 
     AttachStatsbeat(CustomDimensions customDimensions) {
         super(customDimensions);
         this.customDimensions = customDimensions;
-        resourceProviderId = initResourceProviderId(customDimensions.getResourceProvider(), null);
+        this.systemGetenvFn = System::getenv;
+        resourceProviderId = initResourceProviderId(customDimensions.getResourceProvider(), null, systemGetenvFn);
     }
 
     @Override
     protected void send(TelemetryItemExporter exporter) {
         // WEBSITE_HOSTNAME is lazily set in Linux Consumption Plan.
         if (resourceProviderId == null || resourceProviderId.isEmpty()) {
-            resourceProviderId = initResourceProviderId(customDimensions.getResourceProvider(), null);
+            resourceProviderId = initResourceProviderId(customDimensions.getResourceProvider(), null, systemGetenvFn);
         }
 
         StatsbeatTelemetryBuilder telemetryBuilder = createStatsbeatTelemetry(ATTACH_METRIC_NAME, 0);
@@ -54,18 +58,18 @@ class AttachStatsbeat extends BaseStatsbeat {
 
     void updateMetadataInstance(MetadataInstanceResponse response) {
         metadataInstanceResponse = response;
-        resourceProviderId = initResourceProviderId(ResourceProvider.RP_VM, response);
+        resourceProviderId = initResourceProviderId(ResourceProvider.RP_VM, response, systemGetenvFn);
     }
 
     // visible for testing
     static String initResourceProviderId(
-        ResourceProvider resourceProvider, @Nullable MetadataInstanceResponse response) {
+            ResourceProvider resourceProvider, @Nullable MetadataInstanceResponse response, Function<String, String> envVarFn) {
         switch (resourceProvider) {
             case RP_APPSVC:
                 // Linux App Services doesn't have WEBSITE_HOME_STAMPNAME yet. An ask has been submitted.
-                return System.getenv(WEBSITE_SITE_NAME) + "/" + System.getenv(WEBSITE_HOME_STAMPNAME);
+                return envVarFn.apply(WEBSITE_SITE_NAME) + "/" + envVarFn.apply(WEBSITE_HOME_STAMPNAME);
             case RP_FUNCTIONS:
-                return System.getenv(WEBSITE_HOSTNAME);
+                return envVarFn.apply(WEBSITE_HOSTNAME);
             case RP_VM:
                 if (response != null) {
                     return response.getVmId() + "/" + response.getSubscriptionId();

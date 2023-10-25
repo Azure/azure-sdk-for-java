@@ -98,9 +98,9 @@ public class ExceptionPolicyAdapter {
 
     public static Map<String, ExceptionRule> convertExceptionRulesToPublic(Map<String, ExceptionRuleInternal> rules) {
         return rules != null ? rules.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> new ExceptionRule()
-                .setTrigger(convertExceptionTriggerToPublic(entry.getValue().getTrigger()))
-                .setActions(entry.getValue().getActions().entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey,
+                entry -> new ExceptionRule(convertExceptionTriggerToPublic(entry.getValue().getTrigger()),
+                entry.getValue().getActions().entrySet().stream()
                     .collect(Collectors.toMap(Map.Entry::getKey,
                         actions -> convertExceptionActionToPublic(actions.getValue()))))))
             : new HashMap<>();
@@ -121,10 +121,10 @@ public class ExceptionPolicyAdapter {
     public static ExceptionTrigger convertExceptionTriggerToPublic(ExceptionTriggerInternal trigger) {
         if (trigger instanceof QueueLengthExceptionTriggerInternal) {
             QueueLengthExceptionTriggerInternal queueLength = (QueueLengthExceptionTriggerInternal) trigger;
-            return new QueueLengthExceptionTrigger().setThreshold(queueLength.getThreshold());
+            return new QueueLengthExceptionTrigger(queueLength.getThreshold());
         } else if (trigger instanceof WaitTimeExceptionTriggerInternal) {
             WaitTimeExceptionTriggerInternal waitTime = (WaitTimeExceptionTriggerInternal) trigger;
-            return new WaitTimeExceptionTrigger().setThresholdSeconds(waitTime.getThresholdSeconds());
+            return new WaitTimeExceptionTrigger(waitTime.getThresholdSeconds());
         }
 
         return null;

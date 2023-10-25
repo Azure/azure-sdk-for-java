@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,24 +15,22 @@ import java.util.List;
 public final class AnalyzeDocumentOptions {
     private List<String> pages;
     private String locale;
-
-    private List<String> queryFields;
     private List<DocumentAnalysisFeature> documentAnalysisFeatures;
 
     /**
-     * Get the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * Get the custom page numbers for multipage documents(PDF/TIFF). Input the number of the
      * pages you want to get the recognized result for.
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
      * range with a comma, ex - ["1-3", 4].</p>
      *
-     * @return the list of custom page numbers for a multi page document.
+     * @return the list of custom page numbers for a multipage document.
      */
     public List<String> getPages() {
         return pages;
     }
 
     /**
-     * Set the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * Set the custom page numbers for multipage documents(PDF/TIFF). Input the number of the
      * pages you want to get the recognized result for.
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
      * range with a comma, ex - ["1-3", 4].</p>
@@ -67,24 +66,6 @@ public final class AnalyzeDocumentOptions {
     }
 
     /**
-     * Get the list of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
-     * @return List of additional fields to extract from analysis.
-     */
-    public List<String> getQueryFields() {
-        return queryFields;
-    }
-
-    /**
-     * Set the list of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
-     * @param queryFields List of additional fields to extract from analysis.
-     * @return the updated {@code AnalyzeDocumentOptions} value.
-     */
-    public AnalyzeDocumentOptions setQueryFields(List<String> queryFields) {
-        this.queryFields = queryFields;
-        return this;
-    }
-
-    /**
      * Get the list of optional analysis features.
      * @return List of optional analysis features.
      */
@@ -99,6 +80,18 @@ public final class AnalyzeDocumentOptions {
      */
     public AnalyzeDocumentOptions setDocumentAnalysisFeatures(List<DocumentAnalysisFeature> documentAnalysisFeatures) {
         this.documentAnalysisFeatures = documentAnalysisFeatures;
+        return this;
+    }
+
+    /**
+     * Set optional analysis features.
+     * @param documentAnalysisFeatures List of optional analysis features.
+     * @return the updated {@code AnalyzeDocumentOptions} value.
+     */
+    public AnalyzeDocumentOptions setDocumentAnalysisFeatures(DocumentAnalysisFeature... documentAnalysisFeatures) {
+        if (documentAnalysisFeatures != null) {
+            this.documentAnalysisFeatures = Arrays.asList(documentAnalysisFeatures);
+        }
         return this;
     }
 }

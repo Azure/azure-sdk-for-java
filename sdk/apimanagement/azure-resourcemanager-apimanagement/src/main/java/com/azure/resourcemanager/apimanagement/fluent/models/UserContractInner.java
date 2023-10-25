@@ -20,6 +20,10 @@ public final class UserContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private UserContractProperties innerProperties;
 
+    /** Creates an instance of UserContractInner class. */
+    public UserContractInner() {
+    }
+
     /**
      * Get the innerProperties property: User entity contract properties.
      *

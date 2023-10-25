@@ -21,8 +21,7 @@ public final class PrivateEndpointConnectionWrapperProperties {
     private ArmIdWrapper privateEndpoint;
 
     /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
+     * A collection of information about the state of the connection between service consumer and provider.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState", required = true)
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
@@ -38,6 +37,10 @@ public final class PrivateEndpointConnectionWrapperProperties {
      */
     @JsonProperty(value = "groupIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> groupIds;
+
+    /** Creates an instance of PrivateEndpointConnectionWrapperProperties class. */
+    public PrivateEndpointConnectionWrapperProperties() {
+    }
 
     /**
      * Get the privateEndpoint property: The resource of private end point.

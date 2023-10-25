@@ -43,8 +43,7 @@ public class ExceptionPolicyExample {
          * Define an exception trigger.
          * This sets off exception when there are at least 10 jobs in a queue.
          */
-        QueueLengthExceptionTrigger exceptionTrigger = new QueueLengthExceptionTrigger()
-            .setThreshold(10);
+        QueueLengthExceptionTrigger exceptionTrigger = new QueueLengthExceptionTrigger(10);
 
         /**
          * Define an exception action.
@@ -55,9 +54,8 @@ public class ExceptionPolicyExample {
         /**
          * Defining exception rule combining the trigger and action.
          */
-        ExceptionRule exceptionRule = new ExceptionRule()
-            .setActions(Collections.singletonMap("CancelJobActionWhenQueueIsFull", exceptionAction))
-            .setTrigger(exceptionTrigger);
+        ExceptionRule exceptionRule = new ExceptionRule(exceptionTrigger,
+            Collections.singletonMap("CancelJobActionWhenQueueIsFull", exceptionAction));
 
         /**
          * Create the exception policy.
@@ -71,12 +69,10 @@ public class ExceptionPolicyExample {
         /**
          * Add additional exception rule to policy.
          */
-        WaitTimeExceptionTrigger waitTimeExceptionTrigger = new WaitTimeExceptionTrigger();
-        waitTimeExceptionTrigger.setThresholdSeconds(60);
+        WaitTimeExceptionTrigger waitTimeExceptionTrigger = new WaitTimeExceptionTrigger(60);
 
-        ExceptionRule waitTimeExceptionRule = new ExceptionRule();
-        waitTimeExceptionRule.setTrigger(waitTimeExceptionTrigger);
-        waitTimeExceptionRule.setActions(Collections.singletonMap("CancelJobActionWhenJobInQFor1Hr", exceptionAction));
+        ExceptionRule waitTimeExceptionRule = new ExceptionRule(waitTimeExceptionTrigger,
+            Collections.singletonMap("CancelJobActionWhenJobInQFor1Hr", exceptionAction));
 
         UpdateExceptionPolicyOptions updateExceptionPolicyOptions = new UpdateExceptionPolicyOptions(createExceptionPolicyOptions.getId())
             .setExceptionRules(Collections.singletonMap("CancelJobWhenInQueueFor1Hr", waitTimeExceptionRule));

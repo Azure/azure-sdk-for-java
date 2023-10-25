@@ -30,6 +30,7 @@ public class Transliterate {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
+		// BEGIN: getTextTranslationTransliterate
         String language = "zh-Hans";
         String fromScript = "Hans";
         String toScript = "Latn";
@@ -41,5 +42,6 @@ public class Transliterate {
         for (TransliteratedText transliteration : transliterations) {
             System.out.println("Input text was transliterated to '" + transliteration.getScript() + "' script. Transliterated text: '" + transliteration.getText() + "'.");
         }
+		// END: getTextTranslationTransliterate
     }
 }

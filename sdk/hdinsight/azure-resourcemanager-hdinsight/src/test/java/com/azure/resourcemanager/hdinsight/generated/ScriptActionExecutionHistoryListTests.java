@@ -6,20 +6,19 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.ScriptActionExecutionHistoryList;
-import org.junit.jupiter.api.Test;
 
 public final class ScriptActionExecutionHistoryListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ScriptActionExecutionHistoryList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"scriptExecutionId\":8636395279237294027,\"startTime\":\"xbjxyfwnylrcools\",\"endTime\":\"p\",\"status\":\"w\",\"operation\":\"bnujrywvtylbf\",\"executionSummary\":[],\"debugInformation\":\"rd\",\"name\":\"iwii\",\"uri\":\"htywubxcbihwq\",\"parameters\":\"fdntwjchrdgoih\",\"roles\":[\"mwctondzjluudfd\",\"wggytsbwtovvt\",\"seinqfiuf\"],\"applicationName\":\"knpirgnepttwq\"}],\"nextLink\":\"niffcdmqnroj\"}")
+                    "{\"value\":[{\"scriptExecutionId\":7238089424205548916,\"startTime\":\"nrkcxkj\",\"endTime\":\"nxm\",\"status\":\"uxswqrntvl\",\"operation\":\"jpsttexoq\",\"executionSummary\":[{\"status\":\"yyufmhruncuw\",\"instanceCount\":2077646980},{\"status\":\"kcdqzhlct\",\"instanceCount\":1266865634},{\"status\":\"qn\",\"instanceCount\":981773620},{\"status\":\"chrqb\",\"instanceCount\":1026325475}],\"debugInformation\":\"cgegydcwbo\",\"name\":\"jumvqqolihrraio\",\"uri\":\"aubrjtloq\",\"parameters\":\"uojrngiflr\",\"roles\":[\"asccbiui\",\"zdlyjdfqw\"],\"applicationName\":\"yoqufdvruz\"}],\"nextLink\":\"zojhpctfnmd\"}")
                 .toObject(ScriptActionExecutionHistoryList.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ScriptActionExecutionHistoryList model = new ScriptActionExecutionHistoryList();
         model = BinaryData.fromObject(model).toObject(ScriptActionExecutionHistoryList.class);
     }

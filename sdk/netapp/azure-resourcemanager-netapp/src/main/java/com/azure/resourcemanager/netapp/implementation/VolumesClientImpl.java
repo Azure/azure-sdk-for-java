@@ -34,12 +34,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
+import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.ListReplications;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
@@ -202,6 +204,23 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") BreakFileLocksRequest body,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/getGroupIdListForLdapUser")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> listGetGroupIdListForLdapUser(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName,
+            @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GetGroupIdListForLdapUserRequest body,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -2878,6 +2897,390 @@ public final class VolumesClientImpl implements VolumesClient {
         BreakFileLocksRequest body,
         Context context) {
         breakFileLocksAsync(resourceGroupName, accountName, poolName, volumeName, body, context).block();
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> listGetGroupIdListForLdapUserWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        GetGroupIdListForLdapUserRequest body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listGetGroupIdListForLdapUser(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            poolName,
+                            volumeName,
+                            this.client.getApiVersion(),
+                            body,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> listGetGroupIdListForLdapUserWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        GetGroupIdListForLdapUserRequest body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listGetGroupIdListForLdapUser(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                poolName,
+                volumeName,
+                this.client.getApiVersion(),
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of group Id list for Ldap user.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
+        beginListGetGroupIdListForLdapUserAsync(
+            String resourceGroupName,
+            String accountName,
+            String poolName,
+            String volumeName,
+            GetGroupIdListForLdapUserRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            listGetGroupIdListForLdapUserWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, body);
+        return this
+            .client
+            .<GetGroupIdListForLdapUserResponseInner, GetGroupIdListForLdapUserResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                GetGroupIdListForLdapUserResponseInner.class,
+                GetGroupIdListForLdapUserResponseInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of group Id list for Ldap user.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
+        beginListGetGroupIdListForLdapUserAsync(
+            String resourceGroupName,
+            String accountName,
+            String poolName,
+            String volumeName,
+            GetGroupIdListForLdapUserRequest body,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            listGetGroupIdListForLdapUserWithResponseAsync(
+                resourceGroupName, accountName, poolName, volumeName, body, context);
+        return this
+            .client
+            .<GetGroupIdListForLdapUserResponseInner, GetGroupIdListForLdapUserResponseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                GetGroupIdListForLdapUserResponseInner.class,
+                GetGroupIdListForLdapUserResponseInner.class,
+                context);
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of group Id list for Ldap user.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
+        beginListGetGroupIdListForLdapUser(
+            String resourceGroupName,
+            String accountName,
+            String poolName,
+            String volumeName,
+            GetGroupIdListForLdapUserRequest body) {
+        return this
+            .beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of group Id list for Ldap user.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
+        beginListGetGroupIdListForLdapUser(
+            String resourceGroupName,
+            String accountName,
+            String poolName,
+            String volumeName,
+            GetGroupIdListForLdapUserRequest body,
+            Context context) {
+        return this
+            .beginListGetGroupIdListForLdapUserAsync(
+                resourceGroupName, accountName, poolName, volumeName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GetGroupIdListForLdapUserResponseInner> listGetGroupIdListForLdapUserAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        GetGroupIdListForLdapUserRequest body) {
+        return beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GetGroupIdListForLdapUserResponseInner> listGetGroupIdListForLdapUserAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        GetGroupIdListForLdapUserRequest body,
+        Context context) {
+        return beginListGetGroupIdListForLdapUserAsync(
+                resourceGroupName, accountName, poolName, volumeName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        GetGroupIdListForLdapUserRequest body) {
+        return listGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body).block();
+    }
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        GetGroupIdListForLdapUserRequest body,
+        Context context) {
+        return listGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
+            .block();
     }
 
     /**

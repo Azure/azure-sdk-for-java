@@ -24,6 +24,7 @@ import com.azure.resourcemanager.networkcloud.models.KubernetesClusterProvisioni
 import com.azure.resourcemanager.networkcloud.models.KubernetesClusterRestartNodeParameters;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
 import com.azure.resourcemanager.networkcloud.models.NetworkConfiguration;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -267,15 +268,16 @@ public final class KubernetesClusterImpl
         return this;
     }
 
-    public void restartNode(KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters) {
-        serviceManager
+    public OperationStatusResult restartNode(
+        KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters) {
+        return serviceManager
             .kubernetesClusters()
             .restartNode(resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters);
     }
 
-    public void restartNode(
+    public OperationStatusResult restartNode(
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters, Context context) {
-        serviceManager
+        return serviceManager
             .kubernetesClusters()
             .restartNode(resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, context);
     }

@@ -21,6 +21,16 @@ public final class AgentPoolUpgradeSettings {
     @JsonProperty(value = "maxSurge")
     private String maxSurge;
 
+    /*
+     * The drain timeout for a node
+     *
+     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
+     * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
+     * specified, the default is 30 minutes.
+     */
+    @JsonProperty(value = "drainTimeoutInMinutes")
+    private Integer drainTimeoutInMinutes;
+
     /** Creates an instance of AgentPoolUpgradeSettings class. */
     public AgentPoolUpgradeSettings() {
     }
@@ -52,6 +62,34 @@ public final class AgentPoolUpgradeSettings {
      */
     public AgentPoolUpgradeSettings withMaxSurge(String maxSurge) {
         this.maxSurge = maxSurge;
+        return this;
+    }
+
+    /**
+     * Get the drainTimeoutInMinutes property: The drain timeout for a node
+     *
+     * <p>The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
+     * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
+     * specified, the default is 30 minutes.
+     *
+     * @return the drainTimeoutInMinutes value.
+     */
+    public Integer drainTimeoutInMinutes() {
+        return this.drainTimeoutInMinutes;
+    }
+
+    /**
+     * Set the drainTimeoutInMinutes property: The drain timeout for a node
+     *
+     * <p>The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
+     * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
+     * specified, the default is 30 minutes.
+     *
+     * @param drainTimeoutInMinutes the drainTimeoutInMinutes value to set.
+     * @return the AgentPoolUpgradeSettings object itself.
+     */
+    public AgentPoolUpgradeSettings withDrainTimeoutInMinutes(Integer drainTimeoutInMinutes) {
+        this.drainTimeoutInMinutes = drainTimeoutInMinutes;
         return this;
     }
 

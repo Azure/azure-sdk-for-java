@@ -6,20 +6,19 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.EndpointDependency;
-import org.junit.jupiter.api.Test;
 
 public final class EndpointDependencyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EndpointDependency model =
             BinaryData
                 .fromString(
-                    "{\"domainName\":\"cqqudf\",\"description\":\"yxbaaabjyvayf\",\"endpointDetails\":[{\"port\":1578513386}]}")
+                    "{\"domainName\":\"frao\",\"description\":\"koowtl\",\"endpointDetails\":[{\"port\":1523878268},{\"port\":1953532777},{\"port\":1275486297},{\"port\":1506529335}]}")
                 .toObject(EndpointDependency.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EndpointDependency model = new EndpointDependency();
         model = BinaryData.fromObject(model).toObject(EndpointDependency.class);
     }

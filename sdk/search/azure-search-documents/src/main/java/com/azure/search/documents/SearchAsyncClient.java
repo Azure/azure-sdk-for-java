@@ -1076,7 +1076,7 @@ public final class SearchAsyncClient {
             .setSemanticErrorHandling(options.getSemanticErrorHandling())
             .setSemanticMaxWaitInMilliseconds(options.getSemanticMaxWaitInMilliseconds())
             .setDebug(options.getDebug())
-            .setVector(options.getVector());
+            .setVectors(options.getVectors());
     }
 
     static String createSearchRequestAnswers(SearchOptions searchOptions) {

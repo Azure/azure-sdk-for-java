@@ -60,9 +60,12 @@ stages:
 
           - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
+          - pwsh: |
+              Write-Host "##vso[task.setvariable variable=IsLatestNonLtsJdk;]true"
+
           - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
             parameters:
-              LatestJdkFeatureVersion: '19'
+              LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
 
           - task: Maven@3
             displayName: 'Run All Libraries Latest JDK'
@@ -71,7 +74,7 @@ stages:
               options: '$(DefaultOptions) -T 1C -Dgpg.skip'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '1.19'
+              jdkVersionOption: $(LatestNonLtsJavaVersion)
               jdkArchitectureOption: 'x64'
               publishJUnitResults: false
               goals: 'clean install'

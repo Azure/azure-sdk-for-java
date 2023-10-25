@@ -8,22 +8,34 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Objects;
 
 /** Contains the weight percentage and queue selectors to be applied if selected for weighted distributions. */
 @Fluent
 public final class QueueWeightedAllocation {
+    /**
+     * Creates an instance of QueueWeightedAllocation class.
+     *
+     * @param weight The percentage of this weight, expressed as a fraction of 1.
+     * @param queueSelectors A collection of queue selectors that will be applied if this allocation is selected.
+     */
+    public QueueWeightedAllocation(double weight, List<RouterQueueSelector> queueSelectors) {
+        this.weight = weight;
+        this.queueSelectors = Objects.requireNonNull(queueSelectors, "'queueSelectors' cannot be null.");
+    }
+
     /*
      * The percentage of this weight, expressed as a fraction of 1.
      */
     @JsonProperty(value = "weight", required = true)
-    private double weight;
+    private final double weight;
 
     /*
      * A collection of queue selectors that will be applied if this allocation
      * is selected.
      */
     @JsonProperty(value = "queueSelectors", required = true)
-    private List<RouterQueueSelector> queueSelectors;
+    private final List<RouterQueueSelector> queueSelectors;
 
     /**
      * Get the weight property: The percentage of this weight, expressed as a fraction of 1.
@@ -35,17 +47,6 @@ public final class QueueWeightedAllocation {
     }
 
     /**
-     * Set the weight property: The percentage of this weight, expressed as a fraction of 1.
-     *
-     * @param weight the weight value to set.
-     * @return the QueueWeightedAllocation object itself.
-     */
-    public QueueWeightedAllocation setWeight(double weight) {
-        this.weight = weight;
-        return this;
-    }
-
-    /**
      * Get the queueSelectors property: A collection of queue selectors that will be applied if this allocation is
      * selected.
      *
@@ -53,17 +54,5 @@ public final class QueueWeightedAllocation {
      */
     public List<RouterQueueSelector> getQueueSelectors() {
         return this.queueSelectors;
-    }
-
-    /**
-     * Set the queueSelectors property: A collection of queue selectors that will be applied if this allocation is
-     * selected.
-     *
-     * @param queueSelectors the queueSelectors value to set.
-     * @return the QueueWeightedAllocation object itself.
-     */
-    public QueueWeightedAllocation setQueueSelectors(List<RouterQueueSelector> queueSelectors) {
-        this.queueSelectors = queueSelectors;
-        return this;
     }
 }

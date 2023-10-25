@@ -4,15 +4,12 @@
 
 package com.azure.resourcemanager.elasticsan.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
 import com.azure.resourcemanager.elasticsan.models.IscsiTargetInfo;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 import com.azure.resourcemanager.elasticsan.models.VolumeUpdate;
-import java.util.Collections;
-import java.util.Map;
 
 public final class VolumeImpl implements Volume, Volume.Definition, Volume.Update {
     private VolumeInner innerObject;
@@ -31,19 +28,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public String volumeId() {
         return this.innerModel().volumeId();
     }
@@ -52,7 +36,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().creationData();
     }
 
-    public Long sizeGiB() {
+    public long sizeGiB() {
         return this.innerModel().sizeGiB();
     }
 
@@ -166,14 +150,9 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateParameters.withTags(tags);
-            return this;
-        }
+    public VolumeImpl withSizeGiB(long sizeGiB) {
+        this.innerModel().withSizeGiB(sizeGiB);
+        return this;
     }
 
     public VolumeImpl withCreationData(SourceCreationData creationData) {
@@ -182,16 +161,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withSizeGiB(Long sizeGiB) {
-        if (isInCreateMode()) {
-            this.innerModel().withSizeGiB(sizeGiB);
-            return this;
-        } else {
-            this.updateParameters.withSizeGiB(sizeGiB);
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        this.updateParameters.withSizeGiB(sizeGiB);
+        return this;
     }
 }

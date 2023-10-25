@@ -4,7 +4,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageKind;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,12 +12,6 @@ import java.util.List;
 /** Content and layout elements extracted from a page from the input. */
 @Immutable
 public final class DocumentPage {
-    /*
-     * Kind of document page.
-     */
-    @JsonProperty(value = "kind", required = true)
-    private DocumentPageKind kind;
-
     /*
      * 1-based page number in the input document.
      */
@@ -75,12 +68,6 @@ public final class DocumentPage {
     private List<DocumentLine> lines;
 
     /*
-     * Extracted annotations from the page.
-     */
-    @JsonProperty(value = "annotations")
-    private List<DocumentAnnotation> annotations;
-
-    /*
      * Extracted barcodes from the page.
      */
     @JsonProperty(value = "barcodes")
@@ -92,36 +79,18 @@ public final class DocumentPage {
     @JsonProperty(value = "formulas")
     private List<DocumentFormula> formulas;
 
-    /*
-     * Extracted images from the page.
-     */
-    @JsonProperty(value = "images")
-    private List<DocumentImage> images;
-
     /**
      * Creates an instance of DocumentPage class.
      *
-     * @param kind the kind value to set.
      * @param pageNumber the pageNumber value to set.
      * @param spans the spans value to set.
      */
     @JsonCreator
     private DocumentPage(
-            @JsonProperty(value = "kind", required = true) DocumentPageKind kind,
             @JsonProperty(value = "pageNumber", required = true) int pageNumber,
             @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
-        this.kind = kind;
         this.pageNumber = pageNumber;
         this.spans = spans;
-    }
-
-    /**
-     * Get the kind property: Kind of document page.
-     *
-     * @return the kind value.
-     */
-    public DocumentPageKind getKind() {
-        return this.kind;
     }
 
     /**
@@ -208,15 +177,6 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the annotations property: Extracted annotations from the page.
-     *
-     * @return the annotations value.
-     */
-    public List<DocumentAnnotation> getAnnotations() {
-        return this.annotations;
-    }
-
-    /**
      * Get the barcodes property: Extracted barcodes from the page.
      *
      * @return the barcodes value.
@@ -232,14 +192,5 @@ public final class DocumentPage {
      */
     public List<DocumentFormula> getFormulas() {
         return this.formulas;
-    }
-
-    /**
-     * Get the images property: Extracted images from the page.
-     *
-     * @return the images value.
-     */
-    public List<DocumentImage> getImages() {
-        return this.images;
     }
 }

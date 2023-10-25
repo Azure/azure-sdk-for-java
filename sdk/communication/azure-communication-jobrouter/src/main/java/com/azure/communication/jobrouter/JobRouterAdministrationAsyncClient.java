@@ -58,11 +58,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p><strong>Instantiating an asynchronous JobRouter Administration Client</strong></p>
  * <!-- src_embed com.azure.communication.jobrouter.jobrouteradministrationasyncclient.instantiation -->
  * <pre>
- * &#47;&#47; Initialize the router administration client builder
+ * &#47;&#47; Initialize the jobrouter administration client builder
  * final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
  * &#47;&#47; Build the jobrouter administration client
- * JobRouterAdministrationAsyncClient jobRouterAdministrationClient = builder.buildAsyncClient&#40;&#41;;
+ * JobRouterAdministrationAsyncClient jobrouterAdministrationClient = builder.buildAsyncClient&#40;&#41;;
  *
  * </pre>
  * <!-- end com.azure.communication.jobrouter.jobrouteradministrationasyncclient.instantiation -->
@@ -129,6 +129,7 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Updates a classification policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateClassificationPolicyOptions Request options to update classification policy.
      * @return a container for the rules that govern how jobs are classified.
@@ -156,6 +157,7 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Updates a classification policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateClassificationPolicyOptions Request options to update classification policy.
      * @return a container for the rules that govern how jobs are classified.
@@ -390,6 +392,7 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Updates a distribution policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateDistributionPolicyOptions Request options to update distribution policy.
      * @return policy governing how jobs are distributed to workers.
@@ -417,6 +420,7 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Updates a distribution policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateDistributionPolicyOptions Request options to update distribution policy.
      * @return policy governing how jobs are distributed to workers.
@@ -651,6 +655,7 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Updates an exception policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateExceptionPolicyOptions Options to update ExceptionPolicy.
      * @return a policy that defines actions to execute when exception are triggered.
@@ -678,6 +683,7 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Updates an exception policy.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateExceptionPolicyOptions Options to update ExceptionPolicy.
      * @return a policy that defines actions to execute when exception are triggered.
@@ -911,6 +917,7 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Update a queue.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateQueueOptions Container for inputs to update a queue.
      * @return a queue that can contain jobs to be routed.
@@ -938,6 +945,7 @@ public final class JobRouterAdministrationAsyncClient {
 
     /**
      * Update a queue.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateQueueOptions Container for inputs to update a queue.
      * @return a queue that can contain jobs to be routed.

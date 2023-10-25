@@ -7,14 +7,46 @@ package com.azure.communication.jobrouter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 /** The JobMatchingMode model. */
 @Fluent
 public final class RouterJobMatchingMode {
+    /**
+     * Creates an instance of RouterJobMatchingMode class using QueueAndMatchMode.
+     *
+     * @param queueAndMatchMode The QueueAndMatchMode.
+     */
+    public RouterJobMatchingMode(QueueAndMatchMode queueAndMatchMode) {
+        this.modeType = RouterJobMatchModeType.QUEUE_AND_MATCH_MODE;
+        this.queueAndMatchMode = Objects.requireNonNull(queueAndMatchMode, "'queueAndMatchMode' cannot be null.");
+    }
+
+    /**
+     * Creates an instance of RouterJobMatchingMode class using ScheduleAndSuspendMode.
+     *
+     * @param scheduleAndSuspendMode The ScheduleAndSuspendMode.
+     */
+    public RouterJobMatchingMode(ScheduleAndSuspendMode scheduleAndSuspendMode) {
+        this.modeType = RouterJobMatchModeType.SCHEDULE_AND_SUSPEND_MODE;
+        this.scheduleAndSuspendMode = Objects.requireNonNull(scheduleAndSuspendMode, "'scheduleAndSuspendMode' cannot be null.");
+    }
+
+    /**
+     * Creates an instance of RouterJobMatchingMode class using SuspendMode.
+     *
+     * @param suspendMode The SuspendMode.
+     */
+    public RouterJobMatchingMode(SuspendMode suspendMode) {
+        this.modeType = RouterJobMatchModeType.SUSPEND_MODE;
+        this.suspendMode = Objects.requireNonNull(suspendMode, "'suspendMode' cannot be null.");
+    }
+
     /*
      * The modeType property.
      */
     @JsonProperty(value = "modeType")
-    private RouterJobMatchModeType modeType;
+    private final RouterJobMatchModeType modeType;
 
     /*
      * The queueAndMatchMode property.
@@ -44,34 +76,12 @@ public final class RouterJobMatchingMode {
     }
 
     /**
-     * Set the modeType property: The modeType property.
-     *
-     * @param modeType the modeType value to set.
-     * @return the JobMatchingMode object itself.
-     */
-    public RouterJobMatchingMode setModeType(RouterJobMatchModeType modeType) {
-        this.modeType = modeType;
-        return this;
-    }
-
-    /**
      * Get the queueAndMatchMode property: QueueAndMatchMode.
      *
      * @return the queueAndMatchMode value.
      */
     public QueueAndMatchMode getQueueAndMatchMode() {
         return this.queueAndMatchMode;
-    }
-
-    /**
-     * Set the queueAndMatchMode property: Any object.
-     *
-     * @param queueAndMatchMode the queueAndMatchMode value to set.
-     * @return the JobMatchingMode object itself.
-     */
-    public RouterJobMatchingMode setQueueAndMatchMode(QueueAndMatchMode queueAndMatchMode) {
-        this.queueAndMatchMode = queueAndMatchMode;
-        return this;
     }
 
     /**
@@ -84,33 +94,11 @@ public final class RouterJobMatchingMode {
     }
 
     /**
-     * Set the scheduleAndSuspendMode property: The scheduleAndSuspendMode property.
-     *
-     * @param scheduleAndSuspendMode the scheduleAndSuspendMode value to set.
-     * @return the JobMatchingMode object itself.
-     */
-    public RouterJobMatchingMode setScheduleAndSuspendMode(ScheduleAndSuspendMode scheduleAndSuspendMode) {
-        this.scheduleAndSuspendMode = scheduleAndSuspendMode;
-        return this;
-    }
-
-    /**
      * Get the suspendMode property: SuspendMode.
      *
      * @return the suspendMode value.
      */
     public SuspendMode getSuspendMode() {
         return this.suspendMode;
-    }
-
-    /**
-     * Set the suspendMode property: SuspendMode.
-     *
-     * @param suspendMode the suspendMode value to set.
-     * @return the JobMatchingMode object itself.
-     */
-    public RouterJobMatchingMode setSuspendMode(SuspendMode suspendMode) {
-        this.suspendMode = suspendMode;
-        return this;
     }
 }

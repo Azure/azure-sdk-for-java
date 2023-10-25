@@ -30,6 +30,10 @@ public final class TagContractImpl implements TagContract, TagContract.Definitio
         return this.innerModel().displayName();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public TagContractInner innerModel() {
         return this.innerObject;
     }

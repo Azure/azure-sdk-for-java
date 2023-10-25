@@ -17,7 +17,7 @@ public final class WorkflowRunCancelTests extends PurviewWorkflowClientTestBase 
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.cancelWorkflowRunWithResponse(
-                        "41b1feae-1f90-4b35-835f-037f39d8ef67", runCancelReply, requestOptions);
+                        "e71d6cb7-57ba-4212-94e3-26f732f87b3d", runCancelReply, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

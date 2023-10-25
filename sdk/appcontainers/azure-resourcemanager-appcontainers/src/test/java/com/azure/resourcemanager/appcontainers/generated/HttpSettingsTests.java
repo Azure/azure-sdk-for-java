@@ -17,13 +17,13 @@ public final class HttpSettingsTests {
         HttpSettings model =
             BinaryData
                 .fromString(
-                    "{\"requireHttps\":false,\"routes\":{\"apiPrefix\":\"yulpkudjkr\"},\"forwardProxy\":{\"convention\":\"Custom\",\"customHostHeaderName\":\"hfepgzgqex\",\"customProtoHeaderName\":\"ocxscpaierhhbcs\"}}")
+                    "{\"requireHttps\":false,\"routes\":{\"apiPrefix\":\"onlebxetqgtzxdpn\"},\"forwardProxy\":{\"convention\":\"NoProxy\",\"customHostHeaderName\":\"xrjfeallnwsub\",\"customProtoHeaderName\":\"njampm\"}}")
                 .toObject(HttpSettings.class);
         Assertions.assertEquals(false, model.requireHttps());
-        Assertions.assertEquals("yulpkudjkr", model.routes().apiPrefix());
-        Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.forwardProxy().convention());
-        Assertions.assertEquals("hfepgzgqex", model.forwardProxy().customHostHeaderName());
-        Assertions.assertEquals("ocxscpaierhhbcs", model.forwardProxy().customProtoHeaderName());
+        Assertions.assertEquals("onlebxetqgtzxdpn", model.routes().apiPrefix());
+        Assertions.assertEquals(ForwardProxyConvention.NO_PROXY, model.forwardProxy().convention());
+        Assertions.assertEquals("xrjfeallnwsub", model.forwardProxy().customHostHeaderName());
+        Assertions.assertEquals("njampm", model.forwardProxy().customProtoHeaderName());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,17 +31,17 @@ public final class HttpSettingsTests {
         HttpSettings model =
             new HttpSettings()
                 .withRequireHttps(false)
-                .withRoutes(new HttpSettingsRoutes().withApiPrefix("yulpkudjkr"))
+                .withRoutes(new HttpSettingsRoutes().withApiPrefix("onlebxetqgtzxdpn"))
                 .withForwardProxy(
                     new ForwardProxy()
-                        .withConvention(ForwardProxyConvention.CUSTOM)
-                        .withCustomHostHeaderName("hfepgzgqex")
-                        .withCustomProtoHeaderName("ocxscpaierhhbcs"));
+                        .withConvention(ForwardProxyConvention.NO_PROXY)
+                        .withCustomHostHeaderName("xrjfeallnwsub")
+                        .withCustomProtoHeaderName("njampm"));
         model = BinaryData.fromObject(model).toObject(HttpSettings.class);
         Assertions.assertEquals(false, model.requireHttps());
-        Assertions.assertEquals("yulpkudjkr", model.routes().apiPrefix());
-        Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.forwardProxy().convention());
-        Assertions.assertEquals("hfepgzgqex", model.forwardProxy().customHostHeaderName());
-        Assertions.assertEquals("ocxscpaierhhbcs", model.forwardProxy().customProtoHeaderName());
+        Assertions.assertEquals("onlebxetqgtzxdpn", model.routes().apiPrefix());
+        Assertions.assertEquals(ForwardProxyConvention.NO_PROXY, model.forwardProxy().convention());
+        Assertions.assertEquals("xrjfeallnwsub", model.forwardProxy().customHostHeaderName());
+        Assertions.assertEquals("njampm", model.forwardProxy().customProtoHeaderName());
     }
 }

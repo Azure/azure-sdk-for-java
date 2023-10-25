@@ -238,7 +238,7 @@ public interface Volume {
 
     /**
      * Gets the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
-     * directory which provides access to each of the volume's snapshots (default to true).
+     * directory which provides access to each of the volume's snapshots (defaults to true).
      *
      * @return the snapshotDirectoryVisible value.
      */
@@ -301,6 +301,14 @@ public interface Volume {
      * @return the throughputMibps value.
      */
     Float throughputMibps();
+
+    /**
+     * Gets the actualThroughputMibps property: Actual throughput in MiB/s for auto qosType volumes calculated based on
+     * size and serviceLevel.
+     *
+     * @return the actualThroughputMibps value.
+     */
+    Float actualThroughputMibps();
 
     /**
      * Gets the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
@@ -499,6 +507,15 @@ public interface Volume {
     Boolean isLargeVolume();
 
     /**
+     * Gets the originatingResourceId property: Originating Resource Id
+     *
+     * <p>Id of the snapshot or backup that the volume is restored from.
+     *
+     * @return the originatingResourceId value.
+     */
+    String originatingResourceId();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -536,11 +553,13 @@ public interface Volume {
             DefinitionStages.WithSubnetId,
             DefinitionStages.WithCreate {
     }
+
     /** The Volume definition stages. */
     interface DefinitionStages {
         /** The first stage of the Volume definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Volume definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -559,6 +578,7 @@ public interface Volume {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Volume definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -571,6 +591,7 @@ public interface Volume {
              */
             WithCreationToken withExistingCapacityPool(String resourceGroupName, String accountName, String poolName);
         }
+
         /** The stage of the Volume definition allowing to specify creationToken. */
         interface WithCreationToken {
             /**
@@ -584,6 +605,7 @@ public interface Volume {
              */
             WithUsageThreshold withCreationToken(String creationToken);
         }
+
         /** The stage of the Volume definition allowing to specify usageThreshold. */
         interface WithUsageThreshold {
             /**
@@ -599,6 +621,7 @@ public interface Volume {
              */
             WithSubnetId withUsageThreshold(long usageThreshold);
         }
+
         /** The stage of the Volume definition allowing to specify subnetId. */
         interface WithSubnetId {
             /**
@@ -611,6 +634,7 @@ public interface Volume {
              */
             WithCreate withSubnetId(String subnetId);
         }
+
         /**
          * The stage of the Volume definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -667,6 +691,7 @@ public interface Volume {
              */
             Volume create(Context context);
         }
+
         /** The stage of the Volume definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -677,6 +702,7 @@ public interface Volume {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Volume definition allowing to specify zones. */
         interface WithZones {
             /**
@@ -687,6 +713,7 @@ public interface Volume {
              */
             WithCreate withZones(List<String> zones);
         }
+
         /** The stage of the Volume definition allowing to specify serviceLevel. */
         interface WithServiceLevel {
             /**
@@ -700,6 +727,7 @@ public interface Volume {
              */
             WithCreate withServiceLevel(ServiceLevel serviceLevel);
         }
+
         /** The stage of the Volume definition allowing to specify exportPolicy. */
         interface WithExportPolicy {
             /**
@@ -713,6 +741,7 @@ public interface Volume {
              */
             WithCreate withExportPolicy(VolumePropertiesExportPolicy exportPolicy);
         }
+
         /** The stage of the Volume definition allowing to specify protocolTypes. */
         interface WithProtocolTypes {
             /**
@@ -726,6 +755,7 @@ public interface Volume {
              */
             WithCreate withProtocolTypes(List<String> protocolTypes);
         }
+
         /** The stage of the Volume definition allowing to specify snapshotId. */
         interface WithSnapshotId {
             /**
@@ -739,6 +769,7 @@ public interface Volume {
              */
             WithCreate withSnapshotId(String snapshotId);
         }
+
         /** The stage of the Volume definition allowing to specify deleteBaseSnapshot. */
         interface WithDeleteBaseSnapshot {
             /**
@@ -751,6 +782,7 @@ public interface Volume {
              */
             WithCreate withDeleteBaseSnapshot(Boolean deleteBaseSnapshot);
         }
+
         /** The stage of the Volume definition allowing to specify backupId. */
         interface WithBackupId {
             /**
@@ -764,6 +796,7 @@ public interface Volume {
              */
             WithCreate withBackupId(String backupId);
         }
+
         /** The stage of the Volume definition allowing to specify networkFeatures. */
         interface WithNetworkFeatures {
             /**
@@ -777,6 +810,7 @@ public interface Volume {
              */
             WithCreate withNetworkFeatures(NetworkFeatures networkFeatures);
         }
+
         /** The stage of the Volume definition allowing to specify volumeType. */
         interface WithVolumeType {
             /**
@@ -789,6 +823,7 @@ public interface Volume {
              */
             WithCreate withVolumeType(String volumeType);
         }
+
         /** The stage of the Volume definition allowing to specify dataProtection. */
         interface WithDataProtection {
             /**
@@ -802,6 +837,7 @@ public interface Volume {
              */
             WithCreate withDataProtection(VolumePropertiesDataProtection dataProtection);
         }
+
         /** The stage of the Volume definition allowing to specify isRestoring. */
         interface WithIsRestoring {
             /**
@@ -812,18 +848,20 @@ public interface Volume {
              */
             WithCreate withIsRestoring(Boolean isRestoring);
         }
+
         /** The stage of the Volume definition allowing to specify snapshotDirectoryVisible. */
         interface WithSnapshotDirectoryVisible {
             /**
              * Specifies the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only
-             * snapshot directory which provides access to each of the volume's snapshots (default to true)..
+             * snapshot directory which provides access to each of the volume's snapshots (defaults to true)..
              *
              * @param snapshotDirectoryVisible If enabled (true) the volume will contain a read-only snapshot directory
-             *     which provides access to each of the volume's snapshots (default to true).
+             *     which provides access to each of the volume's snapshots (defaults to true).
              * @return the next definition stage.
              */
             WithCreate withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible);
         }
+
         /** The stage of the Volume definition allowing to specify kerberosEnabled. */
         interface WithKerberosEnabled {
             /**
@@ -836,6 +874,7 @@ public interface Volume {
              */
             WithCreate withKerberosEnabled(Boolean kerberosEnabled);
         }
+
         /** The stage of the Volume definition allowing to specify securityStyle. */
         interface WithSecurityStyle {
             /**
@@ -848,6 +887,7 @@ public interface Volume {
              */
             WithCreate withSecurityStyle(SecurityStyle securityStyle);
         }
+
         /** The stage of the Volume definition allowing to specify smbEncryption. */
         interface WithSmbEncryption {
             /**
@@ -860,6 +900,7 @@ public interface Volume {
              */
             WithCreate withSmbEncryption(Boolean smbEncryption);
         }
+
         /** The stage of the Volume definition allowing to specify smbAccessBasedEnumeration. */
         interface WithSmbAccessBasedEnumeration {
             /**
@@ -875,6 +916,7 @@ public interface Volume {
              */
             WithCreate withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration);
         }
+
         /** The stage of the Volume definition allowing to specify smbNonBrowsable. */
         interface WithSmbNonBrowsable {
             /**
@@ -888,6 +930,7 @@ public interface Volume {
              */
             WithCreate withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable);
         }
+
         /** The stage of the Volume definition allowing to specify smbContinuouslyAvailable. */
         interface WithSmbContinuouslyAvailable {
             /**
@@ -900,6 +943,7 @@ public interface Volume {
              */
             WithCreate withSmbContinuouslyAvailable(Boolean smbContinuouslyAvailable);
         }
+
         /** The stage of the Volume definition allowing to specify throughputMibps. */
         interface WithThroughputMibps {
             /**
@@ -912,6 +956,7 @@ public interface Volume {
              */
             WithCreate withThroughputMibps(Float throughputMibps);
         }
+
         /** The stage of the Volume definition allowing to specify encryptionKeySource. */
         interface WithEncryptionKeySource {
             /**
@@ -926,6 +971,7 @@ public interface Volume {
              */
             WithCreate withEncryptionKeySource(EncryptionKeySource encryptionKeySource);
         }
+
         /** The stage of the Volume definition allowing to specify keyVaultPrivateEndpointResourceId. */
         interface WithKeyVaultPrivateEndpointResourceId {
             /**
@@ -939,6 +985,7 @@ public interface Volume {
              */
             WithCreate withKeyVaultPrivateEndpointResourceId(String keyVaultPrivateEndpointResourceId);
         }
+
         /** The stage of the Volume definition allowing to specify ldapEnabled. */
         interface WithLdapEnabled {
             /**
@@ -949,6 +996,7 @@ public interface Volume {
              */
             WithCreate withLdapEnabled(Boolean ldapEnabled);
         }
+
         /** The stage of the Volume definition allowing to specify coolAccess. */
         interface WithCoolAccess {
             /**
@@ -959,6 +1007,7 @@ public interface Volume {
              */
             WithCreate withCoolAccess(Boolean coolAccess);
         }
+
         /** The stage of the Volume definition allowing to specify coolnessPeriod. */
         interface WithCoolnessPeriod {
             /**
@@ -971,6 +1020,7 @@ public interface Volume {
              */
             WithCreate withCoolnessPeriod(Integer coolnessPeriod);
         }
+
         /** The stage of the Volume definition allowing to specify unixPermissions. */
         interface WithUnixPermissions {
             /**
@@ -989,6 +1039,7 @@ public interface Volume {
              */
             WithCreate withUnixPermissions(String unixPermissions);
         }
+
         /** The stage of the Volume definition allowing to specify avsDataStore. */
         interface WithAvsDataStore {
             /**
@@ -1002,6 +1053,7 @@ public interface Volume {
              */
             WithCreate withAvsDataStore(AvsDataStore avsDataStore);
         }
+
         /** The stage of the Volume definition allowing to specify isDefaultQuotaEnabled. */
         interface WithIsDefaultQuotaEnabled {
             /**
@@ -1012,6 +1064,7 @@ public interface Volume {
              */
             WithCreate withIsDefaultQuotaEnabled(Boolean isDefaultQuotaEnabled);
         }
+
         /** The stage of the Volume definition allowing to specify defaultUserQuotaInKiBs. */
         interface WithDefaultUserQuotaInKiBs {
             /**
@@ -1024,6 +1077,7 @@ public interface Volume {
              */
             WithCreate withDefaultUserQuotaInKiBs(Long defaultUserQuotaInKiBs);
         }
+
         /** The stage of the Volume definition allowing to specify defaultGroupQuotaInKiBs. */
         interface WithDefaultGroupQuotaInKiBs {
             /**
@@ -1036,6 +1090,7 @@ public interface Volume {
              */
             WithCreate withDefaultGroupQuotaInKiBs(Long defaultGroupQuotaInKiBs);
         }
+
         /** The stage of the Volume definition allowing to specify capacityPoolResourceId. */
         interface WithCapacityPoolResourceId {
             /**
@@ -1047,6 +1102,7 @@ public interface Volume {
              */
             WithCreate withCapacityPoolResourceId(String capacityPoolResourceId);
         }
+
         /** The stage of the Volume definition allowing to specify proximityPlacementGroup. */
         interface WithProximityPlacementGroup {
             /**
@@ -1057,6 +1113,7 @@ public interface Volume {
              */
             WithCreate withProximityPlacementGroup(String proximityPlacementGroup);
         }
+
         /** The stage of the Volume definition allowing to specify volumeSpecName. */
         interface WithVolumeSpecName {
             /**
@@ -1069,6 +1126,7 @@ public interface Volume {
              */
             WithCreate withVolumeSpecName(String volumeSpecName);
         }
+
         /** The stage of the Volume definition allowing to specify placementRules. */
         interface WithPlacementRules {
             /**
@@ -1082,6 +1140,7 @@ public interface Volume {
              */
             WithCreate withPlacementRules(List<PlacementKeyValuePairs> placementRules);
         }
+
         /** The stage of the Volume definition allowing to specify enableSubvolumes. */
         interface WithEnableSubvolumes {
             /**
@@ -1093,6 +1152,7 @@ public interface Volume {
              */
             WithCreate withEnableSubvolumes(EnableSubvolumes enableSubvolumes);
         }
+
         /** The stage of the Volume definition allowing to specify isLargeVolume. */
         interface WithIsLargeVolume {
             /**
@@ -1107,6 +1167,7 @@ public interface Volume {
             WithCreate withIsLargeVolume(Boolean isLargeVolume);
         }
     }
+
     /**
      * Begins update for the Volume resource.
      *
@@ -1127,7 +1188,8 @@ public interface Volume {
             UpdateStages.WithDefaultGroupQuotaInKiBs,
             UpdateStages.WithUnixPermissions,
             UpdateStages.WithCoolAccess,
-            UpdateStages.WithCoolnessPeriod {
+            UpdateStages.WithCoolnessPeriod,
+            UpdateStages.WithSnapshotDirectoryVisible {
         /**
          * Executes the update request.
          *
@@ -1143,6 +1205,7 @@ public interface Volume {
          */
         Volume apply(Context context);
     }
+
     /** The Volume update stages. */
     interface UpdateStages {
         /** The stage of the Volume update allowing to specify tags. */
@@ -1155,6 +1218,7 @@ public interface Volume {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Volume update allowing to specify serviceLevel. */
         interface WithServiceLevel {
             /**
@@ -1168,6 +1232,7 @@ public interface Volume {
              */
             Update withServiceLevel(ServiceLevel serviceLevel);
         }
+
         /** The stage of the Volume update allowing to specify usageThreshold. */
         interface WithUsageThreshold {
             /**
@@ -1183,6 +1248,7 @@ public interface Volume {
              */
             Update withUsageThreshold(Long usageThreshold);
         }
+
         /** The stage of the Volume update allowing to specify exportPolicy. */
         interface WithExportPolicy {
             /**
@@ -1196,6 +1262,7 @@ public interface Volume {
              */
             Update withExportPolicy(VolumePatchPropertiesExportPolicy exportPolicy);
         }
+
         /** The stage of the Volume update allowing to specify throughputMibps. */
         interface WithThroughputMibps {
             /**
@@ -1208,6 +1275,7 @@ public interface Volume {
              */
             Update withThroughputMibps(Float throughputMibps);
         }
+
         /** The stage of the Volume update allowing to specify dataProtection. */
         interface WithDataProtection {
             /**
@@ -1221,6 +1289,7 @@ public interface Volume {
              */
             Update withDataProtection(VolumePatchPropertiesDataProtection dataProtection);
         }
+
         /** The stage of the Volume update allowing to specify isDefaultQuotaEnabled. */
         interface WithIsDefaultQuotaEnabled {
             /**
@@ -1231,6 +1300,7 @@ public interface Volume {
              */
             Update withIsDefaultQuotaEnabled(Boolean isDefaultQuotaEnabled);
         }
+
         /** The stage of the Volume update allowing to specify defaultUserQuotaInKiBs. */
         interface WithDefaultUserQuotaInKiBs {
             /**
@@ -1243,6 +1313,7 @@ public interface Volume {
              */
             Update withDefaultUserQuotaInKiBs(Long defaultUserQuotaInKiBs);
         }
+
         /** The stage of the Volume update allowing to specify defaultGroupQuotaInKiBs. */
         interface WithDefaultGroupQuotaInKiBs {
             /**
@@ -1255,6 +1326,7 @@ public interface Volume {
              */
             Update withDefaultGroupQuotaInKiBs(Long defaultGroupQuotaInKiBs);
         }
+
         /** The stage of the Volume update allowing to specify unixPermissions. */
         interface WithUnixPermissions {
             /**
@@ -1273,6 +1345,7 @@ public interface Volume {
              */
             Update withUnixPermissions(String unixPermissions);
         }
+
         /** The stage of the Volume update allowing to specify coolAccess. */
         interface WithCoolAccess {
             /**
@@ -1283,6 +1356,7 @@ public interface Volume {
              */
             Update withCoolAccess(Boolean coolAccess);
         }
+
         /** The stage of the Volume update allowing to specify coolnessPeriod. */
         interface WithCoolnessPeriod {
             /**
@@ -1295,7 +1369,21 @@ public interface Volume {
              */
             Update withCoolnessPeriod(Integer coolnessPeriod);
         }
+
+        /** The stage of the Volume update allowing to specify snapshotDirectoryVisible. */
+        interface WithSnapshotDirectoryVisible {
+            /**
+             * Specifies the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only
+             * snapshot directory which provides access to each of the volume's snapshots..
+             *
+             * @param snapshotDirectoryVisible If enabled (true) the volume will contain a read-only snapshot directory
+             *     which provides access to each of the volume's snapshots.
+             * @return the next definition stage.
+             */
+            Update withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -1380,6 +1468,34 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void breakFileLocks(BreakFileLocksRequest body, Context context);
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param body Returns group Id list for a specific LDAP user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user.
+     */
+    GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(GetGroupIdListForLdapUserRequest body);
+
+    /**
+     * Get Group Id List for LDAP User
+     *
+     * <p>Returns the list of group Ids for a specific LDAP User.
+     *
+     * @param body Returns group Id list for a specific LDAP user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user.
+     */
+    GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(
+        GetGroupIdListForLdapUserRequest body, Context context);
 
     /**
      * Break volume replication

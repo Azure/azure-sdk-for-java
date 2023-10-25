@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkResource;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupId\":\"fpubcpzgpxti\",\"requiredMembers\":[\"knidib\"],\"requiredZoneNames\":[\"xgpnr\",\"govfgpikqmhhaow\",\"rmzvupo\"]},\"id\":\"zdfuydzvkfvxcnqm\",\"name\":\"qpswokmvkhlggdhb\",\"type\":\"mzqkz\"}";
+            "{\"properties\":{\"groupId\":\"durelyujl\",\"requiredMembers\":[\"u\",\"pckyec\"],\"requiredZoneNames\":[\"igptajbrzmqxucyc\"]},\"id\":\"oclxiut\",\"name\":\"jc\",\"type\":\"z\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +62,9 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         PrivateLinkResource response =
             manager
                 .privateLinkResources()
-                .getWithResponse("vxlx", "aglqivbgkcvkh", "zvuqdflvon", Context.NONE)
+                .getWithResponse("inzcpdltkrlgj", "tbdrvcqgue", "zhomp", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("xgpnr", response.requiredZoneNames().get(0));
+        Assertions.assertEquals("igptajbrzmqxucyc", response.requiredZoneNames().get(0));
     }
 }

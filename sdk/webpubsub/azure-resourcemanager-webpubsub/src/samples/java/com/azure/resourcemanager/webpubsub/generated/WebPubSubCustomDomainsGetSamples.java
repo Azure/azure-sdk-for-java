@@ -7,7 +7,7 @@ package com.azure.resourcemanager.webpubsub.generated;
 /** Samples for WebPubSubCustomDomains Get. */
 public final class WebPubSubCustomDomainsGetSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomDomains_Get.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubCustomDomains_Get.json
      */
     /**
      * Sample code: WebPubSubCustomDomains_Get.

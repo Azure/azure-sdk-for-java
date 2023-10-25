@@ -9,37 +9,36 @@ import com.azure.resourcemanager.hdinsight.fluent.models.PrivateEndpointConnecti
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointConnectionProperties model =
             BinaryData
                 .fromString(
-                    "{\"privateEndpoint\":{\"id\":\"wburvjxxjnspydpt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Removed\",\"description\":\"nkoukn\",\"actionsRequired\":\"dwtiukbldngkp\"},\"linkIdentifier\":\"ipazyxoegukgjnpi\",\"provisioningState\":\"InProgress\"}")
+                    "{\"privateEndpoint\":{\"id\":\"l\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"lqlfm\",\"actionsRequired\":\"n\"},\"linkIdentifier\":\"glzpswiydm\",\"provisioningState\":\"InProgress\"}")
                 .toObject(PrivateEndpointConnectionProperties.class);
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.REMOVED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("nkoukn", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("dwtiukbldngkp", model.privateLinkServiceConnectionState().actionsRequired());
+                PrivateLinkServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("lqlfm", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("n", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnectionProperties model =
             new PrivateEndpointConnectionProperties()
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateLinkServiceConnectionStatus.REMOVED)
-                        .withDescription("nkoukn")
-                        .withActionsRequired("dwtiukbldngkp"));
+                        .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                        .withDescription("lqlfm")
+                        .withActionsRequired("n"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.REMOVED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("nkoukn", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("dwtiukbldngkp", model.privateLinkServiceConnectionState().actionsRequired());
+                PrivateLinkServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("lqlfm", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("n", model.privateLinkServiceConnectionState().actionsRequired());
     }
 }

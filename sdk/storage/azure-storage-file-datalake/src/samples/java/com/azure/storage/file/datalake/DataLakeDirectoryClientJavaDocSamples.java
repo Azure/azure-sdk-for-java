@@ -49,8 +49,9 @@ public class DataLakeDirectoryClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeDirectoryClient#delete()} and
-     * {@link DataLakeDirectoryClient#deleteWithResponse(boolean, DataLakeRequestConditions, Duration, Context)}
+     * Code snippets for {@link DataLakeDirectoryClient#delete()},
+     * {@link DataLakeDirectoryClient#deleteWithResponse(boolean, DataLakeRequestConditions, Duration, Context)} and
+     * {@link DataLakeDirectoryClient#deleteRecursively()}
      */
     public void deleteCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.delete
@@ -66,6 +67,11 @@ public class DataLakeDirectoryClientJavaDocSamples {
         client.deleteWithResponse(recursive, requestConditions, timeout, new Context(key1, value1));
         System.out.println("Delete request completed");
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteRecursively
+        client.deleteRecursively();
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteRecursively
     }
 
     /**

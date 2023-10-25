@@ -22,7 +22,7 @@ public final class ResourceDetails {
      */
     private int customDocumentModelLimit;
 
-    private QuotaDetails customNeuralDocumentModelBuilds;
+    private QuotaDetails customNeuralDocumentModelQuota;
 
     /**
      * Get the current count of built document analysis models
@@ -55,13 +55,13 @@ public final class ResourceDetails {
      *
      * @return the customNeuralDocumentModelBuilds value.
      */
-    public QuotaDetails getCustomNeuralDocumentModelBuilds() {
-        return customNeuralDocumentModelBuilds;
+    public QuotaDetails getNeuralDocumentModelQuota() {
+        return customNeuralDocumentModelQuota;
     }
 
-    private void setCustomNeuralDocumentModelBuilds(
-        QuotaDetails customNeuralDocumentModelBuilds) {
-        this.customNeuralDocumentModelBuilds = customNeuralDocumentModelBuilds;
+    private void setCustomNeuralDocumentModelQuota(
+        QuotaDetails customNeuralDocumentModelQuota) {
+        this.customNeuralDocumentModelQuota = customNeuralDocumentModelQuota;
     }
 
     static {
@@ -81,7 +81,7 @@ public final class ResourceDetails {
             @Override
             public void setCustomNeuralDocumentModelBuilds(
                 ResourceDetails resourceDetails, QuotaDetails quotaDetails) {
-                resourceDetails.setCustomNeuralDocumentModelBuilds(quotaDetails);
+                resourceDetails.setCustomNeuralDocumentModelQuota(quotaDetails);
             }
         });
     }

@@ -27,10 +27,10 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
@@ -174,8 +174,7 @@ public final class KeyVaultAccessControlClientBuilder implements
 
         if (buildEndpoint == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalStateException(
-                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
         return buildConfiguration;
     }

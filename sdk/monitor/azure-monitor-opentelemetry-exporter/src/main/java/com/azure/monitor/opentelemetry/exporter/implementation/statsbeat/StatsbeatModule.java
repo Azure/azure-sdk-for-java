@@ -11,10 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.FAIL_TO_SEND_STATSBEAT_ERROR;
@@ -39,14 +42,14 @@ public class StatsbeatModule {
 
     private final AtomicBoolean shutdown = new AtomicBoolean();
 
-    public StatsbeatModule() {
+    public StatsbeatModule(Consumer<MetadataInstanceResponse> vmMetadataServiceCallback) {
         customDimensions = new CustomDimensions();
         networkStatsbeat = new NetworkStatsbeat(customDimensions);
         attachStatsbeat = new AttachStatsbeat(customDimensions);
         featureStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.FEATURE);
         instrumentationStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.INSTRUMENTATION);
         nonessentialStatsbeat = new NonessentialStatsbeat(customDimensions);
-        azureMetadataService = new AzureMetadataService(attachStatsbeat, customDimensions);
+        azureMetadataService = new AzureMetadataService(attachStatsbeat, customDimensions, vmMetadataServiceCallback);
     }
 
     public void start(

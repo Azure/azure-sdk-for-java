@@ -13,7 +13,7 @@ public final class DeletionInfoTests {
         DeletionInfo model =
             BinaryData
                 .fromString(
-                    "{\"deletionTime\":\"podxunkb\",\"billingEndDate\":\"xmubyyntwlrbq\",\"scheduledPurgeTime\":\"oievseotgqrlltm\",\"deleteActivityID\":\"lauwzizxbmpgcjef\"}")
+                    "{\"deletionTime\":\"ok\",\"billingEndDate\":\"llxdyhgs\",\"scheduledPurgeTime\":\"cogjltdtbn\",\"deleteActivityID\":\"adoocrkvc\"}")
                 .toObject(DeletionInfo.class);
     }
 

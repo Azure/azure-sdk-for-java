@@ -128,6 +128,7 @@ public final class VariantAssignment {
 
         return null;
     }
+  
     /**
      * Returns a variant for the given name.
      * @param variants List of the Variant References which can be returned

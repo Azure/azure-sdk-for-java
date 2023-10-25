@@ -11,7 +11,7 @@ public final class DefaultErrorResponseErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultErrorResponseError model =
-            BinaryData.fromString("{\"innererror\":\"stxgc\"}").toObject(DefaultErrorResponseError.class);
+            BinaryData.fromString("{\"innererror\":\"lokeyy\"}").toObject(DefaultErrorResponseError.class);
     }
 
     @org.junit.jupiter.api.Test

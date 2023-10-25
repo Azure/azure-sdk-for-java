@@ -33,17 +33,15 @@ public class ApiContractProperties extends ApiEntityBaseContract {
     private String displayName;
 
     /*
-     * Absolute URL of the backend service implementing this API. Cannot be
-     * more than 2000 characters long.
+     * Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long.
      */
     @JsonProperty(value = "serviceUrl")
     private String serviceUrl;
 
     /*
-     * Relative URL uniquely identifying this API and all of its resource paths
-     * within the API Management service instance. It is appended to the API
-     * endpoint base URL specified during the service instance creation to form
-     * a public URL for this API.
+     * Relative URL uniquely identifying this API and all of its resource paths within the API Management service
+     * instance. It is appended to the API endpoint base URL specified during the service instance creation to form a
+     * public URL for this API.
      */
     @JsonProperty(value = "path", required = true)
     private String path;
@@ -59,6 +57,10 @@ public class ApiContractProperties extends ApiEntityBaseContract {
      */
     @JsonProperty(value = "apiVersionSet")
     private ApiVersionSetContractDetails apiVersionSet;
+
+    /** Creates an instance of ApiContractProperties class. */
+    public ApiContractProperties() {
+    }
 
     /**
      * Get the sourceApiId property: API identifier of the source API.

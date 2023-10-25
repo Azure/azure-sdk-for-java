@@ -30,7 +30,7 @@ public final class ScriptCmdletsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"clxyn\",\"timeout\":\"k\",\"parameters\":[]},\"id\":\"abuiy\",\"name\":\"ibuz\",\"type\":\"hdugneiknpg\"}";
+            "{\"properties\":{\"description\":\"iov\",\"timeout\":\"cgxuugqkctotiowl\",\"parameters\":[{\"type\":\"Bool\",\"name\":\"tjgwdtguk\",\"description\":\"nblwphqlkcc\",\"visibility\":\"Visible\",\"optional\":\"Optional\"}]},\"id\":\"qwahoi\",\"name\":\"lwgniiprglvawu\",\"type\":\"z\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class ScriptCmdletsGetWithResponseMockTests {
         ScriptCmdlet response =
             manager
                 .scriptCmdlets()
-                .getWithResponse("fotang", "fhnykzcugs", "vxwlmzqwmvtxnj", "xmcuqud", com.azure.core.util.Context.NONE)
+                .getWithResponse("emmucfxh", "kkflrmymyincqlhr", "s", "sl", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

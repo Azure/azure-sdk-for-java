@@ -56,6 +56,8 @@ public final class DeletedBackupInstancesUndeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.deletedBackupInstances().undelete("dorhcgyyp", "otwypundmb", "hu", com.azure.core.util.Context.NONE);
+        manager
+            .deletedBackupInstances()
+            .undelete("zszuwiwtglxx", "ljfp", "picrmnzhrgmqgjsx", com.azure.core.util.Context.NONE);
     }
 }

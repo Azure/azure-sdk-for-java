@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
@@ -19,8 +20,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-
-import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
 
 /**
  * The processor client for processing Service Bus messages. {@link ServiceBusProcessorClient} provides a push-based
@@ -216,7 +215,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
 
-        ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClient();
+        ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClientForProcessor();
         this.asyncClient.set(client);
         this.sessionReceiverBuilder = null;
         this.queueName = queueName;
@@ -251,10 +250,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         }
 
         if (asyncClient.get() == null) {
-            ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
-                ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
-                : this.receiverBuilder.buildAsyncClient();
-            asyncClient.set(newReceiverClient);
+            asyncClient.set(createNewReceiver());
         }
 
         receiveMessages();
@@ -347,10 +343,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public synchronized String getIdentifier() {
         if (asyncClient.get() == null) {
-            ServiceBusReceiverAsyncClient newReceiverClient = receiverBuilder == null
-                ? sessionReceiverBuilder.buildAsyncClientForProcessor()
-                : receiverBuilder.buildAsyncClient();
-            asyncClient.set(newReceiverClient);
+            asyncClient.set(createNewReceiver());
         }
 
         return asyncClient.get().getIdentifier();
@@ -381,7 +374,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                 @SuppressWarnings("try")
                 @Override
                 public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
-                    try (AutoCloseable scope = tracer.makeSpanCurrent(serviceBusMessageContext.getMessage().getContext())) {
+                    Context span = serviceBusMessageContext.getMessage().getContext();
+                    Exception exception = null;
+                    AutoCloseable scope = tracer.makeSpanCurrent(span);
+                    try {
                         if (serviceBusMessageContext.hasError()) {
                             handleError(serviceBusMessageContext.getThrowable());
                         } else {
@@ -391,22 +387,21 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                             try {
                                 processMessage.accept(serviceBusReceivedMessageContext);
                             } catch (Exception ex) {
-                                serviceBusMessageContext.getMessage().setContext(
-                                    serviceBusMessageContext.getMessage().getContext().addData(PROCESS_ERROR_KEY, ex));
                                 handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
 
                                 if (!processorOptions.isDisableAutoComplete()) {
                                     LOGGER.warning("Error when processing message. Abandoning message.", ex);
                                     abandonMessage(serviceBusMessageContext, receiverClient);
                                 }
+                                exception = ex;
                             }
                         }
                         if (isRunning.get()) {
                             LOGGER.verbose("Requesting 1 more message from upstream");
                             subscription.request(1);
                         }
-                    } catch (Exception e) {
-                        LOGGER.verbose("Error disposing scope", e);
+                    } finally {
+                        tracer.endSpan(exception, span, scope);
                     }
                 }
 
@@ -475,10 +470,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         receiverSubscriptions.clear();
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
         receiverClient.close();
-        ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
-            ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
-            : this.receiverBuilder.buildAsyncClient();
-        asyncClient.set(newReceiverClient);
+        asyncClient.set(createNewReceiver());
         receiveMessages();
+    }
+
+    private ServiceBusReceiverAsyncClient createNewReceiver() {
+        return this.receiverBuilder == null
+            ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
+            : this.receiverBuilder.buildAsyncClientForProcessor();
     }
 }

@@ -11,8 +11,12 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 
 import java.nio.file.FileSystems;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -83,14 +87,16 @@ public class ReadmeSamples {
         BlobDetails blobDetails = new BlobDetails()
             .setContainerName(containerName)
             .setBlobName(blobName);
+        BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders()
+            .setContentType("qir.v1");
         String inputDataUri = storageClient.sasUri(blobDetails).getSasUri();
 
         // Upload input data to blob
         BlobClient blobClient = new BlobClientBuilder()
             .endpoint(inputDataUri)
             .buildClient();
-        String problemFilePath = FileSystems.getDefault().getPath("src/samples/resources/problem.json").toString();
-        blobClient.uploadFromFile(problemFilePath);
+        String qirFilePath = FileSystems.getDefault().getPath("src/samples/java/com/azure/quantum/jobs/BellState.bc").toString();
+        blobClient.uploadFromFile(qirFilePath, null, blobHttpHeaders, null, null, null, null);
         // END: readme-sample-uploadInputData
     }
 
@@ -100,14 +106,19 @@ public class ReadmeSamples {
     public void createTheJob() {
         // BEGIN: readme-sample-createTheJob
         String jobId = String.format("job-%s", UUID.randomUUID());
+        Map<String, Object> inputParams = new HashMap<String, Object>();
+        inputParams.put("entryPoint", "ENTRYPOINT__BellState");
+        inputParams.put("arguments", new ArrayList<String>());
+        inputParams.put("targetCapability", "AdaptiveExecution");
         JobDetails createJobDetails = new JobDetails()
             .setContainerUri(containerUri)
             .setId(jobId)
-            .setInputDataFormat("microsoft.qio.v2")
-            .setOutputDataFormat("microsoft.qio-results.v2")
-            .setProviderId("microsoft")
-            .setTarget("microsoft.paralleltempering-parameterfree.cpu")
-            .setName("{jobName}");
+            .setInputDataFormat("qir.v1")
+            .setOutputDataFormat("microsoft.quantum-results.v1")
+            .setProviderId("quantinuum")
+            .setTarget("quantinuum.sim.h1-1e")
+            .setName("{jobName}")
+            .setInputParams(inputParams);
         JobDetails jobDetails = jobsClient.create(jobId, createJobDetails);
         // END: readme-sample-createTheJob
     }

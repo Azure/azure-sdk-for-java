@@ -14,20 +14,20 @@ public final class PoolPatchPropertiesTests {
     public void testDeserialize() throws Exception {
         PoolPatchProperties model =
             BinaryData
-                .fromString("{\"size\":8915857091335509651,\"qosType\":\"Manual\",\"coolAccess\":true}")
+                .fromString("{\"size\":301155517903615814,\"qosType\":\"Auto\",\"coolAccess\":true}")
                 .toObject(PoolPatchProperties.class);
-        Assertions.assertEquals(8915857091335509651L, model.size());
-        Assertions.assertEquals(QosType.MANUAL, model.qosType());
+        Assertions.assertEquals(301155517903615814L, model.size());
+        Assertions.assertEquals(QosType.AUTO, model.qosType());
         Assertions.assertEquals(true, model.coolAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PoolPatchProperties model =
-            new PoolPatchProperties().withSize(8915857091335509651L).withQosType(QosType.MANUAL).withCoolAccess(true);
+            new PoolPatchProperties().withSize(301155517903615814L).withQosType(QosType.AUTO).withCoolAccess(true);
         model = BinaryData.fromObject(model).toObject(PoolPatchProperties.class);
-        Assertions.assertEquals(8915857091335509651L, model.size());
-        Assertions.assertEquals(QosType.MANUAL, model.qosType());
+        Assertions.assertEquals(301155517903615814L, model.size());
+        Assertions.assertEquals(QosType.AUTO, model.qosType());
         Assertions.assertEquals(true, model.coolAccess());
     }
 }

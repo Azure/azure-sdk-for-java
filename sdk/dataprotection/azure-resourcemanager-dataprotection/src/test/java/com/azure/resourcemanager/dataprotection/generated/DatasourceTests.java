@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.dataprotection.models.BaseResourceProperties;
 import com.azure.resourcemanager.dataprotection.models.Datasource;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,35 +15,36 @@ public final class DatasourceTests {
         Datasource model =
             BinaryData
                 .fromString(
-                    "{\"datasourceType\":\"exim\",\"objectType\":\"yocf\",\"resourceID\":\"fksymddystki\",\"resourceLocation\":\"xhqyudxorrqnb\",\"resourceName\":\"czvyifq\",\"resourceType\":\"kdvjsll\",\"resourceUri\":\"vvdfwatkpnpul\"}")
+                    "{\"datasourceType\":\"hdwbavxbniwdjs\",\"objectType\":\"tsdbpgn\",\"resourceID\":\"ytxhp\",\"resourceLocation\":\"bzpfzab\",\"resourceName\":\"cuh\",\"resourceType\":\"tcty\",\"resourceUri\":\"klbb\",\"resourceProperties\":{\"objectType\":\"BaseResourceProperties\"}}")
                 .toObject(Datasource.class);
-        Assertions.assertEquals("exim", model.datasourceType());
-        Assertions.assertEquals("yocf", model.objectType());
-        Assertions.assertEquals("fksymddystki", model.resourceId());
-        Assertions.assertEquals("xhqyudxorrqnb", model.resourceLocation());
-        Assertions.assertEquals("czvyifq", model.resourceName());
-        Assertions.assertEquals("kdvjsll", model.resourceType());
-        Assertions.assertEquals("vvdfwatkpnpul", model.resourceUri());
+        Assertions.assertEquals("hdwbavxbniwdjs", model.datasourceType());
+        Assertions.assertEquals("tsdbpgn", model.objectType());
+        Assertions.assertEquals("ytxhp", model.resourceId());
+        Assertions.assertEquals("bzpfzab", model.resourceLocation());
+        Assertions.assertEquals("cuh", model.resourceName());
+        Assertions.assertEquals("tcty", model.resourceType());
+        Assertions.assertEquals("klbb", model.resourceUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Datasource model =
             new Datasource()
-                .withDatasourceType("exim")
-                .withObjectType("yocf")
-                .withResourceId("fksymddystki")
-                .withResourceLocation("xhqyudxorrqnb")
-                .withResourceName("czvyifq")
-                .withResourceType("kdvjsll")
-                .withResourceUri("vvdfwatkpnpul");
+                .withDatasourceType("hdwbavxbniwdjs")
+                .withObjectType("tsdbpgn")
+                .withResourceId("ytxhp")
+                .withResourceLocation("bzpfzab")
+                .withResourceName("cuh")
+                .withResourceType("tcty")
+                .withResourceUri("klbb")
+                .withResourceProperties(new BaseResourceProperties());
         model = BinaryData.fromObject(model).toObject(Datasource.class);
-        Assertions.assertEquals("exim", model.datasourceType());
-        Assertions.assertEquals("yocf", model.objectType());
-        Assertions.assertEquals("fksymddystki", model.resourceId());
-        Assertions.assertEquals("xhqyudxorrqnb", model.resourceLocation());
-        Assertions.assertEquals("czvyifq", model.resourceName());
-        Assertions.assertEquals("kdvjsll", model.resourceType());
-        Assertions.assertEquals("vvdfwatkpnpul", model.resourceUri());
+        Assertions.assertEquals("hdwbavxbniwdjs", model.datasourceType());
+        Assertions.assertEquals("tsdbpgn", model.objectType());
+        Assertions.assertEquals("ytxhp", model.resourceId());
+        Assertions.assertEquals("bzpfzab", model.resourceLocation());
+        Assertions.assertEquals("cuh", model.resourceName());
+        Assertions.assertEquals("tcty", model.resourceType());
+        Assertions.assertEquals("klbb", model.resourceUri());
     }
 }

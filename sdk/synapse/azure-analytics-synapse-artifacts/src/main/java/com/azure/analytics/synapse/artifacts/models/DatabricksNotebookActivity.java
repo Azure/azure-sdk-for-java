@@ -135,6 +135,20 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public DatabricksNotebookActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksNotebookActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public DatabricksNotebookActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
