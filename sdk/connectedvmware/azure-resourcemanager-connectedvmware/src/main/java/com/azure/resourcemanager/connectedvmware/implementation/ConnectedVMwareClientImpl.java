@@ -25,17 +25,16 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.connectedvmware.fluent.ClustersClient;
 import com.azure.resourcemanager.connectedvmware.fluent.ConnectedVMwareClient;
 import com.azure.resourcemanager.connectedvmware.fluent.DatastoresClient;
-import com.azure.resourcemanager.connectedvmware.fluent.GuestAgentsClient;
 import com.azure.resourcemanager.connectedvmware.fluent.HostsClient;
-import com.azure.resourcemanager.connectedvmware.fluent.HybridIdentityMetadatasClient;
 import com.azure.resourcemanager.connectedvmware.fluent.InventoryItemsClient;
-import com.azure.resourcemanager.connectedvmware.fluent.MachineExtensionsClient;
 import com.azure.resourcemanager.connectedvmware.fluent.OperationsClient;
 import com.azure.resourcemanager.connectedvmware.fluent.ResourcePoolsClient;
 import com.azure.resourcemanager.connectedvmware.fluent.VCentersClient;
+import com.azure.resourcemanager.connectedvmware.fluent.VMInstanceGuestAgentsClient;
+import com.azure.resourcemanager.connectedvmware.fluent.VirtualMachineInstancesClient;
 import com.azure.resourcemanager.connectedvmware.fluent.VirtualMachineTemplatesClient;
-import com.azure.resourcemanager.connectedvmware.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.connectedvmware.fluent.VirtualNetworksClient;
+import com.azure.resourcemanager.connectedvmware.fluent.VmInstanceHybridIdentityMetadatasClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -130,18 +129,6 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
      */
     public OperationsClient getOperations() {
         return this.operations;
-    }
-
-    /** The VirtualMachinesClient object to access its operations. */
-    private final VirtualMachinesClient virtualMachines;
-
-    /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
-     */
-    public VirtualMachinesClient getVirtualMachines() {
-        return this.virtualMachines;
     }
 
     /** The ResourcePoolsClient object to access its operations. */
@@ -240,40 +227,40 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
         return this.inventoryItems;
     }
 
-    /** The HybridIdentityMetadatasClient object to access its operations. */
-    private final HybridIdentityMetadatasClient hybridIdentityMetadatas;
+    /** The VirtualMachineInstancesClient object to access its operations. */
+    private final VirtualMachineInstancesClient virtualMachineInstances;
 
     /**
-     * Gets the HybridIdentityMetadatasClient object to access its operations.
+     * Gets the VirtualMachineInstancesClient object to access its operations.
      *
-     * @return the HybridIdentityMetadatasClient object.
+     * @return the VirtualMachineInstancesClient object.
      */
-    public HybridIdentityMetadatasClient getHybridIdentityMetadatas() {
-        return this.hybridIdentityMetadatas;
+    public VirtualMachineInstancesClient getVirtualMachineInstances() {
+        return this.virtualMachineInstances;
     }
 
-    /** The MachineExtensionsClient object to access its operations. */
-    private final MachineExtensionsClient machineExtensions;
+    /** The VmInstanceHybridIdentityMetadatasClient object to access its operations. */
+    private final VmInstanceHybridIdentityMetadatasClient vmInstanceHybridIdentityMetadatas;
 
     /**
-     * Gets the MachineExtensionsClient object to access its operations.
+     * Gets the VmInstanceHybridIdentityMetadatasClient object to access its operations.
      *
-     * @return the MachineExtensionsClient object.
+     * @return the VmInstanceHybridIdentityMetadatasClient object.
      */
-    public MachineExtensionsClient getMachineExtensions() {
-        return this.machineExtensions;
+    public VmInstanceHybridIdentityMetadatasClient getVmInstanceHybridIdentityMetadatas() {
+        return this.vmInstanceHybridIdentityMetadatas;
     }
 
-    /** The GuestAgentsClient object to access its operations. */
-    private final GuestAgentsClient guestAgents;
+    /** The VMInstanceGuestAgentsClient object to access its operations. */
+    private final VMInstanceGuestAgentsClient vMInstanceGuestAgents;
 
     /**
-     * Gets the GuestAgentsClient object to access its operations.
+     * Gets the VMInstanceGuestAgentsClient object to access its operations.
      *
-     * @return the GuestAgentsClient object.
+     * @return the VMInstanceGuestAgentsClient object.
      */
-    public GuestAgentsClient getGuestAgents() {
-        return this.guestAgents;
+    public VMInstanceGuestAgentsClient getVMInstanceGuestAgents() {
+        return this.vMInstanceGuestAgents;
     }
 
     /**
@@ -298,9 +285,8 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-01-10-preview";
+        this.apiVersion = "2023-10-01";
         this.operations = new OperationsClientImpl(this);
-        this.virtualMachines = new VirtualMachinesClientImpl(this);
         this.resourcePools = new ResourcePoolsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
         this.hosts = new HostsClientImpl(this);
@@ -309,9 +295,9 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
         this.virtualMachineTemplates = new VirtualMachineTemplatesClientImpl(this);
         this.virtualNetworks = new VirtualNetworksClientImpl(this);
         this.inventoryItems = new InventoryItemsClientImpl(this);
-        this.hybridIdentityMetadatas = new HybridIdentityMetadatasClientImpl(this);
-        this.machineExtensions = new MachineExtensionsClientImpl(this);
-        this.guestAgents = new GuestAgentsClientImpl(this);
+        this.virtualMachineInstances = new VirtualMachineInstancesClientImpl(this);
+        this.vmInstanceHybridIdentityMetadatas = new VmInstanceHybridIdentityMetadatasClientImpl(this);
+        this.vMInstanceGuestAgents = new VMInstanceGuestAgentsClientImpl(this);
     }
 
     /**

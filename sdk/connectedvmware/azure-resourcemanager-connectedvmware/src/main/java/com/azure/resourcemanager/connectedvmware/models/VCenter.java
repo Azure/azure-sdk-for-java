@@ -135,11 +135,11 @@ public interface VCenter {
     List<ResourceStatus> statuses();
 
     /**
-     * Gets the provisioningState property: Gets or sets the provisioning state.
+     * Gets the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
@@ -177,11 +177,13 @@ public interface VCenter {
             DefinitionStages.WithFqdn,
             DefinitionStages.WithCreate {
     }
+
     /** The VCenter definition stages. */
     interface DefinitionStages {
         /** The first stage of the VCenter definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the VCenter definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -200,6 +202,7 @@ public interface VCenter {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the VCenter definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -210,6 +213,7 @@ public interface VCenter {
              */
             WithFqdn withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the VCenter definition allowing to specify fqdn. */
         interface WithFqdn {
             /**
@@ -220,6 +224,7 @@ public interface VCenter {
              */
             WithCreate withFqdn(String fqdn);
         }
+
         /**
          * The stage of the VCenter definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -245,6 +250,7 @@ public interface VCenter {
              */
             VCenter create(Context context);
         }
+
         /** The stage of the VCenter definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -255,6 +261,7 @@ public interface VCenter {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the VCenter definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -265,6 +272,7 @@ public interface VCenter {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the VCenter definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -279,6 +287,7 @@ public interface VCenter {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the VCenter definition allowing to specify port. */
         interface WithPort {
             /**
@@ -289,6 +298,7 @@ public interface VCenter {
              */
             WithCreate withPort(Integer port);
         }
+
         /** The stage of the VCenter definition allowing to specify credentials. */
         interface WithCredentials {
             /**
@@ -300,6 +310,7 @@ public interface VCenter {
             WithCreate withCredentials(VICredential credentials);
         }
     }
+
     /**
      * Begins update for the VCenter resource.
      *
@@ -324,6 +335,7 @@ public interface VCenter {
          */
         VCenter apply(Context context);
     }
+
     /** The VCenter update stages. */
     interface UpdateStages {
         /** The stage of the VCenter update allowing to specify tags. */
@@ -337,6 +349,7 @@ public interface VCenter {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
