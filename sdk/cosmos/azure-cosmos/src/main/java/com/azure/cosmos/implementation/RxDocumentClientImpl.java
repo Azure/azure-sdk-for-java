@@ -4727,6 +4727,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceType,
         Class<T> klass,
         String resourceLink) {
+        DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
+        return ObservableHelper.fluxInlineIfPossibleAsObs(
+            () -> readFeedInternal(options, resourceType, klass, resourceLink, retryPolicy),
+            retryPolicy);
+    }
+
+    private <T> Flux<FeedResponse<T>> readFeedInternal(
+        CosmosQueryRequestOptions options,
+        ResourceType resourceType,
+        Class<T> klass,
+        String resourceLink,
+        DocumentClientRetryPolicy retryPolicy) {
 
         final CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(nonNullOptions);
@@ -4734,7 +4746,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         assert(resourceType != ResourceType.Document);
         // readFeed is only used for non-document operations - no need to wire up hedging
-        DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
@@ -4747,15 +4758,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return request;
         };
 
-        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = request -> ObservableHelper
-            .inlineIfPossibleAsObs(() -> readFeed(request).map(response -> toFeedResponsePage(
-                response,
-                ImplementationBridgeHelpers
-                    .CosmosQueryRequestOptionsHelper
-                    .getCosmosQueryRequestOptionsAccessor()
-                    .getItemFactoryMethod(nonNullOptions, klass),
-                    klass)),
-                retryPolicy);
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc =
+            request -> readFeed(request)
+                .map(response -> toFeedResponsePage(
+                                    response,
+                                    ImplementationBridgeHelpers
+                                        .CosmosQueryRequestOptionsHelper
+                                        .getCosmosQueryRequestOptionsAccessor()
+                                        .getItemFactoryMethod(nonNullOptions, klass),
+                                    klass));
 
         return Paginator
             .getPaginatedQueryResultAsObservable(

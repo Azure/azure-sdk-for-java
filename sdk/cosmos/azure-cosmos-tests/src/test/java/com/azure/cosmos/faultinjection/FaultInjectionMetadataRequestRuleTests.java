@@ -14,8 +14,8 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -73,6 +73,17 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             { FaultInjectionOperationType.DELETE_ITEM, OperationType.Delete },
             { FaultInjectionOperationType.QUERY_ITEM, OperationType.Query },
             { FaultInjectionOperationType.PATCH_ITEM, OperationType.Patch }
+        };
+    }
+
+    @DataProvider(name = "partitionKeyRangesArgProvider")
+    public static Object[][] partitionKeyRangesArgProvider() {
+        return new Object[][]{
+            // FaultInjectionServerErrorType, delay duration, ruleApplyLimitPerOperation
+            { FaultInjectionServerErrorType.CONNECTION_DELAY, Duration.ofSeconds(50), 1 },
+            { FaultInjectionServerErrorType.CONNECTION_DELAY, Duration.ofSeconds(50), Integer.MAX_VALUE },
+            { FaultInjectionServerErrorType.RESPONSE_DELAY, Duration.ofSeconds(11), 1 },
+            { FaultInjectionServerErrorType.RESPONSE_DELAY, Duration.ofSeconds(11), Integer.MAX_VALUE }
         };
     }
 
@@ -469,8 +480,11 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
     }
 
-    @Test(groups = { "multi-master" }, timeOut = 40 * TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_PartitionKeyRanges_ConnectionDelay() throws JsonProcessingException {
+    @Test(groups = { "multi-master" }, dataProvider = "partitionKeyRangesArgProvider", timeOut = 40 * TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_PartitionKeyRanges_DelayError(
+        FaultInjectionServerErrorType faultInjectionServerErrorType,
+        Duration delay,
+        int applyLimit) throws JsonProcessingException {
 
         // We need to create a new client because client may have marked region unavailable in other tests
         // which can impact the test result
@@ -496,9 +510,9 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
-                        .delay(Duration.ofSeconds(50)) // to simulate http connection timeout
-                        .times(1)
+                        .getResultBuilder(faultInjectionServerErrorType)
+                        .delay(delay) // to simulate http connection timeout
+                        .times(applyLimit)
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
@@ -535,6 +549,10 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             } catch (CosmosException cosmosException) {
                 CosmosDiagnostics cosmosDiagnostics = cosmosException.getDiagnostics();
 
+                // The PkRanges requests may have retried in another region,
+                // but the create request will only be retried locally for PARTITION_IS_SPLITTING
+                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+
                 // validate PARTITION_KEY_RANGE_LOOK_UP
                 ObjectNode diagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
                 JsonNode metadataDiagnosticsContext = diagnosticsNode.get("metadataDiagnosticsContext");
@@ -555,7 +573,13 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                 }
 
                 assertThat(pkRangesLookup).isNotNull();
-                assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(45000); // the duration will be at least one timeout
+                if (faultInjectionServerErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) {
+                    assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(45 * 1000 *Math.min(applyLimit, 3)); // the duration will be at least one connection timeout
+                }
+
+                if (faultInjectionServerErrorType == FaultInjectionServerErrorType.RESPONSE_DELAY) {
+                    assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(500 *Math.min(applyLimit, 3)); // the duration will be at least one response timeout
+                }
             }
         } finally {
             pkRangesConnectionDelayRule.disable();
