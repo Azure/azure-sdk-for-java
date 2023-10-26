@@ -28,7 +28,7 @@ public final class InteractiveBrowserBroker {
         if (operatingSystem.contains("win")) {
             builder.supportWindows(true);
         } else {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Unsupported operating system. See https://aka.ms/azsdk/java/identity/troubleshoot#broker for more information."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Unsupported operating system. See https://aka.ms/azsdk/java/identity/troubleshoot#broker for more information."));
         }
         return builder.build();
     }
