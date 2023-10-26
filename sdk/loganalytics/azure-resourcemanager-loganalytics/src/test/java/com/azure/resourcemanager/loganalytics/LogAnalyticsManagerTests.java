@@ -14,7 +14,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.loganalytics.models.*;
+import com.azure.resourcemanager.loganalytics.models.Workspace;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -76,12 +76,6 @@ public class LogAnalyticsManagerTests extends TestBase {
                 .define(spaceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withSku(new WorkspaceSku().withName(WorkspaceSkuNameEnum.PER_GB2018))
-                .withFeatures(new WorkspaceFeatures().withEnableLogAccessUsingOnlyResourcePermissions(true))
-                .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(-1D))
-                .withRetentionInDays(30)
-                .withPublicNetworkAccessForIngestion(com.azure.resourcemanager.loganalytics.models.PublicNetworkAccessType.ENABLED)
-                .withPublicNetworkAccessForQuery(com.azure.resourcemanager.loganalytics.models.PublicNetworkAccessType.ENABLED)
                 .create();
             // @embedEnd
             workspace.refresh();
