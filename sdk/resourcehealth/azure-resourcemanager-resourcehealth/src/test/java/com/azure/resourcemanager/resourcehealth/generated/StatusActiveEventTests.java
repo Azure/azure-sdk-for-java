@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resourcehealth.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcehealth.models.EmergingIssueImpact;
+import com.azure.resourcemanager.resourcehealth.models.ImpactedRegion;
 import com.azure.resourcemanager.resourcehealth.models.SeverityValues;
 import com.azure.resourcemanager.resourcehealth.models.StageValues;
 import com.azure.resourcemanager.resourcehealth.models.StatusActiveEvent;
@@ -19,56 +20,82 @@ public final class StatusActiveEventTests {
         StatusActiveEvent model =
             BinaryData
                 .fromString(
-                    "{\"title\":\"qeqxo\",\"description\":\"dahzxctobg\",\"trackingId\":\"dmoizpostmg\",\"startTime\":\"2021-03-12T03:59:06Z\",\"cloud\":\"unrmfqjhhkxb\",\"severity\":\"Information\",\"stage\":\"Resolve\",\"published\":false,\"lastModifiedTime\":\"2021-07-29T03:03:57Z\",\"impacts\":[{\"id\":\"gudivkrtswbxqz\",\"name\":\"zjf\",\"regions\":[]},{\"id\":\"fdxxivetvtcqaqtd\",\"name\":\"mcbxvwvxysl\",\"regions\":[]}]}")
+                    "{\"title\":\"ahhxvrh\",\"description\":\"kwpjgwwspughftqs\",\"trackingId\":\"qxujxukndxd\",\"startTime\":\"2021-02-07T08:06:06Z\",\"cloud\":\"guufzd\",\"severity\":\"Information\",\"stage\":\"Active\",\"published\":true,\"lastModifiedTime\":\"2021-02-25T10:39:49Z\",\"impacts\":[{\"id\":\"tzingamvpph\",\"name\":\"zqzudph\",\"regions\":[{\"id\":\"dkfw\",\"name\":\"wcvtbvkayhmtnvyq\"}]},{\"id\":\"tkzwpcnpwzc\",\"name\":\"esgvvsccyaj\",\"regions\":[{\"id\":\"hwyg\",\"name\":\"vdnkfxusem\"},{\"id\":\"zrmuhapfcqdps\",\"name\":\"qvpsvuoymg\"}]},{\"id\":\"elvezrypq\",\"name\":\"feo\",\"regions\":[{\"id\":\"wkyhkobopgxe\",\"name\":\"owepbqpcrfkb\"},{\"id\":\"csnjvcdwxlpqekft\",\"name\":\"htjsying\"}]},{\"id\":\"qatmtdhtmdvy\",\"name\":\"ikdgszywkbir\",\"regions\":[{\"id\":\"hlhkjoqrvqqaatj\",\"name\":\"rv\"},{\"id\":\"upmfiibfg\",\"name\":\"ioolvrwxkvtkkgll\"},{\"id\":\"jygvjayvbl\",\"name\":\"vkzuhbxvvyhgso\"}]}]}")
                 .toObject(StatusActiveEvent.class);
-        Assertions.assertEquals("qeqxo", model.title());
-        Assertions.assertEquals("dahzxctobg", model.description());
-        Assertions.assertEquals("dmoizpostmg", model.trackingId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T03:59:06Z"), model.startTime());
-        Assertions.assertEquals("unrmfqjhhkxb", model.cloud());
+        Assertions.assertEquals("ahhxvrh", model.title());
+        Assertions.assertEquals("kwpjgwwspughftqs", model.description());
+        Assertions.assertEquals("qxujxukndxd", model.trackingId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T08:06:06Z"), model.startTime());
+        Assertions.assertEquals("guufzd", model.cloud());
         Assertions.assertEquals(SeverityValues.INFORMATION, model.severity());
-        Assertions.assertEquals(StageValues.RESOLVE, model.stage());
-        Assertions.assertEquals(false, model.published());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T03:03:57Z"), model.lastModifiedTime());
-        Assertions.assertEquals("gudivkrtswbxqz", model.impacts().get(0).id());
-        Assertions.assertEquals("zjf", model.impacts().get(0).name());
+        Assertions.assertEquals(StageValues.ACTIVE, model.stage());
+        Assertions.assertEquals(true, model.published());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T10:39:49Z"), model.lastModifiedTime());
+        Assertions.assertEquals("tzingamvpph", model.impacts().get(0).id());
+        Assertions.assertEquals("zqzudph", model.impacts().get(0).name());
+        Assertions.assertEquals("dkfw", model.impacts().get(0).regions().get(0).id());
+        Assertions.assertEquals("wcvtbvkayhmtnvyq", model.impacts().get(0).regions().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StatusActiveEvent model =
             new StatusActiveEvent()
-                .withTitle("qeqxo")
-                .withDescription("dahzxctobg")
-                .withTrackingId("dmoizpostmg")
-                .withStartTime(OffsetDateTime.parse("2021-03-12T03:59:06Z"))
-                .withCloud("unrmfqjhhkxb")
+                .withTitle("ahhxvrh")
+                .withDescription("kwpjgwwspughftqs")
+                .withTrackingId("qxujxukndxd")
+                .withStartTime(OffsetDateTime.parse("2021-02-07T08:06:06Z"))
+                .withCloud("guufzd")
                 .withSeverity(SeverityValues.INFORMATION)
-                .withStage(StageValues.RESOLVE)
-                .withPublished(false)
-                .withLastModifiedTime(OffsetDateTime.parse("2021-07-29T03:03:57Z"))
+                .withStage(StageValues.ACTIVE)
+                .withPublished(true)
+                .withLastModifiedTime(OffsetDateTime.parse("2021-02-25T10:39:49Z"))
                 .withImpacts(
                     Arrays
                         .asList(
                             new EmergingIssueImpact()
-                                .withId("gudivkrtswbxqz")
-                                .withName("zjf")
-                                .withRegions(Arrays.asList()),
+                                .withId("tzingamvpph")
+                                .withName("zqzudph")
+                                .withRegions(
+                                    Arrays.asList(new ImpactedRegion().withId("dkfw").withName("wcvtbvkayhmtnvyq"))),
                             new EmergingIssueImpact()
-                                .withId("fdxxivetvtcqaqtd")
-                                .withName("mcbxvwvxysl")
-                                .withRegions(Arrays.asList())));
+                                .withId("tkzwpcnpwzc")
+                                .withName("esgvvsccyaj")
+                                .withRegions(
+                                    Arrays
+                                        .asList(
+                                            new ImpactedRegion().withId("hwyg").withName("vdnkfxusem"),
+                                            new ImpactedRegion().withId("zrmuhapfcqdps").withName("qvpsvuoymg"))),
+                            new EmergingIssueImpact()
+                                .withId("elvezrypq")
+                                .withName("feo")
+                                .withRegions(
+                                    Arrays
+                                        .asList(
+                                            new ImpactedRegion().withId("wkyhkobopgxe").withName("owepbqpcrfkb"),
+                                            new ImpactedRegion().withId("csnjvcdwxlpqekft").withName("htjsying"))),
+                            new EmergingIssueImpact()
+                                .withId("qatmtdhtmdvy")
+                                .withName("ikdgszywkbir")
+                                .withRegions(
+                                    Arrays
+                                        .asList(
+                                            new ImpactedRegion().withId("hlhkjoqrvqqaatj").withName("rv"),
+                                            new ImpactedRegion().withId("upmfiibfg").withName("ioolvrwxkvtkkgll"),
+                                            new ImpactedRegion().withId("jygvjayvbl").withName("vkzuhbxvvyhgso")))));
         model = BinaryData.fromObject(model).toObject(StatusActiveEvent.class);
-        Assertions.assertEquals("qeqxo", model.title());
-        Assertions.assertEquals("dahzxctobg", model.description());
-        Assertions.assertEquals("dmoizpostmg", model.trackingId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-12T03:59:06Z"), model.startTime());
-        Assertions.assertEquals("unrmfqjhhkxb", model.cloud());
+        Assertions.assertEquals("ahhxvrh", model.title());
+        Assertions.assertEquals("kwpjgwwspughftqs", model.description());
+        Assertions.assertEquals("qxujxukndxd", model.trackingId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T08:06:06Z"), model.startTime());
+        Assertions.assertEquals("guufzd", model.cloud());
         Assertions.assertEquals(SeverityValues.INFORMATION, model.severity());
-        Assertions.assertEquals(StageValues.RESOLVE, model.stage());
-        Assertions.assertEquals(false, model.published());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T03:03:57Z"), model.lastModifiedTime());
-        Assertions.assertEquals("gudivkrtswbxqz", model.impacts().get(0).id());
-        Assertions.assertEquals("zjf", model.impacts().get(0).name());
+        Assertions.assertEquals(StageValues.ACTIVE, model.stage());
+        Assertions.assertEquals(true, model.published());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T10:39:49Z"), model.lastModifiedTime());
+        Assertions.assertEquals("tzingamvpph", model.impacts().get(0).id());
+        Assertions.assertEquals("zqzudph", model.impacts().get(0).name());
+        Assertions.assertEquals("dkfw", model.impacts().get(0).regions().get(0).id());
+        Assertions.assertEquals("wcvtbvkayhmtnvyq", model.impacts().get(0).regions().get(0).name());
     }
 }
