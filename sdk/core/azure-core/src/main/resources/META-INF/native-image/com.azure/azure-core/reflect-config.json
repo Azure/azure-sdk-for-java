@@ -152,7 +152,7 @@
     "allPublicMethods": true
   },
   {
-    "name":"com.azure.core.models.PollResult",
+    "name":"com.azure.core.util.polling.PollOperationDetails",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,
     "allDeclaredMethods": true,
