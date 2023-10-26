@@ -196,6 +196,23 @@ public interface WebPubSubResource {
     Boolean disableAadAuth();
 
     /**
+     * Gets the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @return the regionEndpointEnabled value.
+     */
+    String regionEndpointEnabled();
+
+    /**
+     * Gets the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @return the resourceStopped value.
+     */
+    String resourceStopped();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -282,7 +299,9 @@ public interface WebPubSubResource {
                 DefinitionStages.WithNetworkACLs,
                 DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithDisableLocalAuth,
-                DefinitionStages.WithDisableAadAuth {
+                DefinitionStages.WithDisableAadAuth,
+                DefinitionStages.WithRegionEndpointEnabled,
+                DefinitionStages.WithResourceStopped {
             /**
              * Executes the create request.
              *
@@ -429,6 +448,36 @@ public interface WebPubSubResource {
              */
             WithCreate withDisableAadAuth(Boolean disableAadAuth);
         }
+
+        /** The stage of the WebPubSubResource definition allowing to specify regionEndpointEnabled. */
+        interface WithRegionEndpointEnabled {
+            /**
+             * Specifies the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to
+             * "Enabled". When it's Disabled, new connections will not be routed to this endpoint, however existing
+             * connections will not be affected. This property is replica specific. Disable the regional endpoint
+             * without replica is not allowed..
+             *
+             * @param regionEndpointEnabled Enable or disable the regional endpoint. Default to "Enabled". When it's
+             *     Disabled, new connections will not be routed to this endpoint, however existing connections will not
+             *     be affected. This property is replica specific. Disable the regional endpoint without replica is not
+             *     allowed.
+             * @return the next definition stage.
+             */
+            WithCreate withRegionEndpointEnabled(String regionEndpointEnabled);
+        }
+
+        /** The stage of the WebPubSubResource definition allowing to specify resourceStopped. */
+        interface WithResourceStopped {
+            /**
+             * Specifies the resourceStopped property: Stop or start the resource. Default to "false". When it's true,
+             * the data plane of the resource is shutdown. When it's false, the data plane of the resource is started..
+             *
+             * @param resourceStopped Stop or start the resource. Default to "false". When it's true, the data plane of
+             *     the resource is shutdown. When it's false, the data plane of the resource is started.
+             * @return the next definition stage.
+             */
+            WithCreate withResourceStopped(String resourceStopped);
+        }
     }
 
     /**
@@ -449,7 +498,9 @@ public interface WebPubSubResource {
             UpdateStages.WithNetworkACLs,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithDisableLocalAuth,
-            UpdateStages.WithDisableAadAuth {
+            UpdateStages.WithDisableAadAuth,
+            UpdateStages.WithRegionEndpointEnabled,
+            UpdateStages.WithResourceStopped {
         /**
          * Executes the update request.
          *
@@ -586,6 +637,36 @@ public interface WebPubSubResource {
              * @return the next definition stage.
              */
             Update withDisableAadAuth(Boolean disableAadAuth);
+        }
+
+        /** The stage of the WebPubSubResource update allowing to specify regionEndpointEnabled. */
+        interface WithRegionEndpointEnabled {
+            /**
+             * Specifies the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to
+             * "Enabled". When it's Disabled, new connections will not be routed to this endpoint, however existing
+             * connections will not be affected. This property is replica specific. Disable the regional endpoint
+             * without replica is not allowed..
+             *
+             * @param regionEndpointEnabled Enable or disable the regional endpoint. Default to "Enabled". When it's
+             *     Disabled, new connections will not be routed to this endpoint, however existing connections will not
+             *     be affected. This property is replica specific. Disable the regional endpoint without replica is not
+             *     allowed.
+             * @return the next definition stage.
+             */
+            Update withRegionEndpointEnabled(String regionEndpointEnabled);
+        }
+
+        /** The stage of the WebPubSubResource update allowing to specify resourceStopped. */
+        interface WithResourceStopped {
+            /**
+             * Specifies the resourceStopped property: Stop or start the resource. Default to "false". When it's true,
+             * the data plane of the resource is shutdown. When it's false, the data plane of the resource is started..
+             *
+             * @param resourceStopped Stop or start the resource. Default to "false". When it's true, the data plane of
+             *     the resource is shutdown. When it's false, the data plane of the resource is started.
+             * @return the next definition stage.
+             */
+            Update withResourceStopped(String resourceStopped);
         }
     }
 
