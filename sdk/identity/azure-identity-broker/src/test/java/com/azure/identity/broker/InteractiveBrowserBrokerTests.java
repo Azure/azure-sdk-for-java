@@ -20,4 +20,12 @@ public class InteractiveBrowserBrokerTests {
             IBroker broker = InteractiveBrowserBroker.getMsalRuntimeBroker();
         });
     }
+
+    @Test
+    @EnabledOnOs({OS.MAC, OS.LINUX})
+    public void msalRuntimeErrorThrown() {
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            IBroker broker = InteractiveBrowserBroker.getMsalRuntimeBroker();
+        });
+    }
 }
