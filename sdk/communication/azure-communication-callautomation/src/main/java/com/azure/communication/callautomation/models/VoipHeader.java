@@ -11,7 +11,7 @@ import com.azure.core.annotation.Fluent;
  *  Custom context VOIP header.
  */
 @Fluent
-public class VoipHeader extends CustomContextHeader {
+public final class VoipHeader extends CustomContextHeader {
     /**
      * Create a VoipHeader object with key and value
      * @param key the header key
