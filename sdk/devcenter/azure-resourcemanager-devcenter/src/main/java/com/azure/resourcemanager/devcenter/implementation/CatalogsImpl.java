@@ -11,8 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devcenter.fluent.CatalogsClient;
 import com.azure.resourcemanager.devcenter.fluent.models.CatalogInner;
+import com.azure.resourcemanager.devcenter.fluent.models.SyncErrorDetailsInner;
 import com.azure.resourcemanager.devcenter.models.Catalog;
 import com.azure.resourcemanager.devcenter.models.Catalogs;
+import com.azure.resourcemanager.devcenter.models.SyncErrorDetails;
 
 public final class CatalogsImpl implements Catalogs {
     private static final ClientLogger LOGGER = new ClientLogger(CatalogsImpl.class);
@@ -71,12 +73,47 @@ public final class CatalogsImpl implements Catalogs {
         this.serviceClient().delete(resourceGroupName, devCenterName, catalogName, context);
     }
 
+    public Response<SyncErrorDetails> getSyncErrorDetailsWithResponse(
+        String resourceGroupName, String devCenterName, String catalogName, Context context) {
+        Response<SyncErrorDetailsInner> inner =
+            this
+                .serviceClient()
+                .getSyncErrorDetailsWithResponse(resourceGroupName, devCenterName, catalogName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new SyncErrorDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SyncErrorDetails getSyncErrorDetails(String resourceGroupName, String devCenterName, String catalogName) {
+        SyncErrorDetailsInner inner =
+            this.serviceClient().getSyncErrorDetails(resourceGroupName, devCenterName, catalogName);
+        if (inner != null) {
+            return new SyncErrorDetailsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void sync(String resourceGroupName, String devCenterName, String catalogName) {
         this.serviceClient().sync(resourceGroupName, devCenterName, catalogName);
     }
 
     public void sync(String resourceGroupName, String devCenterName, String catalogName, Context context) {
         this.serviceClient().sync(resourceGroupName, devCenterName, catalogName, context);
+    }
+
+    public void connect(String resourceGroupName, String devCenterName, String catalogName) {
+        this.serviceClient().connect(resourceGroupName, devCenterName, catalogName);
+    }
+
+    public void connect(String resourceGroupName, String devCenterName, String catalogName, Context context) {
+        this.serviceClient().connect(resourceGroupName, devCenterName, catalogName, context);
     }
 
     public Catalog getById(String id) {

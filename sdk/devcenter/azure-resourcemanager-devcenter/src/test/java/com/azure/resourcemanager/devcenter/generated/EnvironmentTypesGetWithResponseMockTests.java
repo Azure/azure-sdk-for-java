@@ -31,7 +31,7 @@ public final class EnvironmentTypesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Created\"},\"tags\":{\"ohpfkyrkdbdgiog\":\"udzpxgwjplmagstc\",\"nobaiyhddviacegf\":\"jkmnwq\",\"tfpmvmemfnczdw\":\"m\"},\"id\":\"b\",\"name\":\"lxlllchpo\",\"type\":\"bzevwrd\"}";
+            "{\"properties\":{\"provisioningState\":\"Accepted\",\"displayName\":\"zzhmkd\"},\"tags\":{\"xcudchxgsr\":\"flyh\",\"lvizb\":\"oldforobw\",\"dxe\":\"hfovvacqpbtu\"},\"id\":\"abbelawumuaslzk\",\"name\":\"rrwoycqucwyhahn\",\"type\":\"mdr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,10 @@ public final class EnvironmentTypesGetWithResponseMockTests {
         EnvironmentType response =
             manager
                 .environmentTypes()
-                .getWithResponse("dabg", "vudtjuewbcihx", "uwhcjyxccybv", com.azure.core.util.Context.NONE)
+                .getWithResponse("bccxjmonfdgn", "n", "ypuuwwltvuqjctze", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("udzpxgwjplmagstc", response.tags().get("ohpfkyrkdbdgiog"));
+        Assertions.assertEquals("flyh", response.tags().get("xcudchxgsr"));
+        Assertions.assertEquals("zzhmkd", response.displayName());
     }
 }

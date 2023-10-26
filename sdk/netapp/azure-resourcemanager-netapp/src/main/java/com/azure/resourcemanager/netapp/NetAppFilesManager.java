@@ -24,7 +24,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
-import com.azure.resourcemanager.netapp.implementation.AccountBackupsImpl;
 import com.azure.resourcemanager.netapp.implementation.AccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsImpl;
@@ -39,7 +38,6 @@ import com.azure.resourcemanager.netapp.implementation.SubvolumesImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumeGroupsImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumeQuotaRulesImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
-import com.azure.resourcemanager.netapp.models.AccountBackups;
 import com.azure.resourcemanager.netapp.models.Accounts;
 import com.azure.resourcemanager.netapp.models.BackupPolicies;
 import com.azure.resourcemanager.netapp.models.Backups;
@@ -79,8 +77,6 @@ public final class NetAppFilesManager {
     private SnapshotPolicies snapshotPolicies;
 
     private Backups backups;
-
-    private AccountBackups accountBackups;
 
     private BackupPolicies backupPolicies;
 
@@ -255,7 +251,7 @@ public final class NetAppFilesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.netapp")
                 .append("/")
-                .append("1.0.0-beta.13");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -410,7 +406,7 @@ public final class NetAppFilesManager {
     }
 
     /**
-     * Gets the resource collection API of Backups. It manages Backup.
+     * Gets the resource collection API of Backups.
      *
      * @return Resource collection API of Backups.
      */
@@ -419,18 +415,6 @@ public final class NetAppFilesManager {
             this.backups = new BackupsImpl(clientObject.getBackups(), this);
         }
         return backups;
-    }
-
-    /**
-     * Gets the resource collection API of AccountBackups.
-     *
-     * @return Resource collection API of AccountBackups.
-     */
-    public AccountBackups accountBackups() {
-        if (this.accountBackups == null) {
-            this.accountBackups = new AccountBackupsImpl(clientObject.getAccountBackups(), this);
-        }
-        return accountBackups;
     }
 
     /**
@@ -482,8 +466,10 @@ public final class NetAppFilesManager {
     }
 
     /**
-     * @return Wrapped service client NetAppManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client NetAppManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client NetAppManagementClient.
      */
     public NetAppManagementClient serviceClient() {
         return this.clientObject;

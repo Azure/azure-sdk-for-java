@@ -137,7 +137,6 @@ public class TelemetryItemExporter {
     CompletableResultCode internalSendByBatch(TelemetryItemBatchKey telemetryItemBatchKey,
                                               List<TelemetryItem> telemetryItems) {
         List<ByteBuffer> byteBuffers;
-
         // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
         // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
         // insert _OTELRESOURCE_ at the beginning of each batch
@@ -155,8 +154,8 @@ public class TelemetryItemExporter {
     }
 
     private TelemetryItem createOtelResourceMetric(TelemetryItemBatchKey telemetryItemBatchKey) {
-
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create(_OTELRESOURCE_, 0);
+        builder.setConnectionString(telemetryItemBatchKey.connectionString);
         telemetryItemBatchKey.resource.getAttributes().forEach((k, v) -> builder.addProperty(k.getKey(), v.toString()));
         String roleName = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE.toString());
         if (roleName != null) {

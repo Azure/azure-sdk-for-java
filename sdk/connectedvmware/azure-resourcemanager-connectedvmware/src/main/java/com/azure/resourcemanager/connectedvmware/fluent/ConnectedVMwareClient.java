@@ -52,13 +52,6 @@ public interface ConnectedVMwareClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
-     */
-    VirtualMachinesClient getVirtualMachines();
-
-    /**
      * Gets the ResourcePoolsClient object to access its operations.
      *
      * @return the ResourcePoolsClient object.
@@ -115,23 +108,23 @@ public interface ConnectedVMwareClient {
     InventoryItemsClient getInventoryItems();
 
     /**
-     * Gets the HybridIdentityMetadatasClient object to access its operations.
+     * Gets the VirtualMachineInstancesClient object to access its operations.
      *
-     * @return the HybridIdentityMetadatasClient object.
+     * @return the VirtualMachineInstancesClient object.
      */
-    HybridIdentityMetadatasClient getHybridIdentityMetadatas();
+    VirtualMachineInstancesClient getVirtualMachineInstances();
 
     /**
-     * Gets the MachineExtensionsClient object to access its operations.
+     * Gets the VmInstanceHybridIdentityMetadatasClient object to access its operations.
      *
-     * @return the MachineExtensionsClient object.
+     * @return the VmInstanceHybridIdentityMetadatasClient object.
      */
-    MachineExtensionsClient getMachineExtensions();
+    VmInstanceHybridIdentityMetadatasClient getVmInstanceHybridIdentityMetadatas();
 
     /**
-     * Gets the GuestAgentsClient object to access its operations.
+     * Gets the VMInstanceGuestAgentsClient object to access its operations.
      *
-     * @return the GuestAgentsClient object.
+     * @return the VMInstanceGuestAgentsClient object.
      */
-    GuestAgentsClient getGuestAgents();
+    VMInstanceGuestAgentsClient getVMInstanceGuestAgents();
 }

@@ -14,6 +14,15 @@ public final class CacheType extends ExpandableStringEnum<CacheType> {
     public static final CacheType ALL = fromString("All");
 
     /**
+     * Creates a new instance of CacheType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CacheType() {
+    }
+
+    /**
      * Creates or finds a CacheType from its string representation.
      *
      * @param name a name to look for.

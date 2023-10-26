@@ -72,11 +72,10 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientE")
-    private interface EndpointsService {
+    public interface EndpointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EndpointListResult>> listByProfile(
@@ -90,8 +89,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EndpointInner>> get(
@@ -106,8 +104,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -123,8 +120,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -140,8 +136,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -156,8 +151,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/start")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/start")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
@@ -172,8 +166,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/stop")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/stop")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stop(
@@ -188,8 +181,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/purge")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/purge")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> purgeContent(
@@ -205,8 +197,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/load")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/load")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> loadContent(
@@ -222,8 +213,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/validateCustomDomain")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/validateCustomDomain")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ValidateCustomDomainOutputInner>> validateCustomDomain(
@@ -239,8 +229,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/checkResourceUsage")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/checkResourceUsage")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceUsageListResult>> listResourceUsage(
@@ -588,24 +577,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     *     group and profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EndpointInner get(String resourceGroupName, String profileName, String endpointName) {
-        return getAsync(resourceGroupName, profileName, endpointName).block();
-    }
-
-    /**
-     * Gets an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group
-     * and profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -617,6 +588,24 @@ public final class EndpointsClientImpl implements EndpointsClient {
     public Response<EndpointInner> getWithResponse(
         String resourceGroupName, String profileName, String endpointName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, context).block();
+    }
+
+    /**
+     * Gets an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group
+     * and profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
+     *     group and profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EndpointInner get(String resourceGroupName, String profileName, String endpointName) {
+        return getWithResponse(resourceGroupName, profileName, endpointName, Context.NONE).getValue();
     }
 
     /**
@@ -824,7 +813,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EndpointInner>, EndpointInner> beginCreate(
         String resourceGroupName, String profileName, String endpointName, EndpointInner endpointParam) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, endpointParam).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, profileName, endpointName, endpointParam).getSyncPoller();
     }
 
     /**
@@ -849,7 +838,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
         String endpointName,
         EndpointInner endpointParam,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, endpointParam, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, endpointName, endpointParam, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1174,7 +1165,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
         String profileName,
         String endpointName,
         EndpointUpdateParameters endpointUpdateProperties) {
-        return beginUpdateAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties)
+            .getSyncPoller();
     }
 
     /**
@@ -1201,7 +1194,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
         String endpointName,
         EndpointUpdateParameters endpointUpdateProperties,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, endpointName, endpointUpdateProperties, context)
             .getSyncPoller();
     }
 
@@ -1480,7 +1474,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, endpointName).getSyncPoller();
     }
 
     /**
@@ -1499,7 +1493,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, context).getSyncPoller();
     }
 
     /**
@@ -1748,7 +1742,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EndpointInner>, EndpointInner> beginStart(
         String resourceGroupName, String profileName, String endpointName) {
-        return beginStartAsync(resourceGroupName, profileName, endpointName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, profileName, endpointName).getSyncPoller();
     }
 
     /**
@@ -1767,7 +1761,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EndpointInner>, EndpointInner> beginStart(
         String resourceGroupName, String profileName, String endpointName, Context context) {
-        return beginStartAsync(resourceGroupName, profileName, endpointName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, profileName, endpointName, context).getSyncPoller();
     }
 
     /**
@@ -2019,7 +2013,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EndpointInner>, EndpointInner> beginStop(
         String resourceGroupName, String profileName, String endpointName) {
-        return beginStopAsync(resourceGroupName, profileName, endpointName).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, profileName, endpointName).getSyncPoller();
     }
 
     /**
@@ -2038,7 +2032,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EndpointInner>, EndpointInner> beginStop(
         String resourceGroupName, String profileName, String endpointName, Context context) {
-        return beginStopAsync(resourceGroupName, profileName, endpointName, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, profileName, endpointName, context).getSyncPoller();
     }
 
     /**
@@ -2316,7 +2310,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeContent(
         String resourceGroupName, String profileName, String endpointName, PurgeParameters contentFilePaths) {
-        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contentFilePaths).getSyncPoller();
+        return this
+            .beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contentFilePaths)
+            .getSyncPoller();
     }
 
     /**
@@ -2341,7 +2337,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
         String endpointName,
         PurgeParameters contentFilePaths,
         Context context) {
-        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contentFilePaths, context)
+        return this
+            .beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contentFilePaths, context)
             .getSyncPoller();
     }
 
@@ -2632,7 +2629,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginLoadContent(
         String resourceGroupName, String profileName, String endpointName, LoadParameters contentFilePaths) {
-        return beginLoadContentAsync(resourceGroupName, profileName, endpointName, contentFilePaths).getSyncPoller();
+        return this
+            .beginLoadContentAsync(resourceGroupName, profileName, endpointName, contentFilePaths)
+            .getSyncPoller();
     }
 
     /**
@@ -2656,7 +2655,8 @@ public final class EndpointsClientImpl implements EndpointsClient {
         String endpointName,
         LoadParameters contentFilePaths,
         Context context) {
-        return beginLoadContentAsync(resourceGroupName, profileName, endpointName, contentFilePaths, context)
+        return this
+            .beginLoadContentAsync(resourceGroupName, profileName, endpointName, contentFilePaths, context)
             .getSyncPoller();
     }
 
@@ -2907,27 +2907,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainProperties Custom domain to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateCustomDomainOutputInner validateCustomDomain(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        ValidateCustomDomainInput customDomainProperties) {
-        return validateCustomDomainAsync(resourceGroupName, profileName, endpointName, customDomainProperties).block();
-    }
-
-    /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainProperties Custom domain to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2944,6 +2923,29 @@ public final class EndpointsClientImpl implements EndpointsClient {
         return validateCustomDomainWithResponseAsync(
                 resourceGroupName, profileName, endpointName, customDomainProperties, context)
             .block();
+    }
+
+    /**
+     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainProperties Custom domain to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of custom domain validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ValidateCustomDomainOutputInner validateCustomDomain(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        ValidateCustomDomainInput customDomainProperties) {
+        return validateCustomDomainWithResponse(
+                resourceGroupName, profileName, endpointName, customDomainProperties, Context.NONE)
+            .getValue();
     }
 
     /**

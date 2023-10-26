@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FirmwareType. */
+/** Firmware type. */
 public final class FirmwareType extends ExpandableStringEnum<FirmwareType> {
     /** Static value bios for FirmwareType. */
     public static final FirmwareType BIOS = fromString("bios");
 
     /** Static value efi for FirmwareType. */
     public static final FirmwareType EFI = fromString("efi");
+
+    /**
+     * Creates a new instance of FirmwareType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirmwareType() {
+    }
 
     /**
      * Creates or finds a FirmwareType from its string representation.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleAssignments ListByResourceGroup. */
 public final class RoleAssignmentsListByResourceGroupSamples {
     /*
@@ -23,6 +21,6 @@ public final class RoleAssignmentsListByResourceGroupSamples {
             .manager()
             .roleServiceClient()
             .getRoleAssignments()
-            .listByResourceGroup("testrg", null, null, Context.NONE);
+            .listByResourceGroup("testrg", null, null, com.azure.core.util.Context.NONE);
     }
 }

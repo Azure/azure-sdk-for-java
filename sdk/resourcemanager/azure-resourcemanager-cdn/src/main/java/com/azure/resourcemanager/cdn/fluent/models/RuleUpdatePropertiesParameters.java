@@ -47,6 +47,10 @@ public class RuleUpdatePropertiesParameters {
     @JsonProperty(value = "matchProcessingBehavior")
     private MatchProcessingBehavior matchProcessingBehavior;
 
+    /** Creates an instance of RuleUpdatePropertiesParameters class. */
+    public RuleUpdatePropertiesParameters() {
+    }
+
     /**
      * Get the ruleSetName property: The name of the rule set containing the rule.
      *

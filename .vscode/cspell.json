@@ -181,6 +181,7 @@
     "sdk/remoterendering/TestResources/**",
     "sdk/purview/azure-analytics-purview-catalog/**",
     "sdk/servicebus/build/**",
+    "sdk/servicebus/azure-messaging-servicebus-stress/templates/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/workbooks/**",
     "sdk/servicebus/azure-messaging-servicebus-stress/Dockerfile",
     "sdk/search/azure-search-documents/**",
@@ -275,6 +276,8 @@
     "embedme",
     "encryptor",
     "endtoend",
+    "entra",
+    "Entra",
     "Esto",
     "etag",
     "eventhub",
@@ -478,6 +481,16 @@
       "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
       "words": [
         "Decibles"
+      ]
+    },
+    {
+      "filename": "sdk/easm/*",
+      "words": [
+        "easm",
+        "asns",
+        "nxdomain",
+        "cnames",
+        "riskiq"
       ]
     },
     {

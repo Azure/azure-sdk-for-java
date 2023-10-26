@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -11,9 +12,9 @@ import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.SettingFields;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class Utility {
         return isETagRequired ? getETagValue(setting.getETag()) : null;
     }
 
-    public static String getETagSnapshot(boolean isETagRequired, ConfigurationSettingsSnapshot snapshot) {
+    public static String getETagSnapshot(boolean isETagRequired, ConfigurationSnapshot snapshot) {
         if (!isETagRequired) {
             return null;
         }
@@ -159,24 +160,23 @@ public class Utility {
         return context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE);
     }
 
-    public static Response<ConfigurationSettingsSnapshot> updateSnapshotSync(String snapshotName,
-        ConfigurationSettingsSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+    public static Response<ConfigurationSnapshot> updateSnapshotSync(String snapshotName,
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status,
         AzureAppConfigurationImpl serviceClient, Context context) {
+        final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
 
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingsSnapshot> response =
+        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSnapshot> response =
             serviceClient.updateSnapshotWithResponse(snapshotName,
-                new SnapshotUpdateParameters().setStatus(status),
-                getETagSnapshot(ifUnchanged, snapshot), null, context);
+                new SnapshotUpdateParameters().setStatus(status), ifMatch, null, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 
-    public static Mono<Response<ConfigurationSettingsSnapshot>> updateSnapshotAsync(String snapshotName,
-        ConfigurationSettingsSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+    public static Mono<Response<ConfigurationSnapshot>> updateSnapshotAsync(String snapshotName,
+        MatchConditions matchConditions, ConfigurationSnapshotStatus status,
         AzureAppConfigurationImpl serviceClient) {
+        final String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
         return serviceClient.updateSnapshotWithResponseAsync(snapshotName,
-                new SnapshotUpdateParameters().setStatus(status),
-                getETagSnapshot(ifUnchanged, snapshot),
-                null)
+                new SnapshotUpdateParameters().setStatus(status), ifMatch, null)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 }

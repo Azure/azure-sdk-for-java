@@ -29,13 +29,15 @@ public interface WorkspacePurgesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param body Describes the body of a request to purge data in a single table of an Log Analytics Workspace.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing operationId for a specific purge action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspacePurgeResponseInner purge(String resourceGroupName, String workspaceName, WorkspacePurgeBody body);
+    WorkspacePurgesPurgeResponse purgeWithResponse(
+        String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context);
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
@@ -51,29 +53,13 @@ public interface WorkspacePurgesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param body Describes the body of a request to purge data in a single table of an Log Analytics Workspace.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing operationId for a specific purge action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspacePurgesPurgeResponse purgeWithResponse(
-        String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context);
-
-    /**
-     * Gets status of an ongoing purge operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of an ongoing purge operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspacePurgeStatusResponseInner getPurgeStatus(String resourceGroupName, String workspaceName, String purgeId);
+    WorkspacePurgeResponseInner purge(String resourceGroupName, String workspaceName, WorkspacePurgeBody body);
 
     /**
      * Gets status of an ongoing purge operation.
@@ -90,4 +76,18 @@ public interface WorkspacePurgesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkspacePurgeStatusResponseInner> getPurgeStatusWithResponse(
         String resourceGroupName, String workspaceName, String purgeId, Context context);
+
+    /**
+     * Gets status of an ongoing purge operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of an ongoing purge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkspacePurgeStatusResponseInner getPurgeStatus(String resourceGroupName, String workspaceName, String purgeId);
 }

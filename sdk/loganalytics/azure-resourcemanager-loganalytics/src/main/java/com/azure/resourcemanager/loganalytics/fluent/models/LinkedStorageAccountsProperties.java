@@ -24,6 +24,10 @@ public final class LinkedStorageAccountsProperties {
     @JsonProperty(value = "storageAccountIds")
     private List<String> storageAccountIds;
 
+    /** Creates an instance of LinkedStorageAccountsProperties class. */
+    public LinkedStorageAccountsProperties() {
+    }
+
     /**
      * Get the dataSourceType property: Linked storage accounts type.
      *

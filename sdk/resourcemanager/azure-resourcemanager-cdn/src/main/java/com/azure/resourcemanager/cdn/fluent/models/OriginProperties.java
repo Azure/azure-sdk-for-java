@@ -31,6 +31,10 @@ public final class OriginProperties extends OriginUpdatePropertiesParameters {
     @JsonProperty(value = "privateEndpointStatus", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointStatus privateEndpointStatus;
 
+    /** Creates an instance of OriginProperties class. */
+    public OriginProperties() {
+    }
+
     /**
      * Get the resourceState property: Resource status of the origin.
      *

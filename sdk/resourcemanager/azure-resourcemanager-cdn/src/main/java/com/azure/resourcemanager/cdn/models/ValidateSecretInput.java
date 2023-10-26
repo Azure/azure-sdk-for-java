@@ -30,6 +30,10 @@ public final class ValidateSecretInput {
     @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
+    /** Creates an instance of ValidateSecretInput class. */
+    public ValidateSecretInput() {
+    }
+
     /**
      * Get the secretType property: The secret type.
      *

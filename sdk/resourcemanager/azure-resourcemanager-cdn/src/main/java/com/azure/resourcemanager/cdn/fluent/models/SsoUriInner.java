@@ -16,6 +16,10 @@ public final class SsoUriInner {
     @JsonProperty(value = "ssoUriValue", access = JsonProperty.Access.WRITE_ONLY)
     private String ssoUriValue;
 
+    /** Creates an instance of SsoUriInner class. */
+    public SsoUriInner() {
+    }
+
     /**
      * Get the ssoUriValue property: The URI used to login to the supplemental portal.
      *

@@ -32,6 +32,9 @@ import com.azure.resourcemanager.desktopvirtualization.implementation.HostPoolsI
 import com.azure.resourcemanager.desktopvirtualization.implementation.MsixImagesImpl;
 import com.azure.resourcemanager.desktopvirtualization.implementation.MsixPackagesImpl;
 import com.azure.resourcemanager.desktopvirtualization.implementation.OperationsImpl;
+import com.azure.resourcemanager.desktopvirtualization.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.desktopvirtualization.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.desktopvirtualization.implementation.ScalingPlanPersonalSchedulesImpl;
 import com.azure.resourcemanager.desktopvirtualization.implementation.ScalingPlanPooledSchedulesImpl;
 import com.azure.resourcemanager.desktopvirtualization.implementation.ScalingPlansImpl;
 import com.azure.resourcemanager.desktopvirtualization.implementation.SessionHostsImpl;
@@ -45,6 +48,9 @@ import com.azure.resourcemanager.desktopvirtualization.models.HostPools;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixImages;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackages;
 import com.azure.resourcemanager.desktopvirtualization.models.Operations;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkResources;
+import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedules;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedules;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlans;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHosts;
@@ -64,9 +70,15 @@ public final class DesktopVirtualizationManager {
 
     private Workspaces workspaces;
 
+    private PrivateEndpointConnections privateEndpointConnections;
+
+    private PrivateLinkResources privateLinkResources;
+
     private ScalingPlans scalingPlans;
 
     private ScalingPlanPooledSchedules scalingPlanPooledSchedules;
+
+    private ScalingPlanPersonalSchedules scalingPlanPersonalSchedules;
 
     private ApplicationGroups applicationGroups;
 
@@ -252,7 +264,7 @@ public final class DesktopVirtualizationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.desktopvirtualization")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -334,6 +346,31 @@ public final class DesktopVirtualizationManager {
     }
 
     /**
+     * Gets the resource collection API of PrivateEndpointConnections.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
+        }
+        return privateLinkResources;
+    }
+
+    /**
      * Gets the resource collection API of ScalingPlans. It manages ScalingPlan.
      *
      * @return Resource collection API of ScalingPlans.
@@ -356,6 +393,19 @@ public final class DesktopVirtualizationManager {
                 new ScalingPlanPooledSchedulesImpl(clientObject.getScalingPlanPooledSchedules(), this);
         }
         return scalingPlanPooledSchedules;
+    }
+
+    /**
+     * Gets the resource collection API of ScalingPlanPersonalSchedules. It manages ScalingPlanPersonalSchedule.
+     *
+     * @return Resource collection API of ScalingPlanPersonalSchedules.
+     */
+    public ScalingPlanPersonalSchedules scalingPlanPersonalSchedules() {
+        if (this.scalingPlanPersonalSchedules == null) {
+            this.scalingPlanPersonalSchedules =
+                new ScalingPlanPersonalSchedulesImpl(clientObject.getScalingPlanPersonalSchedules(), this);
+        }
+        return scalingPlanPersonalSchedules;
     }
 
     /**
@@ -467,8 +517,10 @@ public final class DesktopVirtualizationManager {
     }
 
     /**
-     * @return Wrapped service client DesktopVirtualizationApiClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client DesktopVirtualizationApiClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client DesktopVirtualizationApiClient.
      */
     public DesktopVirtualizationApiClient serviceClient() {
         return this.clientObject;
