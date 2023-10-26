@@ -17,6 +17,9 @@ public final class AzureBareMetalHardwareTypeNamesEnum
     /** Static value HPE for AzureBareMetalHardwareTypeNamesEnum. */
     public static final AzureBareMetalHardwareTypeNamesEnum HPE = fromString("HPE");
 
+    /** Static value SDFLEX for AzureBareMetalHardwareTypeNamesEnum. */
+    public static final AzureBareMetalHardwareTypeNamesEnum SDFLEX = fromString("SDFLEX");
+
     /**
      * Creates a new instance of AzureBareMetalHardwareTypeNamesEnum value.
      *

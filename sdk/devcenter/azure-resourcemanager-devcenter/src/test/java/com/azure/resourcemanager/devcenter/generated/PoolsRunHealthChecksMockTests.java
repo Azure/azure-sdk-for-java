@@ -56,6 +56,6 @@ public final class PoolsRunHealthChecksMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.pools().runHealthChecks("g", "ojbmxv", "vrefdeesv", com.azure.core.util.Context.NONE);
+        manager.pools().runHealthChecks("cgbjbgdlfgt", "y", "naquflq", com.azure.core.util.Context.NONE);
     }
 }

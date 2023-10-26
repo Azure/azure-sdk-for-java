@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for Tables CreateOrUpdate. */
 public final class TablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesUpsert.json
+     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/TablesUpsert.json
      */
     /**
      * Sample code: TablesUpsert.

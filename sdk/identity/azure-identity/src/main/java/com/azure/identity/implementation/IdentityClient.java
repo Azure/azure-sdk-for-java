@@ -16,6 +16,7 @@ import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
+import com.azure.identity.implementation.util.ValidationUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
@@ -315,7 +316,6 @@ public class IdentityClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithAzureCli(TokenRequestContext request) {
-
         StringBuilder azCommand = new StringBuilder("az account get-access-token --output json --resource ");
 
         String scopes = ScopeUtil.scopesToResource(request.getScopes());
@@ -330,11 +330,13 @@ public class IdentityClient extends IdentityClientBase {
 
         try {
             String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+            ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
+
             // The default is not correct for many cases, such as when the logged in entity is a service principal.
             if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azCommand.append(" --tenant ").append(tenant);
             }
-        } catch (ClientAuthenticationException e) {
+        } catch (ClientAuthenticationException | IllegalArgumentException e) {
             return Mono.error(e);
         }
 
@@ -356,7 +358,6 @@ public class IdentityClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithAzureDeveloperCli(TokenRequestContext request) {
-
         StringBuilder azdCommand = new StringBuilder("azd auth token --output json --scope ");
         List<String> scopes = request.getScopes();
 
@@ -366,16 +367,27 @@ public class IdentityClient extends IdentityClientBase {
             return Mono.error(LOGGER.logExceptionAsError(new IllegalArgumentException("Missing scope in request")));
         }
 
+        for (String scope : scopes) {
+            try {
+                ScopeUtil.validateScope(scope);
+            } catch (IllegalArgumentException ex) {
+                return Mono.error(LOGGER.logExceptionAsError(ex));
+            }
+        }
+
+
         // At least one scope is appended to the azd command.
         // If there are more than one scope, we add `--scope` before each.
         azdCommand.append(String.join(" --scope ", scopes));
 
         try {
             String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+            ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
+
             if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
                 azdCommand.append(" --tenant-id ").append(tenant);
             }
-        } catch (ClientAuthenticationException e) {
+        } catch (ClientAuthenticationException | IllegalArgumentException e) {
             return Mono.error(e);
         }
 
@@ -396,7 +408,7 @@ public class IdentityClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithAzurePowerShell(TokenRequestContext request) {
-
+        ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         List<CredentialUnavailableException> exceptions = new ArrayList<>(2);
 
         PowershellManager defaultPowerShellManager = new PowershellManager(Platform.isWindows()
@@ -454,6 +466,12 @@ public class IdentityClient extends IdentityClientBase {
 
     private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
                                                            PowershellManager powershellManager) {
+        String scope = ScopeUtil.scopesToResource(request.getScopes());
+        try {
+            ScopeUtil.validateScope(scope);
+        } catch (IllegalArgumentException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
         return Mono.using(() -> powershellManager, manager -> manager.initSession().flatMap(m -> {
             String azAccountsCommand = "Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru";
             return m.runCommand(azAccountsCommand).flatMap(output -> {
@@ -466,8 +484,9 @@ public class IdentityClient extends IdentityClientBase {
                 }
 
                 LOGGER.verbose("Az.accounts module was found installed.");
-                String command = "Get-AzAccessToken -ResourceUrl " + ScopeUtil.scopesToResource(request.getScopes())
-                                 + " | ConvertTo-Json";
+                String command = "Get-AzAccessToken -ResourceUrl '"
+                    + scope
+                    + "' | ConvertTo-Json";
                 LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
                                + "Powershell to retrieve the Access Token.", command);
 
@@ -648,17 +667,33 @@ public class IdentityClient extends IdentityClientBase {
      */
     @SuppressWarnings("deprecation")
     public Mono<AccessToken> authenticateWithConfidentialClientCache(TokenRequestContext request) {
+        return authenticateWithConfidentialClientCache(request, null);
+    }
+
+    /**
+     * Asynchronously acquire a token from the currently logged in client.
+     *
+     * @param request the details of the token request
+     * @param account the account used to log in to acquire the last token
+     *
+     * @return a Publisher that emits an AccessToken
+     */
+    @SuppressWarnings("deprecation")
+    public Mono<AccessToken> authenticateWithConfidentialClientCache(TokenRequestContext request, IAccount account) {
         return getConfidentialClientInstance(request).getValue()
             .flatMap(confidentialClient -> Mono.fromFuture(() -> {
                 SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                         new HashSet<>(request.getScopes()))
                     .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+                if (account != null) {
+                    parametersBuilder.account(account);
+                }
                 try {
                     return confidentialClient.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
                     return getFailedCompletableFuture(LOGGER.logExceptionAsError(new RuntimeException(e)));
                 }
-            }).map(ar -> (AccessToken) new MsalToken(ar))
+            }).map(ar -> new MsalToken(ar))
                 .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(REFRESH_OFFSET))));
     }
 

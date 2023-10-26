@@ -20,6 +20,15 @@ public final class MicrosoftGraphRecurrenceRangeType extends ExpandableStringEnu
     public static final MicrosoftGraphRecurrenceRangeType NUMBERED = fromString("numbered");
 
     /**
+     * Creates a new instance of MicrosoftGraphRecurrenceRangeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphRecurrenceRangeType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphRecurrenceRangeType from its string representation.
      *
      * @param name a name to look for.

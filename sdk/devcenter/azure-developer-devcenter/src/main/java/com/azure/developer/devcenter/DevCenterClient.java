@@ -16,20 +16,21 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.developer.devcenter.implementation.DevCentersImpl;
 
 /** Initializes a new instance of the synchronous DevCenterClient type. */
 @ServiceClient(builder = DevCenterClientBuilder.class)
 public final class DevCenterClient {
-    @Generated private final DevCenterAsyncClient client;
+    @Generated private final DevCentersImpl serviceClient;
 
     /**
      * Initializes an instance of DevCenterClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    DevCenterClient(DevCenterAsyncClient client) {
-        this.client = client;
+    DevCenterClient(DevCentersImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -65,7 +66,7 @@ public final class DevCenterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listProjects(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listProjects(requestOptions));
+        return this.serviceClient.listProjects(requestOptions);
     }
 
     /**
@@ -91,7 +92,7 @@ public final class DevCenterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getProjectWithResponse(String projectName, RequestOptions requestOptions) {
-        return this.client.getProjectWithResponse(projectName, requestOptions).block();
+        return this.serviceClient.getProjectWithResponse(projectName, requestOptions);
     }
 
     /**
@@ -159,7 +160,7 @@ public final class DevCenterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAllDevBoxes(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listAllDevBoxes(requestOptions));
+        return this.serviceClient.listAllDevBoxes(requestOptions);
     }
 
     /**
@@ -229,6 +230,6 @@ public final class DevCenterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAllDevBoxesByUser(String userId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listAllDevBoxesByUser(userId, requestOptions));
+        return this.serviceClient.listAllDevBoxesByUser(userId, requestOptions);
     }
 }

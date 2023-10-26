@@ -23,6 +23,10 @@ public final class ValidateSecretOutputInner {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of ValidateSecretOutputInner class. */
+    public ValidateSecretOutputInner() {
+    }
+
     /**
      * Get the status property: The validation status.
      *

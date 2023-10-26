@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeBody;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeBodyFilters;
 import java.util.Arrays;
@@ -35,7 +34,7 @@ public final class WorkspacePurgePurgeSamples {
                                     .withOperator("==")
                                     .withValue(
                                         "/subscriptions/12341234-1234-1234-1234-123412341234/resourceGroups/SomeResourceGroup/providers/microsoft.insights/components/AppInsightResource"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -61,6 +60,6 @@ public final class WorkspacePurgePurgeSamples {
                                     .withColumn("TimeGenerated")
                                     .withOperator(">")
                                     .withValue("2017-09-01T00:00:00"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

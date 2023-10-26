@@ -115,6 +115,10 @@ public class EndpointPropertiesUpdateParameters {
     @JsonProperty(value = "webApplicationFirewallPolicyLink")
     private EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
 
+    /** Creates an instance of EndpointPropertiesUpdateParameters class. */
+    public EndpointPropertiesUpdateParameters() {
+    }
+
     /**
      * Get the originPath property: A directory path on the origin that CDN can use to retrieve content from, e.g.
      * contoso.cloudapp.net/originpath.

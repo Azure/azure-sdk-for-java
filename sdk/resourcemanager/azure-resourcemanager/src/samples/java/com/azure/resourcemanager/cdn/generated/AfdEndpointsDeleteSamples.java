@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AfdEndpoints Delete. */
 public final class AfdEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDEndpoints_Delete.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDEndpoints_Delete.json
      */
     /**
      * Sample code: AFDEndpoints_Delete.
@@ -22,6 +20,6 @@ public final class AfdEndpointsDeleteSamples {
             .manager()
             .serviceClient()
             .getAfdEndpoints()
-            .delete("RG", "profile1", "endpoint1", Context.NONE);
+            .delete("RG", "profile1", "endpoint1", com.azure.core.util.Context.NONE);
     }
 }

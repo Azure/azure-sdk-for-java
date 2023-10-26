@@ -132,6 +132,15 @@ public final class EventGridPublisherClientImpl {
         @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> publishEventGridEventsSync(
+                @HostParam("topicHostname") String topicHostname,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") List<EventGridEvent> events,
+                Context context);
+
+        @Post("")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishCloudEventEvents(
                 @HostParam("topicHostname") String topicHostname,
                 @QueryParam("api-version") String apiVersion,
@@ -142,7 +151,26 @@ public final class EventGridPublisherClientImpl {
         @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> publishCloudEventEventsSync(
+                @HostParam("topicHostname") String topicHostname,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("aeg-channel-name") String aegChannelName,
+                @BodyParam("application/cloudevents-batch+json; charset=utf-8") List<CloudEvent> events,
+                Context context);
+
+        @Post("")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> publishCustomEventEvents(
+                @HostParam("topicHostname") String topicHostname,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") List<Object> events,
+                Context context);
+
+        @Post("")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> publishCustomEventEventsSync(
                 @HostParam("topicHostname") String topicHostname,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") List<Object> events,
@@ -212,6 +240,37 @@ public final class EventGridPublisherClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishEventGridEventsAsync(String topicHostname, List<EventGridEvent> events, Context context) {
         return publishEventGridEventsWithResponseAsync(topicHostname, events, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> publishEventGridEventsWithResponse(
+            String topicHostname, List<EventGridEvent> events, Context context) {
+        return service.publishEventGridEventsSync(topicHostname, this.getApiVersion(), events, context);
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void publishEventGridEvents(String topicHostname, List<EventGridEvent> events) {
+        publishEventGridEventsWithResponse(topicHostname, events, Context.NONE);
     }
 
     /**
@@ -298,6 +357,42 @@ public final class EventGridPublisherClientImpl {
      *
      * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
      * @param events An array of events to be published to Event Grid.
+     * @param aegChannelName Required only when publishing to partner namespaces with partner topic routing mode
+     *     ChannelNameHeader.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> publishCloudEventEventsWithResponse(
+            String topicHostname, List<CloudEvent> events, String aegChannelName, Context context) {
+        return service.publishCloudEventEventsSync(
+                topicHostname, this.getApiVersion(), aegChannelName, events, context);
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
+     * @param aegChannelName Required only when publishing to partner namespaces with partner topic routing mode
+     *     ChannelNameHeader.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void publishCloudEventEvents(String topicHostname, List<CloudEvent> events, String aegChannelName) {
+        publishCloudEventEventsWithResponse(topicHostname, events, aegChannelName, Context.NONE);
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -356,5 +451,36 @@ public final class EventGridPublisherClientImpl {
     public Mono<Void> publishCustomEventEventsAsync(String topicHostname, List<Object> events, Context context) {
         return publishCustomEventEventsWithResponseAsync(topicHostname, events, context)
                 .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> publishCustomEventEventsWithResponse(
+            String topicHostname, List<Object> events, Context context) {
+        return service.publishCustomEventEventsSync(topicHostname, this.getApiVersion(), events, context);
+    }
+
+    /**
+     * Publishes a batch of events to an Azure Event Grid topic.
+     *
+     * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
+     * @param events An array of events to be published to Event Grid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void publishCustomEventEvents(String topicHostname, List<Object> events) {
+        publishCustomEventEventsWithResponse(topicHostname, events, Context.NONE);
     }
 }

@@ -21,6 +21,10 @@ public final class DeliveryRuleSslProtocolCondition extends DeliveryRuleConditio
     @JsonProperty(value = "parameters", required = true)
     private SslProtocolMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleSslProtocolCondition class. */
+    public DeliveryRuleSslProtocolCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

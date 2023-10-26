@@ -239,7 +239,7 @@ public final class WebPubSubManager {
                 .append("-")
                 .append("com.azure.resourcemanager.webpubsub")
                 .append("/")
-                .append("1.1.0-beta.1");
+                .append("1.1.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -424,8 +424,10 @@ public final class WebPubSubManager {
     }
 
     /**
-     * @return Wrapped service client WebPubSubManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client WebPubSubManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client WebPubSubManagementClient.
      */
     public WebPubSubManagementClient serviceClient() {
         return this.clientObject;

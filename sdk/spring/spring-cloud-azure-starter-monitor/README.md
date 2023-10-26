@@ -149,11 +149,11 @@ import io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource;
 public class DataSourceConfig {
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource dataSource(OpenTelemetry openTelemetry) {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         // Data source configurations
         DataSource dataSource = dataSourceBuilder.build();
-        return new OpenTelemetryDataSource(dataSource);
+        return new OpenTelemetryDataSource(dataSource, openTelemetry);
     }
 
 }

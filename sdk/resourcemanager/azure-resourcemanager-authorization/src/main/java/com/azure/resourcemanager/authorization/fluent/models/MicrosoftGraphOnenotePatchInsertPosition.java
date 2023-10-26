@@ -18,6 +18,15 @@ public final class MicrosoftGraphOnenotePatchInsertPosition
     public static final MicrosoftGraphOnenotePatchInsertPosition BEFORE = fromString("Before");
 
     /**
+     * Creates a new instance of MicrosoftGraphOnenotePatchInsertPosition value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphOnenotePatchInsertPosition() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphOnenotePatchInsertPosition from its string representation.
      *
      * @param name a name to look for.

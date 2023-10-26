@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -40,6 +42,19 @@ public final class WorkspaceProperties {
      */
     @JsonProperty(value = "cloudPcResource", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean cloudPcResource;
+
+    /*
+     * Enabled allows this resource to be accessed from both public and private networks, Disabled allows this resource
+     * to only be accessed via private endpoints
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * List of private endpoint connection associated with the specified resource
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /** Creates an instance of WorkspaceProperties class. */
     public WorkspaceProperties() {
@@ -124,10 +139,45 @@ public final class WorkspaceProperties {
     }
 
     /**
+     * Get the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
+     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
+     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the WorkspaceProperties object itself.
+     */
+    public WorkspaceProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
+     * resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
     }
 }

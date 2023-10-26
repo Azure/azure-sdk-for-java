@@ -100,15 +100,15 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * @return the Azure Active Directory endpoint to acquire tokens.
+     * @return the Microsoft Entra endpoint to acquire tokens.
      */
     public String getAuthorityHost() {
         return authorityHost;
     }
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param authorityHost the Microsoft Entra endpoint
      * @return IdentityClientOptions
      */
     public IdentityClientOptions setAuthorityHost(String authorityHost) {

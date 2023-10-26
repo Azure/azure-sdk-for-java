@@ -23,6 +23,15 @@ public final class QueryStringBehavior extends ExpandableStringEnum<QueryStringB
     public static final QueryStringBehavior EXCLUDE_ALL = fromString("ExcludeAll");
 
     /**
+     * Creates a new instance of QueryStringBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryStringBehavior() {
+    }
+
+    /**
      * Creates or finds a QueryStringBehavior from its string representation.
      *
      * @param name a name to look for.
