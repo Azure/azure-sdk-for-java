@@ -111,6 +111,8 @@ extends:
         groupId: com.azure
         safeName: azurespringdatacosmos
         releaseInBatch: ${{ parameters.release_azurespringdatacosmos }}
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
       - name: azure-cosmos-encryption
         groupId: com.azure
         safeName: azurecosmosencryption
