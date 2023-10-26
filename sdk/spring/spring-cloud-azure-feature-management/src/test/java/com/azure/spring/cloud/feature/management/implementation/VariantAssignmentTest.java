@@ -34,8 +34,6 @@ import com.azure.spring.cloud.feature.management.targeting.TargetingContextAcces
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 import com.azure.spring.cloud.feature.management.testobjects.DiscountBanner;
 
-import reactor.core.publisher.Mono;
-
 public class VariantAssignmentTest {
 
     private VariantAssignment variantAssignment;
@@ -74,10 +72,7 @@ public class VariantAssignmentTest {
 
     @Test
     public void noAllocation() {
-        Allocation allocation = new Allocation();
-
-        Mono<Variant> variant = variantAssignment.assignVariant(allocation, null);
-        assertNull(variant.block());
+        assertNull(variantAssignment.assignVariant(new Allocation()));
     }
 
     @Test
@@ -92,24 +87,24 @@ public class VariantAssignmentTest {
         usersAllocations.put("0", userAllocation);
         allocation.setUsers(usersAllocations);
 
-        Mono<Variant> variant = variantAssignment.assignVariant(allocation, null);
-        assertNull(variant.block());
+        assertNull(variantAssignment.assignVariant(allocation));
 
         users.put("1", "test-user-id");
         userAllocation.setUsers(users);
         usersAllocations.put("0", userAllocation);
         allocation.setUsers(usersAllocations);
-        variant = variantAssignment.assignVariant(allocation, null);
-        assertNull(variant.block());
+        
+        String assignedVariant = variantAssignment.assignVariant(allocation);
+        assertEquals("small", assignedVariant);
+        assertNull(variantAssignment.getVariant(null, assignedVariant).block());
 
         List<VariantReference> variantReferences = new ArrayList<>();
         VariantReference small = new VariantReference();
         small.setName("small");
         small.setConfigurationValue("1");
         variantReferences.add(small);
-
-        variant = variantAssignment.assignVariant(allocation, variantReferences);
-        assertNotNull(variant.block());
+        
+        assertNotNull(variantAssignment.getVariant(variantReferences, assignedVariant).block());
     }
 
     @Test
@@ -124,15 +119,16 @@ public class VariantAssignmentTest {
         groupAllocations.put("0", groupAllocation);
         allocation.setGroups(groupAllocations);
 
-        Mono<Variant> variant = variantAssignment.assignVariant(allocation, null);
-        assertNull(variant.block());
+        assertNull(variantAssignment.assignVariant(allocation));
 
         groups.put("1", "test-group-id2");
         groupAllocation.setGroups(groups);
         groupAllocations.put("0", groupAllocation);
         allocation.setGroups(groupAllocations);
-        variant = variantAssignment.assignVariant(allocation, null);
-        assertNull(variant.block());
+        
+        String assignedVariant = variantAssignment.assignVariant(allocation);
+        assertEquals("small", assignedVariant);
+        assertNull(variantAssignment.getVariant(null, assignedVariant).block());
 
         List<VariantReference> variantReferences = new ArrayList<>();
         VariantReference small = new VariantReference();
@@ -140,8 +136,7 @@ public class VariantAssignmentTest {
         small.setConfigurationValue("1");
         variantReferences.add(small);
 
-        variant = variantAssignment.assignVariant(allocation, variantReferences);
-        assertNotNull(variant.block());
+        assertNotNull(variantAssignment.getVariant(variantReferences, assignedVariant).block());
     }
 
     @Test

@@ -28,8 +28,9 @@ public class VariantReference {
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
+    public VariantReference setName(String name) {
         this.name = name;
+        return this;
     }
 
     /**
@@ -42,8 +43,9 @@ public class VariantReference {
     /**
      * @param configurationValue the configurationValue to set
      */
-    public void setConfigurationValue(Object configurationValue) {
+    public VariantReference setConfigurationValue(Object configurationValue) {
         this.configurationValue = configurationValue;
+        return this;
     }
 
     /**
@@ -56,8 +58,9 @@ public class VariantReference {
     /**
      * @param configurationReference the configurationReference to set
      */
-    public void setConfigurationReference(String configurationReference) {
+    public VariantReference setConfigurationReference(String configurationReference) {
         this.configurationReference = configurationReference;
+        return this;
     }
 
     /**
@@ -70,8 +73,9 @@ public class VariantReference {
     /**
      * @param statusOverride the statusOverride to set
      */
-    public void setStatusOverride(String statusOverride) {
+    public VariantReference setStatusOverride(String statusOverride) {
         this.statusOverride = statusOverride;
+        return this;
     }
 
 }
