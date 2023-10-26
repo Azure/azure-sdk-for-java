@@ -26,8 +26,7 @@ public final class SearchResultHelper {
         void setAdditionalProperties(SearchResult searchResult, SearchDocument additionalProperties);
         void setHighlights(SearchResult searchResult, Map<String, List<String>> highlights);
         void setJsonSerializer(SearchResult searchResult, JsonSerializer jsonSerializer);
-        void setRerankerScore(SearchResult searchResult, Double rerankerScore);
-        void setCaptions(SearchResult searchResult, List<CaptionResult> captions);
+        void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore, List<CaptionResult> captions);
     }
 
     /**
@@ -51,11 +50,8 @@ public final class SearchResultHelper {
         accessor.setJsonSerializer(searchResult, jsonSerializer);
     }
 
-    static void setRerankerScore(SearchResult searchResult, Double rerankerScore) {
-        accessor.setRerankerScore(searchResult, rerankerScore);
-    }
-
-    static void setCaptions(SearchResult searchResult, List<CaptionResult> captions) {
-        accessor.setCaptions(searchResult, captions);
+    static void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
+        List<CaptionResult> captions) {
+        accessor.setSemanticSearchResults(searchResult, rerankerScore, captions);
     }
 }

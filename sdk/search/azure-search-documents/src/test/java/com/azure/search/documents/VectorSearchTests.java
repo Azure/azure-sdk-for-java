@@ -258,9 +258,9 @@ public class VectorSearchTests extends SearchTestBase {
                     for (SearchResult result : page.getValue()) {
                         results.add(result);
 
-                        assertNotNull(result.getCaptions());
-                        assertNotNull(result.getCaptions().get(0).getHighlights());
-                        assertNotNull(result.getCaptions().get(0).getText());
+                        assertNotNull(result.getSemanticResult().getCaptions());
+                        assertNotNull(result.getSemanticResult().getCaptions().get(0).getHighlights());
+                        assertNotNull(result.getSemanticResult().getCaptions().get(0).getText());
                     }
                 }
 
@@ -303,9 +303,9 @@ public class VectorSearchTests extends SearchTestBase {
             for (SearchResult result : page.getValue()) {
                 results.add(result);
 
-                assertNotNull(result.getCaptions());
-                assertNotNull(result.getCaptions().get(0).getHighlights());
-                assertNotNull(result.getCaptions().get(0).getText());
+                assertNotNull(result.getSemanticResult().getCaptions());
+                assertNotNull(result.getSemanticResult().getCaptions().get(0).getHighlights());
+                assertNotNull(result.getSemanticResult().getCaptions().get(0).getText());
             }
         }
 

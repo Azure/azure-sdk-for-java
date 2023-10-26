@@ -260,7 +260,7 @@ public class VectorSearchExample {
         System.out.println("Semantic Hybrid Search Results:");
 
         System.out.println("Query Answer:");
-        for (AnswerResult result : results.getAnswers()) {
+        for (AnswerResult result : results.getSemanticResults().getAnswers()) {
             System.out.println("Answer Highlights: " + result.getHighlights());
             System.out.println("Answer Text: " + result.getText());
         }
@@ -270,8 +270,8 @@ public class VectorSearchExample {
             VectorHotel doc = result.getDocument(VectorHotel.class);
             System.out.printf("%s: %s%n", doc.getHotelId(), doc.getHotelName());
 
-            if (result.getCaptions() != null) {
-                CaptionResult caption = result.getCaptions().get(0);
+            if (result.getSemanticResult().getCaptions() != null) {
+                CaptionResult caption = result.getSemanticResult().getCaptions().get(0);
                 if (!CoreUtils.isNullOrEmpty(caption.getHighlights())) {
                     System.out.println("Caption Highlights: " + caption.getHighlights());
                 } else {
