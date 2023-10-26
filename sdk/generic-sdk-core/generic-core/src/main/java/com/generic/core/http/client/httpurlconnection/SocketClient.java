@@ -121,9 +121,9 @@ class SocketClient {
                     .append("\r\n"));
             }
         }
-        if (httpRequest.getBodyAsBinaryData() != null) {
+        if (httpRequest.getBody() != null) {
             request.append("\r\n")
-                .append(httpRequest.getBodyAsBinaryData().toString())
+                .append(httpRequest.getBody().toString())
                 .append("\r\n");
         }
 

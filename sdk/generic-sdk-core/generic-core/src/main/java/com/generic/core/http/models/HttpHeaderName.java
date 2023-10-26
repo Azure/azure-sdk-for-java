@@ -312,16 +312,6 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     public static final HttpHeaderName PREFERENCE_APPLIED = fromString("Preference-Applied");
 
     /**
-     * {@code Proxy-Authenticate}/{@code proxy-authenticate}
-     */
-    public static final HttpHeaderName PROXY_AUTHENTICATE = fromString("Proxy-Authenticate");
-
-    /**
-     * {@code Proxy-Authorization}/{@code proxy-authorization}
-     */
-    public static final HttpHeaderName PROXY_AUTHORIZATION = fromString("Proxy-Authorization");
-
-    /**
      * {@code Range}/{@code range}
      */
     public static final HttpHeaderName RANGE = fromString("Range");

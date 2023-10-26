@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.util.CoreUtils;
+import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.Arrays;

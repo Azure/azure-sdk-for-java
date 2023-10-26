@@ -3,7 +3,7 @@
 
 package com.generic.core.util.logging;
 
-import com.generic.core.util.CoreUtils;
+import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

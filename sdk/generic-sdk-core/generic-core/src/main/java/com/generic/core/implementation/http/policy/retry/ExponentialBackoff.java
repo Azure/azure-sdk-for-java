@@ -4,8 +4,7 @@
 package com.generic.core.implementation.http.policy.retry;
 
 import com.generic.core.http.policy.retry.ExponentialBackoffOptions;
-import com.generic.core.http.policy.retry.RetryStrategy;
-import com.generic.core.util.CoreUtils;
+import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.logging.ClientLogger;
 

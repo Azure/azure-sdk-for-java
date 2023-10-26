@@ -43,7 +43,7 @@ public final class RestProxyUtils {
      * @return the requests body as BinaryData on successful validation.
      */
     public static BinaryData validateLengthSync(final HttpRequest request) {
-        final BinaryData binaryData = request.getBodyAsBinaryData();
+        final BinaryData binaryData = request.getBody();
         if (binaryData == null) {
             return null;
         }

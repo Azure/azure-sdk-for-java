@@ -9,7 +9,7 @@ import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.policy.redirect.RedirectStrategy;
-import com.generic.core.util.CoreUtils;
+import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.net.HttpURLConnection;

@@ -5,13 +5,12 @@ package com.generic.core.http.models;
 
 import com.generic.core.annotation.Fluent;
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.client.HttpClientProvider;
-import com.generic.core.models.ClientOptions;
 import com.generic.core.models.Header;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.time.Duration;
+import java.util.Collections;
 
 /**
  * General configuration options for {@link HttpClient HttpClients}.
@@ -19,7 +18,7 @@ import java.time.Duration;
  * {@link HttpClient} implementations may not support all configuration options in this class.
  */
 @Fluent
-public final class HttpClientOptions extends ClientOptions {
+public final class HttpClientOptions {
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
     private static final Duration DEFAULT_WRITE_TIMEOUT = Duration.ofSeconds(60);
@@ -38,7 +37,6 @@ public final class HttpClientOptions extends ClientOptions {
     private Duration readTimeout;
     private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
-    private Class<? extends HttpClientProvider> httpClientProvider;
 
     /**
      * Creates a new instance of {@link HttpClientOptions}.
@@ -53,11 +51,88 @@ public final class HttpClientOptions extends ClientOptions {
     //     return this;
     // }
 
-    @Override
-    public HttpClientOptions setHeaders(Iterable<Header> headers) {
-        super.setHeaders(headers);
+    private Iterable<Header> headers;
 
+    private String applicationId;
+
+    /**
+     * Gets the application ID.
+     *
+     * @return The application ID.
+     */
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    // /**
+    //  * Sets the application ID.
+    //  * <p>
+    //  * The {@code applicationId} is used to configure {@link UserAgentPolicy} for telemetry/monitoring purposes.
+    //  * <p>
+    //  * <!-- See <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Generic Core: Telemetry -->
+    //  * <!-- policy</a> for additional information. -->
+    //  *
+    //  * <p><strong>Code Samples</strong></p>
+    //  *
+    //  * <p>Create ClientOptions with application ID 'myApplicationId'</p>
+    //  *
+    //  * <!-- src_embed com.azure.core.util.ClientOptions.setApplicationId#String -->
+    //  * <!-- end com.azure.core.util.ClientOptions.setApplicationId#String -->
+    //  *
+    //  * @param applicationId The application ID.
+    //  *
+    //  * @return The updated ClientOptions object.
+    //  *
+    //  * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
+    //  * length.
+    //  */
+    public HttpClientOptions setApplicationId(String applicationId) {
+        return null;
+        //     if (!CoreUtils.isNullOrEmpty(applicationId)) {
+        //         if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
+        //             throw LOGGER.logThrowableAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
+        //         } else if (applicationId.contains(" ")) {
+        //             throw LOGGER.logThrowableAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
+        //         }
+        //     }
+        //
+        //     this.applicationId = applicationId;
+        //
+        //     return this;
+    }
+
+    /**
+     * Sets the {@link Header Headers}.
+     * <p>
+     * The passed headers are applied to each request sent with the client.
+     * <p>
+     * This overwrites all previously set headers.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create ClientOptions with Header 'myCustomHeader':'myStaticValue'</p>
+     *
+     * <!-- src_embed com.azure.core.util.ClientOptions.setHeaders#Iterable -->
+     * <!-- end com.azure.core.util.ClientOptions.setHeaders#Iterable -->
+     *
+     * @param headers The headers.
+     * @return The updated {@link HttpClientOptions} object.
+     */
+    public HttpClientOptions setHeaders(Iterable<Header> headers) {
+        this.headers = headers;
         return this;
+    }
+
+    /**
+     * Gets the {@link Header Headers}.
+     *
+     * @return The {@link Header Headers}, if headers weren't set previously an empty list is returned.
+     */
+    public Iterable<Header> getHeaders() {
+        if (headers == null) {
+            return Collections.emptyList();
+        }
+        return headers;
     }
 
     /**
@@ -312,34 +387,6 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public Duration getConnectionIdleTimeout() {
         return getTimeout(connectionIdleTimeout, DEFAULT_CONNECTION_IDLE_TIMEOUT);
-    }
-
-    /**
-     * Sets the type of the {@link HttpClientProvider} implementation that should be used to construct an instance of
-     * {@link HttpClient}.
-     *
-     * If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} will
-     * be used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
-     * {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
-     * attempting to create an instance of {@link HttpClient}.
-     *
-     * @param httpClientProvider The {@link HttpClientProvider} implementation used to create an instance of
-     * {@link HttpClient}.
-     * @return The updated HttpClientOptions object.
-     */
-    public HttpClientOptions setHttpClientProvider(Class<? extends HttpClientProvider> httpClientProvider) {
-        this.httpClientProvider = httpClientProvider;
-        return this;
-    }
-
-    /**
-     * Gets type of the {@link HttpClientProvider} implementation that should be used to construct an instance of
-     * {@link HttpClient}.
-     *
-     * @return The {@link HttpClientProvider} implementation used to create an instance of {@link HttpClient}.
-     */
-    public Class<? extends HttpClientProvider> getHttpClientProvider() {
-        return httpClientProvider;
     }
 
     private static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {

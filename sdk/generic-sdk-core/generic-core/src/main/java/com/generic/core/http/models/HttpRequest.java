@@ -140,7 +140,7 @@ public class HttpRequest {
      *
      * @return the content to be sent
      */
-    public BinaryData getBodyAsBinaryData() {
+    public BinaryData getBody() {
         return body;
     }
 

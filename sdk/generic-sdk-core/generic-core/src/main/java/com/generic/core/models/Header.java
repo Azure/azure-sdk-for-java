@@ -3,7 +3,7 @@
 
 package com.generic.core.models;
 
-import com.generic.core.util.CoreUtils;
+import com.generic.core.implementation.util.CoreUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

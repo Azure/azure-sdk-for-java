@@ -5,18 +5,12 @@ package com.generic.core.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.List;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation for the type that will be used to deserialize the return value of a REST API response. Supported values
- * are:
- *
- * <ol>
- *     <li>{@link List List&lt;T&gt;} where {@code T} can be one of the four values above.</li>
- * </ol>
+ * sn
  */
 @Retention(RUNTIME)
 @Target(METHOD)

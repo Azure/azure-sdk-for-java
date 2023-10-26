@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy.retry;
+package com.generic.core.implementation.http.policy.retry;
 
 import com.generic.core.http.models.HttpResponse;
 

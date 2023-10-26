@@ -15,7 +15,7 @@
   <groupId>com.generic</groupId>
   <artifactId>generic-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version> <!-- {x-version-update;com.generic:generic-core;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-core;current} -->
 
   <name>Java Core Library for building client libraries for accessing web services.</name>
   <description>This library contains core types for building Java client libraries for accessing web services.</description>
@@ -77,7 +77,7 @@
     <dependency>
       <groupId>com.generic</groupId>
       <artifactId>generic-json</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.generic:generic-core-json;dependency} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-core-json;dependency} -->
     </dependency>
   </dependencies>
 

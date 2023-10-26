@@ -3,6 +3,8 @@
 
 package com.generic.core.http.policy.logging;
 
+import com.generic.core.implementation.http.policy.logging.HttpRequestLogger;
+import com.generic.core.implementation.http.policy.logging.HttpResponseLogger;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.Arrays;

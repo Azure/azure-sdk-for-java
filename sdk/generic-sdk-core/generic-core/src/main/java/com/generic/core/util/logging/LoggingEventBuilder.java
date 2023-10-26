@@ -4,7 +4,7 @@
 package com.generic.core.util.logging;
 
 import com.generic.core.annotation.Fluent;
-import com.generic.core.util.CoreUtils;
+import com.generic.core.implementation.util.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;

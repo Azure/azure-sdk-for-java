@@ -22,9 +22,10 @@ module com.generic.core {
     exports com.generic.core.http.policy.redirect;
     exports com.generic.core.http.policy.retry;
 
-    exports com.generic.core.util;
     exports com.generic.core.util.logging;
     exports com.generic.core.util.serializer;
     exports com.generic.core.implementation.http.policy.retry;
     exports com.generic.core.implementation.http.policy.redirect;
+    exports com.generic.core.implementation.util;
+    exports com.generic.core.implementation.http.policy.logging;
 }

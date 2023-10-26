@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy.logging;
+package com.generic.core.implementation.http.policy.logging;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
@@ -9,11 +9,13 @@ import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
+import com.generic.core.http.policy.logging.HttpLogDetailLevel;
+import com.generic.core.http.policy.logging.HttpLogOptions;
 import com.generic.core.models.Context;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
 import com.generic.core.models.BinaryData;
-import com.generic.core.util.CoreUtils;
+import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.logging.LogLevel;
 import com.generic.core.util.logging.LoggingEventBuilder;
@@ -126,7 +128,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private HttpResponseLoggingContext getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
-        HttpPipelineCallContext callContext) {
+                                                                 HttpPipelineCallContext callContext) {
         return new HttpResponseLoggingContext(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
             callContext.getContext(),
             getRequestRetryCount(callContext.getContext()));
@@ -181,7 +183,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private void logBody(HttpRequest request, int contentLength, LoggingEventBuilder logBuilder, ClientLogger logger, String contentType) {
-        BinaryData data = request.getBodyAsBinaryData();
+        BinaryData data = request.getBody();
         // BinaryDataContent content = BinaryDataHelper.getContent(data);
         // if (content instanceof StringContent
         //     || content instanceof ByteBufferContent

@@ -4,7 +4,6 @@
 package com.generic.core.implementation.http.policy.retry;
 
 import com.generic.core.http.policy.retry.FixedDelayOptions;
-import com.generic.core.http.policy.retry.RetryStrategy;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.time.Duration;

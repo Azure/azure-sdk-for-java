@@ -18,7 +18,7 @@ import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
-import com.generic.core.util.CoreUtils;
+import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.serializer.JsonSerializer;
 
 import java.io.InputStream;

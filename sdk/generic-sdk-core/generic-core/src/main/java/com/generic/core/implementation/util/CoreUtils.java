@@ -1,33 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.util;
+package com.generic.core.implementation.util;
 
-import com.generic.core.http.policy.logging.HttpLogOptions;
-import com.generic.core.models.ClientOptions;
-import com.generic.core.util.logging.ClientLogger;
-import com.generic.core.util.logging.LogLevel;
+import com.generic.core.http.Response;
+import com.generic.core.http.SimpleResponse;
+import com.generic.core.http.models.HttpRequest;
+import com.generic.core.models.Headers;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
-import java.util.UUID;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * This class contains utility methods useful for building client libraries.
@@ -129,4 +113,11 @@ public final class CoreUtils {
                 return String.join(delimiter, values);
         }
     }
+
+    public static <T> Response<T> createResponse(HttpRequest request, int statusCode, Headers headers, T value) {
+
+        return new SimpleResponse<>(request, statusCode, headers, value);
+
+    }
+
 }

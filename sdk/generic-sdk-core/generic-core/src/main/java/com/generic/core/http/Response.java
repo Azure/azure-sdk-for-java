@@ -39,9 +39,4 @@ public interface Response<T> {
      * @return The deserialized value of the HTTP response.
      */
     T getValue();
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    static Response createResponse(HttpRequest request, int statusCode, Headers headers, Object value) {
-        return new SimpleResponse(request, statusCode, headers, value);
-    }
 }

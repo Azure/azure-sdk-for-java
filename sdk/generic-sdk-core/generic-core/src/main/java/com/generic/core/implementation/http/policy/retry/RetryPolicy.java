@@ -8,12 +8,11 @@ import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelineCallContext;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.policy.logging.HttpLoggingPolicy;
+import com.generic.core.implementation.http.policy.logging.HttpLoggingPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.http.policy.retry.RetryOptions;
-import com.generic.core.http.policy.retry.RetryStrategy;
 import com.generic.core.models.Headers;
-import com.generic.core.util.CoreUtils;
+import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.logging.LoggingEventBuilder;
 

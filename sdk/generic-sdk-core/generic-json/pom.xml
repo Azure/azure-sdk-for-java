@@ -15,7 +15,7 @@
   <groupId>com.generic</groupId>
   <artifactId>generic-json</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version> <!-- {x-version-update;com.generic:generic-core-json;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-core-json;current} -->
 
   <name>Java JSON Library for reading and writing JSON</name>
   <description>This package provides interfaces for reading and writing JSON.</description>
