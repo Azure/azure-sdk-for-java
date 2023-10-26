@@ -8,17 +8,17 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The CustomContext model. */
+/** The custom context which will be sent to the target. */
 @Fluent
 public final class CustomContext {
     /*
-     * Dictionary of <string>
+     * Custom context VoiP headers
      */
     @JsonProperty(value = "voipHeaders")
     private Map<String, String> voipHeaders;
 
     /*
-     * Dictionary of <string>
+     * Custom context SIP headers
      */
     @JsonProperty(value = "sipHeaders")
     private Map<String, String> sipHeaders;
@@ -27,7 +27,7 @@ public final class CustomContext {
     public CustomContext() {}
 
     /**
-     * Get the voipHeaders property: Dictionary of &lt;string&gt;.
+     * Get the voipHeaders property: Custom context VoiP headers.
      *
      * @return the voipHeaders value.
      */
@@ -36,7 +36,7 @@ public final class CustomContext {
     }
 
     /**
-     * Set the voipHeaders property: Dictionary of &lt;string&gt;.
+     * Set the voipHeaders property: Custom context VoiP headers.
      *
      * @param voipHeaders the voipHeaders value to set.
      * @return the CustomContext object itself.
@@ -47,7 +47,7 @@ public final class CustomContext {
     }
 
     /**
-     * Get the sipHeaders property: Dictionary of &lt;string&gt;.
+     * Get the sipHeaders property: Custom context SIP headers.
      *
      * @return the sipHeaders value.
      */
@@ -56,7 +56,7 @@ public final class CustomContext {
     }
 
     /**
-     * Set the sipHeaders property: Dictionary of &lt;string&gt;.
+     * Set the sipHeaders property: Custom context SIP headers.
      *
      * @param sipHeaders the sipHeaders value to set.
      * @return the CustomContext object itself.
