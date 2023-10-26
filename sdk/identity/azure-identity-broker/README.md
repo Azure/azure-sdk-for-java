@@ -2,7 +2,7 @@
 
 The Azure Identity Brokered Authentication library extends the Azure Identity library to provide brokdered authentication support. This options class can be used to create an `InteractiveBrowserCredential` capable of using the system authentication broker in lieu of the web browser when available.
 
-[Source code][source] | [API reference documentation][javadoc] | [Azure AD documentation][azuread_doc]
+[Source code][source] | [API reference documentation][javadoc] | [Microsoft Entra ID documentation][entraid_doc]
 
 ## Getting started
 
@@ -96,7 +96,7 @@ public static long getWindowHandle(Stage stage) {
 <!-- LINKS -->
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
 [azure_sub]: https://azure.microsoft.com/free/
-[azuread_doc]: https://learn.microsoft.com/azure/active-directory/
+[entraid_doc]: https://learn.microsoft.com/azure/active-directory/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
