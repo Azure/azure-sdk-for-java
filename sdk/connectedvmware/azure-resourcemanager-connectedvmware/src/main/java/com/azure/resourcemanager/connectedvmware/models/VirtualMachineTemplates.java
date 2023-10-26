@@ -17,20 +17,6 @@ public interface VirtualMachineTemplates {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualMachineTemplate.
-     */
-    VirtualMachineTemplate getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName);
-
-    /**
-     * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,18 +27,18 @@ public interface VirtualMachineTemplates {
         String resourceGroupName, String virtualMachineTemplateName, Context context);
 
     /**
-     * Deletes an virtual machine template.
+     * Gets a virtual machine template.
      *
-     * <p>Implements virtual machine template DELETE method.
+     * <p>Implements virtual machine template GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the virtualMachineTemplate.
      */
-    void delete(String resourceGroupName, String virtualMachineTemplateName, Boolean force);
+    VirtualMachineTemplate getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName);
 
     /**
      * Deletes an virtual machine template.
