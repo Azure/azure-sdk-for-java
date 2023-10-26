@@ -32,15 +32,13 @@ public class JobAdapter {
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
         List<RouterWorkerSelector> workerSelectors = createJobOptions.getRequestedWorkerSelectors();
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
-        Map<String, String> notes = jobNotes != null ? jobNotes.stream()
-            .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : null;
 
         return new RouterJob()
             .setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
             .setQueueId(createJobOptions.getQueueId())
             .setLabels(labels)
-            .setNotes(notes)
+            .setNotes(jobNotes)
             .setPriority(createJobOptions.getPriority())
             .setDispositionCode(createJobOptions.getDispositionCode())
             .setRequestedWorkerSelectors(workerSelectors)

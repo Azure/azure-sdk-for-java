@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter;
 import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.RouterChannel;
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterQueueAssignment;
 import com.azure.communication.jobrouter.models.RouterWorker;
@@ -13,7 +14,9 @@ import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,10 +58,10 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
             }
         };
 
-        ChannelConfiguration channelConfiguration = new ChannelConfiguration(1);
-        Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {
+        RouterChannel channel = new RouterChannel("router-channel", 1);
+        List<RouterChannel> channels = new ArrayList<>() {
             {
-                put("channel1", channelConfiguration);
+                add(channel);
             }
         };
 
@@ -72,7 +75,7 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
             .setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(false)
-            .setChannelConfigurations(channelConfigurations)
+            .setChannels(channels)
             .setQueueAssignments(queueAssignments);
 
         // Action

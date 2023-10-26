@@ -24,6 +24,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 public class ExceptionPolicyExample {
@@ -52,14 +53,14 @@ public class ExceptionPolicyExample {
         /**
          * Defining exception rule combining the trigger and action.
          */
-        ExceptionRule exceptionRule = new ExceptionRule(exceptionTrigger,
-            Collections.singletonMap("CancelJobActionWhenQueueIsFull", exceptionAction));
+        ExceptionRule exceptionRule = new ExceptionRule("queue-length-exception-rule", exceptionTrigger,
+            Arrays.asList(exceptionAction));
 
         /**
          * Create the exception policy.
          */
         CreateExceptionPolicyOptions createExceptionPolicyOptions = new CreateExceptionPolicyOptions(exceptionPolicyId,
-            Collections.singletonMap("TriggerJobCancellationWhenQueueLenIs10", exceptionRule));
+            Arrays.asList(exceptionRule));
         routerAdminClient.createExceptionPolicy(createExceptionPolicyOptions);
 
         System.out.printf("Successfully created exception policy with id: %s %n", exceptionPolicyId);
@@ -69,11 +70,11 @@ public class ExceptionPolicyExample {
          */
         WaitTimeExceptionTrigger waitTimeExceptionTrigger = new WaitTimeExceptionTrigger(60);
 
-        ExceptionRule waitTimeExceptionRule = new ExceptionRule(waitTimeExceptionTrigger,
-            Collections.singletonMap("CancelJobActionWhenJobInQFor1Hr", exceptionAction));
+        ExceptionRule waitTimeExceptionRule = new ExceptionRule("wait-time-exception-rule", waitTimeExceptionTrigger,
+            Arrays.asList(exceptionAction));
 
         ExceptionPolicy exceptionPolicy = new ExceptionPolicy()
-            .setExceptionRules(Collections.singletonMap("CancelJobWhenInQueueFor1Hr", waitTimeExceptionRule));
+            .setExceptionRules(Arrays.asList(waitTimeExceptionRule));
 
         /**
          * Update policy using routerClient.
@@ -97,12 +98,12 @@ public class ExceptionPolicyExample {
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
             .buildClient();
 
-        PagedIterable<ExceptionPolicyItem> exceptionPolicyPagedIterable = routerAdminClient.listExceptionPolicies();
+        PagedIterable<ExceptionPolicy> exceptionPolicyPagedIterable = routerAdminClient.listExceptionPolicies();
         exceptionPolicyPagedIterable.iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getElements().forEach(exceptionPolicy -> {
-                System.out.printf("Retrieved exception policy with id %s %n.", exceptionPolicy.getExceptionPolicy().getId());
+                System.out.printf("Retrieved exception policy with id %s %n.", exceptionPolicy.getId());
             });
         });
     }

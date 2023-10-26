@@ -43,9 +43,9 @@ public class ExceptionPolicyLiveTests extends JobRouterTestBase {
 
         ExceptionRule exceptionRule = new ExceptionRule("CancelledDueToMaxQueueLengthReached", new QueueLengthExceptionTrigger(1), exceptionActions);
 
-        Map<String, ExceptionRule> exceptionRules = new HashMap<String, ExceptionRule>() {
+        List<ExceptionRule> exceptionRules = new ArrayList<>() {
             {
-                put(exceptionPolicyId, exceptionRule);
+                add(exceptionRule);
             }
         };
 
