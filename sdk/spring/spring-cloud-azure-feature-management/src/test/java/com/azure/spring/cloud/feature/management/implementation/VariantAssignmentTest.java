@@ -29,9 +29,8 @@ import com.azure.spring.cloud.feature.management.implementation.models.GroupAllo
 import com.azure.spring.cloud.feature.management.implementation.models.UserAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantReference;
 import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
-import com.azure.spring.cloud.feature.management.targeting.TargetingContext;
-import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
+import com.azure.spring.cloud.feature.management.targeting.TargetingFilterContext;
 import com.azure.spring.cloud.feature.management.testobjects.DiscountBanner;
 
 public class VariantAssignmentTest {
@@ -47,32 +46,28 @@ public class VariantAssignmentTest {
     @Mock
     VariantProperties variantPropertiesMock;
 
-    private TargetingContextAccessor contextAccessor;
-
     private TargetingEvaluationOptions evaluationOptions;
+
+    private TargetingFilterContext targetingContext;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        contextAccessor = new TargetingContextAccessor() {
+        targetingContext = new TargetingFilterContext();
+        targetingContext.setUserId("test-user-id");
+        List<String> groups = new ArrayList<String>();
+        groups.add("test-group-id1");
+        groups.add("test-group-id2");
+        targetingContext.setGroups(groups);
 
-            @Override
-            public void configureTargetingContext(TargetingContext context) {
-                context.setUserId("test-user-id");
-                List<String> groups = new ArrayList<String>();
-                groups.add("test-group-id1");
-                groups.add("test-group-id2");
-                context.setGroups(groups);
-            }
-        };
         evaluationOptions = new TargetingEvaluationOptions();
         evaluationOptions.setIgnoreCase(true);
-        variantAssignment = new VariantAssignment(contextAccessor, evaluationOptions, objectProviderMock);
+        variantAssignment = new VariantAssignment(evaluationOptions, objectProviderMock);
     }
 
     @Test
     public void noAllocation() {
-        assertNull(variantAssignment.assignVariant(new Allocation()));
+        assertNull(variantAssignment.assignVariant(new Allocation(), targetingContext));
     }
 
     @Test
@@ -87,14 +82,14 @@ public class VariantAssignmentTest {
         usersAllocations.put("0", userAllocation);
         allocation.setUsers(usersAllocations);
 
-        assertNull(variantAssignment.assignVariant(allocation));
+        assertNull(variantAssignment.assignVariant(allocation, targetingContext));
 
         users.put("1", "test-user-id");
         userAllocation.setUsers(users);
         usersAllocations.put("0", userAllocation);
         allocation.setUsers(usersAllocations);
-        
-        String assignedVariant = variantAssignment.assignVariant(allocation);
+
+        String assignedVariant = variantAssignment.assignVariant(allocation, targetingContext);
         assertEquals("small", assignedVariant);
         assertNull(variantAssignment.getVariant(null, assignedVariant).block());
 
@@ -103,7 +98,7 @@ public class VariantAssignmentTest {
         small.setName("small");
         small.setConfigurationValue("1");
         variantReferences.add(small);
-        
+
         assertNotNull(variantAssignment.getVariant(variantReferences, assignedVariant).block());
     }
 
@@ -119,14 +114,14 @@ public class VariantAssignmentTest {
         groupAllocations.put("0", groupAllocation);
         allocation.setGroups(groupAllocations);
 
-        assertNull(variantAssignment.assignVariant(allocation));
+        assertNull(variantAssignment.assignVariant(allocation, targetingContext));
 
         groups.put("1", "test-group-id2");
         groupAllocation.setGroups(groups);
         groupAllocations.put("0", groupAllocation);
         allocation.setGroups(groupAllocations);
-        
-        String assignedVariant = variantAssignment.assignVariant(allocation);
+
+        String assignedVariant = variantAssignment.assignVariant(allocation, targetingContext);
         assertEquals("small", assignedVariant);
         assertNull(variantAssignment.getVariant(null, assignedVariant).block());
 
@@ -169,7 +164,7 @@ public class VariantAssignmentTest {
         assertEquals(1, ((DiscountBanner) assignedVariant.getValue()).getSize());
         assertEquals("Azure", ((DiscountBanner) assignedVariant.getValue()).getColor());
     }
-    
+
     @Test
     public void getVariantTestNoProperties() {
         Map<Integer, VariantReference> variants = new LinkedHashMap<Integer, VariantReference>();
@@ -184,10 +179,12 @@ public class VariantAssignmentTest {
 
         List<VariantProperties> properties = new ArrayList<>();
 
-
         when(objectProviderMock.stream()).thenReturn(properties.stream());
-        
-        Exception exception = assertThrows(FeatureManagementException.class, () -> variantAssignment.getVariant(variants.values(), "Small").block());
-        assertEquals("Failed to load getBanner. No ConfigurationProperties where found containing it.. Make sure it exists and is publicly accessible.", exception.getMessage());
+
+        Exception exception = assertThrows(FeatureManagementException.class,
+            () -> variantAssignment.getVariant(variants.values(), "Small").block());
+        assertEquals(
+            "Failed to load getBanner. No ConfigurationProperties where found containing it.. Make sure it exists and is publicly accessible.",
+            exception.getMessage());
     }
 }

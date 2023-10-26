@@ -21,7 +21,6 @@ import com.azure.spring.cloud.feature.management.implementation.models.Percentil
 import com.azure.spring.cloud.feature.management.implementation.models.UserAllocation;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantReference;
 import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
-import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 import com.azure.spring.cloud.feature.management.targeting.TargetingFilterContext;
 
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
  */
 public final class VariantAssignment {
 
-    private final TargetingContextAccessor contextAccessor;
-
     private final TargetingEvaluationOptions evaluationOptions;
 
     private final ObjectProvider<VariantProperties> propertiesProvider;
@@ -45,9 +42,7 @@ public final class VariantAssignment {
      * @param contextAccessor Context for evaluating the users/groups. 
      * @param options enables customization of the filter.
      */
-    public VariantAssignment(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options,
-        ObjectProvider<VariantProperties> propertiesProvider) {
-        this.contextAccessor = contextAccessor;
+    public VariantAssignment(TargetingEvaluationOptions options, ObjectProvider<VariantProperties> propertiesProvider) {
         this.evaluationOptions = options;
         this.propertiesProvider = propertiesProvider;
     }
@@ -58,15 +53,7 @@ public final class VariantAssignment {
      * @param variants List of the possible variants.
      * @return Variant object containing an instance of the type
      */
-    public String assignVariant(Allocation allocation) {
-        TargetingFilterContext targetingContext = new TargetingFilterContext();
-
-        if (contextAccessor == null) {
-            throw new FeatureManagementException("No Targeting Filter Context found to assign variant.");
-        }
-
-        contextAccessor.configureTargetingContext(targetingContext);
-
+    public String assignVariant(Allocation allocation, TargetingFilterContext targetingContext) {
         String targetedUser = targetingContext.getUserId();
 
         if (targetedUser != null) {

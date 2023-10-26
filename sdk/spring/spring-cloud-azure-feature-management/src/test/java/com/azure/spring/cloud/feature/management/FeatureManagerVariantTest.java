@@ -30,6 +30,7 @@ import com.azure.spring.cloud.feature.management.implementation.models.Feature;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantReference;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
+import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 
 /**
@@ -39,6 +40,8 @@ import com.azure.spring.cloud.feature.management.targeting.TargetingContextAcces
 public class FeatureManagerVariantTest {
 
     private FeatureManager featureManager;
+
+    private FeatureManager contextualFeatureManager;
 
     @Mock
     private ApplicationContext context;
@@ -52,13 +55,18 @@ public class FeatureManagerVariantTest {
     @Mock
     private TargetingContextAccessor contextAccessorMock;
 
+    @Mock
+    private ContextualTargetingContextAccessor contextualAccessorMock;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
 
         featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, contextAccessorMock,
-            null, null);
+            null, null, null);
+        contextualFeatureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null,
+            contextualAccessorMock, null, null);
     }
 
     @AfterEach
@@ -88,7 +96,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void noAssigner() {
-        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null, null);
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null, null,
+            null);
 
         HashMap<String, Feature> features = new HashMap<>();
         Feature feature = new Feature();
@@ -188,6 +197,10 @@ public class FeatureManagerVariantTest {
         Variant result = featureManager.getVariant("No Assigner");
         assertEquals(result.getName(), "small");
         assertEquals(result.getValue(), 1);
+
+        result = featureManager.getVariantAsync("No Assigner").block();
+        assertEquals(result.getName(), "small");
+        assertEquals(result.getValue(), 1);
     }
 
     @Test
@@ -266,6 +279,10 @@ public class FeatureManagerVariantTest {
         when(featureManagementPropertiesMock.getFeatureManagement()).thenReturn(features);
         when(context.getBean(Mockito.eq("AlwaysOn"))).thenReturn(new AlwaysOnFilter());
         Variant result = featureManager.getVariant("No Assigner");
+        assertEquals(result.getName(), "small");
+        assertEquals(result.getValue(), 1);
+        
+        result = contextualFeatureManager.getVariant("No Assigner", false);
         assertEquals(result.getName(), "small");
         assertEquals(result.getValue(), 1);
     }
@@ -378,7 +395,6 @@ public class FeatureManagerVariantTest {
 
         assertTrue(featureManager.isEnabledAsync("On").block());
     }
-    
 
     @Test
     public void allOnVariantOverrideInvalidVariant() {
@@ -404,7 +420,7 @@ public class FeatureManagerVariantTest {
 
         assertTrue(featureManager.isEnabledAsync("On").block());
     }
-    
+
     @Test
     public void noFiltersButVariants() {
         HashMap<String, Feature> features = new HashMap<>();
@@ -423,7 +439,6 @@ public class FeatureManagerVariantTest {
 
         assertTrue(featureManager.isEnabledAsync("On").block());
     }
-
 
     private Map<String, VariantReference> createVariants() {
         Map<String, VariantReference> variants = new HashMap<>();
