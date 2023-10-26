@@ -261,7 +261,7 @@
         {
           "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? (com\\.azure\\.containers\\.containerregistry\\.models.*|com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*|com\\.azure\\.security\\.keyvault\\.(administration|certificateskeys|keys\\.cryptography)\\.models.*)",
+          "old": ".*? (com\\.azure\\.containers\\.containerregistry\\.models.*|com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*|com\\.azure\\.security\\.keyvault\\.(administration|certificateskeys|keys|keys\\.cryptography)\\.models.*)",
           "description": ".*com.fasterxml.jackson.*",
           "justification": "Removing Jackson annotations from ACR, KeyVault, and Search in transition to stream-style."
         },
