@@ -97,6 +97,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.createTable#String -->
  *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
+ *
  * <hr/>
  *
  * <h3>Delete a Table</h3>
@@ -113,6 +115,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.deleteTable#String -->
  *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
+ *
  * <hr/>
  *
  * <h3>Get a {@link TableClient}</h3>
@@ -128,6 +132,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * System.out.printf&#40;&quot;Table with name '%s' was retrieved.&quot;, tableClient.getTableName&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.getTableClient#String -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
  *
  * <hr/>
  *
@@ -162,6 +168,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context -->
  *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
+ *
  * <hr/>
  *
  * <h3>Get Table Properties</h3>
@@ -178,6 +186,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * System.out.print&#40;&quot;Retrieved service properties successfully.&quot;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.getProperties -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
  *
  * <hr/>
  *
@@ -207,6 +217,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
  *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
+ *
  * <hr/>
  *
  * <h3>Get Table Statistics</h3>
@@ -223,6 +235,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * System.out.print&#40;&quot;Retrieved service statistics successfully.&quot;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.getStatistics -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
  *
  * @see TableServiceClientBuilder
  * @see com.azure.data.tables

@@ -92,6 +92,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.createTable#String -->
  *
+ * <em><strong>Note: </strong>for synchronous sample, refer to {@link TableServiceClient synchronous client}.</em>
+ *
  * <hr/>
  *
  * <h3>Delete a Table</h3>
@@ -109,6 +111,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.deleteTable#String -->
  *
+ * <em><strong>Note: </strong>for synchronous sample, refer to {@link TableServiceClient synchronous client}</em>
+ *
  * <hr/>
  *
  * <h3>Get a {@link TableServiceAsyncClient}</h3>
@@ -124,6 +128,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * System.out.printf&#40;&quot;Table with name '%s' was retrieved.&quot;, tableAsyncClient.getTableName&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.getTableClient#String -->
+ *
+ * <em><strong>Note: </strong>for synchronous sample, refer to {@link TableServiceClient synchronous client}</em>
  *
  * <hr/>
  *
@@ -151,6 +157,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions -->
  *
+ * <em><strong>Note: </strong>for synchronous sample, refer to {@link TableServiceClient synchronous client}</em>
+ *
  * <hr/>
  *
  * <h3>Get Table Properties</h3>
@@ -167,6 +175,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  *     .subscribe&#40;properties -&gt; System.out.print&#40;&quot;Retrieved service properties successfully.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.getProperties -->
+ *
+ * <em><strong>Note: </strong>for synchronous sample, refer to {@link TableServiceClient synchronous client}</em>
  *
  * <hr/>
  *
@@ -196,6 +206,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties -->
  *
+ * <em><strong>Note: </strong>for synchronous sample, refer to {@link TableServiceClient synchronous client}</em>
+ *
  * <hr/>
  *
  * <h3>Get Table Statistics</h3>
@@ -212,6 +224,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  *     .subscribe&#40;statistics -&gt; System.out.print&#40;&quot;Retrieved service statistics successfully.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.getStatistics -->
+ *
+ * <em><strong>Note: </strong>for synchronous sample, refer to {@link TableServiceClient synchronous client}</em>
  *
  * @see TableServiceClientBuilder
  * @see com.azure.data.tables
