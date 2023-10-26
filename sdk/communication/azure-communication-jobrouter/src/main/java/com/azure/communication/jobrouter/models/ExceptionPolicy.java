@@ -27,8 +27,7 @@ public final class ExceptionPolicy {
     private String name;
 
     /*
-     * (Optional) A dictionary collection of exception rules on the exception policy.
-     * Key is the Id of each exception rule.
+     * (Optional) A collection of exception rules on the exception policy.
      */
     @Generated
     @JsonProperty(value = "exceptionRules")
@@ -71,8 +70,7 @@ public final class ExceptionPolicy {
     }
 
     /**
-     * Get the exceptionRules property: (Optional) A dictionary collection of exception rules on the exception policy.
-     * Key is the Id of each exception rule.
+     * Get the exceptionRules property: (Optional) A collection of exception rules on the exception policy.
      *
      * @return the exceptionRules value.
      */
@@ -99,8 +97,7 @@ public final class ExceptionPolicy {
     }
 
     /**
-     * Set the exceptionRules property: (Optional) A dictionary collection of exception rules on the exception policy.
-     * Key is the Id of each exception rule.
+     * Set the exceptionRules property: (Optional) A collection of exception rules on the exception policy.
      *
      * @param exceptionRules the exceptionRules value to set.
      * @return the ExceptionPolicy object itself.

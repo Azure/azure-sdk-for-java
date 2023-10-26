@@ -461,7 +461,7 @@ public final class JobRouterAsyncClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -471,8 +471,8 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> reclassifyJobWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.reclassifyJobWithResponseAsync(id, requestOptions);
+    Mono<Response<Void>> reclassifyJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.reclassifyJobWithResponseAsync(jobId, requestOptions);
     }
 
     /**
@@ -487,7 +487,7 @@ public final class JobRouterAsyncClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -497,8 +497,8 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelJobWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.cancelJobWithResponseAsync(id, requestOptions);
+    public Mono<Response<Void>> cancelJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.cancelJobWithResponseAsync(jobId, requestOptions);
     }
 
     /**
@@ -513,7 +513,7 @@ public final class JobRouterAsyncClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param completeJobOptions Request model for completing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -525,8 +525,8 @@ public final class JobRouterAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> completeJobWithResponse(
-            String id, BinaryData completeJobOptions, RequestOptions requestOptions) {
-        return this.serviceClient.completeJobWithResponseAsync(id, completeJobOptions, requestOptions);
+            String jobId, BinaryData completeJobOptions, RequestOptions requestOptions) {
+        return this.serviceClient.completeJobWithResponseAsync(jobId, completeJobOptions, requestOptions);
     }
 
     /**
@@ -543,7 +543,7 @@ public final class JobRouterAsyncClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param closeJobOptions Request model for closing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -555,8 +555,8 @@ public final class JobRouterAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeJobWithResponse(
-            String id, BinaryData closeJobOptions, RequestOptions requestOptions) {
-        return this.serviceClient.closeJobWithResponseAsync(id, closeJobOptions, requestOptions);
+            String jobId, BinaryData closeJobOptions, RequestOptions requestOptions) {
+        return this.serviceClient.closeJobWithResponseAsync(jobId, closeJobOptions, requestOptions);
     }
 
     /**
@@ -663,7 +663,7 @@ public final class JobRouterAsyncClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -673,8 +673,8 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getQueuePositionWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getQueuePositionWithResponseAsync(id, requestOptions);
+    public Mono<Response<BinaryData>> getQueuePositionWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.getQueuePositionWithResponseAsync(jobId, requestOptions);
     }
 
     /**
@@ -697,7 +697,7 @@ public final class JobRouterAsyncClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job to un-assign.
+     * @param jobId Id of the job to un-assign.
      * @param assignmentId Id of the assignment to un-assign.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -710,8 +710,8 @@ public final class JobRouterAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> unassignJobWithResponse(
-            String id, String assignmentId, RequestOptions requestOptions) {
-        return this.serviceClient.unassignJobWithResponseAsync(id, assignmentId, requestOptions);
+            String jobId, String assignmentId, RequestOptions requestOptions) {
+        return this.serviceClient.unassignJobWithResponseAsync(jobId, assignmentId, requestOptions);
     }
 
     /**
@@ -787,7 +787,7 @@ public final class JobRouterAsyncClient {
      * }
      * }</pre>
      *
-     * @param id Id of the queue to retrieve statistics.
+     * @param queueId Id of the queue to retrieve statistics.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -797,8 +797,8 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getQueueStatisticsWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getQueueStatisticsWithResponseAsync(id, requestOptions);
+    public Mono<Response<BinaryData>> getQueueStatisticsWithResponse(String queueId, RequestOptions requestOptions) {
+        return this.serviceClient.getQueueStatisticsWithResponseAsync(queueId, requestOptions);
     }
 
     /**
@@ -1281,7 +1281,7 @@ public final class JobRouterAsyncClient {
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1292,10 +1292,10 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelJob(String id) {
+    public Mono<Void> cancelJob(String jobId) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelJobWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
+        return cancelJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1414,7 +1414,7 @@ public final class JobRouterAsyncClient {
     /**
      * Gets a job's position details.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1425,10 +1425,10 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJobPositionDetails> getQueuePosition(String id) {
+    public Mono<RouterJobPositionDetails> getQueuePosition(String jobId) {
         // Generated convenience method for getQueuePositionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getQueuePositionWithResponse(id, requestOptions)
+        return getQueuePositionWithResponse(jobId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(RouterJobPositionDetails.class));
     }
@@ -1436,7 +1436,7 @@ public final class JobRouterAsyncClient {
     /**
      * Un-assign a job.
      *
-     * @param id Id of the job to un-assign.
+     * @param jobId Id of the job to un-assign.
      * @param assignmentId Id of the assignment to un-assign.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1448,10 +1448,10 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResult> unassignJob(String id, String assignmentId) {
+    public Mono<UnassignJobResult> unassignJob(String jobId, String assignmentId) {
         // Generated convenience method for unassignJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return unassignJobWithResponse(id, assignmentId, requestOptions)
+        return unassignJobWithResponse(jobId, assignmentId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(UnassignJobResult.class));
     }
@@ -1504,7 +1504,7 @@ public final class JobRouterAsyncClient {
     /**
      * Retrieves a queue's statistics.
      *
-     * @param id Id of the queue to retrieve statistics.
+     * @param queueId Id of the queue to retrieve statistics.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1515,10 +1515,10 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterQueueStatistics> getQueueStatistics(String id) {
+    public Mono<RouterQueueStatistics> getQueueStatistics(String queueId) {
         // Generated convenience method for getQueueStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getQueueStatisticsWithResponse(id, requestOptions)
+        return getQueueStatisticsWithResponse(queueId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(RouterQueueStatistics.class));
     }
@@ -1668,7 +1668,7 @@ public final class JobRouterAsyncClient {
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param cancelJobOptions Request model for cancelling job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1680,19 +1680,19 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelJob(String id, CancelJobOptions cancelJobOptions) {
+    public Mono<Void> cancelJob(String jobId, CancelJobOptions cancelJobOptions) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (cancelJobOptions != null) {
             requestOptions.setBody(BinaryData.fromObject(cancelJobOptions));
         }
-        return cancelJobWithResponse(id, requestOptions).flatMap(FluxUtil::toMono);
+        return cancelJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Completes an assigned job.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param completeJobOptions Request model for completing job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1704,17 +1704,17 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> completeJob(String id, CompleteJobOptions completeJobOptions) {
+    public Mono<Void> completeJob(String jobId, CompleteJobOptions completeJobOptions) {
         // Generated convenience method for completeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return completeJobWithResponse(id, BinaryData.fromObject(completeJobOptions), requestOptions)
+        return completeJobWithResponse(jobId, BinaryData.fromObject(completeJobOptions), requestOptions)
                 .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Closes a completed job.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param closeJobOptions Request model for closing job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1726,17 +1726,17 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> closeJob(String id, CloseJobOptions closeJobOptions) {
+    public Mono<Void> closeJob(String jobId, CloseJobOptions closeJobOptions) {
         // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return closeJobWithResponse(id, BinaryData.fromObject(closeJobOptions), requestOptions)
+        return closeJobWithResponse(jobId, BinaryData.fromObject(closeJobOptions), requestOptions)
                 .flatMap(FluxUtil::toMono);
     }
 
     /**
      * Un-assign a job.
      *
-     * @param id Id of the job to un-assign.
+     * @param jobId Id of the job to un-assign.
      * @param assignmentId Id of the assignment to un-assign.
      * @param unassignJobOptions Request body for unassign route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1749,13 +1749,14 @@ public final class JobRouterAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResult> unassignJob(String id, String assignmentId, UnassignJobOptions unassignJobOptions) {
+    public Mono<UnassignJobResult> unassignJob(
+            String jobId, String assignmentId, UnassignJobOptions unassignJobOptions) {
         // Generated convenience method for unassignJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (unassignJobOptions != null) {
             requestOptions.setBody(BinaryData.fromObject(unassignJobOptions));
         }
-        return unassignJobWithResponse(id, assignmentId, requestOptions)
+        return unassignJobWithResponse(jobId, assignmentId, requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(UnassignJobResult.class));
     }

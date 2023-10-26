@@ -182,7 +182,9 @@ public final class JobRouterAdministrationClient {
         DistributionPolicy distributionPolicy =
                 DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return this.serviceClient.upsertDistributionPolicyWithResponse(
-                createDistributionPolicyOptions.getDistributionPolicyId(), BinaryData.fromObject(distributionPolicy), requestOptions);
+                createDistributionPolicyOptions.getDistributionPolicyId(),
+                BinaryData.fromObject(distributionPolicy),
+                requestOptions);
     }
 
     /**
@@ -456,7 +458,9 @@ public final class JobRouterAdministrationClient {
                 ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(
                         createClassificationPolicyOptions);
         return this.serviceClient.upsertClassificationPolicyWithResponse(
-                createClassificationPolicyOptions.getClassificationPolicyId(), BinaryData.fromObject(classificationPolicy), requestOptions);
+                createClassificationPolicyOptions.getClassificationPolicyId(),
+                BinaryData.fromObject(classificationPolicy),
+                requestOptions);
     }
 
     /**
@@ -609,7 +613,7 @@ public final class JobRouterAdministrationClient {
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     id: String (Required)
+     *                     id: String (Optional)
      *                 }
      *             ]
      *         }
@@ -631,7 +635,7 @@ public final class JobRouterAdministrationClient {
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     id: String (Required)
+     *                     id: String (Optional)
      *                 }
      *             ]
      *         }
@@ -738,7 +742,9 @@ public final class JobRouterAdministrationClient {
         ExceptionPolicy exceptionPolicy =
                 ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return this.serviceClient.upsertExceptionPolicyWithResponse(
-                createExceptionPolicyOptions.getExceptionPolicyId(), BinaryData.fromObject(exceptionPolicy), requestOptions);
+                createExceptionPolicyOptions.getExceptionPolicyId(),
+                BinaryData.fromObject(exceptionPolicy),
+                requestOptions);
     }
 
     /**
@@ -775,7 +781,7 @@ public final class JobRouterAdministrationClient {
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     id: String (Required)
+     *                     id: String (Optional)
      *                 }
      *             ]
      *         }
@@ -825,7 +831,7 @@ public final class JobRouterAdministrationClient {
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     id: String (Required)
+     *                     id: String (Optional)
      *                 }
      *             ]
      *         }

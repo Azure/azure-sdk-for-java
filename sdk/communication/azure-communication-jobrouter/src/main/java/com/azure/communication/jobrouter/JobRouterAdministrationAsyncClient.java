@@ -172,7 +172,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateDistributionPolicyWithResponse(
             String distributionPolicyId, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertDistributionPolicyWithResponseAsync(distributionPolicyId, resource, requestOptions);
+        return this.serviceClient.upsertDistributionPolicyWithResponseAsync(
+                distributionPolicyId, resource, requestOptions);
     }
 
     /**
@@ -191,7 +192,9 @@ public final class JobRouterAdministrationAsyncClient {
         DistributionPolicy distributionPolicy =
                 DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(
-                createDistributionPolicyOptions.getDistributionPolicyId(), BinaryData.fromObject(distributionPolicy), requestOptions);
+                createDistributionPolicyOptions.getDistributionPolicyId(),
+                BinaryData.fromObject(distributionPolicy),
+                requestOptions);
     }
 
     /**
@@ -430,7 +433,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateClassificationPolicyWithResponse(
             String classificationPolicyId, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource, requestOptions);
+        return this.serviceClient.upsertClassificationPolicyWithResponseAsync(
+                classificationPolicyId, resource, requestOptions);
     }
 
     /**
@@ -450,7 +454,9 @@ public final class JobRouterAdministrationAsyncClient {
                 ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(
                         createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(
-                createClassificationPolicyOptions.getClassificationPolicyId(), BinaryData.fromObject(classificationPolicy), requestOptions);
+                createClassificationPolicyOptions.getClassificationPolicyId(),
+                BinaryData.fromObject(classificationPolicy),
+                requestOptions);
     }
 
     /**
@@ -604,7 +610,7 @@ public final class JobRouterAdministrationAsyncClient {
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     id: String (Required)
+     *                     id: String (Optional)
      *                 }
      *             ]
      *         }
@@ -626,7 +632,7 @@ public final class JobRouterAdministrationAsyncClient {
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     id: String (Required)
+     *                     id: String (Optional)
      *                 }
      *             ]
      *         }
@@ -735,7 +741,9 @@ public final class JobRouterAdministrationAsyncClient {
         ExceptionPolicy exceptionPolicy =
                 ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(
-                createExceptionPolicyOptions.getExceptionPolicyId(), BinaryData.fromObject(exceptionPolicy), requestOptions);
+                createExceptionPolicyOptions.getExceptionPolicyId(),
+                BinaryData.fromObject(exceptionPolicy),
+                requestOptions);
     }
 
     /**
@@ -755,7 +763,7 @@ public final class JobRouterAdministrationAsyncClient {
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     id: String (Required)
+     *                     id: String (Optional)
      *                 }
      *             ]
      *         }
@@ -806,7 +814,7 @@ public final class JobRouterAdministrationAsyncClient {
      *             }
      *             actions (Required): [
      *                  (Required){
-     *                     id: String (Required)
+     *                     id: String (Optional)
      *                 }
      *             ]
      *         }

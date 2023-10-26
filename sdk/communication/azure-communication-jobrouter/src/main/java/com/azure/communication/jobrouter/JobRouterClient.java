@@ -453,7 +453,7 @@ public final class JobRouterClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -463,8 +463,8 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> reclassifyJobWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.reclassifyJobWithResponse(id, requestOptions);
+    Response<Void> reclassifyJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.reclassifyJobWithResponse(jobId, requestOptions);
     }
 
     /**
@@ -479,7 +479,7 @@ public final class JobRouterClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -489,8 +489,8 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelJobWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.cancelJobWithResponse(id, requestOptions);
+    public Response<Void> cancelJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.cancelJobWithResponse(jobId, requestOptions);
     }
 
     /**
@@ -505,7 +505,7 @@ public final class JobRouterClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param completeJobOptions Request model for completing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -517,8 +517,8 @@ public final class JobRouterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> completeJobWithResponse(
-            String id, BinaryData completeJobOptions, RequestOptions requestOptions) {
-        return this.serviceClient.completeJobWithResponse(id, completeJobOptions, requestOptions);
+            String jobId, BinaryData completeJobOptions, RequestOptions requestOptions) {
+        return this.serviceClient.completeJobWithResponse(jobId, completeJobOptions, requestOptions);
     }
 
     /**
@@ -535,7 +535,7 @@ public final class JobRouterClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param closeJobOptions Request model for closing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -546,8 +546,9 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeJobWithResponse(String id, BinaryData closeJobOptions, RequestOptions requestOptions) {
-        return this.serviceClient.closeJobWithResponse(id, closeJobOptions, requestOptions);
+    public Response<Void> closeJobWithResponse(
+            String jobId, BinaryData closeJobOptions, RequestOptions requestOptions) {
+        return this.serviceClient.closeJobWithResponse(jobId, closeJobOptions, requestOptions);
     }
 
     /**
@@ -654,7 +655,7 @@ public final class JobRouterClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -664,8 +665,8 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getQueuePositionWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getQueuePositionWithResponse(id, requestOptions);
+    public Response<BinaryData> getQueuePositionWithResponse(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.getQueuePositionWithResponse(jobId, requestOptions);
     }
 
     /**
@@ -688,7 +689,7 @@ public final class JobRouterClient {
      * }
      * }</pre>
      *
-     * @param id Id of the job to un-assign.
+     * @param jobId Id of the job to un-assign.
      * @param assignmentId Id of the assignment to un-assign.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -699,8 +700,9 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> unassignJobWithResponse(String id, String assignmentId, RequestOptions requestOptions) {
-        return this.serviceClient.unassignJobWithResponse(id, assignmentId, requestOptions);
+    public Response<BinaryData> unassignJobWithResponse(
+            String jobId, String assignmentId, RequestOptions requestOptions) {
+        return this.serviceClient.unassignJobWithResponse(jobId, assignmentId, requestOptions);
     }
 
     /**
@@ -775,7 +777,7 @@ public final class JobRouterClient {
      * }
      * }</pre>
      *
-     * @param id Id of the queue to retrieve statistics.
+     * @param queueId Id of the queue to retrieve statistics.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -785,8 +787,8 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getQueueStatisticsWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getQueueStatisticsWithResponse(id, requestOptions);
+    public Response<BinaryData> getQueueStatisticsWithResponse(String queueId, RequestOptions requestOptions) {
+        return this.serviceClient.getQueueStatisticsWithResponse(queueId, requestOptions);
     }
 
     /**
@@ -1265,7 +1267,7 @@ public final class JobRouterClient {
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1275,10 +1277,10 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelJob(String id) {
+    public void cancelJob(String jobId) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        cancelJobWithResponse(id, requestOptions).getValue();
+        cancelJobWithResponse(jobId, requestOptions).getValue();
     }
 
     /**
@@ -1353,7 +1355,7 @@ public final class JobRouterClient {
     /**
      * Gets a job's position details.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1364,16 +1366,16 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJobPositionDetails getQueuePosition(String id) {
+    public RouterJobPositionDetails getQueuePosition(String jobId) {
         // Generated convenience method for getQueuePositionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getQueuePositionWithResponse(id, requestOptions).getValue().toObject(RouterJobPositionDetails.class);
+        return getQueuePositionWithResponse(jobId, requestOptions).getValue().toObject(RouterJobPositionDetails.class);
     }
 
     /**
      * Un-assign a job.
      *
-     * @param id Id of the job to un-assign.
+     * @param jobId Id of the job to un-assign.
      * @param assignmentId Id of the assignment to un-assign.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1385,10 +1387,12 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnassignJobResult unassignJob(String id, String assignmentId) {
+    public UnassignJobResult unassignJob(String jobId, String assignmentId) {
         // Generated convenience method for unassignJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return unassignJobWithResponse(id, assignmentId, requestOptions).getValue().toObject(UnassignJobResult.class);
+        return unassignJobWithResponse(jobId, assignmentId, requestOptions)
+                .getValue()
+                .toObject(UnassignJobResult.class);
     }
 
     /**
@@ -1437,7 +1441,7 @@ public final class JobRouterClient {
     /**
      * Retrieves a queue's statistics.
      *
-     * @param id Id of the queue to retrieve statistics.
+     * @param queueId Id of the queue to retrieve statistics.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1448,10 +1452,10 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterQueueStatistics getQueueStatistics(String id) {
+    public RouterQueueStatistics getQueueStatistics(String queueId) {
         // Generated convenience method for getQueueStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getQueueStatisticsWithResponse(id, requestOptions).getValue().toObject(RouterQueueStatistics.class);
+        return getQueueStatisticsWithResponse(queueId, requestOptions).getValue().toObject(RouterQueueStatistics.class);
     }
 
     /**
@@ -1556,7 +1560,7 @@ public final class JobRouterClient {
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param cancelJobOptions Request model for cancelling job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1567,19 +1571,19 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelJob(String id, CancelJobOptions cancelJobOptions) {
+    public void cancelJob(String jobId, CancelJobOptions cancelJobOptions) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (cancelJobOptions != null) {
             requestOptions.setBody(BinaryData.fromObject(cancelJobOptions));
         }
-        cancelJobWithResponse(id, requestOptions).getValue();
+        cancelJobWithResponse(jobId, requestOptions).getValue();
     }
 
     /**
      * Completes an assigned job.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param completeJobOptions Request model for completing job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1590,16 +1594,16 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void completeJob(String id, CompleteJobOptions completeJobOptions) {
+    public void completeJob(String jobId, CompleteJobOptions completeJobOptions) {
         // Generated convenience method for completeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        completeJobWithResponse(id, BinaryData.fromObject(completeJobOptions), requestOptions).getValue();
+        completeJobWithResponse(jobId, BinaryData.fromObject(completeJobOptions), requestOptions).getValue();
     }
 
     /**
      * Closes a completed job.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param closeJobOptions Request model for closing job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1610,16 +1614,16 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void closeJob(String id, CloseJobOptions closeJobOptions) {
+    public void closeJob(String jobId, CloseJobOptions closeJobOptions) {
         // Generated convenience method for closeJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        closeJobWithResponse(id, BinaryData.fromObject(closeJobOptions), requestOptions).getValue();
+        closeJobWithResponse(jobId, BinaryData.fromObject(closeJobOptions), requestOptions).getValue();
     }
 
     /**
      * Un-assign a job.
      *
-     * @param id Id of the job to un-assign.
+     * @param jobId Id of the job to un-assign.
      * @param assignmentId Id of the assignment to un-assign.
      * @param unassignJobOptions Request body for unassign route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1632,13 +1636,15 @@ public final class JobRouterClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnassignJobResult unassignJob(String id, String assignmentId, UnassignJobOptions unassignJobOptions) {
+    public UnassignJobResult unassignJob(String jobId, String assignmentId, UnassignJobOptions unassignJobOptions) {
         // Generated convenience method for unassignJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (unassignJobOptions != null) {
             requestOptions.setBody(BinaryData.fromObject(unassignJobOptions));
         }
-        return unassignJobWithResponse(id, assignmentId, requestOptions).getValue().toObject(UnassignJobResult.class);
+        return unassignJobWithResponse(jobId, assignmentId, requestOptions)
+                .getValue()
+                .toObject(UnassignJobResult.class);
     }
 
     /**
