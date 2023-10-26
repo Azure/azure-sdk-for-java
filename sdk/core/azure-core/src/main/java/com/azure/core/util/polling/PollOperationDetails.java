@@ -8,9 +8,9 @@ import com.azure.core.models.ResponseError;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Provides status details for long running operations. */
+/** PollOperationDetails provides details for long running operations. */
 @Immutable
-public final class PollResult {
+public final class PollOperationDetails {
     @JsonProperty(value = "id", required = true)
     private final String operationId;
 
@@ -18,17 +18,17 @@ public final class PollResult {
     private ResponseError error;
 
     /**
-     * Creates an instance of ResourceOperationStatusUserError class.
+     * Creates an instance of PollOperationDetails class.
      *
      * @param operationId the unique ID of the operation.
      */
     @JsonCreator
-    private PollResult(@JsonProperty(value = "id", required = true) String operationId) {
+    private PollOperationDetails(@JsonProperty(value = "id", required = true) String operationId) {
         this.operationId = operationId;
     }
 
     /**
-     * Get the id property: The unique ID of the operation.
+     * Gets the unique ID of the operation.
      *
      * @return the unique ID of the operation.
      */
@@ -37,7 +37,7 @@ public final class PollResult {
     }
 
     /**
-     * Get the error property: Error object that describes the error when status is "Failed".
+     * Gets the error object that describes the error when status is "Failed".
      *
      * @return the error object that describes the error when status is "Failed".
      */
