@@ -2897,19 +2897,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                            state.mergeDiagnosticsContext();
                                            CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
-                                           ctxAccessor.recordOperation(
-                                               ctx,
-                                               200,
-                                               0,
-                                                finalList.size(),
-                                                requestCharge,
-                                               aggregatedDiagnostics,
-                                               null
-                                           );
-                                           diagnosticsAccessor
-                                               .setDiagnosticsContext(
+                                           if (ctx != null) {
+                                               ctxAccessor.recordOperation(
+                                                   ctx,
+                                                   200,
+                                                   0,
+                                                   finalList.size(),
+                                                   requestCharge,
                                                    aggregatedDiagnostics,
-                                                   ctx);
+                                                   null
+                                               );
+                                               diagnosticsAccessor
+                                                   .setDiagnosticsContext(
+                                                       aggregatedDiagnostics,
+                                                       ctx);
+                                           }
 
                                            headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                                .toString(requestCharge));
@@ -2932,19 +2934,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 if (diagnostics != null) {
                                     state.mergeDiagnosticsContext();
                                     CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
-                                    ctxAccessor.recordOperation(
-                                        ctx,
-                                        cosmosException.getStatusCode(),
-                                        cosmosException.getSubStatusCode(),
-                                        0,
-                                        cosmosException.getRequestCharge(),
-                                        diagnostics,
-                                        throwable
-                                    );
-                                    diagnosticsAccessor
-                                        .setDiagnosticsContext(
+                                    if (ctx != null) {
+                                        ctxAccessor.recordOperation(
+                                            ctx,
+                                            cosmosException.getStatusCode(),
+                                            cosmosException.getSubStatusCode(),
+                                            0,
+                                            cosmosException.getRequestCharge(),
                                             diagnostics,
-                                            state.getDiagnosticsContextSnapshot());
+                                            throwable
+                                        );
+                                        diagnosticsAccessor
+                                            .setDiagnosticsContext(
+                                                diagnostics,
+                                                state.getDiagnosticsContextSnapshot());
+                                    }
                                 }
 
                                 return cosmosException;
