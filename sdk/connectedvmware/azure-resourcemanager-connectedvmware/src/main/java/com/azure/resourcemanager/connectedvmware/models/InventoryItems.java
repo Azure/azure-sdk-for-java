@@ -18,21 +18,6 @@ public interface InventoryItems {
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the inventory item.
-     */
-    InventoryItem get(String resourceGroupName, String vcenterName, String inventoryItemName);
-
-    /**
-     * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param vcenterName Name of the vCenter.
-     * @param inventoryItemName Name of the inventoryItem.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,9 +28,9 @@ public interface InventoryItems {
         String resourceGroupName, String vcenterName, String inventoryItemName, Context context);
 
     /**
-     * Deletes an inventoryItem.
+     * Gets InventoryItem.
      *
-     * <p>Implements inventoryItem DELETE method.
+     * <p>Implements InventoryItem GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
@@ -53,8 +38,9 @@ public interface InventoryItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the inventory item.
      */
-    void delete(String resourceGroupName, String vcenterName, String inventoryItemName);
+    InventoryItem get(String resourceGroupName, String vcenterName, String inventoryItemName);
 
     /**
      * Deletes an inventoryItem.
@@ -72,6 +58,20 @@ public interface InventoryItems {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String vcenterName, String inventoryItemName, Context context);
+
+    /**
+     * Deletes an inventoryItem.
+     *
+     * <p>Implements inventoryItem DELETE method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param vcenterName Name of the vCenter.
+     * @param inventoryItemName Name of the inventoryItem.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String vcenterName, String inventoryItemName);
 
     /**
      * Implements GET inventoryItems in a vCenter.

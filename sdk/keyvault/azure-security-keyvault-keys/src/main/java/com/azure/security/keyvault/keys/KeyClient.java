@@ -794,10 +794,6 @@ public final class KeyClient {
     public Response<KeyVaultKey> importKeyWithResponse(ImportKeyOptions importKeyOptions, Context context) {
         if (importKeyOptions == null) {
             throw LOGGER.logExceptionAsError(new RuntimeException("'importKeyOptions' cannot be null."));
-        } else if (importKeyOptions.getName() == null) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("'importKeyOptions.getName()' cannot be null."));
-        } else if (importKeyOptions.getName().isEmpty()) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("'importKeyOptions.getName()' cannot be empty."));
         }
 
         Response<KeyBundle> response = implClient.importKeyWithResponse(vaultUrl, importKeyOptions.getName(),
@@ -989,7 +985,7 @@ public final class KeyClient {
      *
      * @throws HttpResponseException If {@link KeyProperties#getName() name} or
      * {@link KeyProperties#getVersion() version} is an empty string.
-     * @throws NullPointerException If {@code key} is {@code null}.
+     * @throws NullPointerException If {@code keyProperties} is null.
      * @throws ResourceNotFoundException When a key with {@link KeyProperties#getName() name} and
      * {@link KeyProperties#getVersion() version} doesn't exist in the key vault.
      */
@@ -998,8 +994,6 @@ public final class KeyClient {
                                                                  KeyOperation... keyOperations) {
         if (keyProperties == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'keyProperties' cannot be null."));
-        } else if (keyProperties.getName() == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'keyProperties.getName()' cannot be null."));
         }
 
         Response<KeyBundle> response = implClient.updateKeyWithResponse(vaultUrl, keyProperties.getName(), keyProperties.getVersion(),

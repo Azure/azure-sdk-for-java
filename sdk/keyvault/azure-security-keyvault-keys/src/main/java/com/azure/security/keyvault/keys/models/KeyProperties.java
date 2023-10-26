@@ -144,6 +144,12 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
     KeyReleasePolicy releasePolicy;
 
     /**
+     * Creates a new instance of {@link KeyProperties}.
+     */
+    public KeyProperties() {
+    }
+
+    /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
      *
      * @return The recoverable days.

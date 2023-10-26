@@ -40,6 +40,7 @@ public final class KeyVaultKeysUtils {
      * @param httpPipeline The HttpPipeline to use for the CryptographyClient.
      * @param serviceVersion The KeyServiceVersion of the service.
      * @return A new {@link CryptographyClientBuilder} with the values passed from a Keys service client.
+     * @throws IllegalArgumentException If {@code keyName} is null or empty.
      */
     public static CryptographyClientBuilder getCryptographyClientBuilder(String keyName, String keyVersion,
         String vaultUrl, HttpPipeline httpPipeline, KeyServiceVersion serviceVersion) {
@@ -110,6 +111,13 @@ public final class KeyVaultKeysUtils {
         }
     }
 
+    /**
+     * Unpacks a Key Vault key ID into a name and version.
+     *
+     * @param id The Key Vault key ID to unpack.
+     * @param nameConsumer The consumer to accept the name.
+     * @param versionConsumer The consumer to accept the version.
+     */
     public static void unpackId(String id, Consumer<String> nameConsumer, Consumer<String> versionConsumer) {
         if (CoreUtils.isNullOrEmpty(id)) {
             return;
@@ -132,11 +140,26 @@ public final class KeyVaultKeysUtils {
         }
     }
 
+    /**
+     * Converts epoch time to OffsetDateTime.
+     *
+     * @param epochReader The JsonReader containing the epoch time.
+     * @return The OffsetDateTime.
+     * @throws IOException If an error occurs while reading the epoch time.
+     */
     public static OffsetDateTime epochToOffsetDateTime(JsonReader epochReader) throws IOException {
         Instant instant = Instant.ofEpochMilli(epochReader.getLong() * 1000L);
         return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
     }
 
+    /**
+     * Base64 URL encodes the binary value.
+     * <p>
+     * Returns null if the {@code value} is null, returns an empty string if the {@code value} is empty.
+     *
+     * @param value The binary value to base64 URL encode.
+     * @return The base64 URL encoded value.
+     */
     public static String base64UrlJsonSerialization(byte[] value) {
         if (value == null) {
             return null;
@@ -147,6 +170,12 @@ public final class KeyVaultKeysUtils {
         }
     }
 
+    /**
+     * Base64 URL decodes the string value.
+     *
+     * @param value The string value to base64 URL decode.
+     * @return The base64 URL decoded value.
+     */
     public static byte[] base64UrlJsonDeserialization(String value) {
         return value == null ? null : Base64.getUrlDecoder().decode(value);
     }

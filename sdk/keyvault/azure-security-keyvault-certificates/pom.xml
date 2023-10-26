@@ -51,6 +51,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.13.9</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
@@ -75,12 +81,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-library</artifactId>
-      <version>2.2</version> <!-- {x-version-update;org.hamcrest:hamcrest-library;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
       <version>3.4.32</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
@@ -102,12 +102,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.10.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

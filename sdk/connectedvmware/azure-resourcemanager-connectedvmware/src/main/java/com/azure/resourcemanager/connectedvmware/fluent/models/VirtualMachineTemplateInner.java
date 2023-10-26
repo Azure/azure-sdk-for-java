@@ -12,6 +12,7 @@ import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 import com.azure.resourcemanager.connectedvmware.models.FirmwareType;
 import com.azure.resourcemanager.connectedvmware.models.NetworkInterface;
 import com.azure.resourcemanager.connectedvmware.models.OsType;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.azure.resourcemanager.connectedvmware.models.VirtualDisk;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -46,6 +47,10 @@ public final class VirtualMachineTemplateInner extends Resource {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /** Creates an instance of VirtualMachineTemplateInner class. */
+    public VirtualMachineTemplateInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -332,11 +337,11 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

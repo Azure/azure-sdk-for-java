@@ -24,6 +24,10 @@ public final class StorageInsightListResult {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of StorageInsightListResult class. */
+    public StorageInsightListResult() {
+    }
+
     /**
      * Get the value property: A list of storage insight items.
      *

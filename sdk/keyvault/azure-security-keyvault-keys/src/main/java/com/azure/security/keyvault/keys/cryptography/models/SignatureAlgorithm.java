@@ -86,6 +86,8 @@ public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgo
     }
 
     /**
+     * Gets the known SignatureAlgorithm values.
+     *
      * @return known SignatureAlgorithm values.
      */
     public static Collection<SignatureAlgorithm> values() {

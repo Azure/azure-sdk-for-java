@@ -135,6 +135,12 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
     private byte[] y;
 
     /**
+     * Creates a new instance of {@link JsonWebKey}.
+     */
+    public JsonWebKey() {
+    }
+
+    /**
      * Get the kid value.
      *
      * @return the kid value

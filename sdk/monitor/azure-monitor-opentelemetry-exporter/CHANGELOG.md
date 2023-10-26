@@ -4,6 +4,7 @@
 
 ### Bugs Fixed
 - [Fix null ikey for _otelresource_ custom metrics](https://github.com/Azure/azure-sdk-for-java/pull/37352)
+- [Fix no network statsbeat](https://github.com/Azure/azure-sdk-for-java/pull/37360)
 
 ## 1.0.0-beta.12 (2023-10-23)
 

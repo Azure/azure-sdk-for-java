@@ -75,7 +75,7 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
         .setBaseDelay(Duration.ofSeconds(2))
         .setMaxDelay(Duration.ofSeconds(16)));
 
-    private static final ClientLogger LOGGER = new ClientLogger(KeyAsyncClientTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeyClientTestBase.class);
 
     public static final TestMode TEST_MODE = initializeTestMode();
 

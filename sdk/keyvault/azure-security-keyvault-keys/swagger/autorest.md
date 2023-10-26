@@ -30,7 +30,7 @@ autorest
 ## Configuration
 
 ```yaml
-use: '@autorest/java@4.1.19'
+use: '@autorest/java@4.1.22'
 output-folder: ../
 java: true
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/keys.json
@@ -82,6 +82,7 @@ directive:
       $.KeyReleaseParameters.properties.enc = { "$ref": "#/definitions/KeyExportEncryptionAlgorithm" };
 
       $.KeyOperation = $.KeyCreateParameters.properties.key_ops.items;
+      $.KeyOperation.enum = $.KeyOperation.enum.filter(item => item !== "export");
       $.KeyOperation["x-ms-enum"].name = "KeyOperation";
       $.JsonWebKey.properties.key_ops.items = { "$ref": "#/definitions/KeyOperation" };
       $.KeyCreateParameters.properties.key_ops.items = { "$ref": "#/definitions/KeyOperation" };

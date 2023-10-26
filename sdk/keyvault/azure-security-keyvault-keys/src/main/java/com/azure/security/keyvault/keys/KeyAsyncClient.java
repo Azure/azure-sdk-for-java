@@ -323,7 +323,7 @@ public final class KeyAsyncClient {
      * {@link KeyVaultKey created key}.
      *
      * @throws HttpResponseException If {@link CreateKeyOptions#getName()} is an empty string.
-     * @throws NullPointerException If {@code name} is {@code null}.
+     * @throws NullPointerException If {@code createKeyOptions} is null.
      * @throws ResourceModifiedException If {@code createKeyOptions} is malformed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -840,10 +840,6 @@ public final class KeyAsyncClient {
         try {
             if (importKeyOptions == null) {
                 return monoError(LOGGER, new RuntimeException("'importKeyOptions' cannot be null."));
-            } else if (importKeyOptions.getName() == null) {
-                return monoError(LOGGER, new RuntimeException("'importKeyOptions.getName()' cannot be null."));
-            } else if (importKeyOptions.getName().isEmpty()) {
-                return monoError(LOGGER, new RuntimeException("'importKeyOptions.getName()' cannot be empty."));
             }
 
             return implClient.importKeyWithResponseAsync(vaultUrl, importKeyOptions.getName(),
@@ -1002,7 +998,7 @@ public final class KeyAsyncClient {
      *
      * @throws HttpResponseException If {@link KeyProperties#getName() name} or
      * {@link KeyProperties#getVersion() version} is an empty string.
-     * @throws NullPointerException If {@code key} is {@code null}.
+     * @throws NullPointerException If {@code keyProperties} is null.
      * @throws ResourceNotFoundException When a key with {@link KeyProperties#getName() name} and
      * {@link KeyProperties#getVersion() version} doesn't exist in the key vault.
      */
@@ -1012,8 +1008,6 @@ public final class KeyAsyncClient {
         try {
             if (keyProperties == null) {
                 return monoError(LOGGER, new NullPointerException("'keyProperties' cannot be null."));
-            } else if (keyProperties.getName() == null) {
-                return monoError(LOGGER, new NullPointerException("'keyProperties.getName()' cannot be null."));
             }
 
             return implClient.updateKeyWithResponseAsync(vaultUrl, keyProperties.getName(), keyProperties.getVersion(),

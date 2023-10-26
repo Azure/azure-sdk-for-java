@@ -125,6 +125,8 @@ public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAl
     }
 
     /**
+     * Gets known EncryptionAlgorithm values.
+     *
      * @return known EncryptionAlgorithm values.
      */
     public static Collection<EncryptionAlgorithm> values() {

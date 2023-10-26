@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineTemplates GetByResourceGroup. */
 public final class VirtualMachineTemplatesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/GetVirtualMachineTemplate.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetVirtualMachineTemplate.json
      */
     /**
      * Sample code: GetVirtualMachineTemplate.
@@ -18,6 +16,8 @@ public final class VirtualMachineTemplatesGetByResourceGroupSamples {
      */
     public static void getVirtualMachineTemplate(
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.virtualMachineTemplates().getByResourceGroupWithResponse("testrg", "WebFrontEndTemplate", Context.NONE);
+        manager
+            .virtualMachineTemplates()
+            .getByResourceGroupWithResponse("testrg", "WebFrontEndTemplate", com.azure.core.util.Context.NONE);
     }
 }

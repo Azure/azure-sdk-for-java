@@ -741,7 +741,7 @@ public class CryptographyAsyncClient {
 
                 if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
                     return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                        "Wrap kKey operation is not allowed for key with id: %s", this.key.getId()))));
+                        "Wrap Key operation is not allowed for key with id: %s", this.key.getId()))));
                 }
 
                 return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, this.key, context);

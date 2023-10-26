@@ -66,6 +66,8 @@ public final class KeyWrapAlgorithm extends ExpandableStringEnum<KeyWrapAlgorith
     }
 
     /**
+     * Gets known KeyWrapAlgorithm values.
+     *
      * @return known KeyWrapAlgorithm values.
      */
     public static Collection<KeyWrapAlgorithm> values() {

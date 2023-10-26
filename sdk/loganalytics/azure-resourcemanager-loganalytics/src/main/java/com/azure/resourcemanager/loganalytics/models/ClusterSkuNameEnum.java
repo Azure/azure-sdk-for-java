@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClusterSkuNameEnum. */
+/** The name of the SKU. */
 public final class ClusterSkuNameEnum extends ExpandableStringEnum<ClusterSkuNameEnum> {
     /** Static value CapacityReservation for ClusterSkuNameEnum. */
     public static final ClusterSkuNameEnum CAPACITY_RESERVATION = fromString("CapacityReservation");
+
+    /**
+     * Creates a new instance of ClusterSkuNameEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterSkuNameEnum() {
+    }
 
     /**
      * Creates or finds a ClusterSkuNameEnum from its string representation.
