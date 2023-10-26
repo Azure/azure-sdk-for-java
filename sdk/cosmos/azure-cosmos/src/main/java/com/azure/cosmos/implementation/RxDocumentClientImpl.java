@@ -870,7 +870,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<Database>> readDatabases(QueryFeedOperationState state) {
-        return readFeed(state, ResourceType.Database, Database.class, Paths.DATABASES_ROOT);
+        return nonDocumentReadFeed(state, ResourceType.Database, Database.class, Paths.DATABASES_ROOT);
     }
 
     private String parentResourceLinkToQueryLink(String parentResourceLink, ResourceType resourceTypeEnum) {
@@ -1387,7 +1387,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("databaseLink");
         }
 
-        return readFeed(state, ResourceType.DocumentCollection, DocumentCollection.class,
+        return nonDocumentReadFeed(state, ResourceType.DocumentCollection, DocumentCollection.class,
                 Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT));
     }
 
@@ -3467,7 +3467,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return readFeed(state, ResourceType.PartitionKeyRange, PartitionKeyRange.class,
+        return nonDocumentReadFeed(state, ResourceType.PartitionKeyRange, PartitionKeyRange.class,
                 Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
     }
 
@@ -3477,7 +3477,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return readFeed(options, ResourceType.PartitionKeyRange, PartitionKeyRange.class,
+        return nonDocumentReadFeed(options, ResourceType.PartitionKeyRange, PartitionKeyRange.class,
             Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
     }
 
@@ -3667,7 +3667,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return readFeed(state, ResourceType.StoredProcedure, StoredProcedure.class,
+        return nonDocumentReadFeed(state, ResourceType.StoredProcedure, StoredProcedure.class,
                 Utils.joinPath(collectionLink, Paths.STORED_PROCEDURES_PATH_SEGMENT));
     }
 
@@ -3904,7 +3904,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return readFeed(state, ResourceType.Trigger, Trigger.class,
+        return nonDocumentReadFeed(state, ResourceType.Trigger, Trigger.class,
                 Utils.joinPath(collectionLink, Paths.TRIGGERS_PATH_SEGMENT));
     }
 
@@ -4072,7 +4072,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return readFeed(state, ResourceType.UserDefinedFunction, UserDefinedFunction.class,
+        return nonDocumentReadFeed(state, ResourceType.UserDefinedFunction, UserDefinedFunction.class,
                 Utils.joinPath(collectionLink, Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT));
     }
 
@@ -4135,7 +4135,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return readFeed(state, ResourceType.Conflict, Conflict.class,
+        return nonDocumentReadFeed(state, ResourceType.Conflict, Conflict.class,
                 Utils.joinPath(collectionLink, Paths.CONFLICTS_PATH_SEGMENT));
     }
 
@@ -4339,7 +4339,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("databaseLink");
         }
 
-        return readFeed(state, ResourceType.User, User.class,
+        return nonDocumentReadFeed(state, ResourceType.User, User.class,
                 Utils.joinPath(databaseLink, Paths.USERS_PATH_SEGMENT));
     }
 
@@ -4464,7 +4464,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("databaseLink");
         }
 
-        return readFeed(state, ResourceType.ClientEncryptionKey, ClientEncryptionKey.class,
+        return nonDocumentReadFeed(state, ResourceType.ClientEncryptionKey, ClientEncryptionKey.class,
             Utils.joinPath(databaseLink, Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT));
     }
 
@@ -4638,7 +4638,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("userLink");
         }
 
-        return readFeed(state, ResourceType.Permission, Permission.class,
+        return nonDocumentReadFeed(state, ResourceType.Permission, Permission.class,
                 Utils.joinPath(userLink, Paths.PERMISSIONS_PATH_SEGMENT));
     }
 
@@ -4709,31 +4709,31 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Flux<FeedResponse<Offer>> readOffers(QueryFeedOperationState state) {
-        return readFeed(state, ResourceType.Offer, Offer.class,
+        return nonDocumentReadFeed(state, ResourceType.Offer, Offer.class,
                 Utils.joinPath(Paths.OFFERS_PATH_SEGMENT, null));
     }
 
-    private <T> Flux<FeedResponse<T>> readFeed(
+    private <T> Flux<FeedResponse<T>> nonDocumentReadFeed(
         QueryFeedOperationState state,
         ResourceType resourceType,
         Class<T> klass,
         String resourceLink) {
 
-        return readFeed(state.getQueryOptions(), resourceType, klass, resourceLink);
+        return nonDocumentReadFeed(state.getQueryOptions(), resourceType, klass, resourceLink);
     }
 
-    private <T> Flux<FeedResponse<T>> readFeed(
+    private <T> Flux<FeedResponse<T>> nonDocumentReadFeed(
         CosmosQueryRequestOptions options,
         ResourceType resourceType,
         Class<T> klass,
         String resourceLink) {
         DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.fluxInlineIfPossibleAsObs(
-            () -> readFeedInternal(options, resourceType, klass, resourceLink, retryPolicy),
+            () -> nonDocumentReadFeedInternal(options, resourceType, klass, resourceLink, retryPolicy),
             retryPolicy);
     }
 
-    private <T> Flux<FeedResponse<T>> readFeedInternal(
+    private <T> Flux<FeedResponse<T>> nonDocumentReadFeedInternal(
         CosmosQueryRequestOptions options,
         ResourceType resourceType,
         Class<T> klass,

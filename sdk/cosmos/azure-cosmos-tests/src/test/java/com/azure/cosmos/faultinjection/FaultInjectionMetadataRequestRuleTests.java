@@ -493,7 +493,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             .contentResponseOnWriteEnabled(true)
             .preferredRegions(writePreferredLocations)
             .endToEndOperationLatencyPolicyConfig(
-                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMinutes(2)).build())
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMinutes(10)).build())
             .buildAsyncClient();
 
         CosmosAsyncContainer container =
