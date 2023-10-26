@@ -2,26 +2,33 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/azure/ai-services/metrics-advisor/">
- * Azure Metrics Advisor</a> is a cloud-based service provided by Microsoft Azure that provides a set of APIs for
- * data ingestion, anomaly detection, and diagnostics, without needing to know machine learning.</p>
+ * <p><a href="https://learn.microsoft.com/azure/ai-services/metrics-advisor/">Azure Metrics Advisor</a> is a
+ *  cloud-based service provided by Microsoft Azure that is designed to help organizations monitor
+ * and analyze metrics and time-series data from various sources. It is particularly focused on aiding in the
+ *  detection of anomalies, trends, and patterns within this data, which can be invaluable for improving operational
+ * efficiency, identifying issues early, and making data-driven decisions.</p>
  *
- * <p>The Azure Metrics Advisor client library allows Java developers to interact with the Azure Metrics Advisor
- * service.
- * It provides a set of classes and methods that abstract the underlying RESTful API of Azure
- * Metrics Advisor, making it easier to integrate the service into Java applications.</p>
+ * <p>Here are some key features and capabilities of Azure Metrics Advisor:</p>
+
+ * <ul>
+ * <li>Anomaly Detection: Azure Metrics Advisor employs machine learning algorithms to automatically identify
+ * anomalies in time-series data. It can differentiate between normal variations and unusual patterns, helping
+ * organizations detect issues or opportunities for improvement.</li>
  *
- * <p>The Azure Metrics Advisor client library provides the following capabilities:</p>
+ * <li>Time-Series Data Ingestion: The service allows you to ingest time-series data from various sources, including
+ * Azure Monitor, Application Insights, IoT Hub, and custom data sources. This flexibility enables you to monitor a wide
+ * range of metrics.</li>
  *
- * <ol>
- *     <li>Analyze multi-dimensional data from multiple data sources.</li>
- *     <li>Identify and correlate anomalies</li>
- *     <li>Configure and fine-tune the anomaly detection model used on your data</li>
- *     <li>Diagnose anomalies and help with root cause analysis</li>
- *     <li>Connecting your own time series data</li>
- *     <li>Fine tuning the anomaly detection configuration</li>
- *     <li>Configuring alerts for detected anomalies</li>
- * </ol>
+ * <li>Data Exploration: Users can explore their data, view historical trends, and gain insights into the behavior of
+ * various metrics over time. This can be useful for identifying seasonal patterns and understanding the normal
+ * behavior of your systems.</li>
+ *
+ * <li>Integration with Azure Services: Azure Metrics Advisor integrates with other Azure services, such as Azure
+ * Monitor and Azure Data Explorer, making it part of a broader ecosystem for monitoring and analytics.</li>
+ *
+ * <li>Alerts and Notifications: You can set up alerts and notifications based on detected anomalies or specific
+ * thresholds, ensuring that you are informed promptly when issues arise.</li>
+ * </ul>
  *
  * <h2>Getting Started</h2>
  *
@@ -88,45 +95,36 @@
  * <p>The following code sample demonstrates to connect data source to create a data feed using an SQL data source</p>
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed -->
- * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context -->
  * <pre>
- * final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition&#40;&#41;
- *     .setConditionOperator&#40;DetectionConditionOperator.OR&#41;
- *     .setSmartDetectionCondition&#40;new SmartDetectionCondition&#40;
- *         50,
- *         AnomalyDetectorDirection.BOTH,
- *         new SuppressCondition&#40;50, 50&#41;&#41;&#41;
- *     .setHardThresholdCondition&#40;new HardThresholdCondition&#40;
- *         AnomalyDetectorDirection.BOTH,
- *         new SuppressCondition&#40;5, 5&#41;&#41;
- *         .setLowerBound&#40;0.0&#41;
- *         .setUpperBound&#40;100.0&#41;&#41;
- *     .setChangeThresholdCondition&#40;new ChangeThresholdCondition&#40;
- *         50,
- *         30,
- *         true,
- *         AnomalyDetectorDirection.BOTH,
- *         new SuppressCondition&#40;2, 2&#41;&#41;&#41;;
+ * DataFeed dataFeed = new DataFeed&#40;&#41;
+ *     .setName&#40;&quot;dataFeedName&quot;&#41;
+ *     .setSource&#40;new MySqlDataFeedSource&#40;&quot;conn-string&quot;, &quot;query&quot;&#41;&#41;
+ *     .setGranularity&#40;new DataFeedGranularity&#40;&#41;.setGranularityType&#40;DataFeedGranularityType.DAILY&#41;&#41;
+ *     .setSchema&#40;new DataFeedSchema&#40;
+ *         Arrays.asList&#40;
+ *             new DataFeedMetric&#40;&quot;cost&quot;&#41;,
+ *             new DataFeedMetric&#40;&quot;revenue&quot;&#41;
+ *         &#41;&#41;.setDimensions&#40;
+ *         Arrays.asList&#40;
+ *             new DataFeedDimension&#40;&quot;city&quot;&#41;,
+ *             new DataFeedDimension&#40;&quot;category&quot;&#41;
+ *         &#41;&#41;
+ *     &#41;
+ *     .setIngestionSettings&#40;new DataFeedIngestionSettings&#40;OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;&#41;&#41;
+ *     .setOptions&#40;new DataFeedOptions&#40;&#41;
+ *         .setDescription&#40;&quot;data feed description&quot;&#41;
+ *         .setRollupSettings&#40;new DataFeedRollupSettings&#40;&#41;
+ *             .setRollupType&#40;DataFeedRollupType.AUTO_ROLLUP&#41;&#41;&#41;;
  *
- * final String detectionConfigName = &quot;my_detection_config&quot;;
- * final String detectionConfigDescription = &quot;anomaly detection config for metric&quot;;
- * final AnomalyDetectionConfiguration detectionConfig
- *     = new AnomalyDetectionConfiguration&#40;detectionConfigName&#41;
- *     .setDescription&#40;detectionConfigDescription&#41;
- *     .setWholeSeriesDetectionCondition&#40;wholeSeriesCondition&#41;;
+ * DataFeed createdDataFeed = metricsAdvisorAdminClient.createDataFeed&#40;dataFeed&#41;;
  *
- * final String metricId = &quot;0b836da8-10e6-46cd-8f4f-28262e113a62&quot;;
- * Response&lt;AnomalyDetectionConfiguration&gt; response = metricsAdvisorAdminClient
- *     .createDetectionConfigWithResponse&#40;metricId, detectionConfig, Context.NONE&#41;;
- * System.out.printf&#40;&quot;Response statusCode: %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
- * AnomalyDetectionConfiguration createdDetectionConfig = response.getValue&#40;&#41;;
- * System.out.printf&#40;&quot;Detection config Id: %s%n&quot;, createdDetectionConfig.getId&#40;&#41;&#41;;
- * System.out.printf&#40;&quot;Name: %s%n&quot;, createdDetectionConfig.getName&#40;&#41;&#41;;
- * System.out.printf&#40;&quot;Description: %s%n&quot;, createdDetectionConfig.getDescription&#40;&#41;&#41;;
- * System.out.printf&#40;&quot;MetricId: %s%n&quot;, createdDetectionConfig.getMetricId&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Data feed Id: %s%n&quot;, createdDataFeed.getId&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Data feed description: %s%n&quot;, createdDataFeed.getOptions&#40;&#41;.getDescription&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Data feed source type: %s%n&quot;, createdDataFeed.getSourceType&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Data feed creator: %s%n&quot;, createdDataFeed.getCreator&#40;&#41;&#41;;
  * </pre>
- * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context -->
- * <p>
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/DatafeedAsyncSample.java">DatafeedAsyncSample</a></p>.
  *
  * <br>
  *
@@ -158,6 +156,7 @@
  *     String.join&#40;&quot;,&quot;, createdEmailHook.getEmailsToAlert&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end readme-sample-createHook -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/administration/HookAsyncSample.java">Configure a Hook Async Sample</a></p>.
  *
  * @see com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient
  * @see com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient

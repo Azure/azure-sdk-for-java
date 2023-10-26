@@ -2,23 +2,33 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/azure/ai-services/metrics-advisor/">
- * Azure Metrics Advisor</a> is a cloud-based service provided by Microsoft Azure that provides a set of APIs for
- * data ingestion, anomaly detection, and diagnostics, without needing to know machine learning.</p>
+ * <p><a href="https://learn.microsoft.com/azure/ai-services/metrics-advisor/">Azure Metrics Advisor</a> is a
+ *  cloud-based service provided by Microsoft Azure that is designed to help organizations monitor
+ * and analyze metrics and time-series data from various sources. It is particularly focused on aiding in the
+ *  detection of anomalies, trends, and patterns within this data, which can be invaluable for improving operational
+ * efficiency, identifying issues early, and making data-driven decisions.</p>
  *
- * <p>The Azure Metrics Advisor client library allows Java developers to interact with the Azure Metrics Advisor
- * service.
- * It provides a set of classes and methods that abstract the underlying RESTful API of Azure
- * Metrics Advisor, making it easier to integrate the service into Java applications.</p>
+ * <p>Here are some key features and capabilities of Azure Metrics Advisor:</p>
+
+ * <ul>
+ * <li>Anomaly Detection: Azure Metrics Advisor employs machine learning algorithms to automatically identify
+ * anomalies in time-series data. It can differentiate between normal variations and unusual patterns, helping
+ * organizations detect issues or opportunities for improvement.</li>
  *
- * <p>The Azure Metrics Advisor client library provides the following capabilities:</p>
+ * <li>Time-Series Data Ingestion: The service allows you to ingest time-series data from various sources, including
+ * Azure Monitor, Application Insights, IoT Hub, and custom data sources. This flexibility enables you to monitor a wide
+ * range of metrics.</li>
  *
- * <ol>
- *     <li>Analyze multi-dimensional data from multiple data sources.</li>
- *     <li>Identify and correlate anomalies</li>
- *     <li>Configure and fine-tune the anomaly detection model used on your data</li>
- *     <li>Diagnose anomalies and help with root cause analysis</li>
- * </ol>
+ * <li>Data Exploration: Users can explore their data, view historical trends, and gain insights into the behavior of
+ * various metrics over time. This can be useful for identifying seasonal patterns and understanding the normal
+ * behavior of your systems.</li>
+ *
+ * <li>Integration with Azure Services: Azure Metrics Advisor integrates with other Azure services, such as Azure
+ * Monitor and Azure Data Explorer, making it part of a broader ecosystem for monitoring and analytics.</li>
+ *
+ * <li>Alerts and Notifications: You can set up alerts and notifications based on detected anomalies or specific
+ * thresholds, ensuring that you are informed promptly when issues arise.</li>
+ * </ul>
  *
  * <h2>Getting Started</h2>
  *
@@ -104,7 +114,7 @@
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
  * <p>
- *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListSeriesDefinitionsForMetricAsyncSample.java">ListSeriesDefinitionsForMetricAsyncSample</a></p>.
  * <br>
  *
  * <hr>
@@ -157,7 +167,7 @@
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
  * <p>
- *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListsAnomaliesForDetectionConfigAsyncSample.java">ListsAnomaliesForDetectionConfigAsyncSample</a></p>.
  * <br>
  *
  * <hr>
@@ -186,6 +196,7 @@
  *
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListIncidentRootCausesAsyncSample.java">ListIncidentRootCausesAsyncSample</a></p>.
  *
  * @see com.azure.ai.metricsadvisor.MetricsAdvisorClient
  * @see com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient
