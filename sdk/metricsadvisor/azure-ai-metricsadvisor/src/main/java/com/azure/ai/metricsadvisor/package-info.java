@@ -113,7 +113,6 @@
  *     &#125;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
- * <p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListSeriesDefinitionsForMetricAsyncSample.java">ListSeriesDefinitionsForMetricAsyncSample</a></p>.
  * <br>
  *
@@ -166,7 +165,6 @@
  * System.out.printf&#40;&quot;MetricId: %s%n&quot;, createdDetectionConfig.getMetricId&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
- * <p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListsAnomaliesForDetectionConfigAsyncSample.java">ListsAnomaliesForDetectionConfigAsyncSample</a></p>.
  * <br>
  *
