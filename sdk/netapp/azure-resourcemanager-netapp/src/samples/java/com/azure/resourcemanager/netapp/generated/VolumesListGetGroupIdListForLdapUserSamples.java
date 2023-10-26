@@ -9,7 +9,7 @@ import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 /** Samples for Volumes ListGetGroupIdListForLdapUser. */
 public final class VolumesListGetGroupIdListForLdapUserSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/GroupIdListForLDAPUser.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/GroupIdListForLDAPUser.json
      */
     /**
      * Sample code: GetGroupIdListForUser.

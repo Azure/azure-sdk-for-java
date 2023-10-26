@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `withHostNameFromBackendHttpSettings` for `ApplicationGatewayProbe` under `ApplicationGateway`.
 
 ## 2.31.0 (2023-09-28)
 

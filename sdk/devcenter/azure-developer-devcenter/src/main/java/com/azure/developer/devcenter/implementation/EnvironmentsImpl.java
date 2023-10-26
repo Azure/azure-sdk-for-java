@@ -36,6 +36,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
 import java.time.Duration;
@@ -90,6 +92,26 @@ public final class EnvironmentsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/projects/{projectName}/environments")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEnvironmentsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/projects/{projectName}/users/{userId}/environments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -103,6 +125,27 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentsByUser(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @PathParam("userId") String userId,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/projects/{projectName}/users/{userId}/environments")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEnvironmentsByUserSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
@@ -133,6 +176,28 @@ public final class EnvironmentsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/projects/{projectName}/users/{userId}/environments/{environmentName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEnvironmentByUserSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @PathParam("userId") String userId,
+                @PathParam("environmentName") String environmentName,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Put("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
@@ -146,6 +211,29 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateEnvironment(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @PathParam("userId") String userId,
+                @PathParam("environmentName") String environmentName,
+                @BodyParam("application/json") BinaryData body,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/projects/{projectName}/users/{userId}/environments/{environmentName}")
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createOrUpdateEnvironmentSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
@@ -179,6 +267,29 @@ public final class EnvironmentsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Patch("/projects/{projectName}/users/{userId}/environments/{environmentName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> updateEnvironmentSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @PathParam("userId") String userId,
+                @PathParam("environmentName") String environmentName,
+                @BodyParam("application/merge-patch+json") BinaryData body,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Delete("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(
@@ -201,6 +312,28 @@ public final class EnvironmentsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Delete("/projects/{projectName}/users/{userId}/environments/{environmentName}")
+        @ExpectedResponses({200, 202, 204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteEnvironmentSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @PathParam("userId") String userId,
+                @PathParam("environmentName") String environmentName,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/projects/{projectName}/users/{userId}/environments/{environmentName}:deploy")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(
@@ -214,6 +347,29 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deployEnvironmentAction(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @PathParam("userId") String userId,
+                @PathParam("environmentName") String environmentName,
+                @BodyParam("application/json") BinaryData body,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/projects/{projectName}/users/{userId}/environments/{environmentName}:deploy")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deployEnvironmentActionSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
@@ -247,6 +403,29 @@ public final class EnvironmentsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/projects/{projectName}/users/{userId}/environments/{environmentName}:custom")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> customEnvironmentActionSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @PathParam("userId") String userId,
+                @PathParam("environmentName") String environmentName,
+                @BodyParam("application/json") BinaryData body,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/projects/{projectName}/catalogItems")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -260,6 +439,26 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogItems(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/projects/{projectName}/catalogItems")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCatalogItemsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
@@ -288,6 +487,27 @@ public final class EnvironmentsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/projects/{projectName}/catalogItems/{catalogItemId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCatalogItemSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @PathParam("catalogItemId") String catalogItemId,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/projects/{projectName}/catalogItems/{catalogItemId}/versions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -301,6 +521,27 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogItemVersions(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @PathParam("catalogItemId") String catalogItemId,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/projects/{projectName}/catalogItems/{catalogItemId}/versions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCatalogItemVersionsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
@@ -331,6 +572,28 @@ public final class EnvironmentsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/projects/{projectName}/catalogItems/{catalogItemId}/versions/{version}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCatalogItemVersionSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @PathParam("catalogItemId") String catalogItemId,
+                @PathParam("version") String version,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/projects/{projectName}/environmentTypes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -344,6 +607,26 @@ public final class EnvironmentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentTypes(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("projectName") String projectName,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/projects/{projectName}/environmentTypes")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEnvironmentTypesSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("projectName") String projectName,
@@ -382,7 +665,45 @@ public final class EnvironmentsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEnvironmentsNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentsByUserNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEnvironmentsByUserNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -420,6 +741,25 @@ public final class EnvironmentsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCatalogItemsNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogItemVersionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -439,7 +779,45 @@ public final class EnvironmentsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCatalogItemVersionsNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentTypesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listEnvironmentTypesNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -623,11 +1001,85 @@ public final class EnvironmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return results of the environment list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listEnvironmentsSinglePage(String projectName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listEnvironmentsSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        projectName,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Lists the environments for a project.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return results of the environment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironments(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(listEnvironmentsAsync(projectName, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listEnvironmentsSinglePage(projectName, requestOptions),
+                nextLink -> listEnvironmentsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -814,12 +1266,90 @@ public final class EnvironmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return results of the environment list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listEnvironmentsByUserSinglePage(
+            String projectName, String userId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listEnvironmentsByUserSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        projectName,
+                        userId,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Lists the environments for a project and user.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return results of the environment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironmentsByUser(
             String projectName, String userId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listEnvironmentsByUserAsync(projectName, userId, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listEnvironmentsByUserSinglePage(projectName, userId, requestOptions),
+                nextLink -> listEnvironmentsByUserNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -922,7 +1452,16 @@ public final class EnvironmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnvironmentByUserWithResponse(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
-        return getEnvironmentByUserWithResponseAsync(projectName, userId, environmentName, requestOptions).block();
+        final String accept = "application/json";
+        return service.getEnvironmentByUserSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                projectName,
+                userId,
+                environmentName,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1075,6 +1614,89 @@ public final class EnvironmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return properties of an environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateEnvironmentWithResponse(
+            String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.createOrUpdateEnvironmentSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                projectName,
+                userId,
+                environmentName,
+                body,
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Creates or updates an environment.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param environmentName The name of the environment.
+     * @param body Represents a environment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link PollerFlux} for polling of properties of an environment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -1086,12 +1708,12 @@ public final class EnvironmentsImpl {
                         this.createOrUpdateEnvironmentWithResponseAsync(
                                 projectName, userId, environmentName, body, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1166,8 +1788,20 @@ public final class EnvironmentsImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateOrUpdateEnvironment(
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.beginCreateOrUpdateEnvironmentAsync(projectName, userId, environmentName, body, requestOptions)
-                .getSyncPoller();
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.createOrUpdateEnvironmentWithResponse(
+                                projectName, userId, environmentName, body, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1315,7 +1949,17 @@ public final class EnvironmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateEnvironmentWithResponse(
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return updateEnvironmentWithResponseAsync(projectName, userId, environmentName, body, requestOptions).block();
+        final String accept = "application/json";
+        return service.updateEnvironmentSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                projectName,
+                userId,
+                environmentName,
+                body,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1361,6 +2005,35 @@ public final class EnvironmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<Void> deleteEnvironmentWithResponse(
+            String projectName, String userId, String environmentName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteEnvironmentSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                projectName,
+                userId,
+                environmentName,
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Deletes an environment and all its associated resources.
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param environmentName The name of the environment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -1370,12 +2043,12 @@ public final class EnvironmentsImpl {
                 Duration.ofSeconds(1),
                 () -> this.deleteEnvironmentWithResponseAsync(projectName, userId, environmentName, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(Void.class));
     }
@@ -1397,7 +2070,18 @@ public final class EnvironmentsImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteEnvironment(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
-        return this.beginDeleteEnvironmentAsync(projectName, userId, environmentName, requestOptions).getSyncPoller();
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.deleteEnvironmentWithResponse(projectName, userId, environmentName, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -1464,6 +2148,46 @@ public final class EnvironmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<Void> deployEnvironmentActionWithResponse(
+            String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deployEnvironmentActionSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                projectName,
+                userId,
+                environmentName,
+                body,
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Executes a deploy action.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     actionId: String (Required)
+     *     parameters: Object (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param environmentName The name of the environment.
+     * @param body Action properties overriding the environment's default values.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -1475,12 +2199,12 @@ public final class EnvironmentsImpl {
                         this.deployEnvironmentActionWithResponseAsync(
                                 projectName, userId, environmentName, body, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1512,8 +2236,20 @@ public final class EnvironmentsImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginDeployEnvironmentAction(
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.beginDeployEnvironmentActionAsync(projectName, userId, environmentName, body, requestOptions)
-                .getSyncPoller();
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.deployEnvironmentActionWithResponse(
+                                projectName, userId, environmentName, body, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1580,6 +2316,46 @@ public final class EnvironmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<Void> customEnvironmentActionWithResponse(
+            String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.customEnvironmentActionSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                projectName,
+                userId,
+                environmentName,
+                body,
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Executes a custom action.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     actionId: String (Required)
+     *     parameters: Object (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param environmentName The name of the environment.
+     * @param body Action properties overriding the environment's default values.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -1591,12 +2367,12 @@ public final class EnvironmentsImpl {
                         this.customEnvironmentActionWithResponseAsync(
                                 projectName, userId, environmentName, body, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -1628,8 +2404,20 @@ public final class EnvironmentsImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCustomEnvironmentAction(
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.beginCustomEnvironmentActionAsync(projectName, userId, environmentName, body, requestOptions)
-                .getSyncPoller();
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.customEnvironmentActionWithResponse(
+                                projectName, userId, environmentName, body, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1760,11 +2548,69 @@ public final class EnvironmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return results of the catalog item list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCatalogItemsSinglePage(String projectName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listCatalogItemsSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        projectName,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Lists latest version of all catalog items available for a project.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     catalogName: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return results of the catalog item list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listCatalogItems(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(listCatalogItemsAsync(projectName, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listCatalogItemsSinglePage(projectName, requestOptions),
+                nextLink -> listCatalogItemsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1830,7 +2676,15 @@ public final class EnvironmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCatalogItemWithResponse(
             String projectName, String catalogItemId, RequestOptions requestOptions) {
-        return getCatalogItemWithResponseAsync(projectName, catalogItemId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getCatalogItemSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                projectName,
+                catalogItemId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2074,12 +2928,109 @@ public final class EnvironmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return results of the catalog item list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCatalogItemVersionsSinglePage(
+            String projectName, String catalogItemId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listCatalogItemVersionsSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        projectName,
+                        catalogItemId,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * List all versions of a catalog item from a project.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     catalogItemId: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     catalogName: String (Optional)
+     *     version: String (Optional)
+     *     summary: String (Optional)
+     *     description: String (Optional)
+     *     templatePath: String (Optional)
+     *     parametersSchema: String (Optional)
+     *     parameters (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             default: Object (Optional)
+     *             type: String(array/boolean/integer/null/number/object/string) (Optional)
+     *             readOnly: Boolean (Optional)
+     *             required: Boolean (Optional)
+     *             allowed (Optional): [
+     *                 Object (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     actions (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             parametersSchema: String (Optional)
+     *             parameters (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             type: String(Custom/Deploy/Delete) (Optional)
+     *             typeName: String (Optional)
+     *             runner: String (Optional)
+     *         }
+     *     ]
+     *     runner: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     eligibleForLatestVersion: Boolean (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param catalogItemId The unique id of the catalog item.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return results of the catalog item list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listCatalogItemVersions(
             String projectName, String catalogItemId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listCatalogItemVersionsAsync(projectName, catalogItemId, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listCatalogItemVersionsSinglePage(projectName, catalogItemId, requestOptions),
+                nextLink -> listCatalogItemVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2221,7 +3172,16 @@ public final class EnvironmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCatalogItemVersionWithResponse(
             String projectName, String catalogItemId, String version, RequestOptions requestOptions) {
-        return getCatalogItemVersionWithResponseAsync(projectName, catalogItemId, version, requestOptions).block();
+        final String accept = "application/json";
+        return service.getCatalogItemVersionSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                projectName,
+                catalogItemId,
+                version,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2352,11 +3312,70 @@ public final class EnvironmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result of the environment type list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listEnvironmentTypesSinglePage(
+            String projectName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listEnvironmentTypesSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        projectName,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Lists all environment types configured for a project.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     deploymentTargetId: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return result of the environment type list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironmentTypes(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(listEnvironmentTypesAsync(projectName, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listEnvironmentTypesSinglePage(projectName, requestOptions),
+                nextLink -> listEnvironmentTypesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2453,6 +3472,59 @@ public final class EnvironmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return results of the environment list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listEnvironmentsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listEnvironmentsNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return results of the environment list operation along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
@@ -2473,6 +3545,60 @@ public final class EnvironmentsImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     description: String (Optional)
+     *     catalogName: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     parameters: Object (Optional)
+     *     scheduledTasks (Optional): {
+     *         String (Optional): {
+     *             type: String(AutoExpire) (Required)
+     *             enabled: String(Enabled/Disabled) (Optional)
+     *             startTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     tags (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     name: String (Optional)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String (Optional)
+     *     resourceGroupId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return results of the environment list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listEnvironmentsByUserNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listEnvironmentsByUserNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
@@ -2515,6 +3641,43 @@ public final class EnvironmentsImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     catalogName: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return results of the catalog item list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCatalogItemsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listCatalogItemsNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
@@ -2602,6 +3765,80 @@ public final class EnvironmentsImpl {
      *
      * <pre>{@code
      * {
+     *     catalogItemId: String (Optional)
+     *     catalogItemName: String (Optional)
+     *     catalogName: String (Optional)
+     *     version: String (Optional)
+     *     summary: String (Optional)
+     *     description: String (Optional)
+     *     templatePath: String (Optional)
+     *     parametersSchema: String (Optional)
+     *     parameters (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             default: Object (Optional)
+     *             type: String(array/boolean/integer/null/number/object/string) (Optional)
+     *             readOnly: Boolean (Optional)
+     *             required: Boolean (Optional)
+     *             allowed (Optional): [
+     *                 Object (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     actions (Optional): [
+     *          (Optional){
+     *             id: String (Optional)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             parametersSchema: String (Optional)
+     *             parameters (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             type: String(Custom/Deploy/Delete) (Optional)
+     *             typeName: String (Optional)
+     *             runner: String (Optional)
+     *         }
+     *     ]
+     *     runner: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     *     eligibleForLatestVersion: Boolean (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return results of the catalog item list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCatalogItemVersionsNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listCatalogItemVersionsNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
      *     name: String (Optional)
      *     deploymentTargetId: String (Optional)
      *     status: String(Enabled/Disabled) (Optional)
@@ -2635,6 +3872,44 @@ public final class EnvironmentsImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     deploymentTargetId: String (Optional)
+     *     status: String(Enabled/Disabled) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result of the environment type list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listEnvironmentTypesNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listEnvironmentTypesNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

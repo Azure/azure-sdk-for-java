@@ -13,7 +13,7 @@ public final class AllowedEnvironmentTypeInnerTests {
         AllowedEnvironmentTypeInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"yxzk\",\"name\":\"noc\",\"type\":\"koklya\"}")
+                    "{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"lsicohoqqnwv\"},\"id\":\"yav\",\"name\":\"hheunmmqhgyx\",\"type\":\"konocu\"}")
                 .toObject(AllowedEnvironmentTypeInner.class);
     }
 

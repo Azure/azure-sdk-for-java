@@ -23,13 +23,13 @@ public final class GatewaysImpl implements Gateways {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String workspaceName, String gatewayId) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, gatewayId);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String gatewayId, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, gatewayId, context);
+    }
+
+    public void delete(String resourceGroupName, String workspaceName, String gatewayId) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, gatewayId);
     }
 
     private GatewaysClient serviceClient() {

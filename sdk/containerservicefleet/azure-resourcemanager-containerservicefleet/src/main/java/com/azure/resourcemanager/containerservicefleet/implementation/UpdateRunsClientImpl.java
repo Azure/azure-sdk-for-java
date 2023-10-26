@@ -517,8 +517,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -588,8 +588,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -656,8 +656,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdateAsync(
@@ -690,8 +690,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdateAsync(
@@ -724,8 +724,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdateAsync(
@@ -756,8 +756,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(
@@ -782,8 +782,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(
@@ -812,8 +812,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet on
-     *     successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> createOrUpdateAsync(
@@ -838,8 +838,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet on
-     *     successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> createOrUpdateAsync(
@@ -864,8 +864,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet on
-     *     successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> createOrUpdateAsync(
@@ -892,7 +892,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner createOrUpdate(
@@ -915,7 +915,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner createOrUpdate(
@@ -1248,8 +1248,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1305,8 +1305,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1358,8 +1358,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginStartAsync(
@@ -1385,8 +1385,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginStartAsync(
@@ -1415,8 +1415,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginStartAsync(
@@ -1439,8 +1439,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(
@@ -1460,8 +1460,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStart(
@@ -1479,8 +1479,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet on
-     *     successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> startAsync(
@@ -1499,8 +1499,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet on
-     *     successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> startAsync(String resourceGroupName, String fleetName, String updateRunName) {
@@ -1521,8 +1521,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet on
-     *     successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> startAsync(
@@ -1541,7 +1541,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner start(String resourceGroupName, String fleetName, String updateRunName) {
@@ -1560,7 +1560,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner start(
@@ -1578,8 +1578,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -1635,8 +1635,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -1688,8 +1688,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginStopAsync(
@@ -1715,8 +1715,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginStopAsync(
@@ -1745,8 +1745,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link PollerFlux} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UpdateRunInner>, UpdateRunInner> beginStopAsync(
@@ -1769,8 +1769,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(
@@ -1790,8 +1790,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an UpdateRun is a multi-stage process to perform update operations
-     *     across members of a Fleet.
+     * @return the {@link SyncPoller} for polling of a multi-stage process to perform update operations across members
+     *     of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginStop(
@@ -1809,8 +1809,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet on
-     *     successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> stopAsync(
@@ -1829,8 +1829,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet on
-     *     successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> stopAsync(String resourceGroupName, String fleetName, String updateRunName) {
@@ -1851,8 +1851,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet on
-     *     successful completion of {@link Mono}.
+     * @return a multi-stage process to perform update operations across members of a Fleet on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UpdateRunInner> stopAsync(
@@ -1871,7 +1871,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner stop(String resourceGroupName, String fleetName, String updateRunName) {
@@ -1890,7 +1890,7 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRunInner stop(

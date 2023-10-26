@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ColumnDataTypeHintEnum. */
+/** Column data type logical hint. */
 public final class ColumnDataTypeHintEnum extends ExpandableStringEnum<ColumnDataTypeHintEnum> {
     /** Static value uri for ColumnDataTypeHintEnum. */
     public static final ColumnDataTypeHintEnum URI = fromString("uri");
@@ -21,6 +21,15 @@ public final class ColumnDataTypeHintEnum extends ExpandableStringEnum<ColumnDat
 
     /** Static value ip for ColumnDataTypeHintEnum. */
     public static final ColumnDataTypeHintEnum IP = fromString("ip");
+
+    /**
+     * Creates a new instance of ColumnDataTypeHintEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ColumnDataTypeHintEnum() {
+    }
 
     /**
      * Creates or finds a ColumnDataTypeHintEnum from its string representation.

@@ -34,7 +34,7 @@ public final class DatabasesListPrincipalsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"role\":\"Viewer\",\"name\":\"p\",\"type\":\"User\",\"fqn\":\"xelnwc\",\"email\":\"yjede\",\"appId\":\"mlfmkqs\",\"tenantName\":\"zuawxtzxpuamwa\"}]}";
+            "{\"value\":[{\"role\":\"UnrestrictedViewer\",\"name\":\"pfpubcpzgpx\",\"type\":\"User\",\"fqn\":\"hjknidibg\",\"email\":\"xgpnr\",\"appId\":\"ov\",\"tenantName\":\"pikqmh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class DatabasesListPrincipalsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatabasePrincipal> response =
-            manager.databases().listPrincipals("aglkafhon", "juj", "ickpz", com.azure.core.util.Context.NONE);
+            manager.databases().listPrincipals("vxlx", "aglqivbgkcvkh", "zvuqdflvon", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, response.iterator().next().role());
-        Assertions.assertEquals("p", response.iterator().next().name());
+        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, response.iterator().next().role());
+        Assertions.assertEquals("pfpubcpzgpx", response.iterator().next().name());
         Assertions.assertEquals(DatabasePrincipalType.USER, response.iterator().next().type());
-        Assertions.assertEquals("xelnwc", response.iterator().next().fqn());
-        Assertions.assertEquals("yjede", response.iterator().next().email());
-        Assertions.assertEquals("mlfmkqs", response.iterator().next().appId());
+        Assertions.assertEquals("hjknidibg", response.iterator().next().fqn());
+        Assertions.assertEquals("xgpnr", response.iterator().next().email());
+        Assertions.assertEquals("ov", response.iterator().next().appId());
     }
 }

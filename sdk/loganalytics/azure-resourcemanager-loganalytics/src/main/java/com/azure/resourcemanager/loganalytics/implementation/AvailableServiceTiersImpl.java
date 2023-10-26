@@ -30,20 +30,6 @@ public final class AvailableServiceTiersImpl implements AvailableServiceTiers {
         this.serviceManager = serviceManager;
     }
 
-    public List<AvailableServiceTier> listByWorkspace(String resourceGroupName, String workspaceName) {
-        List<AvailableServiceTierInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AvailableServiceTierImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public Response<List<AvailableServiceTier>> listByWorkspaceWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         Response<List<AvailableServiceTierInner>> inner =
@@ -60,6 +46,20 @@ public final class AvailableServiceTiersImpl implements AvailableServiceTiers {
                     .collect(Collectors.toList()));
         } else {
             return null;
+        }
+    }
+
+    public List<AvailableServiceTier> listByWorkspace(String resourceGroupName, String workspaceName) {
+        List<AvailableServiceTierInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new AvailableServiceTierImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
         }
     }
 

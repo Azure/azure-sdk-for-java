@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.Column;
 import com.azure.resourcemanager.loganalytics.models.ColumnTypeEnum;
 import com.azure.resourcemanager.loganalytics.models.Schema;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for Tables Update. */
 public final class TablesUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesUpsert.json
+     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/TablesUpsert.json
      */
     /**
      * Sample code: TablesUpsert.
@@ -25,7 +24,8 @@ public final class TablesUpdateSamples {
         Table resource =
             manager
                 .tables()
-                .getWithResponse("oiautorest6685", "oiautorest6685", "AzureNetworkFlow", Context.NONE)
+                .getWithResponse(
+                    "oiautorest6685", "oiautorest6685", "AzureNetworkFlow", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

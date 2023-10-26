@@ -61,6 +61,14 @@ public final class ProjectEnvironmentTypeImpl
         return this.innerModel().provisioningState();
     }
 
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public Integer environmentCount() {
+        return this.innerModel().environmentCount();
+    }
+
     public String deploymentTargetId() {
         return this.innerModel().deploymentTargetId();
     }
@@ -226,6 +234,11 @@ public final class ProjectEnvironmentTypeImpl
             this.updateBody.withIdentity(identity);
             return this;
         }
+    }
+
+    public ProjectEnvironmentTypeImpl withDisplayName(String displayName) {
+        this.innerModel().withDisplayName(displayName);
+        return this;
     }
 
     public ProjectEnvironmentTypeImpl withDeploymentTargetId(String deploymentTargetId) {

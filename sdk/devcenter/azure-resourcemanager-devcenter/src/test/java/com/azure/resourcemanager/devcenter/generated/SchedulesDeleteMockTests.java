@@ -58,12 +58,6 @@ public final class SchedulesDeleteMockTests {
 
         manager
             .schedules()
-            .delete(
-                "eecjmeis",
-                "stvasylwxdzaumw",
-                "oohgu",
-                "fuzboyjathwtzolb",
-                1032800265,
-                com.azure.core.util.Context.NONE);
+            .delete("xmfcsserxhtv", "oxhlw", "tsjgqrsx", "p", 1133001802, com.azure.core.util.Context.NONE);
     }
 }

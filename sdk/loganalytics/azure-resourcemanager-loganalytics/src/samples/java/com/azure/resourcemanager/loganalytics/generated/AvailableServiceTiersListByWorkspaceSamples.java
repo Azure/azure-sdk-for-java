@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AvailableServiceTiers ListByWorkspace. */
 public final class AvailableServiceTiersListByWorkspaceSamples {
     /*
@@ -17,6 +15,8 @@ public final class AvailableServiceTiersListByWorkspaceSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void availableServiceTiers(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.availableServiceTiers().listByWorkspaceWithResponse("rg1", "workspace1", Context.NONE);
+        manager
+            .availableServiceTiers()
+            .listByWorkspaceWithResponse("rg1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
