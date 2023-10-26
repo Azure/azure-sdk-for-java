@@ -1,5 +1,5 @@
 # Apache Kafka Connect source and sink connectors for Azure Cosmos DB Java SDK for Java
-The AApache Kafka Connect source and sink connector for Azure Cosmos DB allows connecting Azure Cosmos DB containers as sources or sinks in an Apache Kafka Connect event stream.
+The Azure Cosmos DB connectors allow moving data between Azure Cosmos DB and Kafka. The Cosmos DB Sink connector writes data from a Kafka topic to a Cosmos DB container. The Cosmos DB Source connector writes changes from a Cosmos DB container to a Kafka topic.
 
 [Source code][kafka_source_code] | [Package (Maven)][cosmos_kafka_maven] | [Product documentation][cosmos_docs] 
 
