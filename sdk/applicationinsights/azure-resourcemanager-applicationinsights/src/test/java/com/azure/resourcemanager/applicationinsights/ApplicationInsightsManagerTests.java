@@ -17,12 +17,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponent;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationType;
 import com.azure.resourcemanager.applicationinsights.models.IngestionMode;
-import com.azure.resourcemanager.applicationinsights.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
-import com.azure.resourcemanager.loganalytics.models.WorkspaceCapping;
-import com.azure.resourcemanager.loganalytics.models.WorkspaceFeatures;
-import com.azure.resourcemanager.loganalytics.models.WorkspaceSku;
-import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
+import com.azure.resourcemanager.loganalytics.models.Workspace;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -88,30 +84,20 @@ public class ApplicationInsightsManagerTests extends TestBase {
             String componentName = "component" + randomPadding;
             String spaceName = "space" + randomPadding;
             // @embedStart
+            Workspace workspace = logAnalyticsManager.workspaces()
+                .define(spaceName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroupName)
+                .create();
+
             component = applicationInsightsManager.components()
                 .define(componentName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withKind("web")
                 .withApplicationType(ApplicationType.WEB)
-                .withWorkspaceResourceId(
-                    logAnalyticsManager.workspaces()
-                        .define(spaceName)
-                        .withRegion(REGION)
-                        .withExistingResourceGroup(resourceGroupName)
-                        .withSku(new WorkspaceSku().withName(WorkspaceSkuNameEnum.PER_GB2018))
-                        .withFeatures(new WorkspaceFeatures().withEnableLogAccessUsingOnlyResourcePermissions(true))
-                        .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(-1D))
-                        .withRetentionInDays(30)
-                        .withPublicNetworkAccessForIngestion(com.azure.resourcemanager.loganalytics.models.PublicNetworkAccessType.ENABLED)
-                        .withPublicNetworkAccessForQuery(com.azure.resourcemanager.loganalytics.models.PublicNetworkAccessType.ENABLED)
-                        .create()
-                        .id()
-
-                )
+                .withWorkspaceResourceId(workspace.id())
                 .withIngestionMode(IngestionMode.LOG_ANALYTICS)
-                .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.ENABLED)
-                .withPublicNetworkAccessForQuery(PublicNetworkAccessType.ENABLED)
                 .create();
             // @embedEnd
             component.refresh();
