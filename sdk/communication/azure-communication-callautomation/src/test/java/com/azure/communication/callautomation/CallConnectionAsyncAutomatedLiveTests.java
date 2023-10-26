@@ -293,8 +293,6 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         }
     }
 
-    //TODO: uncomment once the the invitation-id fix is deployed on server
-    //@DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
