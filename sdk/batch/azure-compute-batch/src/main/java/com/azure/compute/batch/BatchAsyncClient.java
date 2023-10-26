@@ -6,7 +6,13 @@ package com.azure.compute.batch;
 import com.azure.compute.batch.implementation.BatchClientImpl;
 import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchApplication;
+import com.azure.compute.batch.models.BatchBaseOptions;
 import com.azure.compute.batch.models.BatchCertificate;
+import com.azure.compute.batch.models.BatchDeleteOptions;
+import com.azure.compute.batch.models.BatchDisableOptions;
+import com.azure.compute.batch.models.BatchEnableOptions;
+import com.azure.compute.batch.models.BatchExistsOptions;
+import com.azure.compute.batch.models.BatchGetOptions;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateOptions;
 import com.azure.compute.batch.models.BatchJobDisableOptions;
@@ -15,6 +21,7 @@ import com.azure.compute.batch.models.BatchJobScheduleCreateOptions;
 import com.azure.compute.batch.models.BatchJobScheduleUpdateOptions;
 import com.azure.compute.batch.models.BatchJobTerminateOptions;
 import com.azure.compute.batch.models.BatchJobUpdateOptions;
+import com.azure.compute.batch.models.BatchListOptions;
 import com.azure.compute.batch.models.BatchNode;
 import com.azure.compute.batch.models.BatchNodeRemoteLoginSettingsResult;
 import com.azure.compute.batch.models.BatchNodeUserCreateOptions;
@@ -26,21 +33,40 @@ import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleOptions;
 import com.azure.compute.batch.models.BatchPoolReplaceOptions;
 import com.azure.compute.batch.models.BatchPoolResizeOptions;
 import com.azure.compute.batch.models.BatchPoolUpdateOptions;
+import com.azure.compute.batch.models.BatchReplaceOptions;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskCollection;
 import com.azure.compute.batch.models.BatchTaskCreateOptions;
 import com.azure.compute.batch.models.BatchTaskListSubtasksResult;
+import com.azure.compute.batch.models.BatchTerminateOptions;
+import com.azure.compute.batch.models.BatchUpdateOptions;
+import com.azure.compute.batch.models.DeleteBatchNodeFileOptions;
+import com.azure.compute.batch.models.DeleteBatchTaskFileOptions;
+import com.azure.compute.batch.models.GetBatchJobOptions;
+import com.azure.compute.batch.models.GetBatchJobScheduleOptions;
+import com.azure.compute.batch.models.GetBatchNodeFileOptions;
+import com.azure.compute.batch.models.GetBatchNodeFilePropertiesOptions;
+import com.azure.compute.batch.models.GetBatchPoolOptions;
+import com.azure.compute.batch.models.GetBatchTaskFileOptions;
+import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
+import com.azure.compute.batch.models.GetBatchTaskOptions;
 import com.azure.compute.batch.models.ImageInformation;
 import com.azure.compute.batch.models.JobPreparationAndReleaseTaskExecutionInformation;
+import com.azure.compute.batch.models.ListBatchNodeFilesOptions;
+import com.azure.compute.batch.models.ListBatchTaskFilesOptions;
+import com.azure.compute.batch.models.ListBatchPoolUsageMetricsOptions;
 import com.azure.compute.batch.models.NodeDisableSchedulingOptions;
 import com.azure.compute.batch.models.NodeFile;
 import com.azure.compute.batch.models.NodeRebootOptions;
 import com.azure.compute.batch.models.NodeReimageOptions;
 import com.azure.compute.batch.models.NodeRemoveOptions;
 import com.azure.compute.batch.models.NodeVMExtension;
-import com.azure.compute.batch.models.OptionsBag;
 import com.azure.compute.batch.models.PoolNodeCounts;
 import com.azure.compute.batch.models.PoolUsageMetrics;
+import com.azure.compute.batch.models.ReactivateBatchTaskOptions;
+import com.azure.compute.batch.models.RemoveBatchNodesOptions;
+import com.azure.compute.batch.models.ResizeBatchPoolOptions;
+import com.azure.compute.batch.models.StopBatchPoolResizeOptions;
 import com.azure.compute.batch.models.TaskAddCollectionResult;
 import com.azure.compute.batch.models.TaskCountsResult;
 import com.azure.compute.batch.models.UploadBatchServiceLogsOptions;
@@ -12225,7 +12251,7 @@ public final class BatchAsyncClient {
      * that can be used in an Package reference. For administrator information about applications and versions that are
      * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
-     * @param optionsBag A bag containing optional parameters like maxresults and timeOutInSeconds.
+     * @param options A group containing optional parameters like maxresults and timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12235,8 +12261,8 @@ public final class BatchAsyncClient {
      * @return the result of listing the applications available in an Account as paginated response with {@link
      *     PagedFlux}.
      */
-    public PagedFlux<BatchApplication> listApplications(OptionsBag optionsBag) {
-        return listApplications(optionsBag.getMaxresults(), optionsBag.getTimeOutInSeconds());
+    public PagedFlux<BatchApplication> listApplications(BatchListOptions options) {
+        return listApplications(options.getMaxresults(), options.getTimeOutInSeconds());
     }
 
     /**
@@ -12279,7 +12305,7 @@ public final class BatchAsyncClient {
      * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the Application.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12289,8 +12315,8 @@ public final class BatchAsyncClient {
      * @return contains information about an application in an Azure Batch Account on successful completion of {@link
      *     Mono}.
      */
-    public Mono<BatchApplication> getApplication(String applicationId, OptionsBag optionsBag) {
-        return getApplication(applicationId, optionsBag.getTimeOutInSeconds());
+    public Mono<BatchApplication> getApplication(String applicationId, BatchBaseOptions options) {
+        return getApplication(applicationId, options.getTimeOutInSeconds());
     }
 
     /**
@@ -12378,7 +12404,7 @@ public final class BatchAsyncClient {
      * a startTime or endTime these filters default to the start and end times of the last aggregation interval
      * currently available; that is, only the last aggregation interval is returned.
      *
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, starttime, endtime, and
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, starttime, endtime, and
      *     filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12388,13 +12414,13 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<PoolUsageMetrics> listPoolUsageMetrics(OptionsBag optionsBag) {
+    public PagedFlux<PoolUsageMetrics> listPoolUsageMetrics(ListBatchPoolUsageMetricsOptions options) {
         return listPoolUsageMetrics(
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getStartTime(),
-                optionsBag.getEndTime(),
-                optionsBag.getFilter());
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getStartTime(),
+                options.getEndTime(),
+                options.getFilter());
     }
 
     /**
@@ -12432,7 +12458,7 @@ public final class BatchAsyncClient {
      * information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param body The Pool to be created.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12441,8 +12467,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> createPool(BatchPoolCreateOptions body, OptionsBag optionsBag) {
-        return createPool(body, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> createPool(BatchPoolCreateOptions body, BatchBaseOptions options) {
+        return createPool(body, options.getTimeOutInSeconds());
     }
 
     /**
@@ -12523,7 +12549,7 @@ public final class BatchAsyncClient {
     /**
      * Lists all of the Pools in the specified Account.
      *
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
      *     expand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12533,13 +12559,14 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<BatchPool> listPools(OptionsBag optionsBag) {
+    public PagedFlux<BatchPool> listPools(BatchListOptions options) {
         return listPools(
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getFilter(),
-                optionsBag.getSelect(),
-                optionsBag.getExpand());
+            options.getMaxresults(),
+            options.getTimeOutInSeconds(),
+            options.getFilter(),
+            options.getSelect(),
+            options.getExpand()
+        );
     }
 
     /**
@@ -12608,7 +12635,7 @@ public final class BatchAsyncClient {
      * on a Pool in the deleting state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
      *
      * @param poolId The ID of the Pool to get.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12617,8 +12644,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> deletePool(String poolId, OptionsBag optionsBag) {
-        return deletePool(poolId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> deletePool(String poolId, BatchDeleteOptions options) {
+        return deletePool(poolId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -12668,7 +12695,7 @@ public final class BatchAsyncClient {
      * Gets basic properties of a Pool.
      *
      * @param poolId The ID of the Pool to get.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12676,8 +12703,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return basic properties of a Pool on successful completion of {@link Mono}.
      */
-    public Mono<Boolean> poolExists(String poolId, OptionsBag optionsBag) {
-        return poolExists(poolId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Boolean> poolExists(String poolId, BatchExistsOptions options) {
+        return poolExists(poolId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -12753,7 +12780,7 @@ public final class BatchAsyncClient {
      * Gets information about the specified Pool.
      *
      * @param poolId The ID of the Pool to get.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, select, expand, and
+     * @param options A group containing optional parameters like timeOutInSeconds, select, expand, and
      *     requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12763,13 +12790,13 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Pool on successful completion of {@link Mono}.
      */
-    public Mono<BatchPool> getPool(String poolId, OptionsBag optionsBag) {
+    public Mono<BatchPool> getPool(String poolId, GetBatchPoolOptions options) {
         return getPool(
                 poolId,
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getSelect(),
-                optionsBag.getExpand(),
-                optionsBag.getRequestConditions());
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
     /**
@@ -12831,7 +12858,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The pool properties to update.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12840,8 +12867,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> updatePool(String poolId, BatchPoolUpdateOptions body, OptionsBag optionsBag) {
-        return updatePool(poolId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> updatePool(String poolId, BatchPoolUpdateOptions body, BatchUpdateOptions options) {
+        return updatePool(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -12873,7 +12900,7 @@ public final class BatchAsyncClient {
      * Disables automatic scaling for a Pool.
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12882,8 +12909,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> disablePoolAutoScale(String poolId, OptionsBag optionsBag) {
-        return disablePoolAutoScale(poolId, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> disablePoolAutoScale(String poolId, BatchBaseOptions options) {
+        return disablePoolAutoScale(poolId, options.getTimeOutInSeconds());
     }
 
     /**
@@ -12951,7 +12978,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The options to use for enabling automatic scaling.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -12960,8 +12987,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleOptions body, OptionsBag optionsBag) {
-        return enablePoolAutoScale(poolId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleOptions body, BatchEnableOptions options) {
+        return enablePoolAutoScale(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -13005,7 +13032,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param body The options to use for evaluating the automatic scaling formula.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13016,8 +13043,8 @@ public final class BatchAsyncClient {
      *     Mono}.
      */
     public Mono<AutoScaleRun> evaluatePoolAutoScale(
-            String poolId, BatchPoolEvaluateAutoScaleOptions body, OptionsBag optionsBag) {
-        return evaluatePoolAutoScale(poolId, body, optionsBag.getTimeOutInSeconds());
+            String poolId, BatchPoolEvaluateAutoScaleOptions body, BatchBaseOptions options) {
+        return evaluatePoolAutoScale(poolId, body, options.getTimeOutInSeconds());
     }
 
     /**
@@ -13083,7 +13110,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The options to use for resizing the pool.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by the server.
      * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
@@ -13092,8 +13119,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> resizePool(String poolId, BatchPoolResizeOptions body, OptionsBag optionsBag) {
-        return resizePool(poolId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> resizePool(String poolId, BatchPoolResizeOptions body, ResizeBatchPoolOptions options) {
+        return resizePool(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -13156,7 +13183,7 @@ public final class BatchAsyncClient {
      * this API can also be used to halt the initial sizing of the Pool when it is created.
      *
      * @param poolId The ID of the Pool to get.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by the server.
      * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
@@ -13165,8 +13192,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> stopPoolResize(String poolId, OptionsBag optionsBag) {
-        return stopPoolResize(poolId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> stopPoolResize(String poolId, StopBatchPoolResizeOptions options) {
+        return stopPoolResize(poolId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -13209,7 +13236,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to update.
      * @param body The options to use for replacing properties on the pool.
-     * @param optionsBag A bag containing optional parameters like body and timeOutInSeconds.
+     * @param options A group containing optional parameters like body and timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by the server.
      * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
@@ -13218,8 +13245,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceOptions body, OptionsBag optionsBag) {
-        return replacePoolProperties(poolId, body, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceOptions body, BatchBaseOptions options) {
+        return replacePoolProperties(poolId, body, options.getTimeOutInSeconds());
     }
 
     /**
@@ -13279,7 +13306,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param body The options to use for removing the node.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by the server.
      * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
@@ -13288,8 +13315,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> removeNodes(String poolId, NodeRemoveOptions body, OptionsBag optionsBag) {
-        return removeNodes(poolId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> removeNodes(String poolId, NodeRemoveOptions body, RemoveBatchNodesOptions options) {
+        return removeNodes(poolId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -13352,7 +13379,7 @@ public final class BatchAsyncClient {
     /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
      *
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, and filter.
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, and filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by the server.
      * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
@@ -13361,9 +13388,9 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<ImageInformation> listSupportedImages(OptionsBag optionsBag) {
+    public PagedFlux<ImageInformation> listSupportedImages(BatchListOptions options) {
         return listSupportedImages(
-                optionsBag.getMaxresults(), optionsBag.getTimeOutInSeconds(), optionsBag.getFilter());
+                options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter());
     }
 
     /**
@@ -13427,7 +13454,7 @@ public final class BatchAsyncClient {
      * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be
      * up to date. If you need exact node counts, use a list query.
      *
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, and filter.
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, and filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by the server.
      * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
@@ -13436,8 +13463,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<PoolNodeCounts> listPoolNodeCounts(OptionsBag optionsBag) {
-        return listPoolNodeCounts(optionsBag.getMaxresults(), optionsBag.getTimeOutInSeconds(), optionsBag.getFilter());
+    public PagedFlux<PoolNodeCounts> listPoolNodeCounts(BatchListOptions options) {
+        return listPoolNodeCounts(options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter());
     }
 
     /**
@@ -13502,7 +13529,7 @@ public final class BatchAsyncClient {
      * being deleted.
      *
      * @param jobId The ID of the Job to delete.
-     * @param optionsBag A bag containing optional parameters like jobId, timeOutInSeconds, and requestConditions.
+     * @param options A group containing optional parameters like jobId, timeOutInSeconds, and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by the server.
      * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
@@ -13511,8 +13538,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> deleteJob(String jobId, OptionsBag optionsBag) {
-        return deleteJob(jobId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> deleteJob(String jobId, BatchDeleteOptions options) {
+        return deleteJob(jobId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -13588,7 +13615,7 @@ public final class BatchAsyncClient {
      * Gets information about the specified Job.
      *
      * @param jobId The ID of the Job.
-     * @param optionsBag A bag containing optional parameters like jobId, timeOutInSeconds, select, expand, and
+     * @param options A group containing optional parameters like jobId, timeOutInSeconds, select, expand, and
      *     requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by the server.
@@ -13598,13 +13625,13 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job on successful completion of {@link Mono}.
      */
-    public Mono<BatchJob> getJob(String jobId, OptionsBag optionsBag) {
+    public Mono<BatchJob> getJob(String jobId, GetBatchJobOptions options) {
         return getJob(
                 jobId,
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getSelect(),
-                optionsBag.getExpand(),
-                optionsBag.getRequestConditions());
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
     /**
@@ -13664,7 +13691,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param body The options to use for updating the Job.
-     * @param optionsBag A bag containing optional parameters like jobId, body, timeOutInSeconds, and requestConditions.
+     * @param options A group containing optional parameters like jobId, body, timeOutInSeconds, and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13673,8 +13700,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> updateJob(String jobId, BatchJobUpdateOptions body, OptionsBag optionsBag) {
-        return updateJob(jobId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> updateJob(String jobId, BatchJobUpdateOptions body, BatchUpdateOptions options) {
+        return updateJob(jobId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -13736,7 +13763,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param body A job with updated properties.
-     * @param optionsBag A bag containing optional parameters like jobId, body, timeOutInSeconds, and requestConditions.
+     * @param options A group containing optional parameters like jobId, body, timeOutInSeconds, and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13745,8 +13772,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> replaceJob(String jobId, BatchJob body, OptionsBag optionsBag) {
-        return replaceJob(jobId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> replaceJob(String jobId, BatchJob body, BatchReplaceOptions options) {
+        return replaceJob(jobId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -13814,7 +13841,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job to disable.
      * @param body The options to use for disabling the Job.
-     * @param optionsBag A bag containing optional parameters like jobId, body, timeOutInSeconds, and requestConditions.
+     * @param options A group containing optional parameters like jobId, body, timeOutInSeconds, and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13823,8 +13850,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> disableJob(String jobId, BatchJobDisableOptions body, OptionsBag optionsBag) {
-        return disableJob(jobId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> disableJob(String jobId, BatchJobDisableOptions body, BatchDisableOptions options) {
+        return disableJob(jobId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -13885,7 +13912,7 @@ public final class BatchAsyncClient {
      * Job containing active Tasks which were added more than 180 days ago, those Tasks will not run.
      *
      * @param jobId The ID of the Job to enable.
-     * @param optionsBag A bag containing optional parameters like jobId, timeOutInSeconds, and requestConditions.
+     * @param options A group containing optional parameters like jobId, timeOutInSeconds, and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13894,8 +13921,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> enableJob(String jobId, OptionsBag optionsBag) {
-        return enableJob(jobId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> enableJob(String jobId, BatchEnableOptions options) {
+        return enableJob(jobId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -13966,8 +13993,8 @@ public final class BatchAsyncClient {
      * be scheduled.
      *
      * @param jobId The ID of the Job to terminate.
-     * @param optionsBag A bag containing optional parameters like jobId, timeOutInSeconds, body
-     *     (BatchJobTerminateOptions), and requestConditions.
+     * @param options A group of optional parameters containing options like timeOutInSeconds and requestConditions.
+     * @param body The options to use for terminating the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -13976,12 +14003,12 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> terminateJob(String jobId, OptionsBag optionsBag) {
+    public Mono<Void> terminateJob(String jobId, BatchTerminateOptions options, BatchJobTerminateOptions body) {
         return terminateJob(
                 jobId,
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getBatchJobTerminateOptionsBody(),
-                optionsBag.getRequestConditions());
+                options.getTimeOutInSeconds(),
+                body,
+                options.getRequestConditions());
     }
 
     /**
@@ -14026,7 +14053,7 @@ public final class BatchAsyncClient {
      * naming Jobs, avoid including sensitive information such as user names or secret project names. This information
      * may appear in telemetry logs accessible to Microsoft Support engineers.
      *
-     * @param optionsBag A bag containing optional parameters like body (BatchJobCreateOptions) and timeOutInSeconds.
+     * @param options A group containing optional parameters like body (BatchJobCreateOptions) and timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14035,8 +14062,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> createJob(BatchJobCreateOptions body, OptionsBag optionsBag) {
-        return createJob(body, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> createJob(BatchJobCreateOptions body, BatchBaseOptions options) {
+        return createJob(body, options.getTimeOutInSeconds());
     }
 
     /**
@@ -14116,7 +14143,7 @@ public final class BatchAsyncClient {
     /**
      * Lists all of the Jobs in the specified Account.
      *
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
      *     expand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14126,13 +14153,13 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<BatchJob> listJobs(OptionsBag optionsBag) {
+    public PagedFlux<BatchJob> listJobs(BatchListOptions options) {
         return listJobs(
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getFilter(),
-                optionsBag.getSelect(),
-                optionsBag.getExpand());
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -14219,7 +14246,7 @@ public final class BatchAsyncClient {
      * Lists the Jobs that have been created under the specified Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
      *     expand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14229,14 +14256,14 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<BatchJob> listJobsFromSchedule(String jobScheduleId, OptionsBag optionsBag) {
+    public PagedFlux<BatchJob> listJobsFromSchedule(String jobScheduleId, BatchListOptions options) {
         return listJobsFromSchedule(
                 jobScheduleId,
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getFilter(),
-                optionsBag.getSelect(),
-                optionsBag.getExpand());
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -14325,7 +14352,7 @@ public final class BatchAsyncClient {
      * code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
      *
      * @param jobId The ID of the Job.
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, and select.
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14336,13 +14363,13 @@ public final class BatchAsyncClient {
      *     response with {@link PagedFlux}.
      */
     public PagedFlux<JobPreparationAndReleaseTaskExecutionInformation> listJobPreparationAndReleaseTaskStatus(
-            String jobId, OptionsBag optionsBag) {
+            String jobId, BatchListOptions options) {
         return listJobPreparationAndReleaseTaskStatus(
                 jobId,
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getFilter(),
-                optionsBag.getSelect());
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect());
     }
 
     /**
@@ -14384,7 +14411,7 @@ public final class BatchAsyncClient {
      * may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14393,8 +14420,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Task and TaskSlot counts for a Job on successful completion of {@link Mono}.
      */
-    public Mono<TaskCountsResult> getJobTaskCounts(String jobId, OptionsBag optionsBag) {
-        return getJobTaskCounts(jobId, optionsBag.getTimeOutInSeconds());
+    public Mono<TaskCountsResult> getJobTaskCounts(String jobId, BatchBaseOptions options) {
+        return getJobTaskCounts(jobId, options.getTimeOutInSeconds());
     }
 
     /**
@@ -14426,7 +14453,7 @@ public final class BatchAsyncClient {
      * Creates a Certificate to the specified Account.
      *
      * @param body The Certificate to be created.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14435,8 +14462,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> createCertificate(BatchCertificate body, OptionsBag optionsBag) {
-        return createCertificate(body, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> createCertificate(BatchCertificate body, BatchBaseOptions options) {
+        return createCertificate(body, options.getTimeOutInSeconds());
     }
 
     /**
@@ -14508,7 +14535,7 @@ public final class BatchAsyncClient {
     /**
      * Lists all of the Certificates that have been added to the specified Account.
      *
-     * @param optionsBag A bag containing optional parameters like maxResults, timeOutInSeconds, filter, and select.
+     * @param options A group containing optional parameters like maxResults, timeOutInSeconds, filter, and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14517,12 +14544,12 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<BatchCertificate> listCertificates(OptionsBag optionsBag) {
+    public PagedFlux<BatchCertificate> listCertificates(BatchListOptions options) {
         return listCertificates(
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getFilter(),
-                optionsBag.getSelect());
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect());
     }
 
     /**
@@ -14570,7 +14597,7 @@ public final class BatchAsyncClient {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14579,8 +14606,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint, OptionsBag optionsBag) {
-        return cancelCertificateDeletion(thumbprintAlgorithm, thumbprint, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint, BatchBaseOptions options) {
+        return cancelCertificateDeletion(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds());
     }
 
     /**
@@ -14630,7 +14657,7 @@ public final class BatchAsyncClient {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14639,8 +14666,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint, OptionsBag optionsBag) {
-        return deleteCertificate(thumbprintAlgorithm, thumbprint, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint, BatchBaseOptions options) {
+        return deleteCertificate(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds());
     }
 
     /**
@@ -14686,7 +14713,7 @@ public final class BatchAsyncClient {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to get.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and select.
+     * @param options A group containing optional parameters like timeOutInSeconds and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14695,9 +14722,9 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Certificate on successful completion of {@link Mono}.
      */
-    public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint, OptionsBag optionsBag) {
+    public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint, BatchGetOptions options) {
         return getCertificate(
-                thumbprintAlgorithm, thumbprint, optionsBag.getTimeOutInSeconds(), optionsBag.getSelect());
+                thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds(), options.getSelect());
     }
 
     /**
@@ -14748,7 +14775,7 @@ public final class BatchAsyncClient {
      * Checks the specified Job Schedule exists.
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14756,8 +14783,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether the resource exists on successful completion of {@link Mono}.
      */
-    public Mono<Boolean> jobScheduleExists(String jobScheduleId, OptionsBag optionsBag) {
-        return jobScheduleExists(jobScheduleId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Boolean> jobScheduleExists(String jobScheduleId, BatchExistsOptions options) {
+        return jobScheduleExists(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -14819,7 +14846,7 @@ public final class BatchAsyncClient {
      * are still counted towards Account lifetime statistics.
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14828,8 +14855,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> deleteJobSchedule(String jobScheduleId, OptionsBag optionsBag) {
-        return deleteJobSchedule(jobScheduleId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> deleteJobSchedule(String jobScheduleId, BatchDeleteOptions options) {
+        return deleteJobSchedule(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -14905,7 +14932,7 @@ public final class BatchAsyncClient {
      * Gets information about the specified Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, select, expand, and
+     * @param options A group containing optional parameters like timeOutInSeconds, select, expand, and
      *     requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -14915,13 +14942,13 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job Schedule on successful completion of {@link Mono}.
      */
-    public Mono<BatchJobSchedule> getJobSchedule(String jobScheduleId, OptionsBag optionsBag) {
+    public Mono<BatchJobSchedule> getJobSchedule(String jobScheduleId, GetBatchJobScheduleOptions options) {
         return getJobSchedule(
                 jobScheduleId,
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getSelect(),
-                optionsBag.getExpand(),
-                optionsBag.getRequestConditions());
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
     /**
@@ -14989,7 +15016,7 @@ public final class BatchAsyncClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param body The options to use for updating the Job Schedule.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -14999,9 +15026,9 @@ public final class BatchAsyncClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     public Mono<Void> updateJobSchedule(
-            String jobScheduleId, BatchJobScheduleUpdateOptions body, OptionsBag optionsBag) {
+            String jobScheduleId, BatchJobScheduleUpdateOptions body, BatchUpdateOptions options) {
         return updateJobSchedule(
-                jobScheduleId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+                jobScheduleId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -15069,7 +15096,7 @@ public final class BatchAsyncClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param body A Job Schedule with updated properties.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15078,9 +15105,9 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> replaceJobSchedule(String jobScheduleId, BatchJobSchedule body, OptionsBag optionsBag) {
+    public Mono<Void> replaceJobSchedule(String jobScheduleId, BatchJobSchedule body, BatchReplaceOptions options) {
         return replaceJobSchedule(
-                jobScheduleId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+                jobScheduleId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -15136,7 +15163,7 @@ public final class BatchAsyncClient {
      * <p>No new Jobs will be created until the Job Schedule is enabled again.
      *
      * @param jobScheduleId The ID of the Job Schedule to disable.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15145,8 +15172,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> disableJobSchedule(String jobScheduleId, OptionsBag optionsBag) {
-        return disableJobSchedule(jobScheduleId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> disableJobSchedule(String jobScheduleId, BatchDisableOptions options) {
+        return disableJobSchedule(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -15198,7 +15225,7 @@ public final class BatchAsyncClient {
      * Enables a Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to enable.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15207,8 +15234,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> enableJobSchedule(String jobScheduleId, OptionsBag optionsBag) {
-        return enableJobSchedule(jobScheduleId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> enableJobSchedule(String jobScheduleId, BatchEnableOptions options) {
+        return enableJobSchedule(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -15260,7 +15287,7 @@ public final class BatchAsyncClient {
      * Terminates a Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to terminate.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15269,8 +15296,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> terminateJobSchedule(String jobScheduleId, OptionsBag optionsBag) {
-        return terminateJobSchedule(jobScheduleId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> terminateJobSchedule(String jobScheduleId, BatchTerminateOptions options) {
+        return terminateJobSchedule(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -15302,7 +15329,7 @@ public final class BatchAsyncClient {
      * Creates a Job Schedule to the specified Account.
      *
      * @param body The Job Schedule to be created.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15311,8 +15338,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> createJobSchedule(BatchJobScheduleCreateOptions body, OptionsBag optionsBag) {
-        return createJobSchedule(body, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> createJobSchedule(BatchJobScheduleCreateOptions body, BatchBaseOptions options) {
+        return createJobSchedule(body, options.getTimeOutInSeconds());
     }
 
     /**
@@ -15393,7 +15420,7 @@ public final class BatchAsyncClient {
     /**
      * Lists all of the Job Schedules in the specified Account.
      *
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
      *     expand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -15403,13 +15430,13 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<BatchJobSchedule> listJobSchedules(OptionsBag optionsBag) {
+    public PagedFlux<BatchJobSchedule> listJobSchedules(BatchListOptions options) {
         return listJobSchedules(
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getFilter(),
-                optionsBag.getSelect(),
-                optionsBag.getExpand());
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -15449,7 +15476,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param body The Task to be created.
-     * @param optionsBag A bag containing optional parameters like body and timeOutInSeconds.
+     * @param options A group containing optional parameters like body and timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15458,8 +15485,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> createTask(String jobId, BatchTaskCreateOptions body, OptionsBag optionsBag) {
-        return createTask(jobId, body, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> createTask(String jobId, BatchTaskCreateOptions body, BatchBaseOptions options) {
+        return createTask(jobId, body, options.getTimeOutInSeconds());
     }
 
     /**
@@ -15553,7 +15580,7 @@ public final class BatchAsyncClient {
      * Task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param jobId The ID of the Job.
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, select, and
      *     expand.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -15563,14 +15590,14 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<BatchTask> listTasks(String jobId, OptionsBag optionsBag) {
+    public PagedFlux<BatchTask> listTasks(String jobId, BatchListOptions options) {
         return listTasks(
                 jobId,
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getFilter(),
-                optionsBag.getSelect(),
-                optionsBag.getExpand());
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -15629,7 +15656,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param collection The Tasks to be added.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15639,8 +15666,8 @@ public final class BatchAsyncClient {
      * @return the result of adding a collection of Tasks to a Job on successful completion of {@link Mono}.
      */
     public Mono<TaskAddCollectionResult> createTaskCollection(
-            String jobId, BatchTaskCollection collection, OptionsBag optionsBag) {
-        return createTaskCollection(jobId, collection, optionsBag.getTimeOutInSeconds());
+            String jobId, BatchTaskCollection collection, BatchBaseOptions options) {
+        return createTaskCollection(jobId, collection, options.getTimeOutInSeconds());
     }
 
     /**
@@ -15702,7 +15729,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15711,8 +15738,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> deleteTask(String jobId, String taskId, OptionsBag optionsBag) {
-        return deleteTask(jobId, taskId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> deleteTask(String jobId, String taskId, BatchDeleteOptions options) {
+        return deleteTask(jobId, taskId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -15800,7 +15827,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, select, expand, and
+     * @param options A group containing optional parameters like timeOutInSeconds, select, expand, and
      *     requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -15813,14 +15840,14 @@ public final class BatchAsyncClient {
      *     failure. Retries due to recovery operations are independent of and are not counted against the
      *     maxTaskRetryCount on successful completion of {@link Mono}.
      */
-    public Mono<BatchTask> getTask(String jobId, String taskId, OptionsBag optionsBag) {
+    public Mono<BatchTask> getTask(String jobId, String taskId, GetBatchTaskOptions options) {
         return getTask(
                 jobId,
                 taskId,
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getSelect(),
-                optionsBag.getExpand(),
-                optionsBag.getRequestConditions());
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
     /**
@@ -15881,7 +15908,7 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
      * @param body The Task to update.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15890,8 +15917,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> replaceTask(String jobId, String taskId, BatchTask body, OptionsBag optionsBag) {
-        return replaceTask(jobId, taskId, body, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> replaceTask(String jobId, String taskId, BatchTask body, BatchReplaceOptions options) {
+        return replaceTask(jobId, taskId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -15941,7 +15968,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and select.
+     * @param options A group containing optional parameters like timeOutInSeconds and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -15950,8 +15977,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the subtasks of a Task on successful completion of {@link Mono}.
      */
-    public Mono<BatchTaskListSubtasksResult> listSubTasks(String jobId, String taskId, OptionsBag optionsBag) {
-        return listSubTasks(jobId, taskId, optionsBag.getTimeOutInSeconds(), optionsBag.getSelect());
+    public Mono<BatchTaskListSubtasksResult> listSubTasks(String jobId, String taskId, BatchListOptions options) {
+        return listSubTasks(jobId, taskId, options.getTimeOutInSeconds(), options.getSelect());
     }
 
     /**
@@ -16013,7 +16040,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16022,8 +16049,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> terminateTask(String jobId, String taskId, OptionsBag optionsBag) {
-        return terminateTask(jobId, taskId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> terminateTask(String jobId, String taskId, BatchTerminateOptions options) {
+        return terminateTask(jobId, taskId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -16089,7 +16116,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and requestConditions.
+     * @param options A group containing optional parameters like timeOutInSeconds and requestConditions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16098,8 +16125,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> reactivateTask(String jobId, String taskId, OptionsBag optionsBag) {
-        return reactivateTask(jobId, taskId, optionsBag.getTimeOutInSeconds(), optionsBag.getRequestConditions());
+    public Mono<Void> reactivateTask(String jobId, String taskId, ReactivateBatchTaskOptions options) {
+        return reactivateTask(jobId, taskId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -16142,7 +16169,7 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and recursive.
+     * @param options A group containing optional parameters like timeOutInSeconds and recursive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16151,8 +16178,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> deleteTaskFile(String jobId, String taskId, String filePath, OptionsBag optionsBag) {
-        return deleteTaskFile(jobId, taskId, filePath, optionsBag.getTimeOutInSeconds(), optionsBag.getRecursive());
+    public Mono<Void> deleteTaskFile(String jobId, String taskId, String filePath, DeleteBatchTaskFileOptions options) {
+        return deleteTaskFile(jobId, taskId, filePath, options.getTimeOutInSeconds(), options.getRecursive());
     }
 
     /**
@@ -16213,7 +16240,7 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, ifModifiedSince, ifUnmodifiedSince,
+     * @param options A group containing optional parameters like timeOutInSeconds, ifModifiedSince, ifUnmodifiedSince,
      *     and ocpRange.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -16223,15 +16250,15 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    public Mono<BinaryData> getTaskFile(String jobId, String taskId, String filePath, OptionsBag optionsBag) {
+    public Mono<BinaryData> getTaskFile(String jobId, String taskId, String filePath, GetBatchTaskFileOptions options) {
         return getTaskFile(
                 jobId,
                 taskId,
                 filePath,
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getIfModifiedSince(),
-                optionsBag.getIfUnmodifiedSince(),
-                optionsBag.getOcpRange());
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince(),
+                options.getOcpRange());
     }
 
     /**
@@ -16286,7 +16313,7 @@ public final class BatchAsyncClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, ifModifiedSince, and
+     * @param options A group containing optional parameters like timeOutInSeconds, ifModifiedSince, and
      *     ifUnmodifiedSince.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -16296,14 +16323,14 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Task file on successful completion of {@link Mono}.
      */
-    public Mono<Void> getTaskFileProperties(String jobId, String taskId, String filePath, OptionsBag optionsBag) {
+    public Mono<Void> getTaskFileProperties(String jobId, String taskId, String filePath, GetBatchTaskFilePropertiesOptions options) {
         return getTaskFileProperties(
                 jobId,
                 taskId,
                 filePath,
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getIfModifiedSince(),
-                optionsBag.getIfUnmodifiedSince());
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince());
     }
 
     /**
@@ -16380,7 +16407,7 @@ public final class BatchAsyncClient {
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, and recursive.
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, and recursive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16390,14 +16417,14 @@ public final class BatchAsyncClient {
      * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
      *     as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<NodeFile> listTaskFiles(String jobId, String taskId, OptionsBag optionsBag) {
+    public PagedFlux<NodeFile> listTaskFiles(String jobId, String taskId, ListBatchTaskFilesOptions options) {
         return listTaskFiles(
                 jobId,
                 taskId,
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getFilter(),
-                optionsBag.getRecursive());
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getRecursive());
     }
 
     /**
@@ -16439,7 +16466,7 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param body The options to use for creating the user.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16449,8 +16476,8 @@ public final class BatchAsyncClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     public Mono<Void> createNodeUser(
-            String poolId, String nodeId, BatchNodeUserCreateOptions body, OptionsBag optionsBag) {
-        return createNodeUser(poolId, nodeId, body, optionsBag.getTimeOutInSeconds());
+            String poolId, String nodeId, BatchNodeUserCreateOptions body, BatchBaseOptions options) {
+        return createNodeUser(poolId, nodeId, body, options.getTimeOutInSeconds());
     }
 
     /**
@@ -16490,7 +16517,7 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16499,8 +16526,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName, OptionsBag optionsBag) {
-        return deleteNodeUser(poolId, nodeId, userName, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName, BatchBaseOptions options) {
+        return deleteNodeUser(poolId, nodeId, userName, options.getTimeOutInSeconds());
     }
 
     /**
@@ -16547,7 +16574,7 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @param body The options to use for updating the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -16558,8 +16585,8 @@ public final class BatchAsyncClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     public Mono<Void> replaceNodeUser(
-            String poolId, String nodeId, String userName, BatchNodeUserUpdateOptions body, OptionsBag optionsBag) {
-        return replaceNodeUser(poolId, nodeId, userName, body, optionsBag.getTimeOutInSeconds());
+            String poolId, String nodeId, String userName, BatchNodeUserUpdateOptions body, BatchBaseOptions options) {
+        return replaceNodeUser(poolId, nodeId, userName, body, options.getTimeOutInSeconds());
     }
 
     /**
@@ -16604,7 +16631,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and select.
+     * @param options A group containing optional parameters like timeOutInSeconds and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16613,8 +16640,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node on successful completion of {@link Mono}.
      */
-    public Mono<BatchNode> getNode(String poolId, String nodeId, OptionsBag optionsBag) {
-        return getNode(poolId, nodeId, optionsBag.getTimeOutInSeconds(), optionsBag.getSelect());
+    public Mono<BatchNode> getNode(String poolId, String nodeId, BatchGetOptions options) {
+        return getNode(poolId, nodeId, options.getTimeOutInSeconds(), options.getSelect());
     }
 
     /**
@@ -16656,7 +16683,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and body.
+     * @param options A group containing optional parameters like timeOutInSeconds.
+     * @param body The options to use for rebooting the Compute Node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16665,8 +16693,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> rebootNode(String poolId, String nodeId, OptionsBag optionsBag) {
-        return rebootNode(poolId, nodeId, optionsBag.getTimeOutInSeconds(), optionsBag.getNodeRebootOptionsBody());
+    public Mono<Void> rebootNode(String poolId, String nodeId, BatchBaseOptions options, NodeRebootOptions body) {
+        return rebootNode(poolId, nodeId, options.getTimeOutInSeconds(), body);
     }
 
     /**
@@ -16710,7 +16738,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and body.
+     * @param options A group containing optional parameters like timeOutInSeconds.
+     * @param body The options to use for reimaging the Compute Node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16719,8 +16748,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> reimageNode(String poolId, String nodeId, OptionsBag optionsBag) {
-        return reimageNode(poolId, nodeId, optionsBag.getTimeOutInSeconds(), optionsBag.getNodeReimageOptionsBody());
+    public Mono<Void> reimageNode(String poolId, String nodeId, BatchBaseOptions options, NodeReimageOptions body) {
+        return reimageNode(poolId, nodeId, options.getTimeOutInSeconds(), body);
     }
 
     /**
@@ -16763,7 +16792,8 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and body.
+     * @param options A group containing optional parameters like timeOutInSeconds.
+     * @param body The options to use for disabling scheduling on the Compute Node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16772,9 +16802,9 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> disableNodeScheduling(String poolId, String nodeId, OptionsBag optionsBag) {
+    public Mono<Void> disableNodeScheduling(String poolId, String nodeId, BatchBaseOptions options, NodeDisableSchedulingOptions body) {
         return disableNodeScheduling(
-                poolId, nodeId, optionsBag.getTimeOutInSeconds(), optionsBag.getNodeDisableSchedulingOptionsBody());
+                poolId, nodeId, options.getTimeOutInSeconds(), body);
     }
 
     /**
@@ -16812,7 +16842,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16821,8 +16851,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> enableNodeScheduling(String poolId, String nodeId, OptionsBag optionsBag) {
-        return enableNodeScheduling(poolId, nodeId, optionsBag.getTimeOutInSeconds());
+    public Mono<Void> enableNodeScheduling(String poolId, String nodeId, BatchBaseOptions options) {
+        return enableNodeScheduling(poolId, nodeId, options.getTimeOutInSeconds());
     }
 
     /**
@@ -16867,7 +16897,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16877,8 +16907,8 @@ public final class BatchAsyncClient {
      * @return the remote login settings for a Compute Node on successful completion of {@link Mono}.
      */
     public Mono<BatchNodeRemoteLoginSettingsResult> getNodeRemoteLoginSettings(
-            String poolId, String nodeId, OptionsBag optionsBag) {
-        return getNodeRemoteLoginSettings(poolId, nodeId, optionsBag.getTimeOutInSeconds());
+            String poolId, String nodeId, BatchBaseOptions options) {
+        return getNodeRemoteLoginSettings(poolId, nodeId, options.getTimeOutInSeconds());
     }
 
     /**
@@ -16922,7 +16952,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds.
+     * @param options A group containing optional parameters like timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16931,8 +16961,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represent a byte array on successful completion of {@link Mono}.
      */
-    public Mono<byte[]> getNodeRemoteDesktopFile(String poolId, String nodeId, OptionsBag optionsBag) {
-        return getNodeRemoteDesktopFile(poolId, nodeId, optionsBag.getTimeOutInSeconds());
+    public Mono<byte[]> getNodeRemoteDesktopFile(String poolId, String nodeId, BatchBaseOptions options) {
+        return getNodeRemoteDesktopFile(poolId, nodeId, options.getTimeOutInSeconds());
     }
 
     /**
@@ -16980,7 +17010,7 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
      * @param body The Azure Batch service log files upload options.
-     * @param optionsBag A bag containing optional parameters like body and timeOutInSeconds.
+     * @param options A group containing optional parameters like body and timeOutInSeconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -16991,8 +17021,8 @@ public final class BatchAsyncClient {
      *     {@link Mono}.
      */
     public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(
-            String poolId, String nodeId, UploadBatchServiceLogsOptions body, OptionsBag optionsBag) {
-        return uploadNodeLogs(poolId, nodeId, body, optionsBag.getTimeOutInSeconds());
+            String poolId, String nodeId, UploadBatchServiceLogsOptions body, BatchBaseOptions options) {
+        return uploadNodeLogs(poolId, nodeId, body, options.getTimeOutInSeconds());
     }
 
     /**
@@ -17066,7 +17096,7 @@ public final class BatchAsyncClient {
      * Lists the Compute Nodes in the specified Pool.
      *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, and select.
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -17075,13 +17105,13 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<BatchNode> listNodes(String poolId, OptionsBag optionsBag) {
+    public PagedFlux<BatchNode> listNodes(String poolId, BatchListOptions options) {
         return listNodes(
                 poolId,
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getFilter(),
-                optionsBag.getSelect());
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect());
     }
 
     /**
@@ -17129,7 +17159,7 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and select.
+     * @param options A group containing optional parameters like timeOutInSeconds and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -17139,9 +17169,9 @@ public final class BatchAsyncClient {
      * @return information about the specified Compute Node Extension on successful completion of {@link Mono}.
      */
     public Mono<NodeVMExtension> getNodeExtension(
-            String poolId, String nodeId, String extensionName, OptionsBag optionsBag) {
+            String poolId, String nodeId, String extensionName, BatchGetOptions options) {
         return getNodeExtension(
-                poolId, nodeId, extensionName, optionsBag.getTimeOutInSeconds(), optionsBag.getSelect());
+                poolId, nodeId, extensionName, options.getTimeOutInSeconds(), options.getSelect());
     }
 
     /**
@@ -17212,7 +17242,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, and select.
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, and select.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -17221,9 +17251,9 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<NodeVMExtension> listNodeExtensions(String poolId, String nodeId, OptionsBag optionsBag) {
+    public PagedFlux<NodeVMExtension> listNodeExtensions(String poolId, String nodeId, BatchListOptions options) {
         return listNodeExtensions(
-                poolId, nodeId, optionsBag.getMaxresults(), optionsBag.getTimeOutInSeconds(), optionsBag.getSelect());
+                poolId, nodeId, options.getMaxresults(), options.getTimeOutInSeconds(), options.getSelect());
     }
 
     /**
@@ -17266,7 +17296,7 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds and recursive.
+     * @param options A group containing optional parameters like timeOutInSeconds and recursive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -17275,8 +17305,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> deleteNodeFile(String poolId, String nodeId, String filePath, OptionsBag optionsBag) {
-        return deleteNodeFile(poolId, nodeId, filePath, optionsBag.getTimeOutInSeconds(), optionsBag.getRecursive());
+    public Mono<Void> deleteNodeFile(String poolId, String nodeId, String filePath, DeleteBatchNodeFileOptions options) {
+        return deleteNodeFile(poolId, nodeId, filePath, options.getTimeOutInSeconds(), options.getRecursive());
     }
 
     /**
@@ -17339,7 +17369,7 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, ifModifiedSince, ifUnmodifiedSince,
+     * @param options A group containing optional parameters like timeOutInSeconds, ifModifiedSince, ifUnmodifiedSince,
      *     and ocpRange.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -17349,15 +17379,15 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represent a byte array on successful completion of {@link Mono}.
      */
-    public Mono<byte[]> getNodeFile(String poolId, String nodeId, String filePath, OptionsBag optionsBag) {
+    public Mono<byte[]> getNodeFile(String poolId, String nodeId, String filePath, GetBatchNodeFileOptions options) {
         return getNodeFile(
                 poolId,
                 nodeId,
                 filePath,
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getIfModifiedSince(),
-                optionsBag.getIfUnmodifiedSince(),
-                optionsBag.getOcpRange());
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince(),
+                options.getOcpRange());
     }
 
     /**
@@ -17412,7 +17442,7 @@ public final class BatchAsyncClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
-     * @param optionsBag A bag containing optional parameters like timeOutInSeconds, ifModifiedSince, and
+     * @param options A group containing optional parameters like timeOutInSeconds, ifModifiedSince, and
      *     ifUnmodifiedSince.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -17422,14 +17452,14 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Compute Node file on successful completion of {@link Mono}.
      */
-    public Mono<Void> getNodeFileProperties(String poolId, String nodeId, String filePath, OptionsBag optionsBag) {
+    public Mono<Void> getNodeFileProperties(String poolId, String nodeId, String filePath, GetBatchNodeFilePropertiesOptions options) {
         return getNodeFileProperties(
                 poolId,
                 nodeId,
                 filePath,
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getIfModifiedSince(),
-                optionsBag.getIfUnmodifiedSince());
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince());
     }
 
     /**
@@ -17505,7 +17535,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
-     * @param optionsBag A bag containing optional parameters like maxresults, timeOutInSeconds, filter, and recursive.
+     * @param options A group containing optional parameters like maxresults, timeOutInSeconds, filter, and recursive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -17515,13 +17545,13 @@ public final class BatchAsyncClient {
      * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
      *     as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<NodeFile> listNodeFiles(String poolId, String nodeId, OptionsBag optionsBag) {
+    public PagedFlux<NodeFile> listNodeFiles(String poolId, String nodeId, ListBatchNodeFilesOptions options) {
         return listNodeFiles(
                 poolId,
                 nodeId,
-                optionsBag.getMaxresults(),
-                optionsBag.getTimeOutInSeconds(),
-                optionsBag.getFilter(),
-                optionsBag.getRecursive());
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getRecursive());
     }
 }
