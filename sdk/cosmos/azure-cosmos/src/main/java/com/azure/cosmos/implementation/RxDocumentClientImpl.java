@@ -2896,10 +2896,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                aggregatedDiagnostics, aggregateRequestStatistics);
 
                                            state.mergeDiagnosticsContext();
+                                           CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+                                           ctxAccessor.recordOperation(
+                                               ctx,
+                                               200,
+                                               0,
+                                                finalList.size(),
+                                                requestCharge,
+                                               aggregatedDiagnostics,
+                                               null
+                                           );
                                            diagnosticsAccessor
                                                .setDiagnosticsContext(
                                                    aggregatedDiagnostics,
-                                                   state.getDiagnosticsContextSnapshot());
+                                                   ctx);
 
                                            headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                                .toString(requestCharge));
@@ -2921,6 +2931,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
                                 if (diagnostics != null) {
                                     state.mergeDiagnosticsContext();
+                                    CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+                                    ctxAccessor.recordOperation(
+                                        ctx,
+                                        cosmosException.getStatusCode(),
+                                        cosmosException.getSubStatusCode(),
+                                        0,
+                                        cosmosException.getRequestCharge(),
+                                        diagnostics,
+                                        throwable
+                                    );
                                     diagnosticsAccessor
                                         .setDiagnosticsContext(
                                             diagnostics,
