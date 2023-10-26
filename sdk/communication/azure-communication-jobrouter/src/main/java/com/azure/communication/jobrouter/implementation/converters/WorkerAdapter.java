@@ -19,9 +19,8 @@ public class WorkerAdapter {
         return new RouterWorker()
             .setLabels(createWorkerOptions.getLabels())
             .setTags(createWorkerOptions.getTags())
-            .setQueueAssignments(createWorkerOptions.getQueueAssignments())
             .setAvailableForOffers(createWorkerOptions.isAvailableForOffers())
-            .setChannelConfigurations(createWorkerOptions.getChannelConfigurations())
-            .setTotalCapacity(createWorkerOptions.getTotalCapacity());
+            .setChannels(createWorkerOptions.getChannels())
+            .setCapacity(createWorkerOptions.getCapacity());
     }
 }

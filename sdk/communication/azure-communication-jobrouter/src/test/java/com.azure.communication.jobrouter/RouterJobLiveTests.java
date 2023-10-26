@@ -4,12 +4,12 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
-import com.azure.communication.jobrouter.models.CancelJobRequest;
-import com.azure.communication.jobrouter.models.ChannelConfiguration;
+import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.QueueAndMatchMode;
+import com.azure.communication.jobrouter.models.RouterChannel;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobOffer;
 import com.azure.communication.jobrouter.models.RouterJobStatus;
@@ -69,10 +69,10 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             }
         };
 
-        ChannelConfiguration channelConfiguration = new ChannelConfiguration(1);
-        Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {
+        RouterChannel channel = new RouterChannel("router-channel", 1);
+        List<RouterChannel> channels = new ArrayList<RouterChannel>() {
             {
-                put("channel1", channelConfiguration);
+                add(channel);
             }
         };
 
@@ -87,7 +87,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(true)
-            .setChannelConfigurations(channelConfigurations)
+            .setChannels(channels)
             .setQueueAssignments(queueAssignments);
 
         jobRouterClient.createWorker(createWorkerOptions);
@@ -97,7 +97,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         jobRouterClient.createJob(createJobOptions);
 
-        List<RouterJobOffer> jobOffers = new ArrayList<>();
+        List<RouterJobOffer> jobOffers = new ArrayList<RouterJobOffer>();
         long startTimeMillis = System.currentTimeMillis();
         while (true) {
             RouterWorker worker = jobRouterClient.getWorker(workerId);
@@ -122,7 +122,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
         // Cleanup
-        jobRouterClient.cancelJob(jobId, new CancelJobRequest().setNote("Done.").setDispositionCode("test"));
+        jobRouterClient.cancelJob(jobId, new CancelJobOptions().setNote("Done.").setDispositionCode("test"));
         jobRouterClient.deleteJob(jobId);
         jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);
