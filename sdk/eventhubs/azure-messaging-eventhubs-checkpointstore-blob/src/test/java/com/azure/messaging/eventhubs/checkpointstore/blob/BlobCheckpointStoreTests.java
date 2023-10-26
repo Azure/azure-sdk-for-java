@@ -14,7 +14,6 @@ import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -93,7 +92,7 @@ public class BlobCheckpointStoreTests {
         final String eventHubName = "MyEventHubName";
         final String consumerGroup = "$Default";
         final String prefix = getLegacyPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup);
-        final String ownershipPrefix = prefix + "/ownership/";
+        final String ownershipPrefix = prefix + OWNERSHIP_PATH;
 
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
         BlobItem blobItem = getOwnershipBlobItem("owner1", "etag", ownershipPrefix + "0"); // valid blob
@@ -274,8 +273,7 @@ public class BlobCheckpointStoreTests {
             .setOffset(100L);
         final String legacyPrefix = getLegacyPrefix(checkpoint.getFullyQualifiedNamespace(),
             checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
-        final String blobName = legacyPrefix + "/checkpoint/0";
-
+        final String blobName = legacyPrefix + CHECKPOINT_PATH + checkpoint.getPartitionId();
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaderName.ETAG, "etag2");
