@@ -159,7 +159,7 @@ extends:
         releaseInBatch: ${{ parameters.release_azurecosmostest }}
       - name: azure-cosmos-kafka-connect
         groupId: com.azure.cosmos.kafka
-        safeName: azurecosmosencryption
+        safeName: azurecosmoskafkaconnect
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmoskafka }}
