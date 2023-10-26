@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SavedSearches Delete. */
 public final class SavedSearchesDeleteSamples {
     /*
@@ -19,6 +17,7 @@ public final class SavedSearchesDeleteSamples {
     public static void savedSearchesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager
             .savedSearches()
-            .deleteWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-00000000000", Context.NONE);
+            .deleteWithResponse(
+                "TestRG", "TestWS", "00000000-0000-0000-0000-00000000000", com.azure.core.util.Context.NONE);
     }
 }

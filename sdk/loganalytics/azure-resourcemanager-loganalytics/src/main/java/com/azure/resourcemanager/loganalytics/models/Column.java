@@ -52,6 +52,10 @@ public final class Column {
     @JsonProperty(value = "isHidden", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isHidden;
 
+    /** Creates an instance of Column class. */
+    public Column() {
+    }
+
     /**
      * Get the name property: Column name.
      *
