@@ -235,8 +235,6 @@ public final class JobRouterAdministrationClientBuilder
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
-        RetryOptions localRetryOptions =  this.retryOptions == null ?
-            new RetryOptions(new FixedDelayOptions(3, Duration.ofMillis(5))) : this.retryOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");

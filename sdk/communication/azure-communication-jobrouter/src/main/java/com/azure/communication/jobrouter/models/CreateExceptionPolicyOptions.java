@@ -6,7 +6,6 @@ package com.azure.communication.jobrouter.models;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Request options for Create ExceptionPolicy.
