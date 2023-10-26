@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -491,6 +492,8 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         CosmosAsyncClient testClient = getClientBuilder()
             .contentResponseOnWriteEnabled(true)
             .preferredRegions(writePreferredLocations)
+            .endToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMinutes(2)).build())
             .buildAsyncClient();
 
         CosmosAsyncContainer container =
@@ -527,7 +530,8 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                         .build())
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.PARTITION_IS_SPLITTING) // using partition split to trigger routing map refresh flow
+                        .getResultBuilder(FaultInjectionServerErrorType.PARTITION_IS_SPLITTING)
+                        .times(1)// using partition split to trigger routing map refresh flow
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
@@ -545,10 +549,6 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
 
             try {
                 CosmosDiagnostics cosmosDiagnostics = container.createItem(TestItem.createNewItem()).block().getDiagnostics();
-                fail("CreateItem should have failed. " + cosmosDiagnostics);
-            } catch (CosmosException cosmosException) {
-                CosmosDiagnostics cosmosDiagnostics = cosmosException.getDiagnostics();
-
                 // The PkRanges requests may have retried in another region,
                 // but the create request will only be retried locally for PARTITION_IS_SPLITTING
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
@@ -574,12 +574,15 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
 
                 assertThat(pkRangesLookup).isNotNull();
                 if (faultInjectionServerErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) {
-                    assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(45 * 1000 *Math.min(applyLimit, 3)); // the duration will be at least one connection timeout
+                    assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(45 * 1000 * Math.min(applyLimit, 3)); // the duration will be at least one connection timeout
                 }
 
                 if (faultInjectionServerErrorType == FaultInjectionServerErrorType.RESPONSE_DELAY) {
-                    assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(500 *Math.min(applyLimit, 3)); // the duration will be at least one response timeout
+                    assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(500 * Math.min(applyLimit, 3)); // the duration will be at least one response timeout
                 }
+
+            } catch (CosmosException cosmosException) {
+                fail("CreateItem should have succeeded. " + cosmosException.getDiagnostics());
             }
         } finally {
             pkRangesConnectionDelayRule.disable();
