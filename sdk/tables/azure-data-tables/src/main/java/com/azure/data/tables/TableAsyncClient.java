@@ -121,6 +121,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.createEntity#TableEntity -->
  *
+ * <em><strong>Note: </strong>for a synchronous sample, refer to {@link TableClient the synchronous client}</em>
+ *
  * <hr/>
  *
  * <h3>Retrieve a {@link TableEntity}</h3>
@@ -138,6 +140,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  *             tableEntity.getPartitionKey&#40;&#41;, tableEntity.getRowKey&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.getEntity#String-String -->
+ *
+ * <em><strong>Note: </strong>for a synchronous sample, refer to {@link TableClient the synchronous client}</em>
  *
  * <hr/>
  *
@@ -159,6 +163,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  *             &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.updateEntity#TableEntity-TableEntityUpdateMode -->
+ *
+ * <em><strong>Note: </strong>for a synchronous sample, refer to {@link TableClient the synchronous client}</em>
  *
  * <hr/>
  *
@@ -205,6 +211,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.listEntities#ListEntitiesOptions -->
  *
+ * <em><strong>Note: </strong>for a synchronous sample, refer to {@link TableClient the synchronous client}</em>
+ *
  * <hr/>
  *
  * <h3>Delete a {@link TableEntity}</h3>
@@ -222,6 +230,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  *             &quot;rowKey&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.deleteEntity#String-String -->
+ *
+ * <em><strong>Note: </strong>for a synchronous sample, refer to {@link TableClient the synchronous client}</em>
  *
  * <hr/>
  *
@@ -267,6 +277,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  *     &#125;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableAsyncClient.submitTransaction#List -->
+ *
+ * <em><strong>Note: </strong>for a synchronous sample, refer to {@link TableClient the synchronous client}</em>
  *
  * @see TableClientBuilder
  * @see TableEntity

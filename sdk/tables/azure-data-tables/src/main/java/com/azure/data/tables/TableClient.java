@@ -125,6 +125,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * </pre>
  * <!-- end com.azure.data.tables.tableClient.createEntity#TableEntity -->
  *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
+ *
  * <hr/>
  *
  * <h3>Retrieve a {@link TableEntity}</h3>
@@ -141,6 +143,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  *     tableEntity.getRowKey&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableClient.getEntity#String-String -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
  *
  * <hr/>
  *
@@ -162,6 +166,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  *     &quot;rowKey&quot;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
  *
  * <hr/>
  *
@@ -211,6 +217,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * </pre>
  * <!-- end com.azure.data.tables.tableClient.listEntities#ListEntitiesOptions-Duration-Context -->
  *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
+ *
  * <hr/>
  *
  * <h3>Delete a {@link TableEntity}</h3>
@@ -226,6 +234,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was deleted.&quot;, &quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableClient.deleteEntity#String-String -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
  *
  * <hr/>
  *
@@ -269,6 +279,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  *     System.out.printf&#40;&quot;%n%d&quot;, tableTransactionActionResponse.getStatusCode&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableClient.submitTransaction#List -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableAsyncClient the asynchronous client}. </em>
  *
  * @see TableClientBuilder
  * @see TableEntity

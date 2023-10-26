@@ -71,6 +71,8 @@
  *
  * <hr/>
  *
+ * <h2>Table Service Client Usage</h2>
+ *
  * <h3>Create a {@link com.azure.data.tables.TableServiceClient TableServiceClient} using a {@link com.azure.data.tables.TableServiceClientBuilder TableServiceClientBuilder}</h3>
  *
  <p>The {@link com.azure.data.tables.TableServiceClient TableServiceClient} and {@link com.azure.data.tables.TableServiceAsyncClient TableServiceAsyncClient} both provide access to the tables within an
@@ -142,6 +144,8 @@
  * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.tables.TableServiceAsyncClient TableServiceAsyncClient}</p>
  *
  * <hr/>
+ *
+ * <h2>Table Client Usage</h2>
  *
  * <h3>Retrieve a {@link com.azure.data.tables.TableClient TableClient} from a {@link com.azure.data.tables.TableServiceClient TableServiceClient}</h3>
  *
