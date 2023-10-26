@@ -1,5 +1,5 @@
 # Apache Kafka Connect source and sink connectors for Azure Cosmos DB Java SDK for Java
-The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into Cosmos DB and decrypting it when reading back from the database.
+The AApache Kafka Connect source and sink connector for Azure Cosmos DB allows connecting Azure Cosmos DB containers as sources or sinks in an Apache Kafka Connect event stream.
 
 [Source code][kafka_source_code] | [Package (Maven)][cosmos_kafka_maven] | [Product documentation][cosmos_docs] 
 
