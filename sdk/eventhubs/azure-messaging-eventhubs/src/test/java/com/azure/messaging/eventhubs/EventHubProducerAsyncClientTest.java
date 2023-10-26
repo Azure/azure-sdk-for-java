@@ -622,6 +622,7 @@ class EventHubProducerAsyncClientTest {
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
+                Assertions.assertFalse(batch.tryAdd(event));
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -629,7 +630,7 @@ class EventHubProducerAsyncClientTest {
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
-                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
+                Assertions.assertThrows(AmqpException.class, () -> batch.tryAdd(tooLargeEvent));
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -805,14 +806,15 @@ class EventHubProducerAsyncClientTest {
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
+                Assertions.assertFalse(batch.tryAdd(event));
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
-                Assertions.assertNull(batch.getPartitionKey());
-                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
+                assertNull(batch.getPartitionKey());
+                Assertions.assertThrows(AmqpException.class, () -> batch.tryAdd(tooLargeEvent));
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -915,6 +917,7 @@ class EventHubProducerAsyncClientTest {
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
+                Assertions.assertFalse(batch.tryAdd(event));
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -922,7 +925,7 @@ class EventHubProducerAsyncClientTest {
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
-                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
+                Assertions.assertThrows(AmqpException.class, () -> batch.tryAdd(tooLargeEvent));
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
