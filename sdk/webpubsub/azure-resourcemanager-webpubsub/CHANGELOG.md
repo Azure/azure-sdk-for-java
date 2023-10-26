@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (2023-10-23)
+## 1.1.0-beta.2 (2023-10-26)
 
 - Azure Resource Manager WebPubSub client library for Java. This package contains Microsoft Azure SDK for WebPubSub Management SDK. REST API for Azure WebPubSub Service. Package tag package-2023-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
