@@ -32,7 +32,7 @@ Then include the direct dependency in the `dependencies` section without the ver
 <dependencies>
   <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-identity-brokeredauthentication</artifactId>
+    <artifactId>azure-identity-broker</artifactId>
   </dependency>
 </dependencies>
 ```
@@ -41,11 +41,11 @@ Then include the direct dependency in the `dependencies` section without the ver
 
 To take dependency on a particular version of the library that isn't present in the BOM, add the direct dependency to your project as follows:
 
-[//]: # ({x-version-update-start;com.azure:azure-identity-brokeredauthentication;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-identity-broker;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-identity-brokeredauthentication</artifactId>
+    <artifactId>azure-identity-broker</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -102,4 +102,4 @@ public static long getWindowHandle(Stage stage) {
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-brokeredauthentication
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-broker

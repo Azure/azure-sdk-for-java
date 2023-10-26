@@ -29,7 +29,7 @@ import java.util.function.Function;
  */
 public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> implements HttpTrait<T> {
     private static final ClientLogger LOGGER = new ClientLogger(CredentialBuilderBase.class);
-    IdentityClientOptions identityClientOptions;
+    protected IdentityClientOptions identityClientOptions;
 
     CredentialBuilderBase() {
         this.identityClientOptions = new IdentityClientOptions();

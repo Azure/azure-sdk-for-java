@@ -87,7 +87,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -326,21 +325,19 @@ public abstract class IdentityClientBase {
         }
 
         if (options.isBrokerEnabled()) {
-            // work around MSAL bug
-            builder.correlationId(UUID.randomUUID().toString());
             if (interactiveBrowserBroker == null) {
                 try {
-                    interactiveBrowserBroker = Class.forName("com.azure.identity.brokeredauthentication.InteractiveBrowserBroker");
+                    interactiveBrowserBroker = Class.forName("com.azure.identity.broker.implementation.InteractiveBrowserBroker");
                 } catch (ClassNotFoundException e) {
                     throw LOGGER.logExceptionAsError(new RuntimeException("Could not load the brokered authentication library. "
-                        + "Please ensure that the azure-identity-brokeredauthentication library is on the classpath.", e));
+                        + "Please ensure that the azure-identity-broker library is on the classpath.", e));
                 }
                 getMsalRuntimeBroker = null;
                 try {
                     getMsalRuntimeBroker = interactiveBrowserBroker.getMethod("getMsalRuntimeBroker");
                 } catch (NoSuchMethodException e) {
                     throw LOGGER.logExceptionAsError(new RuntimeException("Could not obtain the InteractiveBrowserBroker. "
-                        + "Please ensure that the azure-identity-brokeredauthentication library is on the classpath.", e));
+                        + "Please ensure that the azure-identity-broker library is on the classpath.", e));
                 }
             }
 
@@ -350,11 +347,11 @@ public abstract class IdentityClientBase {
 
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException("Could not obtain the MSAL Broker. "
-                        + "Please ensure that the azure-identity-brokeredauthentication library is on the classpath.", null));
+                        + "Please ensure that the azure-identity-broker library is on the classpath.", null));
                 }
             } catch (InvocationTargetException | IllegalAccessException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Could not invoke the MSAL Broker. "
-                    + "Please ensure that the azure-identity-brokeredauthentication library is on the classpath.", e));
+                    + "Please ensure that the azure-identity-broker library is on the classpath.", e));
             }
         }
 
@@ -539,8 +536,6 @@ public abstract class IdentityClientBase {
 
         if (options.isBrokerEnabled()) {
             builder.windowHandle(options.getBrokerWindowHandle());
-            // workaround for an MSAL bug.
-            builder.loginHint(loginHint == null ? "" : loginHint);
             if (options.isMsaPassthroughEnabled()) {
                 Map<String, String> extraQueryParameters = new HashMap<>();
                 extraQueryParameters.put("msal_request_type", "consumer_passthrough");

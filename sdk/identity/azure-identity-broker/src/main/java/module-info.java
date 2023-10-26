@@ -3,11 +3,9 @@
 
 module com.azure.identity.broker {
     requires transitive com.azure.core;
-    requires com.azure.identity;
-    requires com.microsoft.aad.msal4j;
+    requires transitive com.azure.identity;
     requires msal4j.brokers;
-
-//    exports com.azure.identity.brokeredauthentication;
-    exports com.azure.identity.broker.implementation;
-
+    requires com.microsoft.aad.msal4j;
+    opens com.azure.identity.broker.implementation to com.azure.identity;
+    exports com.azure.identity.broker;
 }
