@@ -29,6 +29,10 @@ import java.util.function.Function;
  */
 public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> implements HttpTrait<T> {
     private static final ClientLogger LOGGER = new ClientLogger(CredentialBuilderBase.class);
+
+    /**
+     * The options for configuring the identity client.
+     */
     protected IdentityClientOptions identityClientOptions;
 
     CredentialBuilderBase() {
