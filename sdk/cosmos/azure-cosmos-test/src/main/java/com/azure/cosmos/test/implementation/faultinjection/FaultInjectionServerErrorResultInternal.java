@@ -90,6 +90,8 @@ public class FaultInjectionServerErrorResultInternal {
                 responseHeaders.put(
                     HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS,
                     String.valueOf(500));
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE));
                 cosmosException = new RequestRateTooLargeException(null, lsn, partitionKeyRangeId, responseHeaders);
 
                 break;
@@ -137,7 +139,8 @@ public class FaultInjectionServerErrorResultInternal {
             case SERVICE_UNAVAILABLE:
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.SERVER_GENERATED_503));
-                cosmosException = new ServiceUnavailableException(null, lsn, null, responseHeaders, HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
+                cosmosException =
+                    new ServiceUnavailableException(null, lsn, null, responseHeaders, HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
                 break;
 
             case STALED_ADDRESSES_SERVER_GONE:

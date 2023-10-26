@@ -17,6 +17,10 @@ public final class AfdDomainUpdateParameters {
     @JsonProperty(value = "properties")
     private AfdDomainUpdatePropertiesParameters innerProperties;
 
+    /** Creates an instance of AfdDomainUpdateParameters class. */
+    public AfdDomainUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the domain to create.
      *

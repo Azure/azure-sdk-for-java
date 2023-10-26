@@ -9,10 +9,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.selfhelp.fluent.DiagnosticsClient;
-import com.azure.resourcemanager.selfhelp.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.selfhelp.fluent.models.DiagnosticResourceInner;
-import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityRequest;
-import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityResponse;
 import com.azure.resourcemanager.selfhelp.models.DiagnosticResource;
 import com.azure.resourcemanager.selfhelp.models.Diagnostics;
 
@@ -27,30 +24,6 @@ public final class DiagnosticsImpl implements Diagnostics {
         DiagnosticsClient innerClient, com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(scope, checkNameAvailabilityRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public CheckNameAvailabilityResponse checkNameAvailability(String scope) {
-        CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(scope);
-        if (inner != null) {
-            return new CheckNameAvailabilityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<DiagnosticResource> getWithResponse(String scope, String diagnosticsResourceName, Context context) {

@@ -13,7 +13,7 @@ public final class GalleryListResultTests {
         GalleryListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"galleryResourceId\":\"rzafbljjgpbtoqcj\"},\"id\":\"ljavbqid\",\"name\":\"qajzyulpkudjkr\",\"type\":\"khbzhfepgzg\"}],\"nextLink\":\"xzlocxscp\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"galleryResourceId\":\"uvfqawrlyxwj\"},\"id\":\"prbnwbxgjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"galleryResourceId\":\"zw\"},\"id\":\"g\",\"name\":\"itnwuizgazxufi\",\"type\":\"uckyf\"},{\"properties\":{\"provisioningState\":\"Updated\",\"galleryResourceId\":\"idf\"},\"id\":\"wdzuhtymwisd\",\"name\":\"fthwxmnteiwa\",\"type\":\"pvkmijcmmxdcuf\"}],\"nextLink\":\"srp\"}")
                 .toObject(GalleryListResult.class);
     }
 

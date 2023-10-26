@@ -17,26 +17,20 @@ public final class WeeklyScheduleTests {
         WeeklySchedule model =
             BinaryData
                 .fromString(
-                    "{\"scheduleRunDays\":[\"Saturday\"],\"scheduleRunTimes\":[\"2021-04-08T20:14:46Z\",\"2021-06-10T08:41:51Z\",\"2021-04-22T13:36Z\",\"2021-06-17T22:27:31Z\"]}")
+                    "{\"scheduleRunDays\":[\"Saturday\",\"Friday\",\"Sunday\"],\"scheduleRunTimes\":[\"2021-05-24T14:07:59Z\"]}")
                 .toObject(WeeklySchedule.class);
         Assertions.assertEquals(DayOfWeek.SATURDAY, model.scheduleRunDays().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-08T20:14:46Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T14:07:59Z"), model.scheduleRunTimes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WeeklySchedule model =
             new WeeklySchedule()
-                .withScheduleRunDays(Arrays.asList(DayOfWeek.SATURDAY))
-                .withScheduleRunTimes(
-                    Arrays
-                        .asList(
-                            OffsetDateTime.parse("2021-04-08T20:14:46Z"),
-                            OffsetDateTime.parse("2021-06-10T08:41:51Z"),
-                            OffsetDateTime.parse("2021-04-22T13:36Z"),
-                            OffsetDateTime.parse("2021-06-17T22:27:31Z")));
+                .withScheduleRunDays(Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.FRIDAY, DayOfWeek.SUNDAY))
+                .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-05-24T14:07:59Z")));
         model = BinaryData.fromObject(model).toObject(WeeklySchedule.class);
         Assertions.assertEquals(DayOfWeek.SATURDAY, model.scheduleRunDays().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-08T20:14:46Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T14:07:59Z"), model.scheduleRunTimes().get(0));
     }
 }

@@ -17,6 +17,10 @@ public final class ValidateCustomDomainInput {
     @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
+    /** Creates an instance of ValidateCustomDomainInput class. */
+    public ValidateCustomDomainInput() {
+    }
+
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
      *

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.LogMetric;
 import com.azure.resourcemanager.cdn.models.LogMetricsGranularity;
 import com.azure.resourcemanager.cdn.models.LogMetricsGroupBy;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for LogAnalytics GetLogAnalyticsMetrics. */
 public final class LogAnalyticsGetLogAnalyticsMetricsSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsMetrics.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsMetrics.json
      */
     /**
      * Sample code: LogAnalytics_GetLogAnalyticsMetrics.
@@ -39,6 +38,6 @@ public final class LogAnalyticsGetLogAnalyticsMetricsSamples {
                 Arrays.asList(LogMetricsGroupBy.PROTOCOL),
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

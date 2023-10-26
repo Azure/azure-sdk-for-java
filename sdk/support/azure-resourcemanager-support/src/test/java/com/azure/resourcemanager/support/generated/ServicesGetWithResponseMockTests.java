@@ -31,7 +31,7 @@ public final class ServicesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"hagalpbuxwgipwh\",\"name\":\"ow\",\"type\":\"shwankixzbinje\",\"properties\":{\"displayName\":\"tmryw\",\"resourceTypes\":[\"oqftiyqzrnkcq\",\"yx\",\"whzlsicohoq\",\"nwvlryavwhheunmm\"]}}";
+            "{\"id\":\"hsd\",\"name\":\"t\",\"type\":\"fikdowwqu\",\"properties\":{\"displayName\":\"zx\",\"resourceTypes\":[\"ithhqzon\",\"sg\"]}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,9 +59,9 @@ public final class ServicesGetWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Service response = manager.services().getWithResponse("eyeam", com.azure.core.util.Context.NONE).getValue();
+        Service response = manager.services().getWithResponse("el", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("tmryw", response.displayName());
-        Assertions.assertEquals("oqftiyqzrnkcq", response.resourceTypes().get(0));
+        Assertions.assertEquals("zx", response.displayName());
+        Assertions.assertEquals("ithhqzon", response.resourceTypes().get(0));
     }
 }

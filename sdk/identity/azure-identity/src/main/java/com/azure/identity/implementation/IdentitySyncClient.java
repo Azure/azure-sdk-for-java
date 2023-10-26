@@ -12,6 +12,7 @@ import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
+import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -345,7 +346,6 @@ public class IdentitySyncClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public AccessToken authenticateWithAzureCli(TokenRequestContext request) {
-
         StringBuilder azCommand = new StringBuilder("az account get-access-token --output json --resource ");
 
         String scopes = ScopeUtil.scopesToResource(request.getScopes());
@@ -359,9 +359,11 @@ public class IdentitySyncClient extends IdentityClientBase {
         azCommand.append(scopes);
 
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
 
         if (!CoreUtils.isNullOrEmpty(tenant)) {
             azCommand.append(" --tenant ").append(tenant);
+
         }
 
         try {
@@ -392,11 +394,22 @@ public class IdentitySyncClient extends IdentityClientBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing scope in request"));
         }
 
+        scopes.forEach(scope -> {
+            try {
+                ScopeUtil.validateScope(scope);
+            } catch (IllegalArgumentException ex) {
+                throw LOGGER.logExceptionAsError(ex);
+            }
+        });
+
+
         // At least one scope is appended to the azd command.
         // If there are more than one scope, we add `--scope` before each.
         azdCommand.append(String.join(" --scope ", scopes));
 
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
+
         if (!CoreUtils.isNullOrEmpty(tenant)) {
             azdCommand.append(" --tenant-id ").append(tenant);
         }

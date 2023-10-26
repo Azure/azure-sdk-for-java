@@ -4,13 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentProperties;
 import com.azure.resourcemanager.resources.models.TemplateLink;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,8 +21,7 @@ public final class DeploymentsCreateOrUpdateAtScopeSamples {
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createDeploymentAtAGivenScope(com.azure.resourcemanager.AzureResourceManager azure)
-        throws IOException {
+    public static void createDeploymentAtAGivenScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .genericResources()
             .manager()
@@ -39,15 +35,13 @@ public final class DeploymentsCreateOrUpdateAtScopeSamples {
                     .withProperties(
                         new DeploymentProperties()
                             .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                            .withParameters(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize("{}", Object.class, SerializerEncoding.JSON))
+                            .withParameters(mapOf())
                             .withMode(DeploymentMode.INCREMENTAL))
                     .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

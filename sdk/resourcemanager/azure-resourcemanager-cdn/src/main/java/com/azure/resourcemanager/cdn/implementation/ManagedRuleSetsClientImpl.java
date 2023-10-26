@@ -55,7 +55,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientM")
-    private interface ManagedRuleSetsService {
+    public interface ManagedRuleSetsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets")
         @ExpectedResponses({200})

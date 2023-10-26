@@ -132,6 +132,7 @@ public final class AzureWorkloadPointInTimeRecoveryPointTests {
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T04:35:49Z"), model.timeRanges().get(0).endTime());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

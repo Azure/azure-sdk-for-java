@@ -17,9 +17,9 @@ public final class NetworkRuleSetTests {
         NetworkRuleSet model =
             BinaryData
                 .fromString(
-                    "{\"virtualNetworkRules\":[{\"id\":\"qpuedckzywbiex\",\"action\":\"Allow\",\"state\":\"failed\"}]}")
+                    "{\"virtualNetworkRules\":[{\"id\":\"hzls\",\"action\":\"Allow\"},{\"id\":\"hoqqnwvlr\",\"action\":\"Allow\"},{\"id\":\"w\",\"action\":\"Allow\"}]}")
                 .toObject(NetworkRuleSet.class);
-        Assertions.assertEquals("qpuedckzywbiex", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals("hzls", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.virtualNetworkRules().get(0).action());
     }
 
@@ -30,11 +30,11 @@ public final class NetworkRuleSetTests {
                 .withVirtualNetworkRules(
                     Arrays
                         .asList(
-                            new VirtualNetworkRule()
-                                .withVirtualNetworkResourceId("qpuedckzywbiex")
-                                .withAction(Action.ALLOW)));
+                            new VirtualNetworkRule().withVirtualNetworkResourceId("hzls").withAction(Action.ALLOW),
+                            new VirtualNetworkRule().withVirtualNetworkResourceId("hoqqnwvlr").withAction(Action.ALLOW),
+                            new VirtualNetworkRule().withVirtualNetworkResourceId("w").withAction(Action.ALLOW)));
         model = BinaryData.fromObject(model).toObject(NetworkRuleSet.class);
-        Assertions.assertEquals("qpuedckzywbiex", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals("hzls", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.virtualNetworkRules().get(0).action());
     }
 }

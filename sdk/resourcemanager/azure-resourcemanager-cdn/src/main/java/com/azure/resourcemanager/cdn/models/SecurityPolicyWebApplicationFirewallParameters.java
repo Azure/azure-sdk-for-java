@@ -27,6 +27,10 @@ public final class SecurityPolicyWebApplicationFirewallParameters extends Securi
     @JsonProperty(value = "associations")
     private List<SecurityPolicyWebApplicationFirewallAssociation> associations;
 
+    /** Creates an instance of SecurityPolicyWebApplicationFirewallParameters class. */
+    public SecurityPolicyWebApplicationFirewallParameters() {
+    }
+
     /**
      * Get the wafPolicy property: Resource ID.
      *

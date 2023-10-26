@@ -34,10 +34,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.ProfilesClient;
+import com.azure.resourcemanager.cdn.fluent.models.CanMigrateResultInner;
+import com.azure.resourcemanager.cdn.fluent.models.MigrateResultInner;
 import com.azure.resourcemanager.cdn.fluent.models.ProfileInner;
 import com.azure.resourcemanager.cdn.fluent.models.ResourceUsageInner;
 import com.azure.resourcemanager.cdn.fluent.models.SsoUriInner;
 import com.azure.resourcemanager.cdn.fluent.models.SupportedOptimizationTypesListResultInner;
+import com.azure.resourcemanager.cdn.models.CanMigrateParameters;
+import com.azure.resourcemanager.cdn.models.MigrationParameters;
 import com.azure.resourcemanager.cdn.models.ProfileListResult;
 import com.azure.resourcemanager.cdn.models.ProfileUpdateParameters;
 import com.azure.resourcemanager.cdn.models.ResourceUsageListResult;
@@ -76,7 +80,7 @@ public final class ProfilesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientP")
-    private interface ProfilesService {
+    public interface ProfilesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/profiles")
         @ExpectedResponses({200})
@@ -102,8 +106,7 @@ public final class ProfilesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProfileInner>> getByResourceGroup(
@@ -117,8 +120,7 @@ public final class ProfilesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -133,8 +135,7 @@ public final class ProfilesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -149,8 +150,7 @@ public final class ProfilesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -163,9 +163,48 @@ public final class ProfilesClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/canMigrate")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> canMigrate(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CanMigrateParameters canMigrateParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/migrate")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> migrate(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MigrationParameters migrationParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/generateSsoUri")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/migrationCommit")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> migrationCommit(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("profileName") String profileName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/generateSsoUri")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SsoUriInner>> generateSsoUri(
@@ -179,8 +218,7 @@ public final class ProfilesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/getSupportedOptimizationTypes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getSupportedOptimizationTypes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SupportedOptimizationTypesListResultInner>> listSupportedOptimizationTypes(
@@ -194,8 +232,7 @@ public final class ProfilesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/checkResourceUsage")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkResourceUsage")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceUsageListResult>> listResourceUsage(
@@ -679,24 +716,6 @@ public final class ProfilesClientImpl
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
      *     unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     *     under the specified subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProfileInner getByResourceGroup(String resourceGroupName, String profileName) {
-        return getByResourceGroupAsync(resourceGroupName, profileName).block();
-    }
-
-    /**
-     * Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     * under the specified subscription and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     *     unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -708,6 +727,24 @@ public final class ProfilesClientImpl
     public Response<ProfileInner> getByResourceGroupWithResponse(
         String resourceGroupName, String profileName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, profileName, context).block();
+    }
+
+    /**
+     * Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
+     * under the specified subscription and resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
+     *     under the specified subscription and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProfileInner getByResourceGroup(String resourceGroupName, String profileName) {
+        return getByResourceGroupWithResponse(resourceGroupName, profileName, Context.NONE).getValue();
     }
 
     /**
@@ -892,7 +929,7 @@ public final class ProfilesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreate(
         String resourceGroupName, String profileName, ProfileInner profile) {
-        return beginCreateAsync(resourceGroupName, profileName, profile).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, profileName, profile).getSyncPoller();
     }
 
     /**
@@ -913,7 +950,7 @@ public final class ProfilesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreate(
         String resourceGroupName, String profileName, ProfileInner profile, Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, profile, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, profileName, profile, context).getSyncPoller();
     }
 
     /**
@@ -1190,7 +1227,7 @@ public final class ProfilesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(
         String resourceGroupName, String profileName, ProfileUpdateParameters profileUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, profileName, profileUpdateParameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, profileName, profileUpdateParameters).getSyncPoller();
     }
 
     /**
@@ -1214,7 +1251,7 @@ public final class ProfilesClientImpl
         String profileName,
         ProfileUpdateParameters profileUpdateParameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, profileName, profileUpdateParameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, profileName, profileUpdateParameters, context).getSyncPoller();
     }
 
     /**
@@ -1467,7 +1504,7 @@ public final class ProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName) {
-        return beginDeleteAsync(resourceGroupName, profileName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName).getSyncPoller();
     }
 
     /**
@@ -1487,7 +1524,7 @@ public final class ProfilesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, context).getSyncPoller();
     }
 
     /**
@@ -1562,6 +1599,734 @@ public final class ProfilesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String profileName, Context context) {
         deleteAsync(resourceGroupName, profileName, context).block();
+    }
+
+    /**
+     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for canMigrate operation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> canMigrateWithResponseAsync(
+        String resourceGroupName, CanMigrateParameters canMigrateParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (canMigrateParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter canMigrateParameters is required and cannot be null."));
+        } else {
+            canMigrateParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .canMigrate(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            canMigrateParameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for canMigrate operation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> canMigrateWithResponseAsync(
+        String resourceGroupName, CanMigrateParameters canMigrateParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (canMigrateParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter canMigrateParameters is required and cannot be null."));
+        } else {
+            canMigrateParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .canMigrate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                canMigrateParameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of result for canMigrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<CanMigrateResultInner>, CanMigrateResultInner> beginCanMigrateAsync(
+        String resourceGroupName, CanMigrateParameters canMigrateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = canMigrateWithResponseAsync(resourceGroupName, canMigrateParameters);
+        return this
+            .client
+            .<CanMigrateResultInner, CanMigrateResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CanMigrateResultInner.class,
+                CanMigrateResultInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of result for canMigrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<CanMigrateResultInner>, CanMigrateResultInner> beginCanMigrateAsync(
+        String resourceGroupName, CanMigrateParameters canMigrateParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            canMigrateWithResponseAsync(resourceGroupName, canMigrateParameters, context);
+        return this
+            .client
+            .<CanMigrateResultInner, CanMigrateResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), CanMigrateResultInner.class, CanMigrateResultInner.class, context);
+    }
+
+    /**
+     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of result for canMigrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CanMigrateResultInner>, CanMigrateResultInner> beginCanMigrate(
+        String resourceGroupName, CanMigrateParameters canMigrateParameters) {
+        return this.beginCanMigrateAsync(resourceGroupName, canMigrateParameters).getSyncPoller();
+    }
+
+    /**
+     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of result for canMigrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CanMigrateResultInner>, CanMigrateResultInner> beginCanMigrate(
+        String resourceGroupName, CanMigrateParameters canMigrateParameters, Context context) {
+        return this.beginCanMigrateAsync(resourceGroupName, canMigrateParameters, context).getSyncPoller();
+    }
+
+    /**
+     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for canMigrate operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CanMigrateResultInner> canMigrateAsync(
+        String resourceGroupName, CanMigrateParameters canMigrateParameters) {
+        return beginCanMigrateAsync(resourceGroupName, canMigrateParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for canMigrate operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CanMigrateResultInner> canMigrateAsync(
+        String resourceGroupName, CanMigrateParameters canMigrateParameters, Context context) {
+        return beginCanMigrateAsync(resourceGroupName, canMigrateParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for canMigrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CanMigrateResultInner canMigrate(String resourceGroupName, CanMigrateParameters canMigrateParameters) {
+        return canMigrateAsync(resourceGroupName, canMigrateParameters).block();
+    }
+
+    /**
+     * Checks if CDN profile can be migrated to Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param canMigrateParameters Properties needed to check if cdn profile or classic frontdoor can be migrated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for canMigrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CanMigrateResultInner canMigrate(
+        String resourceGroupName, CanMigrateParameters canMigrateParameters, Context context) {
+        return canMigrateAsync(resourceGroupName, canMigrateParameters, context).block();
+    }
+
+    /**
+     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param migrationParameters Properties needed to migrate the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for migrate operation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(
+        String resourceGroupName, MigrationParameters migrationParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (migrationParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter migrationParameters is required and cannot be null."));
+        } else {
+            migrationParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .migrate(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            migrationParameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param migrationParameters Properties needed to migrate the profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for migrate operation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(
+        String resourceGroupName, MigrationParameters migrationParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (migrationParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter migrationParameters is required and cannot be null."));
+        } else {
+            migrationParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .migrate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                migrationParameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param migrationParameters Properties needed to migrate the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of result for migrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<MigrateResultInner>, MigrateResultInner> beginMigrateAsync(
+        String resourceGroupName, MigrationParameters migrationParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = migrateWithResponseAsync(resourceGroupName, migrationParameters);
+        return this
+            .client
+            .<MigrateResultInner, MigrateResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                MigrateResultInner.class,
+                MigrateResultInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param migrationParameters Properties needed to migrate the profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of result for migrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<MigrateResultInner>, MigrateResultInner> beginMigrateAsync(
+        String resourceGroupName, MigrationParameters migrationParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateWithResponseAsync(resourceGroupName, migrationParameters, context);
+        return this
+            .client
+            .<MigrateResultInner, MigrateResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), MigrateResultInner.class, MigrateResultInner.class, context);
+    }
+
+    /**
+     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param migrationParameters Properties needed to migrate the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of result for migrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<MigrateResultInner>, MigrateResultInner> beginMigrate(
+        String resourceGroupName, MigrationParameters migrationParameters) {
+        return this.beginMigrateAsync(resourceGroupName, migrationParameters).getSyncPoller();
+    }
+
+    /**
+     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param migrationParameters Properties needed to migrate the profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of result for migrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<MigrateResultInner>, MigrateResultInner> beginMigrate(
+        String resourceGroupName, MigrationParameters migrationParameters, Context context) {
+        return this.beginMigrateAsync(resourceGroupName, migrationParameters, context).getSyncPoller();
+    }
+
+    /**
+     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param migrationParameters Properties needed to migrate the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for migrate operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MigrateResultInner> migrateAsync(String resourceGroupName, MigrationParameters migrationParameters) {
+        return beginMigrateAsync(resourceGroupName, migrationParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param migrationParameters Properties needed to migrate the profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for migrate operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MigrateResultInner> migrateAsync(
+        String resourceGroupName, MigrationParameters migrationParameters, Context context) {
+        return beginMigrateAsync(resourceGroupName, migrationParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param migrationParameters Properties needed to migrate the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for migrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MigrateResultInner migrate(String resourceGroupName, MigrationParameters migrationParameters) {
+        return migrateAsync(resourceGroupName, migrationParameters).block();
+    }
+
+    /**
+     * Migrate the CDN profile to Azure Frontdoor(Standard/Premium) profile. The change need to be committed after this.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param migrationParameters Properties needed to migrate the profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result for migrate operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MigrateResultInner migrate(
+        String resourceGroupName, MigrationParameters migrationParameters, Context context) {
+        return migrateAsync(resourceGroupName, migrationParameters, context).block();
+    }
+
+    /**
+     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> migrationCommitWithResponseAsync(
+        String resourceGroupName, String profileName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .migrationCommit(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            profileName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> migrationCommitWithResponseAsync(
+        String resourceGroupName, String profileName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .migrationCommit(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                profileName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginMigrationCommitAsync(String resourceGroupName, String profileName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = migrationCommitWithResponseAsync(resourceGroupName, profileName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginMigrationCommitAsync(
+        String resourceGroupName, String profileName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrationCommitWithResponseAsync(resourceGroupName, profileName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginMigrationCommit(String resourceGroupName, String profileName) {
+        return this.beginMigrationCommitAsync(resourceGroupName, profileName).getSyncPoller();
+    }
+
+    /**
+     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginMigrationCommit(
+        String resourceGroupName, String profileName, Context context) {
+        return this.beginMigrationCommitAsync(resourceGroupName, profileName, context).getSyncPoller();
+    }
+
+    /**
+     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> migrationCommitAsync(String resourceGroupName, String profileName) {
+        return beginMigrationCommitAsync(resourceGroupName, profileName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> migrationCommitAsync(String resourceGroupName, String profileName, Context context) {
+        return beginMigrationCommitAsync(resourceGroupName, profileName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void migrationCommit(String resourceGroupName, String profileName) {
+        migrationCommitAsync(resourceGroupName, profileName).block();
+    }
+
+    /**
+     * Commit the migrated Azure Frontdoor(Standard/Premium) profile.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void migrationCommit(String resourceGroupName, String profileName, Context context) {
+        migrationCommitAsync(resourceGroupName, profileName, context).block();
     }
 
     /**
@@ -1693,24 +2458,6 @@ public final class ProfilesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI required to login to the supplemental portal from the Azure portal.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SsoUriInner generateSsoUri(String resourceGroupName, String profileName) {
-        return generateSsoUriAsync(resourceGroupName, profileName).block();
-    }
-
-    /**
-     * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal. Supplemental portal is used to
-     * configure advanced feature capabilities that are not yet available in the Azure portal, such as core reports in a
-     * standard profile; rules engine, advanced HTTP reports, and real-time stats and alerts in a premium profile. The
-     * SSO URI changes approximately every 10 minutes.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1721,6 +2468,24 @@ public final class ProfilesClientImpl
     public Response<SsoUriInner> generateSsoUriWithResponse(
         String resourceGroupName, String profileName, Context context) {
         return generateSsoUriWithResponseAsync(resourceGroupName, profileName, context).block();
+    }
+
+    /**
+     * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal. Supplemental portal is used to
+     * configure advanced feature capabilities that are not yet available in the Azure portal, such as core reports in a
+     * standard profile; rules engine, advanced HTTP reports, and real-time stats and alerts in a premium profile. The
+     * SSO URI changes approximately every 10 minutes.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the URI required to login to the supplemental portal from the Azure portal.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SsoUriInner generateSsoUri(String resourceGroupName, String profileName) {
+        return generateSsoUriWithResponse(resourceGroupName, profileName, Context.NONE).getValue();
     }
 
     /**
@@ -1849,24 +2614,6 @@ public final class ProfilesClientImpl
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
      *     unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported optimization types for the current profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SupportedOptimizationTypesListResultInner listSupportedOptimizationTypes(
-        String resourceGroupName, String profileName) {
-        return listSupportedOptimizationTypesAsync(resourceGroupName, profileName).block();
-    }
-
-    /**
-     * Gets the supported optimization types for the current profile. A user can create an endpoint with an optimization
-     * type from the listed values.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
-     *     unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1877,6 +2624,24 @@ public final class ProfilesClientImpl
     public Response<SupportedOptimizationTypesListResultInner> listSupportedOptimizationTypesWithResponse(
         String resourceGroupName, String profileName, Context context) {
         return listSupportedOptimizationTypesWithResponseAsync(resourceGroupName, profileName, context).block();
+    }
+
+    /**
+     * Gets the supported optimization types for the current profile. A user can create an endpoint with an optimization
+     * type from the listed values.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the supported optimization types for the current profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SupportedOptimizationTypesListResultInner listSupportedOptimizationTypes(
+        String resourceGroupName, String profileName) {
+        return listSupportedOptimizationTypesWithResponse(resourceGroupName, profileName, Context.NONE).getValue();
     }
 
     /**
