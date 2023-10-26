@@ -28,7 +28,7 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * @return The updated InteractiveBrowserCredentialBuilder object.
      */
     public InteractiveBrowserBrokerCredentialBuilder enableLegacyMsaPassthrough() {
-        this.identityClientOptions.enableLegacyMsaPassthrough();
+        this.identityClientOptions.setEnableLegacyMsaPassthrough(true);
         return this;
     }
 }

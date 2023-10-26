@@ -776,9 +776,10 @@ public final class IdentityClientOptions implements Cloneable {
     /**
      * Enables MSA passthrough.
      */
-    public void enableLegacyMsaPassthrough() {
+    public IdentityClientOptions setEnableLegacyMsaPassthrough(boolean enableMsaPassthrough) {
         this.brokerEnabled = true;
-        this.enableMsaPassthrough = true;
+        this.enableMsaPassthrough = enableMsaPassthrough;
+        return this;
     }
 
     /**
@@ -819,7 +820,8 @@ public final class IdentityClientOptions implements Cloneable {
             .setPerRetryPolicies(this.perRetryPolicies)
             .setBrowserCustomizationOptions(this.browserCustomizationOptions)
             .setChained(this.isChained)
-            .setBrokerWindowHandle(this.brokerWindowHandle);
+            .setBrokerWindowHandle(this.brokerWindowHandle)
+            .setEnableLegacyMsaPassthrough(this.enableMsaPassthrough);
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
         }
