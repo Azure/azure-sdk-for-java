@@ -3,7 +3,6 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.RouterChannel;
@@ -59,7 +58,7 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
         };
 
         RouterChannel channel = new RouterChannel("router-channel", 1);
-        List<RouterChannel> channels = new ArrayList<>() {
+        List<RouterChannel> channels = new ArrayList<RouterChannel>() {
             {
                 add(channel);
             }

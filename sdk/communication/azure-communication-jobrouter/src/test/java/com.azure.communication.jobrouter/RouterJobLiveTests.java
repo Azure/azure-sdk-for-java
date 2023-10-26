@@ -5,8 +5,6 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CancelJobOptions;
-import com.azure.communication.jobrouter.models.CancelJobRequest;
-import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
@@ -72,7 +70,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         };
 
         RouterChannel channel = new RouterChannel("router-channel", 1);
-        List<RouterChannel> channels = new ArrayList<>() {
+        List<RouterChannel> channels = new ArrayList<RouterChannel>() {
             {
                 add(channel);
             }
@@ -99,7 +97,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         jobRouterClient.createJob(createJobOptions);
 
-        List<RouterJobOffer> jobOffers = new ArrayList<>();
+        List<RouterJobOffer> jobOffers = new ArrayList<RouterJobOffer>();
         long startTimeMillis = System.currentTimeMillis();
         while (true) {
             RouterWorker worker = jobRouterClient.getWorker(workerId);

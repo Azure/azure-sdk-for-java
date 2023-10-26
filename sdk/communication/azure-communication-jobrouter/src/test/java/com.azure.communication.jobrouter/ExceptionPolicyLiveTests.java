@@ -14,9 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,7 +33,7 @@ public class ExceptionPolicyLiveTests extends JobRouterTestBase {
             .setDispositionCode("CancelledDueToMaxQueueLengthReached")
             .setNote("Job Cancelled as maximum queue length is reached.");
 
-        List<ExceptionAction> exceptionActions = new ArrayList<>() {
+        List<ExceptionAction> exceptionActions = new ArrayList<ExceptionAction>() {
             {
                 add(exceptionAction);
             }
@@ -43,7 +41,7 @@ public class ExceptionPolicyLiveTests extends JobRouterTestBase {
 
         ExceptionRule exceptionRule = new ExceptionRule("CancelledDueToMaxQueueLengthReached", new QueueLengthExceptionTrigger(1), exceptionActions);
 
-        List<ExceptionRule> exceptionRules = new ArrayList<>() {
+        List<ExceptionRule> exceptionRules = new ArrayList<ExceptionRule>() {
             {
                 add(exceptionRule);
             }
