@@ -6,6 +6,7 @@ package com.microsoft.azure.eventhubs.impl;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventDataBatch;
 import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
+import org.apache.qpid.proton.codec.DroppingWritableBuffer;
 import org.apache.qpid.proton.message.Message;
 
 import java.util.Iterator;
@@ -18,7 +19,6 @@ final class EventDataBatchImpl implements EventDataBatch {
     private final int maxMessageSize;
     private final String partitionKey;
     private final List<EventData> events;
-    private final byte[] eventBytes;
     private int currentSize = 0;
 
     EventDataBatchImpl(final int maxMessageSize, final String partitionKey) {
@@ -27,7 +27,6 @@ final class EventDataBatchImpl implements EventDataBatch {
         this.partitionKey = partitionKey;
         this.events = new LinkedList<>();
         this.currentSize = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
-        this.eventBytes = new byte[maxMessageSize];
     }
 
     public int getSize() {
@@ -42,10 +41,9 @@ final class EventDataBatchImpl implements EventDataBatch {
 
         final EventDataImpl eventDataImpl = (EventDataImpl) eventData;
 
-        final int size;
-        try {
-            size = getSize(eventDataImpl, events.isEmpty());
-        } catch (java.nio.BufferOverflowException exception) {
+        final int size = getSize(eventDataImpl, events.isEmpty());
+
+        if (size > maxMessageSize) {
             throw new PayloadSizeExceededException(String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024));
         }
 
@@ -76,7 +74,7 @@ final class EventDataBatchImpl implements EventDataBatch {
     private int getSize(final EventDataImpl eventData, final boolean isFirst) {
 
         final Message amqpMessage = this.partitionKey != null ? eventData.toAmqpMessage(this.partitionKey) : eventData.toAmqpMessage();
-        int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
+        int eventSize = amqpMessage.encode(new DroppingWritableBuffer()); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
         if (isFirst) {
@@ -85,7 +83,7 @@ final class EventDataBatchImpl implements EventDataBatch {
             amqpMessage.setProperties(null);
             amqpMessage.setDeliveryAnnotations(null);
 
-            eventSize += amqpMessage.encode(this.eventBytes, 0, maxMessageSize);
+            eventSize += amqpMessage.encode(new DroppingWritableBuffer());
         }
 
         return eventSize;
