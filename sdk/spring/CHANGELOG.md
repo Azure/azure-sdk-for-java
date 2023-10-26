@@ -1,26 +1,12 @@
 # Release History
 
-## 5.6.0-beta.1 (Unreleased)
-Upgrade Spring Boot dependencies version to 3.1.3 and Spring Cloud dependencies version to 2022.0.4
+## 5.7.0-beta.1 (Unreleased)
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
-- Fix the issue that prevented the `disableChallengeResourceVerification` property of the AKV `SecretClient` to be configured [#36561](https://github.com/Azure/azure-sdk-for-java/issues/36561).
 - Use a new name Microsoft Entra ID instead of the old name Azure Active Directory in the Spring configuration metadata file [#37149](https://github.com/Azure/azure-sdk-for-java/pull/37149).
-
-### Spring Integration Azure Event Hubs
-This section includes changes in the `spring-integration-azure-eventhubs` module.
-
-#### Bugs Fixed
-- Fix NPE in the error handler of `EventHubsInboundChannelAdapter` when `instrumentationManager` or `instrumentationId` is null [#36930](https://github.com/Azure/azure-sdk-for-java/pull/36930).
-
-### Spring Integration Azure Service Bus
-This section includes changes in the `spring-integration-azure-servicebus` module.
-
-#### Bugs Fixed
-- Fix NPE in the error handler of `ServiceBusInboundChannelAdapter` when `instrumentationManager` or `instrumentationId` is null [#36930](https://github.com/Azure/azure-sdk-for-java/pull/36930).
 
 ### Spring Cloud Stream Binder Service Bus
 
@@ -35,6 +21,43 @@ This section includes changes in the `spring-integration-azure-servicebus` modul
 #### Breaking Changes
 - Deprecated APIs `ServiceBusProvisioner.provisionQueue`, `ServiceBusProvisioner.provisionTopic`, `ServiceBusProvisioner.provisionSubscription` [#37151](https://github.com/Azure/azure-sdk-for-java/pull/37151).
 - Add new methods to provision queue and topic with entity properties [#37151](https://github.com/Azure/azure-sdk-for-java/pull/37151).
+
+## 5.6.0 (2023-10-24)
+- This release is compatible with Spring Boot 3.0.0-3.1.3. (Note: 3.1.x (x>3) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.4. (Note: 2022.0.x (x>4) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.17.
+
+### Spring Cloud Azure AppConfiguration Config
+This section includes changes in `spring-cloud-azure-starter-appconfiguration-config` and `spring-cloud-azure-appconfiguration-config-web`
+
+### Bug Fixed
+- Fixes an issue where Web Hook authorization was validated incorrectly, resulting in an Unauthorized error [#37141](https://github.com/Azure/azure-sdk-for-java/pull/37141).
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+- Fix the issue that prevented the `disableChallengeResourceVerification` property of the AKV `SecretClient` to be configured [#36561](https://github.com/Azure/azure-sdk-for-java/issues/36561).
+
+### Spring Integration Azure Event Hubs
+This section includes changes in the `spring-integration-azure-eventhubs` module.
+
+#### Bugs Fixed
+- Fix NPE in the error handler of `EventHubsInboundChannelAdapter` when `instrumentationManager` or `instrumentationId` is null [#36930](https://github.com/Azure/azure-sdk-for-java/pull/36930).
+
+### Spring Integration Azure Service Bus
+This section includes changes in the `spring-integration-azure-servicebus` module.
+
+#### Bugs Fixed
+- Fix NPE in the error handler of `ServiceBusInboundChannelAdapter` when `instrumentationManager` or `instrumentationId` is null [#36930](https://github.com/Azure/azure-sdk-for-java/pull/36930).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#560-2023-10-24) for more details.
 
 ## 5.5.0 (2023-08-28)
 - This release is compatible with Spring Boot 3.0.0-3.1.2. (Note: 3.1.x (x>2) should be supported, but they aren't tested with this release.)
