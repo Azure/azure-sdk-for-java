@@ -329,14 +329,14 @@ public abstract class IdentityClientBase {
                 try {
                     interactiveBrowserBroker = Class.forName("com.azure.identity.broker.implementation.InteractiveBrowserBroker");
                 } catch (ClassNotFoundException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Could not load the brokered authentication library. "
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not load the brokered authentication library. "
                         + "Please ensure that the azure-identity-broker library is on the classpath.", e));
                 }
                 getMsalRuntimeBroker = null;
                 try {
                     getMsalRuntimeBroker = interactiveBrowserBroker.getMethod("getMsalRuntimeBroker");
                 } catch (NoSuchMethodException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Could not obtain the InteractiveBrowserBroker. "
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not obtain the InteractiveBrowserBroker. "
                         + "Please ensure that the azure-identity-broker library is on the classpath.", e));
                 }
             }
@@ -346,11 +346,11 @@ public abstract class IdentityClientBase {
                     builder.broker((IBroker) getMsalRuntimeBroker.invoke(null));
 
                 } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Could not obtain the MSAL Broker. "
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Could not obtain the MSAL Broker. "
                         + "Please ensure that the azure-identity-broker library is on the classpath.", null));
                 }
             } catch (InvocationTargetException | IllegalAccessException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Could not invoke the MSAL Broker. "
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Could not invoke the MSAL Broker. "
                     + "Please ensure that the azure-identity-broker library is on the classpath.", e));
             }
         }
