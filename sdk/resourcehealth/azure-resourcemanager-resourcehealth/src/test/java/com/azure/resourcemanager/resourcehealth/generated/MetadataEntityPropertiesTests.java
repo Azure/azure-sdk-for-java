@@ -17,36 +17,40 @@ public final class MetadataEntityPropertiesTests {
         MetadataEntityProperties model =
             BinaryData
                 .fromString(
-                    "{\"displayName\":\"mi\",\"dependsOn\":[\"hzrvqd\"],\"applicableScenarios\":[\"Alerts\"],\"supportedValues\":[{\"id\":\"igeho\",\"displayName\":\"bowsk\",\"resourceTypes\":[\"ktzlcuiywg\"]}]}")
+                    "{\"displayName\":\"rq\",\"dependsOn\":[\"dckzywbiexz\",\"eyueaxibxujwb\",\"qwalmuzyoxaepd\",\"zjancuxr\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"iwdjswztsdbpgn\",\"displayName\":\"txhp\",\"resourceTypes\":[\"zpfzabglc\",\"hxw\"]},{\"id\":\"tyq\",\"displayName\":\"lbbovplw\",\"resourceTypes\":[\"vgyuguos\",\"mkfssxqukkfplgm\",\"sxnkjzkdeslpvlo\"]}]}")
                 .toObject(MetadataEntityProperties.class);
-        Assertions.assertEquals("mi", model.displayName());
-        Assertions.assertEquals("hzrvqd", model.dependsOn().get(0));
+        Assertions.assertEquals("rq", model.displayName());
+        Assertions.assertEquals("dckzywbiexz", model.dependsOn().get(0));
         Assertions.assertEquals(Scenario.ALERTS, model.applicableScenarios().get(0));
-        Assertions.assertEquals("igeho", model.supportedValues().get(0).id());
-        Assertions.assertEquals("bowsk", model.supportedValues().get(0).displayName());
-        Assertions.assertEquals("ktzlcuiywg", model.supportedValues().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("iwdjswztsdbpgn", model.supportedValues().get(0).id());
+        Assertions.assertEquals("txhp", model.supportedValues().get(0).displayName());
+        Assertions.assertEquals("zpfzabglc", model.supportedValues().get(0).resourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MetadataEntityProperties model =
             new MetadataEntityProperties()
-                .withDisplayName("mi")
-                .withDependsOn(Arrays.asList("hzrvqd"))
-                .withApplicableScenarios(Arrays.asList(Scenario.ALERTS))
+                .withDisplayName("rq")
+                .withDependsOn(Arrays.asList("dckzywbiexz", "eyueaxibxujwb", "qwalmuzyoxaepd", "zjancuxr"))
+                .withApplicableScenarios(Arrays.asList(Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS))
                 .withSupportedValues(
                     Arrays
                         .asList(
                             new MetadataSupportedValueDetail()
-                                .withId("igeho")
-                                .withDisplayName("bowsk")
-                                .withResourceTypes(Arrays.asList("ktzlcuiywg"))));
+                                .withId("iwdjswztsdbpgn")
+                                .withDisplayName("txhp")
+                                .withResourceTypes(Arrays.asList("zpfzabglc", "hxw")),
+                            new MetadataSupportedValueDetail()
+                                .withId("tyq")
+                                .withDisplayName("lbbovplw")
+                                .withResourceTypes(Arrays.asList("vgyuguos", "mkfssxqukkfplgm", "sxnkjzkdeslpvlo"))));
         model = BinaryData.fromObject(model).toObject(MetadataEntityProperties.class);
-        Assertions.assertEquals("mi", model.displayName());
-        Assertions.assertEquals("hzrvqd", model.dependsOn().get(0));
+        Assertions.assertEquals("rq", model.displayName());
+        Assertions.assertEquals("dckzywbiexz", model.dependsOn().get(0));
         Assertions.assertEquals(Scenario.ALERTS, model.applicableScenarios().get(0));
-        Assertions.assertEquals("igeho", model.supportedValues().get(0).id());
-        Assertions.assertEquals("bowsk", model.supportedValues().get(0).displayName());
-        Assertions.assertEquals("ktzlcuiywg", model.supportedValues().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("iwdjswztsdbpgn", model.supportedValues().get(0).id());
+        Assertions.assertEquals("txhp", model.supportedValues().get(0).displayName());
+        Assertions.assertEquals("zpfzabglc", model.supportedValues().get(0).resourceTypes().get(0));
     }
 }

@@ -19,42 +19,42 @@ public final class AzureResourceSkuInnerTests {
         AzureResourceSkuInner model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"zceuojgjrw\",\"sku\":{\"name\":\"Standard_EC16ads_v5\",\"capacity\":1907813820,\"tier\":\"Basic\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":1753683852,\"maximum\":54920560,\"default\":1848522994}}")
+                    "{\"resourceType\":\"ndslgnayqigynduh\",\"sku\":{\"name\":\"Standard_EC8as_v5+1TB_PS\",\"capacity\":1238517729,\"tier\":\"Standard\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":918393543,\"maximum\":1117250592,\"default\":1615397265}}")
                 .toObject(AzureResourceSkuInner.class);
-        Assertions.assertEquals("zceuojgjrw", model.resourceType());
-        Assertions.assertEquals(AzureSkuName.STANDARD_EC16ADS_V5, model.sku().name());
-        Assertions.assertEquals(1907813820, model.sku().capacity());
-        Assertions.assertEquals(AzureSkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("ndslgnayqigynduh", model.resourceType());
+        Assertions.assertEquals(AzureSkuName.STANDARD_EC8AS_V5_1TB_PS, model.sku().name());
+        Assertions.assertEquals(1238517729, model.sku().capacity());
+        Assertions.assertEquals(AzureSkuTier.STANDARD, model.sku().tier());
         Assertions.assertEquals(AzureScaleType.MANUAL, model.capacity().scaleType());
-        Assertions.assertEquals(1753683852, model.capacity().minimum());
-        Assertions.assertEquals(54920560, model.capacity().maximum());
-        Assertions.assertEquals(1848522994, model.capacity().defaultProperty());
+        Assertions.assertEquals(918393543, model.capacity().minimum());
+        Assertions.assertEquals(1117250592, model.capacity().maximum());
+        Assertions.assertEquals(1615397265, model.capacity().defaultProperty());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureResourceSkuInner model =
             new AzureResourceSkuInner()
-                .withResourceType("zceuojgjrw")
+                .withResourceType("ndslgnayqigynduh")
                 .withSku(
                     new AzureSku()
-                        .withName(AzureSkuName.STANDARD_EC16ADS_V5)
-                        .withCapacity(1907813820)
-                        .withTier(AzureSkuTier.BASIC))
+                        .withName(AzureSkuName.STANDARD_EC8AS_V5_1TB_PS)
+                        .withCapacity(1238517729)
+                        .withTier(AzureSkuTier.STANDARD))
                 .withCapacity(
                     new AzureCapacity()
                         .withScaleType(AzureScaleType.MANUAL)
-                        .withMinimum(1753683852)
-                        .withMaximum(54920560)
-                        .withDefaultProperty(1848522994));
+                        .withMinimum(918393543)
+                        .withMaximum(1117250592)
+                        .withDefaultProperty(1615397265));
         model = BinaryData.fromObject(model).toObject(AzureResourceSkuInner.class);
-        Assertions.assertEquals("zceuojgjrw", model.resourceType());
-        Assertions.assertEquals(AzureSkuName.STANDARD_EC16ADS_V5, model.sku().name());
-        Assertions.assertEquals(1907813820, model.sku().capacity());
-        Assertions.assertEquals(AzureSkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("ndslgnayqigynduh", model.resourceType());
+        Assertions.assertEquals(AzureSkuName.STANDARD_EC8AS_V5_1TB_PS, model.sku().name());
+        Assertions.assertEquals(1238517729, model.sku().capacity());
+        Assertions.assertEquals(AzureSkuTier.STANDARD, model.sku().tier());
         Assertions.assertEquals(AzureScaleType.MANUAL, model.capacity().scaleType());
-        Assertions.assertEquals(1753683852, model.capacity().minimum());
-        Assertions.assertEquals(54920560, model.capacity().maximum());
-        Assertions.assertEquals(1848522994, model.capacity().defaultProperty());
+        Assertions.assertEquals(918393543, model.capacity().minimum());
+        Assertions.assertEquals(1117250592, model.capacity().maximum());
+        Assertions.assertEquals(1615397265, model.capacity().defaultProperty());
     }
 }

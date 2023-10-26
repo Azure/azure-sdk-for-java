@@ -596,4 +596,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="VisibilityModifier" files="com.azure.identity.AzureDeveloperCliCredentialNegativeTest.java"/>
   <suppress checks="VisibilityModifier" files="com.azure.identity.AzureCliCredentialNegativeTest.java"/>
 
+  <!-- Suppress checks for defender Easm -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.analytics.defender.easm.models.CountPagedResponse"/>
 </suppressions>

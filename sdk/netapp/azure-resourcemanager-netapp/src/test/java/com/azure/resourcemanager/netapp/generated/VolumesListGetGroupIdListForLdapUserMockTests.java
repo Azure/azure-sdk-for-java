@@ -31,7 +31,7 @@ public final class VolumesListGetGroupIdListForLdapUserMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"groupIdsForLdapUser\":[\"tttwgdslqxih\",\"rmooizqse\",\"pxiutc\",\"apzhyrpetoge\"]}";
+        String responseStr = "{\"groupIdsForLdapUser\":[\"ylfsbtk\",\"dp\"]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class VolumesListGetGroupIdListForLdapUserMockTests {
             manager
                 .volumes()
                 .listGetGroupIdListForLdapUser(
-                    "teusqczkvyklxu",
-                    "yja",
-                    "fmmfblcqcu",
-                    "bgq",
-                    new GetGroupIdListForLdapUserRequest().withUsername("brta"),
+                    "dggxdbeesmi",
+                    "knlrariaawiuagy",
+                    "wqfbylyrfgiagt",
+                    "ojocqwogf",
+                    new GetGroupIdListForLdapUserRequest().withUsername("zjvusfzldmo"),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tttwgdslqxih", response.groupIdsForLdapUser().get(0));
+        Assertions.assertEquals("ylfsbtk", response.groupIdsForLdapUser().get(0));
     }
 }

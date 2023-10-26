@@ -7,6 +7,8 @@ package com.azure.resourcemanager.resourcehealth.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcehealth.fluent.models.MetadataEntityInner;
 import com.azure.resourcemanager.resourcehealth.models.MetadataEntityListResult;
+import com.azure.resourcemanager.resourcehealth.models.MetadataSupportedValueDetail;
+import com.azure.resourcemanager.resourcehealth.models.Scenario;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,10 +18,15 @@ public final class MetadataEntityListResultTests {
         MetadataEntityListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"rlovmclwhijcoej\",\"dependsOn\":[],\"applicableScenarios\":[],\"supportedValues\":[]},\"id\":\"qsqsy\",\"name\":\"bkbfkgukdkex\",\"type\":\"ppofmxaxcfjpgdd\"},{\"properties\":{\"displayName\":\"jjxhvpmo\",\"dependsOn\":[],\"applicableScenarios\":[],\"supportedValues\":[]},\"id\":\"zxibqeoj\",\"name\":\"xqbzvddntwnd\",\"type\":\"icbtwnpzao\"}],\"nextLink\":\"uhrhcffcyddgl\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"nqecanoaeup\",\"dependsOn\":[\"hltrpmopjmcmatuo\",\"thfuiuaodsfcpkvx\",\"dpuozmyz\",\"dagfuaxbezyiuok\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"wqsmbsur\",\"displayName\":\"imoryocfsfksym\",\"resourceTypes\":[\"stkiiuxhqyud\"]},{\"id\":\"rrqnbpoczvyifqrv\",\"displayName\":\"vjsllrmvvdfw\",\"resourceTypes\":[\"pnpulexxbczwtru\",\"iqzbq\",\"vsovmyokac\",\"pkwlhz\"]},{\"id\":\"bpxjmfl\",\"displayName\":\"vnchrkcci\",\"resourceTypes\":[\"juqk\",\"rsa\",\"iwkuofos\"]}]},\"id\":\"hsauuimjmvxied\",\"name\":\"ugidyjrr\",\"type\":\"byao\"},{\"properties\":{\"displayName\":\"xc\",\"dependsOn\":[\"pclhocohslk\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"buhfmvfaxkffeiit\",\"displayName\":\"vmezy\",\"resourceTypes\":[\"xmzsbbzogg\",\"grxwbu\",\"vjxxjnsp\",\"dptkoenkouk\"]},{\"id\":\"udwtiukbl\",\"displayName\":\"gkpocipazyxoe\",\"resourceTypes\":[\"g\"]}]},\"id\":\"piu\",\"name\":\"gygev\",\"type\":\"zntypmrb\"},{\"properties\":{\"displayName\":\"c\",\"dependsOn\":[\"j\",\"dpydn\",\"yhxdeoejzicwi\",\"sjttgzfbish\"],\"applicableScenarios\":[\"Alerts\"],\"supportedValues\":[{\"id\":\"eyeam\",\"displayName\":\"hagalpbuxwgipwh\",\"resourceTypes\":[\"wkgshwa\"]},{\"id\":\"ixzbinjeputtmryw\",\"displayName\":\"zoqftiyqzrnkcqvy\",\"resourceTypes\":[\"hzls\",\"cohoq\",\"nwvlryavwhheunmm\"]},{\"id\":\"gyxzk\",\"displayName\":\"ocukoklyax\",\"resourceTypes\":[\"nuqszfkbey\"]}]},\"id\":\"wrmjmwvvjektc\",\"name\":\"senhwlrs\",\"type\":\"frzpwvlqdqgb\"},{\"properties\":{\"displayName\":\"lihkaetcktvfc\",\"dependsOn\":[\"snkymuctq\",\"jf\",\"ebrjcxe\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"vjrbirphxepcyvah\",\"displayName\":\"ljkyqxjvuuj\",\"resourceTypes\":[\"dokgjl\",\"yoxgvcltbgsnc\"]},{\"id\":\"kjeszz\",\"displayName\":\"ijhtxf\",\"resourceTypes\":[\"bfs\"]},{\"id\":\"nehmpvecx\",\"displayName\":\"debfqkkrbmpukgri\",\"resourceTypes\":[\"zlfbxzpuzycispnq\",\"ahmgkbrp\",\"y\"]}]},\"id\":\"ibnuqqkpik\",\"name\":\"drgvtqagn\",\"type\":\"uynhijg\"}],\"nextLink\":\"ebf\"}")
                 .toObject(MetadataEntityListResult.class);
-        Assertions.assertEquals("rlovmclwhijcoej", model.value().get(0).displayName());
-        Assertions.assertEquals("uhrhcffcyddgl", model.nextLink());
+        Assertions.assertEquals("nqecanoaeup", model.value().get(0).displayName());
+        Assertions.assertEquals("hltrpmopjmcmatuo", model.value().get(0).dependsOn().get(0));
+        Assertions.assertEquals(Scenario.ALERTS, model.value().get(0).applicableScenarios().get(0));
+        Assertions.assertEquals("wqsmbsur", model.value().get(0).supportedValues().get(0).id());
+        Assertions.assertEquals("imoryocfsfksym", model.value().get(0).supportedValues().get(0).displayName());
+        Assertions.assertEquals("stkiiuxhqyud", model.value().get(0).supportedValues().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("ebf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,18 +37,92 @@ public final class MetadataEntityListResultTests {
                     Arrays
                         .asList(
                             new MetadataEntityInner()
-                                .withDisplayName("rlovmclwhijcoej")
-                                .withDependsOn(Arrays.asList())
-                                .withApplicableScenarios(Arrays.asList())
-                                .withSupportedValues(Arrays.asList()),
+                                .withDisplayName("nqecanoaeup")
+                                .withDependsOn(
+                                    Arrays
+                                        .asList("hltrpmopjmcmatuo", "thfuiuaodsfcpkvx", "dpuozmyz", "dagfuaxbezyiuok"))
+                                .withApplicableScenarios(
+                                    Arrays.asList(Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS))
+                                .withSupportedValues(
+                                    Arrays
+                                        .asList(
+                                            new MetadataSupportedValueDetail()
+                                                .withId("wqsmbsur")
+                                                .withDisplayName("imoryocfsfksym")
+                                                .withResourceTypes(Arrays.asList("stkiiuxhqyud")),
+                                            new MetadataSupportedValueDetail()
+                                                .withId("rrqnbpoczvyifqrv")
+                                                .withDisplayName("vjsllrmvvdfw")
+                                                .withResourceTypes(
+                                                    Arrays.asList("pnpulexxbczwtru", "iqzbq", "vsovmyokac", "pkwlhz")),
+                                            new MetadataSupportedValueDetail()
+                                                .withId("bpxjmfl")
+                                                .withDisplayName("vnchrkcci")
+                                                .withResourceTypes(Arrays.asList("juqk", "rsa", "iwkuofos")))),
                             new MetadataEntityInner()
-                                .withDisplayName("jjxhvpmo")
-                                .withDependsOn(Arrays.asList())
-                                .withApplicableScenarios(Arrays.asList())
-                                .withSupportedValues(Arrays.asList())))
-                .withNextLink("uhrhcffcyddgl");
+                                .withDisplayName("xc")
+                                .withDependsOn(Arrays.asList("pclhocohslk"))
+                                .withApplicableScenarios(Arrays.asList(Scenario.ALERTS, Scenario.ALERTS))
+                                .withSupportedValues(
+                                    Arrays
+                                        .asList(
+                                            new MetadataSupportedValueDetail()
+                                                .withId("buhfmvfaxkffeiit")
+                                                .withDisplayName("vmezy")
+                                                .withResourceTypes(
+                                                    Arrays.asList("xmzsbbzogg", "grxwbu", "vjxxjnsp", "dptkoenkouk")),
+                                            new MetadataSupportedValueDetail()
+                                                .withId("udwtiukbl")
+                                                .withDisplayName("gkpocipazyxoe")
+                                                .withResourceTypes(Arrays.asList("g")))),
+                            new MetadataEntityInner()
+                                .withDisplayName("c")
+                                .withDependsOn(Arrays.asList("j", "dpydn", "yhxdeoejzicwi", "sjttgzfbish"))
+                                .withApplicableScenarios(Arrays.asList(Scenario.ALERTS))
+                                .withSupportedValues(
+                                    Arrays
+                                        .asList(
+                                            new MetadataSupportedValueDetail()
+                                                .withId("eyeam")
+                                                .withDisplayName("hagalpbuxwgipwh")
+                                                .withResourceTypes(Arrays.asList("wkgshwa")),
+                                            new MetadataSupportedValueDetail()
+                                                .withId("ixzbinjeputtmryw")
+                                                .withDisplayName("zoqftiyqzrnkcqvy")
+                                                .withResourceTypes(Arrays.asList("hzls", "cohoq", "nwvlryavwhheunmm")),
+                                            new MetadataSupportedValueDetail()
+                                                .withId("gyxzk")
+                                                .withDisplayName("ocukoklyax")
+                                                .withResourceTypes(Arrays.asList("nuqszfkbey")))),
+                            new MetadataEntityInner()
+                                .withDisplayName("lihkaetcktvfc")
+                                .withDependsOn(Arrays.asList("snkymuctq", "jf", "ebrjcxe"))
+                                .withApplicableScenarios(
+                                    Arrays.asList(Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS, Scenario.ALERTS))
+                                .withSupportedValues(
+                                    Arrays
+                                        .asList(
+                                            new MetadataSupportedValueDetail()
+                                                .withId("vjrbirphxepcyvah")
+                                                .withDisplayName("ljkyqxjvuuj")
+                                                .withResourceTypes(Arrays.asList("dokgjl", "yoxgvcltbgsnc")),
+                                            new MetadataSupportedValueDetail()
+                                                .withId("kjeszz")
+                                                .withDisplayName("ijhtxf")
+                                                .withResourceTypes(Arrays.asList("bfs")),
+                                            new MetadataSupportedValueDetail()
+                                                .withId("nehmpvecx")
+                                                .withDisplayName("debfqkkrbmpukgri")
+                                                .withResourceTypes(
+                                                    Arrays.asList("zlfbxzpuzycispnq", "ahmgkbrp", "y"))))))
+                .withNextLink("ebf");
         model = BinaryData.fromObject(model).toObject(MetadataEntityListResult.class);
-        Assertions.assertEquals("rlovmclwhijcoej", model.value().get(0).displayName());
-        Assertions.assertEquals("uhrhcffcyddgl", model.nextLink());
+        Assertions.assertEquals("nqecanoaeup", model.value().get(0).displayName());
+        Assertions.assertEquals("hltrpmopjmcmatuo", model.value().get(0).dependsOn().get(0));
+        Assertions.assertEquals(Scenario.ALERTS, model.value().get(0).applicableScenarios().get(0));
+        Assertions.assertEquals("wqsmbsur", model.value().get(0).supportedValues().get(0).id());
+        Assertions.assertEquals("imoryocfsfksym", model.value().get(0).supportedValues().get(0).displayName());
+        Assertions.assertEquals("stkiiuxhqyud", model.value().get(0).supportedValues().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("ebf", model.nextLink());
     }
 }

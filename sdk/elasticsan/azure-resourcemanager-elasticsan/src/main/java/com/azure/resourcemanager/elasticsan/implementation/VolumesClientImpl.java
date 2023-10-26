@@ -36,6 +36,8 @@ import com.azure.resourcemanager.elasticsan.fluent.VolumesClient;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
 import com.azure.resourcemanager.elasticsan.models.VolumeList;
 import com.azure.resourcemanager.elasticsan.models.VolumeUpdate;
+import com.azure.resourcemanager.elasticsan.models.XMsDeleteSnapshots;
+import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -112,6 +114,8 @@ public final class VolumesClientImpl implements VolumesClient {
             @PathParam("volumeGroupName") String volumeGroupName,
             @PathParam("volumeName") String volumeName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-delete-snapshots") XMsDeleteSnapshots xMsDeleteSnapshots,
+            @HeaderParam("x-ms-force-delete") XMsForceDelete xMsForceDelete,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -866,6 +870,10 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -873,7 +881,12 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -913,6 +926,8 @@ public final class VolumesClientImpl implements VolumesClient {
                             volumeGroupName,
                             volumeName,
                             this.client.getApiVersion(),
+                            xMsDeleteSnapshots,
+                            xMsForceDelete,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -925,6 +940,10 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -933,7 +952,13 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context) {
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -971,8 +996,43 @@ public final class VolumesClientImpl implements VolumesClient {
                 volumeGroupName,
                 volumeName,
                 this.client.getApiVersion(),
+                xMsDeleteSnapshots,
+                xMsForceDelete,
                 accept,
                 context);
+    }
+
+    /**
+     * Delete an Volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param elasticSanName The name of the ElasticSan.
+     * @param volumeGroupName The name of the VolumeGroup.
+     * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(
+                resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -990,8 +1050,11 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
+        final XMsDeleteSnapshots xMsDeleteSnapshots = null;
+        final XMsForceDelete xMsForceDelete = null;
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName);
+            deleteWithResponseAsync(
+                resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -1005,6 +1068,10 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1013,10 +1080,23 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context) {
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context);
+            deleteWithResponseAsync(
+                resourceGroupName,
+                elasticSanName,
+                volumeGroupName,
+                volumeName,
+                xMsDeleteSnapshots,
+                xMsForceDelete,
+                context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -1037,7 +1117,12 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
-        return this.beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName).getSyncPoller();
+        final XMsDeleteSnapshots xMsDeleteSnapshots = null;
+        final XMsForceDelete xMsForceDelete = null;
+        return this
+            .beginDeleteAsync(
+                resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete)
+            .getSyncPoller();
     }
 
     /**
@@ -1047,6 +1132,10 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1055,10 +1144,53 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context) {
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete,
+        Context context) {
         return this
-            .beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context)
+            .beginDeleteAsync(
+                resourceGroupName,
+                elasticSanName,
+                volumeGroupName,
+                volumeName,
+                xMsDeleteSnapshots,
+                xMsForceDelete,
+                context)
             .getSyncPoller();
+    }
+
+    /**
+     * Delete an Volume.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param elasticSanName The name of the ElasticSan.
+     * @param volumeGroupName The name of the VolumeGroup.
+     * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete) {
+        return beginDeleteAsync(
+                resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1076,7 +1208,10 @@ public final class VolumesClientImpl implements VolumesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
         String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
-        return beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName)
+        final XMsDeleteSnapshots xMsDeleteSnapshots = null;
+        final XMsForceDelete xMsForceDelete = null;
+        return beginDeleteAsync(
+                resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1088,6 +1223,10 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1096,8 +1235,21 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context) {
-        return beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context)
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete,
+        Context context) {
+        return beginDeleteAsync(
+                resourceGroupName,
+                elasticSanName,
+                volumeGroupName,
+                volumeName,
+                xMsDeleteSnapshots,
+                xMsForceDelete,
+                context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1115,7 +1267,10 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
-        deleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName).block();
+        final XMsDeleteSnapshots xMsDeleteSnapshots = null;
+        final XMsForceDelete xMsForceDelete = null;
+        deleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete)
+            .block();
     }
 
     /**
@@ -1125,6 +1280,10 @@ public final class VolumesClientImpl implements VolumesClient {
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1132,8 +1291,22 @@ public final class VolumesClientImpl implements VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context) {
-        deleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context).block();
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete,
+        Context context) {
+        deleteAsync(
+                resourceGroupName,
+                elasticSanName,
+                volumeGroupName,
+                volumeName,
+                xMsDeleteSnapshots,
+                xMsForceDelete,
+                context)
+            .block();
     }
 
     /**

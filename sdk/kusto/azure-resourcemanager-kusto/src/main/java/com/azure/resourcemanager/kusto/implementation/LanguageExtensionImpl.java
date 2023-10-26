@@ -28,6 +28,10 @@ public final class LanguageExtensionImpl implements LanguageExtension {
         return this.innerModel().languageExtensionImageName();
     }
 
+    public String languageExtensionCustomImageName() {
+        return this.innerModel().languageExtensionCustomImageName();
+    }
+
     public LanguageExtensionInner innerModel() {
         return this.innerObject;
     }

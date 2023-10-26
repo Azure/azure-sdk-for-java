@@ -12,7 +12,7 @@ public final class JobStatusTests {
     public void testDeserialize() throws Exception {
         JobStatus model =
             BinaryData
-                .fromString("{\"jobName\":\"InitialSync\",\"jobProgress\":\"xzlocxscp\"}")
+                .fromString("{\"jobName\":\"InitialSync\",\"jobProgress\":\"kanyktzlcuiywg\"}")
                 .toObject(JobStatus.class);
     }
 

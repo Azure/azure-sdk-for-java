@@ -18,39 +18,48 @@ public final class ImpactedServiceRegionTests {
         ImpactedServiceRegion model =
             BinaryData
                 .fromString(
-                    "{\"impactedRegion\":\"wpn\",\"status\":\"Active\",\"impactedSubscriptions\":[\"nermcl\",\"plpho\",\"uscrpabgyepsb\",\"tazqugxywpmueefj\"],\"impactedTenants\":[\"qkqujidsu\",\"onobglaocqx\"],\"lastUpdateTime\":\"2021-08-26T18:25:08Z\",\"updates\":[{\"summary\":\"udxytlmoyrx\",\"updateDateTime\":\"2021-08-04T10:24:08Z\"}]}")
+                    "{\"impactedRegion\":\"dtlwwrlkd\",\"status\":\"Resolved\",\"impactedSubscriptions\":[\"ok\",\"tllxdyhgsyocogj\",\"tdtbnnhadooc\"],\"impactedTenants\":[\"cikhnv\",\"amqgxqquezikyw\",\"gxk\",\"lla\"],\"lastUpdateTime\":\"2021-05-13T13:09:28Z\",\"updates\":[{\"summary\":\"ipicc\",\"updateDateTime\":\"2021-07-16T14:13:55Z\"},{\"summary\":\"ivgvvcna\",\"updateDateTime\":\"2021-09-08T02:15:33Z\"},{\"summary\":\"rnxxmueed\",\"updateDateTime\":\"2021-02-18T21:20:21Z\"},{\"summary\":\"v\",\"updateDateTime\":\"2021-12-09T17:48:53Z\"}]}")
                 .toObject(ImpactedServiceRegion.class);
-        Assertions.assertEquals("wpn", model.impactedRegion());
-        Assertions.assertEquals(EventStatusValues.ACTIVE, model.status());
-        Assertions.assertEquals("nermcl", model.impactedSubscriptions().get(0));
-        Assertions.assertEquals("qkqujidsu", model.impactedTenants().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-26T18:25:08Z"), model.lastUpdateTime());
-        Assertions.assertEquals("udxytlmoyrx", model.updates().get(0).summary());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T10:24:08Z"), model.updates().get(0).updateDateTime());
+        Assertions.assertEquals("dtlwwrlkd", model.impactedRegion());
+        Assertions.assertEquals(EventStatusValues.RESOLVED, model.status());
+        Assertions.assertEquals("ok", model.impactedSubscriptions().get(0));
+        Assertions.assertEquals("cikhnv", model.impactedTenants().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-13T13:09:28Z"), model.lastUpdateTime());
+        Assertions.assertEquals("ipicc", model.updates().get(0).summary());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T14:13:55Z"), model.updates().get(0).updateDateTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImpactedServiceRegion model =
             new ImpactedServiceRegion()
-                .withImpactedRegion("wpn")
-                .withStatus(EventStatusValues.ACTIVE)
-                .withImpactedSubscriptions(Arrays.asList("nermcl", "plpho", "uscrpabgyepsb", "tazqugxywpmueefj"))
-                .withImpactedTenants(Arrays.asList("qkqujidsu", "onobglaocqx"))
-                .withLastUpdateTime(OffsetDateTime.parse("2021-08-26T18:25:08Z"))
+                .withImpactedRegion("dtlwwrlkd")
+                .withStatus(EventStatusValues.RESOLVED)
+                .withImpactedSubscriptions(Arrays.asList("ok", "tllxdyhgsyocogj", "tdtbnnhadooc"))
+                .withImpactedTenants(Arrays.asList("cikhnv", "amqgxqquezikyw", "gxk", "lla"))
+                .withLastUpdateTime(OffsetDateTime.parse("2021-05-13T13:09:28Z"))
                 .withUpdates(
                     Arrays
                         .asList(
                             new Update()
-                                .withSummary("udxytlmoyrx")
-                                .withUpdateDateTime(OffsetDateTime.parse("2021-08-04T10:24:08Z"))));
+                                .withSummary("ipicc")
+                                .withUpdateDateTime(OffsetDateTime.parse("2021-07-16T14:13:55Z")),
+                            new Update()
+                                .withSummary("ivgvvcna")
+                                .withUpdateDateTime(OffsetDateTime.parse("2021-09-08T02:15:33Z")),
+                            new Update()
+                                .withSummary("rnxxmueed")
+                                .withUpdateDateTime(OffsetDateTime.parse("2021-02-18T21:20:21Z")),
+                            new Update()
+                                .withSummary("v")
+                                .withUpdateDateTime(OffsetDateTime.parse("2021-12-09T17:48:53Z"))));
         model = BinaryData.fromObject(model).toObject(ImpactedServiceRegion.class);
-        Assertions.assertEquals("wpn", model.impactedRegion());
-        Assertions.assertEquals(EventStatusValues.ACTIVE, model.status());
-        Assertions.assertEquals("nermcl", model.impactedSubscriptions().get(0));
-        Assertions.assertEquals("qkqujidsu", model.impactedTenants().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-26T18:25:08Z"), model.lastUpdateTime());
-        Assertions.assertEquals("udxytlmoyrx", model.updates().get(0).summary());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T10:24:08Z"), model.updates().get(0).updateDateTime());
+        Assertions.assertEquals("dtlwwrlkd", model.impactedRegion());
+        Assertions.assertEquals(EventStatusValues.RESOLVED, model.status());
+        Assertions.assertEquals("ok", model.impactedSubscriptions().get(0));
+        Assertions.assertEquals("cikhnv", model.impactedTenants().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-13T13:09:28Z"), model.lastUpdateTime());
+        Assertions.assertEquals("ipicc", model.updates().get(0).summary());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T14:13:55Z"), model.updates().get(0).updateDateTime());
     }
 }

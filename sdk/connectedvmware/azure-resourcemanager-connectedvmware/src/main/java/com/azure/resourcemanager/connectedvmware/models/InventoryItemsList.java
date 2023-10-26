@@ -25,6 +25,10 @@ public final class InventoryItemsList {
     @JsonProperty(value = "value", required = true)
     private List<InventoryItemInner> value;
 
+    /** Creates an instance of InventoryItemsList class. */
+    public InventoryItemsList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of InventoryItems.
      *

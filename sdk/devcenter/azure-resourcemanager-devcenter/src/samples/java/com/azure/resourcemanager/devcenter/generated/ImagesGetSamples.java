@@ -7,7 +7,7 @@ package com.azure.resourcemanager.devcenter.generated;
 /** Samples for Images Get. */
 public final class ImagesGetSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Images_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Images_Get.json
      */
     /**
      * Sample code: Images_Get.

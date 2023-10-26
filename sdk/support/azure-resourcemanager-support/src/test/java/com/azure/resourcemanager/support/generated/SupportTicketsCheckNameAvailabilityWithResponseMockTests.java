@@ -31,7 +31,7 @@ public final class SupportTicketsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"ujqgidok\",\"message\":\"ljyoxgvcltb\"}";
+        String responseStr = "{\"nameAvailable\":false,\"reason\":\"ondjmq\",\"message\":\"vypomgkopkwho\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +63,9 @@ public final class SupportTicketsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .supportTickets()
                 .checkNameAvailabilityWithResponse(
-                    new CheckNameAvailabilityInput().withName("fnljky").withType(Type.MICROSOFT_SUPPORT_COMMUNICATIONS),
+                    new CheckNameAvailabilityInput()
+                        .withName("nubexk")
+                        .withType(Type.MICROSOFT_SUPPORT_SUPPORT_TICKETS),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }

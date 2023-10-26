@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
@@ -22,11 +23,11 @@ public final class ProjectEnvironmentTypeUpdateTests {
         ProjectEnvironmentTypeUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"deploymentTargetId\":\"tslhspkdeem\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{\"t\":{\"roles\":{}}}},\"tags\":{\"c\":\"mqkrhahvljuahaqu\",\"aex\":\"hmdua\",\"vxpvgomz\":\"pvfadmwsrcr\"},\"identity\":{\"principalId\":\"94ff05ed-0035-4ea1-a9ed-2d72aef7d467\",\"tenantId\":\"41258eea-c393-469c-ac67-2cf25941650b\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"b\":{\"principalId\":\"c2114230-151f-45b4-abc7-70150043340c\",\"clientId\":\"ac8cee49-2b3b-4322-9a02-93f02093c8a4\"}}}}")
+                    "{\"properties\":{\"deploymentTargetId\":\"xxjyngudivkrtsw\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"aqtdoqmcbx\":{\"roleName\":\"jfauvjfdxxi\",\"description\":\"tvtc\"},\"mpew\":{\"roleName\":\"vxysl\",\"description\":\"hsfxoblytkb\"},\"ovasrruvwbhsqfsu\":{\"roleName\":\"fbkrvrnsvs\",\"description\":\"johxcrsb\"},\"ybsrfbjfdtwss\":{\"roleName\":\"gjb\",\"description\":\"xb\"}}},\"userRoleAssignments\":{\"mifthnzdnd\":{\"roles\":{\"taruoujmkcj\":{\"roleName\":\"jzbexilzznfq\",\"description\":\"vwpm\"},\"doy\":{\"roleName\":\"qytjrybnwjewgd\",\"description\":\"ervnaenqpehi\"}}},\"sadbz\":{\"roles\":{\"aqolbgycduiertg\":{\"roleName\":\"ayqigynduhav\",\"description\":\"lkthu\"},\"lqlfm\":{\"roleName\":\"y\",\"description\":\"aolps\"},\"wyhzdx\":{\"roleName\":\"n\",\"description\":\"glzpswiydm\"}}},\"nsikvmkqzeqqkdl\":{\"roles\":{\"xsrz\":{\"roleName\":\"fznudaodvxzb\",\"description\":\"blylpstdbh\"},\"tmweriofzpyq\":{\"roleName\":\"ucerscdntnevfi\",\"description\":\"mygtdssls\"},\"mbes\":{\"roleName\":\"mwabnetshhszhedp\",\"description\":\"wiwubm\"},\"onz\":{\"roleName\":\"nkww\",\"description\":\"pjflcxogao\"}}}}},\"tags\":{\"kwobdagxtibq\":\"xmhhvhgureo\",\"bogqxndlkzgxhu\":\"xbxwa\",\"byyntwlrbqt\":\"iplbpodxunkbebxm\"},\"identity\":{\"principalId\":\"b7543aba-9a3e-4e30-9dde-c5c747acd169\",\"tenantId\":\"733ae89f-19ec-4a74-a78c-e8bd3581ebcd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"gqrlltmuwla\":{\"principalId\":\"26ea610a-5d77-4894-aa4d-54fd1800a888\",\"clientId\":\"866b49cb-adcd-457e-be3a-e99808d9c550\"}}}}")
                 .toObject(ProjectEnvironmentTypeUpdate.class);
-        Assertions.assertEquals("mqkrhahvljuahaqu", model.tags().get("c"));
+        Assertions.assertEquals("xmhhvhgureo", model.tags().get("kwobdagxtibq"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("tslhspkdeem", model.deploymentTargetId());
+        Assertions.assertEquals("xxjyngudivkrtsw", model.deploymentTargetId());
         Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, model.status());
     }
 
@@ -34,23 +35,61 @@ public final class ProjectEnvironmentTypeUpdateTests {
     public void testSerialize() throws Exception {
         ProjectEnvironmentTypeUpdate model =
             new ProjectEnvironmentTypeUpdate()
-                .withTags(mapOf("c", "mqkrhahvljuahaqu", "aex", "hmdua", "vxpvgomz", "pvfadmwsrcr"))
+                .withTags(
+                    mapOf("kwobdagxtibq", "xmhhvhgureo", "bogqxndlkzgxhu", "xbxwa", "byyntwlrbqt", "iplbpodxunkbebxm"))
                 .withIdentity(
                     new ManagedServiceIdentity()
                         .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("b", new UserAssignedIdentity())))
-                .withDeploymentTargetId("tslhspkdeem")
+                        .withUserAssignedIdentities(mapOf("gqrlltmuwla", new UserAssignedIdentity())))
+                .withDeploymentTargetId("xxjyngudivkrtsw")
                 .withStatus(EnvironmentTypeEnableStatus.ENABLED)
                 .withCreatorRoleAssignment(
-                    new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment().withRoles(mapOf()))
-                .withUserRoleAssignments(mapOf("t", new UserRoleAssignmentValue().withRoles(mapOf())));
+                    new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
+                        .withRoles(
+                            mapOf(
+                                "aqtdoqmcbx",
+                                new EnvironmentRole(),
+                                "mpew",
+                                new EnvironmentRole(),
+                                "ovasrruvwbhsqfsu",
+                                new EnvironmentRole(),
+                                "ybsrfbjfdtwss",
+                                new EnvironmentRole())))
+                .withUserRoleAssignments(
+                    mapOf(
+                        "mifthnzdnd",
+                        new UserRoleAssignmentValue()
+                            .withRoles(mapOf("taruoujmkcj", new EnvironmentRole(), "doy", new EnvironmentRole())),
+                        "sadbz",
+                        new UserRoleAssignmentValue()
+                            .withRoles(
+                                mapOf(
+                                    "aqolbgycduiertg",
+                                    new EnvironmentRole(),
+                                    "lqlfm",
+                                    new EnvironmentRole(),
+                                    "wyhzdx",
+                                    new EnvironmentRole())),
+                        "nsikvmkqzeqqkdl",
+                        new UserRoleAssignmentValue()
+                            .withRoles(
+                                mapOf(
+                                    "xsrz",
+                                    new EnvironmentRole(),
+                                    "tmweriofzpyq",
+                                    new EnvironmentRole(),
+                                    "mbes",
+                                    new EnvironmentRole(),
+                                    "onz",
+                                    new EnvironmentRole()))));
         model = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdate.class);
-        Assertions.assertEquals("mqkrhahvljuahaqu", model.tags().get("c"));
+        Assertions.assertEquals("xmhhvhgureo", model.tags().get("kwobdagxtibq"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("tslhspkdeem", model.deploymentTargetId());
+        Assertions.assertEquals("xxjyngudivkrtsw", model.deploymentTargetId());
         Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, model.status());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
