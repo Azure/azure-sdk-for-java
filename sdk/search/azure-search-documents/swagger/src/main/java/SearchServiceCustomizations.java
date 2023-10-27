@@ -98,6 +98,7 @@ public class SearchServiceCustomizations extends Customization {
             libraryCustomization.getRawEditor());
         customizeSearchIndexerDataSourceConnection(publicCustomization.getClass("SearchIndexerDataSourceConnection"));
         customizeSemanticPrioritizedFields(publicCustomization.getClass("SemanticPrioritizedFields"));
+        customizeVectorSearch(publicCustomization.getClass("VectorSearch"));
 
         bulkRemoveFromJsonMethods(publicCustomization.getClass("SearchIndexerKnowledgeStoreProjectionSelector"),
             publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"));
@@ -760,6 +761,15 @@ public class SearchServiceCustomizations extends Customization {
 
             addVarArgsOverload(clazz, "contentFields", "SemanticField");
             addVarArgsOverload(clazz, "keywordsFields", "SemanticField");
+        });
+    }
+
+    private static void customizeVectorSearch(ClassCustomization classCustomization) {
+        customizeAst(classCustomization, clazz -> {
+            clazz.tryAddImportToParentCompilationUnit(Arrays.class);
+
+            addVarArgsOverload(clazz, "profiles", "VectorSearchProfile");
+            addVarArgsOverload(clazz, "algorithms", "VectorSearchAlgorithmConfiguration");
         });
     }
 

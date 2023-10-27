@@ -11,8 +11,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
+import com.azure.search.documents.models.QueryAnswerResult;
 import com.azure.search.documents.models.SemanticErrorReason;
 import com.azure.search.documents.models.SemanticSearchResultsType;
 import java.io.IOException;
@@ -47,7 +47,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * The answers query results for the search operation; null if the answers query parameter was not specified or set
      * to 'none'.
      */
-    private List<AnswerResult> answers;
+    private List<QueryAnswerResult> answers;
 
     /*
      * Continuation JSON payload returned when Azure Cognitive Search can't return all the requested results in a
@@ -125,7 +125,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      *
      * @return the answers value.
      */
-    public List<AnswerResult> getAnswers() {
+    public List<QueryAnswerResult> getAnswers() {
         return this.answers;
     }
 
@@ -204,7 +204,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                     Long count = null;
                     Double coverage = null;
                     Map<String, List<FacetResult>> facets = null;
-                    List<AnswerResult> answers = null;
+                    List<QueryAnswerResult> answers = null;
                     SearchRequest nextPageParameters = null;
                     String nextLink = null;
                     SemanticErrorReason semanticPartialResponseReason = null;
@@ -225,7 +225,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                                     reader.readMap(
                                             reader1 -> reader1.readArray(reader2 -> FacetResult.fromJson(reader2)));
                         } else if ("@search.answers".equals(fieldName)) {
-                            answers = reader.readArray(reader1 -> AnswerResult.fromJson(reader1));
+                            answers = reader.readArray(reader1 -> QueryAnswerResult.fromJson(reader1));
                         } else if ("@search.nextPageParameters".equals(fieldName)) {
                             nextPageParameters = SearchRequest.fromJson(reader);
                         } else if ("@odata.nextLink".equals(fieldName)) {

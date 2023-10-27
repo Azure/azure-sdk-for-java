@@ -14,7 +14,7 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
-import com.azure.search.documents.indexes.models.HnswVectorConfiguration;
+import com.azure.search.documents.indexes.models.HnswAlgorithmConfiguration;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
 import com.azure.search.documents.indexes.models.ScoringProfile;
@@ -129,7 +129,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
         waitForIndexing();
         SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-            .setVectorizableQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName");
@@ -145,7 +145,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
         waitForIndexing();
         SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-            .setVectorizableQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName");
@@ -162,7 +162,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
         waitForIndexing();
         SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-            .setVectorizableQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName", "Category")
@@ -179,7 +179,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
         waitForIndexing();
         SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-            .setVectorizableQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName", "Category")
@@ -197,7 +197,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
         waitForIndexing();
         SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-            .setVectorizableQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName");
@@ -214,7 +214,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
         waitForIndexing();
         SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-            .setVectorizableQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName");
@@ -232,7 +232,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
         SearchOptions searchOptions = new SearchOptions().setVectorSearchOptions(new VectorSearchOptions()
-            .setVectorizableQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
+            .setQueries(new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector")))
             .setSelect("HotelId", "HotelName", "Description", "Category")
@@ -247,20 +247,20 @@ public class VectorSearchTests extends SearchTestBase {
                 searchOptions).byPage().collectList())
             .assertNext(pages -> {
                 SearchPagedResponse page1 = pages.get(0);
-                assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1));
-                assertEquals(1, SearchPagedResponseAccessHelper.getAnswers(page1).size());
-                assertEquals("9", SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getKey());
-                assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getHighlights());
-                assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getText());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1));
+                assertEquals(1, SearchPagedResponseAccessHelper.getQueryAnswers(page1).size());
+                assertEquals("9", SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getKey());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getHighlights());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getText());
 
                 List<SearchResult> results = new ArrayList<>();
                 for (SearchPagedResponse page : pages) {
                     for (SearchResult result : page.getValue()) {
                         results.add(result);
 
-                        assertNotNull(result.getSemanticResult().getCaptions());
-                        assertNotNull(result.getSemanticResult().getCaptions().get(0).getHighlights());
-                        assertNotNull(result.getSemanticResult().getCaptions().get(0).getText());
+                        assertNotNull(result.getSemanticSearch().getQueryCaptions());
+                        assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getHighlights());
+                        assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getText());
                     }
                 }
 
@@ -276,7 +276,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
         waitForIndexing();
         SearchOptions searchOptions = new SearchOptions()
-            .setVectorSearchOptions(new VectorSearchOptions().setVectorizableQueries(
+            .setVectorSearchOptions(new VectorSearchOptions().setQueries(
                 new VectorQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                     .setKNearestNeighborsCount(3)
                     .setFields("DescriptionVector")))
@@ -292,20 +292,20 @@ public class VectorSearchTests extends SearchTestBase {
             searchOptions, Context.NONE).streamByPage().collect(Collectors.toList());
 
         SearchPagedResponse page1 = pages.get(0);
-        assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1));
-        assertEquals(1, SearchPagedResponseAccessHelper.getAnswers(page1).size());
-        assertEquals("9", SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getKey());
-        assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getHighlights());
-        assertNotNull(SearchPagedResponseAccessHelper.getAnswers(page1).get(0).getText());
+        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1));
+        assertEquals(1, SearchPagedResponseAccessHelper.getQueryAnswers(page1).size());
+        assertEquals("9", SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getKey());
+        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getHighlights());
+        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getText());
 
         List<SearchResult> results = new ArrayList<>();
         for (SearchPagedResponse page : pages) {
             for (SearchResult result : page.getValue()) {
                 results.add(result);
 
-                assertNotNull(result.getSemanticResult().getCaptions());
-                assertNotNull(result.getSemanticResult().getCaptions().get(0).getHighlights());
-                assertNotNull(result.getSemanticResult().getCaptions().get(0).getText());
+                assertNotNull(result.getSemanticSearch().getQueryCaptions());
+                assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getHighlights());
+                assertNotNull(result.getSemanticSearch().getQueryCaptions().get(0).getText());
             }
         }
 
@@ -364,8 +364,7 @@ public class VectorSearchTests extends SearchTestBase {
                 createdIndex.setVectorSearch(new VectorSearch()
                     .setProfiles(Collections.singletonList(
                         new VectorSearchProfile("my-vector-profile", "my-vector-config")))
-                    .setAlgorithms(Collections.singletonList(
-                        new HnswVectorConfiguration("my-vector-config"))));
+                    .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config"))));
 
                 return searchIndexClient.createOrUpdateIndex(createdIndex);
             });
@@ -457,8 +456,7 @@ public class VectorSearchTests extends SearchTestBase {
         createdIndex.setVectorSearch(new VectorSearch()
                 .setProfiles(Collections.singletonList(
                     new VectorSearchProfile("my-vector-profile", "my-vector-config")))
-            .setAlgorithms(Collections.singletonList(
-                new HnswVectorConfiguration("my-vector-config"))));
+            .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config"))));
 
         // Update index
         SearchIndex responseIndex = searchIndexClient.createOrUpdateIndex(createdIndex);
@@ -611,8 +609,7 @@ public class VectorSearchTests extends SearchTestBase {
             .setVectorSearch(new VectorSearch()
                 .setProfiles(Collections.singletonList(
                     new VectorSearchProfile("my-vector-profile", "my-vector-config")))
-                .setAlgorithms(
-                    Collections.singletonList(new HnswVectorConfiguration("my-vector-config"))))
+                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config"))))
             .setSemanticSearch(new SemanticSearch()
                 .setConfigurations(Collections.singletonList(new SemanticConfiguration("my-semantic-config",
                     new SemanticPrioritizedFields().setTitleField(new SemanticField("HotelName"))

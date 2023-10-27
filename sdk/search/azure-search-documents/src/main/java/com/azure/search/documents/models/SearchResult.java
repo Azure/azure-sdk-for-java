@@ -28,7 +28,7 @@ public final class SearchResult {
     /*
      * The semantic search results based on the search request.
      */
-    private SemanticSearchResult semanticResult;
+    private SemanticSearchResult semanticSearch;
 
     /*
      * Text fragments from the document that indicate the matching search
@@ -66,7 +66,7 @@ public final class SearchResult {
 
             @Override
             public void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
-                List<CaptionResult> captions) {
+                List<QueryCaptionResult> captions) {
                 searchResult.setSemanticSearchResult(rerankerScore, captions);
             }
         });
@@ -107,8 +107,8 @@ public final class SearchResult {
      *
      * @return the semanticSearchResult value.
      */
-    public SemanticSearchResult getSemanticResult() {
-        return this.semanticResult;
+    public SemanticSearchResult getSemanticSearch() {
+        return this.semanticSearch;
     }
 
     /**
@@ -158,7 +158,7 @@ public final class SearchResult {
      * @param rerankerScore The reranker score.
      * @param captions The captions.
      */
-    private void setSemanticSearchResult(Double rerankerScore, List<CaptionResult> captions) {
-        this.semanticResult = new SemanticSearchResult(rerankerScore, captions);
+    private void setSemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> captions) {
+        this.semanticSearch = new SemanticSearchResult(rerankerScore, captions);
     }
 }

@@ -21,18 +21,18 @@ import java.util.Objects;
  * querying. The hnsw algorithm offers a tunable trade-off between search speed and accuracy.
  */
 @Fluent
-public final class HnswVectorConfiguration extends VectorSearchAlgorithmConfiguration {
+public final class HnswAlgorithmConfiguration extends VectorSearchAlgorithmConfiguration {
     /*
      * Contains the parameters specific to hnsw algorithm.
      */
     private HnswParameters parameters;
 
     /**
-     * Creates an instance of HnswVectorConfiguration class.
+     * Creates an instance of HnswAlgorithmConfiguration class.
      *
      * @param name the name value to set.
      */
-    public HnswVectorConfiguration(String name) {
+    public HnswAlgorithmConfiguration(String name) {
         super(name);
     }
 
@@ -49,9 +49,9 @@ public final class HnswVectorConfiguration extends VectorSearchAlgorithmConfigur
      * Set the parameters property: Contains the parameters specific to hnsw algorithm.
      *
      * @param parameters the parameters value to set.
-     * @return the HnswVectorConfiguration object itself.
+     * @return the HnswAlgorithmConfiguration object itself.
      */
-    public HnswVectorConfiguration setParameters(HnswParameters parameters) {
+    public HnswAlgorithmConfiguration setParameters(HnswParameters parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -66,16 +66,16 @@ public final class HnswVectorConfiguration extends VectorSearchAlgorithmConfigur
     }
 
     /**
-     * Reads an instance of HnswVectorConfiguration from the JsonReader.
+     * Reads an instance of HnswAlgorithmConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of HnswVectorConfiguration if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * @return An instance of HnswAlgorithmConfiguration if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the HnswVectorConfiguration.
+     * @throws IOException If an error occurs while reading the HnswAlgorithmConfiguration.
      */
-    public static HnswVectorConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static HnswAlgorithmConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
                     boolean nameFound = false;
@@ -103,10 +103,11 @@ public final class HnswVectorConfiguration extends VectorSearchAlgorithmConfigur
                         }
                     }
                     if (nameFound) {
-                        HnswVectorConfiguration deserializedHnswVectorConfiguration = new HnswVectorConfiguration(name);
-                        deserializedHnswVectorConfiguration.parameters = parameters;
+                        HnswAlgorithmConfiguration deserializedHnswAlgorithmConfiguration =
+                                new HnswAlgorithmConfiguration(name);
+                        deserializedHnswAlgorithmConfiguration.parameters = parameters;
 
-                        return deserializedHnswVectorConfiguration;
+                        return deserializedHnswAlgorithmConfiguration;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

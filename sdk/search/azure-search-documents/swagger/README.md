@@ -99,6 +99,12 @@ directive:
     - rename-model:
         from: RawVectorQuery
         to: VectorQuery
+    - rename-model:
+        from: AnswerResult
+        to: QueryAnswerResult
+    - rename-model:
+        from: CaptionResult
+        to: QueryCaptionResult
 ```
 
 ### Tag: searchservice
@@ -161,7 +167,7 @@ directive:
         to: ExhaustiveKnnAlgorithmConfiguration
     - rename-model:
         from: HnswVectorSearchAlgorithmConfiguration
-        to: HnswVectorConfiguration
+        to: HnswAlgorithmConfiguration
     - rename-model:
         from: SemanticSettings
         to: SemanticSearch

@@ -13,17 +13,17 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.indexes.models.HnswVectorConfiguration;
+import com.azure.search.documents.indexes.models.HnswAlgorithmConfiguration;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.VectorSearch;
 import com.azure.search.documents.indexes.models.VectorSearchProfile;
-import com.azure.search.documents.models.AnswerResult;
-import com.azure.search.documents.models.CaptionResult;
 import com.azure.search.documents.models.QueryAnswer;
+import com.azure.search.documents.models.QueryAnswerResult;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaption;
+import com.azure.search.documents.models.QueryCaptionResult;
 import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -125,7 +125,7 @@ public class VectorSearchExample {
                 .setProfiles(Collections.singletonList(
                     new VectorSearchProfile("my-vector-profile", "my-vector-config")))
                 .setAlgorithms(Collections.singletonList(
-                    new HnswVectorConfiguration("my-vector-config"))));
+                    new HnswAlgorithmConfiguration("my-vector-config"))));
 
         // Semantic search configuration is disabled due to limited availability.
         // If you know you have access to this feature, you can uncomment the following lines and uncomment the line
@@ -160,7 +160,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search(null, new SearchOptions()
-                .setVectorSearchOptions(new VectorSearchOptions().setVectorizableQueries(vectorizableQuery)),
+                .setVectorSearchOptions(new VectorSearchOptions().setQueries(vectorizableQuery)),
             Context.NONE);
 
         int count = 0;
@@ -188,7 +188,7 @@ public class VectorSearchExample {
 
         SearchPagedIterable searchResults = searchClient.search(null, new SearchOptions()
             .setVectorSearchOptions(new VectorSearchOptions()
-                .setVectorizableQueries(vectorizableQuery)
+                .setQueries(vectorizableQuery)
                 .setFilterMode(VectorFilterMode.POST_FILTER))
             .setFilter("Category eq 'Luxury'"), Context.NONE);
 
@@ -216,7 +216,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search("Top hotels in town", new SearchOptions()
-            .setVectorSearchOptions(new VectorSearchOptions().setVectorizableQueries(vectorizableQuery)), Context.NONE);
+            .setVectorSearchOptions(new VectorSearchOptions().setQueries(vectorizableQuery)), Context.NONE);
 
         int count = 0;
         System.out.println("Simple Hybrid Search Results:");
@@ -246,7 +246,7 @@ public class VectorSearchExample {
 
         SearchOptions searchOptions = new SearchOptions()
             .setVectorSearchOptions(new VectorSearchOptions()
-                .setVectorizableQueries(vectorizableQuery))
+                .setQueries(vectorizableQuery))
             .setSemanticSearchOptions(new SemanticSearchOptions()
                 .setSemanticConfigurationName("my-semantic-config")
                 .setQueryAnswer(new QueryAnswer().setAnswerType(QueryAnswerType.EXTRACTIVE))
@@ -260,7 +260,7 @@ public class VectorSearchExample {
         System.out.println("Semantic Hybrid Search Results:");
 
         System.out.println("Query Answer:");
-        for (AnswerResult result : results.getSemanticResults().getAnswers()) {
+        for (QueryAnswerResult result : results.getSemanticResults().getQueryAnswers()) {
             System.out.println("Answer Highlights: " + result.getHighlights());
             System.out.println("Answer Text: " + result.getText());
         }
@@ -270,8 +270,8 @@ public class VectorSearchExample {
             VectorHotel doc = result.getDocument(VectorHotel.class);
             System.out.printf("%s: %s%n", doc.getHotelId(), doc.getHotelName());
 
-            if (result.getSemanticResult().getCaptions() != null) {
-                CaptionResult caption = result.getSemanticResult().getCaptions().get(0);
+            if (result.getSemanticSearch().getQueryCaptions() != null) {
+                QueryCaptionResult caption = result.getSemanticSearch().getQueryCaptions().get(0);
                 if (!CoreUtils.isNullOrEmpty(caption.getHighlights())) {
                     System.out.println("Caption Highlights: " + caption.getHighlights());
                 } else {
@@ -305,7 +305,7 @@ public class VectorSearchExample {
 
         SearchPagedIterable searchResults = searchClient.search(null, new SearchOptions()
             .setVectorSearchOptions(new VectorSearchOptions()
-                .setVectorizableQueries(firstVectorizableQuery, secondVectorizableQuery, thirdVectorizableQuery)),
+                .setQueries(firstVectorizableQuery, secondVectorizableQuery, thirdVectorizableQuery)),
             Context.NONE);
 
         int count = 0;

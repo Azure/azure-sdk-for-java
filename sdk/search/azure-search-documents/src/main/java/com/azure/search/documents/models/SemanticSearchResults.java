@@ -12,7 +12,7 @@ import java.util.List;
  * The page-level results for a {@link QueryType#SEMANTIC semantic} search.
  */
 public final class SemanticSearchResults {
-    private final List<AnswerResult> answers;
+    private final List<QueryAnswerResult> queryAnswers;
     private final SemanticErrorReason errorReason;
     private final SemanticSearchResultsType resultsType;
 
@@ -21,7 +21,7 @@ public final class SemanticSearchResults {
     }
 
     private SemanticSearchResults(SearchPagedResponse pagedResponse) {
-        this.answers = SearchPagedResponseAccessHelper.getAnswers(pagedResponse);
+        this.queryAnswers = SearchPagedResponseAccessHelper.getQueryAnswers(pagedResponse);
         this.errorReason = SearchPagedResponseAccessHelper.getSemanticErrorReason(pagedResponse);
         this.resultsType = SearchPagedResponseAccessHelper.getSemanticSearchResultsType(pagedResponse);
     }
@@ -33,8 +33,8 @@ public final class SemanticSearchResults {
      *
      * @return The answer results if {@code answers} were supplied in the request, otherwise null.
      */
-    public List<AnswerResult> getAnswers() {
-        return this.answers;
+    public List<QueryAnswerResult> getQueryAnswers() {
+        return this.queryAnswers;
     }
 
     /**

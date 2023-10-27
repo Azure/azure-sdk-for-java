@@ -9,23 +9,20 @@ import java.util.List;
  */
 public final class SemanticSearchResult {
     /*
-     * The relevance score computed by the semantic ranker for the top search
-     * results. Search results are sorted by the RerankerScore first and then
-     * by the Score. RerankerScore is only returned for queries of type
-     * 'semantic'.
+     * The relevance score computed by the semantic ranker for the top search results. Search results are sorted by the
+     * RerankerScore first and then by the Score.
      */
-    private Double rerankerScore;
+    private final Double rerankerScore;
 
     /*
-     * Captions are the most representative passages from the document
-     * relatively to the search query. They are often used as document summary.
-     * Captions are only returned for queries of type 'semantic'.
+     * Captions are the most representative passages from the document relatively to the search query. They are often
+     * used as document summary.
      */
-    private List<CaptionResult> captions;
+    private final List<QueryCaptionResult> queryCaptions;
 
-    SemanticSearchResult(Double rerankerScore, List<CaptionResult> captions) {
+    SemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> queryCaptions) {
         this.rerankerScore = rerankerScore;
-        this.captions = captions;
+        this.queryCaptions = queryCaptions;
     }
 
     /**
@@ -40,13 +37,13 @@ public final class SemanticSearchResult {
     }
 
     /**
-     * Get the captions property: Captions are the most representative passages from the document relatively to the
+     * Get the queryCaptions property: Captions are the most representative passages from the document relatively to the
      * search query. They are often used as document summary. Captions are only returned for queries of type
      * 'semantic'.
      *
      * @return the captions value.
      */
-    public List<CaptionResult> getCaptions() {
-        return this.captions;
+    public List<QueryCaptionResult> getQueryCaptions() {
+        return this.queryCaptions;
     }
 }

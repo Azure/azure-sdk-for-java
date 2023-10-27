@@ -81,7 +81,7 @@ public class VectorSearchAlgorithmConfiguration implements JsonSerializable<Vect
                     if ("exhaustiveKnn".equals(discriminatorValue)) {
                         return ExhaustiveKnnAlgorithmConfiguration.fromJson(readerToUse);
                     } else if ("hnsw".equals(discriminatorValue)) {
-                        return HnswVectorConfiguration.fromJson(readerToUse);
+                        return HnswAlgorithmConfiguration.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
                                 "Discriminator field 'kind' didn't match one of the expected values 'exhaustiveKnn', or 'hnsw'. It was: '"

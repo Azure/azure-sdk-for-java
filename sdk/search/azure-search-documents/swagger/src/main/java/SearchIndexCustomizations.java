@@ -63,8 +63,8 @@ public class SearchIndexCustomizations extends Customization {
         customizeVectorizableQuery(packageCustomization.getClass("VectorizableQuery"));
         customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
 
-        packageCustomization.getClass("AnswerResult").removeMethod("setAdditionalProperties");
-        packageCustomization.getClass("CaptionResult").removeMethod("setAdditionalProperties");
+        packageCustomization.getClass("QueryAnswerResult").removeMethod("setAdditionalProperties");
+        packageCustomization.getClass("QueryCaptionResult").removeMethod("setAdditionalProperties");
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {

@@ -17,13 +17,13 @@ public final class SemanticSearchOptions {
     /*
      * Allows the user to choose whether a semantic call should fail completely, or to return partial results.
      */
-    private SemanticErrorMode semanticErrorMode;
+    private SemanticErrorMode errorMode;
 
     /*
      * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish
      * processing before the request fails.
      */
-    private Duration semanticMaxWaitDuration;
+    private Duration maxWaitDuration;
 
     /*
      * This parameter is only valid if the query type is 'semantic'. If set,
@@ -82,19 +82,19 @@ public final class SemanticSearchOptions {
      *
      * @return the semanticErrorHandling value.
      */
-    public SemanticErrorMode getSemanticErrorMode() {
-        return this.semanticErrorMode;
+    public SemanticErrorMode getErrorMode() {
+        return this.errorMode;
     }
 
     /**
      * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
      * or to return partial results.
      *
-     * @param semanticErrorMode the semanticErrorHandling value to set.
+     * @param errorMode the semanticErrorHandling value to set.
      * @return the SemanticSearchOptions object itself.
      */
-    public SemanticSearchOptions setSemanticErrorMode(SemanticErrorMode semanticErrorMode) {
-        this.semanticErrorMode = semanticErrorMode;
+    public SemanticSearchOptions setErrorMode(SemanticErrorMode errorMode) {
+        this.errorMode = errorMode;
         return this;
     }
 
@@ -104,19 +104,19 @@ public final class SemanticSearchOptions {
      *
      * @return the semanticMaxWaitDuration value.
      */
-    public Duration getSemanticMaxWaitDuration() {
-        return this.semanticMaxWaitDuration;
+    public Duration getMaxWaitDuration() {
+        return this.maxWaitDuration;
     }
 
     /**
      * Set the semanticMaxWaitDuration property: Allows the user to set an upper bound on the amount of time it
      * takes for semantic enrichment to finish processing before the request fails.
      *
-     * @param semanticMaxWaitDuration the semanticMaxWaitInMilliseconds value to set.
+     * @param maxWaitDuration the semanticMaxWaitInMilliseconds value to set.
      * @return the SemanticSearchOptions object itself.
      */
-    public SemanticSearchOptions setSemanticMaxWaitDuration(Duration semanticMaxWaitDuration) {
-        this.semanticMaxWaitDuration = semanticMaxWaitDuration;
+    public SemanticSearchOptions setMaxWaitDuration(Duration maxWaitDuration) {
+        this.maxWaitDuration = maxWaitDuration;
         return this;
     }
 
