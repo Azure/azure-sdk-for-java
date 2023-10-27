@@ -3,12 +3,14 @@
 ## 1.11.0-beta.2 (unreleased)
 
 ### Features Added
+- Initial release of WAM support for Azure Identity.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+- Upgraded 'msal4j' from '1.13.9' to version '1.14.0'.
 
 ## 1.10.4 (2023-10-18)
 

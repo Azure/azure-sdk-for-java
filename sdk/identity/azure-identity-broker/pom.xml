@@ -49,12 +49,12 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.14.3-beta</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j-brokers</artifactId>
-      <version>1.0.3-beta</version> <!-- {x-version-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -107,8 +107,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:msal4j:[1.14.3-beta]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
-                <include>com.microsoft.azure:msal4j-brokers:[1.0.3-beta]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.14.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j-brokers:[1.0.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
