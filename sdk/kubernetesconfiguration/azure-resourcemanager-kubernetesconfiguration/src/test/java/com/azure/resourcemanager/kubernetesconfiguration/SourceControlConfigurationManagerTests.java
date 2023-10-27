@@ -30,8 +30,6 @@ import com.azure.resourcemanager.kubernetesconfiguration.models.Scope;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ScopeCluster;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.Workspace;
-import com.azure.resourcemanager.loganalytics.models.WorkspaceSku;
-import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -109,9 +107,9 @@ public class SourceControlConfigurationManagerTests extends TestBase {
         String extensionName = "extension" + randomPadding;
         try {
             // @embedStart
-            logWorkspace =  logAnalyticsManager.workspaces().define(workspaceName)
-                .withRegion(REGION).withExistingResourceGroup(resourceGroupName)
-                .withSku(new WorkspaceSku().withName(WorkspaceSkuNameEnum.PER_GB2018))
+            logWorkspace =  logAnalyticsManager.workspaces()
+                .define(workspaceName).withRegion(REGION)
+                .withExistingResourceGroup(resourceGroupName)
                 .create();
             Map<String, ManagedClusterAddonProfile> addOnProfilesMap = new HashMap<>();
             addOnProfilesMap.put("azureKeyvaultSecretsProvider", new ManagedClusterAddonProfile().withEnabled(false));
