@@ -58,6 +58,7 @@ public final class VirtualMachineSchedulesDeleteWithResponseMockTests {
 
         manager
             .virtualMachineSchedules()
-            .deleteWithResponse("tnp", "facqo", "cqrq", "wetjtdrhutf", com.azure.core.util.Context.NONE);
+            .deleteWithResponse(
+                "fphmdzxplg", "pvdvatlzmgs", "hnzrsbkkzovlzdm", "fmfws", com.azure.core.util.Context.NONE);
     }
 }
