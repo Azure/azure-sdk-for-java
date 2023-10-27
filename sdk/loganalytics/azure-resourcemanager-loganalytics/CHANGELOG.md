@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,82 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-10-26)
+
+- Azure Resource Manager LogAnalytics client library for Java. This package contains Microsoft Azure SDK for LogAnalytics Management SDK. Operational Insights Client. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Table$Update` was modified
+
+* `withResultStatistics(models.ResultStatistics)` was removed
+
+#### `models.QueryPacks` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Table$Definition` was modified
+
+* `withResultStatistics(models.ResultStatistics)` was removed
+
+#### `models.Workspaces` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.Boolean)` was removed
+
+#### `models.Schema` was modified
+
+* `searchResults()` was removed
+* `restoredLogs()` was removed
+
+### Features Added
+
+#### `models.SearchResults` was modified
+
+* `azureAsyncOperationId()` was added
+
+#### `models.Workspace$Update` was modified
+
+* `withIdentity(models.Identity)` was added
+
+#### `models.Workspace$Definition` was modified
+
+* `withIdentity(models.Identity)` was added
+
+#### `models.WorkspacePatch` was modified
+
+* `identity()` was added
+* `withIdentity(models.Identity)` was added
+
+#### `models.RestoredLogs` was modified
+
+* `azureAsyncOperationId()` was added
+
+#### `models.ResultStatistics` was modified
+
+* `scannedGb()` was added
+
+#### `models.Workspace` was modified
+
+* `identity()` was added
+
+#### `models.Table` was modified
+
+* `totalRetentionInDaysAsDefault()` was added
+* `retentionInDaysAsDefault()` was added
+* `cancelSearch()` was added
+* `cancelSearchWithResponse(com.azure.core.util.Context)` was added
+
+#### `models.QueryPacks` was modified
+
+* `createOrUpdateWithoutNameWithResponse(java.lang.String,fluent.models.LogAnalyticsQueryPackInner,com.azure.core.util.Context)` was added
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `createOrUpdateWithoutName(java.lang.String,fluent.models.LogAnalyticsQueryPackInner)` was added
+
+#### `models.Tables` was modified
+
+* `cancelSearch(java.lang.String,java.lang.String,java.lang.String)` was added
+* `cancelSearchWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.3 (2022-07-07)
 

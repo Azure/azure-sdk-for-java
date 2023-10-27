@@ -40,7 +40,7 @@ public final class LabsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"defaultStorageAccount\":\"fxsfuztlvtmv\",\"defaultPremiumStorageAccount\":\"bwidql\",\"artifactsStorageAccount\":\"ukoveofi\",\"premiumDataDiskStorageAccount\":\"vjfn\",\"vaultName\":\"mvl\",\"labStorageType\":\"StandardSSD\",\"mandatoryArtifactsResourceIdsLinux\":[\"blkujrllfojuidjp\",\"uyjucejikzo\"],\"mandatoryArtifactsResourceIdsWindows\":[\"vtzejetjklnti\",\"yjuzkdb\",\"zolxrzvhqjwtr\"],\"createdDate\":\"2021-08-23T13:19:33Z\",\"premiumDataDisks\":\"Enabled\",\"environmentPermission\":\"Reader\",\"announcement\":{\"title\":\"rkolawjm\",\"markdown\":\"mwrokcdxfzzzwyja\",\"enabled\":\"Disabled\",\"expirationDate\":\"2021-11-07T06:40:11Z\",\"expired\":false,\"provisioningState\":\"nuchlgmltxdwhmo\",\"uniqueIdentifier\":\"sgzv\"},\"support\":{\"enabled\":\"Enabled\",\"markdown\":\"jzfpafolpymwamx\"},\"vmCreationResourceGroup\":\"rag\",\"publicIpId\":\"dphtv\",\"loadBalancerId\":\"lajv\",\"networkSecurityGroupId\":\"jchcsrlzknmzla\",\"extendedProperties\":{\"q\":\"pdwvnphcn\",\"iwdcxsmlzzhzd\":\"pjhmqrhvthl\"},\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"afiqgeaarbgjekg\"},\"location\":\"klbyulidwcw\",\"tags\":{\"o\":\"eg\",\"pzhz\":\"fhjirwgdnqzbrfk\",\"jcitdigsxcdglj\":\"tk\",\"tomflrytswfpf\":\"lkeuac\"},\"id\":\"dgycxnmskwhqjjy\",\"name\":\"lurlpshhkvp\",\"type\":\"dwqslsrhmpqvw\"}";
+            "{\"properties\":{\"defaultStorageAccount\":\"ssmzhhkuui\",\"defaultPremiumStorageAccount\":\"dqq\",\"artifactsStorageAccount\":\"ekvalblhtjq\",\"premiumDataDiskStorageAccount\":\"yvwehtaemxh\",\"vaultName\":\"ysev\",\"labStorageType\":\"Premium\",\"mandatoryArtifactsResourceIdsLinux\":[\"zrrryv\",\"imipskdyzatvfuz\",\"aftjvvruxwigsy\"],\"mandatoryArtifactsResourceIdsWindows\":[\"qdsmjtg\"],\"createdDate\":\"2021-09-30T03:29:26Z\",\"premiumDataDisks\":\"Enabled\",\"environmentPermission\":\"Contributor\",\"announcement\":{\"title\":\"eplkcsm\",\"markdown\":\"hwtbbaedorvvm\",\"enabled\":\"Enabled\",\"expirationDate\":\"2021-07-17T03:29:04Z\",\"expired\":true,\"provisioningState\":\"gwumgxdgdhpa\",\"uniqueIdentifier\":\"dexjddvjs\"},\"support\":{\"enabled\":\"Enabled\",\"markdown\":\"mmwllc\"},\"vmCreationResourceGroup\":\"srsxaptefh\",\"publicIpId\":\"cgjokjljnhvlq\",\"loadBalancerId\":\"ek\",\"networkSecurityGroupId\":\"eksnbksdqhjvyk\",\"extendedProperties\":{\"hhus\":\"sl\"},\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"vnwqjwgo\"},\"location\":\"nlejjjkxybwf\",\"tags\":{\"vkzykjtjknsxf\":\"jbzten\",\"cdp\":\"us\",\"kuwxeoiojfizfavk\":\"upnqrmgjfb\",\"fwxrzxmdew\":\"zwfbcyaykmmfzs\"},\"id\":\"rsxkr\",\"name\":\"lbjazejww\",\"type\":\"iyoypsuhbrnnhj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -71,43 +71,45 @@ public final class LabsCreateOrUpdateMockTests {
         Lab response =
             manager
                 .labs()
-                .define("sfar")
-                .withRegion("qaxsipietgbebjf")
-                .withExistingResourceGroup("xuqibsxtkcudf")
-                .withTags(mapOf("atzviqsowsaael", "moichdlpnfpubntn", "plrvkmjcwmjvlg", "attcju"))
-                .withLabStorageType(StorageType.STANDARD_SSD)
-                .withMandatoryArtifactsResourceIdsLinux(Arrays.asList("xwefohecbvopwndy", "leallklm"))
-                .withMandatoryArtifactsResourceIdsWindows(Arrays.asList("lowkxxpvb", "dfjmzsyzfhotlh"))
-                .withPremiumDataDisks(PremiumDataDisk.ENABLED)
+                .define("jjk")
+                .withRegion("usybwptdaca")
+                .withExistingResourceGroup("y")
+                .withTags(mapOf("tymtpoiwenazer", "lf"))
+                .withLabStorageType(StorageType.STANDARD)
+                .withMandatoryArtifactsResourceIdsLinux(
+                    Arrays.asList("ovwmbjlzqsczpgvd", "napfdqwowftpt", "uwjtks", "h"))
+                .withMandatoryArtifactsResourceIdsWindows(Arrays.asList("qyhleseyq"))
+                .withPremiumDataDisks(PremiumDataDisk.DISABLED)
                 .withEnvironmentPermission(EnvironmentPermission.READER)
                 .withAnnouncement(
                     new LabAnnouncementProperties()
-                        .withTitle("sjlpjrtwszhv")
-                        .withMarkdown("icphvtrrmhw")
+                        .withTitle("jv")
+                        .withMarkdown("wiswskukjtasbvw")
                         .withEnabled(EnableStatus.DISABLED)
-                        .withExpirationDate(OffsetDateTime.parse("2021-03-14T13:08:25Z"))
-                        .withExpired(false))
-                .withSupport(new LabSupportProperties().withEnabled(EnableStatus.ENABLED).withMarkdown("lw"))
-                .withExtendedProperties(mapOf("qyhqo", "otjewlpxuzzjgnre"))
+                        .withExpirationDate(OffsetDateTime.parse("2021-09-30T12:44:35Z"))
+                        .withExpired(true))
+                .withSupport(new LabSupportProperties().withEnabled(EnableStatus.DISABLED).withMarkdown("yw"))
+                .withExtendedProperties(mapOf("n", "dwckygroe", "req", "dljdjuskb"))
                 .create();
 
-        Assertions.assertEquals("klbyulidwcw", response.location());
-        Assertions.assertEquals("eg", response.tags().get("o"));
-        Assertions.assertEquals(StorageType.STANDARD_SSD, response.labStorageType());
-        Assertions.assertEquals("blkujrllfojuidjp", response.mandatoryArtifactsResourceIdsLinux().get(0));
-        Assertions.assertEquals("vtzejetjklnti", response.mandatoryArtifactsResourceIdsWindows().get(0));
+        Assertions.assertEquals("nlejjjkxybwf", response.location());
+        Assertions.assertEquals("jbzten", response.tags().get("vkzykjtjknsxf"));
+        Assertions.assertEquals(StorageType.PREMIUM, response.labStorageType());
+        Assertions.assertEquals("zrrryv", response.mandatoryArtifactsResourceIdsLinux().get(0));
+        Assertions.assertEquals("qdsmjtg", response.mandatoryArtifactsResourceIdsWindows().get(0));
         Assertions.assertEquals(PremiumDataDisk.ENABLED, response.premiumDataDisks());
-        Assertions.assertEquals(EnvironmentPermission.READER, response.environmentPermission());
-        Assertions.assertEquals("rkolawjm", response.announcement().title());
-        Assertions.assertEquals("mwrokcdxfzzzwyja", response.announcement().markdown());
-        Assertions.assertEquals(EnableStatus.DISABLED, response.announcement().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T06:40:11Z"), response.announcement().expirationDate());
-        Assertions.assertEquals(false, response.announcement().expired());
+        Assertions.assertEquals(EnvironmentPermission.CONTRIBUTOR, response.environmentPermission());
+        Assertions.assertEquals("eplkcsm", response.announcement().title());
+        Assertions.assertEquals("hwtbbaedorvvm", response.announcement().markdown());
+        Assertions.assertEquals(EnableStatus.ENABLED, response.announcement().enabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T03:29:04Z"), response.announcement().expirationDate());
+        Assertions.assertEquals(true, response.announcement().expired());
         Assertions.assertEquals(EnableStatus.ENABLED, response.support().enabled());
-        Assertions.assertEquals("jzfpafolpymwamx", response.support().markdown());
-        Assertions.assertEquals("pdwvnphcn", response.extendedProperties().get("q"));
+        Assertions.assertEquals("mmwllc", response.support().markdown());
+        Assertions.assertEquals("sl", response.extendedProperties().get("hhus"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

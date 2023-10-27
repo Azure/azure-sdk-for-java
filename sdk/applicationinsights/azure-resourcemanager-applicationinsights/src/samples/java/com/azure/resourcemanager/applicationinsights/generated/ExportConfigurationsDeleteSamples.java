@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExportConfigurations Delete. */
 public final class ExportConfigurationsDeleteSamples {
     /*
@@ -20,6 +18,7 @@ public final class ExportConfigurationsDeleteSamples {
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .exportConfigurations()
-            .deleteWithResponse("my-resource-group", "my-component", "uGOoki0jQsyEs3IdQ83Q4QsNr4=", Context.NONE);
+            .deleteWithResponse(
+                "my-resource-group", "my-component", "uGOoki0jQsyEs3IdQ83Q4QsNr4=", com.azure.core.util.Context.NONE);
     }
 }

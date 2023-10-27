@@ -18,6 +18,10 @@ public final class AnnotationsListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AnnotationInner> value;
 
+    /** Creates an instance of AnnotationsListResult class. */
+    public AnnotationsListResult() {
+    }
+
     /**
      * Get the value property: An array of annotations.
      *

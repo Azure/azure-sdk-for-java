@@ -37,6 +37,10 @@ public final class WorkItemCreateConfiguration {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> workItemProperties;
 
+    /** Creates an instance of WorkItemCreateConfiguration class. */
+    public WorkItemCreateConfiguration() {
+    }
+
     /**
      * Get the connectorId property: Unique connector id.
      *

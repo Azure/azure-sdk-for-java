@@ -7,7 +7,7 @@ package com.azure.resourcemanager.connectedvmware.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the resource properties. */
+/** Describes the properties of an Inventory Item reference. */
 @Fluent
 public final class InventoryItemDetails {
     /*
@@ -21,6 +21,16 @@ public final class InventoryItemDetails {
      */
     @JsonProperty(value = "moName")
     private String moName;
+
+    /*
+     * The inventory type.
+     */
+    @JsonProperty(value = "inventoryType")
+    private InventoryType inventoryType;
+
+    /** Creates an instance of InventoryItemDetails class. */
+    public InventoryItemDetails() {
+    }
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
@@ -59,6 +69,26 @@ public final class InventoryItemDetails {
      */
     public InventoryItemDetails withMoName(String moName) {
         this.moName = moName;
+        return this;
+    }
+
+    /**
+     * Get the inventoryType property: The inventory type.
+     *
+     * @return the inventoryType value.
+     */
+    public InventoryType inventoryType() {
+        return this.inventoryType;
+    }
+
+    /**
+     * Set the inventoryType property: The inventory type.
+     *
+     * @param inventoryType the inventoryType value to set.
+     * @return the InventoryItemDetails object itself.
+     */
+    public InventoryItemDetails withInventoryType(InventoryType inventoryType) {
+        this.inventoryType = inventoryType;
         return this;
     }
 

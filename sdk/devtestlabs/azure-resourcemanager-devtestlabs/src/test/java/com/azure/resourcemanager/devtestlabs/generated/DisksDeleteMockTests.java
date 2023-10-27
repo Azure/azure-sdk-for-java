@@ -56,9 +56,6 @@ public final class DisksDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .disks()
-            .delete(
-                "rnzcalinc", "yqxzxaqzibmqim", "ymqruqguhfupet", "svvoqsbpkflanfk", com.azure.core.util.Context.NONE);
+        manager.disks().delete("upyvqyvliq", "ipsejbsvsia", "eswhd", "zydisnuep", com.azure.core.util.Context.NONE);
     }
 }

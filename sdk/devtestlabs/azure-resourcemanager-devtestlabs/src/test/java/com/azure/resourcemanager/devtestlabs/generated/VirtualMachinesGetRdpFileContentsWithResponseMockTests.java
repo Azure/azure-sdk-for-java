@@ -30,7 +30,7 @@ public final class VirtualMachinesGetRdpFileContentsWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"contents\":\"kklvzrlrmlccmet\"}";
+        String responseStr = "{\"contents\":\"btplefoi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class VirtualMachinesGetRdpFileContentsWithResponseMockTests {
             manager
                 .virtualMachines()
                 .getRdpFileContentsWithResponse(
-                    "lkfhglhrfoxqwec", "snhpcselqx", "vppqi", com.azure.core.util.Context.NONE)
+                    "cpszpmcvqdvrdmv", "yrx", "hgvqojbxaotcgbz", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("kklvzrlrmlccmet", response.contents());
+        Assertions.assertEquals("btplefoi", response.contents());
     }
 }

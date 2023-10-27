@@ -17,20 +17,6 @@ public interface Clusters {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the cluster.
-     */
-    Cluster getByResourceGroup(String resourceGroupName, String clusterName);
-
-    /**
-     * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param clusterName Name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,18 +26,18 @@ public interface Clusters {
     Response<Cluster> getByResourceGroupWithResponse(String resourceGroupName, String clusterName, Context context);
 
     /**
-     * Deletes an cluster.
+     * Gets a cluster.
      *
-     * <p>Implements cluster DELETE method.
+     * <p>Implements cluster GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the cluster.
      */
-    void delete(String resourceGroupName, String clusterName, Boolean force);
+    Cluster getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
      * Deletes an cluster.
