@@ -83,7 +83,7 @@ public final class ServiceBusMessageBatch {
      *     in the batch.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
-     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link
+     * @throws ServiceBusException if {@code message} is larger than the maximum size of the {@link
      *     ServiceBusMessageBatch}.
      */
     public boolean tryAddMessage(final ServiceBusMessage serviceBusMessage) {
