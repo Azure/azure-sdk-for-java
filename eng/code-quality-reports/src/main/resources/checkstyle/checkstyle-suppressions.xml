@@ -590,7 +590,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ConsoleLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.sdk.build.tool.*\.java"/>
-
   <!-- Identity tests use paramaterization which requires a public field -->
   <suppress checks="VisibilityModifier" files="com.azure.identity.AzureCliCredentialNegativeTest.java"/>
   <suppress checks="VisibilityModifier" files="com.azure.identity.AzureDeveloperCliCredentialNegativeTest.java"/>
