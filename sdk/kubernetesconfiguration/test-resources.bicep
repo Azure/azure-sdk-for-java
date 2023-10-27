@@ -10,12 +10,12 @@ param testApplicationOid string
 @description('The application client secret used to run tests.')
 param testApplicationSecret string
 
-var contributorRoleId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
+var kubernetsServiceClusterAdminRoleId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/0ab0b1a8-8aac-4efd-b8c2-3ee1fb270be8'
 
-resource contributorRoleId_name 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('contributorRoleId${resourceGroup().name}')
+resource kubernetsServiceClusterAdminRoleId_name 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('kubernetsServiceClusterAdminRoleId${resourceGroup().name}')
   properties: {
-    roleDefinitionId: contributorRoleId
+    roleDefinitionId: kubernetsServiceClusterAdminRoleId
     principalId: testApplicationOid
   }
 }
