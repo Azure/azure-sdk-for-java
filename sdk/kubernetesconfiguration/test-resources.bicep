@@ -13,9 +13,9 @@ param testApplicationSecret string
 var kubernetesServiceClusterAdminRoleId = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/0ab0b1a8-8aac-4efd-b8c2-3ee1fb270be8'
 
 resource kubernetesServiceClusterAdminRoleId_name 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('kubernetsServiceClusterAdminRoleId${resourceGroup().name}')
+  name: guid('kubernetesServiceClusterAdminRoleId${resourceGroup().name}')
   properties: {
-    roleDefinitionId: kubernetsServiceClusterAdminRoleId
+    roleDefinitionId: kubernetesServiceClusterAdminRoleId
     principalId: testApplicationOid
   }
 }
