@@ -67,24 +67,6 @@ public final class HealthApisImpl {
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
                 Context context);
-
-        @Head("/api/health")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> getServiceStatusSync(
-                @HostParam("Endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
     }
 
     /**
@@ -120,7 +102,6 @@ public final class HealthApisImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getServiceStatusWithResponse(RequestOptions requestOptions) {
-        return service.getServiceStatusSync(
-                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+        return getServiceStatusWithResponseAsync(requestOptions).block();
     }
 }

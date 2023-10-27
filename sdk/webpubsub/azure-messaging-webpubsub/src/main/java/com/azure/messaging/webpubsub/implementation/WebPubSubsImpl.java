@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WebPubSubs. */
@@ -78,26 +77,6 @@ public final class WebPubSubsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/api/hubs/{hub}/:closeConnections")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> closeAllConnectionsSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Post("/api/hubs/{hub}/:generateToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -118,26 +97,6 @@ public final class WebPubSubsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/api/hubs/{hub}/:generateToken")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> generateClientTokenSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Post("/api/hubs/{hub}/:send")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -151,28 +110,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> sendToAll(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") String contentType,
-                @BodyParam("application/octet-stream") BinaryData message,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/api/hubs/{hub}/:send")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> sendToAllSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @QueryParam("api-version") String apiVersion,
@@ -203,27 +140,6 @@ public final class WebPubSubsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/api/hubs/{hub}/connections/{connectionId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> closeConnectionSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Head("/api/hubs/{hub}/connections/{connectionId}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(
@@ -234,23 +150,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> connectionExists(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Head("/api/hubs/{hub}/connections/{connectionId}")
-        @ExpectedResponses({200, 404})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Boolean> connectionExistsSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("connectionId") String connectionId,
@@ -271,29 +170,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> sendToConnection(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") String contentType,
-                @BodyParam("application/octet-stream") BinaryData message,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/api/hubs/{hub}/connections/{connectionId}/:send")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> sendToConnectionSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("connectionId") String connectionId,
@@ -325,27 +201,6 @@ public final class WebPubSubsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/api/hubs/{hub}/connections/{connectionId}/groups")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> removeConnectionFromAllGroupsSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Head("/api/hubs/{hub}/groups/{group}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(
@@ -356,23 +211,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> groupExists(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("group") String group,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Head("/api/hubs/{hub}/groups/{group}")
-        @ExpectedResponses({200, 404})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Boolean> groupExistsSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("group") String group,
@@ -401,27 +239,6 @@ public final class WebPubSubsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/api/hubs/{hub}/groups/{group}/:closeConnections")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> closeGroupConnectionsSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("group") String group,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Post("/api/hubs/{hub}/groups/{group}/:send")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -435,29 +252,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> sendToGroup(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("group") String group,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") String contentType,
-                @BodyParam("application/octet-stream") BinaryData message,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/api/hubs/{hub}/groups/{group}/:send")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> sendToGroupSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("group") String group,
@@ -490,28 +284,6 @@ public final class WebPubSubsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> removeConnectionFromGroupSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("group") String group,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Put("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -525,28 +297,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addConnectionToGroup(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("group") String group,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Put("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> addConnectionToGroupSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("group") String group,
@@ -578,28 +328,6 @@ public final class WebPubSubsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> revokePermissionSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("permission") String permission,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Head("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(
@@ -610,24 +338,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> checkPermission(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("permission") String permission,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Head("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
-        @ExpectedResponses({200, 404})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Boolean> checkPermissionSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("permission") String permission,
@@ -658,28 +368,6 @@ public final class WebPubSubsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Put("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> grantPermissionSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("permission") String permission,
-                @PathParam("connectionId") String connectionId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Head("/api/hubs/{hub}/users/{userId}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(
@@ -690,23 +378,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Boolean>> userExists(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("userId") String userId,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Head("/api/hubs/{hub}/users/{userId}")
-        @ExpectedResponses({200, 404})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Boolean> userExistsSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("userId") String userId,
@@ -727,27 +398,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> closeUserConnections(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("userId") String userId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/api/hubs/{hub}/users/{userId}/:closeConnections")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> closeUserConnectionsSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("userId") String userId,
@@ -779,29 +429,6 @@ public final class WebPubSubsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/api/hubs/{hub}/users/{userId}/:send")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> sendToUserSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("userId") String userId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Content-Type") String contentType,
-                @BodyParam("application/octet-stream") BinaryData message,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Delete("/api/hubs/{hub}/users/{userId}/groups")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
@@ -815,27 +442,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> removeUserFromAllGroups(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("userId") String userId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Delete("/api/hubs/{hub}/users/{userId}/groups")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> removeUserFromAllGroupsSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("userId") String userId,
@@ -866,28 +472,6 @@ public final class WebPubSubsImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/api/hubs/{hub}/users/{userId}/groups/{group}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> removeUserFromGroupSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("group") String group,
-                @PathParam("userId") String userId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Put("/api/hubs/{hub}/users/{userId}/groups/{group}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -901,28 +485,6 @@ public final class WebPubSubsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addUserToGroup(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("hub") String hub,
-                @PathParam("group") String group,
-                @PathParam("userId") String userId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Put("/api/hubs/{hub}/users/{userId}/groups/{group}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> addUserToGroupSync(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
                 @PathParam("group") String group,
@@ -959,8 +521,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeAllConnectionsWithResponseAsync(String hub, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -999,18 +560,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeAllConnectionsWithResponse(String hub, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.closeAllConnectionsSync(
-                this.client.getEndpoint(),
-                hub,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return closeAllConnectionsWithResponseAsync(hub, requestOptions).block();
     }
 
     /**
@@ -1050,8 +600,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateClientTokenWithResponseAsync(String hub, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         return FluxUtil.withContext(
@@ -1100,18 +649,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateClientTokenWithResponse(String hub, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        final String accept = "application/json, text/json";
-        return service.generateClientTokenSync(
-                this.client.getEndpoint(),
-                hub,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return generateClientTokenWithResponseAsync(hub, requestOptions).block();
     }
 
     /**
@@ -1150,16 +688,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToAllWithResponseAsync(
             String hub, String contentType, BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (contentType == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter message is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1210,28 +745,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToAllWithResponse(
             String hub, String contentType, BinaryData message, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (contentType == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter contentType is required and cannot be null."));
-        }
-        if (message == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter message is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.sendToAllSync(
-                this.client.getEndpoint(),
-                hub,
-                this.client.getServiceVersion().getVersion(),
-                contentType,
-                message,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return sendToAllWithResponseAsync(hub, contentType, message, requestOptions).block();
     }
 
     /**
@@ -1261,12 +775,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> closeConnectionWithResponseAsync(
             String hub, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1306,23 +818,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeConnectionWithResponse(String hub, String connectionId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.closeConnectionSync(
-                this.client.getEndpoint(),
-                hub,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return closeConnectionWithResponseAsync(hub, connectionId, requestOptions).block();
     }
 
     /**
@@ -1347,12 +843,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> connectionExistsWithResponseAsync(
             String hub, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
@@ -1386,21 +880,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> connectionExistsWithResponse(
             String hub, String connectionId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        return service.connectionExistsSync(
-                this.client.getEndpoint(),
-                hub,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                Context.NONE);
+        return connectionExistsWithResponseAsync(hub, connectionId, requestOptions).block();
     }
 
     /**
@@ -1429,20 +909,16 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToConnectionWithResponseAsync(
             String hub, String connectionId, String contentType, BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         if (contentType == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter message is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1484,33 +960,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToConnectionWithResponse(
             String hub, String connectionId, String contentType, BinaryData message, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        if (contentType == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter contentType is required and cannot be null."));
-        }
-        if (message == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter message is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.sendToConnectionSync(
-                this.client.getEndpoint(),
-                hub,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                contentType,
-                message,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return sendToConnectionWithResponseAsync(hub, connectionId, contentType, message, requestOptions).block();
     }
 
     /**
@@ -1530,12 +980,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeConnectionFromAllGroupsWithResponseAsync(
             String hub, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1566,23 +1014,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeConnectionFromAllGroupsWithResponse(
             String hub, String connectionId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.removeConnectionFromAllGroupsSync(
-                this.client.getEndpoint(),
-                hub,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return removeConnectionFromAllGroupsWithResponseAsync(hub, connectionId, requestOptions).block();
     }
 
     /**
@@ -1607,12 +1039,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> groupExistsWithResponseAsync(
             String hub, String group, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
@@ -1645,21 +1075,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> groupExistsWithResponse(String hub, String group, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        return service.groupExistsSync(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                Context.NONE);
+        return groupExistsWithResponseAsync(hub, group, requestOptions).block();
     }
 
     /**
@@ -1690,12 +1106,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> closeGroupConnectionsWithResponseAsync(
             String hub, String group, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1736,23 +1150,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeGroupConnectionsWithResponse(String hub, String group, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.closeGroupConnectionsSync(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return closeGroupConnectionsWithResponseAsync(hub, group, requestOptions).block();
     }
 
     /**
@@ -1792,20 +1190,16 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToGroupWithResponseAsync(
             String hub, String group, String contentType, BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (contentType == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter message is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1858,33 +1252,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToGroupWithResponse(
             String hub, String group, String contentType, BinaryData message, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (contentType == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter contentType is required and cannot be null."));
-        }
-        if (message == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter message is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.sendToGroupSync(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                this.client.getServiceVersion().getVersion(),
-                contentType,
-                message,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return sendToGroupWithResponseAsync(hub, group, contentType, message, requestOptions).block();
     }
 
     /**
@@ -1905,16 +1273,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeConnectionFromGroupWithResponseAsync(
             String hub, String group, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1947,28 +1312,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeConnectionFromGroupWithResponse(
             String hub, String group, String connectionId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.removeConnectionFromGroupSync(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return removeConnectionFromGroupWithResponseAsync(hub, group, connectionId, requestOptions).block();
     }
 
     /**
@@ -1989,16 +1333,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> addConnectionToGroupWithResponseAsync(
             String hub, String group, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2031,28 +1372,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addConnectionToGroupWithResponse(
             String hub, String group, String connectionId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.addConnectionToGroupSync(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return addConnectionToGroupWithResponseAsync(hub, group, connectionId, requestOptions).block();
     }
 
     /**
@@ -2084,16 +1404,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> revokePermissionWithResponseAsync(
             String hub, String permission, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (permission == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter permission is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2137,28 +1454,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokePermissionWithResponse(
             String hub, String permission, String connectionId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (permission == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter permission is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.revokePermissionSync(
-                this.client.getEndpoint(),
-                hub,
-                permission,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return revokePermissionWithResponseAsync(hub, permission, connectionId, requestOptions).block();
     }
 
     /**
@@ -2195,16 +1491,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> checkPermissionWithResponseAsync(
             String hub, String permission, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (permission == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter permission is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
@@ -2251,26 +1544,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkPermissionWithResponse(
             String hub, String permission, String connectionId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (permission == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter permission is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        return service.checkPermissionSync(
-                this.client.getEndpoint(),
-                hub,
-                permission,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                Context.NONE);
+        return checkPermissionWithResponseAsync(hub, permission, connectionId, requestOptions).block();
     }
 
     /**
@@ -2302,16 +1576,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> grantPermissionWithResponseAsync(
             String hub, String permission, String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (permission == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter permission is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2355,28 +1626,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> grantPermissionWithResponse(
             String hub, String permission, String connectionId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (permission == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter permission is required and cannot be null."));
-        }
-        if (connectionId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.grantPermissionSync(
-                this.client.getEndpoint(),
-                hub,
-                permission,
-                connectionId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return grantPermissionWithResponseAsync(hub, permission, connectionId, requestOptions).block();
     }
 
     /**
@@ -2401,12 +1651,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> userExistsWithResponseAsync(
             String hub, String userId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         return FluxUtil.withContext(
                 context ->
@@ -2439,21 +1687,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> userExistsWithResponse(String hub, String userId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        return service.userExistsSync(
-                this.client.getEndpoint(),
-                hub,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                Context.NONE);
+        return userExistsWithResponseAsync(hub, userId, requestOptions).block();
     }
 
     /**
@@ -2484,12 +1718,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> closeUserConnectionsWithResponseAsync(
             String hub, String userId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2530,23 +1762,7 @@ public final class WebPubSubsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeUserConnectionsWithResponse(String hub, String userId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.closeUserConnectionsSync(
-                this.client.getEndpoint(),
-                hub,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return closeUserConnectionsWithResponseAsync(hub, userId, requestOptions).block();
     }
 
     /**
@@ -2585,20 +1801,16 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToUserWithResponseAsync(
             String hub, String userId, String contentType, BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (contentType == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter message is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2650,33 +1862,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToUserWithResponse(
             String hub, String userId, String contentType, BinaryData message, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        if (contentType == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter contentType is required and cannot be null."));
-        }
-        if (message == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter message is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.sendToUserSync(
-                this.client.getEndpoint(),
-                hub,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                contentType,
-                message,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return sendToUserWithResponseAsync(hub, userId, contentType, message, requestOptions).block();
     }
 
     /**
@@ -2696,12 +1882,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeUserFromAllGroupsWithResponseAsync(
             String hub, String userId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2732,23 +1916,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeUserFromAllGroupsWithResponse(
             String hub, String userId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.removeUserFromAllGroupsSync(
-                this.client.getEndpoint(),
-                hub,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return removeUserFromAllGroupsWithResponseAsync(hub, userId, requestOptions).block();
     }
 
     /**
@@ -2769,16 +1937,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeUserFromGroupWithResponseAsync(
             String hub, String group, String userId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2811,28 +1976,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeUserFromGroupWithResponse(
             String hub, String group, String userId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.removeUserFromGroupSync(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return removeUserFromGroupWithResponseAsync(hub, group, userId, requestOptions).block();
     }
 
     /**
@@ -2853,16 +1997,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> addUserToGroupWithResponseAsync(
             String hub, String group, String userId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2895,29 +2036,6 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addUserToGroupWithResponse(
             String hub, String group, String userId, RequestOptions requestOptions) {
-        if (hub == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter hub is required and cannot be null."));
-        }
-        if (group == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter group is required and cannot be null."));
-        }
-        if (userId == null) {
-            throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Parameter userId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.addUserToGroupSync(
-                this.client.getEndpoint(),
-                hub,
-                group,
-                userId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return addUserToGroupWithResponseAsync(hub, group, userId, requestOptions).block();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(WebPubSubsImpl.class);
 }

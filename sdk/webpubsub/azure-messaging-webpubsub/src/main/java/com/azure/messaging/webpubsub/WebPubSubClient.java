@@ -15,21 +15,20 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 
 /** Initializes a new instance of the synchronous WebPubSubServiceClient type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class)
 public final class WebPubSubClient {
-    @Generated private final WebPubSubsImpl serviceClient;
+    @Generated private final WebPubSubAsyncClient client;
 
     /**
      * Initializes an instance of WebPubSubClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    WebPubSubClient(WebPubSubsImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    WebPubSubClient(WebPubSubAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -58,7 +57,7 @@ public final class WebPubSubClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeAllConnectionsWithResponse(String hub, RequestOptions requestOptions) {
-        return this.serviceClient.closeAllConnectionsWithResponse(hub, requestOptions);
+        return this.client.closeAllConnectionsWithResponse(hub, requestOptions).block();
     }
 
     /**
@@ -97,7 +96,7 @@ public final class WebPubSubClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateClientTokenWithResponse(String hub, RequestOptions requestOptions) {
-        return this.serviceClient.generateClientTokenWithResponse(hub, requestOptions);
+        return this.client.generateClientTokenWithResponse(hub, requestOptions).block();
     }
 
     /**
@@ -136,7 +135,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToAllWithResponse(
             String hub, String contentType, BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToAllWithResponse(hub, contentType, message, requestOptions);
+        return this.client.sendToAllWithResponse(hub, contentType, message, requestOptions).block();
     }
 
     /**
@@ -165,7 +164,7 @@ public final class WebPubSubClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeConnectionWithResponse(String hub, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.closeConnectionWithResponse(hub, connectionId, requestOptions);
+        return this.client.closeConnectionWithResponse(hub, connectionId, requestOptions).block();
     }
 
     /**
@@ -190,7 +189,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> connectionExistsWithResponse(
             String hub, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.connectionExistsWithResponse(hub, connectionId, requestOptions);
+        return this.client.connectionExistsWithResponse(hub, connectionId, requestOptions).block();
     }
 
     /**
@@ -219,7 +218,9 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToConnectionWithResponse(
             String hub, String connectionId, String contentType, BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToConnectionWithResponse(hub, connectionId, contentType, message, requestOptions);
+        return this.client
+                .sendToConnectionWithResponse(hub, connectionId, contentType, message, requestOptions)
+                .block();
     }
 
     /**
@@ -239,7 +240,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeConnectionFromAllGroupsWithResponse(
             String hub, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.removeConnectionFromAllGroupsWithResponse(hub, connectionId, requestOptions);
+        return this.client.removeConnectionFromAllGroupsWithResponse(hub, connectionId, requestOptions).block();
     }
 
     /**
@@ -263,7 +264,7 @@ public final class WebPubSubClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> groupExistsWithResponse(String hub, String group, RequestOptions requestOptions) {
-        return this.serviceClient.groupExistsWithResponse(hub, group, requestOptions);
+        return this.client.groupExistsWithResponse(hub, group, requestOptions).block();
     }
 
     /**
@@ -293,7 +294,7 @@ public final class WebPubSubClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeGroupConnectionsWithResponse(String hub, String group, RequestOptions requestOptions) {
-        return this.serviceClient.closeGroupConnectionsWithResponse(hub, group, requestOptions);
+        return this.client.closeGroupConnectionsWithResponse(hub, group, requestOptions).block();
     }
 
     /**
@@ -333,7 +334,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToGroupWithResponse(
             String hub, String group, String contentType, BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToGroupWithResponse(hub, group, contentType, message, requestOptions);
+        return this.client.sendToGroupWithResponse(hub, group, contentType, message, requestOptions).block();
     }
 
     /**
@@ -354,7 +355,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeConnectionFromGroupWithResponse(
             String hub, String group, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.removeConnectionFromGroupWithResponse(hub, group, connectionId, requestOptions);
+        return this.client.removeConnectionFromGroupWithResponse(hub, group, connectionId, requestOptions).block();
     }
 
     /**
@@ -375,7 +376,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addConnectionToGroupWithResponse(
             String hub, String group, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.addConnectionToGroupWithResponse(hub, group, connectionId, requestOptions);
+        return this.client.addConnectionToGroupWithResponse(hub, group, connectionId, requestOptions).block();
     }
 
     /**
@@ -407,7 +408,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokePermissionWithResponse(
             String hub, String permission, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.revokePermissionWithResponse(hub, permission, connectionId, requestOptions);
+        return this.client.revokePermissionWithResponse(hub, permission, connectionId, requestOptions).block();
     }
 
     /**
@@ -444,7 +445,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkPermissionWithResponse(
             String hub, String permission, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.checkPermissionWithResponse(hub, permission, connectionId, requestOptions);
+        return this.client.checkPermissionWithResponse(hub, permission, connectionId, requestOptions).block();
     }
 
     /**
@@ -476,7 +477,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> grantPermissionWithResponse(
             String hub, String permission, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.grantPermissionWithResponse(hub, permission, connectionId, requestOptions);
+        return this.client.grantPermissionWithResponse(hub, permission, connectionId, requestOptions).block();
     }
 
     /**
@@ -500,7 +501,7 @@ public final class WebPubSubClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> userExistsWithResponse(String hub, String userId, RequestOptions requestOptions) {
-        return this.serviceClient.userExistsWithResponse(hub, userId, requestOptions);
+        return this.client.userExistsWithResponse(hub, userId, requestOptions).block();
     }
 
     /**
@@ -530,7 +531,7 @@ public final class WebPubSubClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeUserConnectionsWithResponse(String hub, String userId, RequestOptions requestOptions) {
-        return this.serviceClient.closeUserConnectionsWithResponse(hub, userId, requestOptions);
+        return this.client.closeUserConnectionsWithResponse(hub, userId, requestOptions).block();
     }
 
     /**
@@ -569,7 +570,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToUserWithResponse(
             String hub, String userId, String contentType, BinaryData message, RequestOptions requestOptions) {
-        return this.serviceClient.sendToUserWithResponse(hub, userId, contentType, message, requestOptions);
+        return this.client.sendToUserWithResponse(hub, userId, contentType, message, requestOptions).block();
     }
 
     /**
@@ -589,7 +590,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeUserFromAllGroupsWithResponse(
             String hub, String userId, RequestOptions requestOptions) {
-        return this.serviceClient.removeUserFromAllGroupsWithResponse(hub, userId, requestOptions);
+        return this.client.removeUserFromAllGroupsWithResponse(hub, userId, requestOptions).block();
     }
 
     /**
@@ -610,7 +611,7 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeUserFromGroupWithResponse(
             String hub, String group, String userId, RequestOptions requestOptions) {
-        return this.serviceClient.removeUserFromGroupWithResponse(hub, group, userId, requestOptions);
+        return this.client.removeUserFromGroupWithResponse(hub, group, userId, requestOptions).block();
     }
 
     /**
@@ -631,6 +632,6 @@ public final class WebPubSubClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addUserToGroupWithResponse(
             String hub, String group, String userId, RequestOptions requestOptions) {
-        return this.serviceClient.addUserToGroupWithResponse(hub, group, userId, requestOptions);
+        return this.client.addUserToGroupWithResponse(hub, group, userId, requestOptions).block();
     }
 }
