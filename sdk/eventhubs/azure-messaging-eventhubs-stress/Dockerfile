@@ -1,4 +1,5 @@
-FROM mcr.microsoft.com/openjdk/jdk:11-mariner as builder
+ARG REGISTRY=""
+FROM ${REGISTRY}/java-tools/mvn:jdk11-latest as builder
 
 RUN mkdir /stress-eh
 WORKDIR /stress-eh

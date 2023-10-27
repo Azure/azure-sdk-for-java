@@ -1,4 +1,5 @@
-FROM stresspgs7b6dif73rup6.azurecr.io/java-tools/mvn:java11-mvn3.8.8 as builder
+ARG REGISTRY=""
+FROM ${REGISTRY}/java-tools/mvn:jdk11-latest as builder
 
 RUN mkdir /stress-sb
 WORKDIR /stress-sb
