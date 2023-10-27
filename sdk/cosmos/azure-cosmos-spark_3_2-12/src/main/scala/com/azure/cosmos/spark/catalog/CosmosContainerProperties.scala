@@ -8,6 +8,7 @@ private[spark] object CosmosContainerProperties {
 
   private val partitionKeyPath = "partitionKeyPath"
   private val partitionKeyVersion = "partitionKeyVersion"
+  private val partitionKeyKind = "partitionKeyKind"
   private val indexingPolicy = "indexingPolicy"
   private val defaultTtlPropertyName = "defaultTtlInSeconds"
   private val analyticalStoreTtlPropertyName = "analyticalStoreTtlInSeconds"
@@ -22,6 +23,9 @@ private[spark] object CosmosContainerProperties {
     properties.get(partitionKeyVersion)
   }
 
+  def getPartitionKeyKind(properties: Map[String, String]): Option[String] = {
+     properties.get(partitionKeyKind)
+  }
   def getIndexingPolicy(properties: Map[String, String]): String = {
     properties.getOrElse(indexingPolicy, defaultIndexingPolicy)
   }

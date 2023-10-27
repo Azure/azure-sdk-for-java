@@ -173,9 +173,23 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
         val paths = new util.ArrayList[String]
         val pathList = partitionKeyPath.split(",").toList
         if (pathList.size >= 2) {
-            partitionKeyDef.setKind(PartitionKind.MULTI_HASH)
+            partitionKeyDef.setKind(CosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
+                case Some(pkKind) => {
+                    if (pkKind == PartitionKind.HASH.toString) {
+                        throw new IllegalArgumentException("PartitionKind HASH is not supported for multi-hash partition key")
+                    }
+                    PartitionKind.MULTI_HASH
+                }
+                case None => PartitionKind.MULTI_HASH
+            })
             partitionKeyDef.setVersion(CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
-                case Some(pkVersion) => PartitionKeyDefinitionVersion.valueOf(pkVersion)
+                case Some(pkVersion) =>
+                    {
+                        if (pkVersion == PartitionKeyDefinitionVersion.V1.toString) {
+                            throw new IllegalArgumentException("PartitionKeyVersion V1 is not supported for multi-hash partition key")
+                        }
+                        PartitionKeyDefinitionVersion.V2
+                    }
                 case None => PartitionKeyDefinitionVersion.V2
             })
             pathList.foreach(path => paths.add(path.trim))
