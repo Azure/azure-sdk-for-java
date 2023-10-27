@@ -15,11 +15,6 @@ import java.util.Objects;
 @Fluent
 public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLROTask {
     /*
-     * Enumeration of supported long-running Text Analysis tasks.
-     */
-    private static final AnalyzeTextLROTaskKind KIND = AnalyzeTextLROTaskKind.CUSTOM_SINGLE_LABEL_CLASSIFICATION;
-
-    /*
      * Supported parameters for a Custom Single Classification task.
      */
     private CustomSingleLabelClassificationTaskParameters parameters;
@@ -58,7 +53,8 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
+        jsonWriter.writeStringField(
+                "kind", Objects.toString(AnalyzeTextLROTaskKind.CUSTOM_SINGLE_LABEL_CLASSIFICATION, null));
         jsonWriter.writeStringField("taskName", getTaskName());
         jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
@@ -84,11 +80,9 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!KIND.equals(kind)) {
+                            if (!"CustomSingleLabelClassification".equals(kind)) {
                                 throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to '"
-                                                + KIND
-                                                + "'. The found 'kind' was '"
+                                        "'kind' was expected to be non-null and equal to 'CustomSingleLabelClassification'. The found 'kind' was '"
                                                 + kind
                                                 + "'.");
                             }

@@ -15,11 +15,6 @@ import java.util.Objects;
 @Fluent
 public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
     /*
-     * Enumeration of supported long-running Text Analysis tasks.
-     */
-    private static final AnalyzeTextLROTaskKind KIND = AnalyzeTextLROTaskKind.SENTIMENT_ANALYSIS;
-
-    /*
      * Supported parameters for a Sentiment Analysis task.
      */
     private SentimentAnalysisTaskParameters parameters;
@@ -57,7 +52,7 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
+        jsonWriter.writeStringField("kind", Objects.toString(AnalyzeTextLROTaskKind.SENTIMENT_ANALYSIS, null));
         jsonWriter.writeStringField("taskName", getTaskName());
         jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
@@ -82,11 +77,9 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!KIND.equals(kind)) {
+                            if (!"SentimentAnalysis".equals(kind)) {
                                 throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to '"
-                                                + KIND
-                                                + "'. The found 'kind' was '"
+                                        "'kind' was expected to be non-null and equal to 'SentimentAnalysis'. The found 'kind' was '"
                                                 + kind
                                                 + "'.");
                             }

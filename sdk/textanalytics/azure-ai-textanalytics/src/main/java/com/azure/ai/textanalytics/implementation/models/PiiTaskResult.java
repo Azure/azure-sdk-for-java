@@ -15,11 +15,6 @@ import java.util.Objects;
 @Fluent
 public final class PiiTaskResult extends AnalyzeTextTaskResult {
     /*
-     * Enumeration of supported Text Analysis task results.
-     */
-    private static final AnalyzeTextTaskResultsKind KIND = AnalyzeTextTaskResultsKind.PII_ENTITY_RECOGNITION_RESULTS;
-
-    /*
      * The results property.
      */
     private PiiResult results;
@@ -50,7 +45,8 @@ public final class PiiTaskResult extends AnalyzeTextTaskResult {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
+        jsonWriter.writeStringField(
+                "kind", Objects.toString(AnalyzeTextTaskResultsKind.PII_ENTITY_RECOGNITION_RESULTS, null));
         jsonWriter.writeJsonField("results", this.results);
         return jsonWriter.writeEndObject();
     }
@@ -75,11 +71,9 @@ public final class PiiTaskResult extends AnalyzeTextTaskResult {
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!KIND.equals(kind)) {
+                            if (!"PiiEntityRecognitionResults".equals(kind)) {
                                 throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to '"
-                                                + KIND
-                                                + "'. The found 'kind' was '"
+                                        "'kind' was expected to be non-null and equal to 'PiiEntityRecognitionResults'. The found 'kind' was '"
                                                 + kind
                                                 + "'.");
                             }

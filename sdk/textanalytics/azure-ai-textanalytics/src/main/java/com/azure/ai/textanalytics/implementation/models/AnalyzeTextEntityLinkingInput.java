@@ -15,11 +15,6 @@ import java.util.Objects;
 @Fluent
 public final class AnalyzeTextEntityLinkingInput extends AnalyzeTextTask {
     /*
-     * Enumeration of supported Text Analysis tasks.
-     */
-    private static final AnalyzeTextTaskKind KIND = AnalyzeTextTaskKind.ENTITY_LINKING;
-
-    /*
      * The analysisInput property.
      */
     private MultiLanguageAnalysisInput analysisInput;
@@ -75,7 +70,7 @@ public final class AnalyzeTextEntityLinkingInput extends AnalyzeTextTask {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
+        jsonWriter.writeStringField("kind", Objects.toString(AnalyzeTextTaskKind.ENTITY_LINKING, null));
         jsonWriter.writeJsonField("analysisInput", this.analysisInput);
         jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
@@ -101,11 +96,9 @@ public final class AnalyzeTextEntityLinkingInput extends AnalyzeTextTask {
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!KIND.equals(kind)) {
+                            if (!"EntityLinking".equals(kind)) {
                                 throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to '"
-                                                + KIND
-                                                + "'. The found 'kind' was '"
+                                        "'kind' was expected to be non-null and equal to 'EntityLinking'. The found 'kind' was '"
                                                 + kind
                                                 + "'.");
                             }

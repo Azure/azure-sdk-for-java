@@ -16,12 +16,6 @@ import java.util.Objects;
 @Fluent
 public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResult {
     /*
-     * Enumeration of supported Text Analysis long-running operation task results.
-     */
-    private static final AnalyzeTextLROResultsKind KIND =
-            AnalyzeTextLROResultsKind.ABSTRACTIVE_SUMMARIZATION_LRORESULTS;
-
-    /*
      * An object representing the pre-build summarization results of each document.
      */
     private AbstractiveSummarizationResult results;
@@ -73,7 +67,8 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
+        jsonWriter.writeStringField(
+                "kind", Objects.toString(AnalyzeTextLROResultsKind.ABSTRACTIVE_SUMMARIZATION_LRORESULTS, null));
         jsonWriter.writeStringField("lastUpdateDateTime", Objects.toString(getLastUpdateDateTime(), null));
         jsonWriter.writeStringField("status", Objects.toString(getStatus(), null));
         jsonWriter.writeStringField("taskName", getTaskName());
@@ -102,11 +97,9 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!KIND.equals(kind)) {
+                            if (!"AbstractiveSummarizationLROResults".equals(kind)) {
                                 throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to '"
-                                                + KIND
-                                                + "'. The found 'kind' was '"
+                                        "'kind' was expected to be non-null and equal to 'AbstractiveSummarizationLROResults'. The found 'kind' was '"
                                                 + kind
                                                 + "'.");
                             }
