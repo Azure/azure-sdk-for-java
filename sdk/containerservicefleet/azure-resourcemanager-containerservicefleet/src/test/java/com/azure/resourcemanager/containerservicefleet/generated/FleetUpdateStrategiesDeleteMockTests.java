@@ -58,6 +58,6 @@ public final class FleetUpdateStrategiesDeleteMockTests {
 
         manager
             .fleetUpdateStrategies()
-            .delete("rmaequ", "ah", "icslfaoq", "piyylhalnswhccsp", com.azure.core.util.Context.NONE);
+            .delete("sgsahmkycgr", "uwjuetaeburuvdmo", "s", "zlxwabmqoefkifr", com.azure.core.util.Context.NONE);
     }
 }

@@ -1,14 +1,24 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0 (2023-10-27)
 
-### Features Added
+- Azure Resource Manager ContainerServiceFleet client library for Java. This package contains Microsoft Azure SDK for ContainerServiceFleet Management SDK. Azure Kubernetes Fleet Manager Client. Package tag package-2023-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.ApiServerAccessProfile` was removed
 
-### Other Changes
+* `models.AgentProfile` was removed
+
+* `models.FleetHubProfile` was removed
+
+#### `models.Fleet` was modified
+
+* `hubProfile()` was removed
+
+#### `models.Fleet$Definition` was modified
+
+* `withHubProfile(models.FleetHubProfile)` was removed
 
 ## 1.0.0-beta.3 (2023-10-23)
 

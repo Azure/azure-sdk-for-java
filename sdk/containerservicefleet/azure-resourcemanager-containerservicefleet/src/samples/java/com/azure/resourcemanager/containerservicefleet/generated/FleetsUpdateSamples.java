@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Fleets Update. */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-08-15-preview/examples/Fleets_PatchTags.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_PatchTags.json
      */
     /**
      * Sample code: Update a Fleet.
