@@ -60,11 +60,11 @@ public final class DisksDetachMockTests {
         manager
             .disks()
             .detach(
-                "paqkt",
-                "rumzuedk",
-                "zbfvxovqkxiu",
-                "q",
-                new DetachDiskProperties().withLeasedByLabVmId("vqrnhyhlwcjsqgg"),
+                "yv",
+                "jw",
+                "w",
+                "qsratjhd",
+                new DetachDiskProperties().withLeasedByLabVmId("ybspijhfrzg"),
                 com.azure.core.util.Context.NONE);
     }
 }
