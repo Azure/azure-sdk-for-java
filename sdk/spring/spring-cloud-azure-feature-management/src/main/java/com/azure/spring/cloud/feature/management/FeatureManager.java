@@ -277,7 +277,8 @@ public class FeatureManager {
         }
 
         List<Mono<Boolean>> results = new ArrayList<>();
-
+        
+        
         for (FeatureFilterEvaluationContext featureFilter : feature.getEnabledFor().values()) {
             if (StringUtils.hasText(featureFilter.getName())) {
                 results.add(isFeatureOn(featureFilter, feature.getKey(), featureContext));
@@ -285,7 +286,7 @@ public class FeatureManager {
         }
         return evaluateFeatureFlagResults(feature, results).flatMap(enabled -> {
             if (!enabled && StringUtils.hasText(defaultDisabledVariant)) {
-                return variantAssignment.getVariant(feature.getVariants().values(), defaultDisabledVariant).single();
+                return variantAssignment.getVariant(variants, defaultDisabledVariant).single();
             } else if (!enabled) {
                 return Mono.justOrEmpty(null);
             }
