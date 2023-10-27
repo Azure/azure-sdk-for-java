@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
@@ -148,6 +149,11 @@ public class FaultInjectionServerErrorResultInternal {
                     new GoneException(this.getErrorMessage(RMResources.Gone), HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 staledAddressesException.setIsBasedOn410ResponseFromService();
                 cosmosException = staledAddressesException;
+                break;
+
+            case NAME_CACHE_IS_STALE:
+                cosmosException =
+                    new InvalidPartitionException(this.getErrorMessage(RMResources.InvalidPartitionKey));
                 break;
 
             default:

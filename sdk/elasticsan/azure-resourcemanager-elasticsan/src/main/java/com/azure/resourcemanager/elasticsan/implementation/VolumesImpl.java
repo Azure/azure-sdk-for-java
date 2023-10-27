@@ -13,6 +13,8 @@ import com.azure.resourcemanager.elasticsan.fluent.VolumesClient;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 import com.azure.resourcemanager.elasticsan.models.Volumes;
+import com.azure.resourcemanager.elasticsan.models.XMsDeleteSnapshots;
+import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
 
 public final class VolumesImpl implements Volumes {
     private static final ClientLogger LOGGER = new ClientLogger(VolumesImpl.class);
@@ -32,8 +34,23 @@ public final class VolumesImpl implements Volumes {
     }
 
     public void delete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context) {
-        this.serviceClient().delete(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context);
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete,
+        Context context) {
+        this
+            .serviceClient()
+            .delete(
+                resourceGroupName,
+                elasticSanName,
+                volumeGroupName,
+                volumeName,
+                xMsDeleteSnapshots,
+                xMsForceDelete,
+                context);
     }
 
     public Response<Volume> getWithResponse(
@@ -174,10 +191,21 @@ public final class VolumesImpl implements Volumes {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        this.delete(resourceGroupName, elasticSanName, volumeGroupName, volumeName, Context.NONE);
+        XMsDeleteSnapshots localXMsDeleteSnapshots = null;
+        XMsForceDelete localXMsForceDelete = null;
+        this
+            .delete(
+                resourceGroupName,
+                elasticSanName,
+                volumeGroupName,
+                volumeName,
+                localXMsDeleteSnapshots,
+                localXMsForceDelete,
+                Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(
+        String id, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -207,7 +235,15 @@ public final class VolumesImpl implements Volumes {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        this.delete(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context);
+        this
+            .delete(
+                resourceGroupName,
+                elasticSanName,
+                volumeGroupName,
+                volumeName,
+                xMsDeleteSnapshots,
+                xMsForceDelete,
+                context);
     }
 
     private VolumesClient serviceClient() {

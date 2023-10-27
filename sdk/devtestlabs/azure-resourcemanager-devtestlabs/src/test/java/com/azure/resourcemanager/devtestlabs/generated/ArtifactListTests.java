@@ -18,11 +18,11 @@ public final class ArtifactListTests {
         ArtifactList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"title\":\"mtxpsiebtfh\",\"description\":\"esap\",\"publisher\":\"rdqmhjjdhtldwkyz\",\"filePath\":\"utknc\",\"icon\":\"cwsvlxotog\",\"targetOsType\":\"rupqsxvnmicy\",\"parameters\":\"dataceoveilovno\",\"createdDate\":\"2021-10-13T06:15:30Z\"},\"location\":\"jfcn\",\"tags\":{\"dhbt\":\"cn\"},\"id\":\"kphywpnvjto\",\"name\":\"nermcl\",\"type\":\"plpho\"},{\"properties\":{\"title\":\"scrpabgyepsbjt\",\"description\":\"qugxywpmueefjzwf\",\"publisher\":\"q\",\"filePath\":\"ids\",\"icon\":\"onobglaocqx\",\"targetOsType\":\"cmgyud\",\"parameters\":\"datatlmoyrx\",\"createdDate\":\"2021-08-04T10:24:08Z\"},\"location\":\"u\",\"tags\":{\"lrqjbhckfr\":\"zntxhdz\"},\"id\":\"hrxsbk\",\"name\":\"vpycanuzbp\",\"type\":\"kafkuwbcrnwbm\"},{\"properties\":{\"title\":\"hseyvju\",\"description\":\"tslhspkdeem\",\"publisher\":\"fm\",\"filePath\":\"gkvtmelmqkrhah\",\"icon\":\"juahaquhcdhmdual\",\"targetOsType\":\"xqpvfadmw\",\"parameters\":\"datacrgvxpvgom\",\"createdDate\":\"2021-03-14T19:51:15Z\"},\"location\":\"misgwbnb\",\"tags\":{\"urqhaka\":\"dawkzbali\",\"xcug\":\"hashsfwxosow\",\"ovbvmeueciv\":\"cjooxdjebwpucwwf\",\"otwmcdyt\":\"hzceuojgjrwjue\"},\"id\":\"x\",\"name\":\"it\",\"type\":\"nrjawgqwg\"},{\"properties\":{\"title\":\"ni\",\"description\":\"x\",\"publisher\":\"kpycgklwndnhjd\",\"filePath\":\"whvylw\",\"icon\":\"tdhxujznbmpowuwp\",\"targetOsType\":\"qlveualupjmkh\",\"parameters\":\"dataobbc\",\"createdDate\":\"2021-03-12T03:03:28Z\"},\"location\":\"rtjriplrbpbew\",\"tags\":{\"c\":\"fgb\",\"gibtnm\":\"wxzvlvqhjkb\"},\"id\":\"iebwwaloayqcgwrt\",\"name\":\"j\",\"type\":\"zg\"}],\"nextLink\":\"zmh\"}")
+                    "{\"value\":[{\"properties\":{\"title\":\"wj\",\"description\":\"gdrjervnaenqpe\",\"publisher\":\"ndoygmifthnzdnd\",\"filePath\":\"gnayqigynduh\",\"icon\":\"hqlkthumaqo\",\"targetOsType\":\"gycdu\",\"parameters\":\"datar\",\"createdDate\":\"2021-07-05T23:49:12Z\"},\"location\":\"cym\",\"tags\":{\"ssl\":\"l\",\"d\":\"lfmmdnbbglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\"},\"id\":\"od\",\"name\":\"xzb\",\"type\":\"cblylpstdbhhxsr\"}],\"nextLink\":\"zucerscdntnev\"}")
                 .toObject(ArtifactList.class);
-        Assertions.assertEquals("jfcn", model.value().get(0).location());
-        Assertions.assertEquals("cn", model.value().get(0).tags().get("dhbt"));
-        Assertions.assertEquals("zmh", model.nextLink());
+        Assertions.assertEquals("cym", model.value().get(0).location());
+        Assertions.assertEquals("l", model.value().get(0).tags().get("ssl"));
+        Assertions.assertEquals("zucerscdntnev", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,30 +32,17 @@ public final class ArtifactListTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new ArtifactInner().withLocation("jfcn").withTags(mapOf("dhbt", "cn")),
-                            new ArtifactInner().withLocation("u").withTags(mapOf("lrqjbhckfr", "zntxhdz")),
                             new ArtifactInner()
-                                .withLocation("misgwbnb")
-                                .withTags(
-                                    mapOf(
-                                        "urqhaka",
-                                        "dawkzbali",
-                                        "xcug",
-                                        "hashsfwxosow",
-                                        "ovbvmeueciv",
-                                        "cjooxdjebwpucwwf",
-                                        "otwmcdyt",
-                                        "hzceuojgjrwjue")),
-                            new ArtifactInner()
-                                .withLocation("rtjriplrbpbew")
-                                .withTags(mapOf("c", "fgb", "gibtnm", "wxzvlvqhjkb"))))
-                .withNextLink("zmh");
+                                .withLocation("cym")
+                                .withTags(mapOf("ssl", "l", "d", "lfmmdnbbglzpswi", "bzmnvdfznud", "cwyhzdxssa"))))
+                .withNextLink("zucerscdntnev");
         model = BinaryData.fromObject(model).toObject(ArtifactList.class);
-        Assertions.assertEquals("jfcn", model.value().get(0).location());
-        Assertions.assertEquals("cn", model.value().get(0).tags().get("dhbt"));
-        Assertions.assertEquals("zmh", model.nextLink());
+        Assertions.assertEquals("cym", model.value().get(0).location());
+        Assertions.assertEquals("l", model.value().get(0).tags().get("ssl"));
+        Assertions.assertEquals("zucerscdntnev", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

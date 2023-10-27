@@ -15,20 +15,20 @@ public final class ResourceSkuTests {
         ResourceSku model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"ofncckwyfzqwhxxb\",\"tier\":\"Free\",\"size\":\"xzfe\",\"family\":\"tpp\",\"capacity\":80294620}")
+                    "{\"name\":\"dlhewp\",\"tier\":\"Basic\",\"size\":\"ttwvogvbbe\",\"family\":\"cngqqmoakufgmjz\",\"capacity\":1463483261}")
                 .toObject(ResourceSku.class);
-        Assertions.assertEquals("ofncckwyfzqwhxxb", model.name());
-        Assertions.assertEquals(SignalRSkuTier.FREE, model.tier());
-        Assertions.assertEquals(80294620, model.capacity());
+        Assertions.assertEquals("dlhewp", model.name());
+        Assertions.assertEquals(SignalRSkuTier.BASIC, model.tier());
+        Assertions.assertEquals(1463483261, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceSku model =
-            new ResourceSku().withName("ofncckwyfzqwhxxb").withTier(SignalRSkuTier.FREE).withCapacity(80294620);
+            new ResourceSku().withName("dlhewp").withTier(SignalRSkuTier.BASIC).withCapacity(1463483261);
         model = BinaryData.fromObject(model).toObject(ResourceSku.class);
-        Assertions.assertEquals("ofncckwyfzqwhxxb", model.name());
-        Assertions.assertEquals(SignalRSkuTier.FREE, model.tier());
-        Assertions.assertEquals(80294620, model.capacity());
+        Assertions.assertEquals("dlhewp", model.name());
+        Assertions.assertEquals(SignalRSkuTier.BASIC, model.tier());
+        Assertions.assertEquals(1463483261, model.capacity());
     }
 }

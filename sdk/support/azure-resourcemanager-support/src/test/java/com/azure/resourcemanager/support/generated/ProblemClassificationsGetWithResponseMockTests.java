@@ -31,7 +31,7 @@ public final class ProblemClassificationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"m\",\"name\":\"tqhjfbebrjcx\",\"type\":\"fuwutttxf\",\"properties\":{\"displayName\":\"birphxepcyva\"}}";
+            "{\"id\":\"wuoegrpk\",\"name\":\"wniyqsluicpd\",\"type\":\"kzzlvmbmpaxmodf\",\"properties\":{\"displayName\":\"fy\",\"secondaryConsentEnabled\":[{\"description\":\"fvmwy\",\"type\":\"fouyf\"},{\"description\":\"akcp\",\"type\":\"yzvqt\"}]}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,11 @@ public final class ProblemClassificationsGetWithResponseMockTests {
         ProblemClassification response =
             manager
                 .problemClassifications()
-                .getWithResponse("dqgbiqylihkaetc", "tvfcivfsn", com.azure.core.util.Context.NONE)
+                .getWithResponse("d", "mgxcxrslpm", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("birphxepcyva", response.displayName());
+        Assertions.assertEquals("fy", response.displayName());
+        Assertions.assertEquals("fvmwy", response.secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("fouyf", response.secondaryConsentEnabled().get(0).type());
     }
 }

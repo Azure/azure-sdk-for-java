@@ -7,7 +7,7 @@ package com.azure.resourcemanager.devcenter.generated;
 /** Samples for Galleries ListByDevCenter. */
 public final class GalleriesListByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Galleries_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Galleries_List.json
      */
     /**
      * Sample code: Galleries_ListByDevCenter.

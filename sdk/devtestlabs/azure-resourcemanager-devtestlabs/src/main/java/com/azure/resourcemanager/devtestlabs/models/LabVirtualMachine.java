@@ -332,11 +332,13 @@ public interface LabVirtualMachine {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The LabVirtualMachine definition stages. */
     interface DefinitionStages {
         /** The first stage of the LabVirtualMachine definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -355,6 +357,7 @@ public interface LabVirtualMachine {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -366,6 +369,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withExistingLab(String resourceGroupName, String labName);
         }
+
         /**
          * The stage of the LabVirtualMachine definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -410,6 +414,7 @@ public interface LabVirtualMachine {
              */
             LabVirtualMachine create(Context context);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -420,6 +425,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify notes. */
         interface WithNotes {
             /**
@@ -430,6 +436,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withNotes(String notes);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify ownerObjectId. */
         interface WithOwnerObjectId {
             /**
@@ -440,6 +447,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withOwnerObjectId(String ownerObjectId);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify ownerUserPrincipalName. */
         interface WithOwnerUserPrincipalName {
             /**
@@ -450,6 +458,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withOwnerUserPrincipalName(String ownerUserPrincipalName);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify createdDate. */
         interface WithCreatedDate {
             /**
@@ -460,6 +469,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withCreatedDate(OffsetDateTime createdDate);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify customImageId. */
         interface WithCustomImageId {
             /**
@@ -470,6 +480,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withCustomImageId(String customImageId);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify size. */
         interface WithSize {
             /**
@@ -480,6 +491,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withSize(String size);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify username. */
         interface WithUsername {
             /**
@@ -490,6 +502,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withUsername(String username);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify password. */
         interface WithPassword {
             /**
@@ -500,6 +513,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withPassword(String password);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify sshKey. */
         interface WithSshKey {
             /**
@@ -510,6 +524,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withSshKey(String sshKey);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify isAuthenticationWithSshKey. */
         interface WithIsAuthenticationWithSshKey {
             /**
@@ -522,6 +537,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withIsAuthenticationWithSshKey(Boolean isAuthenticationWithSshKey);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify labSubnetName. */
         interface WithLabSubnetName {
             /**
@@ -532,6 +548,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withLabSubnetName(String labSubnetName);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify labVirtualNetworkId. */
         interface WithLabVirtualNetworkId {
             /**
@@ -542,6 +559,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withLabVirtualNetworkId(String labVirtualNetworkId);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify disallowPublicIpAddress. */
         interface WithDisallowPublicIpAddress {
             /**
@@ -554,6 +572,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withDisallowPublicIpAddress(Boolean disallowPublicIpAddress);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify artifacts. */
         interface WithArtifacts {
             /**
@@ -564,6 +583,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withArtifacts(List<ArtifactInstallProperties> artifacts);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify galleryImageReference. */
         interface WithGalleryImageReference {
             /**
@@ -575,6 +595,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withGalleryImageReference(GalleryImageReference galleryImageReference);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify planId. */
         interface WithPlanId {
             /**
@@ -585,6 +606,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withPlanId(String planId);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify networkInterface. */
         interface WithNetworkInterface {
             /**
@@ -595,6 +617,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withNetworkInterface(NetworkInterfaceProperties networkInterface);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify expirationDate. */
         interface WithExpirationDate {
             /**
@@ -605,6 +628,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withExpirationDate(OffsetDateTime expirationDate);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify allowClaim. */
         interface WithAllowClaim {
             /**
@@ -616,6 +640,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withAllowClaim(Boolean allowClaim);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify storageType. */
         interface WithStorageType {
             /**
@@ -626,6 +651,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withStorageType(String storageType);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify environmentId. */
         interface WithEnvironmentId {
             /**
@@ -637,6 +663,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withEnvironmentId(String environmentId);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify dataDiskParameters. */
         interface WithDataDiskParameters {
             /**
@@ -648,6 +675,7 @@ public interface LabVirtualMachine {
              */
             WithCreate withDataDiskParameters(List<DataDiskProperties> dataDiskParameters);
         }
+
         /** The stage of the LabVirtualMachine definition allowing to specify scheduleParameters. */
         interface WithScheduleParameters {
             /**
@@ -659,6 +687,7 @@ public interface LabVirtualMachine {
             WithCreate withScheduleParameters(List<ScheduleCreationParameter> scheduleParameters);
         }
     }
+
     /**
      * Begins update for the LabVirtualMachine resource.
      *
@@ -683,6 +712,7 @@ public interface LabVirtualMachine {
          */
         LabVirtualMachine apply(Context context);
     }
+
     /** The LabVirtualMachine update stages. */
     interface UpdateStages {
         /** The stage of the LabVirtualMachine update allowing to specify tags. */
@@ -696,6 +726,7 @@ public interface LabVirtualMachine {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

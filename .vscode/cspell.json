@@ -482,6 +482,16 @@
       ]
     },
     {
+      "filename": "sdk/easm/*",
+      "words": [
+        "easm",
+        "asns",
+        "nxdomain",
+        "cnames",
+        "riskiq"
+      ]
+    },
+    {
       "filename": "**/pom.xml",
       "patterns": [
         {
