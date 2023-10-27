@@ -14,20 +14,21 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.messaging.webpubsub.implementation.HealthApisImpl;
 
 /** Initializes a new instance of the synchronous WebPubSubServiceClient type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class)
 public final class HealthApiClient {
-    @Generated private final HealthApiAsyncClient client;
+    @Generated private final HealthApisImpl serviceClient;
 
     /**
      * Initializes an instance of HealthApiClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    HealthApiClient(HealthApiAsyncClient client) {
-        this.client = client;
+    HealthApiClient(HealthApisImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -43,6 +44,6 @@ public final class HealthApiClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getServiceStatusWithResponse(RequestOptions requestOptions) {
-        return this.client.getServiceStatusWithResponse(requestOptions).block();
+        return this.serviceClient.getServiceStatusWithResponse(requestOptions);
     }
 }
