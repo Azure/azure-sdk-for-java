@@ -14,16 +14,20 @@ public final class WorkbookErrorDefinition extends ManagementError {
     /*
      * Internal error details.
      */
-    @JsonProperty(value = "innerError", access = JsonProperty.Access.WRITE_ONLY)
-    private Object innerError;
+    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
+    private WorkbookInnerErrorTrace innererror;
+
+    /** Creates an instance of WorkbookErrorDefinition class. */
+    public WorkbookErrorDefinition() {
+    }
 
     /**
-     * Get the innerError property: Internal error details.
+     * Get the innererror property: Internal error details.
      *
-     * @return the innerError value.
+     * @return the innererror value.
      */
-    public Object getInnerError() {
-        return this.innerError;
+    public WorkbookInnerErrorTrace getInnererror() {
+        return this.innererror;
     }
 
     /**
@@ -32,5 +36,8 @@ public final class WorkbookErrorDefinition extends ManagementError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (getInnererror() != null) {
+            getInnererror().validate();
+        }
     }
 }
