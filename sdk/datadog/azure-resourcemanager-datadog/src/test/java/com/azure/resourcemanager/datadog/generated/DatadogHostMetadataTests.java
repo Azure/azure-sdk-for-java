@@ -16,31 +16,31 @@ public final class DatadogHostMetadataTests {
         DatadogHostMetadata model =
             BinaryData
                 .fromString(
-                    "{\"agentVersion\":\"bdkvwrwjf\",\"installMethod\":{\"tool\":\"nhutjeltmrldhugj\",\"toolVersion\":\"datqxhocdgeabl\",\"installerVersion\":\"huticndvkao\"},\"logsAgent\":{\"transport\":\"i\"}}")
+                    "{\"agentVersion\":\"mbmbexppbh\",\"installMethod\":{\"tool\":\"rolfpfp\",\"toolVersion\":\"lgbquxig\",\"installerVersion\":\"jgzjaoyfhrtx\"},\"logsAgent\":{\"transport\":\"erkujys\"}}")
                 .toObject(DatadogHostMetadata.class);
-        Assertions.assertEquals("bdkvwrwjf", model.agentVersion());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.installMethod().tool());
-        Assertions.assertEquals("datqxhocdgeabl", model.installMethod().toolVersion());
-        Assertions.assertEquals("huticndvkao", model.installMethod().installerVersion());
-        Assertions.assertEquals("i", model.logsAgent().transport());
+        Assertions.assertEquals("mbmbexppbh", model.agentVersion());
+        Assertions.assertEquals("rolfpfp", model.installMethod().tool());
+        Assertions.assertEquals("lgbquxig", model.installMethod().toolVersion());
+        Assertions.assertEquals("jgzjaoyfhrtx", model.installMethod().installerVersion());
+        Assertions.assertEquals("erkujys", model.logsAgent().transport());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatadogHostMetadata model =
             new DatadogHostMetadata()
-                .withAgentVersion("bdkvwrwjf")
+                .withAgentVersion("mbmbexppbh")
                 .withInstallMethod(
                     new DatadogInstallMethod()
-                        .withTool("nhutjeltmrldhugj")
-                        .withToolVersion("datqxhocdgeabl")
-                        .withInstallerVersion("huticndvkao"))
-                .withLogsAgent(new DatadogLogsAgent().withTransport("i"));
+                        .withTool("rolfpfp")
+                        .withToolVersion("lgbquxig")
+                        .withInstallerVersion("jgzjaoyfhrtx"))
+                .withLogsAgent(new DatadogLogsAgent().withTransport("erkujys"));
         model = BinaryData.fromObject(model).toObject(DatadogHostMetadata.class);
-        Assertions.assertEquals("bdkvwrwjf", model.agentVersion());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.installMethod().tool());
-        Assertions.assertEquals("datqxhocdgeabl", model.installMethod().toolVersion());
-        Assertions.assertEquals("huticndvkao", model.installMethod().installerVersion());
-        Assertions.assertEquals("i", model.logsAgent().transport());
+        Assertions.assertEquals("mbmbexppbh", model.agentVersion());
+        Assertions.assertEquals("rolfpfp", model.installMethod().tool());
+        Assertions.assertEquals("lgbquxig", model.installMethod().toolVersion());
+        Assertions.assertEquals("jgzjaoyfhrtx", model.installMethod().installerVersion());
+        Assertions.assertEquals("erkujys", model.logsAgent().transport());
     }
 }

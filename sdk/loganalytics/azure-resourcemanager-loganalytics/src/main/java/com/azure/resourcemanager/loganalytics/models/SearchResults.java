@@ -47,6 +47,16 @@ public final class SearchResults {
     @JsonProperty(value = "sourceTable", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceTable;
 
+    /*
+     * Search results table async operation id.
+     */
+    @JsonProperty(value = "azureAsyncOperationId", access = JsonProperty.Access.WRITE_ONLY)
+    private String azureAsyncOperationId;
+
+    /** Creates an instance of SearchResults class. */
+    public SearchResults() {
+    }
+
     /**
      * Get the query property: Search job query.
      *
@@ -154,6 +164,15 @@ public final class SearchResults {
      */
     public String sourceTable() {
         return this.sourceTable;
+    }
+
+    /**
+     * Get the azureAsyncOperationId property: Search results table async operation id.
+     *
+     * @return the azureAsyncOperationId value.
+     */
+    public String azureAsyncOperationId() {
+        return this.azureAsyncOperationId;
     }
 
     /**

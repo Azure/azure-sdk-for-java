@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure VM workload-specific protectable item representing SAP HANA Dbinstance. */
+/** Azure VM workload-specific protectable item representing HANA HSR. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
-@JsonTypeName("SAPHanaHSR")
+@JsonTypeName("HanaHSRContainer")
 @Fluent
 public final class AzureVmWorkloadSapHanaHsr extends AzureVmWorkloadProtectableItem {
     /** Creates an instance of AzureVmWorkloadSapHanaHsr class. */
@@ -70,6 +70,13 @@ public final class AzureVmWorkloadSapHanaHsr extends AzureVmWorkloadProtectableI
     @Override
     public AzureVmWorkloadSapHanaHsr withPrebackupvalidation(PreBackupValidation prebackupvalidation) {
         super.withPrebackupvalidation(prebackupvalidation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSapHanaHsr withIsProtectable(Boolean isProtectable) {
+        super.withIsProtectable(isProtectable);
         return this;
     }
 

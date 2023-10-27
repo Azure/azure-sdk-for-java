@@ -27,22 +27,13 @@ public final class DataSourcesImpl implements DataSources {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String workspaceName, String dataSourceName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, dataSourceName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String dataSourceName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, dataSourceName, context);
     }
 
-    public DataSource get(String resourceGroupName, String workspaceName, String dataSourceName) {
-        DataSourceInner inner = this.serviceClient().get(resourceGroupName, workspaceName, dataSourceName);
-        if (inner != null) {
-            return new DataSourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String workspaceName, String dataSourceName) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, dataSourceName);
     }
 
     public Response<DataSource> getWithResponse(
@@ -55,6 +46,15 @@ public final class DataSourcesImpl implements DataSources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DataSourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DataSource get(String resourceGroupName, String workspaceName, String dataSourceName) {
+        DataSourceInner inner = this.serviceClient().get(resourceGroupName, workspaceName, dataSourceName);
+        if (inner != null) {
+            return new DataSourceImpl(inner, this.manager());
         } else {
             return null;
         }

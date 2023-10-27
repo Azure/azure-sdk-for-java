@@ -23,12 +23,14 @@ public interface WorkspacePurges {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param body Describes the body of a request to purge data in a single table of an Log Analytics Workspace.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing operationId for a specific purge action.
      */
-    WorkspacePurgeResponse purge(String resourceGroupName, String workspaceName, WorkspacePurgeBody body);
+    Response<WorkspacePurgeResponse> purgeWithResponse(
+        String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context);
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
@@ -44,27 +46,12 @@ public interface WorkspacePurges {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param body Describes the body of a request to purge data in a single table of an Log Analytics Workspace.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing operationId for a specific purge action.
      */
-    Response<WorkspacePurgeResponse> purgeWithResponse(
-        String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context);
-
-    /**
-     * Gets status of an ongoing purge operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of an ongoing purge operation.
-     */
-    WorkspacePurgeStatusResponse getPurgeStatus(String resourceGroupName, String workspaceName, String purgeId);
+    WorkspacePurgeResponse purge(String resourceGroupName, String workspaceName, WorkspacePurgeBody body);
 
     /**
      * Gets status of an ongoing purge operation.
@@ -80,4 +67,17 @@ public interface WorkspacePurges {
      */
     Response<WorkspacePurgeStatusResponse> getPurgeStatusWithResponse(
         String resourceGroupName, String workspaceName, String purgeId, Context context);
+
+    /**
+     * Gets status of an ongoing purge operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of an ongoing purge operation.
+     */
+    WorkspacePurgeStatusResponse getPurgeStatus(String resourceGroupName, String workspaceName, String purgeId);
 }

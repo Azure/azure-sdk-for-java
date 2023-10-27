@@ -16,6 +16,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Helper class for marshaling {@link AudioTranscriptionOptions} and {@link AudioTranslationOptions} objects to be used
@@ -53,9 +54,7 @@ public class MultipartDataHelper {
      * Default constructor used in the code. The boundary is a random value.
      */
     public MultipartDataHelper() {
-        // TODO: We can't use randomly generated UUIDs for now. Generating a test session record won't match the
-        //       newly generated UUID for the test run instance this(UUID.randomUUID().toString().substring(0, 16));
-        this("29580623-3d02-4a");
+        this(UUID.randomUUID().toString().substring(0, 16));
     }
 
     /**

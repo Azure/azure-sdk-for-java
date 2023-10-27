@@ -41,6 +41,15 @@ public final class RequestUriOperator extends ExpandableStringEnum<RequestUriOpe
     public static final RequestUriOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of RequestUriOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestUriOperator() {
+    }
+
+    /**
      * Creates or finds a RequestUriOperator from its string representation.
      *
      * @param name a name to look for.

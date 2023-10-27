@@ -29,17 +29,16 @@ public final class ClusterProperties {
     private ClusterEntityStatus provisioningState;
 
     /*
-     * Configures whether cluster will use double encryption. This Property can
-     * not be modified after cluster creation. Default value is 'true'
+     * Configures whether cluster will use double encryption. This Property can not be modified after cluster creation.
+     * Default value is 'true'
      */
     @JsonProperty(value = "isDoubleEncryptionEnabled")
     private Boolean isDoubleEncryptionEnabled;
 
     /*
-     * Sets whether the cluster will support availability zones. This can be
-     * set as true only in regions where Azure Data Explorer support
-     * Availability Zones. This Property can not be modified after cluster
-     * creation. Default value is 'true' if region supports Availability Zones.
+     * Sets whether the cluster will support availability zones. This can be set as true only in regions where Azure
+     * Data Explorer support Availability Zones. This Property can not be modified after cluster creation. Default
+     * value is 'true' if region supports Availability Zones.
      */
     @JsonProperty(value = "isAvailabilityZonesEnabled")
     private Boolean isAvailabilityZonesEnabled;
@@ -79,6 +78,10 @@ public final class ClusterProperties {
      */
     @JsonProperty(value = "capacityReservationProperties")
     private CapacityReservationProperties capacityReservationProperties;
+
+    /** Creates an instance of ClusterProperties class. */
+    public ClusterProperties() {
+    }
 
     /**
      * Get the clusterId property: The ID associated with the cluster.

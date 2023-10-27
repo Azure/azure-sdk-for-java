@@ -20,6 +20,15 @@ public final class WafGranularity extends ExpandableStringEnum<WafGranularity> {
     public static final WafGranularity P1D = fromString("P1D");
 
     /**
+     * Creates a new instance of WafGranularity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WafGranularity() {
+    }
+
+    /**
      * Creates or finds a WafGranularity from its string representation.
      *
      * @param name a name to look for.

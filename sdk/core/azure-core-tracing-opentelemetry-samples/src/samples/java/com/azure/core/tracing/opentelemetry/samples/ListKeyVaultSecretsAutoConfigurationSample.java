@@ -8,11 +8,11 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import reactor.util.context.Context;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
@@ -26,7 +26,8 @@ public class ListKeyVaultSecretsAutoConfigurationSample {
     private static final String VAULT_URL = "<YOUR_VAULT_URL>";
     @SuppressWarnings("try")
     public void syncClient() {
-        Tracer tracer = configureTracing();
+        OpenTelemetrySdk openTelemetry = AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
+        Tracer tracer = openTelemetry.getTracer("sample");
 
         // BEGIN: readme-sample-context-auto-propagation
         SecretClient secretClient = new SecretClientBuilder()
@@ -46,10 +47,12 @@ public class ListKeyVaultSecretsAutoConfigurationSample {
         }
 
         // END: readme-sample-context-auto-propagation
+        openTelemetry.close();
     }
 
     public void asyncClient() {
-        Tracer tracer = configureTracing();
+        OpenTelemetrySdk openTelemetry = AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
+        Tracer tracer = openTelemetry.getTracer("sample");
 
         // BEGIN: readme-sample-context-manual-propagation
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
@@ -73,20 +76,7 @@ public class ListKeyVaultSecretsAutoConfigurationSample {
         } finally {
             span.end();
         }
-
         // END: readme-sample-context-manual-propagation
-    }
-
-    /**
-     * Configure the OpenTelemetry {@link LoggingSpanExporter} to enable tracing.
-     *
-     * @return The OpenTelemetry {@link Tracer} instance.
-     */
-    private static Tracer configureTracing() {
-        // configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:
-        // OpenTelemetrySdk sdk = AutoConfiguredOpenTelemetrySdk.initialize()
-        //    .getOpenTelemetrySdk();
-
-        return GlobalOpenTelemetry.getTracer("Async-List-KV-Secrets-Sample");
+        openTelemetry.close();
     }
 }

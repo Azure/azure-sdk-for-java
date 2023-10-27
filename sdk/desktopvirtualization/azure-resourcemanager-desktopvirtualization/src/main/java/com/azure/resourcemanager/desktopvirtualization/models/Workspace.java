@@ -140,6 +140,22 @@ public interface Workspace {
     Boolean cloudPcResource();
 
     /**
+     * Gets the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
+     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the privateEndpointConnections property: List of private endpoint connection associated with the specified
+     * resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -174,11 +190,13 @@ public interface Workspace {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Workspace definition stages. */
     interface DefinitionStages {
         /** The first stage of the Workspace definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Workspace definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -197,6 +215,7 @@ public interface Workspace {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Workspace definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -207,6 +226,7 @@ public interface Workspace {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Workspace definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -220,7 +240,8 @@ public interface Workspace {
                 DefinitionStages.WithPlan,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithFriendlyName,
-                DefinitionStages.WithApplicationGroupReferences {
+                DefinitionStages.WithApplicationGroupReferences,
+                DefinitionStages.WithPublicNetworkAccess {
             /**
              * Executes the create request.
              *
@@ -236,6 +257,7 @@ public interface Workspace {
              */
             Workspace create(Context context);
         }
+
         /** The stage of the Workspace definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -246,6 +268,7 @@ public interface Workspace {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Workspace definition allowing to specify managedBy. */
         interface WithManagedBy {
             /**
@@ -261,6 +284,7 @@ public interface Workspace {
              */
             WithCreate withManagedBy(String managedBy);
         }
+
         /** The stage of the Workspace definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -275,6 +299,7 @@ public interface Workspace {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the Workspace definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -285,6 +310,7 @@ public interface Workspace {
              */
             WithCreate withIdentity(ResourceModelWithAllowedPropertySetIdentity identity);
         }
+
         /** The stage of the Workspace definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -295,6 +321,7 @@ public interface Workspace {
              */
             WithCreate withSku(ResourceModelWithAllowedPropertySetSku sku);
         }
+
         /** The stage of the Workspace definition allowing to specify plan. */
         interface WithPlan {
             /**
@@ -305,6 +332,7 @@ public interface Workspace {
              */
             WithCreate withPlan(ResourceModelWithAllowedPropertySetPlan plan);
         }
+
         /** The stage of the Workspace definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -315,6 +343,7 @@ public interface Workspace {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the Workspace definition allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -325,6 +354,7 @@ public interface Workspace {
              */
             WithCreate withFriendlyName(String friendlyName);
         }
+
         /** The stage of the Workspace definition allowing to specify applicationGroupReferences. */
         interface WithApplicationGroupReferences {
             /**
@@ -335,7 +365,21 @@ public interface Workspace {
              */
             WithCreate withApplicationGroupReferences(List<String> applicationGroupReferences);
         }
+
+        /** The stage of the Workspace definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Enabled allows this resource to be accessed from both public
+             * and private networks, Disabled allows this resource to only be accessed via private endpoints.
+             *
+             * @param publicNetworkAccess Enabled allows this resource to be accessed from both public and private
+             *     networks, Disabled allows this resource to only be accessed via private endpoints.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
     }
+
     /**
      * Begins update for the Workspace resource.
      *
@@ -348,7 +392,8 @@ public interface Workspace {
         extends UpdateStages.WithTags,
             UpdateStages.WithDescription,
             UpdateStages.WithFriendlyName,
-            UpdateStages.WithApplicationGroupReferences {
+            UpdateStages.WithApplicationGroupReferences,
+            UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
          *
@@ -364,6 +409,7 @@ public interface Workspace {
          */
         Workspace apply(Context context);
     }
+
     /** The Workspace update stages. */
     interface UpdateStages {
         /** The stage of the Workspace update allowing to specify tags. */
@@ -376,6 +422,7 @@ public interface Workspace {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Workspace update allowing to specify description. */
         interface WithDescription {
             /**
@@ -386,6 +433,7 @@ public interface Workspace {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the Workspace update allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -396,6 +444,7 @@ public interface Workspace {
              */
             Update withFriendlyName(String friendlyName);
         }
+
         /** The stage of the Workspace update allowing to specify applicationGroupReferences. */
         interface WithApplicationGroupReferences {
             /**
@@ -406,7 +455,20 @@ public interface Workspace {
              */
             Update withApplicationGroupReferences(List<String> applicationGroupReferences);
         }
+
+        /** The stage of the Workspace update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Enabled to allow this resource to be access from the public
+             * network.
+             *
+             * @param publicNetworkAccess Enabled to allow this resource to be access from the public network.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

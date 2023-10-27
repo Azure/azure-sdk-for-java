@@ -68,6 +68,20 @@ public final class AzureMLBatchExecutionActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public AzureMLBatchExecutionActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureMLBatchExecutionActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;

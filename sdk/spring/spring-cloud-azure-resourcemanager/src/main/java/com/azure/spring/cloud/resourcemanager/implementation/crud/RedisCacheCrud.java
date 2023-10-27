@@ -11,7 +11,7 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 /**
  * Resource manager for Redis cache.
  */
-public class RedisCacheCrud extends AbstractResourceCrud<RedisCache, String> {
+public class RedisCacheCrud extends AbstractResourceCrud<RedisCache, String, Object> {
 
     public RedisCacheCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);

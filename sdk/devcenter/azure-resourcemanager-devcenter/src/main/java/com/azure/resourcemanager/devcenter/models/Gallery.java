@@ -70,11 +70,13 @@ public interface Gallery {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Gallery definition stages. */
     interface DefinitionStages {
         /** The first stage of the Gallery definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Gallery definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -86,6 +88,7 @@ public interface Gallery {
              */
             WithCreate withExistingDevcenter(String resourceGroupName, String devCenterName);
         }
+
         /**
          * The stage of the Gallery definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -106,6 +109,7 @@ public interface Gallery {
              */
             Gallery create(Context context);
         }
+
         /** The stage of the Gallery definition allowing to specify galleryResourceId. */
         interface WithGalleryResourceId {
             /**
@@ -117,6 +121,7 @@ public interface Gallery {
             WithCreate withGalleryResourceId(String galleryResourceId);
         }
     }
+
     /**
      * Begins update for the Gallery resource.
      *
@@ -141,9 +146,11 @@ public interface Gallery {
          */
         Gallery apply(Context context);
     }
+
     /** The Gallery update stages. */
     interface UpdateStages {
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

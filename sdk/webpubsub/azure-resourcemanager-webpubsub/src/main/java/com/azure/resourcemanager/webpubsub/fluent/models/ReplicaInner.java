@@ -99,6 +99,56 @@ public final class ReplicaInner extends Resource {
     }
 
     /**
+     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     *
+     * @return the regionEndpointEnabled value.
+     */
+    public String regionEndpointEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().regionEndpointEnabled();
+    }
+
+    /**
+     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     *
+     * @param regionEndpointEnabled the regionEndpointEnabled value to set.
+     * @return the ReplicaInner object itself.
+     */
+    public ReplicaInner withRegionEndpointEnabled(String regionEndpointEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReplicaProperties();
+        }
+        this.innerProperties().withRegionEndpointEnabled(regionEndpointEnabled);
+        return this;
+    }
+
+    /**
+     * Get the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @return the resourceStopped value.
+     */
+    public String resourceStopped() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceStopped();
+    }
+
+    /**
+     * Set the resourceStopped property: Stop or start the resource. Default to "false". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @param resourceStopped the resourceStopped value to set.
+     * @return the ReplicaInner object itself.
+     */
+    public ReplicaInner withResourceStopped(String resourceStopped) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReplicaProperties();
+        }
+        this.innerProperties().withResourceStopped(resourceStopped);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

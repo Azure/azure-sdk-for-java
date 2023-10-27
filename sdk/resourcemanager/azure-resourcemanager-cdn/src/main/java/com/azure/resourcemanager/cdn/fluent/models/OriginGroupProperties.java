@@ -28,6 +28,10 @@ public final class OriginGroupProperties extends OriginGroupUpdatePropertiesPara
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private OriginGroupProvisioningState provisioningState;
 
+    /** Creates an instance of OriginGroupProperties class. */
+    public OriginGroupProperties() {
+    }
+
     /**
      * Get the resourceState property: Resource status of the origin group.
      *

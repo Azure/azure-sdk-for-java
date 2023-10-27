@@ -7,7 +7,7 @@ package com.azure.resourcemanager.signalr.generated;
 /** Samples for SignalRReplicas List. */
 public final class SignalRReplicasListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_List.json
      */
     /**
      * Sample code: SignalRReplicas_List.

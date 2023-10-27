@@ -35,7 +35,7 @@ public class AuthenticateWithTokenCache {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Host Name, Port, Username and Azure AD Token are required here.
+        // Host Name, Port, Username, and Microsoft Entra token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
         String hostName = "<HOST_NAME>";
         String userName = "<USERNAME>";

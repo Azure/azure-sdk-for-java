@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHe
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link AssessmentSentiment} model.
+ * The {@code AssessmentSentiment} model.
  */
 @Immutable
 public final class AssessmentSentiment {
@@ -52,6 +52,12 @@ public final class AssessmentSentiment {
                     assessmentSentiment.setLength(length);
                 }
             });
+    }
+
+    /**
+     * Constructs a {@code AssessmentSentiment} model.
+     */
+    public AssessmentSentiment() {
     }
 
     /**
@@ -102,8 +108,8 @@ public final class AssessmentSentiment {
 
     /**
      * Gets the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
-     * higher the confidence in the sentiment. {@link AssessmentSentiment} only has positive or negative confidence
-     * score value because there is no neutral sentiment label in the {@link AssessmentSentiment}.
+     * higher the confidence in the sentiment. {@code AssessmentSentiment} only has positive or negative confidence
+     * score value because there is no neutral sentiment label in the {@code AssessmentSentiment}.
      *
      * @return The {@link SentimentConfidenceScores}.
      */

@@ -287,7 +287,7 @@ public final class LogAnalyticsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.loganalytics")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -609,8 +609,10 @@ public final class LogAnalyticsManager {
     }
 
     /**
-     * @return Wrapped service client OperationalInsightsManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client OperationalInsightsManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client OperationalInsightsManagementClient.
      */
     public OperationalInsightsManagementClient serviceClient() {
         return this.clientObject;

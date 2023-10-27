@@ -65,11 +65,10 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientO")
-    private interface OriginGroupsService {
+    public interface OriginGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/originGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OriginGroupListResult>> listByEndpoint(
@@ -84,8 +83,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OriginGroupInner>> get(
@@ -101,8 +99,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -119,8 +116,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -137,8 +133,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/originGroups/{originGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -505,24 +500,6 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originGroupName Name of the origin group which is unique within the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within an endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OriginGroupInner get(
-        String resourceGroupName, String profileName, String endpointName, String originGroupName) {
-        return getAsync(resourceGroupName, profileName, endpointName, originGroupName).block();
-    }
-
-    /**
-     * Gets an existing origin group within an endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param originGroupName Name of the origin group which is unique within the endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -533,6 +510,24 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
     public Response<OriginGroupInner> getWithResponse(
         String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, originGroupName, context).block();
+    }
+
+    /**
+     * Gets an existing origin group within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originGroupName Name of the origin group which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing origin group within an endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OriginGroupInner get(
+        String resourceGroupName, String profileName, String endpointName, String originGroupName) {
+        return getWithResponse(resourceGroupName, profileName, endpointName, originGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -763,7 +758,8 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
         String endpointName,
         String originGroupName,
         OriginGroupInner originGroup) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup)
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup)
             .getSyncPoller();
     }
 
@@ -790,7 +786,8 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
         String originGroupName,
         OriginGroupInner originGroup,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup, context)
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, endpointName, originGroupName, originGroup, context)
             .getSyncPoller();
     }
 
@@ -1133,7 +1130,8 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
         String endpointName,
         String originGroupName,
         OriginGroupUpdateParameters originGroupUpdateProperties) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties)
             .getSyncPoller();
     }
@@ -1161,7 +1159,8 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
         String originGroupName,
         OriginGroupUpdateParameters originGroupUpdateProperties,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, profileName, endpointName, originGroupName, originGroupUpdateProperties, context)
             .getSyncPoller();
     }
@@ -1453,7 +1452,7 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String originGroupName) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName).getSyncPoller();
     }
 
     /**
@@ -1472,7 +1471,9 @@ public final class OriginGroupsClientImpl implements OriginGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, profileName, endpointName, originGroupName, context)
+            .getSyncPoller();
     }
 
     /**

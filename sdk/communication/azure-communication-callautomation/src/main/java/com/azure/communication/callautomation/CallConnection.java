@@ -4,6 +4,8 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallParticipant;
+import com.azure.communication.callautomation.models.CancelAddParticipantOptions;
+import com.azure.communication.callautomation.models.CancelAddParticipantResult;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
@@ -263,6 +265,33 @@ public final class CallConnection {
         return callConnectionAsync.unmuteParticipantWithResponseInternal(unmuteParticipantsOptions, context).block();
     }
 
+    /**
+     * Cancel add participant request.
+     *
+     * @param invitationId invitation ID used to add participant.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of cancelling add participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CancelAddParticipantResult cancelAddParticipant(String invitationId) {
+        return callConnectionAsync.cancelAddParticipant(invitationId).block();
+    }
+
+    /**
+     * Cancel add participant request.
+     *
+     * @param cancelAddParticipantOptions The options for cancelling add participant request.
+     * @param context A {@link Context} representing the request context.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of cancelling add participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CancelAddParticipantResult> cancelAddParticipantWithResponse(CancelAddParticipantOptions cancelAddParticipantOptions, Context context) {
+        return callConnectionAsync.cancelAddParticipantWithResponseInternal(cancelAddParticipantOptions, context).block();
+    }
+
     //region Content management Actions
     /***
      * Returns an object of CallContent
@@ -272,6 +301,16 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMedia getCallMedia() {
         return new CallMedia(callConnectionAsync.getCallMediaAsync());
+    }
+
+    /***
+     * Returns an object of CallDialog
+     *
+     * @return a CallDialogAsync.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallDialog getCallDialog() {
+        return new CallDialog(callConnectionAsync.getCallDialogAsync());
     }
 
     //endregion

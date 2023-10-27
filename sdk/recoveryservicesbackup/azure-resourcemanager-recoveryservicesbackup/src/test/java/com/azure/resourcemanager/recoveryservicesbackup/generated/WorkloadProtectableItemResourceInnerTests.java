@@ -18,40 +18,41 @@ public final class WorkloadProtectableItemResourceInnerTests {
         WorkloadProtectableItemResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"pikpz\",\"workloadType\":\"ejzanlfz\",\"friendlyName\":\"av\",\"protectionState\":\"Protected\"},\"eTag\":\"onok\",\"location\":\"xrjqcirgzpfrlazs\",\"tags\":{\"wp\":\"woiindf\",\"jvfbgofelja\":\"ylwbtlhflsjcdhsz\"},\"id\":\"rqmq\",\"name\":\"ldvriiiojnalghfk\",\"type\":\"tvsexsowuel\"}")
+                    "{\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"iby\",\"workloadType\":\"dl\",\"friendlyName\":\"shfwpracstwity\",\"protectionState\":\"Protecting\"},\"eTag\":\"xccedcpnmdyodn\",\"location\":\"zxltjcvn\",\"tags\":{\"byqunyow\":\"iugcxnavvwxq\",\"g\":\"wlmdjrkv\",\"j\":\"vfvpdbodaciz\"},\"id\":\"lhkrribdeibqipqk\",\"name\":\"hvxndzwmkrefajpj\",\"type\":\"rwkq\"}")
                 .toObject(WorkloadProtectableItemResourceInner.class);
-        Assertions.assertEquals("xrjqcirgzpfrlazs", model.location());
-        Assertions.assertEquals("woiindf", model.tags().get("wp"));
-        Assertions.assertEquals("pikpz", model.properties().backupManagementType());
-        Assertions.assertEquals("ejzanlfz", model.properties().workloadType());
-        Assertions.assertEquals("av", model.properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.properties().protectionState());
-        Assertions.assertEquals("onok", model.etag());
+        Assertions.assertEquals("zxltjcvn", model.location());
+        Assertions.assertEquals("iugcxnavvwxq", model.tags().get("byqunyow"));
+        Assertions.assertEquals("iby", model.properties().backupManagementType());
+        Assertions.assertEquals("dl", model.properties().workloadType());
+        Assertions.assertEquals("shfwpracstwity", model.properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.properties().protectionState());
+        Assertions.assertEquals("xccedcpnmdyodn", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadProtectableItemResourceInner model =
             new WorkloadProtectableItemResourceInner()
-                .withLocation("xrjqcirgzpfrlazs")
-                .withTags(mapOf("wp", "woiindf", "jvfbgofelja", "ylwbtlhflsjcdhsz"))
+                .withLocation("zxltjcvn")
+                .withTags(mapOf("byqunyow", "iugcxnavvwxq", "g", "wlmdjrkv", "j", "vfvpdbodaciz"))
                 .withProperties(
                     new WorkloadProtectableItem()
-                        .withBackupManagementType("pikpz")
-                        .withWorkloadType("ejzanlfz")
-                        .withFriendlyName("av")
-                        .withProtectionState(ProtectionStatus.PROTECTED))
-                .withEtag("onok");
+                        .withBackupManagementType("iby")
+                        .withWorkloadType("dl")
+                        .withFriendlyName("shfwpracstwity")
+                        .withProtectionState(ProtectionStatus.PROTECTING))
+                .withEtag("xccedcpnmdyodn");
         model = BinaryData.fromObject(model).toObject(WorkloadProtectableItemResourceInner.class);
-        Assertions.assertEquals("xrjqcirgzpfrlazs", model.location());
-        Assertions.assertEquals("woiindf", model.tags().get("wp"));
-        Assertions.assertEquals("pikpz", model.properties().backupManagementType());
-        Assertions.assertEquals("ejzanlfz", model.properties().workloadType());
-        Assertions.assertEquals("av", model.properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.properties().protectionState());
-        Assertions.assertEquals("onok", model.etag());
+        Assertions.assertEquals("zxltjcvn", model.location());
+        Assertions.assertEquals("iugcxnavvwxq", model.tags().get("byqunyow"));
+        Assertions.assertEquals("iby", model.properties().backupManagementType());
+        Assertions.assertEquals("dl", model.properties().workloadType());
+        Assertions.assertEquals("shfwpracstwity", model.properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.properties().protectionState());
+        Assertions.assertEquals("xccedcpnmdyodn", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

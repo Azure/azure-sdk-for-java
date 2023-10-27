@@ -173,8 +173,9 @@ public class ClientTelemetryTest extends TestSuiteBase {
             FeedResponse<InternalObjectNode> response = iterator.next();
         }
 
-        //Verifying above query operation, we should have 2 operation (1 latency, 1 request charge)
-        assertThat(clientTelemetry.getClientTelemetryInfo().getOperationInfoMap().size()).isEqualTo(2);
+        // Verifying above query operation, we should have 4 operation (1 latency, 1 request charge -
+        // for both query plan and the actual feed response)
+        assertThat(clientTelemetry.getClientTelemetryInfo().getOperationInfoMap().size()).isEqualTo(4);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

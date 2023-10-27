@@ -32,6 +32,15 @@ public final class MicrosoftGraphDayOfWeek extends ExpandableStringEnum<Microsof
     public static final MicrosoftGraphDayOfWeek SATURDAY = fromString("saturday");
 
     /**
+     * Creates a new instance of MicrosoftGraphDayOfWeek value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphDayOfWeek() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphDayOfWeek from its string representation.
      *
      * @param name a name to look for.

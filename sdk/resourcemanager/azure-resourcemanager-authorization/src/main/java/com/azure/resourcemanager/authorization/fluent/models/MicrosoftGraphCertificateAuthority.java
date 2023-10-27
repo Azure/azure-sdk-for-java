@@ -17,6 +17,8 @@ import java.util.Map;
 /** certificateAuthority. */
 @Fluent
 public final class MicrosoftGraphCertificateAuthority {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * Required. The base64 encoded string representing the public certificate.
      */
@@ -71,7 +73,7 @@ public final class MicrosoftGraphCertificateAuthority {
      */
     public byte[] certificate() {
         if (this.certificate == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.certificate.decodedBytes();
     }

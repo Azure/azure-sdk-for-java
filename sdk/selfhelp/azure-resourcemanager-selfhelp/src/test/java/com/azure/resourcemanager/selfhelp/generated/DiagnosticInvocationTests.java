@@ -16,24 +16,24 @@ public final class DiagnosticInvocationTests {
         DiagnosticInvocation model =
             BinaryData
                 .fromString(
-                    "{\"solutionId\":\"clxxwrljdo\",\"additionalParameters\":{\"xbnjbiksq\":\"cqvkocrcjdkwtn\",\"ainqpjwnzlljfm\":\"gls\",\"vmgxsab\":\"pee\"}}")
+                    "{\"solutionId\":\"gou\",\"additionalParameters\":{\"gakeqsr\":\"dlikwyqkgfgibma\",\"qqedqytbciqfou\":\"yb\"}}")
                 .toObject(DiagnosticInvocation.class);
-        Assertions.assertEquals("clxxwrljdo", model.solutionId());
-        Assertions.assertEquals("cqvkocrcjdkwtn", model.additionalParameters().get("xbnjbiksq"));
+        Assertions.assertEquals("gou", model.solutionId());
+        Assertions.assertEquals("dlikwyqkgfgibma", model.additionalParameters().get("gakeqsr"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiagnosticInvocation model =
             new DiagnosticInvocation()
-                .withSolutionId("clxxwrljdo")
-                .withAdditionalParameters(
-                    mapOf("xbnjbiksq", "cqvkocrcjdkwtn", "ainqpjwnzlljfm", "gls", "vmgxsab", "pee"));
+                .withSolutionId("gou")
+                .withAdditionalParameters(mapOf("gakeqsr", "dlikwyqkgfgibma", "qqedqytbciqfou", "yb"));
         model = BinaryData.fromObject(model).toObject(DiagnosticInvocation.class);
-        Assertions.assertEquals("clxxwrljdo", model.solutionId());
-        Assertions.assertEquals("cqvkocrcjdkwtn", model.additionalParameters().get("xbnjbiksq"));
+        Assertions.assertEquals("gou", model.solutionId());
+        Assertions.assertEquals("dlikwyqkgfgibma", model.additionalParameters().get("gakeqsr"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

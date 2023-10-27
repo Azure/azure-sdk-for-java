@@ -9,17 +9,17 @@ import com.azure.resourcemanager.baremetalinfrastructure.fluent.models.AzureBare
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List AzureBareMetal Instances operation. */
+/** The response from the List Azure Bare Metal Instances operation. */
 @Fluent
 public final class AzureBareMetalInstancesListResult {
     /*
-     * The list of Azure BareMetal instances.
+     * The list of Azure Bare Metal Instances.
      */
     @JsonProperty(value = "value")
     private List<AzureBareMetalInstanceInner> value;
 
     /*
-     * The URL to get the next set of AzureBareMetal instances.
+     * The URL to get the next set of Azure Bare Metal Instances.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -29,7 +29,7 @@ public final class AzureBareMetalInstancesListResult {
     }
 
     /**
-     * Get the value property: The list of Azure BareMetal instances.
+     * Get the value property: The list of Azure Bare Metal Instances.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class AzureBareMetalInstancesListResult {
     }
 
     /**
-     * Set the value property: The list of Azure BareMetal instances.
+     * Set the value property: The list of Azure Bare Metal Instances.
      *
      * @param value the value value to set.
      * @return the AzureBareMetalInstancesListResult object itself.
@@ -49,7 +49,7 @@ public final class AzureBareMetalInstancesListResult {
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of AzureBareMetal instances.
+     * Get the nextLink property: The URL to get the next set of Azure Bare Metal Instances.
      *
      * @return the nextLink value.
      */
@@ -58,7 +58,7 @@ public final class AzureBareMetalInstancesListResult {
     }
 
     /**
-     * Set the nextLink property: The URL to get the next set of AzureBareMetal instances.
+     * Set the nextLink property: The URL to get the next set of Azure Bare Metal Instances.
      *
      * @param nextLink the nextLink value to set.
      * @return the AzureBareMetalInstancesListResult object itself.

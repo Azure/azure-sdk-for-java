@@ -21,6 +21,15 @@ public final class MicrosoftGraphManagedDeviceOwnerType
     public static final MicrosoftGraphManagedDeviceOwnerType PERSONAL = fromString("personal");
 
     /**
+     * Creates a new instance of MicrosoftGraphManagedDeviceOwnerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphManagedDeviceOwnerType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphManagedDeviceOwnerType from its string representation.
      *
      * @param name a name to look for.

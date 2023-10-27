@@ -19,14 +19,14 @@ public final class ScheduleUpdateTests {
         ScheduleUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"vdkcrodtj\",\"timeZone\":\"fw\",\"state\":\"Enabled\"},\"tags\":{\"kggkfpa\":\"kacjvefkdlfo\",\"pulpqblylsyxk\":\"ao\"},\"location\":\"nsj\"}")
+                    "{\"properties\":{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"sx\",\"timeZone\":\"jmsvpkjp\",\"state\":\"Enabled\"},\"tags\":{\"ljyxgtczhe\":\"fz\"},\"location\":\"bsdshmkxmaehvbbx\"}")
                 .toObject(ScheduleUpdate.class);
-        Assertions.assertEquals("kacjvefkdlfo", model.tags().get("kggkfpa"));
-        Assertions.assertEquals("nsj", model.location());
+        Assertions.assertEquals("fz", model.tags().get("ljyxgtczhe"));
+        Assertions.assertEquals("bsdshmkxmaehvbbx", model.location());
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("vdkcrodtj", model.time());
-        Assertions.assertEquals("fw", model.timeZone());
+        Assertions.assertEquals("sx", model.time());
+        Assertions.assertEquals("jmsvpkjp", model.timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
     }
 
@@ -34,23 +34,24 @@ public final class ScheduleUpdateTests {
     public void testSerialize() throws Exception {
         ScheduleUpdate model =
             new ScheduleUpdate()
-                .withTags(mapOf("kggkfpa", "kacjvefkdlfo", "pulpqblylsyxk", "ao"))
-                .withLocation("nsj")
+                .withTags(mapOf("ljyxgtczhe", "fz"))
+                .withLocation("bsdshmkxmaehvbbx")
                 .withType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("vdkcrodtj")
-                .withTimeZone("fw")
+                .withTime("sx")
+                .withTimeZone("jmsvpkjp")
                 .withState(ScheduleEnableStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleUpdate.class);
-        Assertions.assertEquals("kacjvefkdlfo", model.tags().get("kggkfpa"));
-        Assertions.assertEquals("nsj", model.location());
+        Assertions.assertEquals("fz", model.tags().get("ljyxgtczhe"));
+        Assertions.assertEquals("bsdshmkxmaehvbbx", model.location());
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("vdkcrodtj", model.time());
-        Assertions.assertEquals("fw", model.timeZone());
+        Assertions.assertEquals("sx", model.time());
+        Assertions.assertEquals("jmsvpkjp", model.timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

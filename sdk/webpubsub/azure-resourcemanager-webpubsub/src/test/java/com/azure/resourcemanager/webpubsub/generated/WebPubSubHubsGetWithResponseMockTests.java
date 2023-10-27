@@ -32,7 +32,7 @@ public final class WebPubSubHubsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"rwd\",\"userEventPattern\":\"zeqyjleziun\",\"systemEvents\":[\"fza\",\"tkw\",\"eg\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}},{\"urlTemplate\":\"nseqacjjvp\",\"userEventPattern\":\"guooqjagmdit\",\"systemEvents\":[\"iookjbsah\",\"tdtpdelqacslmo\",\"oebn\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"gdirazf\"},\"id\":\"xejw\",\"name\":\"bmdujtmvcopexc\",\"type\":\"jurbuhhlkyqltqsr\"}";
+            "{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"wrsnewmozqvbu\",\"userEventPattern\":\"ma\",\"systemEvents\":[\"ycxhxzgaztta\",\"o\",\"dvmfqhppub\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{}}},{\"urlTemplate\":\"dfgkmtdh\",\"userEventPattern\":\"ngb\",\"systemEvents\":[\"uahokq\",\"obkauxofsh\",\"phwpnulaiywzej\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"jpllndnpdwrpq\"},\"id\":\"gfugsnnfhyet\",\"name\":\"fypococtfjgti\",\"type\":\"rjvzuyt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,15 @@ public final class WebPubSubHubsGetWithResponseMockTests {
         WebPubSubHub response =
             manager
                 .webPubSubHubs()
-                .getWithResponse("g", "jbgdlfgtdysnaquf", "qbctqha", com.azure.core.util.Context.NONE)
+                .getWithResponse("jqirwrw", "ooxf", "i", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("rwd", response.properties().eventHandlers().get(0).urlTemplate());
-        Assertions.assertEquals("zeqyjleziun", response.properties().eventHandlers().get(0).userEventPattern());
-        Assertions.assertEquals("fza", response.properties().eventHandlers().get(0).systemEvents().get(0));
-        Assertions.assertEquals(UpstreamAuthType.NONE, response.properties().eventHandlers().get(0).auth().type());
-        Assertions.assertEquals("gdirazf", response.properties().anonymousConnectPolicy());
+        Assertions.assertEquals("wrsnewmozqvbu", response.properties().eventHandlers().get(0).urlTemplate());
+        Assertions.assertEquals("ma", response.properties().eventHandlers().get(0).userEventPattern());
+        Assertions.assertEquals("ycxhxzgaztta", response.properties().eventHandlers().get(0).systemEvents().get(0));
+        Assertions
+            .assertEquals(
+                UpstreamAuthType.MANAGED_IDENTITY, response.properties().eventHandlers().get(0).auth().type());
+        Assertions.assertEquals("jpllndnpdwrpq", response.properties().anonymousConnectPolicy());
     }
 }

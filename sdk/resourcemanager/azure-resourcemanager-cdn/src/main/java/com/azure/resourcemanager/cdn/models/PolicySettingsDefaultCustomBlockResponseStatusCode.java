@@ -27,6 +27,15 @@ public final class PolicySettingsDefaultCustomBlockResponseStatusCode
     public static final PolicySettingsDefaultCustomBlockResponseStatusCode FOUR_TWO_NINE = fromInt(429);
 
     /**
+     * Creates a new instance of PolicySettingsDefaultCustomBlockResponseStatusCode value.
+     *
+     * @deprecated Use the {@link #fromInt(int)} factory method.
+     */
+    @Deprecated
+    public PolicySettingsDefaultCustomBlockResponseStatusCode() {
+    }
+
+    /**
      * Creates or finds a PolicySettingsDefaultCustomBlockResponseStatusCode from its string representation.
      *
      * @param name a name to look for.

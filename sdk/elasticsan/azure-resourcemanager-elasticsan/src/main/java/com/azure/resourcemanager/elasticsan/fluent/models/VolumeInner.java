@@ -6,8 +6,11 @@ package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elasticsan.models.IscsiTargetInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,6 +23,12 @@ public final class VolumeInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private VolumeProperties innerProperties = new VolumeProperties();
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
     /** Creates an instance of VolumeInner class. */
     public VolumeInner() {
     }
@@ -31,6 +40,15 @@ public final class VolumeInner extends ProxyResource {
      */
     private VolumeProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -95,6 +113,38 @@ public final class VolumeInner extends ProxyResource {
      */
     public IscsiTargetInfo storageTarget() {
         return this.innerProperties() == null ? null : this.innerProperties().storageTarget();
+    }
+
+    /**
+     * Get the managedBy property: Parent resource information.
+     *
+     * @return the managedBy value.
+     */
+    public ManagedByInfo managedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedBy();
+    }
+
+    /**
+     * Set the managedBy property: Parent resource information.
+     *
+     * @param managedBy the managedBy value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withManagedBy(ManagedByInfo managedBy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withManagedBy(managedBy);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: State of the operation on the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningStates provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
