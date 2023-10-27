@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +33,7 @@ public class AksResourceAttributesTest {
 
     @Test
     void testDefault() {
-        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
                 "otel.resource.attributes",
                 "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
@@ -46,7 +47,7 @@ public class AksResourceAttributesTest {
 
     @Test
     void testServiceNameAndK8sPodName() {
-        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
                 "otel.resource.attributes",
                 "cloud.provider=Azure,cloud.platform=azure_aks,service.name=test-service-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
@@ -60,7 +61,7 @@ public class AksResourceAttributesTest {
 
     @Test
     void testK8sDeploymentName() {
-        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
                 "otel.resource.attributes",
                 "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.deployment.name=test-deployment-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
@@ -74,7 +75,7 @@ public class AksResourceAttributesTest {
 
     @Test
     void testK8sReplicaSetName() {
-        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
                 "otel.resource.attributes",
                 "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.replicaset.name=test-replicaset-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
@@ -88,7 +89,7 @@ public class AksResourceAttributesTest {
 
     @Test
     void testK8sStatefulSetName() {
-        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
                 "otel.resource.attributes",
                 "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.statefulset.name=test-statefulset-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
@@ -103,7 +104,7 @@ public class AksResourceAttributesTest {
 
     @Test
     void testKsJobName() {
-        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
                 "otel.resource.attributes",
                 "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.job.name=test-job-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
@@ -117,7 +118,7 @@ public class AksResourceAttributesTest {
 
     @Test
     void testK8sCronJobName() {
-        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
                 "otel.resource.attributes",
                 "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.cronjob.name=test-cronjob-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
@@ -131,7 +132,7 @@ public class AksResourceAttributesTest {
 
     @Test
     void testK8sDaemonSetName() {
-        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
                 "otel.resource.attributes",
                 "cloud.provider=Azure,cloud.platform=azure_aks,service.name=unknown_service:java,k8s.daemonset.name=test-daemonset-name,k8s.pod.name=test-pod-name"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
@@ -143,11 +144,7 @@ public class AksResourceAttributesTest {
             .isEqualTo("test-pod-name");
     }
 
-    private static Configuration getConfiguration() {
-        return new ConfigurationBuilder(
-            new TestConfigurationSource(),
-            new TestConfigurationSource(),
-            new TestConfigurationSource())
-            .build();
+    private static ConfigProperties getConfiguration() {
+        return DefaultConfigProperties.create(emptyMap());
     }
 }

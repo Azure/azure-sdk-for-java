@@ -68,6 +68,20 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public DataLakeAnalyticsUsqlActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalyticsUsqlActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public DataLakeAnalyticsUsqlActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;

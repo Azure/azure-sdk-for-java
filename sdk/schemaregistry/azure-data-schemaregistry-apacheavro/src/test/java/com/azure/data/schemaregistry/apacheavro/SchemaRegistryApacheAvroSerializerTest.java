@@ -3,20 +3,15 @@
 
 package com.azure.data.schemaregistry.apacheavro;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.models.MessageContent;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -54,8 +49,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -67,7 +60,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -451,17 +443,10 @@ public class SchemaRegistryApacheAvroSerializerTest {
             throw new UncheckedIOException("Unable to get resource input stream for: " + resourceName, e);
         }
 
-        final TokenCredential tokenCredential = mock(TokenCredential.class);
-
-        // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
-        when(tokenCredential.getToken(any(TokenRequestContext.class)))
-            .thenAnswer(invocationOnMock -> Mono.fromCallable(() ->
-                new AccessToken("foo", OffsetDateTime.now().plusMinutes(20))));
-
         final HttpClient mockedHttpClient = setupHttpClient(recordedData);
 
         final SchemaRegistryClientBuilder builder = new SchemaRegistryClientBuilder()
-            .credential(tokenCredential)
+            .credential(new MockTokenCredential())
             .pipeline(new HttpPipelineBuilder().httpClient(mockedHttpClient).build())
             .fullyQualifiedNamespace(PLAYBACK_ENDPOINT);
 
@@ -469,14 +454,8 @@ public class SchemaRegistryApacheAvroSerializerTest {
     }
 
     private static HttpClient setupHttpClient(RecordedData recordedData) {
-        final AtomicInteger counted = new AtomicInteger();
-        final HttpClient httpClientMock = mock(HttpClient.class);
-
-        when(httpClientMock.send(any(), any(Context.class))).thenAnswer(invocationOnMock -> {
-            final HttpRequest request = invocationOnMock.getArgument(0);
-            final NetworkCallRecord networkRecord = recordedData.findFirstAndRemoveNetworkCall(e -> {
-                return true;
-            });
+        return request -> {
+            final NetworkCallRecord networkRecord = recordedData.findFirstAndRemoveNetworkCall(e -> true);
 
             final String body = networkRecord.getResponse().remove("Body");
             final String statusCodeMessage = networkRecord.getResponse().remove("StatusCode");
@@ -488,12 +467,9 @@ public class SchemaRegistryApacheAvroSerializerTest {
                 System.out.println("Body is empty.");
                 return Mono.just(new MockHttpResponse(request, statusCode, headers, new byte[0]));
             } else {
-                final HttpResponse response = new MockHttpResponse(request, statusCode, headers, body);
-                return Mono.just(response);
+                return Mono.just(new MockHttpResponse(request, statusCode, headers, body));
             }
-        });
-
-        return httpClientMock;
+        };
     }
 
     private static MockMessage getPayload(PlayingCard card) throws IOException {

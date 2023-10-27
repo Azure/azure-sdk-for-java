@@ -13,7 +13,7 @@ public final class EndpointListTests {
         EndpointList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"tyxolniwpwc\",\"provisioningState\":\"Succeeded\"},\"id\":\"fkgiawxk\",\"name\":\"ryplwckbasyypn\",\"type\":\"dhsgcba\"}],\"nextLink\":\"hejkotynqgou\"}")
+                    "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"tyxolniwpwc\",\"provisioningState\":\"Succeeded\"},\"id\":\"kgiawxklryplwck\",\"name\":\"asy\",\"type\":\"pnddhsgcbacphejk\"}],\"nextLink\":\"ynqgoulzndlikwyq\"}")
                 .toObject(EndpointList.class);
     }
 

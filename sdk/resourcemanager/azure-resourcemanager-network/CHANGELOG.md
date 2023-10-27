@@ -1,6 +1,12 @@
 # Release History
 
-## 2.31.0-beta.1 (Unreleased)
+## 2.32.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported `withHostNameFromBackendHttpSettings` for `ApplicationGatewayProbe` under `ApplicationGateway`.
+
+## 2.31.0 (2023-09-28)
 
 ### Other Changes
 

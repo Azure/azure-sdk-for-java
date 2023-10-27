@@ -17,20 +17,6 @@ public interface VirtualNetworks {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualNetwork.
-     */
-    VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName);
-
-    /**
-     * Gets a virtual network.
-     *
-     * <p>Implements virtual network GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,18 +27,18 @@ public interface VirtualNetworks {
         String resourceGroupName, String virtualNetworkName, Context context);
 
     /**
-     * Deletes an virtual network.
+     * Gets a virtual network.
      *
-     * <p>Implements virtual network DELETE method.
+     * <p>Implements virtual network GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the virtualNetwork.
      */
-    void delete(String resourceGroupName, String virtualNetworkName, Boolean force);
+    VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName);
 
     /**
      * Deletes an virtual network.

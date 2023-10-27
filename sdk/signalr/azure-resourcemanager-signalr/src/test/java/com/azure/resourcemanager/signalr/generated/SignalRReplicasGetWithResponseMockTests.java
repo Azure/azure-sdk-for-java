@@ -32,7 +32,7 @@ public final class SignalRReplicasGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"sku\":{\"name\":\"lbyulidwcwvmze\",\"tier\":\"Free\",\"size\":\"fhjirwgdnqzbrfk\",\"family\":\"zhzmtksjci\",\"capacity\":966916791},\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"dglj\",\"tags\":{\"ytswfp\":\"euachtomfl\",\"skw\":\"mdgycxn\",\"shhkvpedw\":\"qjjyslurl\"},\"id\":\"slsrhmpq\",\"name\":\"wwsko\",\"type\":\"dcbrwimuvq\"}";
+            "{\"sku\":{\"name\":\"erctatoyin\",\"tier\":\"Premium\",\"size\":\"rlcyrduc\",\"family\":\"go\",\"capacity\":243797938},\"properties\":{\"provisioningState\":\"Creating\",\"regionEndpointEnabled\":\"cvcrrp\",\"resourceStopped\":\"ttbst\"},\"location\":\"eaqnrmvvfkoxm\",\"tags\":{\"zlpdwwex\":\"ktuidvrm\",\"wvqsgny\":\"mzvlazipbh\",\"patlbijp\":\"uuzivensrpmeyyvp\"},\"id\":\"gsksrfhf\",\"name\":\"olmk\",\"type\":\"bnxwc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,15 @@ public final class SignalRReplicasGetWithResponseMockTests {
         Replica response =
             manager
                 .signalRReplicas()
-                .getWithResponse("n", "pxy", "afiqgeaarbgjekg", com.azure.core.util.Context.NONE)
+                .getWithResponse("lexwhcbjp", "bke", "hu", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("dglj", response.location());
-        Assertions.assertEquals("euachtomfl", response.tags().get("ytswfp"));
-        Assertions.assertEquals("lbyulidwcwvmze", response.sku().name());
-        Assertions.assertEquals(SignalRSkuTier.FREE, response.sku().tier());
-        Assertions.assertEquals(966916791, response.sku().capacity());
+        Assertions.assertEquals("eaqnrmvvfkoxm", response.location());
+        Assertions.assertEquals("ktuidvrm", response.tags().get("zlpdwwex"));
+        Assertions.assertEquals("erctatoyin", response.sku().name());
+        Assertions.assertEquals(SignalRSkuTier.PREMIUM, response.sku().tier());
+        Assertions.assertEquals(243797938, response.sku().capacity());
+        Assertions.assertEquals("cvcrrp", response.regionEndpointEnabled());
+        Assertions.assertEquals("ttbst", response.resourceStopped());
     }
 }

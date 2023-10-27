@@ -20,6 +20,15 @@ public final class MicrosoftGraphFollowupFlagStatus extends ExpandableStringEnum
     public static final MicrosoftGraphFollowupFlagStatus FLAGGED = fromString("flagged");
 
     /**
+     * Creates a new instance of MicrosoftGraphFollowupFlagStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphFollowupFlagStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphFollowupFlagStatus from its string representation.
      *
      * @param name a name to look for.

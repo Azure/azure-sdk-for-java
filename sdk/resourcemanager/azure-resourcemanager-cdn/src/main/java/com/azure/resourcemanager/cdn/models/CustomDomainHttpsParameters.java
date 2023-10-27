@@ -36,6 +36,10 @@ public class CustomDomainHttpsParameters {
     @JsonProperty(value = "minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
+    /** Creates an instance of CustomDomainHttpsParameters class. */
+    public CustomDomainHttpsParameters() {
+    }
+
     /**
      * Get the protocolType property: Defines the TLS extension protocol that is used for secure delivery.
      *

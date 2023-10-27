@@ -37,6 +37,10 @@ public final class WafRankingsResponseInner {
     @JsonProperty(value = "data")
     private List<WafRankingsResponseDataItem> data;
 
+    /** Creates an instance of WafRankingsResponseInner class. */
+    public WafRankingsResponseInner() {
+    }
+
     /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
      *

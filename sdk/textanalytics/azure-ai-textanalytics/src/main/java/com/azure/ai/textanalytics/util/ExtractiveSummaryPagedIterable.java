@@ -21,7 +21,7 @@ public final class ExtractiveSummaryPagedIterable extends ContinuablePagedIterab
         ExtractiveSummaryResultCollection, PagedResponse<ExtractiveSummaryResultCollection>> {
 
     /**
-     * Creates an instance of {@link ExtractiveSummaryPagedIterable}. The constructor takes a {@code Supplier} and
+     * Creates an instance of {@code ExtractiveSummaryPagedIterable}. The constructor takes a {@code Supplier} and
      * {@code Function}. The {@code Supplier} returns the first page of {@link ExtractiveSummaryResultCollection},
      * the {@code Function} retrieves subsequent pages of {@link ExtractiveSummaryResultCollection}.
      *

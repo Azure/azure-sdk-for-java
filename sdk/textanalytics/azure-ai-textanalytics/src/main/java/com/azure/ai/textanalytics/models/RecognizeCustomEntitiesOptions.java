@@ -6,13 +6,19 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The {@link RecognizeCustomEntitiesOptions} model.
+ * The {@code RecognizeCustomEntitiesOptions} model.
  */
 @Fluent
 public final class RecognizeCustomEntitiesOptions {
     private String displayName;
     private boolean includeStatistics;
     private boolean disableServiceLogs;
+
+    /**
+     * Constructs a {@code RecognizeCustomEntitiesOptions} model.
+     */
+    public RecognizeCustomEntitiesOptions() {
+    }
 
     /**
      * Gets display name of the operation.
@@ -28,7 +34,7 @@ public final class RecognizeCustomEntitiesOptions {
      *
      * @param displayName Display name of the operation.
      *
-     * @return The {@link RecognizeCustomEntitiesOptions} object itself.
+     * @return The {@code RecognizeCustomEntitiesOptions} object itself.
      */
     public RecognizeCustomEntitiesOptions setDisplayName(String displayName) {
         this.displayName = displayName;
@@ -52,7 +58,7 @@ public final class RecognizeCustomEntitiesOptions {
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return the {@link RecognizeCustomEntitiesOptions} object itself.
+     * @return the {@code RecognizeCustomEntitiesOptions} object itself.
      */
     public RecognizeCustomEntitiesOptions setIncludeStatistics(boolean includeStatistics) {
         this.includeStatistics = includeStatistics;
@@ -77,7 +83,7 @@ public final class RecognizeCustomEntitiesOptions {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link MultiLabelClassifyAction} object itself.
+     * @return The {@code RecognizeCustomEntitiesOptions} object itself.
      */
     public RecognizeCustomEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;

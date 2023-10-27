@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for QueryPacks ListByResourceGroup. */
 public final class QueryPacksListByResourceGroupSamples {
     /*
@@ -18,6 +16,6 @@ public final class QueryPacksListByResourceGroupSamples {
      */
     public static void queryPackListByResourceGroup(
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.queryPacks().listByResourceGroup("my-resource-group", Context.NONE);
+        manager.queryPacks().listByResourceGroup("my-resource-group", com.azure.core.util.Context.NONE);
     }
 }

@@ -66,7 +66,8 @@ public final class TwilioLinkedService extends LinkedService {
     }
 
     /**
-     * Get the username property: The Account SID of Twilio service.
+     * Get the username property: The Account SID of Twilio service. Type: string (or Expression with resultType
+     * string).
      *
      * @return the username value.
      */
@@ -75,7 +76,8 @@ public final class TwilioLinkedService extends LinkedService {
     }
 
     /**
-     * Set the username property: The Account SID of Twilio service.
+     * Set the username property: The Account SID of Twilio service. Type: string (or Expression with resultType
+     * string).
      *
      * @param username the username value to set.
      * @return the TwilioLinkedService object itself.

@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
 
 /**
- * The {@link CategorizedEntity} model.
+ * The {@code CategorizedEntity} model.
  */
 public final class CategorizedEntity {
     private final String text;
@@ -17,7 +17,7 @@ public final class CategorizedEntity {
     private int length;
 
     /**
-     * Creates a {@link CategorizedEntity} model that describes entity.
+     * Creates a {@code CategorizedEntity} model that describes entity.
      *
      * @param text The entity text as appears in the request.
      * @param category The entity category, such as Person/Location/Org/SSN etc.

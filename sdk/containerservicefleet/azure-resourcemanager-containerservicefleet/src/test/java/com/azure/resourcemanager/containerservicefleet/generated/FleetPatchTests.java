@@ -19,25 +19,25 @@ public final class FleetPatchTests {
         FleetPatch model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"zevndhkrwpdappds\":\"sabkyqduujitcjcz\",\"snhu\":\"dkvwrwjfe\",\"tmrldhugjzzdatq\":\"je\"},\"identity\":{\"principalId\":\"6e2b927a-720e-424c-8e89-4e012ec3a802\",\"tenantId\":\"d906c806-8d0a-41a7-af5d-3d59b4b8b0d9\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"lgphu\":{\"principalId\":\"d46ae37b-b0cf-4afa-9413-59109bcb98ff\",\"clientId\":\"9af4399c-4a57-457f-bc30-07616cfa8057\"},\"ndv\":{\"principalId\":\"067e7edd-cc1c-4dd4-bd74-0ab3bfd1eaf5\",\"clientId\":\"ad9ed536-0a75-4789-800a-92a5d8796a92\"}}}}")
+                    "{\"tags\":{\"lmmnkzsmodmglo\":\"ciqfou\",\"uqktap\":\"gpbkwtmut\",\"kdosvqw\":\"pwgcuertu\"},\"identity\":{\"principalId\":\"fd4f9965-38a7-411f-886f-6834eeb598c3\",\"tenantId\":\"e28757b4-d211-476c-848b-cf0c94a61807\",\"type\":\"SystemAssigned,"
+                        + " UserAssigned\",\"userAssignedIdentities\":{\"ddgmb\":{\"principalId\":\"01ecdb70-c186-4a57-b2fd-f138f515a144\",\"clientId\":\"e412eba8-c58c-4e81-9f5a-35b2ef533a0e\"}}}}")
                 .toObject(FleetPatch.class);
-        Assertions.assertEquals("sabkyqduujitcjcz", model.tags().get("zevndhkrwpdappds"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ciqfou", model.tags().get("lmmnkzsmodmglo"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetPatch model =
             new FleetPatch()
-                .withTags(mapOf("zevndhkrwpdappds", "sabkyqduujitcjcz", "snhu", "dkvwrwjfe", "tmrldhugjzzdatq", "je"))
+                .withTags(mapOf("lmmnkzsmodmglo", "ciqfou", "uqktap", "gpbkwtmut", "kdosvqw", "pwgcuertu"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf("lgphu", new UserAssignedIdentity(), "ndv", new UserAssignedIdentity())));
+                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("ddgmb", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(FleetPatch.class);
-        Assertions.assertEquals("sabkyqduujitcjcz", model.tags().get("zevndhkrwpdappds"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ciqfou", model.tags().get("lmmnkzsmodmglo"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

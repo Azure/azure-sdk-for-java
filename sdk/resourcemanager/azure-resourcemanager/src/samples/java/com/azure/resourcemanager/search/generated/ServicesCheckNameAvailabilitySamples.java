@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.search.models.CheckNameAvailabilityInput;
 
 /** Samples for Services CheckNameAvailability. */
 public final class ServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchCheckNameAvailability.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCheckNameAvailability.json
      */
     /**
      * Sample code: SearchCheckNameAvailability.
@@ -24,6 +23,6 @@ public final class ServicesCheckNameAvailabilitySamples {
             .serviceClient()
             .getServices()
             .checkNameAvailabilityWithResponse(
-                new CheckNameAvailabilityInput().withName("mysearchservice"), null, Context.NONE);
+                new CheckNameAvailabilityInput().withName("mysearchservice"), null, com.azure.core.util.Context.NONE);
     }
 }

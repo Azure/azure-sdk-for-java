@@ -20,6 +20,8 @@ import java.util.Map;
 /** driveItem. */
 @Fluent
 public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * audio
      */
@@ -241,7 +243,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
      */
     public byte[] content() {
         if (this.content == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.content.decodedBytes();
     }

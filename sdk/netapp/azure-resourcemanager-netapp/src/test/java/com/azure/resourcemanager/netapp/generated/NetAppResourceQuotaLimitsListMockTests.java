@@ -31,7 +31,7 @@ public final class NetAppResourceQuotaLimitsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"current\":1120696384,\"default\":1863787560},\"id\":\"jeknizshq\",\"name\":\"cimpevfg\",\"type\":\"b\"}]}";
+            "{\"value\":[{\"properties\":{\"current\":937766926,\"default\":689066944},\"id\":\"gdxpg\",\"name\":\"qchiszep\",\"type\":\"nb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class NetAppResourceQuotaLimitsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SubscriptionQuotaItem> response =
-            manager.netAppResourceQuotaLimits().list("w", com.azure.core.util.Context.NONE);
+            manager.netAppResourceQuotaLimits().list("inyflnorwmduvwp", com.azure.core.util.Context.NONE);
     }
 }

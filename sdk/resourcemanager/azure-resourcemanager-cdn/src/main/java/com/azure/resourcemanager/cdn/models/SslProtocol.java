@@ -20,6 +20,15 @@ public final class SslProtocol extends ExpandableStringEnum<SslProtocol> {
     public static final SslProtocol TLSV1_2 = fromString("TLSv1.2");
 
     /**
+     * Creates a new instance of SslProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SslProtocol() {
+    }
+
+    /**
      * Creates or finds a SslProtocol from its string representation.
      *
      * @param name a name to look for.

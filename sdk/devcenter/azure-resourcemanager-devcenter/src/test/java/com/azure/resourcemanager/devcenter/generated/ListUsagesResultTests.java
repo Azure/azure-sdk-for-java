@@ -13,7 +13,7 @@ public final class ListUsagesResultTests {
         ListUsagesResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"currentValue\":5460739394049509501,\"limit\":8841790636704603719,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"wqapnedgfbcvk\",\"value\":\"q\"}},{\"currentValue\":6395460850482092633,\"limit\":4392400281438783051,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"vo\",\"value\":\"sotbob\"}}],\"nextLink\":\"opcjwvnhd\"}")
+                    "{\"value\":[{\"currentValue\":5942973397791682441,\"limit\":5082029566266572596,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"gmhrskdsnfdsdoak\",\"value\":\"dlmkkzevdl\"},\"id\":\"wpusdsttwvogv\"},{\"currentValue\":6615521098570079164,\"limit\":7258892197559233112,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"oakufgm\",\"value\":\"rwr\"},\"id\":\"rtwaenuuzko\"}],\"nextLink\":\"minrfdw\"}")
                 .toObject(ListUsagesResult.class);
     }
 

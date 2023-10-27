@@ -35,7 +35,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_TransactionalBatchTest() {
         assertThat(this.batchClient).isNull();
         this.batchClient = getClientBuilder().buildClient();
@@ -43,12 +43,12 @@ public class TransactionalBatchTest extends BatchTestBase {
         batchContainer = batchClient.getDatabase(batchAsyncContainer.getDatabase().getId()).getContainer(batchAsyncContainer.getId());
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeCloseSyncClient(this.batchClient);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchOrdered() {
         CosmosContainer container = this.batchContainer;
 
@@ -76,7 +76,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         this.verifyByRead(container, replaceDoc);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchMultipleItemExecution() {
         CosmosContainer container = this.batchContainer;
 
@@ -120,7 +120,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchItemETagTest() {
         CosmosContainer container = batchContainer;
         this.createJsonTestDocs(container);
@@ -178,7 +178,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchErrorSessionToken() {
         CosmosContainer container = batchContainer;
         this.createJsonTestDocs(container);
@@ -309,7 +309,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchWithTooManyOperationsTest() {
         int operationCount = MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST + 1;
 
@@ -328,7 +328,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 10)
     public void batchLargerThanServerRequest() {
         int operationCount = 20;
         int appxDocSize = (DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES * 11) / operationCount;
@@ -350,7 +350,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 10)
     public void batchServerResponseTooLarge() {
         int operationCount = 10;
         int appxDocSizeInBytes = 1 * 1024 * 1024;
@@ -372,7 +372,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchReadsOnlyTest() {
         CosmosContainer container = batchContainer;
         this.createJsonTestDocs(container);
@@ -400,7 +400,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchCrud() {
         CosmosContainer container = batchContainer;
         this.createJsonTestDocs(container);
@@ -448,7 +448,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         this.verifyNotFound(container, this.TestDocPk1ExistingD);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchWithInvalidCreateTest() {
         // partition key mismatch between doc and and value passed in to the operation
         this.runWithError(
@@ -457,7 +457,7 @@ public class TransactionalBatchTest extends BatchTestBase {
             HttpResponseStatus.BAD_REQUEST);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchWithReadOfNonExistentEntityTest() {
         this.runWithError(
             batchContainer,
@@ -465,7 +465,7 @@ public class TransactionalBatchTest extends BatchTestBase {
             HttpResponseStatus.NOT_FOUND);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchWithReplaceOfStaleEntity() {
         this.createJsonTestDocs(batchContainer);
 
@@ -484,7 +484,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         this.verifyByRead(batchContainer, this.TestDocPk1ExistingA);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchWithDeleteOfNonExistentEntity() {
         this.runWithError(
             batchContainer,
@@ -492,7 +492,7 @@ public class TransactionalBatchTest extends BatchTestBase {
             HttpResponseStatus.NOT_FOUND);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void batchWithCreateConflict() {
         this.createJsonTestDocs(batchContainer);
 

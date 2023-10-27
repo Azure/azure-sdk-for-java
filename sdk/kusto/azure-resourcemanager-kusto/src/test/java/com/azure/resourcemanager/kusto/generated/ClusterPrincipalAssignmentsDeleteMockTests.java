@@ -58,6 +58,6 @@ public final class ClusterPrincipalAssignmentsDeleteMockTests {
 
         manager
             .clusterPrincipalAssignments()
-            .delete("zab", "elawumu", "slzkwrrwoycqu", com.azure.core.util.Context.NONE);
+            .delete("blembnkbwvqvxkd", "vqihebwtswbzuwf", "duragegizvc", com.azure.core.util.Context.NONE);
     }
 }

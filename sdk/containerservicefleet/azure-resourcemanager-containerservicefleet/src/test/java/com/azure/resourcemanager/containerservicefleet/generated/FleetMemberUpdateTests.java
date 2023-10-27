@@ -12,14 +12,14 @@ public final class FleetMemberUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetMemberUpdate model =
-            BinaryData.fromString("{\"properties\":{\"group\":\"nwbxgjvtbvpyssz\"}}").toObject(FleetMemberUpdate.class);
-        Assertions.assertEquals("nwbxgjvtbvpyssz", model.group());
+            BinaryData.fromString("{\"properties\":{\"group\":\"zloc\"}}").toObject(FleetMemberUpdate.class);
+        Assertions.assertEquals("zloc", model.group());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetMemberUpdate model = new FleetMemberUpdate().withGroup("nwbxgjvtbvpyssz");
+        FleetMemberUpdate model = new FleetMemberUpdate().withGroup("zloc");
         model = BinaryData.fromObject(model).toObject(FleetMemberUpdate.class);
-        Assertions.assertEquals("nwbxgjvtbvpyssz", model.group());
+        Assertions.assertEquals("zloc", model.group());
     }
 }

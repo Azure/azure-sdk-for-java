@@ -79,6 +79,20 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
 
     /** {@inheritDoc} */
     @Override
+    public ExecuteWranglingDataflowActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteWranglingDataflowActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ExecuteWranglingDataflowActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
