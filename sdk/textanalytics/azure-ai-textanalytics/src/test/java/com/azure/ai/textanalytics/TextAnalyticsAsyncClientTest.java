@@ -100,7 +100,6 @@ import static com.azure.ai.textanalytics.TestUtils.getRecognizeEntitiesResultCol
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeHealthcareEntitiesResult1;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeHealthcareEntitiesResult2;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeLinkedEntitiesResultCollection;
-import static com.azure.ai.textanalytics.TestUtils.getRecognizeLinkedEntitiesResultCollectionForActions;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizePiiEntitiesResultCollection;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
