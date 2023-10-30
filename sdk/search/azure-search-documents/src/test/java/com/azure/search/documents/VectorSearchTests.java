@@ -239,8 +239,8 @@ public class VectorSearchTests extends SearchTestBase {
             .setQueryType(QueryType.SEMANTIC)
             .setSemanticSearchOptions(new SemanticSearchOptions()
                 .setSemanticConfigurationName("my-semantic-config")
-                .setQueryCaption(new QueryCaption().setCaptionType(QueryCaptionType.EXTRACTIVE))
-                .setQueryAnswer(new QueryAnswer().setAnswerType(QueryAnswerType.EXTRACTIVE)));
+                .setQueryCaption(new QueryCaption(QueryCaptionType.EXTRACTIVE))
+                .setQueryAnswer(new QueryAnswer(QueryAnswerType.EXTRACTIVE)));
 
         StepVerifier.create(searchClient.search(
                 "Is there any hotel located on the main commercial artery of the city in the heart of New York?",
@@ -284,8 +284,8 @@ public class VectorSearchTests extends SearchTestBase {
             .setQueryType(QueryType.SEMANTIC)
             .setSemanticSearchOptions(new SemanticSearchOptions()
                 .setSemanticConfigurationName("my-semantic-config")
-                .setQueryCaption(new QueryCaption().setCaptionType(QueryCaptionType.EXTRACTIVE))
-                .setQueryAnswer(new QueryAnswer().setAnswerType(QueryAnswerType.EXTRACTIVE)));
+                .setQueryCaption(new QueryCaption(QueryCaptionType.EXTRACTIVE))
+                .setQueryAnswer(new QueryAnswer(QueryAnswerType.EXTRACTIVE)));
 
         List<SearchPagedResponse> pages = searchClient.search(
             "Is there any hotel located on the main commercial artery of the city in the heart of New York?",

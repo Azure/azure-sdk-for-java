@@ -2,18 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.models;
 
+import java.util.Objects;
+
 /**
  * Configuration for how semantic search returns answers to the search.
  */
 public final class QueryAnswer {
-    private QueryAnswerType answerType;
+    private final QueryAnswerType answerType;
     private Integer count;
     private Double threshold;
 
     /**
      * Creates a new instance of {@link QueryAnswer}.
+     *
+     * @param answerType The type of answers to generate.
      */
-    public QueryAnswer() {
+    public QueryAnswer(QueryAnswerType answerType) {
+        this.answerType = Objects.requireNonNull(answerType, "'answerType' cannot be null.");
     }
 
     /**
@@ -23,17 +28,6 @@ public final class QueryAnswer {
      */
     public QueryAnswerType getAnswerType() {
         return answerType;
-    }
-
-    /**
-     * Sets the type of answers to generate.
-     *
-     * @param answerType The type of answers to generate.
-     * @return The QueryAnswer object itself.
-     */
-    public QueryAnswer setAnswerType(QueryAnswerType answerType) {
-        this.answerType = answerType;
-        return this;
     }
 
     /**

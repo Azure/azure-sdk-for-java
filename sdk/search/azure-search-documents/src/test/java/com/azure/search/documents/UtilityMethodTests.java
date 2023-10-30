@@ -31,20 +31,20 @@ public class UtilityMethodTests {
             Arguments.of(null, null),
 
             // None returns none
-            Arguments.of(new QueryAnswer().setAnswerType(QueryAnswerType.NONE), QueryAnswerType.NONE.toString()),
+            Arguments.of(new QueryAnswer(QueryAnswerType.NONE), QueryAnswerType.NONE.toString()),
 
             // Only QueryAnswer provided returns the string value of QueryAnswer.
-            Arguments.of(new QueryAnswer().setAnswerType(QueryAnswerType.EXTRACTIVE),
+            Arguments.of(new QueryAnswer(QueryAnswerType.EXTRACTIVE),
                 QueryAnswerType.EXTRACTIVE.toString()),
 
             // Both QueryAnswer and count provided returns the concatenated string mentioned in docs.
-            Arguments.of(new QueryAnswer().setAnswerType(QueryAnswerType.EXTRACTIVE).setCount(5),
+            Arguments.of(new QueryAnswer(QueryAnswerType.EXTRACTIVE).setCount(5),
                 QueryAnswerType.EXTRACTIVE + "|count-5"),
 
-            Arguments.of(new QueryAnswer().setAnswerType(QueryAnswerType.EXTRACTIVE).setThreshold(0.7),
+            Arguments.of(new QueryAnswer(QueryAnswerType.EXTRACTIVE).setThreshold(0.7),
                 QueryAnswerType.EXTRACTIVE + "|threshold-0.7"),
 
-            Arguments.of(new QueryAnswer().setAnswerType(QueryAnswerType.EXTRACTIVE).setCount(5).setThreshold(0.7),
+            Arguments.of(new QueryAnswer(QueryAnswerType.EXTRACTIVE).setCount(5).setThreshold(0.7),
                 QueryAnswerType.EXTRACTIVE + "|count-5,threshold-0.7")
         );
     }
@@ -61,16 +61,16 @@ public class UtilityMethodTests {
             Arguments.of(null, null),
 
             // None returns none
-            Arguments.of(new QueryCaption().setCaptionType(QueryCaptionType.NONE), QueryCaptionType.NONE.toString()),
+            Arguments.of(new QueryCaption(QueryCaptionType.NONE), QueryCaptionType.NONE.toString()),
 
             // Only QueryCaption provided returns the string value of QueryCaption.
-            Arguments.of(new QueryCaption().setCaptionType(QueryCaptionType.EXTRACTIVE),
+            Arguments.of(new QueryCaption(QueryCaptionType.EXTRACTIVE),
                 QueryAnswerType.EXTRACTIVE.toString()),
 
             // Both QueryCaption and highlight provided returns the concatenated string mentioned in docs.
-            Arguments.of(new QueryCaption().setCaptionType(QueryCaptionType.EXTRACTIVE).setHighlightEnabled(true),
+            Arguments.of(new QueryCaption(QueryCaptionType.EXTRACTIVE).setHighlightEnabled(true),
                 QueryAnswerType.EXTRACTIVE + "|highlight-true"),
-            Arguments.of(new QueryCaption().setCaptionType(QueryCaptionType.EXTRACTIVE).setHighlightEnabled(false),
+            Arguments.of(new QueryCaption(QueryCaptionType.EXTRACTIVE).setHighlightEnabled(false),
                 QueryAnswerType.EXTRACTIVE + "|highlight-false")
         );
     }

@@ -2,17 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.models;
 
+import java.util.Objects;
+
 /**
  * Configuration for how semantic search captions search results.
  */
 public final class QueryCaption {
-    private QueryCaptionType captionType;
+    private final QueryCaptionType captionType;
     private Boolean highlightEnabled;
 
     /**
      * Creates a new instance of {@link QueryCaption}.
+     *
+     * @param captionType The type of captions to generate.
      */
-    public QueryCaption() {
+    public QueryCaption(QueryCaptionType captionType) {
+        this.captionType = Objects.requireNonNull(captionType, "'captionType' cannot be null.");
     }
 
     /**
@@ -22,17 +27,6 @@ public final class QueryCaption {
      */
     public QueryCaptionType getCaptionType() {
         return captionType;
-    }
-
-    /**
-     * Sets the type of captions to generate.
-     *
-     * @param captionType The type of captions to generate.
-     * @return The QueryCaption object itself.
-     */
-    public QueryCaption setCaptionType(QueryCaptionType captionType) {
-        this.captionType = captionType;
-        return this;
     }
 
     /**
