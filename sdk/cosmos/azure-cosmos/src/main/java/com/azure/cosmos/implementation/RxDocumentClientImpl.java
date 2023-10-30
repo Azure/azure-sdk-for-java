@@ -2896,10 +2896,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                aggregatedDiagnostics, aggregateRequestStatistics);
 
                                            state.mergeDiagnosticsContext();
-                                           diagnosticsAccessor
-                                               .setDiagnosticsContext(
+                                           CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+                                           if (ctx != null) {
+                                               ctxAccessor.recordOperation(
+                                                   ctx,
+                                                   200,
+                                                   0,
+                                                   finalList.size(),
+                                                   requestCharge,
                                                    aggregatedDiagnostics,
-                                                   state.getDiagnosticsContextSnapshot());
+                                                   null
+                                               );
+                                               diagnosticsAccessor
+                                                   .setDiagnosticsContext(
+                                                       aggregatedDiagnostics,
+                                                       ctx);
+                                           }
 
                                            headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                                .toString(requestCharge));
@@ -2921,10 +2933,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
                                 if (diagnostics != null) {
                                     state.mergeDiagnosticsContext();
-                                    diagnosticsAccessor
-                                        .setDiagnosticsContext(
+                                    CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+                                    if (ctx != null) {
+                                        ctxAccessor.recordOperation(
+                                            ctx,
+                                            cosmosException.getStatusCode(),
+                                            cosmosException.getSubStatusCode(),
+                                            0,
+                                            cosmosException.getRequestCharge(),
                                             diagnostics,
-                                            state.getDiagnosticsContextSnapshot());
+                                            throwable
+                                        );
+                                        diagnosticsAccessor
+                                            .setDiagnosticsContext(
+                                                diagnostics,
+                                                state.getDiagnosticsContextSnapshot());
+                                    }
                                 }
 
                                 return cosmosException;

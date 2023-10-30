@@ -86,7 +86,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 
-// TODO: Annie: enable emulator group
 public class CosmosTracerTest extends TestSuiteBase {
     private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private static String ITEM_ID;
@@ -103,7 +102,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         super(clientBuilder.contentResponseOnWriteEnabled(true));
     }
 
-    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast", "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         try {
             client = getClientBuilder().buildAsyncClient();
@@ -161,7 +160,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "simple" }, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
     public void cosmosAsyncClient(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -250,7 +249,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "simple" }, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
     public void cosmosAsyncDatabase(
                                     boolean useLegacyTracing,
                                     boolean enableRequestLevelTracing,
@@ -333,7 +332,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
+    @Test(groups = { "fast", "simple" }, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
     public void cosmosAsyncContainerWithFaultInjectionOnCreate(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -425,7 +424,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
+    @Test(groups = { "fast", "simple" }, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
     public void cosmosAsyncContainerWithFaultInjectionOnRead(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -525,7 +524,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
+    @Test(groups = { "fast", "simple" }, dataProvider = "traceTestCaseProvider", timeOut = 10 * TIMEOUT)
     public void cosmosAsyncContainer(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -784,12 +783,18 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "simple" }, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
     public void cosmosAsyncScripts(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
         boolean forceThresholdViolations,
         double samplingRate) throws Exception {
+
+        if (this.client.getContextClient().getGlobalEndpointManager().getAvailableWriteEndpoints().size() > 1) {
+
+            throw new SkipException("Tests would take too long to run on multi master account because " +
+                "scrips etc. creation can take several seconds for replication.");
+        }
 
         TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
 
@@ -1073,7 +1078,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-    @Test(groups = {"fast"}, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "simple" }, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
     public void tracerExceptionSpan(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
@@ -1129,7 +1134,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
-    @AfterClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
+    @AfterClass(groups = { "fast", "simple" }, timeOut = SETUP_TIMEOUT)
     public void afterClass() {
         LifeCycleUtils.closeQuietly(client);
     }
@@ -1332,16 +1337,16 @@ public class CosmosTracerTest extends TestSuiteBase {
             Collection<TracerUnderTest.EventRecord> events  = mockTracer.getEventsOfAllCollectedSiblingSpans();
             if (ctx.isCompleted() && (ctx.isFailure() || ctx.isThresholdViolated())) {
                 if (ctx.isFailure()) {
-                    assertThat(events).anyMatch(e -> e.getName() .equals("failure"));
-                    assertThat(events).noneMatch(e -> e.getName().equals("threshold_violation"));
+                    assertThat(events).anyMatch(e -> e.getName().startsWith("Failure - CTX"));
+                    assertThat(events).noneMatch(e -> e.getName().startsWith("ThresholdViolation - CTX"));
 
                 } else {
-                    assertThat(events).noneMatch(e -> e.getName().equals("failure"));
-                    assertThat(events).anyMatch(e -> e.getName().equals("threshold_violation"));
+                    assertThat(events).noneMatch(e -> e.getName().startsWith("Failure - CTX"));
+                    assertThat(events).anyMatch(e -> e.getName().startsWith("ThresholdViolation - CTX"));
                 }
             } else {
-                assertThat(events).noneMatch(e -> e.getName().equals("threshold_violation"));
-                assertThat(events).noneMatch(e -> e.getName().equals("failure"));
+                assertThat(events).noneMatch(e -> e.getName().startsWith("ThresholdViolation - CTX"));
+                assertThat(events).noneMatch(e -> e.getName().startsWith("Failure - CTX"));
             }
         }
     }
