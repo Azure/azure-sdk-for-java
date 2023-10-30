@@ -28,7 +28,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
 
     /*
      * The relevance score computed by the semantic ranker for the top search results. Search results are sorted by the
-     * RerankerScore first and then by the Score. RerankerScore is only returned for queries of type 'semantic'.
+     * RerankerScore first and then by the Score. RerankerScore is only returned for queries of type `semantic`.
      */
     private Double rerankerScore;
 
@@ -40,7 +40,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
 
     /*
      * Captions are the most representative passages from the document relatively to the search query. They are often
-     * used as document summary. Captions are only returned for queries of type 'semantic'.
+     * used as document summary. Captions are only returned for queries of type `semantic`.
      */
     private List<QueryCaptionResult> captions;
 
@@ -70,7 +70,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
     /**
      * Get the rerankerScore property: The relevance score computed by the semantic ranker for the top search results.
      * Search results are sorted by the RerankerScore first and then by the Score. RerankerScore is only returned for
-     * queries of type 'semantic'.
+     * queries of type `semantic`.
      *
      * @return the rerankerScore value.
      */
@@ -90,7 +90,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
 
     /**
      * Get the captions property: Captions are the most representative passages from the document relatively to the
-     * search query. They are often used as document summary. Captions are only returned for queries of type 'semantic'.
+     * search query. They are often used as document summary. Captions are only returned for queries of type `semantic`.
      *
      * @return the captions value.
      */

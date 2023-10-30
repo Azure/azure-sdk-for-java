@@ -22,7 +22,7 @@ import java.util.Objects;
 @Fluent
 public final class PiiDetectionSkill extends SearchIndexerSkill {
     /*
-     * A value indicating which language code to use. Default is en.
+     * A value indicating which language code to use. Default is `en`.
      */
     private String defaultLanguageCode;
 
@@ -39,7 +39,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     private PiiDetectionSkillMaskingMode maskingMode;
 
     /*
-     * The character used to mask the text if the maskingMode parameter is set to replace. Default is '*'.
+     * The character used to mask the text if the maskingMode parameter is set to replace. Default is `*`.
      */
     private String mask;
 
@@ -71,7 +71,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @return the defaultLanguageCode value.
      */
@@ -80,7 +80,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the PiiDetectionSkill object itself.
@@ -138,7 +138,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Get the mask property: The character used to mask the text if the maskingMode parameter is set to replace.
-     * Default is '*'.
+     * Default is `*`.
      *
      * @return the mask value.
      */
@@ -148,7 +148,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
 
     /**
      * Set the mask property: The character used to mask the text if the maskingMode parameter is set to replace.
-     * Default is '*'.
+     * Default is `*`.
      *
      * @param mask the mask value to set.
      * @return the PiiDetectionSkill object itself.

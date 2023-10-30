@@ -23,7 +23,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
     private List<VectorSearchProfile> profiles;
 
     /*
-     * Contains configuration options specific to the algorithm used during indexing and/or querying.
+     * Contains configuration options specific to the algorithm used during indexing or querying.
      */
     private List<VectorSearchAlgorithmConfiguration> algorithms;
 
@@ -51,7 +51,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
     }
 
     /**
-     * Get the algorithms property: Contains configuration options specific to the algorithm used during indexing and/or
+     * Get the algorithms property: Contains configuration options specific to the algorithm used during indexing or
      * querying.
      *
      * @return the algorithms value.
@@ -61,7 +61,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
     }
 
     /**
-     * Set the algorithms property: Contains configuration options specific to the algorithm used during indexing and/or
+     * Set the algorithms property: Contains configuration options specific to the algorithm used during indexing or
      * querying.
      *
      * @param algorithms the algorithms value to set.
@@ -123,7 +123,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
     }
 
     /**
-     * Set the algorithms property: Contains configuration options specific to the algorithm used during indexing and/or
+     * Set the algorithms property: Contains configuration options specific to the algorithm used during indexing or
      * querying.
      *
      * @param algorithms the algorithms value to set.

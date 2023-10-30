@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** A cognitive service resource provisioned with a key that is attached to a skillset. */
+/** An Azure AI service resource provisioned with a key that is attached to a skillset. */
 @Fluent
 public final class CognitiveServicesAccountKey extends CognitiveServicesAccount {
 
     /*
-     * The key used to provision the cognitive service resource attached to a skillset.
+     * The key used to provision the Azure AI service resource attached to a skillset.
      */
     private String key;
 
@@ -32,7 +32,7 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
     }
 
     /**
-     * Get the key property: The key used to provision the cognitive service resource attached to a skillset.
+     * Get the key property: The key used to provision the Azure AI service resource attached to a skillset.
      *
      * @return the key value.
      */

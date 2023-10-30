@@ -29,7 +29,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     private List<EntityCategory> categories;
 
     /*
-     * A value indicating which language code to use. Default is en.
+     * A value indicating which language code to use. Default is `en`.
      */
     private EntityRecognitionSkillLanguage defaultLanguageCode;
 
@@ -77,7 +77,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     }
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @return the defaultLanguageCode value.
      */
@@ -86,7 +86,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the EntityRecognitionSkillV1 object itself.

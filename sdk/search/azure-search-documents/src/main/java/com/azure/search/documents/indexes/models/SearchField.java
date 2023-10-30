@@ -51,9 +51,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * split into the individual tokens "sunny" and "day". This enables full-text searches for these terms. Fields of
      * type Edm.String or Collection(Edm.String) are searchable by default. This property must be false for simple
      * fields of other non-string data types, and it must be null for complex fields. Note: searchable fields consume
-     * extra space in your index since Azure Cognitive Search will store an additional tokenized version of the field
-     * value for full-text searches. If you want to save space in your index and you don't need a field to be included
-     * in searches, set searchable to false.
+     * extra space in your index to accommodate additional tokenized versions of the field value for full-text
+     * searches. If you want to save space in your index and you don't need a field to be included in searches, set
+     * searchable to false.
      */
     private Boolean searchable;
 
@@ -67,10 +67,10 @@ public final class SearchField implements JsonSerializable<SearchField> {
     private Boolean filterable;
 
     /*
-     * A value indicating whether to enable the field to be referenced in $orderby expressions. By default Azure
-     * Cognitive Search sorts results by score, but in many experiences users will want to sort by fields in the
-     * documents. A simple field can be sortable only if it is single-valued (it has a single value in the scope of the
-     * parent document). Simple collection fields cannot be sortable, since they are multi-valued. Simple sub-fields of
+     * A value indicating whether to enable the field to be referenced in $orderby expressions. By default, the search
+     * engine sorts results by score, but in many experiences users will want to sort by fields in the documents. A
+     * simple field can be sortable only if it is single-valued (it has a single value in the scope of the parent
+     * document). Simple collection fields cannot be sortable, since they are multi-valued. Simple sub-fields of
      * complex collections are also multi-valued, and therefore cannot be sortable. This is true whether it's an
      * immediate parent field, or an ancestor field, that's the complex collection. Complex fields cannot be sortable
      * and the sortable property must be null for such fields. The default for sortable is true for single-valued
@@ -223,9 +223,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * day", internally it will be split into the individual tokens "sunny" and "day". This enables full-text searches
      * for these terms. Fields of type Edm.String or Collection(Edm.String) are searchable by default. This property
      * must be false for simple fields of other non-string data types, and it must be null for complex fields. Note:
-     * searchable fields consume extra space in your index since Azure Cognitive Search will store an additional
-     * tokenized version of the field value for full-text searches. If you want to save space in your index and you
-     * don't need a field to be included in searches, set searchable to false.
+     * searchable fields consume extra space in your index to accommodate additional tokenized versions of the field
+     * value for full-text searches. If you want to save space in your index and you don't need a field to be included
+     * in searches, set searchable to false.
      *
      * @return the searchable value.
      */
@@ -239,9 +239,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * day", internally it will be split into the individual tokens "sunny" and "day". This enables full-text searches
      * for these terms. Fields of type Edm.String or Collection(Edm.String) are searchable by default. This property
      * must be false for simple fields of other non-string data types, and it must be null for complex fields. Note:
-     * searchable fields consume extra space in your index since Azure Cognitive Search will store an additional
-     * tokenized version of the field value for full-text searches. If you want to save space in your index and you
-     * don't need a field to be included in searches, set searchable to false.
+     * searchable fields consume extra space in your index to accommodate additional tokenized versions of the field
+     * value for full-text searches. If you want to save space in your index and you don't need a field to be included
+     * in searches, set searchable to false.
      *
      * @param searchable the searchable value to set.
      * @return the SearchField object itself.
@@ -283,7 +283,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
 
     /**
      * Get the sortable property: A value indicating whether to enable the field to be referenced in $orderby
-     * expressions. By default Azure Cognitive Search sorts results by score, but in many experiences users will want to
+     * expressions. By default, the search engine sorts results by score, but in many experiences users will want to
      * sort by fields in the documents. A simple field can be sortable only if it is single-valued (it has a single
      * value in the scope of the parent document). Simple collection fields cannot be sortable, since they are
      * multi-valued. Simple sub-fields of complex collections are also multi-valued, and therefore cannot be sortable.
@@ -299,7 +299,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
 
     /**
      * Set the sortable property: A value indicating whether to enable the field to be referenced in $orderby
-     * expressions. By default Azure Cognitive Search sorts results by score, but in many experiences users will want to
+     * expressions. By default, the search engine sorts results by score, but in many experiences users will want to
      * sort by fields in the documents. A simple field can be sortable only if it is single-valued (it has a single
      * value in the scope of the parent document). Simple collection fields cannot be sortable, since they are
      * multi-valued. Simple sub-fields of complex collections are also multi-valued, and therefore cannot be sortable.

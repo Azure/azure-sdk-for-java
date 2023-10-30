@@ -26,8 +26,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     /*
      * The total count of results found by the search operation, or null if the count was not requested. If present,
      * the count may be greater than the number of results in this response. This can happen if you use the $top or
-     * $skip parameters, or if Azure Cognitive Search can't return all the requested documents in a single Search
-     * response.
+     * $skip parameters, or if the query can't return all the requested documents in a single response.
      */
     private Long count;
 
@@ -50,9 +49,9 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     private List<QueryAnswerResult> answers;
 
     /*
-     * Continuation JSON payload returned when Azure Cognitive Search can't return all the requested results in a
-     * single Search response. You can use this JSON along with @odata.nextLink to formulate another POST Search
-     * request to get the next part of the search response.
+     * Continuation JSON payload returned when the query can't return all the requested results in a single response.
+     * You can use this JSON along with @odata.nextLink to formulate another POST Search request to get the next part
+     * of the search response.
      */
     private SearchRequest nextPageParameters;
 
@@ -62,19 +61,19 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     private final List<SearchResult> results;
 
     /*
-     * Continuation URL returned when Azure Cognitive Search can't return all the requested results in a single Search
-     * response. You can use this URL to formulate another GET or POST Search request to get the next part of the
-     * search response. Make sure to use the same verb (GET or POST) as the request that produced this response.
+     * Continuation URL returned when the query can't return all the requested results in a single response. You can
+     * use this URL to formulate another GET or POST Search request to get the next part of the search response. Make
+     * sure to use the same verb (GET or POST) as the request that produced this response.
      */
     private String nextLink;
 
     /*
-     * Reason that a partial response was returned for a semantic search request.
+     * Reason that a partial response was returned for a semantic ranking request.
      */
     private SemanticErrorReason semanticPartialResponseReason;
 
     /*
-     * Type of partial response that was returned for a semantic search request.
+     * Type of partial response that was returned for a semantic ranking request.
      */
     private SemanticSearchResultsType semanticPartialResponseType;
 
@@ -90,8 +89,8 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     /**
      * Get the count property: The total count of results found by the search operation, or null if the count was not
      * requested. If present, the count may be greater than the number of results in this response. This can happen if
-     * you use the $top or $skip parameters, or if Azure Cognitive Search can't return all the requested documents in a
-     * single Search response.
+     * you use the $top or $skip parameters, or if the query can't return all the requested documents in a single
+     * response.
      *
      * @return the count value.
      */
@@ -130,9 +129,9 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     }
 
     /**
-     * Get the nextPageParameters property: Continuation JSON payload returned when Azure Cognitive Search can't return
-     * all the requested results in a single Search response. You can use this JSON along with @odata.nextLink to
-     * formulate another POST Search request to get the next part of the search response.
+     * Get the nextPageParameters property: Continuation JSON payload returned when the query can't return all the
+     * requested results in a single response. You can use this JSON along with @odata.nextLink to formulate another
+     * POST Search request to get the next part of the search response.
      *
      * @return the nextPageParameters value.
      */
@@ -150,10 +149,9 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     }
 
     /**
-     * Get the nextLink property: Continuation URL returned when Azure Cognitive Search can't return all the requested
-     * results in a single Search response. You can use this URL to formulate another GET or POST Search request to get
-     * the next part of the search response. Make sure to use the same verb (GET or POST) as the request that produced
-     * this response.
+     * Get the nextLink property: Continuation URL returned when the query can't return all the requested results in a
+     * single response. You can use this URL to formulate another GET or POST Search request to get the next part of the
+     * search response. Make sure to use the same verb (GET or POST) as the request that produced this response.
      *
      * @return the nextLink value.
      */
@@ -162,8 +160,8 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     }
 
     /**
-     * Get the semanticPartialResponseReason property: Reason that a partial response was returned for a semantic search
-     * request.
+     * Get the semanticPartialResponseReason property: Reason that a partial response was returned for a semantic
+     * ranking request.
      *
      * @return the semanticPartialResponseReason value.
      */
@@ -172,7 +170,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     }
 
     /**
-     * Get the semanticPartialResponseType property: Type of partial response that was returned for a semantic search
+     * Get the semanticPartialResponseType property: Type of partial response that was returned for a semantic ranking
      * request.
      *
      * @return the semanticPartialResponseType value.

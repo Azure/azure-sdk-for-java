@@ -19,7 +19,7 @@ import java.util.Objects;
 public final class CustomEntityLookupSkill extends SearchIndexerSkill {
 
     /*
-     * A value indicating which language code to use. Default is en.
+     * A value indicating which language code to use. Default is `en`.
      */
     private CustomEntityLookupSkillLanguage defaultLanguageCode;
 
@@ -64,7 +64,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @return the defaultLanguageCode value.
      */
@@ -73,7 +73,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the CustomEntityLookupSkill object itself.

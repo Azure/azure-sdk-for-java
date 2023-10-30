@@ -153,20 +153,20 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     private Integer semanticMaxWaitInMilliseconds;
 
     /*
-     * This parameter is only valid if the query type is 'semantic'. If set, the query returns answers extracted from
+     * This parameter is only valid if the query type is `semantic`. If set, the query returns answers extracted from
      * key passages in the highest ranked documents. The number of answers returned can be configured by appending the
-     * pipe character '|' followed by the 'count-<number of answers>' option after the answers parameter value, such as
-     * 'extractive|count-3'. Default count is 1. The confidence threshold can be configured by appending the pipe
-     * character '|' followed by the 'threshold-<confidence threshold>' option after the answers parameter value, such
-     * as 'extractive|threshold-0.9'. Default threshold is 0.7.
+     * pipe character `|` followed by the `count-<number of answers>` option after the answers parameter value, such as
+     * `extractive|count-3`. Default count is 1. The confidence threshold can be configured by appending the pipe
+     * character `|` followed by the `threshold-<confidence threshold>` option after the answers parameter value, such
+     * as `extractive|threshold-0.9`. Default threshold is 0.7.
      */
     private String answers;
 
     /*
-     * This parameter is only valid if the query type is 'semantic'. If set, the query returns captions extracted from
-     * key passages in the highest ranked documents. When Captions is set to 'extractive', highlighting is enabled by
-     * default, and can be configured by appending the pipe character '|' followed by the 'highlight-<true/false>'
-     * option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * This parameter is only valid if the query type is `semantic`. If set, the query returns captions extracted from
+     * key passages in the highest ranked documents. When Captions is set to `extractive`, highlighting is enabled by
+     * default, and can be configured by appending the pipe character `|` followed by the `highlight-<true/false>`
+     * option, such as `extractive|highlight-true`. Defaults to `None`.
      */
     private String captions;
 
@@ -658,12 +658,12 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Get the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
+     * Get the answers property: This parameter is only valid if the query type is `semantic`. If set, the query returns
      * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
-     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1. The confidence threshold can be
-     * configured by appending the pipe character '|' followed by the 'threshold-&lt;confidence threshold&gt;' option
-     * after the answers parameter value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
+     * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
+     * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
+     * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      *
      * @return the answers value.
      */
@@ -672,12 +672,12 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Set the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
+     * Set the answers property: This parameter is only valid if the query type is `semantic`. If set, the query returns
      * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
-     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1. The confidence threshold can be
-     * configured by appending the pipe character '|' followed by the 'threshold-&lt;confidence threshold&gt;' option
-     * after the answers parameter value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
+     * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
+     * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
+     * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      *
      * @param answers the answers value to set.
      * @return the SearchOptions object itself.
@@ -688,10 +688,10 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Get the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Get the captions property: This parameter is only valid if the query type is `semantic`. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
+     * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
      *
      * @return the captions value.
      */
@@ -700,10 +700,10 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Set the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Set the captions property: This parameter is only valid if the query type is `semantic`. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
+     * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
      *
      * @param captions the captions value to set.
      * @return the SearchOptions object itself.

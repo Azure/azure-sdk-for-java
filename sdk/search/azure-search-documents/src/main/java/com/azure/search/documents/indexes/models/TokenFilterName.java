@@ -9,7 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Defines the names of all token filters supported by Azure Cognitive Search. */
+/** Defines the names of all token filters supported by the search engine. */
 public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName> {
     /**
      * A token filter that applies the Arabic normalizer to normalize the orthography. See

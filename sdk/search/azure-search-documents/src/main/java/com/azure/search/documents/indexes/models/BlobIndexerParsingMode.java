@@ -23,15 +23,10 @@ public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndex
     /** Set to json to extract structured content from JSON files. */
     public static final BlobIndexerParsingMode JSON = fromString("json");
 
-    /**
-     * Set to jsonArray to extract individual elements of a JSON array as separate documents in Azure Cognitive Search.
-     */
+    /** Set to jsonArray to extract individual elements of a JSON array as separate documents. */
     public static final BlobIndexerParsingMode JSON_ARRAY = fromString("jsonArray");
 
-    /**
-     * Set to jsonLines to extract individual JSON entities, separated by a new line, as separate documents in Azure
-     * Cognitive Search.
-     */
+    /** Set to jsonLines to extract individual JSON entities, separated by a new line, as separate documents. */
     public static final BlobIndexerParsingMode JSON_LINES = fromString("jsonLines");
 
     /**

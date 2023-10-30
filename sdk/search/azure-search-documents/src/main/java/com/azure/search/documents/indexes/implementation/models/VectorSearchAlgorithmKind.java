@@ -11,7 +11,7 @@ import java.util.Collection;
 
 /** The algorithm used for indexing and querying. */
 public final class VectorSearchAlgorithmKind extends ExpandableStringEnum<VectorSearchAlgorithmKind> {
-    /** Hnsw (Hierarchical Navigable Small World), a type of approximate nearest neighbors algorithm. */
+    /** HNSW (Hierarchical Navigable Small World), a type of approximate nearest neighbors algorithm. */
     public static final VectorSearchAlgorithmKind HNSW = fromString("hnsw");
 
     /** Exhaustive KNN algorithm which will perform brute-force search. */

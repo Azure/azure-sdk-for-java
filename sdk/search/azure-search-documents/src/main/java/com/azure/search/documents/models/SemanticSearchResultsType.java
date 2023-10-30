@@ -9,7 +9,7 @@ package com.azure.search.documents.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Type of partial response that was returned for a semantic search request. */
+/** Type of partial response that was returned for a semantic ranking request. */
 public final class SemanticSearchResultsType extends ExpandableStringEnum<SemanticSearchResultsType> {
     /** Results without any semantic enrichment or reranking. */
     public static final SemanticSearchResultsType BASE_RESULTS = fromString("baseResults");

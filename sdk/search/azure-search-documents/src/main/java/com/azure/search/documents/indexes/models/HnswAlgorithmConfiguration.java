@@ -17,13 +17,13 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Contains configuration options specific to the hnsw approximate nearest neighbors algorithm used during indexing and
- * querying. The hnsw algorithm offers a tunable trade-off between search speed and accuracy.
+ * Contains configuration options specific to the HNSW approximate nearest neighbors algorithm used during indexing and
+ * querying. The HNSW algorithm offers a tunable trade-off between search speed and accuracy.
  */
 @Fluent
 public final class HnswAlgorithmConfiguration extends VectorSearchAlgorithmConfiguration {
     /*
-     * Contains the parameters specific to hnsw algorithm.
+     * Contains the parameters specific to HNSW algorithm.
      */
     private HnswParameters parameters;
 
@@ -37,7 +37,7 @@ public final class HnswAlgorithmConfiguration extends VectorSearchAlgorithmConfi
     }
 
     /**
-     * Get the parameters property: Contains the parameters specific to hnsw algorithm.
+     * Get the parameters property: Contains the parameters specific to HNSW algorithm.
      *
      * @return the parameters value.
      */
@@ -46,7 +46,7 @@ public final class HnswAlgorithmConfiguration extends VectorSearchAlgorithmConfi
     }
 
     /**
-     * Set the parameters property: Contains the parameters specific to hnsw algorithm.
+     * Set the parameters property: Contains the parameters specific to HNSW algorithm.
      *
      * @param parameters the parameters value to set.
      * @return the HnswAlgorithmConfiguration object itself.

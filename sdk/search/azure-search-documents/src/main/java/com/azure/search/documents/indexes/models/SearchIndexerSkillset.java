@@ -34,12 +34,12 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     private List<SearchIndexerSkill> skills;
 
     /*
-     * Details about cognitive services to be used when running skills.
+     * Details about the Azure AI service to be used when running skills.
      */
     private CognitiveServicesAccount cognitiveServicesAccount;
 
     /*
-     * Definition of additional projections to azure blob, table, or files, of enriched data.
+     * Definition of additional projections to Azure blob, table, or files, of enriched data.
      */
     private SearchIndexerKnowledgeStore knowledgeStore;
 
@@ -51,11 +51,11 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     /*
      * A description of an encryption key that you create in Azure Key Vault. This key is used to provide an additional
      * level of encryption-at-rest for your skillset definition when you want full assurance that no one, not even
-     * Microsoft, can decrypt your skillset definition in Azure Cognitive Search. Once you have encrypted your skillset
-     * definition, it will always remain encrypted. Azure Cognitive Search will ignore attempts to set this property to
-     * null. You can change this property as needed if you want to rotate your encryption key; Your skillset definition
-     * will be unaffected. Encryption with customer-managed keys is not available for free search services, and is only
-     * available for paid services created on or after January 1, 2019.
+     * Microsoft, can decrypt your skillset definition. Once you have encrypted your skillset definition, it will
+     * always remain encrypted. The search service will ignore attempts to set this property to null. You can change
+     * this property as needed if you want to rotate your encryption key; Your skillset definition will be unaffected.
+     * Encryption with customer-managed keys is not available for free search services, and is only available for paid
+     * services created on or after January 1, 2019.
      */
     private SearchResourceEncryptionKey encryptionKey;
 
@@ -118,7 +118,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     }
 
     /**
-     * Get the cognitiveServicesAccount property: Details about cognitive services to be used when running skills.
+     * Get the cognitiveServicesAccount property: Details about the Azure AI service to be used when running skills.
      *
      * @return the cognitiveServicesAccount value.
      */
@@ -127,7 +127,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     }
 
     /**
-     * Set the cognitiveServicesAccount property: Details about cognitive services to be used when running skills.
+     * Set the cognitiveServicesAccount property: Details about the Azure AI service to be used when running skills.
      *
      * @param cognitiveServicesAccount the cognitiveServicesAccount value to set.
      * @return the SearchIndexerSkillset object itself.
@@ -138,7 +138,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     }
 
     /**
-     * Get the knowledgeStore property: Definition of additional projections to azure blob, table, or files, of enriched
+     * Get the knowledgeStore property: Definition of additional projections to Azure blob, table, or files, of enriched
      * data.
      *
      * @return the knowledgeStore value.
@@ -148,7 +148,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     }
 
     /**
-     * Set the knowledgeStore property: Definition of additional projections to azure blob, table, or files, of enriched
+     * Set the knowledgeStore property: Definition of additional projections to Azure blob, table, or files, of enriched
      * data.
      *
      * @param knowledgeStore the knowledgeStore value to set.
@@ -182,11 +182,11 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     /**
      * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
      * is used to provide an additional level of encryption-at-rest for your skillset definition when you want full
-     * assurance that no one, not even Microsoft, can decrypt your skillset definition in Azure Cognitive Search. Once
-     * you have encrypted your skillset definition, it will always remain encrypted. Azure Cognitive Search will ignore
-     * attempts to set this property to null. You can change this property as needed if you want to rotate your
-     * encryption key; Your skillset definition will be unaffected. Encryption with customer-managed keys is not
-     * available for free search services, and is only available for paid services created on or after January 1, 2019.
+     * assurance that no one, not even Microsoft, can decrypt your skillset definition. Once you have encrypted your
+     * skillset definition, it will always remain encrypted. The search service will ignore attempts to set this
+     * property to null. You can change this property as needed if you want to rotate your encryption key; Your skillset
+     * definition will be unaffected. Encryption with customer-managed keys is not available for free search services,
+     * and is only available for paid services created on or after January 1, 2019.
      *
      * @return the encryptionKey value.
      */
@@ -197,11 +197,11 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     /**
      * Set the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
      * is used to provide an additional level of encryption-at-rest for your skillset definition when you want full
-     * assurance that no one, not even Microsoft, can decrypt your skillset definition in Azure Cognitive Search. Once
-     * you have encrypted your skillset definition, it will always remain encrypted. Azure Cognitive Search will ignore
-     * attempts to set this property to null. You can change this property as needed if you want to rotate your
-     * encryption key; Your skillset definition will be unaffected. Encryption with customer-managed keys is not
-     * available for free search services, and is only available for paid services created on or after January 1, 2019.
+     * assurance that no one, not even Microsoft, can decrypt your skillset definition. Once you have encrypted your
+     * skillset definition, it will always remain encrypted. The search service will ignore attempts to set this
+     * property to null. You can change this property as needed if you want to rotate your encryption key; Your skillset
+     * definition will be unaffected. Encryption with customer-managed keys is not available for free search services,
+     * and is only available for paid services created on or after January 1, 2019.
      *
      * @param encryptionKey the encryptionKey value to set.
      * @return the SearchIndexerSkillset object itself.

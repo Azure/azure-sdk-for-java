@@ -19,7 +19,7 @@ import java.util.Objects;
 public final class OcrSkill extends SearchIndexerSkill {
 
     /*
-     * A value indicating which language code to use. Default is en.
+     * A value indicating which language code to use. Default is `en`.
      */
     private OcrSkillLanguage defaultLanguageCode;
 
@@ -39,7 +39,7 @@ public final class OcrSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @return the defaultLanguageCode value.
      */
@@ -48,7 +48,7 @@ public final class OcrSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the OcrSkill object itself.

@@ -87,7 +87,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d52c50c22ec7f573d49fc3b4c6c931491d92ec8b/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,VectorQueryKind
@@ -99,12 +99,6 @@ directive:
     - rename-model:
         from: RawVectorQuery
         to: VectorQuery
-    - rename-model:
-        from: AnswerResult
-        to: QueryAnswerResult
-    - rename-model:
-        from: CaptionResult
-        to: QueryCaptionResult
 ```
 
 ### Tag: searchservice
@@ -114,7 +108,7 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d52c50c22ec7f573d49fc3b4c6c931491d92ec8b/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/stable/2023-11-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,VectorSearchAlgorithmKind
@@ -162,18 +156,6 @@ directive:
     - rename-model:
         from: SearchIndexerDataSource
         to: SearchIndexerDataSourceConnection
-    - rename-model:
-        from: ExhaustiveKnnVectorSearchAlgorithmConfiguration
-        to: ExhaustiveKnnAlgorithmConfiguration
-    - rename-model:
-        from: HnswVectorSearchAlgorithmConfiguration
-        to: HnswAlgorithmConfiguration
-    - rename-model:
-        from: SemanticSettings
-        to: SemanticSearch
-    - rename-model:
-        from: PrioritizedFields
-        to: SemanticPrioritizedFields
 ```
 
 ---
@@ -293,10 +275,6 @@ directive:
       $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
-
-      $.dimensions["x-ms-client-name"] = "vectorSearchDimensions";
-
-      $.vectorSearchProfile["x-ms-client-name"] = "vectorSearchProfileName";
 ```
 
 ### Rename includeTotalResultCount to includeTotalCount
@@ -307,16 +285,6 @@ directive:
     transform: >
       let param = $.find(p => p.name === "$count");
       param["x-ms-client-name"] = "includeTotalCount";
-```
-
-### Rename Answers to QueryAnswerType and Captions to QueryCaptionType
-``` yaml $(tag) == 'searchindex'
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
-      $.Answers["x-ms-enum"].name = "QueryAnswerType";
-      $.Captions["x-ms-enum"].name = "QueryCaptionType";
 ```
 
 ### Change Answers and Captions to a string in SearchOptions and SearchRequest
@@ -388,15 +356,6 @@ directive:
       $["x-ms-enum"].name = "PiiDetectionSkillMaskingMode";
 ```
 
-### Rename PiiDetectionSkill.maskingCharacter to PiiDetectionSkill.mask
-```yaml $(tag) == 'searchservice'
-directive:
-  - from: swagger-document
-    where: $.definitions.PiiDetectionSkill.properties.maskingCharacter
-    transform: >
-      $["x-ms-client-name"] = "mask";
-```
-
 ### Rename client parameter names
 ``` yaml $(tag) == 'searchservice'
 directive:
@@ -438,141 +397,4 @@ directive:
 - from: swagger-document
   where: $.definitions.VectorizableQuery.properties.k
   transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
-```
-
-### Rename QueryResultDocumentSemanticFieldState
-
-Simplify `QueryResultDocumentSemanticFieldState` name by renaming it to `SemanticFieldState`
-
-```yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.QueryResultDocumentSemanticFieldState
-  transform: $["x-ms-enum"].name = "SemanticFieldState";
-```
-
-### Add Edm.Single to SearchFieldDataType
-
-Adds `Edm.Single` to `SearchFieldDataType` to support vector search.
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.SearchFieldDataType
-  transform: >
-    $.enum.push("Edm.Single");
-    $["x-ms-enum"].values.push({
-      "value": "Edm.Single",
-      "name": "Single",
-      "description": "Indicates that a field contains a single-precision floating point number. This is only valid when used with Collection(Edm.Single)."
-    });  
-```
-
-### Make SemanticField.fieldName required
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.SemanticField
-  transform: >
-    $.required = ["fieldName"];
-```
-
-### Rename VectorSearchProfile.algorithm to VectorSearchProfile.algorithmConfigurationName
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.VectorSearchProfile.properties.algorithm
-  transform: >
-    $["x-ms-client-name"] = "algorithmConfigurationName";
-```
-
-### Rename SearchIndex.semanticSettings to SearchIndex.semanticSearch
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.SearchIndex.properties.semantic
-  transform: >
-    $["x-ms-client-name"] = "SemanticSearch";
-```
-
-### Rename VectorSearchProfile.algorithm to VectorSearchProfile.algorithmConfigurationName
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.VectorSearchProfile.properties.algorithm
-  transform: >
-    $["x-ms-client-name"] = "algorithmConfigurationName";
-```
-
-### Rename SemanticErrorHandling to SemanticErrorMode
-
-``` yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.paths["/docs"].get.parameters
-  transform: >
-    $.find(p => p.name === "semanticErrorHandling")["x-ms-enum"].name = "semanticErrorMode";
-```
-
-``` yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.SemanticErrorHandling
-  transform: >
-    $["x-ms-enum"].name = "SemanticErrorMode";
-```
-
-### Make VectorQuery.vector required
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.VectorQuery
-  transform: >
-    $.required = ["vector"];
-```
-
-### Rename SemanticPrioritizedFields fields to drop leading prioritized
-
-``` yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.SemanticPrioritizedFields.properties
-  transform: >
-    $.prioritizedContentFields["x-ms-client-name"] = "contentFields";
-    $.prioritizedKeywordsFields["x-ms-client-name"] = "keywordsFields";
-```
-
-### Rename SemanticPartialResponseReason to SemanticErrorReason
-
-``` yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.SemanticPartialResponseReason
-  transform: >
-    $["x-ms-enum"].name = "SemanticErrorReason";
-```
-
-### Rename SemanticPartialResponseType to SemanticSearchResultsType
-
-``` yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.SemanticPartialResponseType
-  transform: >
-    $["x-ms-enum"].name = "SemanticSearchResultsType";
-```
-
-### Rename SemanticSearch.defaultConfiguration to defaultConfigurationName
-
-``` yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.SemanticSearch.properties.defaultConfiguration
-  transform: >
-    $["x-ms-client-name"] = "defaultConfigurationName";
 ```
