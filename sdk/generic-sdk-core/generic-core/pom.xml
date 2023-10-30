@@ -44,20 +44,19 @@
     <jacoco.skip>true</jacoco.skip>
     <javaModulesSurefireArgLine>
       --add-exports com.generic.core/com.generic.core.implementation.http=ALL-UNNAMED
-      --add-exports com.generic.core/com.generic.core.implementation.http.rest=ALL-UNNAMED
-      --add-exports com.generic.core/com.generic.core.implementation.serializer=ALL-UNNAMED
 
       --add-opens com.generic.core/com.generic.core=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.credential=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.http=ALL-UNNAMED
-      --add-opens com.generic.core/com.generic.core.http.policy=ALL-UNNAMED
-      --add-opens com.generic.core/com.generic.core.http.rest=ALL-UNNAMED
+      --add-opens com.generic.core/com.generic.core.http.policy.credential=ALL-UNNAMED
+      --add-opens com.generic.core/com.generic.core.http.policy.logging=ALL-UNNAMED
+      --add-opens com.generic.core/com.generic.core.http.policy.redirect=ALL-UNNAMED
+      --add-opens com.generic.core/com.generic.core.http.policy.retry=ALL-UNNAMED
+
       --add-opens com.generic.core/com.generic.core.implementation=ALL-UNNAMED
+      --add-opens com.generic.core/com.generic.core.implementation.http.util=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.implementation.http=ALL-UNNAMED
-      --add-opens com.generic.core/com.generic.core.implementation.http.rest=ALL-UNNAMED
-      --add-opens com.generic.core/com.generic.core.implementation.serializer=ALL-UNNAMED
-      --add-opens com.generic.core/com.generic.core.implementation.logging=ALL-UNNAMED
-      --add-opens com.generic.core/com.generic.core.util=ALL-UNNAMED
+      --add-opens com.generic.core/com.generic.core.util.configuration=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.util.logging=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.util.serializer=ALL-UNNAMED
 
@@ -121,6 +120,31 @@
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-generator-annprocess</artifactId>
       <version>1.36</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.51.v20230217</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.51.v20230217</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <version>1.22</version>  <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

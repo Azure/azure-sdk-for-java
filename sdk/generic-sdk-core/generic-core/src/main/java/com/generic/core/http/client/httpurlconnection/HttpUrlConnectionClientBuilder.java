@@ -4,11 +4,15 @@
 package com.generic.core.http.client.httpurlconnection;
 
 import com.generic.core.http.client.HttpClient;
+import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.util.configuration.Configuration;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpURLConnection,
@@ -25,6 +29,7 @@ public class HttpUrlConnectionClientBuilder {
     private Duration readTimeout;
     private Duration writeTimeout;
     private Duration responseTimeout;
+    private ProxyOptions proxyOptions;
     private Configuration configuration;
 
     /**
@@ -137,6 +142,17 @@ public class HttpUrlConnectionClientBuilder {
     }
 
     /**
+     * Sets proxy configuration.
+     *
+     * @param proxyOptions The proxy configuration to use.
+     * @return The updated HttpUrlConnectionAsyncClientBuilder object.
+     */
+    public HttpUrlConnectionClientBuilder proxy(ProxyOptions proxyOptions) {
+        this.proxyOptions = proxyOptions;
+        return this;
+    }
+
+    /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
@@ -160,11 +176,26 @@ public class HttpUrlConnectionClientBuilder {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
+        ProxyOptions buildProxyOptions = (proxyOptions == null)
+            ? ProxyOptions.fromConfiguration(buildConfiguration)
+            : proxyOptions;
+
+        if (buildProxyOptions != null && buildProxyOptions.getUsername() != null) {
+            Authenticator.setDefault(new ProxyAuthenticator(buildProxyOptions.getUsername(),
+                buildProxyOptions.getPassword()));
+        }
+
+        if (buildProxyOptions != null && buildProxyOptions.getType() != ProxyOptions.Type.HTTP
+            && buildProxyOptions.getType() != null) {
+            throw new IllegalArgumentException("Invalid proxy");
+        }
+
         return new HttpUrlConnectionClient(
             getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT),
             getTimeout(readTimeout, DEFAULT_READ_TIMEOUT),
             getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT),
-            getTimeout(responseTimeout, DEFAULT_RESPONSE_TIMEOUT));
+            getTimeout(responseTimeout, DEFAULT_RESPONSE_TIMEOUT),
+            buildProxyOptions);
     }
 
     private static class ProxyAuthenticator extends Authenticator {

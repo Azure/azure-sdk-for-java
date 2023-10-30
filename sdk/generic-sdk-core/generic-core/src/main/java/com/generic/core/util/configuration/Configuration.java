@@ -23,7 +23,20 @@ import java.util.function.Function;
 public class Configuration implements Cloneable {
 
     // Default properties - these are what we read from the environment
+    /**
+     * URL of the proxy for HTTP connections.
+     */
+    public static final String PROPERTY_HTTP_PROXY = "HTTP_PROXY";
 
+    /**
+     * URL of the proxy for HTTPS connections.
+     */
+    public static final String PROPERTY_HTTPS_PROXY = "HTTPS_PROXY";
+
+    /**
+     * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.
+     */
+    public static final String PROPERTY_NO_PROXY = "NO_PROXY";
     /**
      * Enables logging by setting a log level.
      */

@@ -26,6 +26,7 @@ public final class HttpClientOptions {
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_CONNECTION_IDLE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration NO_TIMEOUT = Duration.ZERO;
+    private ProxyOptions proxyOptions;
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientOptions.class);
 
@@ -100,6 +101,27 @@ public final class HttpClientOptions {
         //
         //     return this;
     }
+
+    /**
+     * Sets the {@link ProxyOptions proxy options} that the {@link HttpClient} will use.
+     *
+     * @param proxyOptions The proxy options to use.
+     * @return The updated HttpClientOptions object.
+     */
+    public HttpClientOptions setProxyOptions(ProxyOptions proxyOptions) {
+        this.proxyOptions = proxyOptions;
+        return this;
+    }
+
+    /**
+     * Gets the {@link ProxyOptions proxy options} that the {@link HttpClient} will use.
+     *
+     * @return The proxy options to use.
+     */
+    public ProxyOptions getProxyOptions() {
+        return proxyOptions;
+    }
+
 
     /**
      * Sets the {@link Header Headers}.

@@ -150,13 +150,10 @@ public class HttpRequest {
     @SuppressWarnings("deprecation")
     public HttpRequest setUrl(String url) {
         try {
-            if (url != null) {
-                this.url = new URL(url);
-            }
+            this.url = new URL(url);
         } catch (MalformedURLException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
+            throw LOGGER.logThrowableAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }
-
         return this;
     }
 
