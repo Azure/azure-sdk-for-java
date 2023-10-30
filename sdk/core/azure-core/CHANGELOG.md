@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `PollOperationDetails` as details of long-running operations.
+
 ### Breaking Changes
 
 ### Bugs Fixed
