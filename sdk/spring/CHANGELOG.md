@@ -1,6 +1,7 @@
 # Release History
 
 ## 5.7.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.1.5 and Spring Cloud dependencies version to 2022.0.4
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
