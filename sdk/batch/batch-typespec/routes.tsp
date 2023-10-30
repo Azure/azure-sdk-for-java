@@ -62,7 +62,7 @@ API.
   @get
   listApplications is RpcOperation<
     BatchApplicationListHeaders,
-    BatchResponseHeaders & ApplicationListResult,
+    BatchResponseHeaders & BatchApplicationListResult,
     {},
     BatchError
   >;
@@ -135,7 +135,7 @@ last aggregation interval is returned.
       @query
       $filter?: string;
     },
-    BatchResponseHeaders & PoolListUsageMetricsResult,
+    BatchResponseHeaders & BatchPoolListUsageMetricsResult,
     {},
     BatchError
   >;
@@ -175,7 +175,7 @@ to Microsoft Support engineers.
 
       @body
       @doc("The Pool to be created.")
-      body: BatchPoolCreateOptions;
+      pool: BatchPoolCreateParameters;
     },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -295,7 +295,7 @@ a StartTask element, then the Pool keeps the existing StartTask.
 
         @doc("The pool properties to update.")
         @body
-        body : BatchPoolUpdateOptions;
+        pool : BatchPoolUpdateParameters;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -355,7 +355,7 @@ more than once every 30 seconds.
 
         @doc("The options to use for enabling automatic scaling.")
         @body
-        body : BatchPoolEnableAutoScaleOptions;
+        parameters : BatchPoolEnableAutoScaleParameters;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -391,7 +391,7 @@ scaling enabled in order to evaluate a formula.
 
       @doc("The options to use for evaluating the automatic scaling formula.")
       @body
-      body : BatchPoolEvaluateAutoScaleOptions;
+      parameters: BatchPoolEvaluateAutoScaleParameters;
     },
     BatchResponseHeaders &
       AutoScaleRun & {
@@ -429,7 +429,7 @@ Nodes, use the Pool remove Compute Nodes API instead.
 
         @doc("The options to use for resizing the pool.")
         @body
-        body : BatchPoolResizeOptions;
+        parameters : BatchPoolResizeParameters;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -485,7 +485,7 @@ with this request, then the Batch service will remove the existing StartTask.
 
       @doc("The options to use for replacing properties on the pool.")
       @body
-      body : BatchPoolReplaceOptions;
+      pool : BatchPoolReplaceParameters;
     },
     PoolUpdatePropertiesResponseHeaders,
     {},
@@ -510,7 +510,7 @@ Each request may remove up to 100 nodes.
 
         @doc("The options to use for removing the node.")
         @body
-        body : NodeRemoveOptions;
+        parameters : BatchNodeRemoveParameters;
       },
     PoolRemoveNodesResponseHeaders,
     {},
@@ -539,7 +539,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
       @query
       $filter?: string;
     },
-    BatchResponseHeaders & AccountListSupportedImagesResult,
+    BatchResponseHeaders & BatchAccountListSupportedImagesResult,
     {},
     BatchError
   >;
@@ -561,7 +561,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
       @query
       $filter?: string;
     },
-    BatchClientResponseHeaders & PoolNodeCountsListResult,
+    BatchClientResponseHeaders & BatchPoolNodeCountsListResult,
     {},
     BatchError
   >;
@@ -644,7 +644,7 @@ element, then the Job keeps the existing constraints.
 
         @doc("The options to use for updating the Job.")
         @body
-        body : BatchJobUpdateOptions;
+        job : BatchJobUpdateParameters;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -681,7 +681,7 @@ with this request, then the Batch service will remove the existing constraints.
 
         @doc("A job with updated properties")
         @body
-        body : BatchJob;
+        job : BatchJob;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -723,7 +723,7 @@ the request fails with status code 409.
 
         @doc("The options to use for disabling the Job.")
         @body
-        body : BatchJobDisableOptions;
+        parameters : BatchJobDisableParameters;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -795,7 +795,7 @@ Tasks cannot be added and any remaining active Tasks will not be scheduled.
 
         @doc("The options to use for terminating the Job.")
         @body
-        body?: BatchJobTerminateOptions;
+        parameters?: BatchJobTerminateParameters;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -834,7 +834,7 @@ engineers.
 
       @doc("The Job to be created.")
       @body
-      body: BatchJobCreateOptions;
+      job: BatchJobCreateParameters;
     },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -945,7 +945,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
       @query({ format: "csv" })
       $select?: string[];
     },
-    BatchResponseHeaders & BatchJobListPreparationAndReleaseTaskStatusResult,
+    BatchResponseHeaders & BatchJobPreparationAndReleaseTaskStatusListResult,
     {},
     BatchError
   >;
@@ -966,7 +966,7 @@ up to date. If you need exact task counts, use a list query.
       @path
       jobId: string;
     },
-    BatchClientResponseHeaders & TaskCountsResult,
+    BatchClientResponseHeaders & BatchTaskCountsResult,
     {},
     BatchError
   >;
@@ -990,7 +990,7 @@ interface Certificates {
 
       @doc("The Certificate to be created.")
       @body
-      body: BatchCertificate;
+      certificate: BatchCertificate;
     },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -1024,7 +1024,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
       @query({ format: "csv" })
       $select?: string[];
     },
-    BatchResponseHeaders & CertificateListResult,
+    BatchResponseHeaders & BatchCertificateListResult,
     {},
     BatchError
   >;
@@ -1231,7 +1231,7 @@ running Jobs are unaffected.
 
         @doc("The options to use for updating the Job Schedule.")
         @body
-        body : BatchJobScheduleUpdateOptions;
+        jobSchedule : BatchJobScheduleUpdateParameters;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -1270,7 +1270,7 @@ running Jobs are unaffected.
 
         @doc("A Job Schedule with updated properties")
         @body
-        body : BatchJobSchedule;
+        jobSchedule : BatchJobSchedule;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -1377,7 +1377,7 @@ running Jobs are unaffected.
 
       @doc("The Job Schedule to be created.")
       @body
-      body: BatchJobScheduleCreateOptions;
+      jobSchedule: BatchJobScheduleCreateParameters;
     },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -1457,7 +1457,7 @@ the Batch service and left in whatever state it was in at that time.
 
       @doc("The Task to be created.")
       @body
-      body: BatchTaskCreateOptions;
+      task: BatchTaskCreateParameters;
     },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -1546,9 +1546,9 @@ service and left in whatever state it was in at that time.
 
       @doc("The Tasks to be added.")
       @body
-      collection: BatchTaskCollection;
+      taskCollection: BatchTaskCollection;
     },
-    BatchClientResponseHeaders & TaskAddCollectionResult,
+    BatchClientResponseHeaders & BatchTaskAddCollectionResult,
     {},
     BatchError
   >;
@@ -1643,7 +1643,7 @@ information about subtasks.
 
         @doc("The Task to update.")
         @body
-        body: BatchTask;
+        task: BatchTask;
       },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -1847,7 +1847,7 @@ combination with the filter parameter to list specific type of files.
       @query
       recursive?: boolean;
     },
-    BatchResponseHeaders & NodeFileListResult,
+    BatchResponseHeaders & BatchNodeFileListResult,
     {},
     BatchError
   >;
@@ -1881,7 +1881,7 @@ running state.
 
       @doc("The options to use for creating the user.")
       @body
-      body: BatchNodeUserCreateOptions;
+      user: BatchNodeUserCreateParameters;
     },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -1959,7 +1959,7 @@ Account on a Compute Node only when it is in the idle or running state.
 
       @doc("The options to use for updating the user.")
       @body
-      body : BatchNodeUserUpdateOptions;
+      parameters : BatchNodeUserUpdateParameters;
     },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -2019,7 +2019,7 @@ Account on a Compute Node only when it is in the idle or running state.
 
       @doc("The options to use for rebooting the Compute Node.")
       @body
-      body?: NodeRebootOptions;
+      parameters?: BatchNodeRebootParameters;
     },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -2059,7 +2059,7 @@ cloud service configuration property.
 
       @doc("The options to use for reimaging the Compute Node.")
       @body
-      body?: NodeReimageOptions;
+      parameters?: BatchNodeReimageParameters;
     },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -2098,7 +2098,7 @@ scheduling state is enabled.
 
       @doc("The options to use for disabling scheduling on the Compute Node.")
       @body
-      body?: NodeDisableSchedulingOptions;
+      parameters?: BatchNodeDisableSchedulingParameters;
     },
     BatchResponseHeaders & {
       @doc("A process exit code.")
@@ -2243,7 +2243,7 @@ Protocol file.
 
       @doc("The Azure Batch service log files upload options.")
       @body
-      body: UploadBatchServiceLogsOptions;
+      parameters: UploadBatchServiceLogsParameters;
     },
     BatchClientResponseHeaders & UploadBatchServiceLogsResult,
     {},
@@ -2305,7 +2305,7 @@ The name of the Compute Node Extension that you want to get information about.
       @query({ format: "csv" })
       $select?: string[];
     },
-    BatchResponseHeaders & NodeVMExtension,
+    BatchResponseHeaders & BatchNodeVMExtension,
     {},
     BatchError
   >;
@@ -2332,7 +2332,7 @@ The name of the Compute Node Extension that you want to get information about.
       @query({ format: "csv" })
       $select?: string[];
     },
-    BatchResponseHeaders & NodeVMExtensionList,
+    BatchResponseHeaders & BatchNodeVMExtensionListResult,
     {},
     BatchError
   >;
@@ -2426,7 +2426,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
       @query
       recursive?: boolean;
     },
-    BatchResponseHeaders & NodeFileListResult,
+    BatchResponseHeaders & BatchNodeFileListResult,
     {},
     BatchError
   >;
