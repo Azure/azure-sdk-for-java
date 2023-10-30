@@ -16,7 +16,6 @@ import com.azure.communication.jobrouter.models.CancelExceptionAction;
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.models.WaitTimeExceptionTrigger;
@@ -25,7 +24,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 public class ExceptionPolicyExample {
     private final String exceptionPolicyId;
