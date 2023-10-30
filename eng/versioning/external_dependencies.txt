@@ -107,9 +107,9 @@ org.graalvm.sdk:graal-sdk;22.0.0.2
 org.graalvm.nativeimage:svm;22.0.0.2
 org.messaginghub:pooled-jms;3.1.4
 org.postgresql:postgresql;42.6.0
-org.slf4j:slf4j-api;2.0.9
-org.slf4j:slf4j-nop;2.0.9
-org.slf4j:slf4j-simple;2.0.9
+org.slf4j:slf4j-api;1.7.36
+org.slf4j:slf4j-nop;1.7.36
+org.slf4j:slf4j-simple;1.7.36
 redis.clients:jedis;4.3.2
 io.lettuce:lettuce-core;6.2.6.RELEASE
 org.redisson:redisson;3.17.0
