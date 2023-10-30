@@ -135,7 +135,7 @@ public final class CustomHmacAuthenticationPolicy implements HttpPipelinePolicy 
 
         final String signature =
             Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
-        String authorization = "HMAC-SHA256 SignedHeaders=x-ms-date;host;x-ms-content-256&Signature=" + signature;
+        String authorization = "HMAC-SHA256 SignedHeaders=x-ms-date;host;x-ms-content-sha256&Signature=" + signature;
         headers.set(HttpHeaderName.AUTHORIZATION, authorization);
         headers.set(X_MS_STRING_TO_SIGN_HEADER,
             Base64.getEncoder().encodeToString(stringToSign.getBytes(StandardCharsets.UTF_8)));
