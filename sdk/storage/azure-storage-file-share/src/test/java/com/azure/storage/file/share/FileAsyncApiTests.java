@@ -12,6 +12,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FileRange;
+import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -58,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -1396,6 +1398,18 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void getFilePath() {
         assertEquals(filePath, primaryFileAsyncClient.getFilePath());
+    }
+
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20240204ServiceVersion")
+    @Test
+    public void listHandlesClientName() {
+        ShareAsyncClient client = primaryFileServiceAsyncClient.getShareAsyncClient("testing");
+        ShareDirectoryAsyncClient directoryClient = client.getDirectoryClient("dir1");
+        ShareFileAsyncClient fileClient = directoryClient.getFileClient("test.txt");
+        List<HandleItem> list = fileClient.listHandles().collectList().block();
+        assertNotNull(list.get(0).getClientName());
+
     }
 
 }

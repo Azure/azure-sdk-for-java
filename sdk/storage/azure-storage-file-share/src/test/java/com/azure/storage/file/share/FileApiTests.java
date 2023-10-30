@@ -2714,25 +2714,15 @@ class FileApiTests extends FileShareTestBase {
         assertTrue(aadFileClient.exists());
     }
 
-    //@EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20240204ServiceVersion")
     @Test
     public void listHandlesClientName() {
-        ShareServiceClient serviceClient = instrument(new ShareServiceClientBuilder()
-            .credential(new StorageSharedKeyCredential("1v7xscnby3pev24ax", "XFaveavLHiA/nlFbmR4i21QTVbc+faEIRU+XydOD0/H+2nyS7kPnkxA4/DiVP9afKAjyH/7AGr5/+AStF6tpTA=="))
-            .endpoint("https://1v7xscnby3pev24ax.preprod.core.windows.net"))
-            .buildClient();
-
-        ShareClient client = serviceClient.getShareClient("testing");
+        ShareClient client = primaryFileServiceClient.getShareClient("testing");
         ShareDirectoryClient directoryClient = client.getDirectoryClient("dir1");
-        ShareFileClient fileClient = directoryClient.getFileClient("test");
+        ShareFileClient fileClient = directoryClient.getFileClient("test.txt");
         List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
         assertNotNull(list.get(0).getClientName());
 
-
-        //ShareClient shareClient = primaryFileServiceClient.getShareClient("myshare");
-        //ShareDirectoryClient directoryClient = shareClient.getDirectoryClient("mydirectory");
-        //ShareFileClient fileClient = directoryClient.getFileClient("myfile");
-        //List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
-        //assertNotNull(list.get(0).getClientName());
     }
 }
