@@ -81,12 +81,12 @@ public final class CustomHmacAuthenticationPolicy implements HttpPipelinePolicy 
                 .orElse(context.getHttpRequest().getUrl());
 
             return contents.collect(() -> {
-                    try {
-                        return MessageDigest.getInstance("SHA-256");
-                    } catch (NoSuchAlgorithmException e) {
-                        throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                    }
-                }, MessageDigest::update)
+                try {
+                    return MessageDigest.getInstance("SHA-256");
+                } catch (NoSuchAlgorithmException e) {
+                    throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+                }
+            }, MessageDigest::update)
                 .flatMap(messageDigest -> {
                     addAuthenticationHeaders(acsResource, hostnameToSignWith,
                         context.getHttpRequest().getHttpMethod().toString(), messageDigest,
@@ -107,7 +107,7 @@ public final class CustomHmacAuthenticationPolicy implements HttpPipelinePolicy 
         headers.set(CONTENT_HASH_HEADER, contentHash);
         String xMsDate = OffsetDateTime.now(ZoneOffset.UTC).format(HMAC_DATETIMEFORMATTER_PATTERN);
         headers.set(X_MS_DATE_HEADER, xMsDate);
-        addSignatureHeader(url, httpMethod, headers,xMsDate, acsResource, contentHash);
+        addSignatureHeader(url, httpMethod, headers, xMsDate, acsResource, contentHash);
     }
 
     private void addSignatureHeader(URL url, String httpMethod, HttpHeaders headers, String xMsDate, String host,

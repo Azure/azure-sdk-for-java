@@ -78,12 +78,12 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
                 .orElse(context.getHttpRequest().getUrl());
 
             return contents.collect(() -> {
-                    try {
-                        return MessageDigest.getInstance("SHA-256");
-                    } catch (NoSuchAlgorithmException e) {
-                        throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                    }
-                }, MessageDigest::update)
+                try {
+                    return MessageDigest.getInstance("SHA-256");
+                } catch (NoSuchAlgorithmException e) {
+                    throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+                }
+            }, MessageDigest::update)
                 .flatMap(messageDigest -> {
                     addAuthenticationHeaders(hostnameToSignWith, context.getHttpRequest().getHttpMethod().toString(),
                         messageDigest, context.getHttpRequest().getHeaders());
