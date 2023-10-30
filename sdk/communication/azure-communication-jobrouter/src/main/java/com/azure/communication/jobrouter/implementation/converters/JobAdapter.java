@@ -26,10 +26,10 @@ public class JobAdapter {
     public static RouterJob convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
         Map<String, LabelValue> labelValueMap = createJobOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
+            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
         Map<String, LabelValue> tagValueMap = createJobOptions.getLabels();
         Map<String, Object> tags = tagValueMap != null ? tagValueMap.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
+            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
         List<RouterWorkerSelector> workerSelectors = createJobOptions.getRequestedWorkerSelectors();
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
 
@@ -44,5 +44,18 @@ public class JobAdapter {
             .setRequestedWorkerSelectors(workerSelectors)
             .setTags(tags)
             .setMatchingMode(createJobOptions.getMatchingMode());
+    }
+
+    private static Object getValue(LabelValue labelValue) {
+        if (labelValue.getValueAsBoolean()) {
+            return labelValue.getValueAsBoolean();
+        } else if (labelValue.getValueAsDouble() != null) {
+            return labelValue.getValueAsDouble();
+        } else if (labelValue.getValueAsInteger() != null) {
+            return labelValue.getValueAsInteger();
+        } else if (labelValue.getValueAsString() != null) {
+            return labelValue.getValueAsString();
+        }
+        return null;
     }
 }
