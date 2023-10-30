@@ -64,7 +64,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.53.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -324,9 +324,7 @@ Licensed under the MIT License.
                     https://issues.apache.org/jira/browse/MSHADE-371 -->
                   <resource>META-INF/LICENSE.md</resource>
                 </transformer>
-
-                <!-- TODO moderakh validate that netty native libs e.g, boringssl actually is used. -->
-              </transformers>
+             </transformers>
 
               <!-- When true, it will attempt to shade the contents of the java source files when creating the sources jar. -->
               <shadeSourcesContent>true</shadeSourcesContent>
