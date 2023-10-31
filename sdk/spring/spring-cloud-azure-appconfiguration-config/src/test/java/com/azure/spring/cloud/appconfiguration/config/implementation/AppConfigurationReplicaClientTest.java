@@ -29,7 +29,6 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.identity.CredentialUnavailableException;
