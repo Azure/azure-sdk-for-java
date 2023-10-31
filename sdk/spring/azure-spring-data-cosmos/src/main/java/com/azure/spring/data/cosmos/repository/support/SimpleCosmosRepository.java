@@ -136,7 +136,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     }
 
     /**
-     * batch save entities
+     * Batch save entities. Uses bulk if possible.
      *
      * @param entities Batch entities
      * @param <S> type of entities
@@ -262,7 +262,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     }
 
     /**
-     * delete all the domains of a container
+     * Delete all the domains of a container. Uses bulk if possible.
      */
     @Override
     public void deleteAll() {
@@ -270,7 +270,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     }
 
     /**
-     * delete list of entities without partitions
+     * Delete list of entities without partitions. Uses bulk if possible.
      *
      * @param entities list of entities to be deleted
      */
@@ -279,7 +279,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         Assert.notNull(entities, "Iterable entities should not be null");
 
         if (information.getPartitionKeyFieldName() != null) {
-
             this.operation.deleteEntities(this.information, entities);
         } else {
             StreamSupport.stream(entities.spliterator(), true).forEach(this::delete);

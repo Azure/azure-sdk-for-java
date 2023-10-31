@@ -734,7 +734,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     /**
-     * Deletes the entities
+     * Deletes the entities using bulk
      *
      * @param information the CosmosEntityInformation
      * @param entities the Iterable entities to be inserted

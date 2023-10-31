@@ -232,7 +232,7 @@ public interface ReactiveCosmosOperations {
     <S extends T, T> Mono<Void> deleteEntities(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities);
 
     /**
-     * Delete all items in a container
+     * Delete all items in a container. Uses bulk if possible.
      *
      * @param containerName the container name
      * @param domainType the domainType

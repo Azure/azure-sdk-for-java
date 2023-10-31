@@ -235,7 +235,7 @@ public interface CosmosOperations {
     <S extends T, T> void deleteEntities(CosmosEntityInformation<T, ?> information, Iterable<S> entities);
 
     /**
-     * Delete all items in a container
+     * Delete all items in a container. Uses bulk if possible.
      *
      * @param containerName the container name
      * @param domainType the domainType
@@ -250,7 +250,7 @@ public interface CosmosOperations {
     void deleteContainer(String containerName);
 
     /**
-     * Delete items matching query
+     * Delete items matching query. Uses bulk if possible.
      *
      * @param query the document query
      * @param domainType type class
