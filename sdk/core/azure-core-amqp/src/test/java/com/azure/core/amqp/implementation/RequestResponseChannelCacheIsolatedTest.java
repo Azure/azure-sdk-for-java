@@ -28,6 +28,12 @@ import java.util.Deque;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Supplier;
 
+/**
+ * Tests for {@link RequestResponseChannelCache}.
+ * <p/>
+ * See <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
+ * for why this test class needs to run in Isolated mode.
+ */
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
 public class RequestResponseChannelCacheIsolatedTest {

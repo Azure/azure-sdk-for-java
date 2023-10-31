@@ -37,6 +37,12 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Tests for {@link ReactorConnectionCache}.
+ * <p/>
+ * See <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
+ * for why this test class needs to run in Isolated mode.
+ */
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
 public class ReactorConnectionCacheIsolatedTest {
