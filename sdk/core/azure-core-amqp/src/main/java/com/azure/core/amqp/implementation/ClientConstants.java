@@ -24,6 +24,7 @@ public final class ClientConstants {
     public static final String SESSION_NAME_KEY = "sessionName";
     public static final String FULLY_QUALIFIED_NAMESPACE_KEY = "namespace";
     public static final String OPERATION_NAME_KEY = "amqpOperation";
+    public static final String DELIVERY_KEY = "delivery";
     public static final String DELIVERY_STATE_KEY = "deliveryState";
     public static final String DELIVERY_TAG_KEY = "lockToken";
     public static final String ERROR_CONDITION_KEY = "errorCondition";
