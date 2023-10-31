@@ -561,26 +561,43 @@ public interface StorageAccount
             WithCreate withHnsEnabled(boolean enabled);
         }
 
-        /** The stage of the storage account definition allowing to specify whether cross tenant replication is enabled. */
+        /** The stage of storage account definition allowing to configure allow cross tenant replication. */
         interface WithAllowCrossTenantReplication {
             /**
-             * Specifies whether cross tenant replication will be enabled or not.
+             * Allows to allow cross tenant replication, configured by individual containers.
              *
-             * @param enabled whether Hns will be enabled or not
              * @return the next stage of storage account definition
              */
-            WithCreate withAllowCrossTenantReplication(boolean enabled);
+            WithCreate enableAllowCrossTenantReplication();
+
+            /**
+             * Disables allow cross tenant replication
+             *
+             * Disabling in storage account overrides the allow cross tenant replication settings for individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate disableAllowCrossTenantReplication();
+
         }
 
-        /** The stage of the storage account definition allowing to specify whether default to oauth authentication is enabled. */
+        /** The stage of storage account definition allowing to configure default to oauth authentication. */
         interface  WithDefaultToOAuthAuthentication {
             /**
-             * Specifies whether default to oauth authentication will be enabled or not.
+             * Allows default to oauth authentication, configured by individual containers.
              *
-             * @param enabled whether default to oauth authentication will be enabled or not
              * @return the next stage of storage account definition
              */
-            WithCreate withDefaultToOAuthAuthentication(boolean enabled);
+            WithCreate enableDefaultToOAuthAuthentication();
+
+            /**
+             * Disables default to oauth authentication
+             *
+             * Disabling in storage account overrides the default to oauth authentication settings for individual containers.
+             *
+             * @return the next stage of storage account definition
+             */
+            WithCreate disableDefaultToOAuthAuthentication();
         }
 
         /**
@@ -931,27 +948,44 @@ public interface StorageAccount
             Update upgradeToGeneralPurposeAccountKindV2();
         }
 
-        /** The stage of storage account update allowing to cross tenant replication. */
+        /** The stage of storage account update allowing to allow cross tenant replication. */
         interface WithAllowCrossTenantReplication {
             /**
-             * Specifies whether cross tenant replication will be enabled or not.
+             * Allows to allow cross tenant replication, configured by individual containers.
              *
-             * @param enabled whether cross tenant replication will be enabled or not
              * @return the next stage of storage account update
              */
-            Update withAllowCrossTenantReplication(boolean enabled);
+            Update enableAllowCrossTenantReplication();
+
+            /**
+             * Disables cross tenant replication
+             *
+             * Disabling in storage account overrides the cross tenant replication settings for individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update disableAllowCrossTenantReplication();
         }
 
-        /** The stage of storage account update allowing to specify whether default to oauth authentication is enabled. */
+        /** The stage of storage account update allowing to configure default to oauth authentication. */
         interface  WithDefaultToOAuthAuthentication {
             /**
-             * Specifies whether default to oauth authentication will be enabled or not.
+             * Allows default to oauth authentication, configured by individual containers.
              *
-             * @param enabled whether default to oauth authentication will be enabled or not
-             * @return the next stage of storage account definition
+             * @return the next stage of storage account update
              */
-            Update withDefaultToOAuthAuthentication(boolean enabled);
+            Update enableDefaultToOAuthAuthentication();
+
+            /**
+             * Disables default to oauth authentication
+             *
+             * Disabling in storage account overrides the default to oauth authentication settings for individual containers.
+             *
+             * @return the next stage of storage account update
+             */
+            Update disableDefaultToOAuthAuthentication();
         }
+
     }
 
     /** The template for a storage account update operation, containing all the settings that can be modified. */

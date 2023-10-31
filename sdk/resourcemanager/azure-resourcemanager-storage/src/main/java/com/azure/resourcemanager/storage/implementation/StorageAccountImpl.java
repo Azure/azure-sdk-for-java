@@ -576,21 +576,41 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl withAllowCrossTenantReplication(boolean enabled) {
+    public StorageAccountImpl enableAllowCrossTenantReplication() {
         if (isInCreateMode()) {
-            createParameters.withAllowCrossTenantReplication(enabled);
+            createParameters.withAllowCrossTenantReplication(true);
         } else {
-            updateParameters.withAllowCrossTenantReplication(enabled);
+            updateParameters.withAllowCrossTenantReplication(true);
         }
         return this;
     }
 
     @Override
-    public StorageAccountImpl withDefaultToOAuthAuthentication(boolean enabled) {
+    public StorageAccountImpl disableAllowCrossTenantReplication() {
         if (isInCreateMode()) {
-            createParameters.withDefaultToOAuthAuthentication(enabled);
+            createParameters.withAllowCrossTenantReplication(false);
         } else {
-            updateParameters.withDefaultToOAuthAuthentication(enabled);
+            updateParameters.withAllowCrossTenantReplication(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl enableDefaultToOAuthAuthentication() {
+        if (isInCreateMode()) {
+            createParameters.withDefaultToOAuthAuthentication(true);
+        } else {
+            updateParameters.withDefaultToOAuthAuthentication(true);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl disableDefaultToOAuthAuthentication() {
+        if (isInCreateMode()) {
+            createParameters.withDefaultToOAuthAuthentication(false);
+        } else {
+            updateParameters.withDefaultToOAuthAuthentication(false);
         }
         return this;
     }
