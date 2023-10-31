@@ -18,7 +18,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.verification.AtLeast;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -31,6 +30,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -183,7 +183,7 @@ public class MessageFluxTest {
         // Expecting closeAsync invocation from two call sites -
         // 1. before the retry to obtain the next receiver.
         // 2. when operator terminates due to non-retriable error.
-        verify(receiver, new AtLeast(2)).closeAsync();
+        verify(receiver, atLeast(2)).closeAsync();
         upstream.assertCancelled();
     }
 
@@ -206,7 +206,7 @@ public class MessageFluxTest {
         // Expecting closeAsync invocation from two call sites -
         // 1. before the NOP retry (NULL_RETRY_POLICY) when first receiver terminates with (retriable) error
         // 2. when operator terminates after NOP retry
-        verify(receiver, new AtLeast(2)).closeAsync();
+        verify(receiver, atLeast(2)).closeAsync();
         upstream.assertCancelled();
     }
 
@@ -228,7 +228,7 @@ public class MessageFluxTest {
         // Expecting closeAsync invocation from two call sites -
         // 1. before the NOP retry (NULL_RETRY_POLICY) when first receiver terminates with completion
         // 2. when operator terminates after NOP retry
-        verify(receiver, new AtLeast(2)).closeAsync();
+        verify(receiver, atLeast(2)).closeAsync();
         upstream.assertCancelled();
     }
 
