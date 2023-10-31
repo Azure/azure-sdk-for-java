@@ -94,11 +94,8 @@ custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDo
 customization-class: src/main/java/SearchIndexCustomizations.java
 directive:
     - rename-model:
-        from: VectorQuery
-        to: VectorizableQuery
-    - rename-model:
         from: RawVectorQuery
-        to: VectorQuery
+        to: VectorizedQuery
 ```
 
 ### Tag: searchservice
@@ -263,7 +260,7 @@ directive:
       $.discriminator = "@odata.type";
 ```
 
-### Change SearchField retrievable to hidden, dimensions to vectorSearchDimensions, and vectorSearchProfile to vectorSearchProfileName
+### Change SearchField retrievable to hidden
 ```yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
@@ -388,13 +385,13 @@ directive:
   transform: $["x-ms-format"] = "arm-id";
 ```
 
-### Rename VectorizableQuery property `K`
+### Rename VectorQuery property `K`
 
-Rename VectorizableQuery property `K` to `KNearestNeighborsCount`
+Rename VectorQuery property `K` to `KNearestNeighborsCount`
 
 ```yaml $(tag) == 'searchindex'
 directive:
 - from: swagger-document
-  where: $.definitions.VectorizableQuery.properties.k
+  where: $.definitions.VectorQuery.properties.k
   transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
 ```

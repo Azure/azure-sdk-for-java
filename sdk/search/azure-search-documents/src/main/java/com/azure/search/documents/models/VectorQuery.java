@@ -7,70 +7,104 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.models.VectorQueryKind;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
-/** The query parameters to use for vector search when a raw vector value is provided. */
+/** The query parameters for vector and hybrid search queries. */
 @Fluent
-public final class VectorQuery extends VectorizableQuery {
+public class VectorQuery implements JsonSerializable<VectorQuery> {
 
     /*
-     * The vector representation of a search query.
+     * Number of nearest neighbors to return as top hits.
      */
-    private final List<Float> vector;
+    private Integer kNearestNeighborsCount;
+
+    /*
+     * Vector Fields of type Collection(Edm.Single) to be included in the vector searched.
+     */
+    private String fields;
+
+    /*
+     * When true, triggers an exhaustive k-nearest neighbor search across all vectors within the vector index. Useful
+     * for scenarios where exact matches are critical, such as determining ground truth values.
+     */
+    private Boolean exhaustive;
+
+    /** Creates an instance of VectorQuery class. */
+    public VectorQuery() {}
 
     /**
-     * Creates an instance of VectorQuery class.
+     * Get the kNearestNeighborsCount property: Number of nearest neighbors to return as top hits.
      *
-     * @param vector the vector value to set.
+     * @return the kNearestNeighborsCount value.
      */
-    public VectorQuery(List<Float> vector) {
-        this.vector = vector;
+    public Integer getKNearestNeighborsCount() {
+        return this.kNearestNeighborsCount;
     }
 
     /**
-     * Get the vector property: The vector representation of a search query.
+     * Set the kNearestNeighborsCount property: Number of nearest neighbors to return as top hits.
      *
-     * @return the vector value.
+     * @param kNearestNeighborsCount the kNearestNeighborsCount value to set.
+     * @return the VectorQuery object itself.
      */
-    public List<Float> getVector() {
-        return this.vector;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public VectorQuery setKNearestNeighborsCount(Integer kNearestNeighborsCount) {
-        super.setKNearestNeighborsCount(kNearestNeighborsCount);
+        this.kNearestNeighborsCount = kNearestNeighborsCount;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the fields property: Vector Fields of type Collection(Edm.Single) to be included in the vector searched.
+     *
+     * @return the fields value.
+     */
+    public String getFields() {
+        return this.fields;
+    }
+
+    /**
+     * Set the fields property: Vector Fields of type Collection(Edm.Single) to be included in the vector searched.
+     *
+     * @param fields the fields value to set.
+     * @return the VectorQuery object itself.
+     */
     public VectorQuery setFields(String... fields) {
-        super.setFields(fields);
+        this.fields = (fields == null) ? null : String.join(",", fields);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the exhaustive property: When true, triggers an exhaustive k-nearest neighbor search across all vectors
+     * within the vector index. Useful for scenarios where exact matches are critical, such as determining ground truth
+     * values.
+     *
+     * @return the exhaustive value.
+     */
+    public Boolean isExhaustive() {
+        return this.exhaustive;
+    }
+
+    /**
+     * Set the exhaustive property: When true, triggers an exhaustive k-nearest neighbor search across all vectors
+     * within the vector index. Useful for scenarios where exact matches are critical, such as determining ground truth
+     * values.
+     *
+     * @param exhaustive the exhaustive value to set.
+     * @return the VectorQuery object itself.
+     */
     public VectorQuery setExhaustive(Boolean exhaustive) {
-        super.setExhaustive(exhaustive);
+        this.exhaustive = exhaustive;
         return this;
     }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(VectorQueryKind.VECTOR, null));
-        jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
-        jsonWriter.writeStringField("fields", getFields());
-        jsonWriter.writeBooleanField("exhaustive", isExhaustive());
-        jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
+        jsonWriter.writeNumberField("k", this.kNearestNeighborsCount);
+        jsonWriter.writeStringField("fields", this.fields);
+        jsonWriter.writeBooleanField("exhaustive", this.exhaustive);
         return jsonWriter.writeEndObject();
     }
 
@@ -80,55 +114,36 @@ public final class VectorQuery extends VectorizableQuery {
      * @param jsonReader The JsonReader being read.
      * @return An instance of VectorQuery if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the VectorQuery.
      */
     public static VectorQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Integer kNearestNeighborsCount = null;
-                    String fields = null;
-                    Boolean exhaustive = null;
-                    boolean vectorFound = false;
-                    List<Float> vector = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = reader.bufferObject();
+                    // Prepare for reading
+                    readerToUse.nextToken();
+                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = readerToUse.getFieldName();
+                        readerToUse.nextToken();
                         if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"vector".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'vector'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("k".equals(fieldName)) {
-                            kNearestNeighborsCount = reader.getNullable(JsonReader::getInt);
-                        } else if ("fields".equals(fieldName)) {
-                            fields = reader.getString();
-                        } else if ("exhaustive".equals(fieldName)) {
-                            exhaustive = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("vector".equals(fieldName)) {
-                            vector = reader.readArray(reader1 -> reader1.getFloat());
-                            vectorFound = true;
+                            discriminatorValue = readerToUse.getString();
+                            break;
                         } else {
-                            reader.skipChildren();
+                            readerToUse.skipChildren();
                         }
                     }
-                    if (vectorFound) {
-                        VectorQuery deserializedVectorQuery = new VectorQuery(vector);
-                        deserializedVectorQuery.setKNearestNeighborsCount(kNearestNeighborsCount);
-                        deserializedVectorQuery.setFields(fields);
-                        deserializedVectorQuery.setExhaustive(exhaustive);
-                        return deserializedVectorQuery;
+                    if (discriminatorValue != null) {
+                        readerToUse = readerToUse.reset();
                     }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!vectorFound) {
-                        missingProperties.add("vector");
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("vector".equals(discriminatorValue)) {
+                        return VectorizedQuery.fromJson(readerToUse);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field 'kind' didn't match one of the expected values 'vector'");
                     }
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
                 });
     }
 }

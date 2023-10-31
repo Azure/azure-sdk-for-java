@@ -60,8 +60,8 @@ public class SearchIndexCustomizations extends Customization {
         customizeAutocompleteOptions(packageCustomization.getClass("AutocompleteOptions"));
         customizeSuggestOptions(packageCustomization.getClass("SuggestOptions"));
         customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
-        customizeVectorizableQuery(packageCustomization.getClass("VectorizableQuery"));
         customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
+        customizeVectorizedQuery(packageCustomization.getClass("VectorizedQuery"));
 
         packageCustomization.getClass("QueryAnswerResult").removeMethod("setAdditionalProperties");
         packageCustomization.getClass("QueryCaptionResult").removeMethod("setAdditionalProperties");
@@ -117,7 +117,7 @@ public class SearchIndexCustomizations extends Customization {
     }
 
 
-private void customizeVectorizableQuery(ClassCustomization classCustomization) {
+private void customizeVectorQuery(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
             .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true)))
             .setBody(StaticJavaParser.parseBlock(joinWithNewline(
@@ -128,7 +128,7 @@ private void customizeVectorizableQuery(ClassCustomization classCustomization) {
             ))));
 }
 
-    private void customizeVectorQuery(ClassCustomization classCustomization) {
+    private void customizeVectorizedQuery(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
             .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true))));
     }

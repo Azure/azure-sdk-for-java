@@ -31,7 +31,7 @@ import com.azure.search.documents.models.SemanticSearchOptions;
 import com.azure.search.documents.models.VectorFilterMode;
 import com.azure.search.documents.models.VectorQuery;
 import com.azure.search.documents.models.VectorSearchOptions;
-import com.azure.search.documents.models.VectorizableQuery;
+import com.azure.search.documents.models.VectorizedQuery;
 import com.azure.search.documents.util.SearchPagedIterable;
 
 import java.io.IOException;
@@ -154,7 +154,7 @@ public class VectorSearchExample {
     public static void singleVectorSearch(SearchClient searchClient) {
         // Example of using vector search without using a search query or any filters.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        VectorizableQuery vectorizableQuery = new VectorQuery(vectorizedResult)
+        VectorQuery vectorizableQuery = new VectorizedQuery(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
@@ -181,7 +181,7 @@ public class VectorSearchExample {
     public static void singleVectorSearchWithFilter(SearchClient searchClient) {
         // Example of using vector search with a filter.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        VectorizableQuery vectorizableQuery = new VectorQuery(vectorizedResult)
+        VectorQuery vectorizableQuery = new VectorizedQuery(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
@@ -210,7 +210,7 @@ public class VectorSearchExample {
     public static void simpleHybridSearch(SearchClient searchClient) {
         // Example of using vector search with a query in addition to vectorization.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        VectorizableQuery vectorizableQuery = new VectorQuery(vectorizedResult)
+        VectorQuery vectorizableQuery = new VectorizedQuery(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
@@ -239,7 +239,7 @@ public class VectorSearchExample {
     public static void semanticHybridSearch(SearchClient searchClient) {
         // Example of using vector search with a semantic query in addition to vectorization.
         List<Float> vectorizedResult = VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION; // "Top hotels in town"
-        VectorizableQuery vectorizableQuery = new VectorQuery(vectorizedResult)
+        VectorQuery vectorizableQuery = new VectorizedQuery(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
@@ -286,19 +286,19 @@ public class VectorSearchExample {
     public static void multiVectorSearch(SearchClient searchClient) {
         // Example of using multiple vectors in search without using a search query or any filters.
         List<Float> vectorizedResult = VectorSearchEmbeddings.HOTEL1_VECTORIZE_DESCRIPTION;
-        VectorizableQuery firstVectorizableQuery = new VectorQuery(vectorizedResult)
+        VectorQuery firstVectorizableQuery = new VectorizedQuery(vectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
         List<Float> secondVectorizedResult = VectorSearchEmbeddings.HOTEL2_VECTORIZE_DESCRIPTION;
-        VectorizableQuery secondVectorizableQuery = new VectorQuery(secondVectorizedResult)
+        VectorQuery secondVectorizableQuery = new VectorizedQuery(secondVectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
         List<Float> thirdVectorizedResult = VectorSearchEmbeddings.HOTEL3_VECTORIZE_DESCRIPTION;
-        VectorizableQuery thirdVectorizableQuery = new VectorQuery(thirdVectorizedResult)
+        VectorQuery thirdVectorizableQuery = new VectorizedQuery(thirdVectorizedResult)
             .setKNearestNeighborsCount(3)
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");

@@ -16,7 +16,7 @@ import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SemanticErrorMode;
 import com.azure.search.documents.models.VectorFilterMode;
-import com.azure.search.documents.models.VectorizableQuery;
+import com.azure.search.documents.models.VectorQuery;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -184,7 +184,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     /*
      * The query parameters for vector and hybrid search queries.
      */
-    private List<VectorizableQuery> vectorQueries;
+    private List<VectorQuery> vectorQueries;
 
     /*
      * Determines whether or not filters are applied before or after the vector search is performed. Default is
@@ -766,7 +766,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      *
      * @return the vectorQueries value.
      */
-    public List<VectorizableQuery> getVectorQueries() {
+    public List<VectorQuery> getVectorQueries() {
         return this.vectorQueries;
     }
 
@@ -776,7 +776,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * @param vectorQueries the vectorQueries value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setVectorQueries(List<VectorizableQuery> vectorQueries) {
+    public SearchRequest setVectorQueries(List<VectorQuery> vectorQueries) {
         this.vectorQueries = vectorQueries;
         return this;
     }
@@ -907,8 +907,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                         } else if ("captions".equals(fieldName)) {
                             deserializedSearchRequest.captions = reader.getString();
                         } else if ("vectorQueries".equals(fieldName)) {
-                            List<VectorizableQuery> vectorQueries =
-                                    reader.readArray(reader1 -> VectorizableQuery.fromJson(reader1));
+                            List<VectorQuery> vectorQueries =
+                                    reader.readArray(reader1 -> VectorQuery.fromJson(reader1));
                             deserializedSearchRequest.vectorQueries = vectorQueries;
                         } else if ("vectorFilterMode".equals(fieldName)) {
                             deserializedSearchRequest.vectorFilterMode =

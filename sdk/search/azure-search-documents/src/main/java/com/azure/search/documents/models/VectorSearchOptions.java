@@ -10,7 +10,7 @@ import java.util.List;
  */
 public final class VectorSearchOptions {
     private VectorFilterMode filterMode;
-    private List<VectorizableQuery> queries;
+    private List<VectorQuery> queries;
 
     /**
      * Creates a new instance of {@link VectorSearchOptions}.
@@ -43,7 +43,7 @@ public final class VectorSearchOptions {
      *
      * @return The list of vector queries to perform.
      */
-    public List<VectorizableQuery> getQueries() {
+    public List<VectorQuery> getQueries() {
         return queries;
     }
 
@@ -53,7 +53,7 @@ public final class VectorSearchOptions {
      * @param queries The list of vector queries to perform.
      * @return The VectorSearchOptions object itself.
      */
-    public VectorSearchOptions setQueries(VectorizableQuery... queries) {
+    public VectorSearchOptions setQueries(VectorQuery... queries) {
         this.queries = queries == null ? null : Arrays.asList(queries);
         return this;
     }
@@ -64,7 +64,7 @@ public final class VectorSearchOptions {
      * @param queries The list of vector queries to perform.
      * @return The VectorSearchOptions object itself.
      */
-    public VectorSearchOptions setQueries(List<VectorizableQuery> queries) {
+    public VectorSearchOptions setQueries(List<VectorQuery> queries) {
         this.queries = queries;
         return this;
     }
