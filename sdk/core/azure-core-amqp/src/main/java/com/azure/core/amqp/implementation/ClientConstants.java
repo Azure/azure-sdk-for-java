@@ -35,6 +35,7 @@ public final class ClientConstants {
     public static final String INTERVAL_KEY = "interval_ms";
     public static final String SUBSCRIBER_ID_KEY = "subscriberId";
     public static final String PUMP_ID_KEY = "pump-id";
+    public static final String CALL_SITE_KEY = "call-site";
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
