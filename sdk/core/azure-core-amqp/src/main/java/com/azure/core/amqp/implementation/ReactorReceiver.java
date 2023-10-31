@@ -72,9 +72,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private final AtomicLong lastSequenceNumber = new AtomicLong();
     private final AutoCloseable trackPrefetchSeqNoSubscription;
 
-    // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
-    // is removed. At that point the type "ReceiveLinkHandlerWrapper" type will be removed and the Ctr will take
-    // "ReceiveLinkHandler".
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
                               ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
                               AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
@@ -148,18 +145,20 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                     });
                 }, 1);
         } else {
-            this.messagesProcessor = this.handler.getDeliveredMessagesV2()
-                .map(message -> {
-                    // TODO (anu): Check with Liudmila to see if we need isPrefetchedSequenceNumberEnabled() check per message.
-                    //  Or checking once at Construction time is enough, if so remove the map (hence the extra Map-Function call).
-                    if (metricsProvider.isPrefetchedSequenceNumberEnabled()) {
-                        Long seqNo = getSequenceNumber(message);
+            if (metricsProvider.isPrefetchedSequenceNumberEnabled()) {
+                // Meters are not expected to be enabled dynamically so checking once at Receiver construction time
+                // is sufficient.
+                this.messagesProcessor = this.handler.getDeliveredMessagesV2()
+                    .map(message -> {
+                        final Long seqNo = getSequenceNumber(message);
                         if (seqNo != null) {
                             lastSequenceNumber.set(seqNo);
                         }
-                    }
-                    return message;
-                });
+                        return message;
+                    });
+            } else {
+                this.messagesProcessor = this.handler.getDeliveredMessagesV2();
+            }
         }
 
         this.retryOptions = retryOptions;
@@ -447,7 +446,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 sink.success(localCloseScheduled);
             }
         });
-        return handler.beginClose(localCloseMono);
+        return handler.beginClose().then(localCloseMono);
     }
 
     /**
