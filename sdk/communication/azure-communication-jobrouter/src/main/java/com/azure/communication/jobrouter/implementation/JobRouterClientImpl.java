@@ -374,7 +374,7 @@ public final class JobRouterClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData completeJobOptions,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -395,7 +395,7 @@ public final class JobRouterClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData completeJobOptions,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -416,7 +416,7 @@ public final class JobRouterClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData closeJobOptions,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -437,7 +437,7 @@ public final class JobRouterClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData closeJobOptions,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -955,7 +955,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1010,7 +1010,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1106,7 +1106,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1161,7 +1161,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1244,7 +1244,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1324,7 +1324,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1595,7 +1595,7 @@ public final class JobRouterClientImpl {
      * }</pre>
      *
      * @param jobId Id of the job.
-     * @param completeJobOptions Request model for completing job.
+     * @param options Request model for completing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1605,7 +1605,7 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> completeJobWithResponseAsync(
-            String jobId, BinaryData completeJobOptions, RequestOptions requestOptions) {
+            String jobId, BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1614,7 +1614,7 @@ public final class JobRouterClientImpl {
                                 this.getServiceVersion().getVersion(),
                                 jobId,
                                 accept,
-                                completeJobOptions,
+                                options,
                                 requestOptions,
                                 context));
     }
@@ -1632,7 +1632,7 @@ public final class JobRouterClientImpl {
      * }</pre>
      *
      * @param jobId Id of the job.
-     * @param completeJobOptions Request model for completing job.
+     * @param options Request model for completing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1641,15 +1641,14 @@ public final class JobRouterClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> completeJobWithResponse(
-            String jobId, BinaryData completeJobOptions, RequestOptions requestOptions) {
+    public Response<Void> completeJobWithResponse(String jobId, BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.completeJobSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 jobId,
                 accept,
-                completeJobOptions,
+                options,
                 requestOptions,
                 Context.NONE);
     }
@@ -1669,7 +1668,7 @@ public final class JobRouterClientImpl {
      * }</pre>
      *
      * @param jobId Id of the job.
-     * @param closeJobOptions Request model for closing job.
+     * @param options Request model for closing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1679,7 +1678,7 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeJobWithResponseAsync(
-            String jobId, BinaryData closeJobOptions, RequestOptions requestOptions) {
+            String jobId, BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1688,7 +1687,7 @@ public final class JobRouterClientImpl {
                                 this.getServiceVersion().getVersion(),
                                 jobId,
                                 accept,
-                                closeJobOptions,
+                                options,
                                 requestOptions,
                                 context));
     }
@@ -1708,7 +1707,7 @@ public final class JobRouterClientImpl {
      * }</pre>
      *
      * @param jobId Id of the job.
-     * @param closeJobOptions Request model for closing job.
+     * @param options Request model for closing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1717,15 +1716,14 @@ public final class JobRouterClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeJobWithResponse(
-            String jobId, BinaryData closeJobOptions, RequestOptions requestOptions) {
+    public Response<Void> closeJobWithResponse(String jobId, BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.closeJobSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 jobId,
                 accept,
-                closeJobOptions,
+                options,
                 requestOptions,
                 Context.NONE);
     }
@@ -1768,7 +1766,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1873,7 +1871,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -1991,7 +1989,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -2093,7 +2091,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -3458,7 +3456,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -3544,7 +3542,7 @@ public final class JobRouterClientImpl {
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
      *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
