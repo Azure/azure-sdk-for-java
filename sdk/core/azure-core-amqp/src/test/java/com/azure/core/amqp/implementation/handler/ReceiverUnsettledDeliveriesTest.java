@@ -47,8 +47,8 @@ public class ReceiverUnsettledDeliveriesTest {
     private static final String RECEIVER_LINK_NAME = "orders-link";
     private static final String DISPOSITION_ERROR_ON_CLOSE = "The receiver didn't receive the disposition "
         + "acknowledgment due to receive link closure.";
-    private final ClientLogger logger = new ClientLogger(ReceiverUnsettledDeliveriesTest.class);
-    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
+    private static final ClientLogger LOGGER = new ClientLogger(ReceiverUnsettledDeliveriesTest.class);
+    private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions();
     private AutoCloseable mocksCloseable;
     @Mock
     private ReactorDispatcher reactorDispatcher;
@@ -255,7 +255,7 @@ public class ReceiverUnsettledDeliveriesTest {
                     final AmqpException amqpError = (AmqpException) error;
                     Assertions.assertEquals(AmqpErrorCondition.SERVER_BUSY_ERROR, amqpError.getErrorCondition());
                 });
-            Assertions.assertEquals(retryOptions.getMaxRetries() + 1, dispositionCallCount[0]);
+            Assertions.assertEquals(RETRY_OPTIONS.getMaxRetries() + 1, dispositionCallCount[0]);
         }
     }
 
@@ -432,7 +432,7 @@ public class ReceiverUnsettledDeliveriesTest {
 
     private ReceiverUnsettledDeliveries createUnsettledDeliveries() {
         return new ReceiverUnsettledDeliveries(HOSTNAME, ENTITY_PATH, RECEIVER_LINK_NAME,
-            reactorDispatcher, retryOptions, DELIVERY_EMPTY_TAG, logger);
+            reactorDispatcher, RETRY_OPTIONS, DELIVERY_EMPTY_TAG, LOGGER);
     }
 
     private static Answer<Void> byRunningRunnable() {
