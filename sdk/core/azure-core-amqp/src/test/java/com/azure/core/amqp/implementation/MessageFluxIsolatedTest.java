@@ -19,7 +19,9 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.verification.AtLeast;
@@ -39,6 +41,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -77,11 +80,15 @@ public class MessageFluxIsolatedTest {
         }
     }
 
+    private static Stream<Arguments> creditFlowModePrefetch() {
+        return Stream.of(
+            Arguments.of(CreditFlowMode.EmissionDriven, 1),
+            Arguments.of(CreditFlowMode.RequestDriven, 0)
+        );
+    }
+
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     @Execution(ExecutionMode.SAME_THREAD)
     public void shouldGetNextReceiverWhenCurrentTerminateWithRetriableError(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
@@ -119,10 +126,7 @@ public class MessageFluxIsolatedTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     @Execution(ExecutionMode.SAME_THREAD)
     public void shouldGetNextReceiverWhenCurrentTerminateWithCompletion(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
@@ -160,10 +164,7 @@ public class MessageFluxIsolatedTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     @Execution(ExecutionMode.SAME_THREAD)
     public void shouldNotGetNextReceiverWhenCurrentTerminateWithNonRetriableError(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
@@ -203,10 +204,7 @@ public class MessageFluxIsolatedTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     @Execution(ExecutionMode.SAME_THREAD)
     public void shouldTerminateWhenRetriesOfReceiversErrorExhausts(CreditFlowMode creditFlowMode, int prefetch) {
         final AmqpException error = new AmqpException(true, "retriable", null);
@@ -246,6 +244,189 @@ public class MessageFluxIsolatedTest {
     }
 
     @ParameterizedTest
+    @MethodSource("creditFlowModePrefetch")
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldHappenUpdateDispositionOnCurrentReceiver(CreditFlowMode creditFlowMode, int prefetch) {
+        final Duration retryDelay = Duration.ofSeconds(1);
+        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
+        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, RETRY_POLICY);
+
+        final ReactorReceiver firstReceiver = mock(ReactorReceiver.class);
+        final ReactorReceiverFacade firstReceiverFacade = new ReactorReceiverFacade(upstream, firstReceiver);
+        when(firstReceiver.getEndpointStates()).thenReturn(firstReceiverFacade.getEndpointStates());
+        when(firstReceiver.receive()).thenReturn(firstReceiverFacade.getMessages());
+        final List<String> firstReceiverDispositionTags = new ArrayList<>();
+        doAnswer(invocation -> {
+            final Object[] args = invocation.getArguments();
+            @SuppressWarnings("unchecked")
+            final String deliveryTag = (String) args[0];
+            firstReceiverDispositionTags.add(deliveryTag);
+            return Mono.empty();
+        }).when(firstReceiver).updateDisposition(any(), any());
+        when(firstReceiver.closeAsync()).thenReturn(Mono.empty());
+
+        final ReactorReceiver secondReceiver = mock(ReactorReceiver.class);
+        final ReactorReceiverFacade secondReceiverFacade = new ReactorReceiverFacade(upstream, secondReceiver);
+        when(secondReceiver.getEndpointStates()).thenReturn(secondReceiverFacade.getEndpointStates());
+        when(secondReceiver.receive()).thenReturn(secondReceiverFacade.getMessages());
+        final List<String> secondReceiverDispositionTags = new ArrayList<>();
+        doAnswer(invocation -> {
+            final Object[] args = invocation.getArguments();
+            @SuppressWarnings("unchecked")
+            final String deliveryTag = (String) args[0];
+            secondReceiverDispositionTags.add(deliveryTag);
+            return Mono.empty();
+        }).when(secondReceiver).updateDisposition(any(), any());
+        when(secondReceiver.closeAsync()).thenReturn(Mono.empty());
+
+        final Message message = mock(Message.class);
+        final List<Message> firstReceiverMessages = generateMessages(message, 4);
+        final List<Message> secondReceiverMessages = generateMessages(message, 6);
+        final int firstReceiverMessagesCount = firstReceiverMessages.size();
+        final int secondReceiverMessagesCount = secondReceiverMessages.size();
+        final List<String> dispositionTags = new ArrayList<>();
+        for (int i = 0; i < firstReceiverMessagesCount; i++) {
+            dispositionTags.add(UUID.randomUUID().toString());
+        }
+        for (int i = 0; i < secondReceiverMessagesCount; i++) {
+            dispositionTags.add(UUID.randomUUID().toString());
+        }
+        final int[] idx = new int[1];
+        final int request = firstReceiverMessagesCount + secondReceiverMessagesCount + 5;
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> messageFlux.concatMap(m -> messageFlux.updateDisposition(dispositionTags.get(idx[0]++), Accepted.getInstance()).thenReturn(m), 1))
+                .then(firstReceiverFacade.emit())
+                .thenRequest(request)
+                .then(firstReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
+                .then(firstReceiverFacade.emitAndCompleteMessages(firstReceiverMessages))
+                .then(firstReceiverFacade.completeEndpointStates())
+                .thenAwait(retryDelay.plusSeconds(1))
+                .then(secondReceiverFacade.emit())
+                .then(secondReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
+                .then(secondReceiverFacade.emitAndCompleteMessages(secondReceiverMessages))
+                .then(secondReceiverFacade.completeEndpointStates())
+                .then(() -> upstream.complete())
+                .expectNextCount(firstReceiverMessagesCount + secondReceiverMessagesCount)
+                .thenConsumeWhile(m -> true)
+                .verifyComplete();
+        }
+
+        int i = 0;
+        for (; i < firstReceiverMessagesCount; i++) {
+            Assertions.assertEquals(dispositionTags.get(i), firstReceiverDispositionTags.get(i));
+        }
+        int j = 0;
+        for (; i < firstReceiverMessagesCount + secondReceiverMessagesCount; i++, j++) {
+            Assertions.assertEquals(dispositionTags.get(i), secondReceiverDispositionTags.get(j));
+        }
+        upstream.assertCancelled();
+    }
+
+    @ParameterizedTest
+    @MethodSource("creditFlowModePrefetch")
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void updateDispositionShouldErrorIfReceiverIsGone(CreditFlowMode creditFlowMode, int prefetch) {
+        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
+        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, RETRY_POLICY);
+
+        final ReactorReceiver receiver = mock(ReactorReceiver.class);
+        final ReactorReceiverFacade receiverFacade = new ReactorReceiverFacade(upstream, receiver);
+        when(receiver.getEndpointStates()).thenReturn(receiverFacade.getEndpointStates());
+        when(receiver.receive()).thenReturn(receiverFacade.getMessages());
+        when(receiver.closeAsync()).thenReturn(Mono.empty());
+        final RuntimeException endpointError = new RuntimeException("endpoint-error");
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> messageFlux)
+                .then(receiverFacade.emit())
+                .thenRequest(5)
+                .then(receiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
+                .then(receiverFacade.errorEndpointStates(endpointError))
+                .verifyErrorSatisfies(error -> {
+                    Assertions.assertEquals(endpointError, error);
+                });
+        }
+        upstream.assertCancelled();
+        // The MessageFlux is terminated as a result of backing link (receiver) error, and that link no longer exists.
+        StepVerifier.create(messageFlux.updateDisposition("t", Accepted.getInstance()))
+            .verifyErrorSatisfies(dispositionError -> {
+                Assertions.assertTrue(dispositionError instanceof DeliveryNotOnLinkException);
+                final Throwable[] suppressed = dispositionError.getSuppressed();
+                Assertions.assertNotNull(suppressed);
+                Assertions.assertTrue(suppressed.length > 0);
+                // Assert the endpoint error is included in the dispositionError.
+                boolean foundEndpointError = false;
+                for (Throwable e : suppressed) {
+                    if (!foundEndpointError) {
+                        foundEndpointError = (e == endpointError);
+                    }
+                }
+                Assertions.assertTrue(foundEndpointError);
+            });
+    }
+
+    @ParameterizedTest
+    @MethodSource("creditFlowModePrefetch")
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldNotMakeDuplicateRetriesWhenRetryIsInProgress(CreditFlowMode creditFlowMode, int prefetch) {
+        final int[] upstreamEmission = new int[1];
+        final Sinks.Many<ReactorReceiver> upstreamSink = Sinks.many().unicast().onBackpressureBuffer();
+        final Flux<ReactorReceiver> upstream = upstreamSink.asFlux()
+            .doOnRequest(r -> {
+                Assertions.assertEquals(1, r);
+
+                final ReactorReceiver receiver = mock(ReactorReceiver.class);
+                when(receiver.closeAsync()).thenReturn(Mono.empty());
+
+                upstreamEmission[0]++;
+                switch (upstreamEmission[0]) {
+                    case 1:
+                        when(receiver.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
+                        when(receiver.receive()).thenReturn(Flux.empty());
+                        upstreamSink.emitNext(receiver, Sinks.EmitFailureHandler.FAIL_FAST);
+                        break;
+                    case 2:
+                        when(receiver.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE).concatWith(Flux.never()));
+                        when(receiver.receive()).thenReturn(Flux.never());
+                        upstreamSink.emitNext(receiver, Sinks.EmitFailureHandler.FAIL_FAST);
+                        break;
+                    default:
+                        when(receiver.getEndpointStates()).thenReturn(Flux.error(new RuntimeException("unexpected request")));
+                        when(receiver.receive()).thenReturn(Flux.error(new RuntimeException("unexpected request")));
+                        upstreamSink.emitNext(receiver, Sinks.EmitFailureHandler.FAIL_FAST);
+                }
+            });
+
+        final Duration backoffBeforeRequestingNextReceiver = Duration.ofSeconds(10);
+        final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(new AmqpRetryOptions()
+            .setMaxRetries(MAX_RETRY)
+            .setDelay(backoffBeforeRequestingNextReceiver));
+        final MessageFlux messageFlux = new MessageFlux(upstream, prefetch, creditFlowMode, retryPolicy);
+
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> messageFlux)
+                .thenRequest(1)
+                // The initial request ^ for one message, that leads to obtaining the first-receiver.
+                // Since first-receiver gets terminated, the message-flux will initiate a retry that
+                // will get the second-receiver only after 10 seconds.
+                .thenAwait(Duration.ofSeconds(1))
+                // After 1 sec ^, while there is still 9 seconds remaining in retry backoff, request for one
+                // message, resulting a drain-loop iteration, which should not attempt to get another receiver.
+                .thenRequest(1)
+                .thenAwait(Duration.ofSeconds(15))
+                // Await 15 seconds ^ so that retry backoff elapses and message-flux will get second-receiver.
+                .thenCancel()
+                .verify(Duration.ofSeconds(30));
+        }
+
+        // Assert there were only two emissions i.e. there were no attempt to obtain a receiver while retry
+        // is in progress.
+        Assertions.assertEquals(2, upstreamEmission[0]);
+    }
+
+    @ParameterizedTest
     @CsvSource({
         "EmissionDriven,5",
         "RequestDriven,0"
@@ -278,7 +459,7 @@ public class MessageFluxIsolatedTest {
 
     @ParameterizedTest
     @CsvSource({
-        "EmissionDriven,1",
+        "EmissionDriven,5",
         "RequestDriven,0"
     })
     @Execution(ExecutionMode.SAME_THREAD)
@@ -304,97 +485,6 @@ public class MessageFluxIsolatedTest {
         }
 
         Assertions.assertEquals(0, receiverFacade.getRequestedMessages());
-        upstream.assertCancelled();
-    }
-
-    @Test
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void shouldTransferRequestToNextReceiver() {
-        final int request = 10;
-        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), 0, CreditFlowMode.RequestDriven, RETRY_POLICY);
-
-        final ReactorReceiver firstReceiver = mock(ReactorReceiver.class);
-        final ReactorReceiverFacade firstReceiverFacade = new ReactorReceiverFacade(upstream, firstReceiver);
-        final AmqpException error = new AmqpException(true, "retriable", null);
-        when(firstReceiver.getEndpointStates()).thenReturn(firstReceiverFacade.getEndpointStates());
-        when(firstReceiver.receive()).thenReturn(firstReceiverFacade.getMessages());
-        when(firstReceiver.closeAsync()).thenReturn(Mono.empty());
-
-        final ReactorReceiver secondReceiver = mock(ReactorReceiver.class);
-        final ReactorReceiverFacade secondReceiverFacade = new ReactorReceiverFacade(upstream, secondReceiver);
-        when(secondReceiver.getEndpointStates()).thenReturn(secondReceiverFacade.getEndpointStates());
-        when(secondReceiver.receive()).thenReturn(secondReceiverFacade.getMessages());
-        when(secondReceiver.closeAsync()).thenReturn(Mono.empty());
-
-        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux)
-                .then(firstReceiverFacade.emit())
-                .thenRequest(request)
-                .then(firstReceiverFacade.emitAndErrorEndpointStates(AmqpEndpointState.ACTIVE, error))
-                .then(firstReceiverFacade.completeMessages())
-                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
-                .then(secondReceiverFacade.emit())
-                .then(secondReceiverFacade.emitAndCompleteEndpointStates(AmqpEndpointState.ACTIVE))
-                .then(secondReceiverFacade.completeMessages())
-                .then(() -> upstream.complete())
-                .verifyComplete();
-        }
-
-        Assertions.assertEquals(request, firstReceiverFacade.getRequestedMessages());
-        Assertions.assertEquals(request, secondReceiverFacade.getRequestedMessages());
-        upstream.assertCancelled();
-    }
-
-    // TODO (anu): See if test should be split into two, one per *DrivenCreditFlow test.
-    @Test
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void shouldTransferPendingRequestToNextReceiver() {
-        final Duration retryDelay = Duration.ofSeconds(1);
-        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), 0, CreditFlowMode.RequestDriven, RETRY_POLICY);
-
-        final ReactorReceiver firstReceiver = mock(ReactorReceiver.class);
-        final ReactorReceiverFacade firstReceiverFacade = new ReactorReceiverFacade(upstream, firstReceiver);
-        when(firstReceiver.getEndpointStates()).thenReturn(firstReceiverFacade.getEndpointStates());
-        when(firstReceiver.receive()).thenReturn(firstReceiverFacade.getMessages());
-        when(firstReceiver.closeAsync()).thenReturn(Mono.empty());
-
-        final ReactorReceiver secondReceiver = mock(ReactorReceiver.class);
-        final ReactorReceiverFacade secondReceiverFacade = new ReactorReceiverFacade(upstream, secondReceiver);
-        when(secondReceiver.getEndpointStates()).thenReturn(secondReceiverFacade.getEndpointStates());
-        when(secondReceiver.receive()).thenReturn(secondReceiverFacade.getMessages());
-        when(secondReceiver.closeAsync()).thenReturn(Mono.empty());
-
-        final Message message = mock(Message.class);
-        final List<Message> firstReceiverMessages = generateMessages(message, 4);
-        final List<Message> secondReceiverMessages = generateMessages(message, 6);
-        final int firstReceiverMessagesCount = firstReceiverMessages.size();
-        final int secondReceiverMessagesCount = secondReceiverMessages.size();
-        final int request = firstReceiverMessagesCount + secondReceiverMessagesCount + 5; // 15
-
-        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux)
-                .then(firstReceiverFacade.emit())
-                .thenRequest(request)
-                .then(firstReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
-                .then(firstReceiverFacade.emitAndCompleteMessages(firstReceiverMessages))
-                .then(firstReceiverFacade.completeEndpointStates())
-                .thenAwait(retryDelay.plusSeconds(1))
-                .then(secondReceiverFacade.emit())
-                .then(secondReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
-                .then(secondReceiverFacade.emitAndCompleteMessages(secondReceiverMessages))
-                .then(secondReceiverFacade.completeMessages())
-                .then(() -> upstream.complete())
-                .expectNextCount(firstReceiverMessagesCount + secondReceiverMessagesCount)
-                .thenConsumeWhile(m -> true)
-                .verifyComplete();
-        }
-
-        final int expectedRequestToFirstReceiver = request;
-        final int expectedRequestToSecondReceiver = request - firstReceiverMessagesCount;
-        Assertions.assertEquals(expectedRequestToFirstReceiver, firstReceiverFacade.getRequestedMessages());
-        Assertions.assertEquals(expectedRequestToSecondReceiver, secondReceiverFacade.getRequestedMessages());
         upstream.assertCancelled();
     }
 
@@ -713,43 +803,62 @@ public class MessageFluxIsolatedTest {
         upstream.assertCancelled();
     }
 
-    @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @Test
     @Execution(ExecutionMode.SAME_THREAD)
-    public void shouldHappenUpdateDispositionOnCurrentReceiver(CreditFlowMode creditFlowMode, int prefetch) {
-        final Duration retryDelay = Duration.ofSeconds(1);
+    public void shouldTransferRequestToNextReceiver() {
+        final int request = 10;
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, RETRY_POLICY);
+        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), 0, CreditFlowMode.RequestDriven, RETRY_POLICY);
 
         final ReactorReceiver firstReceiver = mock(ReactorReceiver.class);
         final ReactorReceiverFacade firstReceiverFacade = new ReactorReceiverFacade(upstream, firstReceiver);
+        final AmqpException error = new AmqpException(true, "retriable", null);
         when(firstReceiver.getEndpointStates()).thenReturn(firstReceiverFacade.getEndpointStates());
         when(firstReceiver.receive()).thenReturn(firstReceiverFacade.getMessages());
-        final List<String> firstReceiverDispositionTags = new ArrayList<>();
-        doAnswer(invocation -> {
-            final Object[] args = invocation.getArguments();
-            @SuppressWarnings("unchecked")
-            final String deliveryTag = (String) args[0];
-            firstReceiverDispositionTags.add(deliveryTag);
-            return Mono.empty();
-        }).when(firstReceiver).updateDisposition(any(), any());
         when(firstReceiver.closeAsync()).thenReturn(Mono.empty());
 
         final ReactorReceiver secondReceiver = mock(ReactorReceiver.class);
         final ReactorReceiverFacade secondReceiverFacade = new ReactorReceiverFacade(upstream, secondReceiver);
         when(secondReceiver.getEndpointStates()).thenReturn(secondReceiverFacade.getEndpointStates());
         when(secondReceiver.receive()).thenReturn(secondReceiverFacade.getMessages());
-        final List<String> secondReceiverDispositionTags = new ArrayList<>();
-        doAnswer(invocation -> {
-            final Object[] args = invocation.getArguments();
-            @SuppressWarnings("unchecked")
-            final String deliveryTag = (String) args[0];
-            secondReceiverDispositionTags.add(deliveryTag);
-            return Mono.empty();
-        }).when(secondReceiver).updateDisposition(any(), any());
+        when(secondReceiver.closeAsync()).thenReturn(Mono.empty());
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> messageFlux)
+                .then(firstReceiverFacade.emit())
+                .thenRequest(request)
+                .then(firstReceiverFacade.emitAndErrorEndpointStates(AmqpEndpointState.ACTIVE, error))
+                .then(firstReceiverFacade.completeMessages())
+                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+                .then(secondReceiverFacade.emit())
+                .then(secondReceiverFacade.emitAndCompleteEndpointStates(AmqpEndpointState.ACTIVE))
+                .then(secondReceiverFacade.completeMessages())
+                .then(() -> upstream.complete())
+                .verifyComplete();
+        }
+
+        Assertions.assertEquals(request, firstReceiverFacade.getRequestedMessages());
+        Assertions.assertEquals(request, secondReceiverFacade.getRequestedMessages());
+        upstream.assertCancelled();
+    }
+
+    @Test
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldTransferPendingRequestToNextReceiver() {
+        final Duration retryDelay = Duration.ofSeconds(1);
+        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
+        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), 0, CreditFlowMode.RequestDriven, RETRY_POLICY);
+
+        final ReactorReceiver firstReceiver = mock(ReactorReceiver.class);
+        final ReactorReceiverFacade firstReceiverFacade = new ReactorReceiverFacade(upstream, firstReceiver);
+        when(firstReceiver.getEndpointStates()).thenReturn(firstReceiverFacade.getEndpointStates());
+        when(firstReceiver.receive()).thenReturn(firstReceiverFacade.getMessages());
+        when(firstReceiver.closeAsync()).thenReturn(Mono.empty());
+
+        final ReactorReceiver secondReceiver = mock(ReactorReceiver.class);
+        final ReactorReceiverFacade secondReceiverFacade = new ReactorReceiverFacade(upstream, secondReceiver);
+        when(secondReceiver.getEndpointStates()).thenReturn(secondReceiverFacade.getEndpointStates());
+        when(secondReceiver.receive()).thenReturn(secondReceiverFacade.getMessages());
         when(secondReceiver.closeAsync()).thenReturn(Mono.empty());
 
         final Message message = mock(Message.class);
@@ -757,18 +866,10 @@ public class MessageFluxIsolatedTest {
         final List<Message> secondReceiverMessages = generateMessages(message, 6);
         final int firstReceiverMessagesCount = firstReceiverMessages.size();
         final int secondReceiverMessagesCount = secondReceiverMessages.size();
-        final List<String> dispositionTags = new ArrayList<>();
-        for (int i = 0; i < firstReceiverMessagesCount; i++) {
-            dispositionTags.add(UUID.randomUUID().toString());
-        }
-        for (int i = 0; i < secondReceiverMessagesCount; i++) {
-            dispositionTags.add(UUID.randomUUID().toString());
-        }
-        final int[] idx = new int[1];
-        final int request = firstReceiverMessagesCount + secondReceiverMessagesCount + 5;
+        final int request = firstReceiverMessagesCount + secondReceiverMessagesCount + 5; // 15
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux.concatMap(m -> messageFlux.updateDisposition(dispositionTags.get(idx[0]++), Accepted.getInstance()).thenReturn(m), 1))
+            verifier.create(() -> messageFlux)
                 .then(firstReceiverFacade.emit())
                 .thenRequest(request)
                 .then(firstReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
@@ -778,131 +879,18 @@ public class MessageFluxIsolatedTest {
                 .then(secondReceiverFacade.emit())
                 .then(secondReceiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
                 .then(secondReceiverFacade.emitAndCompleteMessages(secondReceiverMessages))
-                .then(secondReceiverFacade.completeEndpointStates())
+                .then(secondReceiverFacade.completeMessages())
                 .then(() -> upstream.complete())
                 .expectNextCount(firstReceiverMessagesCount + secondReceiverMessagesCount)
                 .thenConsumeWhile(m -> true)
                 .verifyComplete();
         }
 
-        int i = 0;
-        for (; i < firstReceiverMessagesCount; i++) {
-            Assertions.assertEquals(dispositionTags.get(i), firstReceiverDispositionTags.get(i));
-        }
-        int j = 0;
-        for (; i < firstReceiverMessagesCount + secondReceiverMessagesCount; i++, j++) {
-            Assertions.assertEquals(dispositionTags.get(i), secondReceiverDispositionTags.get(j));
-        }
+        final int expectedRequestToFirstReceiver = request;
+        final int expectedRequestToSecondReceiver = request - firstReceiverMessagesCount;
+        Assertions.assertEquals(expectedRequestToFirstReceiver, firstReceiverFacade.getRequestedMessages());
+        Assertions.assertEquals(expectedRequestToSecondReceiver, secondReceiverFacade.getRequestedMessages());
         upstream.assertCancelled();
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void updateDispositionShouldErrorIfReceiverIsGone(CreditFlowMode creditFlowMode, int prefetch) {
-        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, RETRY_POLICY);
-
-        final ReactorReceiver receiver = mock(ReactorReceiver.class);
-        final ReactorReceiverFacade receiverFacade = new ReactorReceiverFacade(upstream, receiver);
-        when(receiver.getEndpointStates()).thenReturn(receiverFacade.getEndpointStates());
-        when(receiver.receive()).thenReturn(receiverFacade.getMessages());
-        when(receiver.closeAsync()).thenReturn(Mono.empty());
-        final RuntimeException endpointError = new RuntimeException("endpoint-error");
-
-        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux)
-                .then(receiverFacade.emit())
-                .thenRequest(5)
-                .then(receiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
-                .then(receiverFacade.errorEndpointStates(endpointError))
-                .verifyErrorSatisfies(error -> {
-                    Assertions.assertEquals(endpointError, error);
-                });
-        }
-        upstream.assertCancelled();
-        // The MessageFlux is terminated as a result of backing link (receiver) error, and that link no longer exists.
-        StepVerifier.create(messageFlux.updateDisposition("t", Accepted.getInstance()))
-            .verifyErrorSatisfies(dispositionError -> {
-                Assertions.assertTrue(dispositionError instanceof DeliveryNotOnLinkException);
-                final Throwable[] suppressed = dispositionError.getSuppressed();
-                Assertions.assertNotNull(suppressed);
-                Assertions.assertTrue(suppressed.length > 0);
-                // Assert the endpoint error is included in the dispositionError.
-                boolean foundEndpointError = false;
-                for (Throwable e : suppressed) {
-                    if (!foundEndpointError) {
-                        foundEndpointError = (e == endpointError);
-                    }
-                }
-                Assertions.assertTrue(foundEndpointError);
-            });
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void shouldNotMakeDuplicateRetriesWhenRetryIsInProgress(CreditFlowMode creditFlowMode, int prefetch) {
-        final int[] upstreamEmission = new int[1];
-        final Sinks.Many<ReactorReceiver> upstreamSink = Sinks.many().unicast().onBackpressureBuffer();
-        final Flux<ReactorReceiver> upstream = upstreamSink.asFlux()
-            .doOnRequest(r -> {
-                Assertions.assertEquals(1, r);
-
-                final ReactorReceiver receiver = mock(ReactorReceiver.class);
-                when(receiver.closeAsync()).thenReturn(Mono.empty());
-
-                upstreamEmission[0]++;
-                switch (upstreamEmission[0]) {
-                    case 1:
-                        when(receiver.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
-                        when(receiver.receive()).thenReturn(Flux.empty());
-                        upstreamSink.emitNext(receiver, Sinks.EmitFailureHandler.FAIL_FAST);
-                        break;
-                    case 2:
-                        when(receiver.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE).concatWith(Flux.never()));
-                        when(receiver.receive()).thenReturn(Flux.never());
-                        upstreamSink.emitNext(receiver, Sinks.EmitFailureHandler.FAIL_FAST);
-                        break;
-                    default:
-                        when(receiver.getEndpointStates()).thenReturn(Flux.error(new RuntimeException("unexpected request")));
-                        when(receiver.receive()).thenReturn(Flux.error(new RuntimeException("unexpected request")));
-                        upstreamSink.emitNext(receiver, Sinks.EmitFailureHandler.FAIL_FAST);
-                }
-            });
-
-        final Duration backoffBeforeRequestingNextReceiver = Duration.ofSeconds(10);
-        final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(new AmqpRetryOptions()
-            .setMaxRetries(MAX_RETRY)
-            .setDelay(backoffBeforeRequestingNextReceiver));
-        final MessageFlux messageFlux = new MessageFlux(upstream, prefetch, creditFlowMode, retryPolicy);
-
-
-        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux)
-                .thenRequest(1)
-                // The initial request ^ for one message, that leads to obtaining the first-receiver.
-                // Since first-receiver gets terminated, the message-flux will initiate a retry that
-                // will get the second-receiver only after 10 seconds.
-                .thenAwait(Duration.ofSeconds(1))
-                // After 1 sec ^, while there is still 9 seconds remaining in retry backoff, request for one
-                // message, resulting a drain-loop iteration, which should not attempt to get another receiver.
-                .thenRequest(1)
-                .thenAwait(Duration.ofSeconds(15))
-                // Await 15 seconds ^ so that retry backoff elapses and message-flux will get second-receiver.
-                .thenCancel()
-                .verify(Duration.ofSeconds(30));
-        }
-
-        // Assert there were only two emissions i.e. there were no attempt to obtain a receiver while retry
-        // is in progress.
-        Assertions.assertEquals(2, upstreamEmission[0]);
     }
 
     private static List<Message> generateMessages(Message message, int count) {
@@ -910,6 +898,4 @@ public class MessageFluxIsolatedTest {
             .mapToObj(__ -> message)
             .collect(Collectors.toList());
     }
-
-    // TODO (anu): MoreTests: Evaluate ReceiverLinkProcessor tests and migrate to validate equivalent scenarios (if not covered) using MessageFlux.
 }

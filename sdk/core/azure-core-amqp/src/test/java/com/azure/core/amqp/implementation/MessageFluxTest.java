@@ -13,7 +13,8 @@ import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -28,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -53,11 +55,15 @@ public class MessageFluxTest {
         }
     }
 
+    private static Stream<Arguments> creditFlowModePrefetch() {
+        return Stream.of(
+            Arguments.of(CreditFlowMode.EmissionDriven, 1),
+            Arguments.of(CreditFlowMode.RequestDriven, 0)
+        );
+    }
+
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void shouldTerminateWhenUpstreamCompleteWithoutEmittingReceiver(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
@@ -70,10 +76,7 @@ public class MessageFluxTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void shouldTerminateWhenUpstreamErrorsWithoutEmittingReceiver(CreditFlowMode creditFlowMode, int prefetch) {
         final RuntimeException error = new RuntimeException("error-signal");
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
@@ -87,10 +90,7 @@ public class MessageFluxTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void shouldTerminateWhenDownstreamSignalsCancel(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
@@ -103,10 +103,7 @@ public class MessageFluxTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void shouldCloseReceiverWhenUpstreamComplete(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
@@ -126,10 +123,7 @@ public class MessageFluxTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void shouldCloseReceiverWhenUpstreamErrors(CreditFlowMode creditFlowMode, int prefetch) {
         final RuntimeException error = new RuntimeException("error-signal");
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
@@ -150,10 +144,7 @@ public class MessageFluxTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void shouldCloseReceiverWhenDownstreamSignalsCancel(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
@@ -173,10 +164,7 @@ public class MessageFluxTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void shouldTerminateWhenReceiverEmitsNonRetriableError(CreditFlowMode creditFlowMode, int prefetch) {
         final AmqpException error = new AmqpException(false, "non-retriable", null);
         final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
@@ -200,10 +188,7 @@ public class MessageFluxTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void shouldTerminateWhenRetryDisabledAndFirstReceiverEmitsRetriableError(CreditFlowMode creditFlowMode, int prefetch) {
         final AmqpException error = new AmqpException(true, "retriable", null);
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
@@ -226,10 +211,7 @@ public class MessageFluxTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void shouldTerminateWhenRetryDisabledAndFirstReceiverCompletes(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, MessageFlux.NULL_RETRY_POLICY);
@@ -251,10 +233,7 @@ public class MessageFluxTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void shouldHonorBackpressureRequest(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
@@ -289,10 +268,7 @@ public class MessageFluxTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
-    })
+    @MethodSource("creditFlowModePrefetch")
     public void updateDispositionShouldErrorIfReceiverIsNotInitialized(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
