@@ -135,6 +135,7 @@ public class ReactorConnection implements AmqpConnection {
                     .timeout(operationTimeout, Mono.error(() -> new AmqpException(true, String.format(
                         "Connection '%s' not opened within AmqpRetryOptions.tryTimeout(): %s", connectionId,
                         operationTimeout), handler.getErrorContext())));
+
                 return activeEndpoint.thenReturn(reactorConnection);
             })
             .doOnError(error -> {
@@ -276,39 +277,18 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
-        return connectionMono.map(connection -> {
-            return sessionMap.computeIfAbsent(sessionName, key -> {
-                final SessionHandler sessionHandler = handlerProvider.createSessionHandler(connectionId,
-                    getFullyQualifiedNamespace(), key, connectionOptions.getRetry().getTryTimeout());
-                final Session session = connection.session();
+        return connectionMono.flatMap(connection -> {
+            return Mono.<SessionSubscription>create(sink -> {
+                try {
+                    reactorProvider.getReactorDispatcher().invoke(() -> {
+                        final SessionSubscription sessionSubscription =
+                            sessionMap.computeIfAbsent(sessionName, key -> createSessionSubscription(key));
 
-                BaseHandler.setHandler(session, sessionHandler);
-                final AmqpSession amqpSession = createSession(key, session, sessionHandler);
-                final Disposable subscription = amqpSession.getEndpointStates()
-                    .subscribe(state -> {
-                    }, error -> {
-                        // If we were already disposing of the connection, the session would be removed.
-                        if (isDisposed.get()) {
-                            return;
-                        }
-
-                        logger.atInfo()
-                            .addKeyValue(SESSION_NAME_KEY, sessionName)
-                            .log("Error occurred. Removing and disposing session", error);
-                        removeSession(key);
-                    }, () -> {
-                        // If we were already disposing of the connection, the session would be removed.
-                        if (isDisposed.get()) {
-                            return;
-                        }
-
-                        logger.atVerbose()
-                            .addKeyValue(SESSION_NAME_KEY, sessionName)
-                            .log("Complete. Removing and disposing session.");
-                        removeSession(key);
+                        sink.success(sessionSubscription);
                     });
-
-                return new SessionSubscription(amqpSession, subscription);
+                } catch (IOException e) {
+                    sink.error(e);
+                }
             });
         }).flatMap(sessionSubscription -> {
             final Mono<AmqpEndpointState> activeSession = sessionSubscription.getSession().getEndpointStates()
@@ -499,6 +479,40 @@ public class ReactorConnection implements AmqpConnection {
                     .addKeyValue(SIGNAL_TYPE_KEY, signalType)
                     .log("Closed reactor dispatcher.")))
             .then(isClosedMono.asMono());
+    }
+
+    /**
+     * NOTE: Invoke inside reactor dispatcher thread.
+     */
+    SessionSubscription createSessionSubscription(String sessionName) {
+        final SessionHandler sessionHandler = handlerProvider.createSessionHandler(connectionId,
+            getFullyQualifiedNamespace(), sessionName, connectionOptions.getRetry().getTryTimeout());
+        final Session session = connection.session();
+
+        BaseHandler.setHandler(session, sessionHandler);
+        final AmqpSession amqpSession = createSession(sessionName, session, sessionHandler);
+        final Disposable subscription = amqpSession.getEndpointStates()
+            .subscribe(state -> {
+            }, error -> {
+                // If we were already disposing of the connection, the session would be removed.
+                if (isDisposed.get()) {
+                    return;
+                }
+
+                logger.atInfo()
+                    .addKeyValue(SESSION_NAME_KEY, sessionName)
+                    .log("Error occurred. Removing and disposing session", error);
+                removeSession(sessionName);
+            }, () -> {
+                // If we were already disposing of the connection, the session would be removed.
+                if (isDisposed.get()) {
+                    return;
+                }
+
+                removeSession(sessionName);
+            });
+
+        return new SessionSubscription(amqpSession, subscription);
     }
 
     private synchronized void closeConnectionWork() {
