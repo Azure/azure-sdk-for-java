@@ -196,12 +196,6 @@
           "justification": "Skip customized getters on class when serialization and deserialization."
         },
         {
-          "regex": true,
-          "code": "java.annotation.added",
-          "new": "class com.azure.ai.textanalytics.models.HealthcareEntityRelationType",
-          "justification": "Skip JsonCreator annotation on the method fromString when serialization and deserialization."
-        },
-        {
           "code": "java.class.removed",
           "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
           "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
@@ -264,6 +258,12 @@
           "old": ".*? (com\\.azure\\.containers\\.containerregistry\\.models.*|com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*|com\\.azure\\.security\\.keyvault\\.(administration|certificates)\\.models.*)",
           "description": ".*com.fasterxml.jackson.*",
           "justification": "Removing Jackson annotations from ACR, KeyVault, and Search in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.ai\\.textanalytics\\.models.*",
+          "justification": "Removing Jackson annotations from Text Analytics in transition to stream-style."
         },
         {
           "code": "java.field.removed",
