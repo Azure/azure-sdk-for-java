@@ -39,7 +39,9 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_STATE_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -222,7 +224,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         if (remoteOutcome == null) {
             logger.atWarning()
                 .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
-                .addKeyValue("delivery", delivery)
+                .addKeyValue(DELIVERY_KEY, delivery)
                 .log("No outcome associated with delivery.");
 
             return;
@@ -232,7 +234,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         if (work == null) {
             logger.atWarning()
                 .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
-                .addKeyValue("delivery", delivery)
+                .addKeyValue(DELIVERY_KEY, delivery)
                 .log("No pending update for delivery.");
             return;
         }
@@ -419,9 +421,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
             } catch (IOException | RejectedExecutionException dispatchError) {
                 final Throwable amqpException = logger.atError()
                     .addKeyValue(DELIVERY_TAG_KEY, work.getDeliveryTag())
+                    .addKeyValue(LINK_NAME_KEY, receiveLinkName)
                     .log(new AmqpException(false,
-                        String.format("linkName[%s], deliveryTag[%s]. Retrying updateDisposition failed to dispatch to Reactor.",
-                            receiveLinkName, work.getDeliveryTag()),
+                        "Retrying updateDisposition failed to dispatch to Reactor.",
                         dispatchError, getErrorContext(delivery)));
 
                 completeDispositionWorkWithSettle(work, delivery, amqpException);
@@ -484,7 +486,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
             }
 
             if (completionCount[0] == 0) {
-                logger.info("Starting completion of timed out disposition works (call site:{}).", callSite);
+                logger.atInfo()
+                    .addKeyValue("call-site", callSite)
+                    .log("Starting completion of timed out disposition works.");
             }
 
             final Throwable completionError;
@@ -501,8 +505,10 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
 
         if (completionCount[0] > 0) {
             // The log help debug if the user code chained to the work-mono (DispositionWork::getMono()) never returns.
-            logger.info("Completed {} timed-out disposition works (call site:{}). Locks {}",
-                callSite, completionCount[0], deliveryTags.toString());
+            logger.atInfo()
+                .addKeyValue("call-site", callSite)
+                .addKeyValue("locks", deliveryTags.toString())
+                .log("Completed {} timed-out disposition works.", completionCount[0]);
         }
     }
 
