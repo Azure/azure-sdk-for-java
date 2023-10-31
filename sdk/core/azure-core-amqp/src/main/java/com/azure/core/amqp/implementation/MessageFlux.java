@@ -36,7 +36,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-import java.util.function.BiFunction;
 
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_STATE_KEY;
@@ -56,10 +55,23 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
     public static final AmqpRetryPolicy NULL_RETRY_POLICY = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
     private static final String MESSAGE_FLUX_KEY = "messageFlux";
     private final ClientLogger logger;
+    /**
+     * The prefetch value used by the credit computation strategy.
+     */
     private final int prefetch;
+    /**
+     * The mode representing the strategy to compute and send the receiver credit.
+     * See {@link CreditAccountingStrategy}
+     */
     private final CreditFlowMode creditFlowMode;
+    /**
+     * The retry policy to use to establish a new receiver when the current receiver encounter terminal error.
+     */
     private final AmqpRetryPolicy retryPolicy;
-    private volatile BiFunction<String, DeliveryState, Mono<Void>> updateDispositionFunc;
+    /**
+     * The function for updating disposition state of messages using the current receiver.
+     */
+    private volatile DispositionFunction updateDispositionFunc;
 
     /**
      * Create a message-flux to stream messages from a messaging entity to downstream subscriber.
@@ -85,7 +97,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         this.prefetch = prefetch;
         this.creditFlowMode = creditFlowMode;
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-        this.updateDispositionFunc = (t, s) -> Mono.error(new IllegalStateException("Cannot update disposition as no receive-link is established."));
+        this.updateDispositionFunc = DispositionFunction.NO_DISPOSITION;
     }
 
     /**
@@ -107,8 +119,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
      * @return A Mono that completes when the state is successfully updated and acknowledged by message broker.
      */
     public Mono<Void> updateDisposition(String deliveryTag, DeliveryState deliveryState) {
-        final BiFunction<String, DeliveryState, Mono<Void>> updateDispositionFunc = this.updateDispositionFunc;
-        return updateDispositionFunc.apply(deliveryTag, deliveryState);
+        final DispositionFunction function = this.updateDispositionFunc;
+        return function.updateDisposition(deliveryTag, deliveryState);
     }
 
     /**
@@ -118,8 +130,31 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
      *
      * @param updateDispositionFunc the function to disposition messages delivered by the current backing receiver.
      */
-    void onNextUpdateDispositionFunction(BiFunction<String, DeliveryState, Mono<Void>> updateDispositionFunc) {
+    void onNextUpdateDispositionFunction(DispositionFunction updateDispositionFunc) {
         this.updateDispositionFunc = updateDispositionFunc;
+    }
+
+    /**
+     * Represents a function that accepts delivery tag and disposition state {@link DeliveryState} to set for the message
+     * identified by that delivery tag. The function returns {@link Mono} representing the outcome of the disposition
+     * operation attempted.
+     */
+    @FunctionalInterface
+    private interface DispositionFunction {
+        /**
+         * Indicate that the disposition cannot be attempted as there is no backing receiver link to perform the operation.
+         */
+        DispositionFunction NO_DISPOSITION = (t, s) -> Mono.error(new IllegalStateException("Cannot update disposition as no receive-link is established."));
+
+        /**
+         * Updates the disposition state of a message uniquely identified by the given delivery tag.
+         *
+         * @param deliveryTag delivery tag of message.
+         * @param deliveryState Delivery state of message.
+         *
+         * @return A Mono that completes when the state is successfully updated and acknowledged by message broker.
+         */
+        Mono<Void> updateDisposition(String deliveryTag, DeliveryState deliveryState);
     }
 
     /**
@@ -152,9 +187,9 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             AtomicIntegerFieldUpdater.newUpdater(RecoverableReactorReceiver.class, "wip");
         private volatile boolean done;
         private volatile boolean cancelled;
-        volatile Throwable error;
+        private volatile Throwable error;
         @SuppressWarnings("rawtypes")
-        static final AtomicReferenceFieldUpdater<RecoverableReactorReceiver, Throwable> ERROR =
+        private static final AtomicReferenceFieldUpdater<RecoverableReactorReceiver, Throwable> ERROR =
             AtomicReferenceFieldUpdater.newUpdater(RecoverableReactorReceiver.class,
                 Throwable.class,
                 "error");
@@ -216,9 +251,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
             // Request MediatorHolder to set the new mediator as the current (for the drain-loop to pick)
             if (mediatorHolder.trySet(mediator)) {
-                // the MediatorHolder accepted the mediator. Notify the mediator that the recoverable-receiver
-                // (a.k.a parent) is ready to use the mediator; in-response, the mediator notifies its readiness
-                // by invoking 'onMediatorReady'.
+                // The MediatorHolder accepted the mediator. Notify that this recoverable-receiver i.e. the parent of
+                // the mediator is ready to use the mediator by invoking 'mediator.onParentReady()'. In-response,
+                // the mediator notifies its readiness by invoking 'onMediatorReady(DispositionFunction)' of this
+                // recoverable-receiver.
                 mediator.onParentReady();
             } else {
                 // the MediatorHolder rejected the mediator as holder was frozen due to operator termination.
@@ -329,7 +365,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 // but it is identified that there is no active drain-loop; hence immediately react to cancel.
                 upstream.cancel();
                 mediatorHolder.freeze();
-                // wip increment also placed a tombstone on the drain-loop, so further drain(..) calls are nop.
+                // wip increment also placed a tombstone on the drain-loop, so further drain(..) calls are no-op.
             }
         }
 
@@ -339,7 +375,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          *
          * @param updateDispositionFunc the function to disposition messages from mediator's backing receiver.
          */
-        void onMediatorReady(BiFunction<String, DeliveryState, Mono<Void>> updateDispositionFunc) {
+        void onMediatorReady(DispositionFunction updateDispositionFunc) {
             retryAttempts.set(0);
             parent.onNextUpdateDispositionFunction(updateDispositionFunc);
             // After invoking 'messageSubscriber.onSubscribe(this)' and before the readiness of the mediator,
@@ -393,7 +429,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 if (terminateIfCancelled(downstream, null)) {
                     // the 'return' from the drain-loop in response to 'true' from 'terminateIf*' methods
                     // places a tombstone on the drain-loop (by not reducing the wip counter).
-                    // Once tombstone placed on the drain-loop, further drain(..) calls are nop.
+                    // Once tombstone placed on the drain-loop, further drain(..) calls are no-op.
                     return;
                 }
 
@@ -737,7 +773,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * Invoked by the parent {@link RecoverableReactorReceiver} when it is ready to use this new mediator
          * (The mediator facilitate communication between the parent and the new receiver ({@link AmqpReceiveLink}) that
          * mediator wraps). In response, this mediator notifies the parent about its readiness by invoking
-         * {@link RecoverableReactorReceiver#onMediatorReady(BiFunction)}.
+         * {@link RecoverableReactorReceiver#onMediatorReady(DispositionFunction)}.
          */
         void onParentReady() {
             updateLogWithReceiverId(logger.atWarning()).log("Setting next mediator and waiting for activation.");
@@ -849,7 +885,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         @Override
         public void onError(Throwable e) {
-            // NOP: The error signal to terminate the mediator arrives through onLinkError.
+            // NO-OP: The error signal to terminate the mediator arrives through onLinkError.
         }
 
         /**
@@ -874,7 +910,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         @Override
         public void onComplete() {
-            // NOP: The completion signal to terminate the mediator arrives through onLinkComplete.
+            // NO-OP: The completion signal to terminate the mediator arrives through onLinkComplete.
         }
 
         /**
@@ -1027,7 +1063,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
         /**
          * annotate the log builder with the receiver info (connectionId:linkName:entityPath) if the mediator has
-         * receiver set, else nop.
+         * receiver set, else no-op.
          *
          * @param builder the log builder to annotate.
          * @return the log builder annotated with receiver info.
