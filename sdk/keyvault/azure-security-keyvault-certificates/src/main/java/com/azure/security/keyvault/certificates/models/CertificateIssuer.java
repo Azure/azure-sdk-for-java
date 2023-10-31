@@ -3,76 +3,49 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper;
+import com.azure.security.keyvault.certificates.implementation.models.IssuerAttributes;
+import com.azure.security.keyvault.certificates.implementation.models.IssuerBundle;
+import com.azure.security.keyvault.certificates.implementation.models.IssuerCredentials;
+import com.azure.security.keyvault.certificates.implementation.models.OrganizationDetails;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Instant;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+
+import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
+
 /**
  * Represents certificate Issuer with all of its properties.
  */
-public final class CertificateIssuer {
+public final class CertificateIssuer implements JsonSerializable<CertificateIssuer> {
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateIssuer.class);
 
-    /**
-     * The user name/account name/account id.
-     */
-    private String accountId;
+    static {
+        CertificateIssuerHelper.setAccessor(new CertificateIssuerHelper.CertificateIssuerAccessor() {
+            @Override
+            public CertificateIssuer createCertificateIssuer(IssuerBundle impl) {
+                return new CertificateIssuer(impl);
+            }
 
-    /**
-     * The password/secret/account key.
-     */
-    private String password;
+            @Override
+            public IssuerBundle getImpl(CertificateIssuer certificateIssuer) {
+                return certificateIssuer.impl;
+            }
+        });
+    }
 
-    /**
-     * The organization Id.
-     */
-    private String organizationId;
-
-    /**
-     * The administrators.
-     */
-    private List<AdministratorContact> administratorContacts;
-
-    /**
-     * The issuer id.
-     */
-    @JsonProperty(value = "id")
-    private String id;
-
-    /**
-     * The issuer provider.
-     */
-    @JsonProperty(value = "provider")
-    private String provider;
+    private final IssuerBundle impl;
 
     /**
      * Name of the referenced issuer object or reserved names; for example,
      * 'Self' or 'Unknown'.
      */
-    @JsonProperty(value = "name")
-    String name;
-
-    /**
-     * Determines whether the issuer is enabled.
-     */
-    @JsonProperty(value = "enabled")
-    private Boolean enabled;
-
-    /**
-     * The created UTC time.
-     */
-    private OffsetDateTime created;
-
-    /**
-     * The updated UTC time.
-     */
-    private OffsetDateTime updated;
+    private final String name;
 
     /**
      * Creates an instance of the issuer.
@@ -82,7 +55,7 @@ public final class CertificateIssuer {
      */
     public CertificateIssuer(String name, String provider) {
         this.name = name;
-        this.provider = provider;
+        this.impl = new IssuerBundle().setProvider(provider);
     }
 
     /**
@@ -91,17 +64,20 @@ public final class CertificateIssuer {
      * @param name The name of the issuer.
      */
     public CertificateIssuer(String name) {
-        this.name = name;
+        this(name, null);
     }
 
-    CertificateIssuer() { }
+    private CertificateIssuer(IssuerBundle impl) {
+        this.impl = impl;
+        this.name = getIdMetadata(impl.getId(), -1, 3, -1, LOGGER).getName();
+    }
 
     /**
      * Get the id of the issuer.
      * @return the identifier.
      */
     public String getId() {
-        return id;
+        return impl.getId();
     }
 
     /**
@@ -109,7 +85,7 @@ public final class CertificateIssuer {
      * @return the issuer provider
      */
     public String getProvider() {
-        return provider;
+        return impl.getProvider();
     }
 
     /**
@@ -125,7 +101,7 @@ public final class CertificateIssuer {
      * @return the account id
      */
     public String getAccountId() {
-        return accountId;
+        return impl.getCredentials() == null ? null : impl.getCredentials().getAccountId();
     }
 
     /**
@@ -134,7 +110,11 @@ public final class CertificateIssuer {
      * @return the Issuer object itself.
      */
     public CertificateIssuer setAccountId(String accountId) {
-        this.accountId = accountId;
+        if (impl.getCredentials() == null) {
+            impl.setCredentials(new IssuerCredentials());
+        }
+
+        impl.getCredentials().setAccountId(accountId);
         return this;
     }
 
@@ -143,7 +123,7 @@ public final class CertificateIssuer {
      * @return the password
      */
     public String getPassword() {
-        return password;
+        return impl.getCredentials() == null ? null : impl.getCredentials().getPassword();
     }
 
     /**
@@ -152,7 +132,11 @@ public final class CertificateIssuer {
      * @return the Issuer object itself.
      */
     public CertificateIssuer setPassword(String password) {
-        this.password = password;
+        if (impl.getCredentials() == null) {
+            impl.setCredentials(new IssuerCredentials());
+        }
+
+        impl.getCredentials().setPassword(password);
         return this;
     }
 
@@ -161,7 +145,7 @@ public final class CertificateIssuer {
      * @return the organization id
      */
     public String getOrganizationId() {
-        return organizationId;
+        return impl.getOrganizationDetails() == null ? null : impl.getOrganizationDetails().getId();
     }
 
     /**
@@ -170,7 +154,11 @@ public final class CertificateIssuer {
      * @return the Issuer object itself.
      */
     public CertificateIssuer setOrganizationId(String organizationId) {
-        this.organizationId = organizationId;
+        if (impl.getOrganizationDetails() == null) {
+            impl.setOrganizationDetails(new OrganizationDetails());
+        }
+
+        impl.getOrganizationDetails().setId(organizationId);
         return this;
     }
 
@@ -179,7 +167,7 @@ public final class CertificateIssuer {
      * @return the administrators
      */
     public List<AdministratorContact> getAdministratorContacts() {
-        return administratorContacts;
+        return impl.getOrganizationDetails() == null ? null : impl.getOrganizationDetails().getAdminDetails();
     }
 
     /**
@@ -188,7 +176,11 @@ public final class CertificateIssuer {
      * @return the Issuer object itself.
      */
     public CertificateIssuer setAdministratorContacts(List<AdministratorContact> administratorContacts) {
-        this.administratorContacts = administratorContacts;
+        if (impl.getOrganizationDetails() == null) {
+            impl.setOrganizationDetails(new OrganizationDetails());
+        }
+
+        impl.getOrganizationDetails().setAdminDetails(administratorContacts);
         return this;
     }
 
@@ -197,7 +189,7 @@ public final class CertificateIssuer {
      * @return the enabled status
      */
     public Boolean isEnabled() {
-        return enabled;
+        return impl.getAttributes() == null ? null : impl.getAttributes().isEnabled();
     }
 
     /**
@@ -206,7 +198,11 @@ public final class CertificateIssuer {
      * @return the Issuer object itself.
      */
     public CertificateIssuer setEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (impl.getAttributes() == null) {
+            impl.setAttributes(new IssuerAttributes());
+        }
+
+        impl.getAttributes().setEnabled(enabled);
         return this;
     }
 
@@ -215,7 +211,7 @@ public final class CertificateIssuer {
      * @return the created UTC time.
      */
     public OffsetDateTime getCreatedOn() {
-        return created;
+        return impl.getAttributes() == null ? null : impl.getAttributes().getCreated();
     }
 
     /**
@@ -223,63 +219,22 @@ public final class CertificateIssuer {
      * @return the updated UTC time.
      */
     public OffsetDateTime getUpdatedOn() {
-        return updated;
+        return impl.getAttributes() == null ? null : impl.getAttributes().getUpdated();
     }
 
-    @JsonProperty(value = "credentials")
-    private void unpackCredentials(Map<String, Object> credentials) {
-        this.accountId = (String) credentials.get("account_id");
-        this.password = (String) credentials.get("pwd");
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return impl.toJson(jsonWriter);
     }
 
-    @JsonProperty(value = "org_details")
-    @SuppressWarnings("unchecked")
-    private void unpackOrganizationalDetails(Map<String, Object> orgDetails) {
-        this.administratorContacts =  orgDetails.containsKey("admin_details") ? parseAdministrators((List<Object>) orgDetails.get("admin_details")) : null;
-        this.organizationId = (String) orgDetails.get("id");
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<AdministratorContact> parseAdministrators(List<Object> admins) {
-        List<AdministratorContact> output = new ArrayList<>();
-
-        for (Object admin : admins) {
-            LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) admin;
-            String firstName = map.containsKey("first_name") ? map.get("first_name") : "";
-            String lastName = map.containsKey("last_name") ? map.get("last_name") : "";
-            String email = map.containsKey("email") ? map.get("email") : "";
-            String phone = map.containsKey("phone") ? map.get("phone") : "";
-            output.add(new AdministratorContact().setFirstName(firstName).setLastName(lastName).setEmail(email).setPhone(phone));
-        }
-        return  output;
-    }
-
-    @JsonProperty("attributes")
-    private void unpackBaseAttributes(Map<String, Object> attributes) {
-        this.enabled = (Boolean) attributes.get("enabled");
-        this.created = epochToOffsetDateTime(attributes.get("created"));
-        this.updated = epochToOffsetDateTime(attributes.get("updated"));
-    }
-
-    private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
-        if (epochValue != null) {
-            Instant instant = Instant.ofEpochMilli(((Number) epochValue).longValue() * 1000L);
-            return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
-        }
-        return null;
-    }
-
-    @JsonProperty(value = "id")
-    void unpackId(String id) {
-        if (id != null && id.length() > 0) {
-            this.id = id;
-            try {
-                URL url = new URL(id);
-                String[] tokens = url.getPath().split("/");
-                this.name = (tokens.length >= 4 ? tokens[3] : null);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
+    /**
+     * Reads a JSON stream into a {@link CertificateIssuer}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link CertificateIssuer} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link CertificateIssuer} fails to be read from the {@code jsonReader}.
+     */
+    public static CertificateIssuer fromJson(JsonReader jsonReader) throws IOException {
+        return new CertificateIssuer(IssuerBundle.fromJson(jsonReader));
     }
 }

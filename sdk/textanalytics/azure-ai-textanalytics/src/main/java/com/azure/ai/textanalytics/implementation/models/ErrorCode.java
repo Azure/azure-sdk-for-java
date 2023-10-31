@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Human-readable error code. */
@@ -80,7 +79,6 @@ public final class ErrorCode extends ExpandableStringEnum<ErrorCode> {
      * @param name a name to look for.
      * @return the corresponding ErrorCode.
      */
-    @JsonCreator
     public static ErrorCode fromString(String name) {
         return fromString(name, ErrorCode.class);
     }

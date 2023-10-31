@@ -17,40 +17,40 @@ public final class ServiceImpactingEventTests {
         ServiceImpactingEvent model =
             BinaryData
                 .fromString(
-                    "{\"eventStartTime\":\"2021-12-06T02:09:40Z\",\"eventStatusLastModifiedTime\":\"2020-12-23T05:46:04Z\",\"correlationId\":\"ysvlejuvf\",\"status\":{\"value\":\"rlyxwjkcprbnw\"},\"incidentProperties\":{\"title\":\"jvtbvpyss\",\"service\":\"nruj\",\"region\":\"uhmuouqfprwzwbn\",\"incidentType\":\"itnwuizgazxufi\"}}")
+                    "{\"eventStartTime\":\"2021-06-17T08:19:14Z\",\"eventStatusLastModifiedTime\":\"2021-03-26T22:43:42Z\",\"correlationId\":\"c\",\"status\":{\"value\":\"ivkwlzuvccfwnfnb\"},\"incidentProperties\":{\"title\":\"ionle\",\"service\":\"etqgtzxdpnq\",\"region\":\"qwxrjfeallnw\",\"incidentType\":\"bisnja\"}}")
                 .toObject(ServiceImpactingEvent.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-06T02:09:40Z"), model.eventStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T05:46:04Z"), model.eventStatusLastModifiedTime());
-        Assertions.assertEquals("ysvlejuvf", model.correlationId());
-        Assertions.assertEquals("rlyxwjkcprbnw", model.status().value());
-        Assertions.assertEquals("jvtbvpyss", model.incidentProperties().title());
-        Assertions.assertEquals("nruj", model.incidentProperties().service());
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.incidentProperties().region());
-        Assertions.assertEquals("itnwuizgazxufi", model.incidentProperties().incidentType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T08:19:14Z"), model.eventStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T22:43:42Z"), model.eventStatusLastModifiedTime());
+        Assertions.assertEquals("c", model.correlationId());
+        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.status().value());
+        Assertions.assertEquals("ionle", model.incidentProperties().title());
+        Assertions.assertEquals("etqgtzxdpnq", model.incidentProperties().service());
+        Assertions.assertEquals("qwxrjfeallnw", model.incidentProperties().region());
+        Assertions.assertEquals("bisnja", model.incidentProperties().incidentType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceImpactingEvent model =
             new ServiceImpactingEvent()
-                .withEventStartTime(OffsetDateTime.parse("2021-12-06T02:09:40Z"))
-                .withEventStatusLastModifiedTime(OffsetDateTime.parse("2020-12-23T05:46:04Z"))
-                .withCorrelationId("ysvlejuvf")
-                .withStatus(new ServiceImpactingEventStatus().withValue("rlyxwjkcprbnw"))
+                .withEventStartTime(OffsetDateTime.parse("2021-06-17T08:19:14Z"))
+                .withEventStatusLastModifiedTime(OffsetDateTime.parse("2021-03-26T22:43:42Z"))
+                .withCorrelationId("c")
+                .withStatus(new ServiceImpactingEventStatus().withValue("ivkwlzuvccfwnfnb"))
                 .withIncidentProperties(
                     new ServiceImpactingEventIncidentProperties()
-                        .withTitle("jvtbvpyss")
-                        .withService("nruj")
-                        .withRegion("uhmuouqfprwzwbn")
-                        .withIncidentType("itnwuizgazxufi"));
+                        .withTitle("ionle")
+                        .withService("etqgtzxdpnq")
+                        .withRegion("qwxrjfeallnw")
+                        .withIncidentType("bisnja"));
         model = BinaryData.fromObject(model).toObject(ServiceImpactingEvent.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-06T02:09:40Z"), model.eventStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T05:46:04Z"), model.eventStatusLastModifiedTime());
-        Assertions.assertEquals("ysvlejuvf", model.correlationId());
-        Assertions.assertEquals("rlyxwjkcprbnw", model.status().value());
-        Assertions.assertEquals("jvtbvpyss", model.incidentProperties().title());
-        Assertions.assertEquals("nruj", model.incidentProperties().service());
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.incidentProperties().region());
-        Assertions.assertEquals("itnwuizgazxufi", model.incidentProperties().incidentType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T08:19:14Z"), model.eventStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T22:43:42Z"), model.eventStatusLastModifiedTime());
+        Assertions.assertEquals("c", model.correlationId());
+        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.status().value());
+        Assertions.assertEquals("ionle", model.incidentProperties().title());
+        Assertions.assertEquals("etqgtzxdpnq", model.incidentProperties().service());
+        Assertions.assertEquals("qwxrjfeallnw", model.incidentProperties().region());
+        Assertions.assertEquals("bisnja", model.incidentProperties().incidentType());
     }
 }

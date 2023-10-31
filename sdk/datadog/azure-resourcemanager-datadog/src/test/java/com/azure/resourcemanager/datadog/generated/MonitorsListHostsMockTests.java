@@ -32,7 +32,7 @@ public final class MonitorsListHostsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"fudwpznt\",\"aliases\":[\"zhlrqjb\",\"ck\"],\"apps\":[\"hrxsbk\",\"vpycanuzbp\",\"kafkuwbcrnwbm\"],\"meta\":{\"agentVersion\":\"seyvj\",\"installMethod\":{\"tool\":\"tslhspkdeem\",\"toolVersion\":\"fm\",\"installerVersion\":\"gkvtmelmqkrhah\"},\"logsAgent\":{\"transport\":\"uahaquhcdhmd\"}}}]}";
+            "{\"value\":[{\"name\":\"ebtfhvpesap\",\"aliases\":[\"dqmh\",\"jdhtldwkyzxu\",\"tkncwsc\",\"svlxotogtwrup\"],\"apps\":[\"vnm\",\"cykvceo\",\"eil\",\"vnotyfjfcnj\"],\"meta\":{\"agentVersion\":\"nxdhbt\",\"installMethod\":{\"tool\":\"h\",\"toolVersion\":\"pnvjtoqnermclf\",\"installerVersion\":\"phoxus\"},\"logsAgent\":{\"transport\":\"abgy\"}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,15 +61,15 @@ public final class MonitorsListHostsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatadogHost> response =
-            manager.monitors().listHosts("xtccmg", "udxytlmoyrx", com.azure.core.util.Context.NONE);
+            manager.monitors().listHosts("upedeojnabckhs", "txp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fudwpznt", response.iterator().next().name());
-        Assertions.assertEquals("zhlrqjb", response.iterator().next().aliases().get(0));
-        Assertions.assertEquals("hrxsbk", response.iterator().next().apps().get(0));
-        Assertions.assertEquals("seyvj", response.iterator().next().meta().agentVersion());
-        Assertions.assertEquals("tslhspkdeem", response.iterator().next().meta().installMethod().tool());
-        Assertions.assertEquals("fm", response.iterator().next().meta().installMethod().toolVersion());
-        Assertions.assertEquals("gkvtmelmqkrhah", response.iterator().next().meta().installMethod().installerVersion());
-        Assertions.assertEquals("uahaquhcdhmd", response.iterator().next().meta().logsAgent().transport());
+        Assertions.assertEquals("ebtfhvpesap", response.iterator().next().name());
+        Assertions.assertEquals("dqmh", response.iterator().next().aliases().get(0));
+        Assertions.assertEquals("vnm", response.iterator().next().apps().get(0));
+        Assertions.assertEquals("nxdhbt", response.iterator().next().meta().agentVersion());
+        Assertions.assertEquals("h", response.iterator().next().meta().installMethod().tool());
+        Assertions.assertEquals("pnvjtoqnermclf", response.iterator().next().meta().installMethod().toolVersion());
+        Assertions.assertEquals("phoxus", response.iterator().next().meta().installMethod().installerVersion());
+        Assertions.assertEquals("abgy", response.iterator().next().meta().logsAgent().transport());
     }
 }

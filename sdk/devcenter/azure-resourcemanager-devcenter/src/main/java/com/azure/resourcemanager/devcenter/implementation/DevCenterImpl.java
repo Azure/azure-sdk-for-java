@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.DevCenterInner;
 import com.azure.resourcemanager.devcenter.models.DevCenter;
 import com.azure.resourcemanager.devcenter.models.DevCenterUpdate;
+import com.azure.resourcemanager.devcenter.models.Encryption;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import java.util.Collections;
@@ -59,6 +60,14 @@ public final class DevCenterImpl implements DevCenter, DevCenter.Definition, Dev
 
     public String devCenterUri() {
         return this.innerModel().devCenterUri();
+    }
+
+    public Encryption encryption() {
+        return this.innerModel().encryption();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
     }
 
     public Region region() {
@@ -192,6 +201,26 @@ public final class DevCenterImpl implements DevCenter, DevCenter.Definition, Dev
             return this;
         } else {
             this.updateBody.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public DevCenterImpl withEncryption(Encryption encryption) {
+        if (isInCreateMode()) {
+            this.innerModel().withEncryption(encryption);
+            return this;
+        } else {
+            this.updateBody.withEncryption(encryption);
+            return this;
+        }
+    }
+
+    public DevCenterImpl withDisplayName(String displayName) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateBody.withDisplayName(displayName);
             return this;
         }
     }

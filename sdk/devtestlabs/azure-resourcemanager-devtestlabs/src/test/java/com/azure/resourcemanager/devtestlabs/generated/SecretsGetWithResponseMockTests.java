@@ -31,7 +31,7 @@ public final class SecretsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"value\":\"subklr\",\"provisioningState\":\"jnltcetjdvqydi\",\"uniqueIdentifier\":\"qkwaruwd\"},\"location\":\"vqzxoebwg\",\"tags\":{\"upwtz\":\"ibanb\",\"ozkxbzrpejplss\":\"pak\"},\"id\":\"nbtttkgsuxu\",\"name\":\"rswgkpjhboyikeb\",\"type\":\"uhkslg\"}";
+            "{\"properties\":{\"value\":\"jnosdkv\",\"provisioningState\":\"fasgm\",\"uniqueIdentifier\":\"rnzpducdaak\"},\"location\":\"ujktzb\",\"tags\":{\"wkppnwyytfvp\":\"yfpqd\"},\"id\":\"tfjikffffgkuh\",\"name\":\"nwhvuldbkkejj\",\"type\":\"jigawgaz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,16 +63,11 @@ public final class SecretsGetWithResponseMockTests {
             manager
                 .secrets()
                 .getWithResponse(
-                    "wnbaf",
-                    "ctohzhaquvwsxbgn",
-                    "kerv",
-                    "choadhrsxqv",
-                    "vspabdsrgfajgl",
-                    com.azure.core.util.Context.NONE)
+                    "lvgecpwgoljtz", "nm", "sdobygoogxq", "pjxvazyjf", "csa", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("vqzxoebwg", response.location());
-        Assertions.assertEquals("ibanb", response.tags().get("upwtz"));
-        Assertions.assertEquals("subklr", response.value());
+        Assertions.assertEquals("ujktzb", response.location());
+        Assertions.assertEquals("yfpqd", response.tags().get("wkppnwyytfvp"));
+        Assertions.assertEquals("jnosdkv", response.value());
     }
 }

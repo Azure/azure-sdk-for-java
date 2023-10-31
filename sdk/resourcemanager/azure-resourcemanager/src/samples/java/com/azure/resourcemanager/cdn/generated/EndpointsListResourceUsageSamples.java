@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Endpoints ListResourceUsage. */
 public final class EndpointsListResourceUsageSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Endpoints_ListResourceUsage.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Endpoints_ListResourceUsage.json
      */
     /**
      * Sample code: Endpoints_ListResourceUsage.
@@ -22,6 +20,6 @@ public final class EndpointsListResourceUsageSamples {
             .manager()
             .serviceClient()
             .getEndpoints()
-            .listResourceUsage("RG", "profile1", "endpoint1", Context.NONE);
+            .listResourceUsage("RG", "profile1", "endpoint1", com.azure.core.util.Context.NONE);
     }
 }

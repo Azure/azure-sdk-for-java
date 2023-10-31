@@ -21,6 +21,10 @@ public final class DeliveryRuleHostnameCondition extends DeliveryRuleCondition {
     @JsonProperty(value = "parameters", required = true)
     private HostnameMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleHostnameCondition class. */
+    public DeliveryRuleHostnameCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

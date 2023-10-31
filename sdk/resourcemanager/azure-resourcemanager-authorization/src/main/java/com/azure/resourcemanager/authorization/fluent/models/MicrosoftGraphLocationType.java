@@ -41,6 +41,15 @@ public final class MicrosoftGraphLocationType extends ExpandableStringEnum<Micro
     public static final MicrosoftGraphLocationType POSTAL_ADDRESS = fromString("postalAddress");
 
     /**
+     * Creates a new instance of MicrosoftGraphLocationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphLocationType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphLocationType from its string representation.
      *
      * @param name a name to look for.

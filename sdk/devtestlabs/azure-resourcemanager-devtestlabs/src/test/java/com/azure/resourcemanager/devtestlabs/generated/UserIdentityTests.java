@@ -14,29 +14,29 @@ public final class UserIdentityTests {
         UserIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalName\":\"tsttktlahbq\",\"principalId\":\"tx\",\"tenantId\":\"zukxitmmqtgqq\",\"objectId\":\"hrnxrxc\",\"appId\":\"uisavokq\"}")
+                    "{\"principalName\":\"weazul\",\"principalId\":\"ethwwnpjhlfz\",\"tenantId\":\"pchwa\",\"objectId\":\"bousn\",\"appId\":\"pgfewetwlyx\"}")
                 .toObject(UserIdentity.class);
-        Assertions.assertEquals("tsttktlahbq", model.principalName());
-        Assertions.assertEquals("tx", model.principalId());
-        Assertions.assertEquals("zukxitmmqtgqq", model.tenantId());
-        Assertions.assertEquals("hrnxrxc", model.objectId());
-        Assertions.assertEquals("uisavokq", model.appId());
+        Assertions.assertEquals("weazul", model.principalName());
+        Assertions.assertEquals("ethwwnpjhlfz", model.principalId());
+        Assertions.assertEquals("pchwa", model.tenantId());
+        Assertions.assertEquals("bousn", model.objectId());
+        Assertions.assertEquals("pgfewetwlyx", model.appId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserIdentity model =
             new UserIdentity()
-                .withPrincipalName("tsttktlahbq")
-                .withPrincipalId("tx")
-                .withTenantId("zukxitmmqtgqq")
-                .withObjectId("hrnxrxc")
-                .withAppId("uisavokq");
+                .withPrincipalName("weazul")
+                .withPrincipalId("ethwwnpjhlfz")
+                .withTenantId("pchwa")
+                .withObjectId("bousn")
+                .withAppId("pgfewetwlyx");
         model = BinaryData.fromObject(model).toObject(UserIdentity.class);
-        Assertions.assertEquals("tsttktlahbq", model.principalName());
-        Assertions.assertEquals("tx", model.principalId());
-        Assertions.assertEquals("zukxitmmqtgqq", model.tenantId());
-        Assertions.assertEquals("hrnxrxc", model.objectId());
-        Assertions.assertEquals("uisavokq", model.appId());
+        Assertions.assertEquals("weazul", model.principalName());
+        Assertions.assertEquals("ethwwnpjhlfz", model.principalId());
+        Assertions.assertEquals("pchwa", model.tenantId());
+        Assertions.assertEquals("bousn", model.objectId());
+        Assertions.assertEquals("pgfewetwlyx", model.appId());
     }
 }

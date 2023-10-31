@@ -3,6 +3,7 @@
 
 module com.azure.data.appconfiguration {
     requires transitive com.azure.core;
+    requires transitive com.azure.core.experimental;
     requires com.azure.json;
 
     opens com.azure.data.appconfiguration.implementation to com.azure.core;

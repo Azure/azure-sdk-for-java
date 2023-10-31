@@ -17,27 +17,28 @@ public final class IlrRequestResourceTests {
         IlrRequestResource model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"objectType\":\"IlrRequest\"},\"eTag\":\"sttwvogvbbe\",\"location\":\"dcngqqmoakufgmj\",\"tags\":{\"enuuzkopbm\":\"rdgrtw\"},\"id\":\"nrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"}")
+                    "{\"properties\":{\"objectType\":\"IlrRequest\"},\"eTag\":\"jaltolmnc\",\"location\":\"sobqw\",\"tags\":{\"cqdpfuv\":\"bnwdcfh\"},\"id\":\"lsbjjcanvxbv\",\"name\":\"vudutncor\",\"type\":\"r\"}")
                 .toObject(IlrRequestResource.class);
-        Assertions.assertEquals("dcngqqmoakufgmj", model.location());
-        Assertions.assertEquals("rdgrtw", model.tags().get("enuuzkopbm"));
-        Assertions.assertEquals("sttwvogvbbe", model.etag());
+        Assertions.assertEquals("sobqw", model.location());
+        Assertions.assertEquals("bnwdcfh", model.tags().get("cqdpfuv"));
+        Assertions.assertEquals("jaltolmnc", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IlrRequestResource model =
             new IlrRequestResource()
-                .withLocation("dcngqqmoakufgmj")
-                .withTags(mapOf("enuuzkopbm", "rdgrtw"))
+                .withLocation("sobqw")
+                .withTags(mapOf("cqdpfuv", "bnwdcfh"))
                 .withProperties(new IlrRequest())
-                .withEtag("sttwvogvbbe");
+                .withEtag("jaltolmnc");
         model = BinaryData.fromObject(model).toObject(IlrRequestResource.class);
-        Assertions.assertEquals("dcngqqmoakufgmj", model.location());
-        Assertions.assertEquals("rdgrtw", model.tags().get("enuuzkopbm"));
-        Assertions.assertEquals("sttwvogvbbe", model.etag());
+        Assertions.assertEquals("sobqw", model.location());
+        Assertions.assertEquals("bnwdcfh", model.tags().get("cqdpfuv"));
+        Assertions.assertEquals("jaltolmnc", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -16,11 +16,11 @@ public final class ResourceMoveRequestTests {
         ResourceMoveRequest model =
             BinaryData
                 .fromString(
-                    "{\"validateOnly\":false,\"moveResources\":[\"gvfcj\",\"wzo\",\"xjtfelluwfzit\"],\"moveResourceInputType\":\"MoveResourceSourceId\"}")
+                    "{\"validateOnly\":false,\"moveResources\":[\"guhmuouqfpr\",\"zw\"],\"moveResourceInputType\":\"MoveResourceId\"}")
                 .toObject(ResourceMoveRequest.class);
         Assertions.assertEquals(false, model.validateOnly());
-        Assertions.assertEquals("gvfcj", model.moveResources().get(0));
-        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID, model.moveResourceInputType());
+        Assertions.assertEquals("guhmuouqfpr", model.moveResources().get(0));
+        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,11 +28,11 @@ public final class ResourceMoveRequestTests {
         ResourceMoveRequest model =
             new ResourceMoveRequest()
                 .withValidateOnly(false)
-                .withMoveResources(Arrays.asList("gvfcj", "wzo", "xjtfelluwfzit"))
-                .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID);
+                .withMoveResources(Arrays.asList("guhmuouqfpr", "zw"))
+                .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_ID);
         model = BinaryData.fromObject(model).toObject(ResourceMoveRequest.class);
         Assertions.assertEquals(false, model.validateOnly());
-        Assertions.assertEquals("gvfcj", model.moveResources().get(0));
-        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID, model.moveResourceInputType());
+        Assertions.assertEquals("guhmuouqfpr", model.moveResources().get(0));
+        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
     }
 }

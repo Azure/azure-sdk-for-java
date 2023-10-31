@@ -19,22 +19,20 @@ public final class MyWorkbookProperties {
     private String displayName;
 
     /*
-     * Configuration of this particular private workbook. Configuration data is
-     * a string containing valid JSON
+     * Configuration of this particular private workbook. Configuration data is a string containing valid JSON
      */
     @JsonProperty(value = "serializedData", required = true)
     private String serializedData;
 
     /*
-     * This instance's version of the data model. This can change as new
-     * features are added that can be marked private workbook.
+     * This instance's version of the data model. This can change as new features are added that can be marked private
+     * workbook.
      */
     @JsonProperty(value = "version")
     private String version;
 
     /*
-     * Date and time in UTC of the last modification that was made to this
-     * private workbook definition.
+     * Date and time in UTC of the last modification that was made to this private workbook definition.
      */
     @JsonProperty(value = "timeModified", access = JsonProperty.Access.WRITE_ONLY)
     private String timeModified;
@@ -46,8 +44,7 @@ public final class MyWorkbookProperties {
     private String category;
 
     /*
-     * A list of 0 or more tags that are associated with this private workbook
-     * definition
+     * A list of 0 or more tags that are associated with this private workbook definition
      */
     @JsonProperty(value = "tags")
     private List<String> tags;
@@ -69,6 +66,10 @@ public final class MyWorkbookProperties {
      */
     @JsonProperty(value = "storageUri")
     private String storageUri;
+
+    /** Creates an instance of MyWorkbookProperties class. */
+    public MyWorkbookProperties() {
+    }
 
     /**
      * Get the displayName property: The user-defined name of the private workbook.

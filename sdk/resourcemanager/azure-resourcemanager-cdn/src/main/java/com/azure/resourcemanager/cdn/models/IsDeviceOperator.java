@@ -14,6 +14,15 @@ public final class IsDeviceOperator extends ExpandableStringEnum<IsDeviceOperato
     public static final IsDeviceOperator EQUAL = fromString("Equal");
 
     /**
+     * Creates a new instance of IsDeviceOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IsDeviceOperator() {
+    }
+
+    /**
      * Creates or finds a IsDeviceOperator from its string representation.
      *
      * @param name a name to look for.

@@ -242,11 +242,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    private static boolean olderThan20210410ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2021_04_10);
-    }
-
-    @DisabledIf("olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
     @Test
     public void createEncryptionContext() {
         dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -333,11 +329,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             "0777", "0057", null, null, null), 201);
     }
 
-    private static boolean olderThan20201206ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_12_06);
-    }
-
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -353,7 +345,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -436,7 +428,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithLeaseId() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -455,7 +447,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithLeaseDuration() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -472,7 +464,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @ParameterizedTest
     @MethodSource("timeExpiresOnOptionsSupplier")
     public void createOptionsWithTimeExpiresOn(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -485,7 +477,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         return Stream.of(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)), null);
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createOptionsWithTimeToExpireRelativeToNow() {
         DataLakePathScheduleDeletionOptions deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6));
@@ -593,7 +585,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .setPermissions("0777").setUmask("0057"), Context.NONE), 201);
     }
 
-    @DisabledIf("olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
     @Test
     public void createIfNotExistsEncryptionContext() {
         dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
@@ -619,7 +611,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithACL() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -637,7 +629,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithOwnerAndGroup() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -730,7 +722,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithLeaseId() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -752,7 +744,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithLeaseDuration() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -771,7 +763,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @ParameterizedTest
     @MethodSource("timeExpiresOnOptionsSupplier")
     public void createIfNotExistsOptionsWithTimeExpiresOn(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -782,7 +774,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(fc.createIfNotExistsWithResponse(options, null), 201);
     }
 
-    @DisabledIf("olderThan20201206ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
     @Test
     public void createIfNotExistsOptionsWithTimeToExpireRelativeToNow() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -1010,11 +1002,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    private static boolean olderThan20200210ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_02_10);
-    }
-
-    @DisabledIf("olderThan20200210ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void setACLRecursive() {
         StepVerifier.create(fc.setAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES))
@@ -1026,7 +1014,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20200210ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void updateACLRecursive() {
         StepVerifier.create(fc.updateAccessControlRecursive(PATH_ACCESS_CONTROL_ENTRIES))
@@ -1038,7 +1026,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20200210ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void removeACLRecursive() {
         List<PathRemoveAccessControlEntry> removeAccessControlEntries = PathRemoveAccessControlEntry.parseList(
@@ -2308,11 +2296,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             });
     }
 
-    private static boolean olderThan20200804ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_08_04);
-    }
 
-    @DisabledIf("olderThan20200804ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void appendDataLeaseAcquire() {
         fc = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName()).block();
@@ -2334,7 +2319,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20200804ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void appendDataLeaseAutoRenew() {
         fc = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName()).block();
@@ -2383,7 +2368,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20200804ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
     @Test
     public void appendDataLeaseAcquireRelease() {
         fc = dataLakeFileSystemAsyncClient.createFileIfNotExists(generatePathName()).block();
@@ -2429,7 +2414,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void appendDataFlush() {
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions().setFlush(true);
@@ -2469,7 +2454,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void appendBinaryDataFlush() {
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions().setFlush(true);
@@ -3448,7 +3433,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210410ServiceVersion")
     @Test
     public void uploadEncryptionContext() {
         String encryptionContext = "encryptionContext";
@@ -3506,7 +3491,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc.flush(b.length(), true).block();
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @ValueSource(ints = {
         1, // 32 bytes
@@ -3543,7 +3528,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("queryCsvSerializationSeparatorSupplier")
     public void queryCsvSerializationSeparator(char recordSeparator, char columnSeparator, boolean headersPresentIn,
@@ -3607,7 +3592,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryCsvSerializationEscapeAndFieldQuote() {
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3633,7 +3618,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("queryInputJsonSupplier")
     public void queryInputJson(int numCopies, char recordSeparator) {
@@ -3669,7 +3654,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputCsvOutputJson() {
         liveTestScenarioWithRetry(() -> {
@@ -3695,7 +3680,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputJsonOutputCsv() {
         liveTestScenarioWithRetry(() -> {
@@ -3723,7 +3708,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("resource")
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryInputCsvOutputArrow() {
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3746,7 +3731,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryNonFatalError() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3768,7 +3753,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryFatalError() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3789,7 +3774,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryProgressReceiver() {
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3820,7 +3805,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode") // Large amount of data.
     @Test
     public void queryMultipleRecordsWithProgressReceiver() {
@@ -3848,7 +3833,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @CsvSource(value = {"true,false", "false,true"})
     public void queryInputOutputIA(boolean input, boolean output) {
@@ -3867,7 +3852,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryArrowInputIA() {
         FileQueryArrowSerialization inSer = new FileQueryArrowSerialization();
@@ -3881,11 +3866,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    private static boolean olderThan20201002ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_10_02);
-    }
-
-    @DisabledIf("olderThan20201002ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201002ServiceVersion")
     @Test
     public void queryParquetOutputIA() {
         FileQueryParquetSerialization outSer = new FileQueryParquetSerialization();
@@ -3899,7 +3880,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @SuppressWarnings("resource")
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void queryError() {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
@@ -3910,7 +3891,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void queryAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -3947,7 +3928,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         }
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -3966,7 +3947,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("scheduleDeletionSupplier")
     public void scheduleDeletion(FileScheduleDeletionOptions fileScheduleDeletionOptions, boolean hasExpiry) {
@@ -3988,11 +3969,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         );
     }
 
-    private static boolean olderThan20191212ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2019_12_12);
-    }
-
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20191212ServiceVersion")
     @Test
     public void scheduleDeletionTime() {
         OffsetDateTime now = testResourceNamer.now();

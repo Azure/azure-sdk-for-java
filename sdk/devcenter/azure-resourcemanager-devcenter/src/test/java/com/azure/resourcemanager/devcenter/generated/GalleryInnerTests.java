@@ -14,15 +14,15 @@ public final class GalleryInnerTests {
         GalleryInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Updating\",\"galleryResourceId\":\"hhbcsglummajtjao\"},\"id\":\"obnbdxkqpxokaj\",\"name\":\"onpimexgstxg\",\"type\":\"po\"}")
+                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"galleryResourceId\":\"dnsezcxtbzs\"},\"id\":\"yc\",\"name\":\"sne\",\"type\":\"mdwzjeiachboo\"}")
                 .toObject(GalleryInner.class);
-        Assertions.assertEquals("hhbcsglummajtjao", model.galleryResourceId());
+        Assertions.assertEquals("dnsezcxtbzs", model.galleryResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GalleryInner model = new GalleryInner().withGalleryResourceId("hhbcsglummajtjao");
+        GalleryInner model = new GalleryInner().withGalleryResourceId("dnsezcxtbzs");
         model = BinaryData.fromObject(model).toObject(GalleryInner.class);
-        Assertions.assertEquals("hhbcsglummajtjao", model.galleryResourceId());
+        Assertions.assertEquals("dnsezcxtbzs", model.galleryResourceId());
     }
 }

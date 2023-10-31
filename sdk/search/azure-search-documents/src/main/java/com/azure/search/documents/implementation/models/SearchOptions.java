@@ -92,13 +92,21 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     private String scoringProfile;
 
     /*
+     * Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and
+     * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
+     * retrieval and ranking phase, and the L2 semantic phase.
+     */
+    private String semanticQuery;
+
+    /*
      * The name of the semantic configuration that lists which fields should be used for semantic ranking, captions,
      * highlights, and answers
      */
     private String semanticConfiguration;
 
     /*
-     * Allows the user to choose whether a semantic call should fail completely, or to return partial results.
+     * Allows the user to choose whether a semantic call should fail completely, or to return partial results
+     * (default).
      */
     private SemanticErrorHandling semanticErrorHandling;
 
@@ -449,6 +457,30 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
+     * Get the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
+     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @return the semanticQuery value.
+     */
+    public String getSemanticQuery() {
+        return this.semanticQuery;
+    }
+
+    /**
+     * Set the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use different
+     * queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @param semanticQuery the semanticQuery value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticQuery(String semanticQuery) {
+        this.semanticQuery = semanticQuery;
+        return this;
+    }
+
+    /**
      * Get the semanticConfiguration property: The name of the semantic configuration that lists which fields should be
      * used for semantic ranking, captions, highlights, and answers.
      *
@@ -472,7 +504,7 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
 
     /**
      * Get the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
-     * or to return partial results.
+     * or to return partial results (default).
      *
      * @return the semanticErrorHandling value.
      */
@@ -482,7 +514,7 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
 
     /**
      * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail completely,
-     * or to return partial results.
+     * or to return partial results (default).
      *
      * @param semanticErrorHandling the semanticErrorHandling value to set.
      * @return the SearchOptions object itself.
@@ -832,6 +864,7 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
         jsonWriter.writeArrayField(
                 "ScoringParameters", this.scoringParameters, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scoringProfile", this.scoringProfile);
+        jsonWriter.writeStringField("semanticQuery", this.semanticQuery);
         jsonWriter.writeStringField("semanticConfiguration", this.semanticConfiguration);
         jsonWriter.writeStringField("semanticErrorHandling", Objects.toString(this.semanticErrorHandling, null));
         jsonWriter.writeNumberField("semanticMaxWaitInMilliseconds", this.semanticMaxWaitInMilliseconds);
@@ -893,6 +926,8 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                             deserializedSearchOptions.scoringParameters = scoringParameters;
                         } else if ("scoringProfile".equals(fieldName)) {
                             deserializedSearchOptions.scoringProfile = reader.getString();
+                        } else if ("semanticQuery".equals(fieldName)) {
+                            deserializedSearchOptions.semanticQuery = reader.getString();
                         } else if ("semanticConfiguration".equals(fieldName)) {
                             deserializedSearchOptions.semanticConfiguration = reader.getString();
                         } else if ("semanticErrorHandling".equals(fieldName)) {

@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for ScalingPlanPooledSchedules Update. */
 public final class ScalingPlanPooledSchedulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/ScalingPlanPooledSchedule_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlanPooledSchedule_Update.json
      */
     /**
      * Sample code: ScalingPlanPooledSchedules_Update.
