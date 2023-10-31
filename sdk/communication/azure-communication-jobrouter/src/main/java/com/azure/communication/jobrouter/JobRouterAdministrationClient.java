@@ -8,6 +8,7 @@ import com.azure.communication.jobrouter.implementation.converters.Classificatio
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
@@ -179,7 +180,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createDistributionPolicyWithResponse(
             CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
-        DistributionPolicy distributionPolicy =
+        DistributionPolicyInternal distributionPolicy =
                 DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return this.serviceClient.upsertDistributionPolicyWithResponse(
                 createDistributionPolicyOptions.getDistributionPolicyId(),
