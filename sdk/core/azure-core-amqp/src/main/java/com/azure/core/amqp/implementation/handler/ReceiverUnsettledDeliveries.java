@@ -39,6 +39,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.core.amqp.implementation.ClientConstants.CALL_SITE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_STATE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
@@ -487,7 +488,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
 
             if (completionCount[0] == 0) {
                 logger.atInfo()
-                    .addKeyValue("call-site", callSite)
+                    .addKeyValue(CALL_SITE_KEY, callSite)
                     .log("Starting completion of timed out disposition works.");
             }
 
@@ -506,7 +507,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         if (completionCount[0] > 0) {
             // The log help debug if the user code chained to the work-mono (DispositionWork::getMono()) never returns.
             logger.atInfo()
-                .addKeyValue("call-site", callSite)
+                .addKeyValue(CALL_SITE_KEY, callSite)
                 .addKeyValue("locks", deliveryTags.toString())
                 .log("Completed {} timed-out disposition works.", completionCount[0]);
         }
