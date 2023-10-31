@@ -87,7 +87,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                 return c.connectAndAwaitToActive()
                     .doOnCancel(() -> {
                         if (!c.isDisposed()) {
-                            c.closeAsync(closeSignal("The connection request was canceled while waiting to active."))
+                            c.closeAsync(createShutdownSignal("The connection request was canceled while waiting to active."))
                                 .subscribe();
                         }
                     });
@@ -102,7 +102,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                     currentConnection = connection;
                 }
                 if (terminated) {
-                    connection.closeAsync(closeSignal("Connection recovery support is terminated.")).subscribe();
+                    connection.closeAsync(createShutdownSignal("Connection recovery support is terminated.")).subscribe();
                     sink.error(TERMINATED_ERROR);
                 } else {
                     logger.atInfo()
@@ -159,13 +159,16 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         return retryOptions;
     }
 
+    /**
+     * The AmqpChannelProcessor has the API 'isChannelClosed()' with impl as
+     * "return currentChannel == null || isDisposed();"
+     * That API is backing the 'EventHubConsumerAsyncClient::isConnectionClosed()' API,
+     * which is used in 'PartitionPumpManager'. That original code introduced seems not correct,
+     * but at the moment, it's still being determined what the side effects of removing that would be.
+     *
+     * @return true if the current cached connection is closed.
+     */
     public boolean isCurrentConnectionClosed() {
-        // The AmqpChannelProcessor has the API 'isChannelClosed()' with impl as
-        // { return currentChannel == null || isDisposed(); }.
-        // That API is backing the 'EventHubConsumerAsyncClient::isConnectionClosed()' API,
-        // which is used in 'PartitionPumpManager'. That original code introduced seems not correct,
-        // but at the moment, it's still being determined what the side effects of removing that would be.
-        //
         return (currentConnection != null && currentConnection.isDisposed()) || terminated;
     }
 
@@ -184,7 +187,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             connection = currentConnection;
         }
         if (connection != null && !connection.isDisposed()) {
-            connection.closeAsync(closeSignal("Terminating the connection recovery support.")).subscribe();
+            connection.closeAsync(createShutdownSignal("Terminating the connection recovery support.")).subscribe();
         } else {
             logger.info("Terminating the connection recovery support.");
         }
@@ -262,7 +265,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             }));
     }
 
-    private static AmqpShutdownSignal closeSignal(String message) {
+    private static AmqpShutdownSignal createShutdownSignal(String message) {
         return new AmqpShutdownSignal(false, false, message);
     }
 }
