@@ -19,6 +19,10 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * Temporary type to support receive link handler in v1 ({@link ReceiveLinkHandler}) and v2 ({@link ReceiveLinkHandler2})
  * side by side.
+ * <p/>
+ * ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
+ * is removed. At that point the type "ReceiveLinkHandlerWrapper" type will be removed and the Ctr will take
+ * "ReceiveLinkHandler".
  * TODO (anu): remove the temporary type once v1's side by side support with v2 is no longer needed.
  */
 public final class ReceiveLinkHandlerWrapper {
@@ -88,11 +92,11 @@ public final class ReceiveLinkHandlerWrapper {
         return receiveLinkHandler2.sendDisposition(deliveryTag, deliveryState);
     }
 
-    Mono<Boolean> beginClose(Mono<Boolean> thenMono) {
+    Mono<Void> beginClose() {
         if (isV2) {
-            return receiveLinkHandler2.preClose().then(thenMono);
+            return receiveLinkHandler2.preClose();
         } else {
-            return thenMono;
+            return Mono.empty();
         }
     }
 
