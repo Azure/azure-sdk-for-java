@@ -187,7 +187,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
     }
 
     @Test
-    public void canEnableAndDisableCrossTenantReplicationOnStorageAccount() {
+    public void canEnableAllowCrossTenantReplicationOnStorageAccount() {
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
@@ -195,7 +195,27 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .withRegion(Region.US_EAST2)
                 .withNewResourceGroup(rgName)
                 .withSku(StorageAccountSkuType.STANDARD_LRS)
-                .enableAllowCrossTenantReplication()
+                .disableAllowCrossTenantReplication()
+                .create();
+
+        Assertions.assertFalse(storageAccount.isAllowCrossTenantReplication());
+
+        storageAccount.update()
+            .enableAllowCrossTenantReplication()
+            .apply();
+
+        Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());
+    }
+
+    @Test
+    public void canDisableAllowCrossTenantReplicationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
                 .create();
 
         Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());
@@ -208,7 +228,26 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
     }
 
     @Test
-    public void canEnableAndDisableDefaultToOAuthAuthenticationOnStorageAccount() {
+    public void canEnableDefaultToOAuthAuthenticationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .create();
+
+        Assertions.assertFalse(storageAccount.isDefaultToOAuthAuthentication());
+
+        storageAccount.update()
+            .enableDefaultToOAuthAuthentication()
+            .apply();
+
+        Assertions.assertTrue(storageAccount.isDefaultToOAuthAuthentication());
+    }
+    @Test
+    public void canDisableDefaultToOAuthAuthenticationOnStorageAccount() {
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
