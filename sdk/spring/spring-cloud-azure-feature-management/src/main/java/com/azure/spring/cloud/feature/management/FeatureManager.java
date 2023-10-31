@@ -347,13 +347,14 @@ public class FeatureManager {
     }
 
     private TargetingFilterContext buildContext(Object appContext) {
-        if (contextualAccessor != null) {
-            TargetingFilterContext targetingContext = new TargetingFilterContext();
+        TargetingFilterContext targetingContext = new TargetingFilterContext();
+        if (contextualAccessor != null && (appContext != null || contextAccessor == null)) {
+            // Use this if, there is an appContext + the contextualAccessor, or there is no contextAccessor.
             contextualAccessor.configureTargetingContext(targetingContext, appContext);
             return targetingContext;
         }
         if (contextAccessor != null) {
-            TargetingFilterContext targetingContext = new TargetingFilterContext();
+            // If this is the only one provided just use it.
             contextAccessor.configureTargetingContext(targetingContext);
             return targetingContext;
         }
