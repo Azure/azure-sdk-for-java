@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixes potential race condition when creating proton-j sessions. Only create proton-j sessions on proton-j reactor scheduler.
+
 ### Other Changes
 
 ## 2.8.10 (2023-10-06)
