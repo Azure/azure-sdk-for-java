@@ -7,6 +7,7 @@ import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.RouterChannel;
 import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,15 +45,15 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
          */
         String workerId = String.format("%s-CreateWorker-Worker", JAVA_LIVE_TESTS);
 
-        Map<String, Object> labels = new HashMap<String, Object>() {
+        Map<String, RouterValue> labels = new HashMap<String, RouterValue>() {
             {
-                put("Label", "Value");
+                put("Label", new RouterValue("Value"));
             }
         };
 
-        Map<String, Object> tags = new HashMap<String, Object>() {
+        Map<String, RouterValue> tags = new HashMap<String, RouterValue>() {
             {
-                put("Tag", "Value");
+                put("Tag", new RouterValue("Value"));
             }
         };
 

@@ -9,6 +9,7 @@ import com.azure.communication.jobrouter.implementation.converters.DistributionP
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
@@ -986,7 +987,7 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createQueueWithResponse(
             CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
-        RouterQueue queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
+        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueue(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions);
     }
 

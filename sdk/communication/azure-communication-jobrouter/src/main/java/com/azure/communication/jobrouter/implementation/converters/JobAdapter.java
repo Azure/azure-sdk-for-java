@@ -3,6 +3,7 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
+import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterJob;
@@ -23,7 +24,7 @@ public class JobAdapter {
      * @param createJobOptions Container with options to create {@link RouterJob}
      * @return RouterJob
      */
-    public static RouterJob convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
+    public static RouterJobInternal convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
         Map<String, RouterValue> labelValueMap = createJobOptions.getLabels();
         Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
@@ -33,7 +34,7 @@ public class JobAdapter {
         List<RouterWorkerSelector> workerSelectors = createJobOptions.getRequestedWorkerSelectors();
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
 
-        return new RouterJob()
+        return new RouterJobInternal()
             .setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
             .setQueueId(createJobOptions.getQueueId())

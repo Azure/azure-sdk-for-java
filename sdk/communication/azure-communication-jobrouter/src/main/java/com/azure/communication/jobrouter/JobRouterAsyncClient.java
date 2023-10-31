@@ -6,6 +6,8 @@ package com.azure.communication.jobrouter;
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
+import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.CloseJobOptions;
@@ -340,7 +342,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createJobWithResponse(
             CreateJobOptions createJobOptions, RequestOptions requestOptions) {
-        RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+        RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
         return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
     }
 
@@ -1054,7 +1056,7 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWorkerWithResponse(
             CreateWorkerOptions createWorkerOptions, RequestOptions requestOptions) {
-        RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+        RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
         return upsertWorkerWithResponse(
                 createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker), requestOptions);
     }
