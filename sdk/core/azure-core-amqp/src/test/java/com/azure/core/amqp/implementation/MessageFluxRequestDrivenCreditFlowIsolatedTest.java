@@ -77,9 +77,7 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
 
         final AtomicLong initialFlow = new AtomicLong();
         doAnswer(invocation -> {
-            final Object[] args = invocation.getArguments();
-            @SuppressWarnings("unchecked")
-            final Supplier<Long> creditSupplier = (Supplier<Long>) args[0];
+            final Supplier<Long> creditSupplier = invocation.getArgument(0);
             Assertions.assertNotNull(creditSupplier);
             initialFlow.addAndGet(creditSupplier.get());
             return null;
@@ -114,9 +112,7 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
         final AtomicLong firstFlow = new AtomicLong();
         final AtomicLong secondFlow = new AtomicLong();
         doAnswer(invocation -> {
-            final Object[] args = invocation.getArguments();
-            @SuppressWarnings("unchecked")
-            final Supplier<Long> creditSupplier = (Supplier<Long>) args[0];
+            final Supplier<Long> creditSupplier = invocation.getArgument(0);
             Assertions.assertNotNull(creditSupplier);
 
             final int calls = flowCalls.incrementAndGet();
@@ -165,9 +161,7 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
         final AtomicLong firstFlow = new AtomicLong();
         final AtomicLong secondFlow = new AtomicLong();
         doAnswer(invocation -> {
-            final Object[] args = invocation.getArguments();
-            @SuppressWarnings("unchecked")
-            final Supplier<Long> creditSupplier = (Supplier<Long>) args[0];
+            final Supplier<Long> creditSupplier = invocation.getArgument(0);
             Assertions.assertNotNull(creditSupplier);
 
             final int calls = flowCalls.incrementAndGet();
@@ -218,9 +212,7 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
         final AtomicLong thirdFlow = new AtomicLong();
         final AtomicLong fourthFlow = new AtomicLong();
         doAnswer(invocation -> {
-            final Object[] args = invocation.getArguments();
-            @SuppressWarnings("unchecked")
-            final Supplier<Long> creditSupplier = (Supplier<Long>) args[0];
+            final Supplier<Long> creditSupplier = invocation.getArgument(0);
             Assertions.assertNotNull(creditSupplier);
 
             final int calls = flowCalls.incrementAndGet();
@@ -273,9 +265,7 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
 
         final ConcurrentLinkedQueue<Long> flows = new ConcurrentLinkedQueue<>();
         doAnswer(invocation -> {
-            final Object[] args = invocation.getArguments();
-            @SuppressWarnings("unchecked")
-            final Supplier<Long> creditSupplier = (Supplier<Long>) args[0];
+            final Supplier<Long> creditSupplier = invocation.getArgument(0);
             Assertions.assertNotNull(creditSupplier);
             flows.add(creditSupplier.get());
             return null;
