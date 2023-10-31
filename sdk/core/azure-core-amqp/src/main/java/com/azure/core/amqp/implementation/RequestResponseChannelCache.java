@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static com.azure.core.amqp.implementation.ClientConstants.CALL_SITE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
@@ -238,7 +239,8 @@ public final class RequestResponseChannelCache implements Disposable {
             logger.atInfo()
                 .addKeyValue(IS_CACHE_TERMINATED_KEY, isCacheTerminated)
                 .addKeyValue(IS_CONNECTION_TERMINATED_KEY, isConnectionTerminated)
-                .log("Channel recovery support is terminated. call-site:{}", callSite);
+                .addKeyValue(CALL_SITE_KEY, callSite)
+                .log("Channel recovery support is terminated.");
             return new RecoveryTerminatedException(connection.getId(), isCacheTerminated, isConnectionTerminated);
         }
         return null;
