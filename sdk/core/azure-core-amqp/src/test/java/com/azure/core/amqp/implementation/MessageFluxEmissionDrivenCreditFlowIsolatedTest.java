@@ -74,9 +74,7 @@ public class MessageFluxEmissionDrivenCreditFlowIsolatedTest {
 
         final AtomicLong initialFlow = new AtomicLong();
         doAnswer(invocation -> {
-            final Object[] args = invocation.getArguments();
-            @SuppressWarnings("unchecked")
-            final Supplier<Long> creditSupplier = (Supplier<Long>) args[0];
+            final Supplier<Long> creditSupplier = invocation.getArgument(0);
             Assertions.assertNotNull(creditSupplier);
             initialFlow.addAndGet(creditSupplier.get());
             return null;
