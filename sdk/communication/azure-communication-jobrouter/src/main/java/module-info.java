@@ -11,9 +11,6 @@ module com.azure.communication.jobrouter {
 
     opens com.azure.communication.jobrouter.models to
             com.azure.core,
-            com.fasterxml.jackson.databind;
-    opens com.azure.communication.jobrouter.models to
-            com.azure.core,
             com.fasterxml.jackson.databind,
             com.azure.communication.jobrouter.implementation.converters;
 }
