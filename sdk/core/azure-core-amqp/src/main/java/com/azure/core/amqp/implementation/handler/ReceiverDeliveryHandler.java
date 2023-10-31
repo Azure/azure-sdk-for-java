@@ -23,6 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_TAG_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.IS_PARTIAL_DELIVERY_KEY;
@@ -404,19 +405,21 @@ final class ReceiverDeliveryHandler {
 
     private void logOnDelivery(Delivery delivery, UUID deliveryTag, boolean wasSettled) {
         final Link link = delivery.getLink();
-        if (link != null) {
-            final ErrorCondition condition = link.getRemoteCondition();
-            final LoggingEventBuilder loggingEvent = addErrorCondition(logger.atVerbose(), condition)
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .addKeyValue(LINK_NAME_KEY, receiveLinkName);
-            if (deliveryTag != null) {
-                loggingEvent.addKeyValue("lockToken", deliveryTag);
-            }
-            loggingEvent.addKeyValue("updatedLinkCredit", link.getCredit())
-                .addKeyValue("remoteCredit", link.getRemoteCredit())
-                .addKeyValue("delivery.isSettled", wasSettled)
-                .log("onDelivery.");
+        if (link == null) {
+            return;
         }
+
+        final ErrorCondition condition = link.getRemoteCondition();
+        final LoggingEventBuilder loggingEvent = addErrorCondition(logger.atVerbose(), condition)
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .addKeyValue(LINK_NAME_KEY, receiveLinkName);
+        if (deliveryTag != null) {
+            loggingEvent.addKeyValue(DELIVERY_TAG_KEY, deliveryTag);
+        }
+        loggingEvent.addKeyValue(UPDATED_LINK_CREDIT_KEY, link.getCredit())
+            .addKeyValue(REMOTE_CREDIT_KEY, link.getRemoteCredit())
+            .addKeyValue(IS_SETTLED_DELIVERY_KEY, wasSettled)
+            .log("onDelivery.");
     }
 
     private static UUID decodeDeliveryTag(Delivery delivery) {
