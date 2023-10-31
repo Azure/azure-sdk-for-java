@@ -14,7 +14,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
@@ -136,7 +136,7 @@ class AppConfigurationReplicaClient {
     List<ConfigurationSetting> listSettingSnapshot(String snapshotName) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
-            ConfigurationSettingSnapshot snapshot = client.getSnapshot(snapshotName);
+            ConfigurationSettingsSnapshot snapshot = client.getSnapshot(snapshotName);
             if (!CompositionType.KEY.equals(snapshot.getCompositionType())) {
                 throw new IllegalArgumentException("Snapshot " + snapshotName + " needs to be of type Key.");
             }

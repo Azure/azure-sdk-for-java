@@ -30,6 +30,7 @@ import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
@@ -183,7 +184,7 @@ public class AppConfigurationReplicaClientTest {
             new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
         List<ConfigurationSetting> configurations = new ArrayList<>();
-        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(null);
+        ConfigurationSettingsSnapshot snapshot = new ConfigurationSettingsSnapshot(null);
         snapshot.setCompositionType(CompositionType.KEY);
 
         when(clientMock.getSnapshot(Mockito.any())).thenReturn(snapshot);
@@ -215,7 +216,7 @@ public class AppConfigurationReplicaClientTest {
         AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock,
             new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
-        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(null);
+        ConfigurationSettingsSnapshot snapshot = new ConfigurationSettingsSnapshot(null);
         snapshot.setCompositionType(CompositionType.KEY_LABEL);
 
         when(clientMock.getSnapshot(Mockito.any())).thenReturn(snapshot);
