@@ -38,6 +38,7 @@ import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
+import org.apache.qpid.proton.reactor.impl.IO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -97,6 +98,7 @@ class ReactorConnectionTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions().setHeaders(
         Arrays.asList(new Header("name", PRODUCT), new Header("version", CLIENT_VERSION)));
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(FULLY_QUALIFIED_NAMESPACE, 3128);
+    private final TestPublisher<AmqpShutdownSignal> shutdownSignalPublisher = TestPublisher.create();
 
     private ReactorConnection connection;
     private ConnectionHandler connectionHandler;
@@ -122,6 +124,8 @@ class ReactorConnectionTest {
     @Mock
     private MessageSerializer messageSerializer;
     @Mock
+    private ReactorDispatcher reactorDispatcher;
+    @Mock
     private ReactorProvider reactorProvider;
     @Mock
     private ReactorHandlerProvider reactorHandlerProvider;
@@ -142,17 +146,25 @@ class ReactorConnectionTest {
 
         connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
 
+        // Adding a sleep in here else it results in a tight loop of reactor.process() calls, adding to the memory
+        // footprint as mockito tries to remember every invocation.
+        // If we don't mock this though, reactor.process() returns false and prematurely closes the ReactorExecutor.
+        doAnswer(invocation -> {
+            Thread.sleep(2000);
+            return true;
+        }).when(reactor).process();
+
         when(reactor.selectable()).thenReturn(selectable);
         when(reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, connectionHandler.getProtocolPort(),
             connectionHandler))
             .thenReturn(connectionProtonJ);
         when(reactor.attachments()).thenReturn(mock(Record.class));
 
-        final Pipe pipe = Pipe.open();
-        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor, pipe);
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
+
+        when(reactorDispatcher.getShutdownSignal()).thenReturn(shutdownSignalPublisher.mono());
 
         when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(connectionHandler);
@@ -176,8 +188,6 @@ class ReactorConnectionTest {
 
     @AfterEach
     void teardown() throws Exception {
-        System.err.println("Clean-up");
-
         connectionHandler.close();
         sessionHandler.close();
 
@@ -223,7 +233,7 @@ class ReactorConnectionTest {
      * Creates a session with the given name and set handler.
      */
     @Test
-    void createSession() {
+    void createSession() throws IOException {
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
             connectionHandler)).thenReturn(connectionProtonJ);
         when(connectionProtonJ.session()).thenReturn(session);
@@ -234,9 +244,13 @@ class ReactorConnectionTest {
         // We only want it to emit a session when it is active.
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
         connectionHandler.onConnectionRemoteOpen(connectionEvent);
-
-
         sessionHandler.onSessionRemoteOpen(sessionEvent);
+
+        doAnswer(invocation -> {
+            final Runnable argument = invocation.getArgument(0);
+            argument.run();
+            return -1;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act & Assert
         StepVerifier.create(connection.createSession(SESSION_NAME))
@@ -264,7 +278,38 @@ class ReactorConnectionTest {
     }
 
     @Test
-    void createSessionWhenConnectionInactive() {
+    void createSessionThrowsWhenCannotBeScheduled() throws IOException {
+        when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
+            connectionHandler)).thenReturn(connectionProtonJ);
+        when(connectionProtonJ.session()).thenReturn(session);
+
+        when(session.attachments()).thenReturn(record);
+        when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+
+        // We only want it to emit a session when it is active.
+        when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+        connectionHandler.onConnectionRemoteOpen(connectionEvent);
+
+        final Exception dummyCause = new IllegalStateException("Test-Exception");
+
+        doAnswer(invocation -> {
+            throw new IOException("TestException.", dummyCause);
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        // Act & Assert
+        StepVerifier.create(connection.createSession(SESSION_NAME))
+            .expectErrorSatisfies(e -> {
+                assertTrue(e instanceof IOException);
+                assertEquals(dummyCause, e.getCause());
+            })
+            .verify();
+    }
+
+    /**
+     * Expect a timeout exception when creating an AMQP session on an inactive connection.
+     */
+    @Test
+    void createSessionWhenConnectionInactive() throws IOException {
         // Arrange
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
             connectionHandler)).thenReturn(connectionProtonJ);
@@ -277,17 +322,23 @@ class ReactorConnectionTest {
         when(connectionProtonJ.getLocalState()).thenReturn(EndpointState.ACTIVE);
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.UNINITIALIZED);
 
+        doAnswer(invocation -> {
+            final Runnable argument = invocation.getArgument(0);
+            argument.run();
+            return -1;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
         // Act & Assert
         StepVerifier.create(connection.createSession(SESSION_NAME))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 assertTrue(((AmqpException) error).isTransient());
             })
-            .verify(VERIFY_TIMEOUT);
+            .verify();
     }
 
     @Test
-    void createSessionFailureWorksWithRetry() {
+    void createSessionFailureWorksWithRetry() throws IOException {
         when(reactor.process()).then(invocation -> {
             TimeUnit.SECONDS.sleep(5);
             return true;
@@ -324,6 +375,11 @@ class ReactorConnectionTest {
         final Event sessionEvent2 = mock(Event.class);
         when(sessionEvent2.getSession()).thenReturn(session2);
 
+        doAnswer(invocation -> {
+            final Runnable argument = invocation.getArgument(0);
+            argument.run();
+            return -1;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act & Assert
 
@@ -360,7 +416,7 @@ class ReactorConnectionTest {
      * Creates a session with the given name and set handler.
      */
     @Test
-    void removeSessionThatExists() {
+    void removeSessionThatExists() throws IOException {
         final Record reactorRecord = mock(Record.class);
         when(reactor.attachments()).thenReturn(reactorRecord);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
@@ -376,6 +432,12 @@ class ReactorConnectionTest {
 
         sessionHandler.onSessionRemoteOpen(sessionEvent);
 
+        doAnswer(invocation -> {
+            final Runnable argument = invocation.getArgument(0);
+            argument.run();
+            return -1;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
         // Act & Assert
         StepVerifier.create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession(s.getSessionName())))
             .expectNext(true)
@@ -389,7 +451,7 @@ class ReactorConnectionTest {
      * Creates a session with the given name and set handler.
      */
     @Test
-    void removeSessionThatDoesNotExist() {
+    void removeSessionThatDoesNotExist() throws IOException {
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
             connectionHandler)).thenReturn(connectionProtonJ);
         when(connectionProtonJ.session()).thenReturn(session);
@@ -402,6 +464,12 @@ class ReactorConnectionTest {
         connectionHandler.onConnectionRemoteOpen(connectionEvent);
 
         sessionHandler.onSessionRemoteOpen(sessionEvent);
+
+        doAnswer(invocation -> {
+            final Runnable argument = invocation.getArgument(0);
+            argument.run();
+            return -1;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act & Assert
         StepVerifier.create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession("does-not-exist")))
@@ -450,11 +518,17 @@ class ReactorConnectionTest {
      * Verifies that we can get the CBS node.
      */
     @Test
-    void createCBSNode() {
+    void createCBSNode() throws IOException {
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
         final Event mock = mock(Event.class);
         when(mock.getConnection()).thenReturn(connectionProtonJ);
         connectionHandler.onConnectionRemoteOpen(mock);
+
+        doAnswer(invocation -> {
+            final Runnable argument = invocation.getArgument(0);
+            argument.run();
+            return -1;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act and Assert
         StepVerifier.create(this.connection.getClaimsBasedSecurityNode())
@@ -808,7 +882,7 @@ class ReactorConnectionTest {
 
     @Test
     @Disabled("This will be revisited")
-    void createManagementNode() {
+    void createManagementNode() throws IOException {
         final String linkName = "bar";
         final String entityPath = "foo";
         final Session session = mock(Session.class);
@@ -870,6 +944,12 @@ class ReactorConnectionTest {
         when(reactorHandlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
             argThat(path -> path.contains("cbs") && path.contains(entityPath)), argThat(path -> path.contains("cbs"))))
             .thenReturn(receiveLinkHandler);
+
+        doAnswer(invocation -> {
+            final Runnable argument = invocation.getArgument(0);
+            argument.run();
+            return -1;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act and Assert
         StepVerifier.create(connection.getManagementNode(entityPath))
