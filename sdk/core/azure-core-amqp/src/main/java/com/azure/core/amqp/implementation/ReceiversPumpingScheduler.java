@@ -31,33 +31,32 @@ import java.util.function.Supplier;
  * it within 60 seconds since idle, the ExecutorService (and its backing single-thread) is evicted from the pool.
  * <p/>
  * The typical allocation for Java App in a containerized environment is 2-4 cores per node.
- * See <a href="https://learn.microsoft.com/en-us/azure/developer/java/containers/overview">Java containerization</a>.
+ * See <a href="https://learn.microsoft.com/azure/developer/java/containers/overview">Java containerization</a>.
  * For message processing, a 'setup' starting with 2-4 cores per node and replicating the nodes if needed is recommended.
  * Typical, observed 'use-cases' are 1 to ~5 active {@link ReactorReceiver} (with a max-concurrent-calls per receiver in
  * ProcessorClient). The default {@code poolMaxSize} is 20 *count(cpu) and serves well in common 'setup' and 'use-cases'
  * or beyond. Under common 'setup' and 'use-cases', this can lead an arrangement of one Thread in the pool dedicated to
  * one {@link ReactorReceiver} instance.
- * <p/>
- * Note_1: If pool size tuning is really needed for a 'setup' and 'use-case', the default {@code poolMaxSize} can be overridden
+ * <ol>
+ * <li>If pool size tuning is really needed for a 'setup' and 'use-case', the default {@code poolMaxSize} can be overridden
  * through the system property 'com.azure.core.amqp.receiversPumpingThreadPoolMaxSize'. There is no one-size-fits-all guidance
  * for resource allocation. Resourcing depends on the nature of application work, other executor service (e.g. for DB, REST calls)
- * resources in the application, load on these resources etc... and should be evaluated case by case.
- * <p/>
- * Note_2: We didn't want the pool to scale unbounded fashion like {@link java.util.concurrent.Executors#newCachedThreadPool()}
+ * resources in the application, load on these resources etc... and should be evaluated case by case.</li>
+ * <li>We didn't want the pool to scale unbounded fashion like {@link java.util.concurrent.Executors#newCachedThreadPool()}
  * for the same reasons that Reactor phased out the (unbounded) elastic Scheduler, and the recommendation from async experts
  * is to use bounded pool.
  * See <a href="https://github.com/reactor/reactor-core/issues/1804#issuecomment-532626201">Unbounded Scheduler removal</a>.
  * This is also the reason we don't want to create one Scheduler per {@link ReactorReceiver} instance. Since such an approach
- * may result in certain application pattern to cause unbounded thread allocations leading to OOM.
- * <p/>
- * Note_3: the max-concurrent-calls functionality in ProcessorClient uses its own Scheduler to deliver the messages concurrently.
+ * may result in certain application pattern to cause unbounded thread allocations leading to OOM.</li>
+ * <li>The max-concurrent-calls functionality in ProcessorClient uses its own Scheduler to deliver the messages concurrently.
  * Overall the threading arrangement is close to T1 (e.g., T1 Service Bus library), where a shared internal pool (similar to
- * ReceiversPumpingScheduler) pumps the messages internally and different pool (customizable in T1) pump for max-concurrent-calls.
- * <p/>
- * Note_4: The idle timeout of '60-sec' for the pool and the queue size of '100000' for each Java single-threaded ExecutorService
- * in the pool are uplifted from the Reactor's choice for the same attributes.
+ * ReceiversPumpingScheduler) pumps the messages internally and different pool (customizable in T1) pump for max-concurrent-calls.</li>
+ * <li>The idle timeout of '60-sec' for the pool and the queue size of '100000' for each Java single-threaded ExecutorService
+ * in the pool are uplifted from the Reactor's choice for the same attributes.</li>
+ * </ol>
  */
 public final class ReceiversPumpingScheduler implements Scheduler {
+    private static final ClientLogger LOGGER = new ClientLogger(ReceiversPumpingScheduler.class);
     private static final String NAME = "receiverPump";
     private static final int TASK_QUEUE_CAP = 100000;
     private static final int IDLE_TTL_SECONDS = 60;
@@ -147,15 +146,16 @@ public final class ReceiversPumpingScheduler implements Scheduler {
             .map(m -> {
                 try {
                     return Integer.parseInt(m);
-                } catch (NumberFormatException e) {
+                } catch (NumberFormatException ignored) {
                     // Use poolMaxSizeDefault (the initialization log below hints the size is chosen).
                     return null;
                 }
             });
         final int poolMaxSize = poolMaxSizeOverridden.orElseGet(poolMaxSizeDefault);
         this.inner = Schedulers.newBoundedElastic(poolMaxSize, TASK_QUEUE_CAP, NAME, IDLE_TTL_SECONDS, true);
-        (new ClientLogger(ReceiversPumpingScheduler.class)).atVerbose()
-            .log("Initialized common ReceiversPumpingScheduler(maxThreads={})", poolMaxSize);
+        LOGGER.atVerbose()
+            .addKeyValue("maxThreads", poolMaxSize)
+            .log("Initialized common thread pool for receivers pumping.");
     }
 
     /**
@@ -186,8 +186,7 @@ public final class ReceiversPumpingScheduler implements Scheduler {
             return ((Supplier<?>) s).get().getClass()
                 .getSimpleName().equals("VirtualTimeScheduler");
         } else {
-            (new ClientLogger(ReceiversPumpingScheduler.class)).atVerbose()
-                .log("Can't perform VTScheduler check.");
+            LOGGER.atVerbose().log("Can't perform VTScheduler check.");
             return false;
         }
     }
