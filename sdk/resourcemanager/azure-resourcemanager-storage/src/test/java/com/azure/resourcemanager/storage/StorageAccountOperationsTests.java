@@ -185,4 +185,46 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertFalse(storageAccount.isBlobPublicAccessAllowed());
         Assertions.assertFalse(storageAccount.isSharedKeyAccessAllowed());
     }
+
+    @Test
+    public void canEnableAndDisableCrossTenantReplicationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .withAllowCrossTenantReplication(true)
+                .create();
+
+        Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());
+
+        storageAccount.update()
+            .withAllowCrossTenantReplication(false)
+            .apply();
+
+        Assertions.assertFalse(storageAccount.isAllowCrossTenantReplication());
+    }
+
+    @Test
+    public void canEnableAndDisableDefaultToOAuthAuthenticationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .withDefaultToOAuthAuthentication(true)
+                .create();
+
+        Assertions.assertTrue(storageAccount.isDefaultToOAuthAuthentication());
+
+        storageAccount.update()
+            .withDefaultToOAuthAuthentication(false)
+            .apply();
+
+        Assertions.assertFalse(storageAccount.isDefaultToOAuthAuthentication());
+    }
 }

@@ -206,6 +206,20 @@ public interface StorageAccount
      */
     Mono<List<StorageAccountKey>> regenerateKeyAsync(String keyName);
 
+    /**
+     * Checks whether cross tenant replication is allowed.
+     *
+     * @return true if cross tenant replication is enabled, false otherwise
+     */
+    boolean isAllowCrossTenantReplication();
+
+    /**
+     * Checks whether default to oauth authentication is allowed.
+     *
+     * @return true if default to oauth authentication is enabled, false otherwise
+     */
+    boolean isDefaultToOAuthAuthentication();
+
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -547,6 +561,28 @@ public interface StorageAccount
             WithCreate withHnsEnabled(boolean enabled);
         }
 
+        /** The stage of the storage account definition allowing to specify whether cross tenant replication is enabled. */
+        interface WithAllowCrossTenantReplication {
+            /**
+             * Specifies whether cross tenant replication will be enabled or not.
+             *
+             * @param enabled whether Hns will be enabled or not
+             * @return the next stage of storage account definition
+             */
+            WithCreate withAllowCrossTenantReplication(boolean enabled);
+        }
+
+        /** The stage of the storage account definition allowing to specify whether default to oauth authentication is enabled. */
+        interface  WithDefaultToOAuthAuthentication {
+            /**
+             * Specifies whether default to oauth authentication will be enabled or not.
+             *
+             * @param enabled whether default to oauth authentication will be enabled or not
+             * @return the next stage of storage account definition
+             */
+            WithCreate withDefaultToOAuthAuthentication(boolean enabled);
+        }
+
         /**
          * A storage account definition with sufficient inputs to create a new storage account in the cloud, but
          * exposing additional optional inputs to specify.
@@ -567,6 +603,8 @@ public interface StorageAccount
                 DefinitionStages.WithLargeFileShares,
                 DefinitionStages.WithHns,
                 DefinitionStages.WithBlobAccess,
+                DefinitionStages.WithAllowCrossTenantReplication,
+                DefinitionStages.WithDefaultToOAuthAuthentication,
                 Resource.DefinitionWithTags<WithCreate> {
         }
 
@@ -892,6 +930,28 @@ public interface StorageAccount
              */
             Update upgradeToGeneralPurposeAccountKindV2();
         }
+
+        /** The stage of storage account update allowing to cross tenant replication. */
+        interface WithAllowCrossTenantReplication {
+            /**
+             * Specifies whether cross tenant replication will be enabled or not.
+             *
+             * @param enabled whether cross tenant replication will be enabled or not
+             * @return the next stage of storage account update
+             */
+            Update withAllowCrossTenantReplication(boolean enabled);
+        }
+
+        /** The stage of storage account update allowing to specify whether default to oauth authentication is enabled. */
+        interface  WithDefaultToOAuthAuthentication {
+            /**
+             * Specifies whether default to oauth authentication will be enabled or not.
+             *
+             * @param enabled whether default to oauth authentication will be enabled or not
+             * @return the next stage of storage account definition
+             */
+            Update withDefaultToOAuthAuthentication(boolean enabled);
+        }
     }
 
     /** The template for a storage account update operation, containing all the settings that can be modified. */
@@ -906,6 +966,8 @@ public interface StorageAccount
             UpdateStages.WithNetworkAccess,
             UpdateStages.WithUpgrade,
             UpdateStages.WithBlobAccess,
+            UpdateStages.WithAllowCrossTenantReplication,
+            UpdateStages.WithDefaultToOAuthAuthentication,
             Resource.UpdateWithTags<Update> {
     }
 }

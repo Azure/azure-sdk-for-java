@@ -241,6 +241,22 @@ class StorageAccountImpl
     }
 
     @Override
+    public boolean isAllowCrossTenantReplication() {
+        if (this.innerModel().allowCrossTenantReplication() == null) {
+            return true;
+        }
+        return this.innerModel().allowCrossTenantReplication();
+    }
+
+    @Override
+    public boolean isDefaultToOAuthAuthentication() {
+        if (this.innerModel().defaultToOAuthAuthentication() == null) {
+            return true;
+        }
+        return this.innerModel().defaultToOAuthAuthentication();
+    }
+
+    @Override
     public List<StorageAccountKey> getKeys() {
         return this.getKeysAsync().block();
     }
@@ -561,6 +577,26 @@ class StorageAccountImpl
             createParameters.withAllowSharedKeyAccess(false);
         } else {
             updateParameters.withAllowSharedKeyAccess(false);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withAllowCrossTenantReplication(boolean enabled) {
+        if (isInCreateMode()) {
+            createParameters.withAllowCrossTenantReplication(enabled);
+        } else {
+            updateParameters.withAllowCrossTenantReplication(enabled);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withDefaultToOAuthAuthentication(boolean enabled) {
+        if (isInCreateMode()) {
+            createParameters.withDefaultToOAuthAuthentication(enabled);
+        } else {
+            updateParameters.withDefaultToOAuthAuthentication(enabled);
         }
         return this;
     }
