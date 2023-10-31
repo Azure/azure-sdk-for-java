@@ -18,6 +18,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivilegedAction;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -472,6 +473,7 @@ public class StorageImplUtils {
         return threadPool;
     }
 
+    @SuppressWarnings({ "deprecation", "removal" })
     public static void registerShutdownHook(ExecutorService threadPool) {
         long halfTimeout = TimeUnit.SECONDS.toNanos(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS) / 2;
         Thread hook = new Thread(() -> {
@@ -486,7 +488,10 @@ public class StorageImplUtils {
                 threadPool.shutdown();
             }
         });
-        Runtime.getRuntime().addShutdownHook(hook);
+        java.security.AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+            Runtime.getRuntime().addShutdownHook(hook);
+            return null;
+        });
     }
 
     public static String getEncryptionDataKey(Map<String, String> metadata) {

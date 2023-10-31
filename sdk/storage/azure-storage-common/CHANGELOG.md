@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- StorageImplUtils initialization fails with java.security.AccessControlException when run under SecurityManager
 
 ### Other Changes
 
