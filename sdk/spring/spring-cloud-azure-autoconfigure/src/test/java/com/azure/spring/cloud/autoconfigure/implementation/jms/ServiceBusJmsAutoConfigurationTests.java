@@ -36,7 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
-import static org.springframework.boot.autoconfigure.jms.JmsProperties.AcknowledgeMode.CLIENT;
 
 class ServiceBusJmsAutoConfigurationTests {
 
@@ -232,7 +231,7 @@ class ServiceBusJmsAutoConfigurationTests {
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.listener.autoStartup=false",
-                "spring.jms.listener.acknowledgeMode=client",
+                "spring.jms.listener.session.acknowledgeMode=client",
                 "spring.jms.listener.concurrency=2",
                 "spring.jms.listener.receiveTimeout=2s",
                 "spring.jms.listener.maxConcurrency=10",
@@ -242,7 +241,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).hasSingleBean(JmsProperties.class);
                 JmsProperties jmsProperties = context.getBean(JmsProperties.class);
                 assertThat(jmsProperties.getListener().isAutoStartup()).isFalse();
-                assertThat(jmsProperties.getListener().getAcknowledgeMode()).isEqualTo(CLIENT);
+                assertThat(jmsProperties.getListener().getSession().getAcknowledgeMode().getMode()).isEqualTo((Session.CLIENT_ACKNOWLEDGE));
                 assertThat(jmsProperties.getListener().formatConcurrency()).isEqualTo("2-10");
                 assertThat(jmsProperties.getListener().getReceiveTimeout()).isEqualTo(Duration.ofSeconds(2));
                 assertThat(jmsProperties.getListener().getMaxConcurrency()).isEqualTo(10);
