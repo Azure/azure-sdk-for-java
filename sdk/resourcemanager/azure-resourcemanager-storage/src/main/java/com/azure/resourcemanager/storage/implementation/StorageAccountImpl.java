@@ -242,18 +242,12 @@ class StorageAccountImpl
 
     @Override
     public boolean isAllowCrossTenantReplication() {
-        if (this.innerModel().allowCrossTenantReplication() == null) {
-            return true;
-        }
-        return this.innerModel().allowCrossTenantReplication();
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().allowCrossTenantReplication());
     }
 
     @Override
     public boolean isDefaultToOAuthAuthentication() {
-        if (this.innerModel().defaultToOAuthAuthentication() == null) {
-            return true;
-        }
-        return this.innerModel().defaultToOAuthAuthentication();
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().defaultToOAuthAuthentication());
     }
 
     @Override

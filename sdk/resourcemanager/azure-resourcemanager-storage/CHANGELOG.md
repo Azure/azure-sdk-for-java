@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `allowCrossTenantReplication` and `defaultToOAuthAuthentication` for `StorageAccount` in create and update.
 
 ## 2.32.0 (2023-10-27)
 
