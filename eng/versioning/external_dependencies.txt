@@ -383,6 +383,13 @@ cosmos_org.scalatest:scalatest-maven-plugin;2.0.2
 cosmos_net.alchim31.maven:scala-maven-plugin;4.8.1
 cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 
+## Cosmos Kafka connector under sdk\cosmos\azure-cosmos-kafka-connect\pom.xml
+# Cosmos Kafka connector runtime dependencies
+cosmos_org.apache.kafka:connect-api;3.6.0
+# Cosmos Kafka connector tests only
+# Maven Tools for Cosmos Kafka connector only
+cosmos_io.confluent:kafka-connect-maven-plugin;0.12.0
+
 # sdk\core\azure-core-serializer-avro-jackson\pom.xml
 # This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
 jacksonavro_org.apache.avro:avro-maven-plugin;1.8.2
