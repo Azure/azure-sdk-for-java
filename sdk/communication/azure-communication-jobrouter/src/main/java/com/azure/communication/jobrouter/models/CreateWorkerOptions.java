@@ -19,7 +19,7 @@ public final class CreateWorkerOptions {
     /**
      * The queue(s) that this worker can receive work from.
      */
-    private Map<String, RouterQueueAssignment> queueAssignments;
+    private List<String> queues;
 
     /**
      * The total capacity score this worker has to manage multiple concurrent
@@ -62,11 +62,11 @@ public final class CreateWorkerOptions {
     /**
      * Set the queueAssignments property: The queue(s) that this worker can receive work from.
      *
-     * @param queueAssignments the queueAssignments value to set.
+     * @param queues the queueAssignments value to set.
      * @return this
      */
-    public CreateWorkerOptions setQueueAssignments(Map<String, RouterQueueAssignment> queueAssignments) {
-        this.queueAssignments = queueAssignments;
+    public CreateWorkerOptions setQueues(List<String> queues) {
+        this.queues = queues;
         return this;
     }
 
@@ -128,8 +128,8 @@ public final class CreateWorkerOptions {
      * Returns queue assignments.
      * @return queueAssignments
      */
-    public Map<String, RouterQueueAssignment> getQueueAssignments() {
-        return this.queueAssignments;
+    public List<String> getQueues() {
+        return this.queues;
     }
 
     /**

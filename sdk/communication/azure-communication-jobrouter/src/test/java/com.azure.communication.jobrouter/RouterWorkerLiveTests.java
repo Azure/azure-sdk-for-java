@@ -7,7 +7,6 @@ import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.RouterChannel;
 import com.azure.communication.jobrouter.models.RouterQueue;
-import com.azure.communication.jobrouter.models.RouterQueueAssignment;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -64,9 +63,9 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
             }
         };
 
-        Map<String, RouterQueueAssignment> queueAssignments = new HashMap<String, RouterQueueAssignment>() {
+        List<String> queues = new ArrayList<String>() {
             {
-                put(jobQueue.getId(), new RouterQueueAssignment());
+                add(jobQueue.getId());
             }
         };
 
@@ -75,7 +74,7 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
             .setTags(tags)
             .setAvailableForOffers(false)
             .setChannels(channels)
-            .setQueueAssignments(queueAssignments);
+            .setQueues(queues);
 
         // Action
         RouterWorker result = jobRouterClient.createWorker(createWorkerOptions);

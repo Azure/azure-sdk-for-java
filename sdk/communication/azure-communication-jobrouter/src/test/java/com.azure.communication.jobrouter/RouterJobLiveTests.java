@@ -14,7 +14,6 @@ import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobOffer;
 import com.azure.communication.jobrouter.models.RouterJobStatus;
 import com.azure.communication.jobrouter.models.RouterQueue;
-import com.azure.communication.jobrouter.models.RouterQueueAssignment;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.ScheduleAndSuspendMode;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
@@ -76,9 +75,9 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             }
         };
 
-        Map<String, RouterQueueAssignment> queueAssignments = new HashMap<String, RouterQueueAssignment>() {
+        List<String> queues = new ArrayList<>() {
             {
-                put(jobQueue.getId(), new RouterQueueAssignment());
+                add(jobQueue.getId());
             }
         };
 
@@ -88,7 +87,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setTags(tags)
             .setAvailableForOffers(true)
             .setChannels(channels)
-            .setQueueAssignments(queueAssignments);
+            .setQueues(queues);
 
         jobRouterClient.createWorker(createWorkerOptions);
 
