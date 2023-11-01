@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpURLConnection,
+ * Builder to configure and build an instance of the generic-core {@link HttpClient} type using the JDK HttpURLConnection,
  * first introduced in JDK 1.1.
  */
 public class HttpUrlConnectionClientBuilder {

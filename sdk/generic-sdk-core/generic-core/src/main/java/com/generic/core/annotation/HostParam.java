@@ -19,11 +19,29 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p><strong>Example 1: Named parameters</strong></p>
  *
  * <!-- src_embed com.generic.core.annotation.HostParam.class1 -->
+ * <pre>
+ * &#64;Host&#40;&quot;&#123;accountName&#125;.&#123;suffix&#125;&quot;&#41;
+ * interface DatalakeService &#123;
+ *     &#64;Get&#40;&quot;jobs&#47;&#123;jobIdentity&#125;&quot;&#41;
+ *     Job getJob&#40;&#64;HostParam&#40;&quot;accountName&quot;&#41; String accountName,
+ *         &#64;HostParam&#40;&quot;suffix&quot;&#41; String suffix,
+ *         &#64;PathParam&#40;&quot;jobIdentity&quot;&#41; String jobIdentity&#41;;
+ * &#125;
+ * </pre>
  * <!-- end com.generic.core.annotation.HostParam.class1 -->
  *
  * <p><strong>Example 2: Unnamed parameter</strong></p>
  *
  * <!-- src_embed com.generic.core.annotation.HostParam.class2 -->
+ * <pre>
+ * String KEY_VAULT_ENDPOINT = &quot;&#123;vaultName&#125;&quot;;
+ *
+ * &#64;Host&#40;KEY_VAULT_ENDPOINT&#41;
+ * interface KeyVaultService &#123;
+ *     &#64;Get&#40;&quot;secrets&#47;&#123;secretName&#125;&quot;&#41;
+ *     Secret get&#40;&#64;HostParam&#40;&quot;vaultName&quot;&#41; String vaultName, &#64;PathParam&#40;&quot;secretName&quot;&#41; String secretName&#41;;
+ * &#125;
+ * </pre>
  * <!-- end com.generic.core.annotation.HostParam.class2 -->
  */
 @Retention(RUNTIME)

@@ -15,21 +15,58 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p><strong>Example 1:</strong></p>
  *
  * <!-- src_embed com.generic.core.annotation.QueryParam.class1 -->
+ * <pre>
+ * &#64;Get&#40;&quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&#123;resourceGroupName&#125;&#47;resources&quot;&#41;
+ * Mono&lt;ResponseBase&lt;ResponseHeaders, ResponseBody&gt;&gt; listByResourceGroup&#40;
+ *     &#64;PathParam&#40;&quot;resourceGroupName&quot;&#41; String resourceGroupName,
+ *     &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId,
+ *     &#64;QueryParam&#40;&quot;$filter&quot;&#41; String filter,
+ *     &#64;QueryParam&#40;&quot;$expand&quot;&#41; String expand,
+ *     &#64;QueryParam&#40;&quot;$top&quot;&#41; Integer top,
+ *     &#64;QueryParam&#40;&quot;api-version&quot;&#41; String apiVersion&#41;;
+ *
+ * &#47;&#47; The value of parameters filter, expand, top, apiVersion will be encoded and will be used to set the query
+ * &#47;&#47; parameters &#123;$filter&#125;, &#123;$expand&#125;, &#123;$top&#125;, &#123;api-version&#125; on the HTTP URL.
+ * </pre>
  * <!-- end com.generic.core.annotation.QueryParam.class1 -->
  *
  * <p><strong>Example 2:</strong> (A use case where PathParam.encoded=true will be used)</p>
  *
  * <!-- src_embed com.generic.core.annotation.QueryParam.class2 -->
+ * <pre>
+ * &#47;&#47; It is possible that a query parameter will need to be encoded:
+ * &#64;Get&#40;&quot;http:&#47;&#47;wq.com&#47;foo&#47;&#123;subpath&#125;&#47;value&quot;&#41;
+ * String getValue&#40;&#64;PathParam&#40;&quot;subpath&quot;&#41; String param,
+ *     &#64;QueryParam&#40;&quot;query&quot;&#41; String query&#41;;
+ *
+ * &#47;&#47; In this case, if consumer pass &quot;a=b&quot; as the value for 'query' then the resolved url looks like:
+ * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;subpath&#47;value?query=a%3Db&quot;
+ * </pre>
  * <!-- end com.generic.core.annotation.QueryParam.class2 -->
  *
  * <p>For such cases the encoded attribute can be used:</p>
  *
  * <!-- src_embed com.generic.core.annotation.QueryParam.class3 -->
+ * <pre>
+ * &#64;Get&#40;&quot;http:&#47;&#47;wq.com&#47;foo&#47;&#123;subpath&#125;&#47;values&quot;&#41;
+ * List&lt;String&gt; getValues&#40;&#64;PathParam&#40;&quot;subpath&quot;&#41; String param,
+ *     &#64;QueryParam&#40;value = &quot;query&quot;, encoded = true&#41; String query&#41;;
+ *
+ * &#47;&#47; In this case, if consumer pass &quot;a=b&quot; as the value for 'query' then the resolved url looks like:
+ * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;paramblah&#47;values?connectionString=a=b&quot;
+ * </pre>
  * <!-- end com.generic.core.annotation.QueryParam.class3 -->
  *
  * <p><strong>Example 3:</strong></p>
  *
  * <!-- src_embed com.generic.core.annotation.QueryParam.class4 -->
+ * <pre>
+ * &#64;Get&#40;&quot;http:&#47;&#47;wq.com&#47;foo&#47;multiple&#47;params&quot;&#41;
+ * String multipleParams&#40;&#64;QueryParam&#40;value = &quot;query&quot;, multipleQueryParams = true&#41; List&lt;String&gt; query&#41;;
+ *
+ * &#47;&#47; The value of parameter avoid would look like this:
+ * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;multiple&#47;params?avoid%3Dtest1&amp;avoid%3Dtest2&amp;avoid%3Dtest3&quot;
+ * </pre>
  * <!-- end com.generic.core.annotation.QueryParam.class4 -->
  */
 @Retention(RUNTIME)

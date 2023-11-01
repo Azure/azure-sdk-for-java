@@ -78,7 +78,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
             return ReflectionUtils.getConstructorInvoker(clazz, clazz.getDeclaredConstructor());
         } catch (NoSuchMethodException | IllegalAccessException e) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Can't find or access default constructor for " + clazz.getName()
-                + ", make sure corresponding package is open to azure-core", e);
+                + ", make sure corresponding package is open to generic-core", e);
         } catch (Exception e) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Failed to get default constructor for " + clazz.getName(), e);
         }

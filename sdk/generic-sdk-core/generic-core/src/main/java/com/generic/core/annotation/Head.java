@@ -18,11 +18,22 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p><strong>Example 1: Relative path segments</strong></p>
  *
  * <!-- src_embed com.generic.core.annotation.Head.class1 -->
+ * <pre>
+ * &#64;Head&#40;&quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.Compute&#47;&quot;
+ *     + &quot;virtualMachines&#47;&#123;vmName&#125;&quot;&#41;
+ * boolean checkNameAvailability&#40;&#64;PathParam&#40;&quot;resourceGroupName&quot;&#41; String rgName,
+ *     &#64;PathParam&#40;&quot;vmName&quot;&#41; String vmName,
+ *     &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId&#41;;
+ * </pre>
  * <!-- end com.generic.core.annotation.Head.class1 -->
  *
  * <p><strong>Example 2: Absolute path segment</strong></p>
  *
  * <!-- src_embed com.generic.core.annotation.Head.class2 -->
+ * <pre>
+ * &#64;Head&#40;&quot;&#123;storageAccountId&#125;&quot;&#41;
+ * boolean checkNameAvailability&#40;&#64;PathParam&#40;&quot;storageAccountId&quot;&#41; String storageAccountId&#41;;
+ * </pre>
  * <!-- end com.generic.core.annotation.Head.class2 -->
  */
 @Retention(RUNTIME)

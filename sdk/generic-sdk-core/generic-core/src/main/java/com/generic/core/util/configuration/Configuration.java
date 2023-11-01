@@ -95,7 +95,7 @@ public class Configuration implements Cloneable {
     private final boolean isEmpty;
 
     /**
-     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to
+     * Constructs a configuration containing the known properties constants. Use {@link ConfigurationBuilder} to
      * create instance of {@link Configuration}.
      *
      * @param configurationSource Configuration property source.

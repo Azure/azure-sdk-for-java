@@ -24,7 +24,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
-    private static final String INVALID_AZURE_PROXY_URL = "URL is invalid and is being ignored.";
+    private static final String INVALID_PROXY_URL = "URL is invalid and is being ignored.";
 
     /*
      * This indicates whether system proxy configurations (HTTPS_PROXY, HTTP_PROXY) are allowed to be used.
@@ -176,8 +176,8 @@ public class ProxyOptions {
      * <p>
      * Environment configurations are loaded in this order:
      * <ol>
-     *     <li>Azure HTTPS</li>
-     *     <li>Azure HTTP</li>
+     *     <li>HTTPS</li>
+     *     <li>HTTP</li>
      *     <li>Java HTTPS</li>
      *     <li>Java HTTP</li>
      * </ol>
@@ -250,7 +250,7 @@ public class ProxyOptions {
             }
         }
 
-        proxyOptions = attemptToLoadAzureSdkProxy(configuration, createUnresolved);
+        proxyOptions = attemptToLoadSdkProxy(configuration, createUnresolved);
         if (proxyOptions != null) {
             return proxyOptions;
         }
@@ -319,7 +319,7 @@ public class ProxyOptions {
         } catch (MalformedURLException ex) {
             LOGGER.atWarning()
                 .addKeyValue("url", proxyProperty)
-                .log(INVALID_AZURE_PROXY_URL);
+                .log(INVALID_PROXY_URL);
             return null;
         }
     }
@@ -354,7 +354,7 @@ public class ProxyOptions {
         return createOptions(host, port, nonProxyHostsString, username, password, createUnresolved);
     }
 
-    private static ProxyOptions attemptToLoadAzureSdkProxy(Configuration configuration, boolean createUnresolved) {
+    private static ProxyOptions attemptToLoadSdkProxy(Configuration configuration, boolean createUnresolved) {
         String host = configuration.get(HOST_PROPERTY);
 
         // No proxy configuration setup.

@@ -41,7 +41,7 @@ public final class ConfigurationBuilder {
      * <!-- src_embed com.azure.core.util.Configuration -->
      * <!-- end com.com.azure.core.util.Configuration -->
      *
-     * @param source Custom {@link ConfigurationSource} containing known Azure SDK configuration properties.
+     * @param source Custom {@link ConfigurationSource} containing known SDK configuration properties.
      */
     public ConfigurationBuilder(ConfigurationSource source) {
         this.mutableSource = new MutableConfigurationSource(Objects.requireNonNull(source, "'source' cannot be null"));
@@ -50,10 +50,10 @@ public final class ConfigurationBuilder {
 
     /**
      * Creates {@code ConfigurationBuilder} with configuration sources for explicit configuration, system properties and
-     * environment configuration sources. Use this constructor to customize known Azure SDK system properties and
+     * environment configuration sources. Use this constructor to customize known SDK system properties and
      * environment variables retrieval.
      *
-     * @param source Custom {@link ConfigurationSource} containing known Azure SDK configuration properties
+     * @param source Custom {@link ConfigurationSource} containing known SDK configuration properties
      * @param systemPropertiesConfigurationSource {@link ConfigurationSource} containing known Azure SDK system
      * properties.
      * @param environmentConfigurationSource {@link ConfigurationSource} containing known Azure SDK environment
@@ -90,7 +90,7 @@ public final class ConfigurationBuilder {
     }
 
     /**
-     * Sets path to root configuration properties where shared Azure SDK properties are defined. When local per-client
+     * Sets path to root configuration properties where shared SDK properties are defined. When local per-client
      * property is missing, {@link Configuration} falls back to shared properties.
      *
      * <!-- src_embed com.azure.core.util.Configuration -->
