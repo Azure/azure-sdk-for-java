@@ -3,13 +3,23 @@
 
 package com.generic.core.http;
 
+import com.generic.core.http.client.HttpClient;
+import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
+import com.generic.core.implementation.http.rest.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
+import com.generic.core.implementation.http.rest.ErrorOptions;
+import com.generic.core.implementation.http.rest.RestProxyImpl;
+import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.rest.SwaggerInterfaceParser;
 import com.generic.core.implementation.http.rest.SwaggerMethodParser;
-import com.generic.core.util.serializer.JsonSerializer;
+import com.generic.core.models.Context;
+import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.EnumSet;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
@@ -20,7 +30,7 @@ import java.lang.reflect.Method;
 public final class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;
     private final HttpPipeline httpPipeline;
-    private final com.generic.core.implementation.http.rest.RestProxy restProxy;
+    private final RestProxyImpl restProxyImpl;
 
     /**
      * Create a RestProxy.
@@ -30,10 +40,9 @@ public final class RestProxy implements InvocationHandler {
      * @param interfaceParser the parser that contains information about the interface describing REST API methods that
      * this RestProxy "implements".
      */
-    private RestProxy(HttpPipeline httpPipeline, JsonSerializer serializer, SwaggerInterfaceParser interfaceParser) {
+    private RestProxy(HttpPipeline httpPipeline, ObjectSerializer serializer, SwaggerInterfaceParser interfaceParser) {
         this.interfaceParser = interfaceParser;
-        this.restProxy =
-            new com.generic.core.implementation.http.rest.RestProxy(httpPipeline, serializer, interfaceParser);
+        this.restProxyImpl = new RestProxyImpl(httpPipeline, serializer, interfaceParser);
         this.httpPipeline = httpPipeline;
     }
 
@@ -49,20 +58,52 @@ public final class RestProxy implements InvocationHandler {
         return interfaceParser.getMethodParser(method);
     }
 
+    /**
+     * Send the provided request, applying any request policies provided to the {@link HttpClient} instance.
+     *
+     * @param request The HTTP request to send.
+     * @param context The context.
+     * @return An {@link HttpResponse}.
+     */
+    public HttpResponse send(HttpRequest request, Context context) {
+        return httpPipeline.send(request, context);
+    }
+
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
-        //        RestProxyUtils.validateResumeOperationIsNotPresent(method);
-
         // Note: request options need to be evaluated here, as it is a public class with package private methods.
         // Evaluating here allows the package private methods to be invoked here for downstream use.
-        //     final SwaggerMethodParser methodParser = getMethodParser(method);
-        //     HttpRequestOptions options = methodParser.setRequestOptions(args);
-        //     Context context = methodParser.setContext(args);
-        //
-        //     return syncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
-        //         options != null ? options.getRequestCallback() : null, methodParser, false, args);
-        // }
-        return null;
+        final SwaggerMethodParser methodParser = getMethodParser(method);
+        RequestOptions options = methodParser.setRequestOptions(args);
+
+        return restProxyImpl.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
+            options != null ? options.getRequestCallback() : null, methodParser, args);
+    }
+
+    /**
+     * Create a proxy implementation of the provided Swagger interface.
+     *
+     * @param swaggerInterface the Swagger interface to provide a proxy implementation for
+     * @param <A> the type of the Swagger interface
+     *
+     * @return a proxy implementation of the provided Swagger interface
+     */
+    public static <A> A create(Class<A> swaggerInterface) {
+        return create(swaggerInterface, RestProxyUtils.createDefaultPipeline(),
+            RestProxyUtils.createDefaultSerializer());
+    }
+
+    /**
+     * Create a proxy implementation of the provided Swagger interface.
+     *
+     * @param swaggerInterface the Swagger interface to provide a proxy implementation for
+     * @param httpPipeline the HttpPipelinePolicy and HttpClient pipeline that will be used to send Http requests
+     * @param <A> the type of the Swagger interface
+     *
+     * @return a proxy implementation of the provided Swagger interface
+     */
+    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
+        return create(swaggerInterface, httpPipeline, RestProxyUtils.createDefaultSerializer());
     }
 
     /**
@@ -76,10 +117,10 @@ public final class RestProxy implements InvocationHandler {
      * @return a proxy implementation of the provided Swagger interface
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, JsonSerializer serializer) {
+    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, ObjectSerializer serializer) {
         final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
-        // final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
-        final RestProxy restProxy = null;
-        return null;
+        final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
+        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface},
+            restProxy);
     }
 }

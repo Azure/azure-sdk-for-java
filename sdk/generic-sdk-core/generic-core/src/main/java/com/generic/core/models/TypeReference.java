@@ -3,6 +3,7 @@
 
 package com.generic.core.models;
 
+import com.generic.core.implementation.TypeUtil;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.lang.reflect.ParameterizedType;
@@ -40,13 +41,14 @@ public abstract class TypeReference<T> {
     @SuppressWarnings("unchecked")
     public TypeReference() {
         Type superClass = this.getClass().getGenericSuperclass();
+
         if (superClass instanceof Class) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException(MISSING_TYPE));
         } else {
             this.javaType = ((ParameterizedType) superClass).getActualTypeArguments()[0];
         }
-        // this.clazz = (Class<T>) TypeUtil.getRawClass(javaType);
-        this.clazz = null;
+
+        this.clazz = (Class<T>) TypeUtil.getRawClass(javaType);
     }
 
     private TypeReference(Class<T> clazz) {
@@ -72,6 +74,7 @@ public abstract class TypeReference<T> {
      *
      * @param clazz {@link Class} that contains generic information used to create the {@link TypeReference}.
      * @param <T> The generic type.
+     *
      * @return Either the cached or new instance of {@link TypeReference}.
      */
     @SuppressWarnings("unchecked")
@@ -80,14 +83,15 @@ public abstract class TypeReference<T> {
          * When computing the TypeReference if the key is absent ignore the parameter from the compute function. The
          * compute function wildcards to T type which causes the type system to breakdown.
          */
-        return (TypeReference<T>) CACHE.computeIfAbsent(clazz, c -> new TypeReference<T>(clazz) { });
+        return (TypeReference<T>) CACHE.computeIfAbsent(clazz, c -> new TypeReference<T>(clazz) {
+        });
     }
 
     /**
      * Returns the {@link Class} representing instance of the {@link TypeReference} created.
      *
-     * @return The {@link Class} representing instance of the {@link TypeReference} created
-     * using the {@link TypeReference#createInstance(Class)}, otherwise returns {@code null}.
+     * @return The {@link Class} representing instance of the {@link TypeReference} created using the
+     * {@link TypeReference#createInstance(Class)}, otherwise returns {@code null}.
      */
     public Class<T> getJavaClass() {
         return this.clazz;

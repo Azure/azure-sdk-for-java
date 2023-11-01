@@ -67,6 +67,7 @@ class SocketClient {
      * @param socket An instance of the SocketClient
      * @return an instance of HttpUrlConnectionResponse
      */
+    @SuppressWarnings("deprecation")
     private static HttpUrlConnectionResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
         httpRequest.setHeader(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
         if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HttpHeaderName.CONNECTION))) {

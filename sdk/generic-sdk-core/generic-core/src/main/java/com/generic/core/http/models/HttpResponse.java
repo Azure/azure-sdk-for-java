@@ -3,8 +3,8 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.models.Headers;
 import com.generic.core.models.BinaryData;
+import com.generic.core.models.Headers;
 
 import java.io.Closeable;
 
@@ -13,6 +13,8 @@ import java.io.Closeable;
  */
 public abstract class HttpResponse implements Closeable {
     private final HttpRequest request;
+    private BinaryData binaryData = null;
+    private final byte[] bodyBytes;
 
     /**
      * Creates an instance of {@link HttpResponse}.
@@ -21,6 +23,18 @@ public abstract class HttpResponse implements Closeable {
      */
     protected HttpResponse(HttpRequest request) {
         this.request = request;
+        this.bodyBytes = null;
+    }
+
+    /**
+     * Creates an instance of {@link HttpResponse}.
+     *
+     * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
+     * @param bodyBytes The response body as a byte array.
+     */
+    protected HttpResponse(HttpRequest request, byte[] bodyBytes) {
+        this.request = request;
+        this.bodyBytes = bodyBytes;
     }
 
     /**
@@ -55,8 +69,12 @@ public abstract class HttpResponse implements Closeable {
      * @return The {@link BinaryData} response body.
      */
     public BinaryData getBody() {
-        // return BinaryData.fromBytes("".getBytes());
-        return null;
+        // We shouldn't create multiple binary data instances for a single stream.
+        if (binaryData == null && bodyBytes != null) {
+            binaryData = BinaryData.fromBytes(bodyBytes);
+        }
+
+        return binaryData;
     }
 
     /**

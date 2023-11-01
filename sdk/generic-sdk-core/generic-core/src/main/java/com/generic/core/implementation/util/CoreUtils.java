@@ -26,6 +26,7 @@ public final class CoreUtils {
      * Checks if the array is null or empty.
      *
      * @param array Array being checked for nullness or emptiness.
+     *
      * @return True if the array is null or empty, false otherwise.
      */
     public static boolean isNullOrEmpty(Object[] array) {
@@ -36,6 +37,7 @@ public final class CoreUtils {
      * Checks if the collection is null or empty.
      *
      * @param collection Collection being checked for nullness or emptiness.
+     *
      * @return True if the collection is null or empty, false otherwise.
      */
     public static boolean isNullOrEmpty(Collection<?> collection) {
@@ -46,6 +48,7 @@ public final class CoreUtils {
      * Checks if the map is null or empty.
      *
      * @param map Map being checked for nullness or emptiness.
+     *
      * @return True if the map is null or empty, false otherwise.
      */
     public static boolean isNullOrEmpty(Map<?, ?> map) {
@@ -56,6 +59,7 @@ public final class CoreUtils {
      * Checks if the character sequence is null or empty.
      *
      * @param charSequence Character sequence being checked for nullness or emptiness.
+     *
      * @return True if the character sequence is null or empty, false otherwise.
      */
     public static boolean isNullOrEmpty(CharSequence charSequence) {
@@ -68,7 +72,9 @@ public final class CoreUtils {
      *
      * @param delimiter Delimiter between the values.
      * @param values The values to join.
+     *
      * @return The {@code values} joined delimited by the {@code delimiter}.
+     *
      * @throws NullPointerException If {@code delimiter} or {@code values} is null.
      */
     public static String stringJoin(String delimiter, List<String> values) {
@@ -76,6 +82,7 @@ public final class CoreUtils {
         Objects.requireNonNull(values, "'values' cannot be null.");
 
         int count = values.size();
+
         switch (count) {
             case 0:
                 return "";
@@ -115,9 +122,6 @@ public final class CoreUtils {
     }
 
     public static <T> Response<T> createResponse(HttpRequest request, int statusCode, Headers headers, T value) {
-
         return new SimpleResponse<>(request, statusCode, headers, value);
-
     }
-
 }

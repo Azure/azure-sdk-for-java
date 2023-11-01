@@ -19,7 +19,9 @@ public final class BinaryDataHelper {
          * Creates a new {@link BinaryData} with the given content.
          *
          * @param content The {@link BinaryDataContent}.
+         *
          * @return A new {@link BinaryData}.
+         *
          * @throws NullPointerException If {@code content} is null.
          */
         BinaryData createBinaryData(BinaryDataContent content);
@@ -28,6 +30,7 @@ public final class BinaryDataHelper {
          * Gets the {@link BinaryDataContent} that backs the {@link BinaryData}.
          *
          * @param binaryData The {@link BinaryData} having its content retrieved.
+         *
          * @return The {@link BinaryDataContent} that backs the {@link BinaryData}.
          */
         BinaryDataContent getContent(BinaryData binaryData);
@@ -46,11 +49,14 @@ public final class BinaryDataHelper {
      * Creates a new {@link BinaryData} with the given content.
      *
      * @param content The {@link BinaryDataContent}.
+     *
      * @return A new {@link BinaryData}.
+     *
      * @throws NullPointerException If {@code content} is null.
      */
     public static BinaryData createBinaryData(BinaryDataContent content) {
         ensureAccessorSet();
+
         return accessor.createBinaryData(content);
     }
 
@@ -58,21 +64,24 @@ public final class BinaryDataHelper {
      * Gets the {@link BinaryDataContent} that backs the {@link BinaryData}.
      *
      * @param binaryData The {@link BinaryData} having its content retrieved.
+     *
      * @return The {@link BinaryDataContent} that backs the {@link BinaryData}.
      */
     public static BinaryDataContent getContent(BinaryData binaryData) {
         ensureAccessorSet();
+
         return accessor.getContent(binaryData);
     }
 
     /**
      * The success of setting up accessor depends on the order in which classes are loaded.
-     * This method ensures that if accessor hasn't been set we force-load BinaryData class
-     * which in turns populates the accessor.
+     *
+     * This method ensures that if accessor hasn't been set we force-load BinaryData class which in turns populates the
+     * accessor.
      */
     private static void ensureAccessorSet() {
-//        if (accessor == null) {
-//            BinaryData.fromString("");
-//        }
+        if (accessor == null) {
+            BinaryData.fromString("");
+        }
     }
 }

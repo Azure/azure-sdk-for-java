@@ -191,23 +191,25 @@ public final class TypeUtil {
     }
 
     /**
-     * Returns the body type expected in the rest response.
+     * Returns the body type expected in the REST response.
      *
      * @param restResponseReturnType The RestResponse subtype containing the type arguments we are inspecting.
+     *
      * @return The type of the body.
      */
     public static Type getRestResponseBodyType(Type restResponseReturnType) {
-        // if this type has type arguments, then we look at the last one to determine if it expects a body
+        // If this type has type arguments, then we look at the last one to determine if it expects a body
         final Type[] restResponseTypeArguments = TypeUtil.getTypeArguments(restResponseReturnType);
+
         if (restResponseTypeArguments != null && restResponseTypeArguments.length > 0) {
             return restResponseTypeArguments[restResponseTypeArguments.length - 1];
         } else {
-            // no generic type on this RestResponse sub-type, so we go up to parent
+            // No generic type on this RestResponse subtype, so we go up to parent
             return getRestResponseBodyType(TypeUtil.getSuperType(restResponseReturnType));
         }
     }
 
-    // Private Ctr
+    // Private constructor
     private TypeUtil() {
     }
 }

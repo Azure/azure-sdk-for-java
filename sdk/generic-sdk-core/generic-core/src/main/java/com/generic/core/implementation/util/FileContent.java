@@ -3,7 +3,9 @@
 
 package com.generic.core.implementation.util;
 
+import com.generic.core.models.TypeReference;
 import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -118,6 +120,11 @@ public class FileContent extends BinaryDataContent {
     }
 
     @Override
+    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
+        return serializer.deserialize(toStream(), typeReference);
+    }
+
+    @Override
     public InputStream toStream() {
         try {
             return new SliceInputStream(new BufferedInputStream(getFileInputStream(), chunkSize), position, length);
@@ -128,6 +135,15 @@ public class FileContent extends BinaryDataContent {
 
     protected FileInputStream getFileInputStream() throws FileNotFoundException {
         return new FileInputStream(file.toFile());
+    }
+
+    @Override
+    public ByteBuffer toByteBuffer() {
+        if (length > Integer.MAX_VALUE) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+        }
+
+        return toByteBufferInternal();
     }
 
     protected ByteBuffer toByteBufferInternal() {
@@ -162,6 +178,16 @@ public class FileContent extends BinaryDataContent {
      */
     public int getChunkSize() {
         return chunkSize;
+    }
+
+    @Override
+    public boolean isReplayable() {
+        return true;
+    }
+
+    @Override
+    public BinaryDataContent toReplayableContent() {
+        return this;
     }
 
     @Override

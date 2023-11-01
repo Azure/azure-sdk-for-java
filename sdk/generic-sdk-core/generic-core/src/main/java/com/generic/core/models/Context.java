@@ -28,7 +28,6 @@ public class Context {
     private static final Context[] EMPTY_CHAIN = new Context[0];
 
     // All fields must be immutable.
-    //
     /**
      * Signifies that no data needs to be passed to the pipeline.
      */
@@ -65,11 +64,12 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.context#object-object -->
-     * <!-- end com.azure.core.util.context#object-object -->
+     * <!-- src_embed com.generic.core.util.context#object-object -->
+     * <!-- end com.generic.core.util.context#object-object -->
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
+     *
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context(Object key, Object value) {
@@ -100,12 +100,14 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.context.addData#object-object -->
-     * <!-- end com.azure.core.util.context.addData#object-object -->
+     * <!-- src_embed com.generic.core.util.context.addData#object-object -->
+     * <!-- end com.generic.core.util.context.addData#object-object -->
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
+     *
      * @return the new {@link Context} object containing the specified pair added to the set of pairs.
+     *
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context addData(Object key, Object value) {
@@ -121,11 +123,13 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.context.of#map -->
-     * <!-- end com.azure.core.util.context.of#map -->
+     * <!-- src_embed com.generic.core.util.context.of#map -->
+     * <!-- end com.generic.core.util.context.of#map -->
      *
      * @param keyValues The input key value pairs that will be added to this context.
+     *
      * @return Context object containing all the key-value pairs in the input map.
+     *
      * @throws IllegalArgumentException If {@code keyValues} is {@code null} or empty
      */
     public static Context of(Map<Object, Object> keyValues) {
@@ -134,6 +138,7 @@ public class Context {
         }
 
         Context context = null;
+
         for (Map.Entry<Object, Object> entry : keyValues.entrySet()) {
             if (context == null) {
                 context = new Context(entry.getKey(), entry.getValue());
@@ -141,6 +146,7 @@ public class Context {
                 context = context.addData(entry.getKey(), entry.getValue());
             }
         }
+
         return context;
     }
 
@@ -150,11 +156,13 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.context.getData#object -->
-     * <!-- end com.azure.core.util.context.getData#object -->
+     * <!-- src_embed com.generic.core.util.context.getData#object -->
+     * <!-- end com.generic.core.util.context.getData#object -->
      *
      * @param key The key to search for.
+     *
      * @return The value of the specified key if it exists.
+     *
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Optional<Object> getData(Object key) {
@@ -183,8 +191,8 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.Context.getValues -->
-     * <!-- end com.azure.core.util.Context.getValues -->
+     * <!-- src_embed com.generic.core.util.Context.getValues -->
+     * <!-- end com.generic.core.util.Context.getValues -->
      *
      * @return A map containing all values of the context linked-list.
      */
@@ -195,6 +203,7 @@ public class Context {
 
         if (contextCount == 1) {
             this.valuesMap = Collections.singletonMap(key, value);
+
             return this.valuesMap;
         }
 
@@ -213,13 +222,14 @@ public class Context {
         }
 
         this.valuesMap = Collections.unmodifiableMap(map);
+
         return this.valuesMap;
     }
 
     /**
      * Gets the {@link Context Contexts} in the chain of Contexts that this Context is the tail.
      *
-     * @return The Contexts, in oldest to newest order, in the chain of Contexts that this Context is the tail.
+     * @return The Contexts, in oldest-to-newest order, in the chain of Contexts that this Context is the tail.
      */
     Context[] getContextChain() {
         Context[] chain = new Context[contextCount];
@@ -237,5 +247,42 @@ public class Context {
         }
 
         return chain;
+    }
+
+    /**
+     * Merges two {@link Context Contexts} into a new {@link Context}.
+     *
+     * @param into Context being merged into.
+     * @param from Context being merged.
+     *
+     * @return A new Context that is the merged Contexts.
+     *
+     * @throws NullPointerException If either {@code into} or {@code from} is null.
+     */
+    public static Context mergeContexts(Context into, Context from) {
+        Objects.requireNonNull(into, "'into' cannot be null.");
+        Objects.requireNonNull(from, "'from' cannot be null.");
+
+        // If the 'into' Context is the NONE Context just return the 'from' Context.
+        // This is safe as Context is immutable and prevents needing to create any new Contexts and temporary arrays.
+        if (into == Context.NONE) {
+            return from;
+        }
+
+        // Same goes the other way, where if the 'from' Context is the NONE Context just return the 'into' Context.
+        if (from == Context.NONE) {
+            return into;
+        }
+
+        Context[] contextChain = from.getContextChain();
+
+        Context returnContext = into;
+        for (Context toAdd : contextChain) {
+            if (toAdd != null) {
+                returnContext = returnContext.addData(toAdd.getKey(), toAdd.getValue());
+            }
+        }
+
+        return returnContext;
     }
 }

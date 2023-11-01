@@ -14,32 +14,38 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A {@link BinaryDataContent} implementation which is backed by a {@code String}.
+ * A {@link BinaryDataContent} implementation which is backed by a serializable object.
  */
-public final class StringContent extends BinaryDataContent {
-    private final String content;
+public final class SerializableContent extends BinaryDataContent {
+
+    private final Object content;
+    private final ObjectSerializer serializer;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<StringContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(StringContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<SerializableContent, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(SerializableContent.class, byte[].class, "bytes");
 
     /**
-     * Creates a new instance of {@link StringContent}.
-     * @param content The string content.
-     * @throws NullPointerException if {@code content} is null.
+     * Creates a new instance of {@link SerializableContent}.
+     *
+     * @param content The serializable object that forms the content of this instance.
+     * @param serializer The serializer that serializes the {@code content}.
+     *
+     * @throws NullPointerException if {@code serializer} is null.
      */
-    public StringContent(String content) {
-        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+    public SerializableContent(Object content, ObjectSerializer serializer) {
+        this.content = content;
+        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
     }
 
     @Override
     public Long getLength() {
-        return (long) toBytes().length;
+        return this.content == null ? null : (long) toBytes().length;
     }
 
     @Override
     public String toString() {
-        return this.content;
+        return new String(toBytes(), StandardCharsets.UTF_8);
     }
 
     @Override
@@ -54,7 +60,7 @@ public final class StringContent extends BinaryDataContent {
 
     @Override
     public InputStream toStream() {
-        return new ByteArrayInputStream(toBytes());
+        return new ByteArrayInputStream(getBytes());
     }
 
     @Override
@@ -74,10 +80,10 @@ public final class StringContent extends BinaryDataContent {
 
     @Override
     public BinaryDataContentType getContentType() {
-        return BinaryDataContentType.TEXT;
+        return BinaryDataContentType.OBJECT;
     }
 
     private byte[] getBytes() {
-        return this.content.getBytes(StandardCharsets.UTF_8);
+        return serializer.serializeToBytes(content);
     }
 }

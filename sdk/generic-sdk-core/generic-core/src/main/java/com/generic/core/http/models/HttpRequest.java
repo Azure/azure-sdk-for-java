@@ -3,11 +3,12 @@
 
 package com.generic.core.http.models;
 
+import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
-import com.generic.core.models.BinaryData;
 import com.generic.core.util.logging.ClientLogger;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -26,16 +27,40 @@ public class HttpRequest {
     /**
      * Create a new HttpRequest instance.
      *
-     * @param httpMethod the HTTP request method
-     * @param url the target address to send the request to
-     * @param headers the HTTP headers to use with this request
-     * @param body the request content
+     * @param httpMethod The HTTP request method.
+     * @param url The target address to send the request to.
      */
-    public HttpRequest(HttpMethod httpMethod, URL url, Headers headers, BinaryData body) {
+    public HttpRequest(HttpMethod httpMethod, URL url) {
+        this(httpMethod, url, new Headers(), null);
+    }
+
+    /**
+     * Create a new HttpRequest instance.
+     *
+     * @param httpMethod the HTTP request method.
+     * @param url the target address to send the request to.
+     *
+     * @throws IllegalArgumentException If {@code url} is null or it cannot be parsed into a valid URL.
+     */
+    public HttpRequest(HttpMethod httpMethod, String url) {
+        this.httpMethod = httpMethod;
+
+        setUrl(url);
+
+        this.headers = new Headers();
+    }
+
+    /**
+     * Create a new HttpRequest instance.
+     *
+     * @param httpMethod The HTTP request method.
+     * @param url The target address to send the request to.
+     * @param headers The HTTP headers to use with this request.
+     */
+    public HttpRequest(HttpMethod httpMethod, URL url, Headers headers) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
-        setBody(body);
     }
 
     /**
@@ -43,19 +68,38 @@ public class HttpRequest {
      *
      * @param httpMethod the HTTP request method
      * @param url the target address to send the request to
-     * @throws IllegalArgumentException if {@code url} is null or it cannot be parsed into a valid URL.
+     *
+     * @throws IllegalArgumentException If {@code url} is null or it cannot be parsed into a valid URL.
      */
     public HttpRequest(HttpMethod httpMethod, String url, BinaryData body) {
         this.httpMethod = httpMethod;
+
         setUrl(url);
         setBody(body);
+
         this.headers = new Headers();
+    }
+
+    /**
+     * Create a new HttpRequest instance.
+     *
+     * @param httpMethod The HTTP request method.
+     * @param url The target address to send the request to.
+     * @param headers The HTTP headers to use with this request.
+     * @param body The request content.
+     */
+    public HttpRequest(HttpMethod httpMethod, URL url, Headers headers, BinaryData body) {
+        this.httpMethod = httpMethod;
+        this.url = url;
+        this.headers = headers;
+
+        setBody(body);
     }
 
     /**
      * Get the request method.
      *
-     * @return the request method
+     * @return The request method.
      */
     public HttpMethod getHttpMethod() {
         return httpMethod;
@@ -64,18 +108,20 @@ public class HttpRequest {
     /**
      * Set the request method.
      *
-     * @param httpMethod the request method
-     * @return this HttpRequest
+     * @param httpMethod The request method.
+     *
+     * @return This HttpRequest.
      */
     public HttpRequest setHttpMethod(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;
+
         return this;
     }
 
     /**
      * Get the target address.
      *
-     * @return the target address
+     * @return The target address.
      */
     public URL getUrl() {
         return url;
@@ -84,28 +130,40 @@ public class HttpRequest {
     /**
      * Set the target address to send the request to.
      *
-     * @param url target address as {@link URL}
-     * @return this HttpRequest
+     * @param url target address as {@link URL}.
+     *
+     * @return This HttpRequest.
      */
     public HttpRequest setUrl(URL url) {
         this.url = url;
+
         return this;
     }
 
     /**
      * Set the target address to send the request to.
      *
-     * @param url target address as {@link URL}
-     * @return this HttpRequest
+     * @param url Target address as {@link URL}.
+     *
+     * @return This HttpRequest.
      */
+    @SuppressWarnings("deprecation")
     public HttpRequest setUrl(String url) {
+        try {
+            if (url != null) {
+                this.url = new URL(url);
+            }
+        } catch (MalformedURLException ex) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
+        }
+
         return this;
     }
 
     /**
      * Get the request headers.
      *
-     * @return headers to be sent
+     * @return The Headers to be sent.
      */
     public Headers getHeaders() {
         return headers;
@@ -114,11 +172,13 @@ public class HttpRequest {
     /**
      * Set the request headers.
      *
-     * @param headers the set of headers
-     * @return this HttpRequest
+     * @param headers The set of headers.
+     *
+     * @return This HttpRequest.
      */
     public HttpRequest setHeaders(Headers headers) {
         this.headers = headers;
+
         return this;
     }
 
@@ -126,19 +186,21 @@ public class HttpRequest {
      * Set a request header, replacing any existing value. A null for {@code value} will remove the header if one with
      * matching name exists.
      *
-     * @param headerName the header name
-     * @param value the header value
-     * @return this HttpRequest
+     * @param headerName The header name.
+     * @param value The header value.
+     *
+     * @return This HttpRequest.
      */
     public HttpRequest setHeader(HttpHeaderName headerName, String value) {
         headers.set(headerName, value);
+
         return this;
     }
 
     /**
      * Get the request content.
      *
-     * @return the content to be sent
+     * @return The content to be sent.
      */
     public BinaryData getBody() {
         return body;
@@ -149,12 +211,12 @@ public class HttpRequest {
      * <p>
      * The Content-Length header will be set based on the given content's length.
      *
-     * @param content the request content
-     * @return this HttpRequest
+     * @param content The request content.
+     *
+     * @return This HttpRequest.
      */
     public HttpRequest setBody(String content) {
-        // return setBody(BinaryData.fromString(content));
-        return null;
+        return setBody(BinaryData.fromString(content));
     }
 
     /**
@@ -162,29 +224,33 @@ public class HttpRequest {
      * <p>
      * The Content-Length header will be set based on the given content's length.
      *
-     * @param content the request content
-     * @return this HttpRequest
+     * @param content The request content.
+     *
+     * @return This HttpRequest.
      */
     public HttpRequest setBody(byte[] content) {
-        // return setBody(BinaryData.fromBytes(content));
-        return null;
+        return setBody(BinaryData.fromBytes(content));
     }
 
     /**
      * Set request content.
      * <p>
-     * Content-Length header is updated. Otherwise,
-     * the caller must set the Content-Length header to indicate the length of the content, or use Transfer-Encoding:
-     * chunked.
+     * If provided content has known length, i.e. {@link BinaryData#getLength()} returns non-null then Content-Length
+     * header is updated. Otherwise, if provided content has unknown length, i.e. {@link BinaryData#getLength()} returns
+     * null then the caller must set the Content-Length header to indicate the length of the content, or use
+     * Transfer-Encoding: chunked.
      *
-     * @param content the request content
-     * @return this HttpRequest
+     * @param content The request content.
+     *
+     * @return This HttpRequest.
      */
     public HttpRequest setBody(BinaryData content) {
         this.body = content;
-        // if (content != null && content.getLength() != null) {
-        //     setContentLength(content.getLength());
-        // }
+
+        if (content != null && content.getLength() != null) {
+            setContentLength(content.getLength());
+        }
+
         return this;
     }
 
@@ -196,13 +262,14 @@ public class HttpRequest {
      * Creates a copy of the request.
      * <p>
      * The main purpose of this is so that this HttpRequest can be changed and the resulting HttpRequest can be a
-     * backup. This means that the cloned HttpHeaders and body must not be able to change from side effects of this
+     * backup. This means that the cloned Headers and body must not be able to change from side effects of this
      * HttpRequest.
      *
-     * @return a new HTTP request instance with cloned instances of all mutable properties.
+     * @return A new HTTP request instance with cloned instances of all mutable properties.
      */
     public HttpRequest copy() {
         final Headers bufferedHeaders = new Headers(headers);
+
         return new HttpRequest(httpMethod, url, bufferedHeaders, body);
     }
 }

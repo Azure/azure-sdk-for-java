@@ -14,32 +14,34 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A {@link BinaryDataContent} implementation which is backed by a {@code String}.
+ * A {@link BinaryDataContent} implementation which is backed by a {@link ByteBuffer}.
  */
-public final class StringContent extends BinaryDataContent {
-    private final String content;
+public final class ByteBufferContent extends BinaryDataContent {
+    private final ByteBuffer content;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<StringContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(StringContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<ByteBufferContent, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(ByteBufferContent.class, byte[].class, "bytes");
 
     /**
-     * Creates a new instance of {@link StringContent}.
-     * @param content The string content.
-     * @throws NullPointerException if {@code content} is null.
+     * Creates a new instance of {@link com.azure.core.implementation.util.BinaryDataContent}.
+     *
+     * @param content The {@link ByteBuffer} content.
+     *
+     * @throws NullPointerException If {@code content} is null.
      */
-    public StringContent(String content) {
+    public ByteBufferContent(ByteBuffer content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
 
     @Override
     public Long getLength() {
-        return (long) toBytes().length;
+        return (long) content.remaining();
     }
 
     @Override
     public String toString() {
-        return this.content;
+        return new String(toBytes(), StandardCharsets.UTF_8);
     }
 
     @Override
@@ -59,7 +61,7 @@ public final class StringContent extends BinaryDataContent {
 
     @Override
     public ByteBuffer toByteBuffer() {
-        return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
+        return content.asReadOnlyBuffer();
     }
 
     @Override
@@ -74,10 +76,16 @@ public final class StringContent extends BinaryDataContent {
 
     @Override
     public BinaryDataContentType getContentType() {
-        return BinaryDataContentType.TEXT;
+        return BinaryDataContentType.BINARY;
     }
 
     private byte[] getBytes() {
-        return this.content.getBytes(StandardCharsets.UTF_8);
+        byte[] bytes = new byte[content.remaining()];
+
+        content.mark();
+        content.get(bytes);
+        content.flip();
+
+        return bytes;
     }
 }

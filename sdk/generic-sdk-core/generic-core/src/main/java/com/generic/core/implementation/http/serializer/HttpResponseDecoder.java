@@ -4,7 +4,8 @@
 package com.generic.core.implementation.http.serializer;
 
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.util.serializer.JsonSerializer;
+import com.generic.core.models.Headers;
+import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.Closeable;
 
@@ -13,14 +14,14 @@ import java.io.Closeable;
  */
 public final class HttpResponseDecoder {
     // The adapter for deserialization
-    private final JsonSerializer serializer;
+    private final ObjectSerializer serializer;
 
     /**
      * Creates HttpResponseDecoder.
      *
      * @param serializer the serializer
      */
-    public HttpResponseDecoder(JsonSerializer serializer) {
+    public HttpResponseDecoder(ObjectSerializer serializer) {
         this.serializer = serializer;
     }
 
@@ -43,7 +44,7 @@ public final class HttpResponseDecoder {
      */
     public static class HttpDecodedResponse implements Closeable {
         private final HttpResponse response;
-        private final JsonSerializer serializer;
+        private final ObjectSerializer serializer;
         private final HttpResponseDecodeData decodeData;
         private Object bodyCached;
         private Object headersCached;
@@ -55,8 +56,8 @@ public final class HttpResponseDecoder {
          * @param serializer the decoder
          * @param decodeData the necessary data required to decode a Http response
          */
-        HttpDecodedResponse(final HttpResponse response, JsonSerializer serializer,
-            HttpResponseDecodeData decodeData) {
+        HttpDecodedResponse(final HttpResponse response, ObjectSerializer serializer,
+                            HttpResponseDecodeData decodeData) {
             this.response = response;
             this.serializer = serializer;
             this.decodeData = decodeData;
@@ -76,19 +77,11 @@ public final class HttpResponseDecoder {
          * @return The decoded body.
          */
         public Object getDecodedBody(byte[] body) {
+            if (this.bodyCached == null) {
+                this.bodyCached = HttpResponseBodyDecoder.decodeByteArray(body, response, serializer, decodeData);
+            }
 
             return this.bodyCached;
-        }
-
-        /**
-         * Gets the decoded {@link} object.
-         * <p>
-         * Null is returned if the headers aren't able to be decoded or if there is no decoded headers type.
-         *
-         * @return The decoded headers object, or null if they aren't able to be decoded.
-         */
-        public Object getDecodedHeaders() {
-            return null;
         }
 
         @Override

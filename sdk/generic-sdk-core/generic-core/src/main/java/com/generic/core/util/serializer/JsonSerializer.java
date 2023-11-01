@@ -11,7 +11,7 @@ import java.io.OutputStream;
 /**
  * Generic interface covering basic JSON serialization and deserialization methods.
  */
-public interface JsonSerializer {
+public interface JsonSerializer extends ObjectSerializer {
     /**
      * Reads a JSON byte array into its object representation.
      *
@@ -20,8 +20,9 @@ public interface JsonSerializer {
      * @param <T> Type of the object.
      * @return The object represented by the deserialized JSON byte array.
      */
+    @Override
     default <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
-        return deserializeFromBytes(data, typeReference);
+        return ObjectSerializer.super.deserializeFromBytes(data, typeReference);
     }
 
     /**
@@ -32,6 +33,7 @@ public interface JsonSerializer {
      * @param <T> Type of the object.
      * @return The object represented by the deserialized JSON stream.
      */
+    @Override
     <T> T deserialize(InputStream stream, TypeReference<T> typeReference);
 
     /**
@@ -40,8 +42,9 @@ public interface JsonSerializer {
      * @param value The object.
      * @return The JSON binary representation of the serialized object.
      */
+    @Override
     default byte[] serializeToBytes(Object value) {
-        return serializeToBytes(value);
+        return ObjectSerializer.super.serializeToBytes(value);
     }
 
     /**
@@ -50,5 +53,6 @@ public interface JsonSerializer {
      * @param stream {@link OutputStream} where the object's JSON representation will be written.
      * @param value The object.
      */
+    @Override
     void serialize(OutputStream stream, Object value);
 }
