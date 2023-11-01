@@ -579,7 +579,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl allowCrossTenantReplication () {
+    public StorageAccountImpl allowCrossTenantReplication() {
         if (isInCreateMode()) {
             createParameters.withAllowCrossTenantReplication(true);
         } else {
