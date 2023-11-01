@@ -5,6 +5,8 @@
 package com.azure.communication.identity.implementation;
 
 import com.azure.communication.identity.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.identity.implementation.models.CommunicationIdentitiesCreateHeaders;
+import com.azure.communication.identity.implementation.models.CommunicationIdentitiesRevokeAccessTokensHeaders;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
@@ -24,9 +26,13 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CommunicationIdentities. */
@@ -59,21 +65,25 @@ public final class CommunicationIdentitiesImpl {
         @Post("/identities")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CommunicationIdentityAccessTokenResult>> create(
+        Mono<ResponseBase<CommunicationIdentitiesCreateHeaders, CommunicationIdentityAccessTokenResult>> create(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CommunicationIdentityCreateRequest body,
                 @HeaderParam("Accept") String accept,
+                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
                 Context context);
 
         @Post("/identities")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<CommunicationIdentityAccessTokenResult> createSync(
+        ResponseBase<CommunicationIdentitiesCreateHeaders, CommunicationIdentityAccessTokenResult> createSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CommunicationIdentityCreateRequest body,
                 @HeaderParam("Accept") String accept,
+                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
                 Context context);
 
         @Delete("/identities/{id}")
@@ -99,21 +109,25 @@ public final class CommunicationIdentitiesImpl {
         @Post("/identities/{id}/:revokeAccessTokens")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> revokeAccessTokens(
+        Mono<ResponseBase<CommunicationIdentitiesRevokeAccessTokensHeaders, Void>> revokeAccessTokens(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
                 Context context);
 
         @Post("/identities/{id}/:revokeAccessTokens")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<Void> revokeAccessTokensSync(
+        ResponseBase<CommunicationIdentitiesRevokeAccessTokensHeaders, Void> revokeAccessTokensSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
+                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
                 Context context);
 
         @Post("/teamsUser/:exchangeAccessToken")
@@ -167,16 +181,25 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity with access token along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a communication identity with access token along with {@link ResponseBase} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentityAccessTokenResult>> createWithResponseAsync(
-            CommunicationIdentityCreateRequest body) {
+    public Mono<ResponseBase<CommunicationIdentitiesCreateHeaders, CommunicationIdentityAccessTokenResult>>
+            createWithResponseAsync(CommunicationIdentityCreateRequest body) {
         final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return FluxUtil.withContext(
                 context ->
-                        service.create(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
+                        service.create(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                body,
+                                accept,
+                                repeatabilityRequestId,
+                                repeatabilityFirstSent,
+                                context));
     }
 
     /**
@@ -188,14 +211,23 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity with access token along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a communication identity with access token along with {@link ResponseBase} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentityAccessTokenResult>> createWithResponseAsync(
-            CommunicationIdentityCreateRequest body, Context context) {
+    public Mono<ResponseBase<CommunicationIdentitiesCreateHeaders, CommunicationIdentityAccessTokenResult>>
+            createWithResponseAsync(CommunicationIdentityCreateRequest body, Context context) {
         final String accept = "application/json";
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
+        return service.create(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                body,
+                accept,
+                repeatabilityRequestId,
+                repeatabilityFirstSent,
+                context);
     }
 
     /**
@@ -239,13 +271,22 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity with access token along with {@link Response}.
+     * @return a communication identity with access token along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationIdentityAccessTokenResult> createWithResponse(
-            CommunicationIdentityCreateRequest body, Context context) {
+    public ResponseBase<CommunicationIdentitiesCreateHeaders, CommunicationIdentityAccessTokenResult>
+            createWithResponse(CommunicationIdentityCreateRequest body, Context context) {
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
+        return service.createSync(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                body,
+                accept,
+                repeatabilityRequestId,
+                repeatabilityFirstSent,
+                context);
     }
 
     /**
@@ -360,15 +401,24 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> revokeAccessTokensWithResponseAsync(String id) {
+    public Mono<ResponseBase<CommunicationIdentitiesRevokeAccessTokensHeaders, Void>>
+            revokeAccessTokensWithResponseAsync(String id) {
         final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return FluxUtil.withContext(
                 context ->
                         service.revokeAccessTokens(
-                                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                                this.client.getEndpoint(),
+                                id,
+                                this.client.getApiVersion(),
+                                accept,
+                                repeatabilityRequestId,
+                                repeatabilityFirstSent,
+                                context));
     }
 
     /**
@@ -379,12 +429,22 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> revokeAccessTokensWithResponseAsync(String id, Context context) {
+    public Mono<ResponseBase<CommunicationIdentitiesRevokeAccessTokensHeaders, Void>>
+            revokeAccessTokensWithResponseAsync(String id, Context context) {
         final String accept = "application/json";
-        return service.revokeAccessTokens(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
+        return service.revokeAccessTokens(
+                this.client.getEndpoint(),
+                id,
+                this.client.getApiVersion(),
+                accept,
+                repeatabilityRequestId,
+                repeatabilityFirstSent,
+                context);
     }
 
     /**
@@ -424,13 +484,22 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> revokeAccessTokensWithResponse(String id, Context context) {
+    public ResponseBase<CommunicationIdentitiesRevokeAccessTokensHeaders, Void> revokeAccessTokensWithResponse(
+            String id, Context context) {
         final String accept = "application/json";
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return service.revokeAccessTokensSync(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(),
+                id,
+                this.client.getApiVersion(),
+                accept,
+                repeatabilityRequestId,
+                repeatabilityFirstSent,
+                context);
     }
 
     /**
