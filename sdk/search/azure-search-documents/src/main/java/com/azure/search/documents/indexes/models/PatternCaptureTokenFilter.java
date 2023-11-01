@@ -21,9 +21,6 @@ import java.util.List;
 @Fluent
 public final class PatternCaptureTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * A list of patterns to match against each token.
      */
     private final List<String> patterns;

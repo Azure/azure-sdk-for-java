@@ -19,9 +19,6 @@ import java.util.Objects;
 @Fluent
 public final class PathHierarchyTokenizer extends LexicalTokenizer {
     /*
-     * Identifies the concrete type of the tokenizer.
-     */
-    /*
      * The delimiter character to use. Default is "/".
      */
     private Character delimiter;

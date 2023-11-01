@@ -315,12 +315,12 @@ public class FieldBuilderTests {
 
         SearchField field = fields.get(0);
         assertEquals(1536, field.getVectorSearchDimensions());
-        assertEquals("myprofile", field.getVectorSearchProfile());
+        assertEquals("myprofile", field.getVectorSearchProfileName());
     }
 
     @SuppressWarnings("unused")
     public static final class VectorSearchField {
-        @SearchableField(vectorSearchDimensions = 1536, vectorSearchProfile = "myprofile")
+        @SearchableField(vectorSearchDimensions = 1536, vectorSearchProfileName = "myprofile")
         public List<Float> vectorSearchField;
     }
 
@@ -334,7 +334,7 @@ public class FieldBuilderTests {
 
     @SuppressWarnings("unused")
     public static final class VectorFieldMissingDimensions {
-        @SearchableField(vectorSearchProfile = "myprofile")
+        @SearchableField(vectorSearchProfileName = "myprofile")
         public List<Float> vectorSearchField;
     }
 

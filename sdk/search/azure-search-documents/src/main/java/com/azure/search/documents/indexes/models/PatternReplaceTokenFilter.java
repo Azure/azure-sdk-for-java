@@ -23,9 +23,6 @@ import java.util.List;
 @Immutable
 public final class PatternReplaceTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * A regular expression pattern.
      */
     private final String pattern;

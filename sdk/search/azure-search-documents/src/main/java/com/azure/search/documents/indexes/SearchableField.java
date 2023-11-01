@@ -103,10 +103,10 @@ public @interface SearchableField {
     /**
      * The name of the vector search profile that specifies the parameters for searching the vector field.
      * <p>
-     * If the value is empty, the field won't have a {@link SearchField#getVectorSearchProfile()} value.
+     * If the value is empty, the field won't have a {@link SearchField#getVectorSearchProfileName()} ()} value.
      *
      * @return The name of the vector search profile that specifies the parameters for searching the vector
      * {@link SearchField field}.
      */
-    String vectorSearchProfile() default "";
+    String vectorSearchProfileName() default "";
 }

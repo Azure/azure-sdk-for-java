@@ -19,9 +19,6 @@ import java.util.List;
 @Fluent
 public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
     /*
-     * Identifies the concrete type of the tokenizer.
-     */
-    /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split.
      */
     private Integer maxTokenLength;

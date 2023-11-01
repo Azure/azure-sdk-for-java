@@ -11,10 +11,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
-import com.azure.search.documents.models.SemanticPartialResponseReason;
-import com.azure.search.documents.models.SemanticPartialResponseType;
+import com.azure.search.documents.models.QueryAnswerResult;
+import com.azure.search.documents.models.SemanticErrorReason;
+import com.azure.search.documents.models.SemanticSearchResultsType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     /*
      * The total count of results found by the search operation, or null if the count was not requested. If present,
      * the count may be greater than the number of results in this response. This can happen if you use the $top or
-     * $skip parameters, or if Azure Cognitive Search can't return all the requested documents in a single Search
-     * response.
+     * $skip parameters, or if the query can't return all the requested documents in a single response.
      */
     private Long count;
 
@@ -47,12 +46,12 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * The answers query results for the search operation; null if the answers query parameter was not specified or set
      * to 'none'.
      */
-    private List<AnswerResult> answers;
+    private List<QueryAnswerResult> answers;
 
     /*
-     * Continuation JSON payload returned when Azure Cognitive Search can't return all the requested results in a
-     * single Search response. You can use this JSON along with @odata.nextLink to formulate another POST Search
-     * request to get the next part of the search response.
+     * Continuation JSON payload returned when the query can't return all the requested results in a single response.
+     * You can use this JSON along with @odata.nextLink to formulate another POST Search request to get the next part
+     * of the search response.
      */
     private SearchRequest nextPageParameters;
 
@@ -62,21 +61,21 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     private final List<SearchResult> results;
 
     /*
-     * Continuation URL returned when Azure Cognitive Search can't return all the requested results in a single Search
-     * response. You can use this URL to formulate another GET or POST Search request to get the next part of the
-     * search response. Make sure to use the same verb (GET or POST) as the request that produced this response.
+     * Continuation URL returned when the query can't return all the requested results in a single response. You can
+     * use this URL to formulate another GET or POST Search request to get the next part of the search response. Make
+     * sure to use the same verb (GET or POST) as the request that produced this response.
      */
     private String nextLink;
 
     /*
-     * Reason that a partial response was returned for a semantic search request.
+     * Reason that a partial response was returned for a semantic ranking request.
      */
-    private SemanticPartialResponseReason semanticPartialResponseReason;
+    private SemanticErrorReason semanticPartialResponseReason;
 
     /*
-     * Type of partial response that was returned for a semantic search request.
+     * Type of partial response that was returned for a semantic ranking request.
      */
-    private SemanticPartialResponseType semanticPartialResponseType;
+    private SemanticSearchResultsType semanticPartialResponseType;
 
     /**
      * Creates an instance of SearchDocumentsResult class.
@@ -90,8 +89,8 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     /**
      * Get the count property: The total count of results found by the search operation, or null if the count was not
      * requested. If present, the count may be greater than the number of results in this response. This can happen if
-     * you use the $top or $skip parameters, or if Azure Cognitive Search can't return all the requested documents in a
-     * single Search response.
+     * you use the $top or $skip parameters, or if the query can't return all the requested documents in a single
+     * response.
      *
      * @return the count value.
      */
@@ -125,14 +124,14 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      *
      * @return the answers value.
      */
-    public List<AnswerResult> getAnswers() {
+    public List<QueryAnswerResult> getAnswers() {
         return this.answers;
     }
 
     /**
-     * Get the nextPageParameters property: Continuation JSON payload returned when Azure Cognitive Search can't return
-     * all the requested results in a single Search response. You can use this JSON along with @odata.nextLink to
-     * formulate another POST Search request to get the next part of the search response.
+     * Get the nextPageParameters property: Continuation JSON payload returned when the query can't return all the
+     * requested results in a single response. You can use this JSON along with @odata.nextLink to formulate another
+     * POST Search request to get the next part of the search response.
      *
      * @return the nextPageParameters value.
      */
@@ -150,10 +149,9 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     }
 
     /**
-     * Get the nextLink property: Continuation URL returned when Azure Cognitive Search can't return all the requested
-     * results in a single Search response. You can use this URL to formulate another GET or POST Search request to get
-     * the next part of the search response. Make sure to use the same verb (GET or POST) as the request that produced
-     * this response.
+     * Get the nextLink property: Continuation URL returned when the query can't return all the requested results in a
+     * single response. You can use this URL to formulate another GET or POST Search request to get the next part of the
+     * search response. Make sure to use the same verb (GET or POST) as the request that produced this response.
      *
      * @return the nextLink value.
      */
@@ -162,22 +160,22 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     }
 
     /**
-     * Get the semanticPartialResponseReason property: Reason that a partial response was returned for a semantic search
-     * request.
+     * Get the semanticPartialResponseReason property: Reason that a partial response was returned for a semantic
+     * ranking request.
      *
      * @return the semanticPartialResponseReason value.
      */
-    public SemanticPartialResponseReason getSemanticPartialResponseReason() {
+    public SemanticErrorReason getSemanticPartialResponseReason() {
         return this.semanticPartialResponseReason;
     }
 
     /**
-     * Get the semanticPartialResponseType property: Type of partial response that was returned for a semantic search
+     * Get the semanticPartialResponseType property: Type of partial response that was returned for a semantic ranking
      * request.
      *
      * @return the semanticPartialResponseType value.
      */
-    public SemanticPartialResponseType getSemanticPartialResponseType() {
+    public SemanticSearchResultsType getSemanticPartialResponseType() {
         return this.semanticPartialResponseType;
     }
 
@@ -204,11 +202,11 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                     Long count = null;
                     Double coverage = null;
                     Map<String, List<FacetResult>> facets = null;
-                    List<AnswerResult> answers = null;
+                    List<QueryAnswerResult> answers = null;
                     SearchRequest nextPageParameters = null;
                     String nextLink = null;
-                    SemanticPartialResponseReason semanticPartialResponseReason = null;
-                    SemanticPartialResponseType semanticPartialResponseType = null;
+                    SemanticErrorReason semanticPartialResponseReason = null;
+                    SemanticSearchResultsType semanticPartialResponseType = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -225,16 +223,15 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                                     reader.readMap(
                                             reader1 -> reader1.readArray(reader2 -> FacetResult.fromJson(reader2)));
                         } else if ("@search.answers".equals(fieldName)) {
-                            answers = reader.readArray(reader1 -> AnswerResult.fromJson(reader1));
+                            answers = reader.readArray(reader1 -> QueryAnswerResult.fromJson(reader1));
                         } else if ("@search.nextPageParameters".equals(fieldName)) {
                             nextPageParameters = SearchRequest.fromJson(reader);
                         } else if ("@odata.nextLink".equals(fieldName)) {
                             nextLink = reader.getString();
                         } else if ("@search.semanticPartialResponseReason".equals(fieldName)) {
-                            semanticPartialResponseReason =
-                                    SemanticPartialResponseReason.fromString(reader.getString());
+                            semanticPartialResponseReason = SemanticErrorReason.fromString(reader.getString());
                         } else if ("@search.semanticPartialResponseType".equals(fieldName)) {
-                            semanticPartialResponseType = SemanticPartialResponseType.fromString(reader.getString());
+                            semanticPartialResponseType = SemanticSearchResultsType.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

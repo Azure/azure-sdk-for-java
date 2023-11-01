@@ -16,40 +16,40 @@ import java.util.List;
 
 /** Defines parameters for a search index that influence semantic capabilities. */
 @Fluent
-public final class SemanticSettings implements JsonSerializable<SemanticSettings> {
+public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
     /*
      * Allows you to set the name of a default semantic configuration in your index, making it optional to pass it on
      * as a query parameter every time.
      */
-    private String defaultConfiguration;
+    private String defaultConfigurationName;
 
     /*
      * The semantic configurations for the index.
      */
     private List<SemanticConfiguration> configurations;
 
-    /** Creates an instance of SemanticSettings class. */
-    public SemanticSettings() {}
+    /** Creates an instance of SemanticSearch class. */
+    public SemanticSearch() {}
 
     /**
-     * Get the defaultConfiguration property: Allows you to set the name of a default semantic configuration in your
+     * Get the defaultConfigurationName property: Allows you to set the name of a default semantic configuration in your
      * index, making it optional to pass it on as a query parameter every time.
      *
-     * @return the defaultConfiguration value.
+     * @return the defaultConfigurationName value.
      */
-    public String getDefaultConfiguration() {
-        return this.defaultConfiguration;
+    public String getDefaultConfigurationName() {
+        return this.defaultConfigurationName;
     }
 
     /**
-     * Set the defaultConfiguration property: Allows you to set the name of a default semantic configuration in your
+     * Set the defaultConfigurationName property: Allows you to set the name of a default semantic configuration in your
      * index, making it optional to pass it on as a query parameter every time.
      *
-     * @param defaultConfiguration the defaultConfiguration value to set.
-     * @return the SemanticSettings object itself.
+     * @param defaultConfigurationName the defaultConfigurationName value to set.
+     * @return the SemanticSearch object itself.
      */
-    public SemanticSettings setDefaultConfiguration(String defaultConfiguration) {
-        this.defaultConfiguration = defaultConfiguration;
+    public SemanticSearch setDefaultConfigurationName(String defaultConfigurationName) {
+        this.defaultConfigurationName = defaultConfigurationName;
         return this;
     }
 
@@ -66,9 +66,9 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
      * Set the configurations property: The semantic configurations for the index.
      *
      * @param configurations the configurations value to set.
-     * @return the SemanticSettings object itself.
+     * @return the SemanticSearch object itself.
      */
-    public SemanticSettings setConfigurations(List<SemanticConfiguration> configurations) {
+    public SemanticSearch setConfigurations(List<SemanticConfiguration> configurations) {
         this.configurations = configurations;
         return this;
     }
@@ -76,40 +76,40 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("defaultConfiguration", this.defaultConfiguration);
+        jsonWriter.writeStringField("defaultConfiguration", this.defaultConfigurationName);
         jsonWriter.writeArrayField(
                 "configurations", this.configurations, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of SemanticSettings from the JsonReader.
+     * Reads an instance of SemanticSearch from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SemanticSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of SemanticSearch if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SemanticSettings.
+     * @throws IOException If an error occurs while reading the SemanticSearch.
      */
-    public static SemanticSettings fromJson(JsonReader jsonReader) throws IOException {
+    public static SemanticSearch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    SemanticSettings deserializedSemanticSettings = new SemanticSettings();
+                    SemanticSearch deserializedSemanticSearch = new SemanticSearch();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("defaultConfiguration".equals(fieldName)) {
-                            deserializedSemanticSettings.defaultConfiguration = reader.getString();
+                            deserializedSemanticSearch.defaultConfigurationName = reader.getString();
                         } else if ("configurations".equals(fieldName)) {
                             List<SemanticConfiguration> configurations =
                                     reader.readArray(reader1 -> SemanticConfiguration.fromJson(reader1));
-                            deserializedSemanticSettings.configurations = configurations;
+                            deserializedSemanticSearch.configurations = configurations;
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    return deserializedSemanticSettings;
+                    return deserializedSemanticSearch;
                 });
     }
 }

@@ -17,9 +17,6 @@ import java.util.List;
 /** A skill that enables scenarios that require a Boolean operation to determine the data to assign to an output. */
 @Fluent
 public final class ConditionalSkill extends SearchIndexerSkill {
-    /*
-     * Identifies the concrete type of the skill.
-     */
     /**
      * Creates an instance of ConditionalSkill class.
      *

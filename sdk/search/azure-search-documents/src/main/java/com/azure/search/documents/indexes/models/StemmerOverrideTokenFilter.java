@@ -22,9 +22,6 @@ import java.util.List;
 @Immutable
 public final class StemmerOverrideTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * A list of stemming rules in the following format: "word => stem", for example: "ran => run".
      */
     private final List<String> rules;

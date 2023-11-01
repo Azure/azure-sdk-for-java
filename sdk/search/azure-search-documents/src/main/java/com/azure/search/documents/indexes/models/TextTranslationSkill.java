@@ -19,9 +19,6 @@ import java.util.Objects;
 @Fluent
 public final class TextTranslationSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    /*
      * The language code to translate documents into for documents that don't specify the to language explicitly.
      */
     private final TextTranslationSkillLanguage defaultToLanguageCode;
@@ -34,7 +31,7 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /*
      * The language code to translate documents from when neither the fromLanguageCode input nor the
      * defaultFromLanguageCode parameter are provided, and the automatic language detection is unsuccessful. Default is
-     * en.
+     * `en`.
      */
     private TextTranslationSkillLanguage suggestedFrom;
 
@@ -88,7 +85,7 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /**
      * Get the suggestedFrom property: The language code to translate documents from when neither the fromLanguageCode
      * input nor the defaultFromLanguageCode parameter are provided, and the automatic language detection is
-     * unsuccessful. Default is en.
+     * unsuccessful. Default is `en`.
      *
      * @return the suggestedFrom value.
      */
@@ -99,7 +96,7 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /**
      * Set the suggestedFrom property: The language code to translate documents from when neither the fromLanguageCode
      * input nor the defaultFromLanguageCode parameter are provided, and the automatic language detection is
-     * unsuccessful. Default is en.
+     * unsuccessful. Default is `en`.
      *
      * @param suggestedFrom the suggestedFrom value to set.
      * @return the TextTranslationSkill object itself.

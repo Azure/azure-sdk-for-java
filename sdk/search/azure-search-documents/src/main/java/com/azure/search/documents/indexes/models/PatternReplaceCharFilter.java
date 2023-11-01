@@ -23,9 +23,6 @@ import java.util.List;
 @Immutable
 public final class PatternReplaceCharFilter extends CharFilter {
     /*
-     * Identifies the concrete type of the char filter.
-     */
-    /*
      * A regular expression pattern.
      */
     private final String pattern;

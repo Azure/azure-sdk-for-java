@@ -276,7 +276,7 @@ public final class FieldBuilder {
         String indexAnalyzerName = null;
         String[] synonymMapNames = null;
         Integer vectorSearchDimensions = null;
-        String vectorSearchProfile = null;
+        String vectorSearchProfileName = null;
 
         if (simpleField != null) {
             key = simpleField.isKey();
@@ -296,8 +296,8 @@ public final class FieldBuilder {
             synonymMapNames = searchableField.synonymMapNames();
             vectorSearchDimensions = searchableField.vectorSearchDimensions() > 0
                 ? searchableField.vectorSearchDimensions() : null;
-            vectorSearchProfile = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfile())
-                ? null : searchableField.vectorSearchProfile();
+            vectorSearchProfileName = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfileName())
+                ? null : searchableField.vectorSearchProfileName();
         }
 
         StringBuilder errorMessage = new StringBuilder();
@@ -327,9 +327,9 @@ public final class FieldBuilder {
         }
 
         if (searchField.getType() == COLLECTION_SINGLE
-            && (vectorSearchDimensions == null || vectorSearchProfile == null)) {
+            && (vectorSearchDimensions == null || vectorSearchProfileName == null)) {
             errorMessage.append(
-                "Please specify both vectorSearchDimensions and vectorSearchProfile for Collection(Edm.Single) type. ");
+                "Please specify both vectorSearchDimensions and vectorSearchProfileName for Collection(Edm.Single) type. ");
         }
 
         if (errorMessage.length() > 0) {
@@ -343,7 +343,7 @@ public final class FieldBuilder {
             .setSortable(sortable)
             .setFacetable(facetable)
             .setVectorSearchDimensions(vectorSearchDimensions)
-            .setVectorSearchProfile(vectorSearchProfile);
+            .setVectorSearchProfileName(vectorSearchProfileName);
 
         if (hasAnalyzerName) {
             searchField.setAnalyzerName(LexicalAnalyzerName.fromString(analyzerName));

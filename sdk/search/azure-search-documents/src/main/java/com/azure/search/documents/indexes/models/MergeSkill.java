@@ -21,9 +21,6 @@ import java.util.List;
 @Fluent
 public final class MergeSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    /*
      * The tag indicates the start of the merged text. By default, the tag is an empty space.
      */
     private String insertPreTag;

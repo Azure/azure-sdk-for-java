@@ -19,10 +19,6 @@ import java.util.Objects;
 @Fluent
 public final class FreshnessScoringFunction extends ScoringFunction {
     /*
-     * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The
-     * function type must be lower case.
-     */
-    /*
      * Parameter values for the freshness scoring function.
      */
     private final FreshnessScoringParameters parameters;

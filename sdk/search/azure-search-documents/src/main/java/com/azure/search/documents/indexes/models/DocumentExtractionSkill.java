@@ -19,9 +19,6 @@ import java.util.Map;
 @Fluent
 public final class DocumentExtractionSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    /*
      * The parsingMode for the skill. Will be set to 'default' if not defined.
      */
     private String parsingMode;

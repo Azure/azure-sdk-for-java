@@ -18,9 +18,6 @@ import java.util.List;
 @Immutable
 public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolicy {
     /*
-     * Identifies the concrete type of the data change detection policy.
-     */
-    /*
      * The name of the high water mark column.
      */
     private final String highWaterMarkColumnName;

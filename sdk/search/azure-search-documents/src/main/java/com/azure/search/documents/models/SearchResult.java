@@ -26,12 +26,9 @@ public final class SearchResult {
     private final double score;
 
     /*
-     * The relevance score computed by the semantic ranker for the top search
-     * results. Search results are sorted by the RerankerScore first and then
-     * by the Score. RerankerScore is only returned for queries of type
-     * 'semantic'.
+     * The semantic search results based on the search request.
      */
-    private Double rerankerScore;
+    private SemanticSearchResult semanticSearch;
 
     /*
      * Text fragments from the document that indicate the matching search
@@ -41,17 +38,13 @@ public final class SearchResult {
     private Map<String, List<String>> highlights;
 
     /*
-     * Captions are the most representative passages from the document
-     * relatively to the search query. They are often used as document summary.
-     * Captions are only returned for queries of type 'semantic'.
-     */
-    private List<CaptionResult> captions;
-
-    /*
      * Contains a document found by a search query, plus associated metadata.
      */
     private Map<String, Object> additionalProperties;
 
+    /*
+     * The json serializer.
+     */
     private JsonSerializer jsonSerializer;
 
     static {
@@ -72,13 +65,9 @@ public final class SearchResult {
             }
 
             @Override
-            public void setRerankerScore(SearchResult searchResult, Double rerankerScore) {
-                searchResult.setRerankerScore(rerankerScore);
-            }
-
-            @Override
-            public void setCaptions(SearchResult searchResult, List<CaptionResult> captions) {
-                searchResult.setCaptions(captions);
+            public void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
+                List<QueryCaptionResult> captions) {
+                searchResult.setSemanticSearchResult(rerankerScore, captions);
             }
         });
     }
@@ -102,17 +91,6 @@ public final class SearchResult {
     }
 
     /**
-     * Get the rerankerScore property: The relevance score computed by the semantic ranker for the top search results.
-     * Search results are sorted by the RerankerScore first and then by the Score. RerankerScore is only returned for
-     * queries of type 'semantic'.
-     *
-     * @return the rerankerScore value.
-     */
-    public Double getRerankerScore() {
-        return this.rerankerScore;
-    }
-
-    /**
      * Get the highlights property: Text fragments from the document that indicate the matching search terms, organized
      * by each applicable field; null if hit highlighting was not enabled for the query.
      *
@@ -123,14 +101,14 @@ public final class SearchResult {
     }
 
     /**
-     * Get the captions property: Captions are the most representative passages from the document relatively to the
-     * search query. They are often used as document summary. Captions are only returned for queries of type
-     * 'semantic'.
+     * Get the semanticSearchResult property: The semantic search results based on the search request.
+     * <p>
+     * If semantic search wasn't requested this will return a {@link SemanticSearchResult} with no values.
      *
-     * @return the captions value.
+     * @return the semanticSearchResult value.
      */
-    public List<CaptionResult> getCaptions() {
-        return this.captions;
+    public SemanticSearchResult getSemanticSearch() {
+        return this.semanticSearch;
     }
 
     /**
@@ -174,20 +152,13 @@ public final class SearchResult {
     }
 
     /**
-     * The private setter to set the rerankerScore property via {@code SearchResultHelper.setRerankerScore}.
+     * The private setter to set the semanticSearchResult property via
+     * {@code SearchResultHelper.setSemanticSearchResult}.
      *
      * @param rerankerScore The reranker score.
-     */
-    private void setRerankerScore(Double rerankerScore) {
-        this.rerankerScore = rerankerScore;
-    }
-
-    /**
-     * The private setter to set the captions property via {@code SearchResultHelper.setCaptions}.
-     *
      * @param captions The captions.
      */
-    private void setCaptions(List<CaptionResult> captions) {
-        this.captions = captions;
+    private void setSemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> captions) {
+        this.semanticSearch = new SemanticSearchResult(rerankerScore, captions);
     }
 }

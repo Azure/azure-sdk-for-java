@@ -21,9 +21,6 @@ import java.util.List;
 @Fluent
 public final class LanguageDetectionSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    /*
      * A country code to use as a hint to the language detection model if it cannot disambiguate the language.
      */
     private String defaultCountryHint;

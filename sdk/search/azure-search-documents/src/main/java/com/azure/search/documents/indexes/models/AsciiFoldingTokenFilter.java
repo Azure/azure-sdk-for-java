@@ -22,9 +22,6 @@ import java.util.List;
 @Fluent
 public final class AsciiFoldingTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * A value indicating whether the original token will be kept. Default is false.
      */
     private Boolean preserveOriginal;

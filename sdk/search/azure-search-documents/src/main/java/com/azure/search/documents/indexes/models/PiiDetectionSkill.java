@@ -22,10 +22,7 @@ import java.util.Objects;
 @Fluent
 public final class PiiDetectionSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    /*
-     * A value indicating which language code to use. Default is en.
+     * A value indicating which language code to use. Default is `en`.
      */
     private String defaultLanguageCode;
 
@@ -42,9 +39,9 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     private PiiDetectionSkillMaskingMode maskingMode;
 
     /*
-     * The character used to mask the text if the maskingMode parameter is set to replace. Default is '*'.
+     * The character used to mask the text if the maskingMode parameter is set to replace. Default is `*`.
      */
-    private String maskingCharacter;
+    private String mask;
 
     /*
      * The version of the model to use when calling the Text Analytics service. It will default to the latest available
@@ -74,7 +71,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @return the defaultLanguageCode value.
      */
@@ -83,7 +80,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the PiiDetectionSkill object itself.
@@ -140,24 +137,24 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the maskingCharacter property: The character used to mask the text if the maskingMode parameter is set to
-     * replace. Default is '*'.
+     * Get the mask property: The character used to mask the text if the maskingMode parameter is set to replace.
+     * Default is `*`.
      *
-     * @return the maskingCharacter value.
+     * @return the mask value.
      */
-    public String getMaskingCharacter() {
-        return this.maskingCharacter;
+    public String getMask() {
+        return this.mask;
     }
 
     /**
-     * Set the maskingCharacter property: The character used to mask the text if the maskingMode parameter is set to
-     * replace. Default is '*'.
+     * Set the mask property: The character used to mask the text if the maskingMode parameter is set to replace.
+     * Default is `*`.
      *
-     * @param maskingCharacter the maskingCharacter value to set.
+     * @param mask the mask value to set.
      * @return the PiiDetectionSkill object itself.
      */
-    public PiiDetectionSkill setMaskingCharacter(String maskingCharacter) {
-        this.maskingCharacter = maskingCharacter;
+    public PiiDetectionSkill setMask(String mask) {
+        this.mask = mask;
         return this;
     }
 
@@ -260,7 +257,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("defaultLanguageCode", this.defaultLanguageCode);
         jsonWriter.writeNumberField("minimumPrecision", this.minimumPrecision);
         jsonWriter.writeStringField("maskingMode", Objects.toString(this.maskingMode, null));
-        jsonWriter.writeStringField("maskingCharacter", this.maskingCharacter);
+        jsonWriter.writeStringField("maskingCharacter", this.mask);
         jsonWriter.writeStringField("modelVersion", this.modelVersion);
         jsonWriter.writeArrayField(
                 "piiCategories", this.piiCategories, (writer, element) -> writer.writeString(element));
@@ -291,7 +288,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                     String defaultLanguageCode = null;
                     Double minimumPrecision = null;
                     PiiDetectionSkillMaskingMode maskingMode = null;
-                    String maskingCharacter = null;
+                    String mask = null;
                     String modelVersion = null;
                     List<String> piiCategories = null;
                     String domain = null;
@@ -326,7 +323,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                         } else if ("maskingMode".equals(fieldName)) {
                             maskingMode = PiiDetectionSkillMaskingMode.fromString(reader.getString());
                         } else if ("maskingCharacter".equals(fieldName)) {
-                            maskingCharacter = reader.getString();
+                            mask = reader.getString();
                         } else if ("modelVersion".equals(fieldName)) {
                             modelVersion = reader.getString();
                         } else if ("piiCategories".equals(fieldName)) {
@@ -345,7 +342,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                         deserializedPiiDetectionSkill.defaultLanguageCode = defaultLanguageCode;
                         deserializedPiiDetectionSkill.minimumPrecision = minimumPrecision;
                         deserializedPiiDetectionSkill.maskingMode = maskingMode;
-                        deserializedPiiDetectionSkill.maskingCharacter = maskingCharacter;
+                        deserializedPiiDetectionSkill.mask = mask;
                         deserializedPiiDetectionSkill.modelVersion = modelVersion;
                         deserializedPiiDetectionSkill.piiCategories = piiCategories;
                         deserializedPiiDetectionSkill.domain = domain;

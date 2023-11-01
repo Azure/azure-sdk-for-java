@@ -17,10 +17,10 @@ import java.util.Map;
 
 /**
  * Captions are the most representative passages from the document relatively to the search query. They are often used
- * as document summary. Captions are only returned for queries of type 'semantic'..
+ * as document summary. Captions are only returned for queries of type `semantic`.
  */
 @Fluent
-public final class CaptionResult implements JsonSerializable<CaptionResult> {
+public final class QueryCaptionResult implements JsonSerializable<QueryCaptionResult> {
     /*
      * A representative text passage extracted from the document most relevant to the search query.
      */
@@ -33,12 +33,12 @@ public final class CaptionResult implements JsonSerializable<CaptionResult> {
 
     /*
      * Captions are the most representative passages from the document relatively to the search query. They are often
-     * used as document summary. Captions are only returned for queries of type 'semantic'..
+     * used as document summary. Captions are only returned for queries of type `semantic`.
      */
     private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CaptionResult class. */
-    public CaptionResult() {}
+    /** Creates an instance of QueryCaptionResult class. */
+    public QueryCaptionResult() {}
 
     /**
      * Get the text property: A representative text passage extracted from the document most relevant to the search
@@ -63,25 +63,12 @@ public final class CaptionResult implements JsonSerializable<CaptionResult> {
     /**
      * Get the additionalProperties property: Captions are the most representative passages from the document relatively
      * to the search query. They are often used as document summary. Captions are only returned for queries of type
-     * 'semantic'..
+     * `semantic`.
      *
      * @return the additionalProperties value.
      */
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
-    }
-
-    /**
-     * Set the additionalProperties property: Captions are the most representative passages from the document relatively
-     * to the search query. They are often used as document summary. Captions are only returned for queries of type
-     * 'semantic'..
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the CaptionResult object itself.
-     */
-    public CaptionResult setAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
     }
 
     @Override
@@ -96,26 +83,26 @@ public final class CaptionResult implements JsonSerializable<CaptionResult> {
     }
 
     /**
-     * Reads an instance of CaptionResult from the JsonReader.
+     * Reads an instance of QueryCaptionResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CaptionResult if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of QueryCaptionResult if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CaptionResult.
+     * @throws IOException If an error occurs while reading the QueryCaptionResult.
      */
-    public static CaptionResult fromJson(JsonReader jsonReader) throws IOException {
+    public static QueryCaptionResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    CaptionResult deserializedCaptionResult = new CaptionResult();
+                    QueryCaptionResult deserializedQueryCaptionResult = new QueryCaptionResult();
                     Map<String, Object> additionalProperties = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("text".equals(fieldName)) {
-                            deserializedCaptionResult.text = reader.getString();
+                            deserializedQueryCaptionResult.text = reader.getString();
                         } else if ("highlights".equals(fieldName)) {
-                            deserializedCaptionResult.highlights = reader.getString();
+                            deserializedQueryCaptionResult.highlights = reader.getString();
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
@@ -124,9 +111,9 @@ public final class CaptionResult implements JsonSerializable<CaptionResult> {
                             additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
-                    deserializedCaptionResult.additionalProperties = additionalProperties;
+                    deserializedQueryCaptionResult.additionalProperties = additionalProperties;
 
-                    return deserializedCaptionResult;
+                    return deserializedQueryCaptionResult;
                 });
     }
 }

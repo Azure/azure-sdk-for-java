@@ -18,9 +18,6 @@ import java.util.List;
 @Fluent
 public final class KeywordMarkerTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * A list of words to mark as keywords.
      */
     private final List<String> keywords;

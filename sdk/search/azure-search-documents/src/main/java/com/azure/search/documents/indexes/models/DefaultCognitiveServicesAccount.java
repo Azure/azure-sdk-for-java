@@ -12,12 +12,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** An empty object that represents the default cognitive service resource for a skillset. */
+/** An empty object that represents the default Azure AI service resource for a skillset. */
 @Fluent
 public final class DefaultCognitiveServicesAccount extends CognitiveServicesAccount {
-    /*
-     * Identifies the concrete type of the cognitive service resource attached to a skillset.
-     */
     /** Creates an instance of DefaultCognitiveServicesAccount class. */
     public DefaultCognitiveServicesAccount() {}
 

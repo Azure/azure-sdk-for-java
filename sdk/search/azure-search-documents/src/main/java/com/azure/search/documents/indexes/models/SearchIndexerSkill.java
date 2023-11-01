@@ -23,7 +23,7 @@ import java.util.List;
 public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> {
     /*
      * The name of the skill which uniquely identifies it within the skillset. A skill with no name defined will be
-     * given a default name of its 1-based index in the skills array, prefixed with the character '#'.
+     * given a default name of its 1-based index in the skills array, prefixed with the character `#`.
      */
     private String name;
 
@@ -63,7 +63,7 @@ public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndex
     /**
      * Get the name property: The name of the skill which uniquely identifies it within the skillset. A skill with no
      * name defined will be given a default name of its 1-based index in the skills array, prefixed with the character
-     * '#'.
+     * `#`.
      *
      * @return the name value.
      */
@@ -74,7 +74,7 @@ public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndex
     /**
      * Set the name property: The name of the skill which uniquely identifies it within the skillset. A skill with no
      * name defined will be given a default name of its 1-based index in the skills array, prefixed with the character
-     * '#'.
+     * `#`.
      *
      * @param name the name value to set.
      * @return the SearchIndexerSkill object itself.

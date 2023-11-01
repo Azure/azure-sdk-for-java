@@ -10,50 +10,48 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.implementation.models.VectorSearchAlgorithmKind;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Contains configuration options specific to the exhaustive KNN algorithm used during querying, which will perform
- * brute-force search across the entire vector index.
+ * Contains configuration options specific to the HNSW approximate nearest neighbors algorithm used during indexing and
+ * querying. The HNSW algorithm offers a tunable trade-off between search speed and accuracy.
  */
 @Fluent
-public final class ExhaustiveKnnVectorSearchAlgorithmConfiguration extends VectorSearchAlgorithmConfiguration {
+public final class HnswAlgorithmConfiguration extends VectorSearchAlgorithmConfiguration {
     /*
-     * The name of the kind of algorithm being configured for use with vector search.
+     * Contains the parameters specific to HNSW algorithm.
      */
-    /*
-     * Contains the parameters specific to exhaustive KNN algorithm.
-     */
-    private ExhaustiveKnnParameters parameters;
+    private HnswParameters parameters;
 
     /**
-     * Creates an instance of ExhaustiveKnnVectorSearchAlgorithmConfiguration class.
+     * Creates an instance of HnswAlgorithmConfiguration class.
      *
      * @param name the name value to set.
      */
-    public ExhaustiveKnnVectorSearchAlgorithmConfiguration(String name) {
+    public HnswAlgorithmConfiguration(String name) {
         super(name);
     }
 
     /**
-     * Get the parameters property: Contains the parameters specific to exhaustive KNN algorithm.
+     * Get the parameters property: Contains the parameters specific to HNSW algorithm.
      *
      * @return the parameters value.
      */
-    public ExhaustiveKnnParameters getParameters() {
+    public HnswParameters getParameters() {
         return this.parameters;
     }
 
     /**
-     * Set the parameters property: Contains the parameters specific to exhaustive KNN algorithm.
+     * Set the parameters property: Contains the parameters specific to HNSW algorithm.
      *
      * @param parameters the parameters value to set.
-     * @return the ExhaustiveKnnVectorSearchAlgorithmConfiguration object itself.
+     * @return the HnswAlgorithmConfiguration object itself.
      */
-    public ExhaustiveKnnVectorSearchAlgorithmConfiguration setParameters(ExhaustiveKnnParameters parameters) {
+    public HnswAlgorithmConfiguration setParameters(HnswParameters parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -61,56 +59,55 @@ public final class ExhaustiveKnnVectorSearchAlgorithmConfiguration extends Vecto
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(VectorSearchAlgorithmKind.EXHAUSTIVE_KNN, null));
+        jsonWriter.writeStringField("kind", Objects.toString(VectorSearchAlgorithmKind.HNSW, null));
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeJsonField("exhaustiveKnnParameters", this.parameters);
+        jsonWriter.writeJsonField("hnswParameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ExhaustiveKnnVectorSearchAlgorithmConfiguration from the JsonReader.
+     * Reads an instance of HnswAlgorithmConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ExhaustiveKnnVectorSearchAlgorithmConfiguration if the JsonReader was pointing to an
-     *     instance of it, or null if it was pointing to JSON null.
+     * @return An instance of HnswAlgorithmConfiguration if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the ExhaustiveKnnVectorSearchAlgorithmConfiguration.
+     * @throws IOException If an error occurs while reading the HnswAlgorithmConfiguration.
      */
-    public static ExhaustiveKnnVectorSearchAlgorithmConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static HnswAlgorithmConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
                     boolean nameFound = false;
                     String name = null;
-                    ExhaustiveKnnParameters parameters = null;
+                    HnswParameters parameters = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!"exhaustiveKnn".equals(kind)) {
+                            if (!"hnsw".equals(kind)) {
                                 throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'exhaustiveKnn'. The found 'kind' was '"
+                                        "'kind' was expected to be non-null and equal to 'hnsw'. The found 'kind' was '"
                                                 + kind
                                                 + "'.");
                             }
                         } else if ("name".equals(fieldName)) {
                             name = reader.getString();
                             nameFound = true;
-                        } else if ("exhaustiveKnnParameters".equals(fieldName)) {
-                            parameters = ExhaustiveKnnParameters.fromJson(reader);
+                        } else if ("hnswParameters".equals(fieldName)) {
+                            parameters = HnswParameters.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
                     }
                     if (nameFound) {
-                        ExhaustiveKnnVectorSearchAlgorithmConfiguration
-                                deserializedExhaustiveKnnVectorSearchAlgorithmConfiguration =
-                                        new ExhaustiveKnnVectorSearchAlgorithmConfiguration(name);
-                        deserializedExhaustiveKnnVectorSearchAlgorithmConfiguration.parameters = parameters;
+                        HnswAlgorithmConfiguration deserializedHnswAlgorithmConfiguration =
+                                new HnswAlgorithmConfiguration(name);
+                        deserializedHnswAlgorithmConfiguration.parameters = parameters;
 
-                        return deserializedExhaustiveKnnVectorSearchAlgorithmConfiguration;
+                        return deserializedHnswAlgorithmConfiguration;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

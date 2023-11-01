@@ -18,9 +18,6 @@ import java.util.List;
 @Fluent
 public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The list of words to match against.
      */
     private final List<String> wordList;

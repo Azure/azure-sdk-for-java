@@ -19,9 +19,6 @@ import java.io.IOException;
 @Fluent
 public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionDetectionPolicy {
     /*
-     * Identifies the concrete type of the data deletion detection policy.
-     */
-    /*
      * The name of the column to use for soft-deletion detection.
      */
     private String softDeleteColumnName;

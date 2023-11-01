@@ -21,9 +21,6 @@ import java.util.List;
 @Fluent
 public final class CommonGramTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    /*
      * The set of common words.
      */
     private final List<String> commonWords;

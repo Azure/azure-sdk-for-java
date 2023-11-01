@@ -11,6 +11,7 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.LongLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.javadoc.Javadoc;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.function.Consumer;
 
 /**
  * Contains customizations for Azure Search's index swagger code generation.
@@ -59,26 +61,26 @@ public class SearchIndexCustomizations extends Customization {
         customizeSuggestOptions(packageCustomization.getClass("SuggestOptions"));
         customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
         customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
-        customizeRawVectorQuery(packageCustomization.getClass("RawVectorQuery"));
-        // customizeVectorizableTextQuery(packageCustomization.getClass("VectorizableTextQuery"));
+        customizeVectorizedQuery(packageCustomization.getClass("VectorizedQuery"));
+
+        packageCustomization.getClass("QueryAnswerResult").removeMethod("setAdditionalProperties");
+        packageCustomization.getClass("QueryCaptionResult").removeMethod("setAdditionalProperties");
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
-        classCustomization.getMethod("isUseFuzzyMatching").rename("useFuzzyMatching");
-        classCustomization.customizeAst(ast -> addVarArgsOverload(
-            ast.getClassByName(classCustomization.getClassName()).get(), classCustomization.getClassName(),
-            "searchFields", "String"));
+        customizeAst(classCustomization, clazz -> {
+            clazz.getMethodsByName("isUseFuzzyMatching").get(0).setName("useFuzzyMatching");
+            addVarArgsOverload(clazz, "searchFields", "String");
+        });
     }
 
     private void customizeSuggestOptions(ClassCustomization classCustomization) {
-        classCustomization.getMethod("isUseFuzzyMatching").rename("useFuzzyMatching");
-        classCustomization.customizeAst(ast -> {
-            String className = classCustomization.getClassName();
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className).get();
+        customizeAst(classCustomization, clazz -> {
+            clazz.getMethodsByName("isUseFuzzyMatching").get(0).setName("useFuzzyMatching");
 
-            addVarArgsOverload(clazz, className, "orderBy", "String");
-            addVarArgsOverload(clazz, className, "searchFields", "String");
-            addVarArgsOverload(clazz, className, "select", "String");
+            addVarArgsOverload(clazz, "orderBy", "String");
+            addVarArgsOverload(clazz, "searchFields", "String");
+            addVarArgsOverload(clazz, "select", "String");
         });
     }
 
@@ -88,16 +90,14 @@ public class SearchIndexCustomizations extends Customization {
     }
 
     private void customizeSearchOptions(ClassCustomization classCustomization) {
-        classCustomization.getMethod("isIncludeTotalCount").rename("isTotalCountIncluded");
-        classCustomization.customizeAst(ast -> {
-            String className = classCustomization.getClassName();
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className).get();
+        customizeAst(classCustomization, clazz -> {;
+            clazz.getMethodsByName("isIncludeTotalCount").get(0).setName("isTotalCountIncluded");
 
-            addVarArgsOverload(clazz, className, "facets", "String");
-            addVarArgsOverload(clazz, className, "orderBy", "String");
-            addVarArgsOverload(clazz, className, "searchFields", "String");
-            addVarArgsOverload(clazz, className, "select", "String");
-            addVarArgsOverload(clazz, className, "highlightFields", "String");
+            addVarArgsOverload(clazz, "facets", "String");
+            addVarArgsOverload(clazz, "orderBy", "String");
+            addVarArgsOverload(clazz, "searchFields", "String");
+            addVarArgsOverload(clazz, "select", "String");
+            addVarArgsOverload(clazz, "highlightFields", "String");
         });
 
         // Can't be done right now as setScoringParameters uses String.
@@ -118,36 +118,23 @@ public class SearchIndexCustomizations extends Customization {
 
 
 private void customizeVectorQuery(ClassCustomization classCustomization) {
-        String methodName = "setFields";
-        String parameter = "String... fields";
-        String body = "this.fields = (fields == null) ? null : String.join(\",\", fields);\n" +
-            "        return this;";
-        String javadoc = "/**\n" +
-            "     * Sets the list of field names to which to scope the query.\n" +
-            "     *\n" +
-            "     * @param fields the list of field names to which to scope the query\n" +
-            "     * @return the SearchQueryVector object itself.\n" +
-            "     */";
-        classCustomization.getMethod(methodName).replaceParameters(parameter).replaceBody(body);
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
+            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true)))
+            .setBody(StaticJavaParser.parseBlock(joinWithNewline(
+                "{",
+                "    this.fields = (fields == null) ? null : String.join(\",\", fields);",
+                "    return this;",
+                "}"
+            ))));
 }
 
-    private void customizeRawVectorQuery(ClassCustomization classCustomization) {
-        String methodName = "setFields";
-        String parameter = "String... fields";
-        classCustomization.getMethod(methodName).replaceParameters(parameter);
-    }
-
-    private void customizeVectorizableTextQuery(ClassCustomization classCustomization) {
-        String methodName = "setFields";
-        String parameter = "String... fields";
-        classCustomization.getMethod(methodName).replaceParameters(parameter);
+    private void customizeVectorizedQuery(ClassCustomization classCustomization) {
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
+            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true))));
     }
 
     private void customizeIndexAction(ClassCustomization classCustomization) {
-        classCustomization.customizeAst(ast -> {
-            String className = classCustomization.getClassName();
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className).get();
-
+        customizeAst(classCustomization, clazz -> {
             clazz.addPrivateField("String", "rawDocument");
             clazz.addMethod("getRawDocument", Modifier.Keyword.PUBLIC).setType("String")
                 .setBody(new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement("return this.rawDocument;"))))
@@ -175,8 +162,7 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
     }
 
     private void customizeIndexingResult(ClassCustomization classCustomization) {
-        classCustomization.customizeAst(ast -> {
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName("IndexingResult").get();
+        customizeAst(classCustomization, clazz -> {
             clazz.addImplementedType(Serializable.class);
             clazz.addFieldWithInitializer("long", "serialVersionUID", new LongLiteralExpr("-8604424005271188140L"),
                 Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
@@ -195,17 +181,21 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
         });
     }
 
+    private static void customizeAst(ClassCustomization classCustomization, Consumer<ClassOrInterfaceDeclaration> consumer) {
+        classCustomization.customizeAst(ast -> consumer.accept(ast.getClassByName(classCustomization.getClassName())
+            .orElseThrow(() -> new RuntimeException("Class not found. " + classCustomization.getClassName()))));
+    }
+
     /*
      * This helper function adds a varargs overload in addition to a List setter.
      */
-    private static void addVarArgsOverload(ClassOrInterfaceDeclaration clazz, String className, String parameterName,
-        String parameterType) {
+    private static void addVarArgsOverload(ClassOrInterfaceDeclaration clazz, String parameterName, String parameterType) {
         String methodName = "set" + parameterName.substring(0, 1).toUpperCase(Locale.ROOT) + parameterName.substring(1);
 
         String varargMethod = String.format(VARARG_METHOD_TEMPLATE, parameterName);
 
         Javadoc copyJavadoc = clazz.getMethodsByName(methodName).get(0).getJavadoc().get();
-        clazz.addMethod(methodName, Modifier.Keyword.PUBLIC).setType(className)
+        clazz.addMethod(methodName, Modifier.Keyword.PUBLIC).setType(clazz.getNameAsString())
             .addParameter(StaticJavaParser.parseParameter(parameterType + "... " + parameterName))
             .setBody(StaticJavaParser.parseBlock(varargMethod))
             .setJavadocComment(copyJavadoc);

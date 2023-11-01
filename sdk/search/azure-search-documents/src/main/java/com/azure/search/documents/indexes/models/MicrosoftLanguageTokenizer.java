@@ -19,9 +19,6 @@ import java.util.Objects;
 @Fluent
 public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     /*
-     * Identifies the concrete type of the tokenizer.
-     */
-    /*
      * The maximum token length. Tokens longer than the maximum length are split. Maximum token length that can be used
      * is 300 characters. Tokens longer than 300 characters are first split into tokens of length 300 and then each of
      * those tokens is split based on the max token length set. Default is 255.

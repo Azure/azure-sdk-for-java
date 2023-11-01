@@ -19,10 +19,7 @@ import java.util.Objects;
 @Fluent
 public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    /*
-     * A value indicating which language code to use. Default is en.
+     * A value indicating which language code to use. Default is `en`.
      */
     private KeyPhraseExtractionSkillLanguage defaultLanguageCode;
 
@@ -48,7 +45,7 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @return the defaultLanguageCode value.
      */
@@ -57,7 +54,7 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the KeyPhraseExtractionSkill object itself.
