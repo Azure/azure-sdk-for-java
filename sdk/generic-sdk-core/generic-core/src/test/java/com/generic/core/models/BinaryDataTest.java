@@ -29,7 +29,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -533,7 +532,7 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void binaryDataAsPropertySerialization() throws IOException {
+    public void binaryDataAsPropertySerialization() {
         BinaryDataAsProperty binaryDataAsProperty = new BinaryDataAsProperty()
             .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
         String expectedJson = "{\"property\":{\"test\":\"test\"}}";
@@ -543,7 +542,7 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void binaryDataAsPropertyDeserialization() throws IOException {
+    public void binaryDataAsPropertyDeserialization() {
         BinaryDataAsProperty expected = new BinaryDataAsProperty()
             .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
         String json = "{\"property\":{\"test\":\"test\"}}";
@@ -571,23 +570,16 @@ public class BinaryDataTest {
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject();
 
-            String propertyText;
+            // This makes the final JSON look like: {"property":"{\"test\":\"test\"}"} instead of
+            // {"property":{"test":"test"}}.
+            // TODO (vcolin7): Investigate how (and if it's possible) to handle this without custom logic as shown
+            //  later.
+            //jsonWriter.writeUntypedField("property", property);
 
-            if (property == null) {
-                propertyText = null;
-            } else {
-                byte[] bytes = property.toBytes();
+            BinaryDataPropertyClass binaryDataPropertyClass =
+                property.toObject(TypeReference.createInstance(BinaryDataPropertyClass.class), SERIALIZER);
 
-                if (bytes == null) {
-                    propertyText = null;
-                } else if (bytes.length == 0) {
-                    propertyText = "";
-                } else {
-                    propertyText = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
-                }
-            }
-
-            jsonWriter.writeStringField("property", propertyText);
+            jsonWriter.writeJsonField("property", binaryDataPropertyClass);
             jsonWriter.writeEndObject();
 
             return jsonWriter;
@@ -603,8 +595,7 @@ public class BinaryDataTest {
                         reader.nextToken();
 
                         if ("property".equals(fieldName)) {
-                            binaryDataAsProperty.setProperty(reader.getNullable(nonNullReader ->
-                                BinaryData.fromString(nonNullReader.getString())));
+                            binaryDataAsProperty.setProperty(BinaryData.fromObject(reader.readUntyped()));
                         } else {
                             reader.skipChildren();
                         }
