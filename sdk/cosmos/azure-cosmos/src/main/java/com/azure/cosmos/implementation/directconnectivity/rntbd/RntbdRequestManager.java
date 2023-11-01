@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.LockedException;
@@ -641,6 +642,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                         return;
                     }
                 }
+
+                logger.info("Session token : {}",
+                    record.args().serviceRequest().getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
 
                 context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
                     record.stage(RntbdRequestRecord.Stage.SENT);
