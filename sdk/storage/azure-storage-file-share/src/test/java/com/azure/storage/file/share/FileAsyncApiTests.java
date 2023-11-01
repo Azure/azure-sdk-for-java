@@ -17,14 +17,17 @@ import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
+import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -41,6 +44,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -601,6 +605,66 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertEquals(result.charAt((int) (destinationOffset + i)), data.charAt((int) (sourceOffset + i)));
             }
         }).verifyComplete();
+    }
+
+    @Test
+    public void uploadRangeFromURLOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceClientAsync_sharedKey(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryAsyncClient dirClient = oAuthServiceClient.getShareAsyncClient(shareName)
+            .getDirectoryClient(generatePathName());
+        dirClient.create().block();
+        String fileName = generatePathName();
+        ShareFileAsyncClient fileClient = dirClient.getFileClient(fileName);
+        fileClient.create(1024).block();
+
+        String data = "The quick brown fox jumps over the lazy dog";
+        int sourceOffset = 5;
+        int length = 5;
+        int destinationOffset = 0;
+
+        fileClient.uploadRange(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block();
+        StorageSharedKeyCredential credential = StorageSharedKeyCredential.fromConnectionString(
+            ENVIRONMENT.getPrimaryAccount().getConnectionString());
+        String sasToken = new ShareServiceSasSignatureValues()
+            .setExpiryTime(testResourceNamer.now().plusDays(1))
+            .setPermissions(new ShareFileSasPermission().setReadPermission(true))
+            .setShareName(fileClient.getShareName())
+            .setFilePath(fileClient.getFilePath())
+            .generateSasQueryParameters(credential)
+            .encode();
+
+        String fileNameDest = generatePathName();
+        ShareFileAsyncClient fileClientDest = dirClient.getFileClient(fileNameDest);
+        fileClientDest.create(1024).block();
+
+        StepVerifier.create(fileClientDest.uploadRangeFromUrlWithResponse(length,
+            destinationOffset, sourceOffset, fileClient.getFileUrl() + "?" + sasToken))
+            .assertNext(r -> assertEquals(r.getStatusCode(), 201))
+            .verifyComplete();
+
+        StepVerifier.create(fileClientDest.downloadWithResponse(null)
+            .flatMap(r -> {
+                assertTrue(r.getStatusCode() == 200 || r.getStatusCode() == 206);
+                ShareFileDownloadHeaders headers = r.getDeserializedHeaders();
+
+                assertNotNull(headers.getETag());
+                assertNotNull(headers.getLastModified());
+                assertNotNull(headers.getFilePermissionKey());
+                assertNotNull(headers.getFileAttributes());
+                assertNotNull(headers.getFileLastWriteTime());
+                assertNotNull(headers.getFileCreationTime());
+                assertNotNull(headers.getFileChangeTime());
+                assertNotNull(headers.getFileParentId());
+                assertNotNull(headers.getFileId());
+
+                return FluxUtil.collectBytesInByteBufferStream(r.getValue());
+            }))
+            .assertNext(bytes -> {
+                //u
+                assertEquals(bytes[0], 117);
+            })
+            .verifyComplete();
     }
 
     @Test
