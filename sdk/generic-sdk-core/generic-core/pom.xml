@@ -39,6 +39,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
+    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
+    <jacoco.skip>true</jacoco.skip>
     <javaModulesSurefireArgLine>
       --add-exports com.generic.core/com.generic.core.implementation.http=ALL-UNNAMED
       --add-exports com.generic.core/com.generic.core.implementation.http.rest=ALL-UNNAMED

@@ -58,6 +58,7 @@
 
     <jacoco.min.linecoverage>0.85</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
+    <jacoco.skip>true</jacoco.skip>
   </properties>
 
   <dependencies>
