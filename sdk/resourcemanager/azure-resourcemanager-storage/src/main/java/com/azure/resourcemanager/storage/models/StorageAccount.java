@@ -564,7 +564,7 @@ public interface StorageAccount
         /** The stage of storage account definition allowing to configure allow cross tenant replication. */
         interface WithAllowCrossTenantReplication {
             /**
-             * Disables allow cross tenant replication
+             * Disables allow cross tenant replication.
              *
              * Disabling in storage account overrides the allow cross tenant replication settings for individual containers.
              *
@@ -942,7 +942,7 @@ public interface StorageAccount
             Update allowCrossTenantReplication();
 
             /**
-             * Disables cross tenant replication
+             * Disables cross tenant replication.
              *
              * Disabling in storage account overrides the cross tenant replication settings for individual containers.
              *
@@ -961,7 +961,7 @@ public interface StorageAccount
             Update enableDefaultToOAuthAuthentication();
 
             /**
-             * Disables default to oauth authentication
+             * Disables default to oauth authentication.
              *
              * Disabling in storage account overrides the default to oauth authentication settings for individual containers.
              *
