@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.webpubsub.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubHubInner;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHub;
@@ -28,6 +29,10 @@ public final class WebPubSubHubImpl implements WebPubSubHub, WebPubSubHub.Defini
 
     public WebPubSubHubProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {

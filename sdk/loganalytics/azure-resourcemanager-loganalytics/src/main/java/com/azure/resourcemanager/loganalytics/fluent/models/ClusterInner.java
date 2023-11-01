@@ -38,6 +38,10 @@ public final class ClusterInner extends Resource {
     @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
 
+    /** Creates an instance of ClusterInner class. */
+    public ClusterInner() {
+    }
+
     /**
      * Get the identity property: The identity of the resource.
      *

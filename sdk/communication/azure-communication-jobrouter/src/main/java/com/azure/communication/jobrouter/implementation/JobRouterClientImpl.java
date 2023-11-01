@@ -153,7 +153,7 @@ public final class JobRouterClientImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "JobRouterClient")
     public interface JobRouterClientService {
-        @Patch("/routing/jobs/{id}")
+        @Patch("/routing/jobs/{jobId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -168,14 +168,14 @@ public final class JobRouterClientImpl {
         Mono<Response<BinaryData>> upsertJob(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Patch("/routing/jobs/{id}")
+        @Patch("/routing/jobs/{jobId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -190,14 +190,14 @@ public final class JobRouterClientImpl {
         Response<BinaryData> upsertJobSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("Content-Type") String contentType,
                 @HeaderParam("accept") String accept,
                 @BodyParam("application/merge-patch+json") BinaryData resource,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/jobs/{id}")
+        @Get("/routing/jobs/{jobId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -212,12 +212,12 @@ public final class JobRouterClientImpl {
         Mono<Response<BinaryData>> getJob(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/jobs/{id}")
+        @Get("/routing/jobs/{jobId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -232,12 +232,12 @@ public final class JobRouterClientImpl {
         Response<BinaryData> getJobSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/routing/jobs/{id}")
+        @Delete("/routing/jobs/{jobId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -252,12 +252,12 @@ public final class JobRouterClientImpl {
         Mono<Response<Void>> deleteJob(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/routing/jobs/{id}")
+        @Delete("/routing/jobs/{jobId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -272,12 +272,12 @@ public final class JobRouterClientImpl {
         Response<Void> deleteJobSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/routing/jobs/{id}:reclassify")
+        @Post("/routing/jobs/{jobId}:reclassify")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -292,12 +292,12 @@ public final class JobRouterClientImpl {
         Mono<Response<Void>> reclassifyJob(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/routing/jobs/{id}:reclassify")
+        @Post("/routing/jobs/{jobId}:reclassify")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -312,12 +312,12 @@ public final class JobRouterClientImpl {
         Response<Void> reclassifyJobSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/routing/jobs/{id}:cancel")
+        @Post("/routing/jobs/{jobId}:cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -332,12 +332,12 @@ public final class JobRouterClientImpl {
         Mono<Response<Void>> cancelJob(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/routing/jobs/{id}:cancel")
+        @Post("/routing/jobs/{jobId}:cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -352,12 +352,12 @@ public final class JobRouterClientImpl {
         Response<Void> cancelJobSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/routing/jobs/{id}:complete")
+        @Post("/routing/jobs/{jobId}:complete")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -372,13 +372,13 @@ public final class JobRouterClientImpl {
         Mono<Response<Void>> completeJob(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData completeJobRequest,
+                @BodyParam("application/json") BinaryData completeJobOptions,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/routing/jobs/{id}:complete")
+        @Post("/routing/jobs/{jobId}:complete")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -393,13 +393,13 @@ public final class JobRouterClientImpl {
         Response<Void> completeJobSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData completeJobRequest,
+                @BodyParam("application/json") BinaryData completeJobOptions,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/routing/jobs/{id}:close")
+        @Post("/routing/jobs/{jobId}:close")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -414,13 +414,13 @@ public final class JobRouterClientImpl {
         Mono<Response<Void>> closeJob(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData closeJobRequest,
+                @BodyParam("application/json") BinaryData closeJobOptions,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/routing/jobs/{id}:close")
+        @Post("/routing/jobs/{jobId}:close")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -435,9 +435,9 @@ public final class JobRouterClientImpl {
         Response<Void> closeJobSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData closeJobRequest,
+                @BodyParam("application/json") BinaryData closeJobOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -479,7 +479,7 @@ public final class JobRouterClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/jobs/{id}/position")
+        @Get("/routing/jobs/{jobId}/position")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -494,12 +494,12 @@ public final class JobRouterClientImpl {
         Mono<Response<BinaryData>> getQueuePosition(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/jobs/{id}/position")
+        @Get("/routing/jobs/{jobId}/position")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -514,12 +514,12 @@ public final class JobRouterClientImpl {
         Response<BinaryData> getQueuePositionSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/routing/jobs/{id}/assignments/{assignmentId}:unassign")
+        @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:unassign")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -534,13 +534,13 @@ public final class JobRouterClientImpl {
         Mono<Response<BinaryData>> unassignJob(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @PathParam("assignmentId") String assignmentId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Post("/routing/jobs/{id}/assignments/{assignmentId}:unassign")
+        @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:unassign")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -555,7 +555,7 @@ public final class JobRouterClientImpl {
         Response<BinaryData> unassignJobSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("jobId") String jobId,
                 @PathParam("assignmentId") String assignmentId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
@@ -645,7 +645,7 @@ public final class JobRouterClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/queues/{id}/statistics")
+        @Get("/routing/queues/{queueId}/statistics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -660,12 +660,12 @@ public final class JobRouterClientImpl {
         Mono<Response<BinaryData>> getQueueStatistics(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("queueId") String queueId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/routing/queues/{id}/statistics")
+        @Get("/routing/queues/{queueId}/statistics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -680,7 +680,7 @@ public final class JobRouterClientImpl {
         Response<BinaryData> getQueueStatisticsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @PathParam("id") String id,
+                @PathParam("queueId") String queueId,
                 @HeaderParam("accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -942,6 +942,7 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
@@ -980,9 +981,12 @@ public final class JobRouterClientImpl {
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     notes (Optional): {
-     *         String: String (Optional)
-     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
      *     }
@@ -993,6 +997,7 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
@@ -1031,16 +1036,19 @@ public final class JobRouterClientImpl {
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     notes (Optional): {
-     *         String: String (Optional)
-     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
      *     }
      * }
      * }</pre>
      *
-     * @param id The id of the job.
+     * @param jobId The id of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1051,7 +1059,7 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> upsertJobWithResponseAsync(
-            String id, BinaryData resource, RequestOptions requestOptions) {
+            String jobId, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1059,7 +1067,7 @@ public final class JobRouterClientImpl {
                         service.upsertJob(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                jobId,
                                 contentType,
                                 accept,
                                 resource,
@@ -1085,6 +1093,7 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
@@ -1123,9 +1132,12 @@ public final class JobRouterClientImpl {
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     notes (Optional): {
-     *         String: String (Optional)
-     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
      *     }
@@ -1136,6 +1148,7 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
@@ -1174,16 +1187,19 @@ public final class JobRouterClientImpl {
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     notes (Optional): {
-     *         String: String (Optional)
-     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
      *     }
      * }
      * }</pre>
      *
-     * @param id The id of the job.
+     * @param jobId The id of the job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1193,13 +1209,14 @@ public final class JobRouterClientImpl {
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertJobWithResponse(String id, BinaryData resource, RequestOptions requestOptions) {
+    public Response<BinaryData> upsertJobWithResponse(
+            String jobId, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.upsertJobSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                id,
+                jobId,
                 contentType,
                 accept,
                 resource,
@@ -1214,6 +1231,7 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
@@ -1252,16 +1270,19 @@ public final class JobRouterClientImpl {
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     notes (Optional): {
-     *         String: String (Optional)
-     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
      *     }
      * }
      * }</pre>
      *
-     * @param id The id of the job.
+     * @param jobId The id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1270,14 +1291,14 @@ public final class JobRouterClientImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getJobWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getJob(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                jobId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -1290,6 +1311,7 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     channelReference: String (Optional)
      *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
@@ -1328,16 +1350,19 @@ public final class JobRouterClientImpl {
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     notes (Optional): {
-     *         String: String (Optional)
-     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
      *     }
      * }
      * }</pre>
      *
-     * @param id The id of the job.
+     * @param jobId The id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1346,16 +1371,16 @@ public final class JobRouterClientImpl {
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getJobWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getJobSync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept, requestOptions, Context.NONE);
     }
 
     /**
      * Deletes a job and all of its traces.
      *
-     * @param id The id of the job.
+     * @param jobId The id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1364,14 +1389,14 @@ public final class JobRouterClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteJobWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteJob(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                jobId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -1380,7 +1405,7 @@ public final class JobRouterClientImpl {
     /**
      * Deletes a job and all of its traces.
      *
-     * @param id The id of the job.
+     * @param jobId The id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1389,10 +1414,10 @@ public final class JobRouterClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobWithResponse(String id, RequestOptions requestOptions) {
+    public Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.deleteJobSync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1406,7 +1431,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1415,7 +1440,7 @@ public final class JobRouterClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> reclassifyJobWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<Void>> reclassifyJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
@@ -1430,7 +1455,7 @@ public final class JobRouterClientImpl {
                         service.reclassifyJob(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                jobId,
                                 accept,
                                 requestOptionsLocal,
                                 context));
@@ -1447,7 +1472,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1456,7 +1481,7 @@ public final class JobRouterClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> reclassifyJobWithResponse(String id, RequestOptions requestOptions) {
+    public Response<Void> reclassifyJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
@@ -1469,7 +1494,7 @@ public final class JobRouterClientImpl {
         return service.reclassifyJobSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                id,
+                jobId,
                 accept,
                 requestOptionsLocal,
                 Context.NONE);
@@ -1487,7 +1512,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1496,7 +1521,7 @@ public final class JobRouterClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelJobWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<Void>> cancelJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
@@ -1511,7 +1536,7 @@ public final class JobRouterClientImpl {
                         service.cancelJob(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                jobId,
                                 accept,
                                 requestOptionsLocal,
                                 context));
@@ -1529,7 +1554,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1538,7 +1563,7 @@ public final class JobRouterClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelJobWithResponse(String id, RequestOptions requestOptions) {
+    public Response<Void> cancelJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
@@ -1551,7 +1576,7 @@ public final class JobRouterClientImpl {
         return service.cancelJobSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                id,
+                jobId,
                 accept,
                 requestOptionsLocal,
                 Context.NONE);
@@ -1569,8 +1594,8 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
-     * @param completeJobRequest Request model for completing job.
+     * @param jobId Id of the job.
+     * @param completeJobOptions Request model for completing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1580,16 +1605,16 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> completeJobWithResponseAsync(
-            String id, BinaryData completeJobRequest, RequestOptions requestOptions) {
+            String jobId, BinaryData completeJobOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.completeJob(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                jobId,
                                 accept,
-                                completeJobRequest,
+                                completeJobOptions,
                                 requestOptions,
                                 context));
     }
@@ -1606,8 +1631,8 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
-     * @param completeJobRequest Request model for completing job.
+     * @param jobId Id of the job.
+     * @param completeJobOptions Request model for completing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1617,14 +1642,14 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> completeJobWithResponse(
-            String id, BinaryData completeJobRequest, RequestOptions requestOptions) {
+            String jobId, BinaryData completeJobOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.completeJobSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                id,
+                jobId,
                 accept,
-                completeJobRequest,
+                completeJobOptions,
                 requestOptions,
                 Context.NONE);
     }
@@ -1643,8 +1668,8 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
-     * @param closeJobRequest Request model for closing job.
+     * @param jobId Id of the job.
+     * @param closeJobOptions Request model for closing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1654,16 +1679,16 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeJobWithResponseAsync(
-            String id, BinaryData closeJobRequest, RequestOptions requestOptions) {
+            String jobId, BinaryData closeJobOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.closeJob(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                jobId,
                                 accept,
-                                closeJobRequest,
+                                closeJobOptions,
                                 requestOptions,
                                 context));
     }
@@ -1682,8 +1707,8 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
-     * @param closeJobRequest Request model for closing job.
+     * @param jobId Id of the job.
+     * @param closeJobOptions Request model for closing job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1692,14 +1717,15 @@ public final class JobRouterClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeJobWithResponse(String id, BinaryData closeJobRequest, RequestOptions requestOptions) {
+    public Response<Void> closeJobWithResponse(
+            String jobId, BinaryData closeJobOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.closeJobSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                id,
+                jobId,
                 accept,
-                closeJobRequest,
+                closeJobOptions,
                 requestOptions,
                 Context.NONE);
     }
@@ -1729,53 +1755,54 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     job (Required): {
-     *         id: String (Required)
-     *         channelReference: String (Optional)
-     *         status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
-     *         enqueuedAt: OffsetDateTime (Optional)
-     *         channelId: String (Optional)
-     *         classificationPolicyId: String (Optional)
-     *         queueId: String (Optional)
-     *         priority: Integer (Optional)
-     *         dispositionCode: String (Optional)
-     *         requestedWorkerSelectors (Optional): [
-     *              (Optional){
-     *                 key: String (Required)
-     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
-     *                 value: Object (Optional)
-     *                 expiresAfterSeconds: Double (Optional)
-     *                 expedite: Boolean (Optional)
-     *                 status: String(active/expired) (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         attachedWorkerSelectors (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         labels (Optional): {
-     *             String: Object (Optional)
+     *     etag: String (Required)
+     *     id: String (Required)
+     *     channelReference: String (Optional)
+     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueuedAt: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             expiresAfterSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             status: String(active/expired) (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
      *         }
-     *         assignments (Optional): {
-     *             String (Optional): {
-     *                 assignmentId: String (Required)
-     *                 workerId: String (Optional)
-     *                 assignedAt: OffsetDateTime (Required)
-     *                 completedAt: OffsetDateTime (Optional)
-     *                 closedAt: OffsetDateTime (Optional)
-     *             }
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         notes (Optional): {
-     *             String: String (Optional)
-     *         }
-     *         scheduledAt: OffsetDateTime (Optional)
-     *         matchingMode (Optional): {
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             assignmentId: String (Required)
+     *             workerId: String (Optional)
+     *             assignedAt: OffsetDateTime (Required)
+     *             completedAt: OffsetDateTime (Optional)
+     *             closedAt: OffsetDateTime (Optional)
      *         }
      *     }
-     *     etag: String (Required)
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     scheduledAt: OffsetDateTime (Optional)
+     *     matchingMode (Optional): {
+     *     }
      * }
      * }</pre>
      *
@@ -1833,53 +1860,54 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     job (Required): {
-     *         id: String (Required)
-     *         channelReference: String (Optional)
-     *         status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
-     *         enqueuedAt: OffsetDateTime (Optional)
-     *         channelId: String (Optional)
-     *         classificationPolicyId: String (Optional)
-     *         queueId: String (Optional)
-     *         priority: Integer (Optional)
-     *         dispositionCode: String (Optional)
-     *         requestedWorkerSelectors (Optional): [
-     *              (Optional){
-     *                 key: String (Required)
-     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
-     *                 value: Object (Optional)
-     *                 expiresAfterSeconds: Double (Optional)
-     *                 expedite: Boolean (Optional)
-     *                 status: String(active/expired) (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         attachedWorkerSelectors (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         labels (Optional): {
-     *             String: Object (Optional)
+     *     etag: String (Required)
+     *     id: String (Required)
+     *     channelReference: String (Optional)
+     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueuedAt: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             expiresAfterSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             status: String(active/expired) (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
      *         }
-     *         assignments (Optional): {
-     *             String (Optional): {
-     *                 assignmentId: String (Required)
-     *                 workerId: String (Optional)
-     *                 assignedAt: OffsetDateTime (Required)
-     *                 completedAt: OffsetDateTime (Optional)
-     *                 closedAt: OffsetDateTime (Optional)
-     *             }
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         notes (Optional): {
-     *             String: String (Optional)
-     *         }
-     *         scheduledAt: OffsetDateTime (Optional)
-     *         matchingMode (Optional): {
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             assignmentId: String (Required)
+     *             workerId: String (Optional)
+     *             assignedAt: OffsetDateTime (Required)
+     *             completedAt: OffsetDateTime (Optional)
+     *             closedAt: OffsetDateTime (Optional)
      *         }
      *     }
-     *     etag: String (Required)
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     scheduledAt: OffsetDateTime (Optional)
+     *     matchingMode (Optional): {
+     *     }
      * }
      * }</pre>
      *
@@ -1950,53 +1978,54 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     job (Required): {
-     *         id: String (Required)
-     *         channelReference: String (Optional)
-     *         status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
-     *         enqueuedAt: OffsetDateTime (Optional)
-     *         channelId: String (Optional)
-     *         classificationPolicyId: String (Optional)
-     *         queueId: String (Optional)
-     *         priority: Integer (Optional)
-     *         dispositionCode: String (Optional)
-     *         requestedWorkerSelectors (Optional): [
-     *              (Optional){
-     *                 key: String (Required)
-     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
-     *                 value: Object (Optional)
-     *                 expiresAfterSeconds: Double (Optional)
-     *                 expedite: Boolean (Optional)
-     *                 status: String(active/expired) (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         attachedWorkerSelectors (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         labels (Optional): {
-     *             String: Object (Optional)
+     *     etag: String (Required)
+     *     id: String (Required)
+     *     channelReference: String (Optional)
+     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueuedAt: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             expiresAfterSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             status: String(active/expired) (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
      *         }
-     *         assignments (Optional): {
-     *             String (Optional): {
-     *                 assignmentId: String (Required)
-     *                 workerId: String (Optional)
-     *                 assignedAt: OffsetDateTime (Required)
-     *                 completedAt: OffsetDateTime (Optional)
-     *                 closedAt: OffsetDateTime (Optional)
-     *             }
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         notes (Optional): {
-     *             String: String (Optional)
-     *         }
-     *         scheduledAt: OffsetDateTime (Optional)
-     *         matchingMode (Optional): {
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             assignmentId: String (Required)
+     *             workerId: String (Optional)
+     *             assignedAt: OffsetDateTime (Required)
+     *             completedAt: OffsetDateTime (Optional)
+     *             closedAt: OffsetDateTime (Optional)
      *         }
      *     }
-     *     etag: String (Required)
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     scheduledAt: OffsetDateTime (Optional)
+     *     matchingMode (Optional): {
+     *     }
      * }
      * }</pre>
      *
@@ -2051,53 +2080,54 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     job (Required): {
-     *         id: String (Required)
-     *         channelReference: String (Optional)
-     *         status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
-     *         enqueuedAt: OffsetDateTime (Optional)
-     *         channelId: String (Optional)
-     *         classificationPolicyId: String (Optional)
-     *         queueId: String (Optional)
-     *         priority: Integer (Optional)
-     *         dispositionCode: String (Optional)
-     *         requestedWorkerSelectors (Optional): [
-     *              (Optional){
-     *                 key: String (Required)
-     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
-     *                 value: Object (Optional)
-     *                 expiresAfterSeconds: Double (Optional)
-     *                 expedite: Boolean (Optional)
-     *                 status: String(active/expired) (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         attachedWorkerSelectors (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         labels (Optional): {
-     *             String: Object (Optional)
+     *     etag: String (Required)
+     *     id: String (Required)
+     *     channelReference: String (Optional)
+     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueuedAt: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             expiresAfterSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             status: String(active/expired) (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
      *         }
-     *         assignments (Optional): {
-     *             String (Optional): {
-     *                 assignmentId: String (Required)
-     *                 workerId: String (Optional)
-     *                 assignedAt: OffsetDateTime (Required)
-     *                 completedAt: OffsetDateTime (Optional)
-     *                 closedAt: OffsetDateTime (Optional)
-     *             }
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         notes (Optional): {
-     *             String: String (Optional)
-     *         }
-     *         scheduledAt: OffsetDateTime (Optional)
-     *         matchingMode (Optional): {
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             assignmentId: String (Required)
+     *             workerId: String (Optional)
+     *             assignedAt: OffsetDateTime (Required)
+     *             completedAt: OffsetDateTime (Optional)
+     *             closedAt: OffsetDateTime (Optional)
      *         }
      *     }
-     *     etag: String (Required)
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     scheduledAt: OffsetDateTime (Optional)
+     *     matchingMode (Optional): {
+     *     }
      * }
      * }</pre>
      *
@@ -2158,7 +2188,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2167,14 +2197,14 @@ public final class JobRouterClientImpl {
      * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getQueuePositionWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getQueuePositionWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getQueuePosition(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                jobId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -2195,7 +2225,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2204,10 +2234,10 @@ public final class JobRouterClientImpl {
      * @return a job's position details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getQueuePositionWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getQueuePositionWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getQueuePositionSync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2230,7 +2260,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job to un-assign.
+     * @param jobId Id of the job to un-assign.
      * @param assignmentId Id of the assignment to un-assign.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2242,7 +2272,7 @@ public final class JobRouterClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> unassignJobWithResponseAsync(
-            String id, String assignmentId, RequestOptions requestOptions) {
+            String jobId, String assignmentId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
@@ -2257,7 +2287,7 @@ public final class JobRouterClientImpl {
                         service.unassignJob(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                jobId,
                                 assignmentId,
                                 accept,
                                 requestOptionsLocal,
@@ -2284,7 +2314,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the job to un-assign.
+     * @param jobId Id of the job to un-assign.
      * @param assignmentId Id of the assignment to un-assign.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2294,7 +2324,8 @@ public final class JobRouterClientImpl {
      * @return response payload after a job has been successfully unassigned along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> unassignJobWithResponse(String id, String assignmentId, RequestOptions requestOptions) {
+    public Response<BinaryData> unassignJobWithResponse(
+            String jobId, String assignmentId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
@@ -2307,7 +2338,7 @@ public final class JobRouterClientImpl {
         return service.unassignJobSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
-                id,
+                jobId,
                 assignmentId,
                 accept,
                 requestOptionsLocal,
@@ -2491,7 +2522,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the queue to retrieve statistics.
+     * @param queueId Id of the queue to retrieve statistics.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2500,14 +2531,15 @@ public final class JobRouterClientImpl {
      * @return statistics for the queue along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getQueueStatisticsWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getQueueStatisticsWithResponseAsync(
+            String queueId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getQueueStatistics(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
-                                id,
+                                queueId,
                                 accept,
                                 requestOptions,
                                 context));
@@ -2529,7 +2561,7 @@ public final class JobRouterClientImpl {
      * }
      * }</pre>
      *
-     * @param id Id of the queue to retrieve statistics.
+     * @param queueId Id of the queue to retrieve statistics.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2538,10 +2570,15 @@ public final class JobRouterClientImpl {
      * @return statistics for the queue along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getQueueStatisticsWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getQueueStatisticsWithResponse(String queueId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getQueueStatisticsSync(
-                this.getEndpoint(), this.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                queueId,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -2562,25 +2599,26 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
-     *     queueAssignments (Optional): {
-     *         String (Optional): {
-     *         }
-     *     }
-     *     totalCapacity: Integer (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
      *     labels (Optional): {
      *         String: Object (Optional)
      *     }
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     channelConfigurations (Optional): {
-     *         String (Optional): {
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
      *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
-     *     }
+     *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
@@ -2607,25 +2645,26 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
-     *     queueAssignments (Optional): {
-     *         String (Optional): {
-     *         }
-     *     }
-     *     totalCapacity: Integer (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
      *     labels (Optional): {
      *         String: Object (Optional)
      *     }
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     channelConfigurations (Optional): {
-     *         String (Optional): {
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
      *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
-     *     }
+     *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
@@ -2693,25 +2732,26 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
-     *     queueAssignments (Optional): {
-     *         String (Optional): {
-     *         }
-     *     }
-     *     totalCapacity: Integer (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
      *     labels (Optional): {
      *         String: Object (Optional)
      *     }
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     channelConfigurations (Optional): {
-     *         String (Optional): {
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
      *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
-     *     }
+     *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
@@ -2738,25 +2778,26 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
-     *     queueAssignments (Optional): {
-     *         String (Optional): {
-     *         }
-     *     }
-     *     totalCapacity: Integer (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
      *     labels (Optional): {
      *         String: Object (Optional)
      *     }
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     channelConfigurations (Optional): {
-     *         String (Optional): {
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
      *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
-     *     }
+     *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
@@ -2811,25 +2852,26 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
-     *     queueAssignments (Optional): {
-     *         String (Optional): {
-     *         }
-     *     }
-     *     totalCapacity: Integer (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
      *     labels (Optional): {
      *         String: Object (Optional)
      *     }
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     channelConfigurations (Optional): {
-     *         String (Optional): {
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
      *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
-     *     }
+     *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
@@ -2881,25 +2923,26 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
+     *     etag: String (Required)
      *     id: String (Required)
      *     state: String(active/draining/inactive) (Optional)
-     *     queueAssignments (Optional): {
-     *         String (Optional): {
-     *         }
-     *     }
-     *     totalCapacity: Integer (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
      *     labels (Optional): {
      *         String: Object (Optional)
      *     }
      *     tags (Optional): {
      *         String: Object (Optional)
      *     }
-     *     channelConfigurations (Optional): {
-     *         String (Optional): {
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
      *             capacityCostPerJob: int (Required)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
-     *     }
+     *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
@@ -3014,47 +3057,45 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     worker (Required): {
-     *         id: String (Required)
-     *         state: String(active/draining/inactive) (Optional)
-     *         queueAssignments (Optional): {
-     *             String (Optional): {
-     *             }
-     *         }
-     *         totalCapacity: Integer (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         channelConfigurations (Optional): {
-     *             String (Optional): {
-     *                 capacityCostPerJob: int (Required)
-     *                 maxNumberOfJobs: Integer (Optional)
-     *             }
-     *         }
-     *         offers (Optional): [
-     *              (Optional){
-     *                 offerId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 offeredAt: OffsetDateTime (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         assignedJobs (Optional): [
-     *              (Optional){
-     *                 assignmentId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 assignedAt: OffsetDateTime (Required)
-     *             }
-     *         ]
-     *         loadRatio: Double (Optional)
-     *         availableForOffers: Boolean (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     ]
+     *     offers (Optional): [
+     *          (Optional){
+     *             offerId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offeredAt: OffsetDateTime (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             assignmentId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignedAt: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -3111,47 +3152,45 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     worker (Required): {
-     *         id: String (Required)
-     *         state: String(active/draining/inactive) (Optional)
-     *         queueAssignments (Optional): {
-     *             String (Optional): {
-     *             }
-     *         }
-     *         totalCapacity: Integer (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         channelConfigurations (Optional): {
-     *             String (Optional): {
-     *                 capacityCostPerJob: int (Required)
-     *                 maxNumberOfJobs: Integer (Optional)
-     *             }
-     *         }
-     *         offers (Optional): [
-     *              (Optional){
-     *                 offerId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 offeredAt: OffsetDateTime (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         assignedJobs (Optional): [
-     *              (Optional){
-     *                 assignmentId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 assignedAt: OffsetDateTime (Required)
-     *             }
-     *         ]
-     *         loadRatio: Double (Optional)
-     *         availableForOffers: Boolean (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     ]
+     *     offers (Optional): [
+     *          (Optional){
+     *             offerId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offeredAt: OffsetDateTime (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             assignmentId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignedAt: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -3221,47 +3260,45 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     worker (Required): {
-     *         id: String (Required)
-     *         state: String(active/draining/inactive) (Optional)
-     *         queueAssignments (Optional): {
-     *             String (Optional): {
-     *             }
-     *         }
-     *         totalCapacity: Integer (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         channelConfigurations (Optional): {
-     *             String (Optional): {
-     *                 capacityCostPerJob: int (Required)
-     *                 maxNumberOfJobs: Integer (Optional)
-     *             }
-     *         }
-     *         offers (Optional): [
-     *              (Optional){
-     *                 offerId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 offeredAt: OffsetDateTime (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         assignedJobs (Optional): [
-     *              (Optional){
-     *                 assignmentId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 assignedAt: OffsetDateTime (Required)
-     *             }
-     *         ]
-     *         loadRatio: Double (Optional)
-     *         availableForOffers: Boolean (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     ]
+     *     offers (Optional): [
+     *          (Optional){
+     *             offerId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offeredAt: OffsetDateTime (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             assignmentId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignedAt: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -3315,47 +3352,45 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     worker (Required): {
-     *         id: String (Required)
-     *         state: String(active/draining/inactive) (Optional)
-     *         queueAssignments (Optional): {
-     *             String (Optional): {
-     *             }
-     *         }
-     *         totalCapacity: Integer (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         channelConfigurations (Optional): {
-     *             String (Optional): {
-     *                 capacityCostPerJob: int (Required)
-     *                 maxNumberOfJobs: Integer (Optional)
-     *             }
-     *         }
-     *         offers (Optional): [
-     *              (Optional){
-     *                 offerId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 offeredAt: OffsetDateTime (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         assignedJobs (Optional): [
-     *              (Optional){
-     *                 assignmentId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 assignedAt: OffsetDateTime (Required)
-     *             }
-     *         ]
-     *         loadRatio: Double (Optional)
-     *         availableForOffers: Boolean (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     ]
+     *     offers (Optional): [
+     *          (Optional){
+     *             offerId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offeredAt: OffsetDateTime (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             assignmentId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignedAt: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -3410,53 +3445,54 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     job (Required): {
-     *         id: String (Required)
-     *         channelReference: String (Optional)
-     *         status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
-     *         enqueuedAt: OffsetDateTime (Optional)
-     *         channelId: String (Optional)
-     *         classificationPolicyId: String (Optional)
-     *         queueId: String (Optional)
-     *         priority: Integer (Optional)
-     *         dispositionCode: String (Optional)
-     *         requestedWorkerSelectors (Optional): [
-     *              (Optional){
-     *                 key: String (Required)
-     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
-     *                 value: Object (Optional)
-     *                 expiresAfterSeconds: Double (Optional)
-     *                 expedite: Boolean (Optional)
-     *                 status: String(active/expired) (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         attachedWorkerSelectors (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         labels (Optional): {
-     *             String: Object (Optional)
+     *     etag: String (Required)
+     *     id: String (Required)
+     *     channelReference: String (Optional)
+     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueuedAt: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             expiresAfterSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             status: String(active/expired) (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
      *         }
-     *         assignments (Optional): {
-     *             String (Optional): {
-     *                 assignmentId: String (Required)
-     *                 workerId: String (Optional)
-     *                 assignedAt: OffsetDateTime (Required)
-     *                 completedAt: OffsetDateTime (Optional)
-     *                 closedAt: OffsetDateTime (Optional)
-     *             }
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         notes (Optional): {
-     *             String: String (Optional)
-     *         }
-     *         scheduledAt: OffsetDateTime (Optional)
-     *         matchingMode (Optional): {
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             assignmentId: String (Required)
+     *             workerId: String (Optional)
+     *             assignedAt: OffsetDateTime (Required)
+     *             completedAt: OffsetDateTime (Optional)
+     *             closedAt: OffsetDateTime (Optional)
      *         }
      *     }
-     *     etag: String (Required)
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     scheduledAt: OffsetDateTime (Optional)
+     *     matchingMode (Optional): {
+     *     }
      * }
      * }</pre>
      *
@@ -3495,53 +3531,54 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     job (Required): {
-     *         id: String (Required)
-     *         channelReference: String (Optional)
-     *         status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
-     *         enqueuedAt: OffsetDateTime (Optional)
-     *         channelId: String (Optional)
-     *         classificationPolicyId: String (Optional)
-     *         queueId: String (Optional)
-     *         priority: Integer (Optional)
-     *         dispositionCode: String (Optional)
-     *         requestedWorkerSelectors (Optional): [
-     *              (Optional){
-     *                 key: String (Required)
-     *                 labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
-     *                 value: Object (Optional)
-     *                 expiresAfterSeconds: Double (Optional)
-     *                 expedite: Boolean (Optional)
-     *                 status: String(active/expired) (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         attachedWorkerSelectors (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         labels (Optional): {
-     *             String: Object (Optional)
+     *     etag: String (Required)
+     *     id: String (Required)
+     *     channelReference: String (Optional)
+     *     status: String(pendingClassification/queued/assigned/completed/closed/cancelled/classificationFailed/created/pendingSchedule/scheduled/scheduleFailed/waitingForActivation) (Optional)
+     *     enqueuedAt: OffsetDateTime (Optional)
+     *     channelId: String (Optional)
+     *     classificationPolicyId: String (Optional)
+     *     queueId: String (Optional)
+     *     priority: Integer (Optional)
+     *     dispositionCode: String (Optional)
+     *     requestedWorkerSelectors (Optional): [
+     *          (Optional){
+     *             key: String (Required)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanEqual/greaterThan/greaterThanEqual) (Required)
+     *             value: Object (Optional)
+     *             expiresAfterSeconds: Double (Optional)
+     *             expedite: Boolean (Optional)
+     *             status: String(active/expired) (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
      *         }
-     *         assignments (Optional): {
-     *             String (Optional): {
-     *                 assignmentId: String (Required)
-     *                 workerId: String (Optional)
-     *                 assignedAt: OffsetDateTime (Required)
-     *                 completedAt: OffsetDateTime (Optional)
-     *                 closedAt: OffsetDateTime (Optional)
-     *             }
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         notes (Optional): {
-     *             String: String (Optional)
-     *         }
-     *         scheduledAt: OffsetDateTime (Optional)
-     *         matchingMode (Optional): {
+     *     ]
+     *     attachedWorkerSelectors (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     assignments (Optional): {
+     *         String (Optional): {
+     *             assignmentId: String (Required)
+     *             workerId: String (Optional)
+     *             assignedAt: OffsetDateTime (Required)
+     *             completedAt: OffsetDateTime (Optional)
+     *             closedAt: OffsetDateTime (Optional)
      *         }
      *     }
-     *     etag: String (Required)
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     notes (Optional): [
+     *          (Optional){
+     *             message: String (Required)
+     *             addedAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     scheduledAt: OffsetDateTime (Optional)
+     *     matchingMode (Optional): {
+     *     }
      * }
      * }</pre>
      *
@@ -3577,47 +3614,45 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     worker (Required): {
-     *         id: String (Required)
-     *         state: String(active/draining/inactive) (Optional)
-     *         queueAssignments (Optional): {
-     *             String (Optional): {
-     *             }
-     *         }
-     *         totalCapacity: Integer (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         channelConfigurations (Optional): {
-     *             String (Optional): {
-     *                 capacityCostPerJob: int (Required)
-     *                 maxNumberOfJobs: Integer (Optional)
-     *             }
-     *         }
-     *         offers (Optional): [
-     *              (Optional){
-     *                 offerId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 offeredAt: OffsetDateTime (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         assignedJobs (Optional): [
-     *              (Optional){
-     *                 assignmentId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 assignedAt: OffsetDateTime (Required)
-     *             }
-     *         ]
-     *         loadRatio: Double (Optional)
-     *         availableForOffers: Boolean (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     ]
+     *     offers (Optional): [
+     *          (Optional){
+     *             offerId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offeredAt: OffsetDateTime (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             assignmentId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignedAt: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -3657,47 +3692,45 @@ public final class JobRouterClientImpl {
      *
      * <pre>{@code
      * {
-     *     worker (Required): {
-     *         id: String (Required)
-     *         state: String(active/draining/inactive) (Optional)
-     *         queueAssignments (Optional): {
-     *             String (Optional): {
-     *             }
-     *         }
-     *         totalCapacity: Integer (Optional)
-     *         labels (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         tags (Optional): {
-     *             String: Object (Optional)
-     *         }
-     *         channelConfigurations (Optional): {
-     *             String (Optional): {
-     *                 capacityCostPerJob: int (Required)
-     *                 maxNumberOfJobs: Integer (Optional)
-     *             }
-     *         }
-     *         offers (Optional): [
-     *              (Optional){
-     *                 offerId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 offeredAt: OffsetDateTime (Optional)
-     *                 expiresAt: OffsetDateTime (Optional)
-     *             }
-     *         ]
-     *         assignedJobs (Optional): [
-     *              (Optional){
-     *                 assignmentId: String (Required)
-     *                 jobId: String (Required)
-     *                 capacityCost: int (Required)
-     *                 assignedAt: OffsetDateTime (Required)
-     *             }
-     *         ]
-     *         loadRatio: Double (Optional)
-     *         availableForOffers: Boolean (Optional)
-     *     }
      *     etag: String (Required)
+     *     id: String (Required)
+     *     state: String(active/draining/inactive) (Optional)
+     *     queues (Optional): [
+     *         String (Optional)
+     *     ]
+     *     capacity: Integer (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     channels (Optional): [
+     *          (Optional){
+     *             channelId: String (Required)
+     *             capacityCostPerJob: int (Required)
+     *             maxNumberOfJobs: Integer (Optional)
+     *         }
+     *     ]
+     *     offers (Optional): [
+     *          (Optional){
+     *             offerId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             offeredAt: OffsetDateTime (Optional)
+     *             expiresAt: OffsetDateTime (Optional)
+     *         }
+     *     ]
+     *     assignedJobs (Optional): [
+     *          (Optional){
+     *             assignmentId: String (Required)
+     *             jobId: String (Required)
+     *             capacityCost: int (Required)
+     *             assignedAt: OffsetDateTime (Required)
+     *         }
+     *     ]
+     *     loadRatio: Double (Optional)
+     *     availableForOffers: Boolean (Optional)
      * }
      * }</pre>
      *

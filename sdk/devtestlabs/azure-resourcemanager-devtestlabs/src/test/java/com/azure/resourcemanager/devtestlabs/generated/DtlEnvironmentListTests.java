@@ -6,7 +6,9 @@ package com.azure.resourcemanager.devtestlabs.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devtestlabs.fluent.models.DtlEnvironmentInner;
+import com.azure.resourcemanager.devtestlabs.models.ArmTemplateParameterProperties;
 import com.azure.resourcemanager.devtestlabs.models.DtlEnvironmentList;
+import com.azure.resourcemanager.devtestlabs.models.EnvironmentDeploymentProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,12 +20,13 @@ public final class DtlEnvironmentListTests {
         DtlEnvironmentList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"armTemplateDisplayName\":\"khihihlhzds\",\"resourceGroupId\":\"zbsrgnowcj\",\"createdByUser\":\"gmvecactxmw\",\"provisioningState\":\"e\",\"uniqueIdentifier\":\"wcluqovekqvgq\"},\"location\":\"uwifzmpjwyiv\",\"tags\":{\"cvhrfsp\":\"f\",\"kvyklxubyjaffmm\":\"uagrttikteusqc\",\"qcuubgqibrta\":\"bl\"},\"id\":\"metttwgd\",\"name\":\"lqxihhrmooiz\",\"type\":\"seypxiutcxapz\"},{\"properties\":{\"armTemplateDisplayName\":\"petogebjox\",\"resourceGroupId\":\"hvnh\",\"createdByUser\":\"brqnkkzjcjb\",\"provisioningState\":\"gaehvvibrxjjst\",\"uniqueIdentifier\":\"beitpkx\"},\"location\":\"tmo\",\"tags\":{\"qxzhem\":\"lftidgfcwqmpim\"},\"id\":\"yhohujswtwkozzwc\",\"name\":\"lkb\",\"type\":\"wpfaj\"},{\"properties\":{\"armTemplateDisplayName\":\"ltlwtjjguktalhs\",\"resourceGroupId\":\"kcdmxzrpoaimln\",\"createdByUser\":\"aaomylweazu\",\"provisioningState\":\"sethwwn\",\"uniqueIdentifier\":\"hlf\"},\"location\":\"swpchwahfbousn\",\"tags\":{\"ykxhdjh\":\"gfewetwlyxgnc\",\"h\":\"immbcx\",\"qizxfpxtgqscjavf\":\"cporxvxcjz\"},\"id\":\"juhdqazkmtgguwpi\",\"name\":\"r\",\"type\":\"jcivmmg\"}],\"nextLink\":\"cf\"}")
+                    "{\"value\":[{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"rimrs\",\"parameters\":[{},{},{}]},\"armTemplateDisplayName\":\"ecj\",\"resourceGroupId\":\"islstv\",\"createdByUser\":\"ylw\",\"provisioningState\":\"zaum\",\"uniqueIdentifier\":\"oohgu\"},\"location\":\"fuzboyjathwtzolb\",\"tags\":{\"xmeb\":\"wm\",\"veabfqxnmwmqtib\":\"jscjpahl\",\"jaeukmrsieekpn\":\"yijddtvqcttad\",\"pibudqwyxebeybpm\":\"zaapmudqmeqwi\"},\"id\":\"znrtffyaqit\",\"name\":\"hheioqaqhvseuf\",\"type\":\"qyrxp\"}],\"nextLink\":\"cgq\"}")
                 .toObject(DtlEnvironmentList.class);
-        Assertions.assertEquals("uwifzmpjwyiv", model.value().get(0).location());
-        Assertions.assertEquals("f", model.value().get(0).tags().get("cvhrfsp"));
-        Assertions.assertEquals("khihihlhzds", model.value().get(0).armTemplateDisplayName());
-        Assertions.assertEquals("cf", model.nextLink());
+        Assertions.assertEquals("fuzboyjathwtzolb", model.value().get(0).location());
+        Assertions.assertEquals("wm", model.value().get(0).tags().get("xmeb"));
+        Assertions.assertEquals("rimrs", model.value().get(0).deploymentProperties().armTemplateId());
+        Assertions.assertEquals("ecj", model.value().get(0).armTemplateDisplayName());
+        Assertions.assertEquals("cgq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,27 +37,37 @@ public final class DtlEnvironmentListTests {
                     Arrays
                         .asList(
                             new DtlEnvironmentInner()
-                                .withLocation("uwifzmpjwyiv")
+                                .withLocation("fuzboyjathwtzolb")
                                 .withTags(
-                                    mapOf("cvhrfsp", "f", "kvyklxubyjaffmm", "uagrttikteusqc", "qcuubgqibrta", "bl"))
-                                .withArmTemplateDisplayName("khihihlhzds"),
-                            new DtlEnvironmentInner()
-                                .withLocation("tmo")
-                                .withTags(mapOf("qxzhem", "lftidgfcwqmpim"))
-                                .withArmTemplateDisplayName("petogebjox"),
-                            new DtlEnvironmentInner()
-                                .withLocation("swpchwahfbousn")
-                                .withTags(
-                                    mapOf("ykxhdjh", "gfewetwlyxgnc", "h", "immbcx", "qizxfpxtgqscjavf", "cporxvxcjz"))
-                                .withArmTemplateDisplayName("ltlwtjjguktalhs")))
-                .withNextLink("cf");
+                                    mapOf(
+                                        "xmeb",
+                                        "wm",
+                                        "veabfqxnmwmqtib",
+                                        "jscjpahl",
+                                        "jaeukmrsieekpn",
+                                        "yijddtvqcttad",
+                                        "pibudqwyxebeybpm",
+                                        "zaapmudqmeqwi"))
+                                .withDeploymentProperties(
+                                    new EnvironmentDeploymentProperties()
+                                        .withArmTemplateId("rimrs")
+                                        .withParameters(
+                                            Arrays
+                                                .asList(
+                                                    new ArmTemplateParameterProperties(),
+                                                    new ArmTemplateParameterProperties(),
+                                                    new ArmTemplateParameterProperties())))
+                                .withArmTemplateDisplayName("ecj")))
+                .withNextLink("cgq");
         model = BinaryData.fromObject(model).toObject(DtlEnvironmentList.class);
-        Assertions.assertEquals("uwifzmpjwyiv", model.value().get(0).location());
-        Assertions.assertEquals("f", model.value().get(0).tags().get("cvhrfsp"));
-        Assertions.assertEquals("khihihlhzds", model.value().get(0).armTemplateDisplayName());
-        Assertions.assertEquals("cf", model.nextLink());
+        Assertions.assertEquals("fuzboyjathwtzolb", model.value().get(0).location());
+        Assertions.assertEquals("wm", model.value().get(0).tags().get("xmeb"));
+        Assertions.assertEquals("rimrs", model.value().get(0).deploymentProperties().armTemplateId());
+        Assertions.assertEquals("ecj", model.value().get(0).armTemplateDisplayName());
+        Assertions.assertEquals("cgq", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

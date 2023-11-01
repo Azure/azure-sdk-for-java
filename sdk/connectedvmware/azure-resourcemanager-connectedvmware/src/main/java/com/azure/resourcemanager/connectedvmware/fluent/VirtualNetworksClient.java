@@ -23,7 +23,6 @@ public interface VirtualNetworksClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -31,7 +30,7 @@ public interface VirtualNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreate(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner body);
+        String resourceGroupName, String virtualNetworkName);
 
     /**
      * Implements virtual network PUT method.
@@ -50,22 +49,6 @@ public interface VirtualNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreate(
         String resourceGroupName, String virtualNetworkName, VirtualNetworkInner body, Context context);
-
-    /**
-     * Implements virtual network PUT method.
-     *
-     * <p>Create Or Update virtual network.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualNetwork.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkInner create(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner body);
 
     /**
      * Implements virtual network PUT method.
@@ -107,21 +90,6 @@ public interface VirtualNetworksClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualNetwork.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkInner getByResourceGroup(String resourceGroupName, String virtualNetworkName);
-
-    /**
-     * Gets a virtual network.
-     *
-     * <p>Implements virtual network GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +101,9 @@ public interface VirtualNetworksClient {
         String resourceGroupName, String virtualNetworkName, Context context);
 
     /**
-     * Updates a virtual network.
+     * Gets a virtual network.
      *
-     * <p>API to update certain properties of the virtual network resource.
+     * <p>Implements virtual network GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
@@ -145,7 +113,7 @@ public interface VirtualNetworksClient {
      * @return define the virtualNetwork.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkInner update(String resourceGroupName, String virtualNetworkName);
+    VirtualNetworkInner getByResourceGroup(String resourceGroupName, String virtualNetworkName);
 
     /**
      * Updates a virtual network.
@@ -166,20 +134,34 @@ public interface VirtualNetworksClient {
         String resourceGroupName, String virtualNetworkName, ResourcePatch body, Context context);
 
     /**
+     * Updates a virtual network.
+     *
+     * <p>API to update certain properties of the virtual network resource.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param virtualNetworkName Name of the virtual network resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the virtualNetwork.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkInner update(String resourceGroupName, String virtualNetworkName);
+
+    /**
      * Deletes an virtual network.
      *
      * <p>Implements virtual network DELETE method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName, Boolean force);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName);
 
     /**
      * Deletes an virtual network.
@@ -198,21 +180,6 @@ public interface VirtualNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkName, Boolean force, Context context);
-
-    /**
-     * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String virtualNetworkName, Boolean force);
 
     /**
      * Deletes an virtual network.

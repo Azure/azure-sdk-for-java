@@ -14,7 +14,7 @@ public final class CreateJobOptions {
     /**
      * The id of the job.
      */
-    private final String id;
+    private final String jobId;
 
     /**
      * Reference to an external parent context, eg. call ID.
@@ -90,12 +90,12 @@ public final class CreateJobOptions {
 
     /**
      * Constructor for CreateJobOptions.
-     * @param id The id of the job.
+     * @param jobId The id of the job.
      * @param channelId The channel identifier. eg. voice, chat, etc.
      * @param queueId The Id of the Queue that this job is queued to.
      */
-    public CreateJobOptions(String id, String channelId, String queueId) {
-        this.id = id;
+    public CreateJobOptions(String jobId, String channelId, String queueId) {
+        this.jobId = jobId;
         this.channelId = channelId;
         this.queueId = queueId;
     }
@@ -176,8 +176,8 @@ public final class CreateJobOptions {
      * Returns the id of RouterJob.
      * @return id.
      */
-    public String getId() {
-        return this.id;
+    public String getJobId() {
+        return this.jobId;
     }
 
     /**

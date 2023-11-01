@@ -18,6 +18,10 @@ public final class WorkItemConfigurationsListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<WorkItemConfigurationInner> value;
 
+    /** Creates an instance of WorkItemConfigurationsListResult class. */
+    public WorkItemConfigurationsListResult() {
+    }
+
     /**
      * Get the value property: An array of work item configurations.
      *

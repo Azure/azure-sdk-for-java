@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.models.ItemScopePath;
 
 /** Samples for AnalyticsItems List. */
@@ -22,6 +21,12 @@ public final class AnalyticsItemsListSamples {
         manager
             .analyticsItems()
             .listWithResponse(
-                "my-resource-group", "my-component", ItemScopePath.ANALYTICS_ITEMS, null, null, null, Context.NONE);
+                "my-resource-group",
+                "my-component",
+                ItemScopePath.ANALYTICS_ITEMS,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }
