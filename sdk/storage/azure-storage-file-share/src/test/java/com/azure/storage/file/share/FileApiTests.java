@@ -2771,4 +2771,16 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         assertTrue(aadFileClient.exists());
     }
+
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20240204ServiceVersion")
+    @Test
+    public void listHandlesClientName() {
+        ShareClient client = primaryFileServiceClient.getShareClient("testing");
+        ShareDirectoryClient directoryClient = client.getDirectoryClient("dir1");
+        ShareFileClient fileClient = directoryClient.getFileClient("test.txt");
+        List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
+        assertNotNull(list.get(0).getClientName());
+
+    }
 }

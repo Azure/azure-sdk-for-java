@@ -694,6 +694,10 @@ public class FileShareTestBase extends TestProxyTestBase {
         return olderThan(ShareServiceVersion.V2023_01_03);
     }
 
+    protected static boolean olderThan20240204ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2024_02_04);
+    }
+
     protected static boolean olderThan(ShareServiceVersion targetVersion) {
         String targetServiceVersionFromEnvironment = ENVIRONMENT.getServiceVersion();
         ShareServiceVersion version = (targetServiceVersionFromEnvironment != null)
