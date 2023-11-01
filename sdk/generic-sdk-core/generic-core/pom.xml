@@ -64,6 +64,9 @@
       --add-reads com.generic.core=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
+    <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
+    <checkstyle.excludes>**/generated/**/*.java</checkstyle.excludes>
+
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
     <javadoc.excludePackageNames>com.generic.json</javadoc.excludePackageNames>
