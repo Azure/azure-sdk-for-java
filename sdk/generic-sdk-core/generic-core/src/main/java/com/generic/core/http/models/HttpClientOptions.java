@@ -21,23 +21,16 @@ import java.util.Collections;
 public final class HttpClientOptions {
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
-    private static final Duration DEFAULT_WRITE_TIMEOUT = Duration.ofSeconds(60);
-    private static final Duration DEFAULT_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
-    private static final Duration DEFAULT_CONNECTION_IDLE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration NO_TIMEOUT = Duration.ZERO;
     private ProxyOptions proxyOptions;
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientOptions.class);
 
-    // private ProxyOptions proxyOptions;
-//    private Configuration configuration;
+    private Configuration configuration;
     private Duration connectTimeout;
-    private Duration writeTimeout;
-    private Duration responseTimeout;
     private Duration readTimeout;
     private Integer maximumConnectionPoolSize;
-    private Duration connectionIdleTimeout;
 
     /**
      * Creates a new instance of {@link HttpClientOptions}.
@@ -100,6 +93,26 @@ public final class HttpClientOptions {
         //     this.applicationId = applicationId;
         //
         //     return this;
+    }
+
+    /**
+     * Sets the configuration store that the {@link HttpClient} will use.
+     *
+     * @param configuration The configuration store to use.
+     * @return The updated HttpClientOptions object.
+     */
+    public HttpClientOptions setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Gets the configuration store that the {@link HttpClient} will use.
+     *
+     * @return The configuration store to use.
+     */
+    public Configuration getConfiguration() {
+        return configuration;
     }
 
     /**
@@ -187,92 +200,6 @@ public final class HttpClientOptions {
      */
     public Duration getConnectTimeout() {
         return getTimeout(connectTimeout, DEFAULT_CONNECT_TIMEOUT);
-    }
-
-    /**
-     * Sets the writing timeout for a request to be sent.
-     * <p>
-     * The writing timeout does not apply to the entire request but to each emission being sent over the wire. For
-     * example a request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the
-     * outbound buffer will be periodically checked to determine if it is still draining.
-     * <p>
-     * If {@code writeTimeout} is null either {@link Configuration#PROPERTY_REQUEST_WRITE_TIMEOUT} or a 60-second
-     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no write timeout will be
-     * applied. When applying the timeout the greatest of one millisecond and the value of {@code writeTimeout} will be
-     * used.
-     * <p>
-     * The default writing timeout is 60 seconds.
-     *
-     * @param writeTimeout Write operation timeout duration.
-     * @return The updated HttpClientOptions object.
-     */
-    public HttpClientOptions setWriteTimeout(Duration writeTimeout) {
-        this.writeTimeout = writeTimeout;
-        return this;
-    }
-
-    /**
-     * Gets the writing timeout for a request to be sent.
-     * <p>
-     * The default writing timeout is 60 seconds.
-     *
-     * @return The writing timeout of a request to be sent.
-     */
-    public Duration getWriteTimeout() {
-        return getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT);
-    }
-
-    /**
-     * Sets the response timeout duration used when waiting for a server to reply.
-     * <p>
-     * The response timeout begins once the request write completes and finishes once the first response read is
-     * triggered when the server response is received.
-     * <p>
-     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_REQUEST_RESPONSE_TIMEOUT} or a
-     * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
-     * applied to the response. When applying the timeout the greatest of one millisecond and the value of
-     * {@code responseTimeout} will be used.
-     * <p>
-     * The default response timeout is 60 seconds.
-     *
-     * @param responseTimeout Response timeout duration.
-     * @return The updated HttpClientOptions object.
-     */
-    public HttpClientOptions responseTimeout(Duration responseTimeout) {
-        this.responseTimeout = responseTimeout;
-        return this;
-    }
-
-    /**
-     * Sets the response timeout duration used when waiting for a server to reply.
-     * <p>
-     * The response timeout begins once the request write completes and finishes once the first response read is
-     * triggered when the server response is received.
-     * <p>
-     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_REQUEST_RESPONSE_TIMEOUT} or a
-     * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
-     * applied to the response. When applying the timeout the greatest of one millisecond and the value of
-     * {@code responseTimeout} will be used.
-     * <p>
-     * The default response timeout is 60 seconds.
-     *
-     * @param responseTimeout Response timeout duration.
-     * @return The updated HttpClientOptions object.
-     */
-    public HttpClientOptions setResponseTimeout(Duration responseTimeout) {
-        this.responseTimeout = responseTimeout;
-        return this;
-    }
-
-    /**
-     * Gets the response timeout duration used when waiting for a server to reply.
-     * <p>
-     * The default response timeout is 60 seconds.
-     *
-     * @return The response timeout duration.
-     */
-    public Duration getResponseTimeout() {
-        return getTimeout(responseTimeout, DEFAULT_RESPONSE_TIMEOUT);
     }
 
     /**
@@ -378,37 +305,6 @@ public final class HttpClientOptions {
      */
     public Integer getMaximumConnectionPoolSize() {
         return maximumConnectionPoolSize;
-    }
-
-    /**
-     * Sets the duration of time before an idle connection.
-     * <p>
-     * The connection idle timeout begins once the connection has completed its last network request. Every time the
-     * connection is used the idle timeout will reset.
-     * <p>
-     * If {@code connectionIdleTimeout} is null a 60-second timeout will be used, if it is a {@link Duration} less than
-     * or equal to zero then no timeout period will be applied. When applying the timeout the greatest of one
-     * millisecond and the value of {@code connectionIdleTimeout} will be used.
-     * <p>
-     * The default connection idle timeout is 60 seconds.
-     *
-     * @param connectionIdleTimeout The connection idle timeout duration.
-     * @return The updated HttpClientOptions object.
-     */
-    public HttpClientOptions setConnectionIdleTimeout(Duration connectionIdleTimeout) {
-        this.connectionIdleTimeout = connectionIdleTimeout;
-        return this;
-    }
-
-    /**
-     * Gets the duration of time before an idle connection is closed.
-     * <p>
-     * The default connection idle timeout is 60 seconds.
-     *
-     * @return The connection idle timeout duration.
-     */
-    public Duration getConnectionIdleTimeout() {
-        return getTimeout(connectionIdleTimeout, DEFAULT_CONNECTION_IDLE_TIMEOUT);
     }
 
     private static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {

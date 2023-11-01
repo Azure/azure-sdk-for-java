@@ -22,13 +22,10 @@ public class HttpUrlConnectionClientBuilder {
 
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
-    private static final Duration DEFAULT_WRITE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private Duration connectionTimeout;
     private Duration readTimeout;
-    private Duration writeTimeout;
-    private Duration responseTimeout;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
 
@@ -74,44 +71,6 @@ public class HttpUrlConnectionClientBuilder {
      */
     public HttpUrlConnectionClientBuilder readTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
-        return this;
-    }
-
-    /**
-     * Sets the writing timeout for a request to be sent.
-     * <p>
-     * The writing timeout does not apply to the entire request but to the request being sent over the wire. For example
-     * a request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the last
-     * write tracker will update when each operation completes and the outbound buffer will be periodically checked to
-     * determine if it is still draining.
-     * <p>
-     * If {@code writeTimeout} is null a 60-second timeout will be used, if it is a {@link Duration} less than or equal
-     * to zero then no write timeout will be applied. When applying the timeout the greatest of one millisecond and the
-     * value of {@code writeTimeout} will be used.
-     *
-     * @param writeTimeout Write operation timeout duration.
-     * @return The updated HttpUrlConnectionAsyncClientBuilder object.
-     */
-    public HttpUrlConnectionClientBuilder writeTimeout(Duration writeTimeout) {
-        this.writeTimeout = writeTimeout;
-        return this;
-    }
-
-    /**
-     * Sets the response timeout duration used when waiting for a server to reply.
-     * <p>
-     * The response timeout begins once the request write completes and finishes once the first response read is
-     * triggered when the server response is received.
-     * <p>
-     * If {@code responseTimeout} is null a 60-second timeout will be used, if it is a {@link Duration} less than
-     * or equal to zero then no timeout will be applied to the response. When applying the timeout the greatest
-     * of one millisecond and the value of {@code responseTimeout} will be used.
-     *
-     * @param responseTimeout Response timeout duration.
-     * @return The updated HttpUrlConnectionAsyncClientBuilder object.
-     */
-    public HttpUrlConnectionClientBuilder responseTimeout(Duration responseTimeout) {
-        this.responseTimeout = responseTimeout;
         return this;
     }
 
@@ -193,8 +152,6 @@ public class HttpUrlConnectionClientBuilder {
         return new HttpUrlConnectionClient(
             getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT),
             getTimeout(readTimeout, DEFAULT_READ_TIMEOUT),
-            getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT),
-            getTimeout(responseTimeout, DEFAULT_RESPONSE_TIMEOUT),
             buildProxyOptions);
     }
 

@@ -434,9 +434,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         private void doLog(String body) {
-            // logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
-            //         prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader, body))
-            //     .log(RESPONSE_LOG_MESSAGE);
+             logBuilder.addKeyValue("body", body)
+                 .log(RESPONSE_LOG_MESSAGE);
         }
     }
 }

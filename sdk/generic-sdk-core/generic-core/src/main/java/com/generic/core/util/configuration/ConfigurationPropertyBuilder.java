@@ -45,8 +45,8 @@ public final class ConfigurationPropertyBuilder<T> {
      * property value does not contain sensitive information, use {@link ConfigurationPropertyBuilder#logValue} to
      * enable logging.
      *
-     * <!-- src_embed com.azure.core.util.configuration.Configuration.get#ConfigurationProperty -->
-     * <!-- end com.azure.core.util.configuration.Configuration.get#ConfigurationProperty -->
+     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.

@@ -21,6 +21,7 @@ public class MockHttpResponse extends HttpResponse {
     private final int statusCode;
 
     private final Headers headers;
+    private final byte[] bodyBytes;
 
     /**
      * Creates a HTTP response associated with a {@code request}, returns the {@code statusCode}, and has an empty
@@ -70,6 +71,7 @@ public class MockHttpResponse extends HttpResponse {
 
         this.statusCode = statusCode;
         this.headers = headers;
+        this.bodyBytes = bodyBytes;
     }
 
     /**
@@ -122,6 +124,6 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public BinaryData getBody() {
-        return super.getBody();
+        return BinaryData.fromBytes(bodyBytes);
     }
 }

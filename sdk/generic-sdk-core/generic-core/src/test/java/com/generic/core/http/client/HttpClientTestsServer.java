@@ -146,6 +146,7 @@ public class HttpClientTestsServer {
 
     private static void sendSimpleHttpBinResponse(HttpServletRequest req, HttpServletResponse resp,
         String requestString) throws IOException {
+        // TODO: update after Serialization is implemented
 //        HttpBinJSON responseBody = new HttpBinJSON();
 //        responseBody.url(cleanseUrl(req));
 //
@@ -164,8 +165,8 @@ public class HttpClientTestsServer {
 //            setBaseHttpHeaders(resp);
 //            responseBody.headers(headers);
 //        }
-
-        handleRequest(resp, "application/json", null);
+//
+//        handleRequest(resp, "application/json", null);
     }
 
 

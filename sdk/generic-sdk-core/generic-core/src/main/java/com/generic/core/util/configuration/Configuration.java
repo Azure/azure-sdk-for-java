@@ -17,8 +17,8 @@ import java.util.function.Function;
 /**
  * Contains configuration information that is used during construction of client libraries.
  *
- * <!-- src_embed com.azure.core.util.configuration.Configuration -->
- * <!-- end com.azure.core.util.configuration.Configuration -->
+ * <!-- src_embed com.azure.core.util.Configuration -->
+ * <!-- end com.azure.core.util.Configuration -->
  */
 public class Configuration implements Cloneable {
 
@@ -84,8 +84,7 @@ public class Configuration implements Cloneable {
     /*
      * Gets the global configuration shared by all client libraries.
      */
-    private static final Configuration GLOBAL_CONFIGURATION =
-        new Configuration(Collections.emptyMap(), EnvironmentConfiguration.getGlobalConfiguration(), null, null);
+    private static final Configuration GLOBAL_CONFIGURATION = new Configuration(Collections.emptyMap(), EnvironmentConfiguration.getGlobalConfiguration(), null, null);
 
     private static final ClientLogger LOGGER = new ClientLogger(Configuration.class);
 
@@ -96,16 +95,30 @@ public class Configuration implements Cloneable {
     private final boolean isEmpty;
 
     /**
-     * Constructs a configuration containing the known properties constants. Use to create instance of
-     * {@link Configuration}.
+     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to
+     * create instance of {@link Configuration}.
+     *
+     * @param configurationSource Configuration property source.
+     * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
+     * @param path Absolute path of current configuration section for logging and diagnostics purposes.
+     * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
+     */
+    Configuration(ConfigurationSource configurationSource, EnvironmentConfiguration environmentConfiguration,
+        String path, Configuration sharedConfiguration) {
+        this(readConfigurations(configurationSource, path), environmentConfiguration, path, sharedConfiguration);
+    }
+
+    /**
+     * Constructs a configuration containing the known properties constants. Use {@link ConfigurationBuilder} to
+     * create instance of {@link Configuration}.
      *
      * @param configurations map of all properties.
      * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
      * @param path Absolute path of current configuration section for logging and diagnostics purposes.
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration,
-                  String path, Configuration sharedConfiguration) {
+    private Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration,
+        String path, Configuration sharedConfiguration) {
         this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
         this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration,
@@ -142,7 +155,7 @@ public class Configuration implements Cloneable {
      * Gets the value of system property or environment variable converted to given primitive {@code T} using
      * corresponding {@code parse} method on this type.
      *
-     * Use {@link Configuration)} overload to get explicit configuration or environment
+     * Use {@link Configuration#get(ConfigurationProperty)} overload to get explicit configuration or environment
      * configuration from specific source.
      *
      * <p>
@@ -206,6 +219,7 @@ public class Configuration implements Cloneable {
         return get(name) != null;
     }
 
+
     /**
      * Checks if configuration contains the property. If property can be shared between clients, checks this
      * {@code Configuration} and falls back to shared section. If property has aliases, system property or environment
@@ -236,8 +250,8 @@ public class Configuration implements Cloneable {
      * <p>
      * Property value is converted to specified type. If property value is missing and not required, default value is returned.
      *
-     * <!-- src_embed com.azure.core.util.configuration.Configuration.get#ConfigurationProperty -->
-     * <!-- end com.azure.core.util.configuration.Configuration.get#ConfigurationProperty -->
+     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
      *
      * @param property instance.
      * @param <T> Type that the configuration is converted to if found.
