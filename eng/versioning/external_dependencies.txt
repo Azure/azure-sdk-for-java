@@ -110,7 +110,7 @@ org.postgresql:postgresql;42.6.0
 org.slf4j:slf4j-api;2.0.9
 org.slf4j:slf4j-nop;2.0.9
 org.slf4j:slf4j-simple;2.0.9
-redis.clients:jedis;5.0.1
+redis.clients:jedis;4.3.2
 io.lettuce:lettuce-core;6.2.6.RELEASE
 org.redisson:redisson;3.17.0
 net.bytebuddy:byte-buddy;1.14.9
