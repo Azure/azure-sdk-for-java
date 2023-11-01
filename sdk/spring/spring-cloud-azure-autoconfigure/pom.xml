@@ -407,6 +407,7 @@
                 <include>jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[2.0.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[8.0.1.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:jar</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.messaginghub:pooled-jms:[3.1.4]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.6.0]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.2.0-RC1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
