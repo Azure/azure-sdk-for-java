@@ -130,10 +130,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                                         .addKeyValue("credits", credits)
                                         .log("Adding credits.");
                                     receiver.flow(credits);
-                                } else {
-                                    logger.atVerbose()
-                                        .addKeyValue("credits", credits)
-                                        .log("There are no credits to add.");
                                 }
 
                                 metricsProvider.recordAddCredits(credits == null ? 0 : credits);
