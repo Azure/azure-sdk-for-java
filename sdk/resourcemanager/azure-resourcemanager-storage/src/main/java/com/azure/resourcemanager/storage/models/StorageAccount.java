@@ -570,7 +570,7 @@ public interface StorageAccount
              *
              * @return the next stage of storage account definition
              */
-            WithCreate disableAllowCrossTenantReplication();
+            WithCreate disallowCrossTenantReplication();
 
         }
 
@@ -939,7 +939,7 @@ public interface StorageAccount
              *
              * @return the next stage of storage account update
              */
-            Update enableAllowCrossTenantReplication();
+            Update allowCrossTenantReplication();
 
             /**
              * Disables cross tenant replication
@@ -948,7 +948,7 @@ public interface StorageAccount
              *
              * @return the next stage of storage account update
              */
-            Update disableAllowCrossTenantReplication();
+            Update disallowCrossTenantReplication();
         }
 
         /** The stage of storage account update allowing to configure default to oauth authentication. */

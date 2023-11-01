@@ -187,7 +187,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
     }
 
     @Test
-    public void canEnableAllowCrossTenantReplicationOnStorageAccount() {
+    public void canAllowCrossTenantReplicationOnStorageAccount() {
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
@@ -195,20 +195,20 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .withRegion(Region.US_EAST2)
                 .withNewResourceGroup(rgName)
                 .withSku(StorageAccountSkuType.STANDARD_LRS)
-                .disableAllowCrossTenantReplication()
+                .disallowCrossTenantReplication()
                 .create();
 
         Assertions.assertFalse(storageAccount.isAllowCrossTenantReplication());
 
         storageAccount.update()
-            .enableAllowCrossTenantReplication()
+            .allowCrossTenantReplication()
             .apply();
 
         Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());
     }
 
     @Test
-    public void canDisableAllowCrossTenantReplicationOnStorageAccount() {
+    public void canDisallowCrossTenantReplicationOnStorageAccount() {
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
@@ -221,7 +221,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());
 
         storageAccount.update()
-            .disableAllowCrossTenantReplication()
+            .disallowCrossTenantReplication()
             .apply();
 
         Assertions.assertFalse(storageAccount.isAllowCrossTenantReplication());
