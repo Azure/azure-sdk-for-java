@@ -57,6 +57,10 @@ public final class SessionContainer implements ISessionContainer {
         this.disableSessionCapturing = value;
     }
 
+    public boolean getDisableSessionCapturing() {
+        return this.disableSessionCapturing;
+    }
+
     String getSessionToken(String collectionLink) {
 
         PathInfo pathInfo = new PathInfo(false, null, null, false);
