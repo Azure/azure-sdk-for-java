@@ -241,7 +241,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).hasSingleBean(JmsProperties.class);
                 JmsProperties jmsProperties = context.getBean(JmsProperties.class);
                 assertThat(jmsProperties.getListener().isAutoStartup()).isFalse();
-                assertThat(jmsProperties.getListener().getSession().getAcknowledgeMode().getMode()).isEqualTo((Session.CLIENT_ACKNOWLEDGE));
+                assertThat(jmsProperties.getListener().getAcknowledgeMode().getMode()).isEqualTo((Session.CLIENT_ACKNOWLEDGE));
                 assertThat(jmsProperties.getListener().formatConcurrency()).isEqualTo("2-10");
                 assertThat(jmsProperties.getListener().getReceiveTimeout()).isEqualTo(Duration.ofSeconds(2));
                 assertThat(jmsProperties.getListener().getMaxConcurrency()).isEqualTo(10);
