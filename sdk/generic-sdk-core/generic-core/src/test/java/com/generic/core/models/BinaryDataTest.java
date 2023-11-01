@@ -11,7 +11,6 @@ import com.generic.json.JsonReader;
 import com.generic.json.JsonSerializable;
 import com.generic.json.JsonToken;
 import com.generic.json.JsonWriter;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -56,6 +56,7 @@ public class BinaryDataTest {
 
     static {
         RANDOM_DATA = new byte[1024 * 1024]; // 1 MB
+
         fillArray(RANDOM_DATA);
     }
 
@@ -137,10 +138,10 @@ public class BinaryDataTest {
 
     @Test
     public void createFromNullObject() {
-        BinaryData
-            binaryData = BinaryData.fromObject(null, BinaryData.SERIALIZER);
-        Assertions.assertNull(binaryData.toBytes());
-        Assertions.assertNull(binaryData.getLength());
+        BinaryData binaryData = BinaryData.fromObject(null, SERIALIZER);
+
+        assertNull(binaryData.toBytes());
+        assertNull(binaryData.getLength());
     }
 
     @Test

@@ -250,7 +250,7 @@ public class DefaultJsonSerializerTests {
     }
 
     private static Stream<Arguments> textDeserializationSupplier() throws MalformedURLException {
-        byte[] helloBytes = "hello".getBytes(StandardCharsets.UTF_8);
+        byte[] helloBytes = "\"hello\"".getBytes(StandardCharsets.UTF_8);
         String urlUri = "https://azure.com";
         byte[] urlUriBytes = urlUri.getBytes(StandardCharsets.UTF_8);
         OffsetDateTime offsetDateTime = OffsetDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS);
