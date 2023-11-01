@@ -785,30 +785,26 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 // ^ Pass down only readiness (active) event and terminal events.
                 .publishOn(ReceiversPumpingScheduler.instance())
                 // ^ Offload any initial drain (upon readiness) and final drain (upon termination) to ReceiversPumpingScheduler.
-                .doOnEach(event -> {
-                    if (event.isOnNext()) {
-                        assert event.get() == AmqpEndpointState.ACTIVE;
-                        if (!ready) {
-                            updateLogWithReceiverId(logger.atWarning()).log("The mediator is active.");
-                            // Set the 'ready' flag to indicate AmqpReceiveLink's successful transition to the active state.
-                            // Once this flag is set, further drain-loop can use 'CreditAccountingStrategy' contract to
-                            // place credits (i.e., the flag ensures credit is placed on the Link only after it is active).
-                            ready = true;
-                            parent.onMediatorReady(this::updateDisposition);
-                        }
-                        return;
+                .subscribe(state -> {
+                    assert state == AmqpEndpointState.ACTIVE;
+                    if (!ready) {
+                        updateLogWithReceiverId(logger.atWarning()).log("The mediator is active.");
+                        // Set the 'ready' flag to indicate AmqpReceiveLink's successful transition to the active state.
+                        // Once this flag is set, further drain-loop can use 'CreditAccountingStrategy' contract to
+                        // place credits (i.e., the flag ensures credit is placed on the Link only after it is active).
+                        ready = true;
+                        // Notify readiness to trigger drain.
+                        parent.onMediatorReady(this::updateDisposition);
                     }
-                    if (event.isOnError()) {
-                        final Throwable e = event.getThrowable();
-                        updateLogWithReceiverId(logger.atWarning()).log("Receiver emitted terminal error.", e);
-                        onLinkError(e);
-                        return;
-                    }
-                    if (event.isOnComplete()) {
-                        updateLogWithReceiverId(logger.atWarning()).log("Receiver emitted terminal completion.");
-                        onLinkComplete();
-                    }
-                }).subscribe(__ -> { }, __ -> { }, () -> { });
+                }, e -> {
+                    updateLogWithReceiverId(logger.atWarning()).log("Receiver emitted terminal error.", e);
+                    // Notify terminal error there by trigger final drain if needed.
+                    onLinkError(e);
+                }, () -> {
+                    updateLogWithReceiverId(logger.atWarning()).log("Receiver emitted terminal completion.");
+                    // Notify terminal completion there by trigger final drain if needed.
+                    onLinkComplete();
+                });
             endpointStateDisposable.add(endpointDisposable);
         }
 
