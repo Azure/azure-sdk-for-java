@@ -41,7 +41,7 @@ customization-class: src/main/java/AppConfigCustomization.java
 ```yaml
 output-folder: ..\
 java: true
-use: '@autorest/java@4.1.17'
+use: '@autorest/java@4.1.22'
 enable-sync-stack: true
 generate-client-interfaces: false
 generate-client-as-impl: true
