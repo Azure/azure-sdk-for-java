@@ -1073,9 +1073,10 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void uploadRangeFromURLOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient_sharedKey(new ShareServiceClientBuilder()
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClientSharedKey(new ShareServiceClientBuilder()
             .shareTokenIntent(ShareTokenIntent.BACKUP));
         ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
             .getDirectoryClient(generatePathName());

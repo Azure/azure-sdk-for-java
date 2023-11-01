@@ -394,7 +394,7 @@ public class FileShareTestBase extends TestProxyTestBase {
         return setOauthCredentials(builder).buildClient();
     }
 
-    protected ShareServiceClient getOAuthServiceClient_sharedKey(ShareServiceClientBuilder builder) {
+    protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {
         if (builder == null) {
             builder = new ShareServiceClientBuilder();
         }
@@ -405,7 +405,7 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildClient();
     }
 
-    protected ShareServiceAsyncClient getOAuthServiceClientAsync_sharedKey(ShareServiceClientBuilder builder) {
+    protected ShareServiceAsyncClient getOAuthServiceClientAsyncSharedKey(ShareServiceClientBuilder builder) {
         if (builder == null) {
             builder = new ShareServiceClientBuilder();
         }

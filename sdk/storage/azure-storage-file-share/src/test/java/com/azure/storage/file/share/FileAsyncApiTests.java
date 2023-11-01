@@ -17,12 +17,10 @@ import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
-import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
-import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
@@ -44,7 +42,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -607,9 +604,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void uploadRangeFromURLOAuth() {
-        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceClientAsync_sharedKey(new ShareServiceClientBuilder()
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceClientAsyncSharedKey(new ShareServiceClientBuilder()
             .shareTokenIntent(ShareTokenIntent.BACKUP));
         ShareDirectoryAsyncClient dirClient = oAuthServiceClient.getShareAsyncClient(shareName)
             .getDirectoryClient(generatePathName());
