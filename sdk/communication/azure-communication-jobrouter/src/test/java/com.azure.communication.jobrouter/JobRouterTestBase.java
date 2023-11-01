@@ -13,6 +13,7 @@ import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -111,9 +112,9 @@ class JobRouterTestBase extends TestProxyTestBase {
 
     protected RouterQueue createQueue(JobRouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
         String queueName = String.format("%s-Name", queueId);
-        Map<String, Object> queueLabels = new HashMap<String, Object>() {
+        Map<String, RouterValue> queueLabels = new HashMap<String, RouterValue>() {
             {
-                put("Label_1", "Value_1");
+                put("Label_1", new RouterValue("Value_1"));
             }
         };
 
@@ -147,7 +148,7 @@ class JobRouterTestBase extends TestProxyTestBase {
                 new ArrayList<RouterWorkerSelector>() {
                     {
                         new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN)
-                            .setValue(10);
+                            .setValue(new RouterValue(10));
                     }
                 }
             );

@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.time.Duration;
+
 /** Attaches a worker selector where the value is passed through from the job label with the same key. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("pass-through")
@@ -33,9 +35,8 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
     /*
      * Describes how long the attached label selector is valid in seconds.
      */
-    @Generated
     @JsonProperty(value = "expiresAfterSeconds")
-    private Double expiresAfterSeconds;
+    private Duration expiresAfter;
 
     /**
      * Creates an instance of PassThroughWorkerSelectorAttachment class.
@@ -78,19 +79,19 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      * @return the expiresAfterSeconds value.
      */
     @Generated
-    public Double getExpiresAfterSeconds() {
-        return this.expiresAfterSeconds;
+    public Duration getExpiresAfter() {
+        return this.expiresAfter;
     }
 
     /**
      * Set the expiresAfterSeconds property: Describes how long the attached label selector is valid in seconds.
      *
-     * @param expiresAfterSeconds the expiresAfterSeconds value to set.
+     * @param expiresAfter the expiresAfterSeconds value to set.
      * @return the PassThroughWorkerSelectorAttachment object itself.
      */
     @Generated
-    public PassThroughWorkerSelectorAttachment setExpiresAfterSeconds(Double expiresAfterSeconds) {
-        this.expiresAfterSeconds = expiresAfterSeconds;
+    public PassThroughWorkerSelectorAttachment setExpiresAfter(Duration expiresAfter) {
+        this.expiresAfter = expiresAfter;
         return this;
     }
 }

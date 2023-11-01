@@ -7,7 +7,6 @@ import com.azure.communication.jobrouter.models.JobMatchingMode;
 import com.azure.communication.jobrouter.models.RouterJobAssignment;
 import com.azure.communication.jobrouter.models.RouterJobNote;
 import com.azure.communication.jobrouter.models.RouterJobStatus;
-import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -89,15 +88,14 @@ public final class RouterJobInternal {
      */
     @Generated
     @JsonProperty(value = "requestedWorkerSelectors")
-    private List<RouterWorkerSelector> requestedWorkerSelectors;
+    private List<RouterWorkerSelectorInternal> requestedWorkerSelectors;
 
     /*
      * A collection of label selectors attached by a classification policy, which a
      * worker must satisfy in order to process this job.
      */
-    @Generated
     @JsonProperty(value = "attachedWorkerSelectors", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RouterWorkerSelector> attachedWorkerSelectors;
+    private List<RouterWorkerSelectorInternal> attachedWorkerSelectors;
 
     /*
      * A set of key/value pairs that are identifying attributes used by the rules
@@ -327,7 +325,7 @@ public final class RouterJobInternal {
      * @return the requestedWorkerSelectors value.
      */
     @Generated
-    public List<RouterWorkerSelector> getRequestedWorkerSelectors() {
+    public List<RouterWorkerSelectorInternal> getRequestedWorkerSelectors() {
         return this.requestedWorkerSelectors;
     }
 
@@ -339,7 +337,7 @@ public final class RouterJobInternal {
      * @return the RouterJob object itself.
      */
     @Generated
-    public RouterJobInternal setRequestedWorkerSelectors(List<RouterWorkerSelector> requestedWorkerSelectors) {
+    public RouterJobInternal setRequestedWorkerSelectors(List<RouterWorkerSelectorInternal> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
     }
@@ -350,8 +348,7 @@ public final class RouterJobInternal {
      *
      * @return the attachedWorkerSelectors value.
      */
-    @Generated
-    public List<RouterWorkerSelector> getAttachedWorkerSelectors() {
+    public List<RouterWorkerSelectorInternal> getAttachedWorkerSelectors() {
         return this.attachedWorkerSelectors;
     }
 

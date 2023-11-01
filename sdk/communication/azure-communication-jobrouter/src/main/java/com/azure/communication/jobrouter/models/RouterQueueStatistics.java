@@ -7,6 +7,8 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.Duration;
 import java.util.Map;
 
 /** Statistics for the queue. */
@@ -31,9 +33,8 @@ public final class RouterQueueStatistics {
      * The estimated wait time of this queue rounded up to the nearest minute, grouped
      * by job priority
      */
-    @Generated
     @JsonProperty(value = "estimatedWaitTimeMinutes")
-    private Map<String, Double> estimatedWaitTimeMinutes;
+    private Map<String, Duration> estimatedWaitTimeMinutes;
 
     /*
      * The wait time of the job that has been enqueued in this queue for the longest.
@@ -82,8 +83,7 @@ public final class RouterQueueStatistics {
      *
      * @return the estimatedWaitTimeMinutes value.
      */
-    @Generated
-    public Map<String, Double> getEstimatedWaitTimeMinutes() {
+    public Map<String, Duration> getEstimatedWaitTime() {
         return this.estimatedWaitTimeMinutes;
     }
 

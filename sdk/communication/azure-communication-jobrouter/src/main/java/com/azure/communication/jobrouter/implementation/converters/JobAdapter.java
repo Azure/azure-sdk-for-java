@@ -4,11 +4,11 @@
 package com.azure.communication.jobrouter.implementation.converters;
 
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerSelectorInternal;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobNote;
-import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 
 import java.util.List;
 import java.util.Map;
@@ -31,8 +31,18 @@ public class JobAdapter {
         Map<String, RouterValue> tagValueMap = createJobOptions.getLabels();
         Map<String, Object> tags = tagValueMap != null ? tagValueMap.entrySet().stream()
             .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
-        List<RouterWorkerSelector> workerSelectors = createJobOptions.getRequestedWorkerSelectors();
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
+        List<RouterWorkerSelectorInternal> workerSelectors = createJobOptions.getRequestedWorkerSelectors()
+            .stream()
+            .map(workerSelector ->
+                new RouterWorkerSelectorInternal(workerSelector.getKey(), workerSelector.getLabelOperator())
+                    .setValue(getValue(workerSelector.getValue()))
+                    .setExpedite(workerSelector.isExpedite())
+                    .setExpiresAt(workerSelector.getExpiresAt())
+                    .setExpiresAfterSeconds((double) workerSelector.getExpiresAfter().getSeconds())
+                    .setStatus(workerSelector.getStatus())
+            )
+            .collect(Collectors.toList());
 
         return new RouterJobInternal()
             .setChannelId(createJobOptions.getChannelId())
