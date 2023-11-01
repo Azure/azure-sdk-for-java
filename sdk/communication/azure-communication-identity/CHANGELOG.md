@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0 (Unreleased)
 
 ### Features Added
 - Introduction of new scopes for token generation.
