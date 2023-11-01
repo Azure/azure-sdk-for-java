@@ -20,8 +20,9 @@ public class AzureSpringBootVersionVerifier {
 
     static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0 = "org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer";
     static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_1 = "org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer.ValidationConfigurationCustomizer,setIgnoreRegistrationFailure,";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_2 = "org.springframework.boot.autoconfigure.web.client.RestClientSsl";
     /**
-     * Versions supported by Spring Cloud Azure, for present is [3.0, 3.1]. Update this value if needed.
+     * Versions supported by Spring Cloud Azure, for present is [3.0, 3.1, 3.2]. Update this value if needed.
      */
     private final Map<String, String> supportedVersions = new HashMap<>();
 
@@ -45,6 +46,7 @@ public class AzureSpringBootVersionVerifier {
     private void initDefaultSupportedBootVersionCheckMeta() {
         supportedVersions.put("3.0", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0);
         supportedVersions.put("3.1", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_1);
+        supportedVersions.put("3.2", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_2);
     }
 
     /**
