@@ -14,6 +14,7 @@ import java.util.List;
 public final class PlayOptions {
     /*
      * A List of {@link PlaySource} representing the sources to play.
+     * Currently only single play source per request is supported.
      */
     private final List<PlaySource> playSources;
 

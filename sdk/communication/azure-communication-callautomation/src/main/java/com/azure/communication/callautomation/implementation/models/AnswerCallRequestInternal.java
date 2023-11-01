@@ -29,10 +29,10 @@ public final class AnswerCallRequestInternal {
     private String operationContext;
 
     /*
-     * The endpoint URL of the Azure Cognitive Services resource attached
+     * AI options for the call.
      */
-    @JsonProperty(value = "cognitiveServicesEndpoint")
-    private String cognitiveServicesEndpoint;
+    @JsonProperty(value = "callIntelligenceOptions")
+    private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
      * The identifier of the call automation entity which answers the call
@@ -104,22 +104,23 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
-     * Get the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource attached.
+     * Get the callIntelligenceOptions property: AI options for the call.
      *
-     * @return the cognitiveServicesEndpoint value.
+     * @return the callIntelligenceOptions value.
      */
-    public String getCognitiveServicesEndpoint() {
-        return this.cognitiveServicesEndpoint;
+    public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
     }
 
     /**
-     * Set the cognitiveServicesEndpoint property: The endpoint URL of the Azure Cognitive Services resource attached.
+     * Set the callIntelligenceOptions property: AI options for the call.
      *
-     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
+     * @param callIntelligenceOptions the callIntelligenceOptions value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
-        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
+    public AnswerCallRequestInternal setCallIntelligenceOptions(
+            CallIntelligenceOptionsInternal callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
 

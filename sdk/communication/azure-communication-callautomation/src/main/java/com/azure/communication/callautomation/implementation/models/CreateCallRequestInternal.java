@@ -49,10 +49,10 @@ public final class CreateCallRequestInternal {
     private String callbackUri;
 
     /*
-     * The identifier of the Cognitive Service resource assigned to this call.
+     * AI options for the call.
      */
-    @JsonProperty(value = "cognitiveServicesEndpoint")
-    private String cognitiveServicesEndpoint;
+    @JsonProperty(value = "callIntelligenceOptions")
+    private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /** Creates an instance of CreateCallRequestInternal class. */
     public CreateCallRequestInternal() {}
@@ -180,24 +180,23 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
-     * call.
+     * Get the callIntelligenceOptions property: AI options for the call.
      *
-     * @return the cognitiveServicesEndpoint value.
+     * @return the callIntelligenceOptions value.
      */
-    public String getCognitiveServicesEndpoint() {
-        return this.cognitiveServicesEndpoint;
+    public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
     }
 
     /**
-     * Set the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
-     * call.
+     * Set the callIntelligenceOptions property: AI options for the call.
      *
-     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
+     * @param callIntelligenceOptions the callIntelligenceOptions value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
-        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
+    public CreateCallRequestInternal setCallIntelligenceOptions(
+            CallIntelligenceOptionsInternal callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
 }
