@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IndexUtilizationInfo;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OperationCancelledException;
@@ -535,11 +534,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             while (iterator.hasNext()) {
                 FeedResponse<InternalObjectNode> feedResponse = iterator.next();
                 queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
-                logger.info("This is query diagnostics {}", queryDiagnostics);
-                if (feedResponse.getResponseHeaders().containsKey(HttpConstants.HttpHeaders.INDEX_UTILIZATION)) {
-                    assertThat(feedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.INDEX_UTILIZATION)).isNotNull();
-                    assertThat(createFromJSONString(Utils.decodeBase64String(feedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.INDEX_UTILIZATION))).getUtilizedSingleIndexes()).isNotNull();
-                }
+                assertThat(queryDiagnostics).contains("\"indexUtilizationInfo\"");
+                assertThat(queryDiagnostics).contains("\"UtilizedSingleIndexes\"");
+                assertThat(queryDiagnostics).contains("\"PotentialSingleIndexes\"");
+                assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
+                assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
             }
         }
     }
@@ -1554,17 +1553,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
 
         return HttpClient.createFixed(httpClientConfig);
-    }
-
-    private IndexUtilizationInfo createFromJSONString(String jsonString) {
-        ObjectMapper indexUtilizationInfoObjectMapper = new ObjectMapper();
-        IndexUtilizationInfo indexUtilizationInfo = null;
-        try {
-            indexUtilizationInfo = indexUtilizationInfoObjectMapper.readValue(jsonString, IndexUtilizationInfo.class);
-        } catch (JsonProcessingException e) {
-            logger.error("Json not correctly formed ", e);
-        }
-        return indexUtilizationInfo;
     }
 
     private void validateRegionContacted(CosmosDiagnostics cosmosDiagnostics, CosmosAsyncClient cosmosAsyncClient) throws Exception {

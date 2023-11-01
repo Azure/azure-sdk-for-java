@@ -9,7 +9,11 @@ import java.util.Map;
 
 /** Identity used for BYOS. */
 @Fluent
-public class WorkbookResourceIdentity extends ManagedServiceIdentity {
+public final class WorkbookResourceIdentity extends ManagedServiceIdentity {
+    /** Creates an instance of WorkbookResourceIdentity class. */
+    public WorkbookResourceIdentity() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public WorkbookResourceIdentity withType(ManagedServiceIdentityType type) {

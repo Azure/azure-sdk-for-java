@@ -14,26 +14,26 @@ public final class OperationDisplayTests {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"ummajtjaod\",\"resource\":\"bnbdxkqpxokajion\",\"operation\":\"mexgstxgcp\",\"description\":\"gmaajrm\"}")
+                    "{\"provider\":\"leyyvx\",\"resource\":\"jpkcattpng\",\"operation\":\"rcczsqpjhvmd\",\"description\":\"v\"}")
                 .toObject(OperationDisplay.class);
-        Assertions.assertEquals("ummajtjaod", model.provider());
-        Assertions.assertEquals("bnbdxkqpxokajion", model.resource());
-        Assertions.assertEquals("mexgstxgcp", model.operation());
-        Assertions.assertEquals("gmaajrm", model.description());
+        Assertions.assertEquals("leyyvx", model.provider());
+        Assertions.assertEquals("jpkcattpng", model.resource());
+        Assertions.assertEquals("rcczsqpjhvmd", model.operation());
+        Assertions.assertEquals("v", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationDisplay model =
             new OperationDisplay()
-                .withProvider("ummajtjaod")
-                .withResource("bnbdxkqpxokajion")
-                .withOperation("mexgstxgcp")
-                .withDescription("gmaajrm");
+                .withProvider("leyyvx")
+                .withResource("jpkcattpng")
+                .withOperation("rcczsqpjhvmd")
+                .withDescription("v");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("ummajtjaod", model.provider());
-        Assertions.assertEquals("bnbdxkqpxokajion", model.resource());
-        Assertions.assertEquals("mexgstxgcp", model.operation());
-        Assertions.assertEquals("gmaajrm", model.description());
+        Assertions.assertEquals("leyyvx", model.provider());
+        Assertions.assertEquals("jpkcattpng", model.resource());
+        Assertions.assertEquals("rcczsqpjhvmd", model.operation());
+        Assertions.assertEquals("v", model.description());
     }
 }

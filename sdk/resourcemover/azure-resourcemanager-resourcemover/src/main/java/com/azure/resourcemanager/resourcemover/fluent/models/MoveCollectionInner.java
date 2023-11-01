@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resourcemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.resourcemover.models.Identity;
 import com.azure.resourcemanager.resourcemover.models.MoveCollectionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,6 +32,12 @@ public final class MoveCollectionInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private MoveCollectionProperties properties;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /** Creates an instance of MoveCollectionInner class. */
     public MoveCollectionInner() {
@@ -83,6 +90,15 @@ public final class MoveCollectionInner extends Resource {
     public MoveCollectionInner withProperties(MoveCollectionProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */

@@ -188,13 +188,18 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
 
     def getThroughputControlClientCacheItem(userConfig: Map[String, String],
                                             calledFrom: String,
-                                            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]]): Option[CosmosClientCacheItem] = {
+                                            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
+                                            sparkEnvironmentInfo: String): Option[CosmosClientCacheItem] = {
         val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
         val diagnosticConfig = DiagnosticsConfig.parseDiagnosticsConfig(userConfig)
 
         if (throughputControlConfigOpt.isDefined) {
             val throughputControlClientConfig =
-                CosmosClientConfiguration.apply(throughputControlConfigOpt.get.cosmosAccountConfig, diagnosticConfig, false)
+                CosmosClientConfiguration.apply(
+                  throughputControlConfigOpt.get.cosmosAccountConfig,
+                  diagnosticConfig,
+                  false,
+                  sparkEnvironmentInfo)
 
             val throughputControlClientMetadata =
                 cosmosClientStateHandles match {

@@ -13,6 +13,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
 import com.azure.resourcemanager.elasticsan.models.VolumeUpdate;
+import com.azure.resourcemanager.elasticsan.models.XMsDeleteSnapshots;
+import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
 
 /** An instance of this class provides access to all the operations defined in VolumesClient. */
 public interface VolumesClient {
@@ -215,6 +217,10 @@ public interface VolumesClient {
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -223,7 +229,13 @@ public interface VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context);
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete,
+        Context context);
 
     /**
      * Delete an Volume.
@@ -246,6 +258,10 @@ public interface VolumesClient {
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -253,7 +269,13 @@ public interface VolumesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context);
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete,
+        Context context);
 
     /**
      * Get an Volume.

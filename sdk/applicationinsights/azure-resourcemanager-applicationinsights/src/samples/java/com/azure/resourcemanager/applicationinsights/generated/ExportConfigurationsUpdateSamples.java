@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentExportRequest;
 
 /** Samples for ExportConfigurations Update. */
@@ -39,6 +38,6 @@ public final class ExportConfigurationsUpdateSamples {
                     .withDestinationStorageLocationId("eastus")
                     .withDestinationAccountId(
                         "/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.ClassicStorage/storageAccounts/mystorageblob"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

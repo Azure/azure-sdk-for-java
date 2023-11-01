@@ -60,11 +60,11 @@ public final class DisksAttachMockTests {
         manager
             .disks()
             .attach(
-                "xsyaowuzowpuoh",
-                "kc",
-                "rgukxrztio",
-                "hlutixmqrudjizc",
-                new AttachDiskProperties().withLeasedByLabVmId("zmcrunfhiucnmfb"),
+                "wyj",
+                "nldpxottd",
+                "i",
+                "ocqibz",
+                new AttachDiskProperties().withLeasedByLabVmId("hweebiph"),
                 com.azure.core.util.Context.NONE);
     }
 }

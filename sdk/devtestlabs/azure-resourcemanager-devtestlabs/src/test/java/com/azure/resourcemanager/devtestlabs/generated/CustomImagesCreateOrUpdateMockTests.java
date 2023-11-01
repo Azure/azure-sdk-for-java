@@ -17,6 +17,12 @@ import com.azure.resourcemanager.devtestlabs.models.CustomImageOsType;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesCustom;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesFromPlan;
 import com.azure.resourcemanager.devtestlabs.models.CustomImagePropertiesFromVm;
+import com.azure.resourcemanager.devtestlabs.models.DataDiskStorageTypeInfo;
+import com.azure.resourcemanager.devtestlabs.models.LinuxOsInfo;
+import com.azure.resourcemanager.devtestlabs.models.LinuxOsState;
+import com.azure.resourcemanager.devtestlabs.models.StorageType;
+import com.azure.resourcemanager.devtestlabs.models.WindowsOsInfo;
+import com.azure.resourcemanager.devtestlabs.models.WindowsOsState;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -38,7 +44,7 @@ public final class CustomImagesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"vm\":{\"sourceVmId\":\"peeksnbksdqhjv\"},\"vhd\":{\"imageName\":\"sl\",\"sysPrep\":true,\"osType\":\"Windows\"},\"description\":\"tcpoqma\",\"author\":\"wqjwgok\",\"creationDate\":\"2021-03-20T05:15:41Z\",\"managedImageId\":\"jj\",\"managedSnapshotId\":\"ybwfdbkjb\",\"dataDiskStorageInfo\":[],\"customImagePlan\":{\"id\":\"vkzykjtjknsxf\",\"publisher\":\"shcdpkupnqrmg\",\"offer\":\"bpkuwxeoio\"},\"isPlanAuthorized\":true,\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"jzwfb\"},\"location\":\"yay\",\"tags\":{\"bfw\":\"fz\",\"dew\":\"rzx\"},\"id\":\"rsxkr\",\"name\":\"lbjazejww\",\"type\":\"iyoypsuhbrnnhj\"}";
+            "{\"properties\":{\"vm\":{\"sourceVmId\":\"gqphrgfnzhctmjts\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"NonDeprovisioned\"}},\"vhd\":{\"imageName\":\"arpzeqacdldtzm\",\"sysPrep\":false,\"osType\":\"Linux\"},\"description\":\"cpczshnuqnd\",\"author\":\"zupfkhuytuszxhm\",\"creationDate\":\"2021-10-02T12:20:25Z\",\"managedImageId\":\"egw\",\"managedSnapshotId\":\"ukvzwydwttha\",\"dataDiskStorageInfo\":[{\"lun\":\"skjivbsshajqfuk\",\"storageType\":\"Standard\"},{\"lun\":\"pgeumilh\",\"storageType\":\"Premium\"},{\"lun\":\"rdexyio\",\"storageType\":\"Premium\"}],\"customImagePlan\":{\"id\":\"nbdbzsxcwqqr\",\"publisher\":\"pcbbprtugav\",\"offer\":\"bcyksivmfogd\"},\"isPlanAuthorized\":true,\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"gmbawvifdxk\"},\"location\":\"cifhocjxwkl\",\"tags\":{\"xxvir\":\"rvtxvcmufunlc\",\"rquv\":\"eyngjg\"},\"id\":\"ygg\",\"name\":\"pmcrdcuelj\",\"type\":\"iahxmfqryarvs\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,45 +75,52 @@ public final class CustomImagesCreateOrUpdateMockTests {
         CustomImage response =
             manager
                 .customImages()
-                .define("zrsq")
-                .withRegion("kileplkcsmknhwtb")
-                .withExistingLab("vvlfntymtp", "iwenazero")
-                .withTags(mapOf("bdgwumgxdgd", "dorvvmqfloy", "tm", "pabgdexjddvjsaqw"))
-                .withVm(new CustomImagePropertiesFromVm().withSourceVmId("xkdnwqapf"))
+                .define("jrr")
+                .withRegion("lj")
+                .withExistingLab("hmtybkcgsuthhll", "mwynefxexlfciatx")
+                .withTags(mapOf("jpbi", "vume", "leqirccjclykcgxv", "nzpphepife", "punettepdjxq", "pjlvczuoda"))
+                .withVm(
+                    new CustomImagePropertiesFromVm()
+                        .withSourceVmId("dskjhhxdlaj")
+                        .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_APPLIED))
+                        .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_APPLIED)))
                 .withVhd(
                     new CustomImagePropertiesCustom()
-                        .withImageName("vessm")
-                        .withSysPrep(false)
-                        .withOsType(CustomImageOsType.LINUX))
-                .withDescription("uipldqq")
-                .withAuthor("ekvalblhtjq")
-                .withManagedImageId("wehtaemxh")
-                .withManagedSnapshotId("ysev")
-                .withDataDiskStorageInfo(Arrays.asList())
+                        .withImageName("lxlhuavkrm")
+                        .withSysPrep(true)
+                        .withOsType(CustomImageOsType.NONE))
+                .withDescription("mkxettcsloj")
+                .withAuthor("qid")
+                .withManagedImageId("qxjhqxcsqhtkbtnq")
+                .withManagedSnapshotId("ngldmbiipsn")
+                .withDataDiskStorageInfo(
+                    Arrays.asList(new DataDiskStorageTypeInfo().withLun("qkzn").withStorageType(StorageType.PREMIUM)))
                 .withCustomImagePlan(
-                    new CustomImagePropertiesFromPlan()
-                        .withId("zrrryv")
-                        .withPublisher("mipskdyzatv")
-                        .withOffer("zkaftjvvrux"))
-                .withIsPlanAuthorized(true)
+                    new CustomImagePropertiesFromPlan().withId("xricctkwmuqq").withPublisher("jxeiy").withOffer("esrw"))
+                .withIsPlanAuthorized(false)
                 .create();
 
-        Assertions.assertEquals("yay", response.location());
-        Assertions.assertEquals("fz", response.tags().get("bfw"));
-        Assertions.assertEquals("peeksnbksdqhjv", response.vm().sourceVmId());
-        Assertions.assertEquals("sl", response.vhd().imageName());
-        Assertions.assertEquals(true, response.vhd().sysPrep());
-        Assertions.assertEquals(CustomImageOsType.WINDOWS, response.vhd().osType());
-        Assertions.assertEquals("tcpoqma", response.description());
-        Assertions.assertEquals("wqjwgok", response.author());
-        Assertions.assertEquals("jj", response.managedImageId());
-        Assertions.assertEquals("ybwfdbkjb", response.managedSnapshotId());
-        Assertions.assertEquals("vkzykjtjknsxf", response.customImagePlan().id());
-        Assertions.assertEquals("shcdpkupnqrmg", response.customImagePlan().publisher());
-        Assertions.assertEquals("bpkuwxeoio", response.customImagePlan().offer());
+        Assertions.assertEquals("cifhocjxwkl", response.location());
+        Assertions.assertEquals("rvtxvcmufunlc", response.tags().get("xxvir"));
+        Assertions.assertEquals("gqphrgfnzhctmjts", response.vm().sourceVmId());
+        Assertions.assertEquals(WindowsOsState.SYSPREP_APPLIED, response.vm().windowsOsInfo().windowsOsState());
+        Assertions.assertEquals(LinuxOsState.NON_DEPROVISIONED, response.vm().linuxOsInfo().linuxOsState());
+        Assertions.assertEquals("arpzeqacdldtzm", response.vhd().imageName());
+        Assertions.assertEquals(false, response.vhd().sysPrep());
+        Assertions.assertEquals(CustomImageOsType.LINUX, response.vhd().osType());
+        Assertions.assertEquals("cpczshnuqnd", response.description());
+        Assertions.assertEquals("zupfkhuytuszxhm", response.author());
+        Assertions.assertEquals("egw", response.managedImageId());
+        Assertions.assertEquals("ukvzwydwttha", response.managedSnapshotId());
+        Assertions.assertEquals("skjivbsshajqfuk", response.dataDiskStorageInfo().get(0).lun());
+        Assertions.assertEquals(StorageType.STANDARD, response.dataDiskStorageInfo().get(0).storageType());
+        Assertions.assertEquals("nbdbzsxcwqqr", response.customImagePlan().id());
+        Assertions.assertEquals("pcbbprtugav", response.customImagePlan().publisher());
+        Assertions.assertEquals("bcyksivmfogd", response.customImagePlan().offer());
         Assertions.assertEquals(true, response.isPlanAuthorized());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

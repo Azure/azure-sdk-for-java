@@ -19,6 +19,12 @@ public final class LanguageExtensionImageName extends ExpandableStringEnum<Langu
     /** Static value Python3_10_8 for LanguageExtensionImageName. */
     public static final LanguageExtensionImageName PYTHON3_10_8 = fromString("Python3_10_8");
 
+    /** Static value Python3_10_8_DL for LanguageExtensionImageName. */
+    public static final LanguageExtensionImageName PYTHON3_10_8_DL = fromString("Python3_10_8_DL");
+
+    /** Static value PythonCustomImage for LanguageExtensionImageName. */
+    public static final LanguageExtensionImageName PYTHON_CUSTOM_IMAGE = fromString("PythonCustomImage");
+
     /**
      * Creates a new instance of LanguageExtensionImageName value.
      *

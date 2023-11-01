@@ -1,6 +1,6 @@
 # Release History
 
-## 1.11.0-beta.2 (unreleased)
+## 1.11.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.11.0-beta.2 (2023-10-27)
+
+### Features Added
+- Initial release of WAM support for Azure Identity.
+
+### Other Changes
+- Upgraded 'msal4j' from '1.13.9' to version '1.14.0'.
+
+## 1.10.4 (2023-10-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.8` to version `1.13.9`.
+
+## 1.10.3 (2023-10-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
 
 ## 1.10.2 (2023-10-10)
 

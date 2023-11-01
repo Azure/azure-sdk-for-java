@@ -17,12 +17,12 @@ public final class SchedulePropertiesTests {
         ScheduleProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Updated\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jezwlwnw\",\"timeZone\":\"qlcvydy\",\"state\":\"Enabled\"}")
+                    "{\"provisioningState\":\"NotSpecified\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"fzg\",\"timeZone\":\"jdftuljltd\",\"state\":\"Enabled\"}")
                 .toObject(ScheduleProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("jezwlwnw", model.time());
-        Assertions.assertEquals("qlcvydy", model.timeZone());
+        Assertions.assertEquals("fzg", model.time());
+        Assertions.assertEquals("jdftuljltd", model.timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
     }
 
@@ -32,14 +32,14 @@ public final class SchedulePropertiesTests {
             new ScheduleProperties()
                 .withType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("jezwlwnw")
-                .withTimeZone("qlcvydy")
+                .withTime("fzg")
+                .withTimeZone("jdftuljltd")
                 .withState(ScheduleEnableStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("jezwlwnw", model.time());
-        Assertions.assertEquals("qlcvydy", model.timeZone());
+        Assertions.assertEquals("fzg", model.time());
+        Assertions.assertEquals("jdftuljltd", model.timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
     }
 }

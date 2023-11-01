@@ -22,6 +22,10 @@ public final class MyWorkbookUserAssignedIdentities {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
+    /** Creates an instance of MyWorkbookUserAssignedIdentities class. */
+    public MyWorkbookUserAssignedIdentities() {
+    }
+
     /**
      * Get the principalId property: The principal ID of resource identity.
      *
