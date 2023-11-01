@@ -76,7 +76,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             }
         };
 
-        List<String> queues = new ArrayList<>() {
+        List<String> queues = new ArrayList<String>() {
             {
                 add(jobQueue.getId());
             }
