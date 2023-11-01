@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -55,9 +56,9 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
         RouterQueue queue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
-        Map<String, Object> updatedQueueLabels = new HashMap<String, Object>() {
+        Map<String, RouterValue> updatedQueueLabels = new HashMap<String, RouterValue>() {
             {
-                put("Label_1", "UpdatedValue");
+                put("Label_1", new RouterValue("UpdatedValue"));
             }
         };
 
