@@ -26,13 +26,16 @@ import java.util.function.Function;
  */
 public final class ReflectionSerializable {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionSerializable.class);
-    private static final Map<Class<?>, ReflectiveInvoker> FROM_JSON_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, ReflectiveInvoker> FROM_JSON_CACHE;
+
+    static {
+        FROM_JSON_CACHE = new ConcurrentHashMap<>();
+    }
 
     /**
      * Whether {@code JsonSerializable} is supported and the {@code bodyContentClass} is an instance of it.
      *
      * @param bodyContentClass The body content class.
-     *
      * @return Whether {@code bodyContentClass} can be used as {@code JsonSerializable}.
      */
     public static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
@@ -43,14 +46,11 @@ public final class ReflectionSerializable {
      * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
      *
      * @param jsonSerializable The {@code JsonSerializable} body content.
-     *
      * @return The {@link ByteBuffer} representing the serialized {@code jsonSerializable}.
-     *
      * @throws IOException If an error occurs during serialization.
      */
     public static ByteBuffer serializeJsonSerializableToByteBuffer(JsonSerializable<?> jsonSerializable)
         throws IOException {
-
         return serializeJsonSerializableWithReturn(jsonSerializable, AccessibleByteArrayOutputStream::toByteBuffer);
     }
 
@@ -58,9 +58,7 @@ public final class ReflectionSerializable {
      * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
      *
      * @param jsonSerializable The {@code JsonSerializable} content.
-     *
      * @return The {@code byte[]} representing the serialized {@code jsonSerializable}.
-     *
      * @throws IOException If an error occurs during serialization.
      */
     public static byte[] serializeJsonSerializableToBytes(JsonSerializable<?> jsonSerializable) throws IOException {
@@ -71,9 +69,7 @@ public final class ReflectionSerializable {
      * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
      *
      * @param jsonSerializable The {@code JsonSerializable} content.
-     *
      * @return The {@link String} representing the serialized {@code jsonSerializable}.
-     *
      * @throws IOException If an error occurs during serialization.
      */
     public static String serializeJsonSerializableToString(JsonSerializable<?> jsonSerializable) throws IOException {
@@ -81,11 +77,9 @@ public final class ReflectionSerializable {
     }
 
     private static <T> T serializeJsonSerializableWithReturn(JsonSerializable<?> jsonSerializable,
-                                                             Function<AccessibleByteArrayOutputStream, T> returner)
-        throws IOException {
+                                                             Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
              JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
-
             jsonWriter.writeJson(jsonSerializable).flush();
 
             return returner.apply(outputStream);
@@ -97,7 +91,6 @@ public final class ReflectionSerializable {
      *
      * @param jsonSerializable The {@code JsonSerializable} content.
      * @param outputStream Where the serialized {@code JsonSerializable} will be written.
-     *
      * @throws IOException If an error occurs during serialization.
      */
     public static void serializeJsonSerializableIntoOutputStream(JsonSerializable<?> jsonSerializable,
@@ -112,9 +105,7 @@ public final class ReflectionSerializable {
      *
      * @param jsonSerializable The {@code JsonSerializable} represented by the {@code json}.
      * @param json The JSON being deserialized.
-     *
      * @return An instance of {@code jsonSerializable} based on the {@code json}.
-     *
      * @throws IOException If an error occurs during deserialization.
      */
     public static Object deserializeAsJsonSerializable(Class<?> jsonSerializable, byte[] json) throws IOException {

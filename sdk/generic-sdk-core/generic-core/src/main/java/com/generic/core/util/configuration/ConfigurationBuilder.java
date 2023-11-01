@@ -4,6 +4,7 @@
 package com.generic.core.util.configuration;
 
 import com.generic.core.annotation.Fluent;
+import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.EnvironmentConfiguration;
 import com.generic.core.util.logging.ClientLogger;
 
@@ -37,8 +38,8 @@ public final class ConfigurationBuilder {
     /**
      * Creates {@code ConfigurationBuilder} with configuration source.
      *
-     * <!-- src_embed com.azure.core.util.configuration.Configuration -->
-     * <!-- end com.com.azure.core.util.configuration.Configuration -->
+     * <!-- src_embed com.azure.core.util.Configuration -->
+     * <!-- end com.com.azure.core.util.Configuration -->
      *
      * @param source Custom {@link ConfigurationSource} containing known SDK configuration properties.
      */
@@ -49,12 +50,14 @@ public final class ConfigurationBuilder {
 
     /**
      * Creates {@code ConfigurationBuilder} with configuration sources for explicit configuration, system properties and
-     * environment configuration sources. Use this constructor to customize known SDK system properties and environment
-     * variables retrieval.
+     * environment configuration sources. Use this constructor to customize known SDK system properties and
+     * environment variables retrieval.
      *
-     * @param source Custom {@link ConfigurationSource} containing known SDK configuration properties.
-     * @param systemPropertiesConfigurationSource {@link ConfigurationSource} containing known SDK system properties.
-     * @param environmentConfigurationSource {@link ConfigurationSource} containing known SDK environment variables.
+     * @param source Custom {@link ConfigurationSource} containing known SDK configuration properties
+     * @param systemPropertiesConfigurationSource {@link ConfigurationSource} containing known Azure SDK system
+     * properties.
+     * @param environmentConfigurationSource {@link ConfigurationSource} containing known Azure SDK environment
+     * variables.
      */
     public ConfigurationBuilder(ConfigurationSource source, ConfigurationSource systemPropertiesConfigurationSource,
         ConfigurationSource environmentConfigurationSource) {
@@ -90,8 +93,8 @@ public final class ConfigurationBuilder {
      * Sets path to root configuration properties where shared SDK properties are defined. When local per-client
      * property is missing, {@link Configuration} falls back to shared properties.
      *
-     * <!-- src_embed com.azure.core.util.configuration.Configuration -->
-     * <!-- end com.com.azure.core.util.configuration.Configuration -->
+     * <!-- src_embed com.azure.core.util.Configuration -->
+     * <!-- end com.com.azure.core.util.Configuration -->
      *
      * @param rootPath absolute root path, can be {@code null}.
      * @return {@code ConfigurationBuilder} instance for chaining.
@@ -104,7 +107,7 @@ public final class ConfigurationBuilder {
 
     /**
      * Builds root {@link Configuration} section. Use it for shared properties only. To read client-specific
-     * configuration, use {@link ConfigurationBuilder} which can read per-client and shared
+     * configuration, use {@link ConfigurationBuilder#buildSection(String)} which can read per-client and shared
      * properties.
      *
      * <!-- src_embed com.azure.core.util.ConfigurationBuilder#build -->
@@ -113,12 +116,41 @@ public final class ConfigurationBuilder {
      * @return Root {@link Configuration} with shared properties.
      */
     public Configuration build() {
-//        if (sharedConfiguration == null) {
-//            // defaults can be reused to get different client sections.
-//            sharedConfiguration = new Configuration(mutableSource, environmentConfiguration, rootPath, null);
-//        }
+        if (sharedConfiguration == null) {
+            // defaults can be reused to get different client sections.
+            sharedConfiguration = new Configuration(mutableSource, environmentConfiguration, rootPath, null);
+        }
 
         return sharedConfiguration;
+    }
+
+    /**
+     * Builds {@link Configuration} section that supports retrieving properties from client-specific section with
+     * fallback to root section for properties that can be shared between clients.
+     *
+     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#buildSection -->
+     * <!-- end com.azure.core.util.ConfigurationBuilder#buildSection -->
+     *
+     * @param path relative path from {@link ConfigurationBuilder#root(String)} to client section.
+     * @return Client {@link Configuration} capable of reading client-specific and shared properties.
+     */
+    public Configuration buildSection(String path) {
+        Objects.requireNonNull(path, "'path' cannot be null");
+        if (sharedConfiguration == null) {
+            // sharedConfiguration can be reused to build different client sections.
+            sharedConfiguration = new Configuration(mutableSource, environmentConfiguration, rootPath, null);
+        }
+
+        String absolutePath = getAbsolutePath(rootPath, path);
+        return new Configuration(mutableSource, environmentConfiguration, absolutePath, sharedConfiguration);
+    }
+
+    private static String getAbsolutePath(String root, String relative) {
+        if (CoreUtils.isNullOrEmpty(root)) {
+            return relative;
+        }
+
+        return root + "." + relative;
     }
 
     private static final class MutableConfigurationSource implements ConfigurationSource {

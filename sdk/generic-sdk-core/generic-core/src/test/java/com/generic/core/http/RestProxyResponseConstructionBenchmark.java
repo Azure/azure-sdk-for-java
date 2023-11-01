@@ -48,7 +48,7 @@ public class RestProxyResponseConstructionBenchmark {
 
     /**
      * Benchmarks creating a {@link Response} type using the constructor directly when possible (types outside the scope
-     * of azure-core must use reflection).
+     * of generic-core must use reflection).
      * <p>
      * Benchmarking shows this as ~20-30x faster than using ResponseConstructorCache and the MethodHandle it returns.
      */

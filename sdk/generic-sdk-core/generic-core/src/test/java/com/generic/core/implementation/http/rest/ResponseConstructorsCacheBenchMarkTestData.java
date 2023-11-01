@@ -75,12 +75,14 @@ class ResponseConstructorsCacheBenchMarkTestData {
     static final class MockResponse extends HttpResponse {
         private final int statusCode;
         private final Headers headers;
+        private final byte[] bodyBytes;
 
         MockResponse(HttpRequest request, int statusCode, Headers headers, byte[] body) {
             super(request, body);
 
             this.statusCode = statusCode;
             this.headers = headers;
+            this.bodyBytes = body;
         }
 
         @Override
@@ -95,7 +97,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
         @Override
         public BinaryData getBody() {
-            return super.getBody();
+            return BinaryData.fromBytes(bodyBytes);
         }
     }
 

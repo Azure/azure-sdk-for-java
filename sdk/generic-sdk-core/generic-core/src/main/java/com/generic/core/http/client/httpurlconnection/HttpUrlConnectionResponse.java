@@ -12,13 +12,13 @@ import com.generic.core.models.Headers;
 class HttpUrlConnectionResponse extends HttpResponse {
     private final int statusCode;
     private final Headers headers;
-    private final byte[] body;
+    private final BinaryData body;
 
     public HttpUrlConnectionResponse(HttpRequest request, int statusCode, Headers headers, BinaryData body) {
         super(request);
         this.statusCode = statusCode;
         this.headers = headers;
-        this.body = null;
+        this.body = body;
     }
 
     @Override
@@ -28,17 +28,17 @@ class HttpUrlConnectionResponse extends HttpResponse {
 
     @Override
     public String getHeaderValue(HttpHeaderName name) {
-        return null;
+        return headers.getValue(name);
     }
 
     @Override
     public Headers getHeaders() {
-        return null;
+        return this.headers;
     }
 
     @Override
     public BinaryData getBody() {
-        return BinaryData.fromBytes(this.body);
+        return this.body;
     }
     public HttpResponse buffer() {
         return this;

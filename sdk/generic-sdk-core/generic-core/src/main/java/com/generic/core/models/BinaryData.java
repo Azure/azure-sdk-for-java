@@ -367,13 +367,6 @@ public final class BinaryData {
      * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromFile#Path-Long-Long -->
-     * <pre>
-     * long position = 1024;
-     * long length = 100 * 1048;
-     * BinaryData binaryData = BinaryData.fromFile&#40;
-     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length&#41;;
-     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
-     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromFile#Path-Long-Long -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
@@ -399,14 +392,6 @@ public final class BinaryData {
      * <p><strong>Create an instance from a file</strong></p>
      *
      * <!-- src_embed com.generic.core.util.BinaryData.fromFile#Path-Long-Long-int -->
-     * <pre>
-     * long position = 1024;
-     * long length = 100 * 1048;
-     * int chunkSize = 8092;
-     * BinaryData binaryData = BinaryData.fromFile&#40;
-     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length, chunkSize&#41;;
-     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
-     * </pre>
      * <!-- end com.generic.core.util.BinaryData.fromFile#Path-Long-Long-int -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.

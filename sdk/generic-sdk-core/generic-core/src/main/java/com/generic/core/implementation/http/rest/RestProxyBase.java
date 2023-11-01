@@ -80,15 +80,15 @@ public abstract class RestProxyBase {
             context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName());
 
             if (methodParser.isResponseEagerlyRead()) {
-                context = context.addData("azure-eagerly-read-response", true);
+                context = context.addData("eagerly-read-response", true);
             }
 
             if (methodParser.isResponseBodyIgnored()) {
-                context = context.addData("azure-ignore-response-body", true);
+                context = context.addData("ignore-response-body", true);
             }
 
             if (methodParser.isHeadersEagerlyConverted()) {
-                context = context.addData("azure-eagerly-convert-headers", true);
+                context = context.addData("eagerly-convert-headers", true);
             }
 
             return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
@@ -117,7 +117,7 @@ public abstract class RestProxyBase {
         // Inspection of the response type needs to be performed to determine which course of action should be taken to
         // instantiate the Response<?> from the HttpResponse.
         //
-        // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
+        // If the type is either the Response or PagedResponse interface from generic-core a new instance of either
         // ResponseBase or PagedResponseBase can be returned.
         if (cls.equals(Response.class)) {
             // For Response return a new instance of ResponseBase cast to the class.
@@ -290,7 +290,7 @@ public abstract class RestProxyBase {
                 (Throwable) responseDecodedContent);
         }
 
-        // For HttpResponseException types that exist in azure-core, call the constructor directly.
+        // For HttpResponseException types that exist in generic-core, call the constructor directly.
         Class<? extends HttpResponseException> exceptionType = exception.getExceptionType();
 
         if (exceptionType == HttpResponseException.class) {
@@ -306,7 +306,7 @@ public abstract class RestProxyBase {
         } else if (exceptionType == TooManyRedirectsException.class) {
             return new TooManyRedirectsException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
         } else {
-            // Finally, if the HttpResponseException subclass doesn't exist in azure-core, use reflection to create a
+            // Finally, if the HttpResponseException subclass doesn't exist in generic-core, use reflection to create a
             // new instance of it.
             try {
                 ReflectiveInvoker reflectiveInvoker =

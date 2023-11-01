@@ -18,7 +18,7 @@ import static com.generic.core.implementation.util.CoreUtils.isNullOrEmpty;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
- * Utility methods for testing {@code azure-core}.
+ * Utility methods for testing {@code generic-core}.
  */
 public final class CoreTestUtils {
     private static final byte[] BYTES;
