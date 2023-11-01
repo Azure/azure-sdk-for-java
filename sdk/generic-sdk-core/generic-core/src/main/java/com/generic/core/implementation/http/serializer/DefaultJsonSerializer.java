@@ -29,9 +29,13 @@ public class DefaultJsonSerializer implements JsonSerializer {
     @Override
     public <T> T deserializeFromBytes(byte[] bytes, TypeReference<T> typeReference) {
         try (JsonReader jsonReader = JsonProviders.createReader(bytes)) {
-            Class<T> clazz = typeReference.getJavaClass();
+            if (JsonSerializable.class.isAssignableFrom(typeReference.getJavaClass())) {
+                Class<T> clazz = typeReference.getJavaClass();
 
-            return (T) clazz.getMethod("fromJson", clazz).invoke(null, jsonReader);
+                return (T) clazz.getMethod("fromJson", JsonReader.class).invoke(null, jsonReader);
+            } else {
+                return (T) jsonReader.readUntyped();
+            }
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
@@ -43,9 +47,13 @@ public class DefaultJsonSerializer implements JsonSerializer {
     @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
         try (JsonReader jsonReader = JsonProviders.createReader(stream)) {
-            Class<T> clazz = typeReference.getJavaClass();
+            if (JsonSerializable.class.isAssignableFrom(typeReference.getJavaClass())) {
+                Class<T> clazz = typeReference.getJavaClass();
 
-            return (T) clazz.getMethod("fromJson", clazz).invoke(null, jsonReader);
+                return (T) clazz.getMethod("fromJson", JsonReader.class).invoke(null, jsonReader);
+            } else {
+                return (T) jsonReader.readUntyped();
+            }
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
@@ -55,13 +63,15 @@ public class DefaultJsonSerializer implements JsonSerializer {
 
     @Override
     public byte[] serializeToBytes(Object value) {
-        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-            JsonWriter jsonWriter = JsonProviders.createWriter(byteArrayOutputStream);
+        if (value == null) {
+            return null;
+        }
 
-            JsonSerializable<?> jsonSerializable = (JsonSerializable<?>) value;
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             JsonWriter jsonWriter = JsonProviders.createWriter(byteArrayOutputStream)) {
 
-            jsonWriter.writeJson(jsonSerializable);
-            jsonWriter.close();
+            jsonWriter.writeUntyped(value);
+            jsonWriter.flush();
 
             return byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
@@ -71,13 +81,12 @@ public class DefaultJsonSerializer implements JsonSerializer {
 
     @Override
     public void serialize(OutputStream stream, Object value) {
-        try {
-            JsonWriter jsonWriter = JsonProviders.createWriter(stream);
+        if (value == null) {
+            return;
+        }
 
-            JsonSerializable<?> jsonSerializable = (JsonSerializable<?>) value;
-
-            jsonWriter.writeJson(jsonSerializable);
-            jsonWriter.close();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
+            jsonWriter.writeUntyped(value);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
