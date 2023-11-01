@@ -35,7 +35,7 @@ public final class DefaultJsonReader extends JsonReader {
      * @param json JSON {@code byte[]}.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link JsonReader}.
-     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON {@code byte[]}.
+     * @throws IOException If a {@link JsonReader} could not be constructed from the JSON {@code byte[]}.
      */
     public static JsonReader fromBytes(byte[] json, JsonOptions options) throws IOException {
         return new DefaultJsonReader(FACTORY.createParser(json), true, json, null, options);
@@ -47,7 +47,7 @@ public final class DefaultJsonReader extends JsonReader {
      * @param json JSON String.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link JsonReader}.
-     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON String.
+     * @throws IOException If a {@link JsonReader} could not be constructed from the JSON String.
      */
     public static JsonReader fromString(String json, JsonOptions options) throws IOException {
         return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, options);
@@ -59,7 +59,7 @@ public final class DefaultJsonReader extends JsonReader {
      * @param json JSON {@link InputStream}.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link JsonReader}.
-     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON {@link InputStream}.
+     * @throws IOException If a {@link JsonReader} could not be constructed from the JSON {@link InputStream}.
      */
     public static JsonReader fromStream(InputStream json, JsonOptions options) throws IOException {
         return new DefaultJsonReader(FACTORY.createParser(json), json.markSupported(), null, null, options);
@@ -71,7 +71,7 @@ public final class DefaultJsonReader extends JsonReader {
      * @param reader JSON {@link Reader}.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link DefaultJsonReader}.
-     * @throws IOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON {@link Reader}.
+     * @throws IOException If a {@link DefaultJsonReader} could not be constructed from the JSON {@link Reader}.
      */
     public static JsonReader fromReader(Reader reader, JsonOptions options) throws IOException {
         return new DefaultJsonReader(FACTORY.createParser(reader), reader.markSupported(), null, null, options);

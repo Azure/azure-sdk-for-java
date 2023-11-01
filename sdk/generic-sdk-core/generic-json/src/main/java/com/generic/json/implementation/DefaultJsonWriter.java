@@ -37,7 +37,7 @@ public final class DefaultJsonWriter extends JsonWriter {
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link DefaultJsonWriter}.
      * @throws NullPointerException If {@code json} is null.
-     * @throws IOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the {@link OutputStream}.
+     * @throws IOException If a {@link DefaultJsonWriter} could not be constructed from the {@link OutputStream}.
      */
     public static JsonWriter toStream(OutputStream json, JsonOptions options) throws IOException {
         Objects.requireNonNull(json, "'json' cannot be null.");
@@ -54,7 +54,7 @@ public final class DefaultJsonWriter extends JsonWriter {
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link DefaultJsonWriter}.
      * @throws NullPointerException If {@code json} is null.
-     * @throws IOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the {@link Writer}.
+     * @throws IOException If a {@link DefaultJsonWriter} could not be constructed from the {@link Writer}.
      */
     public static JsonWriter toWriter(Writer json, JsonOptions options) throws IOException {
         Objects.requireNonNull(json, "'json' cannot be null.");
