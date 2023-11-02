@@ -427,6 +427,9 @@ spring_com.microsoft.azure:azure;1.34.0
 # sdk\spring\spring-cloud-azure-service\pom.xml
 spring_redis.clients:jedis;3.8.0
 
+# sdk\identity\azure-identity\pom.xml
+sample_redis.clients:jedis;4.3.2
+
 # Spring Boot 3 dependency versions
 jakarta.servlet:jakarta.servlet-api;6.0.0
 jakarta.xml.bind:jakarta.xml.bind-api;4.0.1
